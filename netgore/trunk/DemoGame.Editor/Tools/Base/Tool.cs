@@ -30,26 +30,12 @@ namespace DemoGame.Editor
 
         readonly string _name;
         readonly IToolBarControl _toolBarControl;
-        readonly ToolManager _toolManager;
         readonly ToolBarVisibility _toolBarVisibility;
+        readonly ToolManager _toolManager;
 
         bool _canShowInToolbar = true;
         bool _isDisposed;
         bool _isEnabled;
-
-        /// <summary>
-        /// Gets the visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.
-        /// </summary>
-        public ToolBarVisibility ToolBarVisibility { get { return _toolBarVisibility; } }
-
-        /// <summary>
-        /// Tries to add this <see cref="Tool"/> to the appropriate <see cref="ToolBar"/> if it is not already on the
-        /// <see cref="ToolBar"/>.
-        /// </summary>
-        public void AddToToolBar()
-        {
-            ToolBar.AddToToolBar(this);
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tool"/> class.
@@ -65,7 +51,8 @@ namespace DemoGame.Editor
         /// <see cref="ToolBarControlType"/> enum.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarVisibility"/> does not contain a defined value of the
         /// <see cref="ToolBarVisibility"/> enum.</exception>
-        protected Tool(string name, ToolManager toolManager, ToolBarControlType toolBarControlType, ToolBarVisibility toolBarVisibility)
+        protected Tool(string name, ToolManager toolManager, ToolBarControlType toolBarControlType,
+                       ToolBarVisibility toolBarVisibility)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
@@ -175,11 +162,28 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Gets the visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.
+        /// </summary>
+        public ToolBarVisibility ToolBarVisibility
+        {
+            get { return _toolBarVisibility; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="ToolManager"/> that this tool is in.
         /// </summary>
         public ToolManager ToolManager
         {
             get { return _toolManager; }
+        }
+
+        /// <summary>
+        /// Tries to add this <see cref="Tool"/> to the appropriate <see cref="ToolBar"/> if it is not already on the
+        /// <see cref="ToolBar"/>.
+        /// </summary>
+        public void AddToToolBar()
+        {
+            ToolBar.AddToToolBar(this);
         }
 
         /// <summary>
@@ -219,10 +223,6 @@ namespace DemoGame.Editor
             Dispose(false);
         }
 
-        protected virtual void OnToolBarPriorityChanged(int oldValue, int newValue)
-        {
-        }
-
         protected virtual void OnCanShowInToolBarChanged(bool oldValue, bool newValue)
         {
         }
@@ -233,6 +233,10 @@ namespace DemoGame.Editor
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
         protected virtual void OnEnabledChanged(bool oldValue, bool newValue)
+        {
+        }
+
+        protected virtual void OnToolBarPriorityChanged(int oldValue, int newValue)
         {
         }
 

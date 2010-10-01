@@ -12,12 +12,6 @@ namespace DemoGame.Editor
         static readonly ISprite _lightSprite = SystemSprites.Lightblub;
 
         /// <summary>
-        /// Property to access the MSC. Provided purely for the means of shortening the
-        /// code
-        /// </summary>
-        MapScreenControl MSC { get { return Container.MapScreenControl; } }
-
-        /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
         /// </summary>
         public override Image CursorImage
@@ -26,38 +20,20 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Completely clears the state of the cursor.
-        /// </summary>
-        void ClearState()
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
-        /// </summary>
-        public override void Activate()
-        {
-            base.Activate();
-
-            ClearState();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
-        /// </summary>
-        public override void Deactivate()
-        {
-            base.Deactivate();
-
-            ClearState();
-        }
-
-        /// <summary>
         /// Gets the <see cref="ISprite"/> for the lightbulbs used by this cursor to represent lights.
         /// </summary>
         public static ISprite LightSprite
         {
             get { return _lightSprite; }
+        }
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC
+        {
+            get { return Container.MapScreenControl; }
         }
 
         /// <summary>
@@ -74,6 +50,33 @@ namespace DemoGame.Editor
         public override int ToolbarPriority
         {
             get { return 45; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            ClearState();
         }
 
         /// <summary>

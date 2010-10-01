@@ -16,7 +16,58 @@ namespace DemoGame.Editor
         string _toolTip = string.Empty;
         object _toolTipObj = null;
         Vector2 _toolTipPos;
-        
+
+        /// <summary>
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
+        /// </summary>
+        public override Image CursorImage
+        {
+            get { return Resources.cursor_lights; }
+        }
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC
+        {
+            get { return Container.MapScreenControl; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Light"; }
+        }
+
+        /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM
+        {
+            get { return GlobalState.Instance.Map.SelectedObjsManager; }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        public override int ToolbarPriority
+        {
+            get { return 40; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
         /// <summary>
         /// Completely clears the state of the cursor.
         /// </summary>
@@ -40,40 +91,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
-        /// </summary>
-        public override void Activate()
-        {
-            base.Activate();
-
-            ClearState();
-        }
-
-        /// <summary>
-        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
-        /// </summary>
-        public override Image CursorImage
-        {
-            get { return Resources.cursor_lights; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Select Light"; }
-        }
-
-        /// <summary>
-        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
-        /// </summary>
-        public override int ToolbarPriority
-        {
-            get { return 40; }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
@@ -86,7 +103,8 @@ namespace DemoGame.Editor
 
             // Draw the tooltip
             if (_toolTipObj != null && !string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White,
+                                             Color.Black);
         }
 
         /// <summary>
@@ -106,17 +124,6 @@ namespace DemoGame.Editor
 
             return closestLight;
         }
-
-        /// <summary>
-        /// Property to access the MSC. Provided purely for the means of shortening the
-        /// code
-        /// </summary>
-        MapScreenControl MSC { get { return Container.MapScreenControl; } }
-
-        /// <summary>
-        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
-        /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
 
         /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.

@@ -1,4 +1,7 @@
-﻿namespace DemoGame.Editor
+﻿using System.Linq;
+using System.Windows.Forms;
+
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Contains the settings specific to the <see cref="ToolBarControlType.ProgressBar"/>.
@@ -24,7 +27,23 @@
         /// <summary>
         /// Gets the <see cref="System.Windows.Forms.ProgressBar"/>.
         /// </summary>
-        System.Windows.Forms.ProgressBar ProgressBar { get; }
+        ProgressBar ProgressBar { get; }
+
+        /// <summary>
+        /// Gets or sets the amount by which to increment the current value of the progress bar each time
+        /// <see cref="IToolBarProgressBarSettings.PerformStep"/> is called.
+        /// </summary>
+        int Step { set; get; }
+
+        /// <summary>
+        /// Gets or sets the style of the progress bar.
+        /// </summary>
+        ProgressBarStyle Style { set; get; }
+
+        /// <summary>
+        /// Gets or sets the current value of the progress bar.
+        /// </summary>
+        int Value { set; get; }
 
         /// <summary>
         /// Advances the current position of the progress bar by the specified amount.
@@ -37,21 +56,5 @@
         /// <see cref="IToolBarProgressBarSettings.Step"/> property.
         /// </summary>
         void PerformStep();
-
-        /// <summary>
-        /// Gets or sets the amount by which to increment the current value of the progress bar each time
-        /// <see cref="IToolBarProgressBarSettings.PerformStep"/> is called.
-        /// </summary>
-        int Step { set; get; }
-
-        /// <summary>
-        /// Gets or sets the style of the progress bar.
-        /// </summary>
-        System.Windows.Forms.ProgressBarStyle Style { set; get; }
-
-        /// <summary>
-        /// Gets or sets the current value of the progress bar.
-        /// </summary>
-        int Value { set; get; }
     }
 }

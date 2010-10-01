@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Linq;
 using NetGore.EditorTools;
 
 namespace DemoGame.Editor
@@ -16,14 +9,8 @@ namespace DemoGame.Editor
     /// </summary>
     public sealed partial class EditMapCursorsForm : ChildWindowForm
     {
-        readonly EditorCursorManager<MapScreenControl> _cursorManager;
-
-        /// <summary>
-        /// Gets the <see cref="EditMapCursorsForm"/> instance.
-        /// </summary>
-        public static EditMapCursorsForm Instance { get { return _instance; } }
-
         static readonly EditMapCursorsForm _instance;
+        readonly EditorCursorManager<MapScreenControl> _cursorManager;
 
         /// <summary>
         /// Initializes the <see cref="EditMapCursorsForm"/> class.
@@ -41,6 +28,14 @@ namespace DemoGame.Editor
             InitializeComponent();
 
             // TODO: !! _cursorManager  = new EditorCursorManager<MapScreenControl>(null, null, this, 
+        }
+
+        /// <summary>
+        /// Gets the <see cref="EditMapCursorsForm"/> instance.
+        /// </summary>
+        public static EditMapCursorsForm Instance
+        {
+            get { return _instance; }
         }
     }
 }

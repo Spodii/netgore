@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +6,7 @@ using System.Windows.Forms;
 using log4net;
 using NetGore;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
@@ -28,7 +28,7 @@ namespace DemoGame.Editor
             Application.SetCompatibleTextRenderingDefault(false);
 
             // NOTE: Forces SFML to load early on instead of later, causing a LoaderLock exception. Can probably be removed later.
-            using (new SFML.Graphics.Image())
+            using (new Image())
             {
             }
 

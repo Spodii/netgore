@@ -22,37 +22,6 @@ namespace DemoGame.Editor
 
         MouseButtons _mouseDragButton = MouseButtons.None;
         Vector2 _mouseDragStart = Vector2.Zero;
-        
-        /// <summary>
-        /// Completely clears the state of the cursor.
-        /// </summary>
-        void ClearState()
-        {
-            _selectedWalls.Clear();
-            _mouseDragButton = MouseButtons.None;
-            _mouseDragStart = Vector2.Zero;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
-        /// </summary>
-        public override void Deactivate()
-        {
-            base.Deactivate();
-
-            ClearState();
-        }
-
-        /// <summary>
-        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
-        /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
-
-        /// <summary>
-        /// Property to access the MSC. Provided purely for the means of shortening the
-        /// code
-        /// </summary>
-        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WallCursor"/> class.
@@ -73,11 +42,28 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC
+        {
+            get { return Container.MapScreenControl; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the name of the cursor.
         /// </summary>
         public override string Name
         {
             get { return "Select Wall"; }
+        }
+
+        /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM
+        {
+            get { return GlobalState.Instance.Map.SelectedObjsManager; }
         }
 
         /// <summary>
@@ -94,6 +80,26 @@ namespace DemoGame.Editor
         public override void Activate()
         {
             base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+            _selectedWalls.Clear();
+            _mouseDragButton = MouseButtons.None;
+            _mouseDragStart = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
 
             ClearState();
         }

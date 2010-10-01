@@ -21,6 +21,21 @@ namespace DemoGame.Editor
             Application.AddMessageFilter(_keyMessageFilter);
         }
 
+        public static bool IsAltDown
+        {
+            get { return IsKeyDown(Keys.Alt); }
+        }
+
+        public static bool IsCtrlDown
+        {
+            get { return IsKeyDown(Keys.ControlKey); }
+        }
+
+        public static bool IsShiftDown
+        {
+            get { return IsKeyDown(Keys.ShiftKey); }
+        }
+
         public static bool AreKeysDown(params Keys[] keys)
         {
             if (keys == null || keys.Length == 0)
@@ -28,12 +43,6 @@ namespace DemoGame.Editor
 
             return keys.All(IsKeyDown);
         }
-
-        public static bool IsCtrlDown { get { return IsKeyDown(Keys.ControlKey); } }
-
-        public static bool IsAltDown { get { return IsKeyDown(Keys.Alt); } }
-
-        public static bool IsShiftDown { get { return IsKeyDown(Keys.ShiftKey); } }
 
         public static bool AreKeysUp(params Keys[] keys)
         {

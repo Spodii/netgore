@@ -23,6 +23,66 @@ namespace DemoGame.Editor
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
+        ///   Initializes a new instance of the <see cref = "GrhCursor" /> class.
+        /// </summary>
+        public GrhCursor()
+        {
+            _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
+            _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
+        }
+
+        /// <summary>
+        ///   Gets the cursor's <see cref = "System.Drawing.Image" />.
+        /// </summary>
+        public override Image CursorImage
+        {
+            get { return Resources.cursor_grhs; }
+        }
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC
+        {
+            get { return Container.MapScreenControl; }
+        }
+
+        /// <summary>
+        ///   When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Grh"; }
+        }
+
+        /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM
+        {
+            get { return GlobalState.Instance.Map.SelectedObjsManager; }
+        }
+
+        /// <summary>
+        ///   Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        public override int ToolbarPriority
+        {
+            get { return 15; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
         /// Completely clears the state of the cursor.
         /// </summary>
         void ClearState()
@@ -42,60 +102,6 @@ namespace DemoGame.Editor
             base.Deactivate();
 
             ClearState();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
-        /// </summary>
-        public override void Activate()
-        {
-            base.Activate();
-
-            ClearState();
-        }
-
-        /// <summary>
-        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
-        /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
-
-        /// <summary>
-        /// Property to access the MSC. Provided purely for the means of shortening the
-        /// code
-        /// </summary>
-        MapScreenControl MSC { get { return Container.MapScreenControl; } }
-
-        /// <summary>
-        ///   Initializes a new instance of the <see cref = "GrhCursor" /> class.
-        /// </summary>
-        public GrhCursor()
-        {
-            _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
-            _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
-        }
-
-        /// <summary>
-        ///   Gets the cursor's <see cref = "System.Drawing.Image" />.
-        /// </summary>
-        public override Image CursorImage
-        {
-            get { return Resources.cursor_grhs; }
-        }
-
-        /// <summary>
-        ///   When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Select Grh"; }
-        }
-
-        /// <summary>
-        ///   Gets the priority of the cursor on the toolbar. Lower values appear first.
-        /// </summary>
-        public override int ToolbarPriority
-        {
-            get { return 15; }
         }
 
         /// <summary>

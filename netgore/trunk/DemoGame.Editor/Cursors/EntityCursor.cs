@@ -21,6 +21,65 @@ namespace DemoGame.Editor
         Vector2 _toolTipPos;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EntityCursor"/> class.
+        /// </summary>
+        public EntityCursor()
+        {
+            _mnuIgnoreWalls = new MenuItem("Ignore Walls", Menu_IgnoreWalls_Click) { Checked = true };
+            _contextMenu = new ContextMenu(new MenuItem[] { _mnuIgnoreWalls });
+        }
+
+        /// <summary>
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
+        /// </summary>
+        public override Image CursorImage
+        {
+            get { return Resources.cursor_entities; }
+        }
+
+        /// <summary>
+        /// Property to access the <see cref="MapScreenControl"/>. Provided purely for convenience.
+        /// </summary>
+        MapScreenControl MSC
+        {
+            get { return Container.MapScreenControl; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the cursor.
+        /// </summary>
+        public override string Name
+        {
+            get { return "Select Entity"; }
+        }
+
+        /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM
+        {
+            get { return GlobalState.Instance.Map.SelectedObjsManager; }
+        }
+
+        /// <summary>
+        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        /// </summary>
+        public override int ToolbarPriority
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
         /// Completely clears the state of the cursor.
         /// </summary>
         void ClearState()
@@ -42,59 +101,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
-        /// </summary>
-        public override void Activate()
-        {
-            base.Activate();
-
-            ClearState();
-        }
-
-        /// <summary>
-        /// Property to access the <see cref="MapScreenControl"/>. Provided purely for convenience.
-        /// </summary>
-        MapScreenControl MSC { get { return Container.MapScreenControl; } }
-
-        /// <summary>
-        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
-        /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EntityCursor"/> class.
-        /// </summary>
-        public EntityCursor()
-        {
-            _mnuIgnoreWalls = new MenuItem("Ignore Walls", Menu_IgnoreWalls_Click) { Checked = true };
-            _contextMenu = new ContextMenu(new MenuItem[] { _mnuIgnoreWalls });
-        }
-
-        /// <summary>
-        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
-        /// </summary>
-        public override Image CursorImage
-        {
-            get { return Resources.cursor_entities; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
-        /// </summary>
-        public override string Name
-        {
-            get { return "Select Entity"; }
-        }
-
-        /// <summary>
-        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
-        /// </summary>
-        public override int ToolbarPriority
-        {
-            get { return 0; }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles drawing the interface for the cursor, which is
         /// displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
@@ -102,7 +108,8 @@ namespace DemoGame.Editor
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             if (!string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White,
+                                             Color.Black);
         }
 
         /// <summary>
