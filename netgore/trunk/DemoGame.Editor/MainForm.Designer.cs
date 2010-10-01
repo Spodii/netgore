@@ -178,14 +178,12 @@ namespace DemoGame.Editor
             this.tbMap.AllowItemReorder = true;
             resources.ApplyResources(this.tbMap, "tbMap");
             this.tbMap.Name = "tbMap";
-            this.tbMap.ToolBarVisibility = DemoGame.Editor.ToolBarVisibility.Map;
             // 
             // tbGlobal
             // 
             this.tbGlobal.AllowItemReorder = true;
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
-            this.tbGlobal.ToolBarVisibility = DemoGame.Editor.ToolBarVisibility.Global;
             // 
             // MainForm
             // 
