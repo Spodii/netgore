@@ -11,6 +11,11 @@ namespace DemoGame.Editor
     public enum ToolBarVisibility : byte
     {
         /// <summary>
+        /// Not visible from on any <see cref="ToolBar"/>.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// The <see cref="Tool"/> is visible from every part of the editor.
         /// </summary>
         Global,

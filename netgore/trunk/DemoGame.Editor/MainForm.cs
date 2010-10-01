@@ -28,9 +28,6 @@ namespace DemoGame.Editor
         {
             base.OnLoad(e);
 
-            ToolBar.GlobalToolBar = tbGlobal;
-            ToolBar.NonGlobalToolBar = tbNonGlobal;
-
             // HACK: Force the ToolManager to initialize. Won't be needed when we load the settings here instead.
             var x = ToolManager.Instance;
         }
