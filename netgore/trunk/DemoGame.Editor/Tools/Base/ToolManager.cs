@@ -70,6 +70,14 @@ namespace DemoGame.Editor
         public event ToolEventHandler ToolRemoved;
 
         /// <summary>
+        /// Gets all of the enabled <see cref="Tool"/>s.
+        /// </summary>
+        public IEnumerable<Tool> EnabledTools
+        {
+            get { return _tools.Values.Where(x => x.IsEnabled && !x.IsDisposed).ToImmutable(); }
+        }
+
+        /// <summary>
         /// Gets the <see cref="ToolManager"/> instance.
         /// </summary>
         public static ToolManager Instance
@@ -78,11 +86,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets all tools available.
+        /// Gets all of the <see cref="Tool"/>s.
         /// </summary>
         public IEnumerable<Tool> Tools
         {
-            get { return _tools.Values; }
+            get { return _tools.Values.ToImmutable(); }
         }
 
         /// <summary>

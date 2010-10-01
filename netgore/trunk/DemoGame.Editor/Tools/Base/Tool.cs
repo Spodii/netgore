@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using NetGore;
+using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
@@ -14,6 +15,66 @@ namespace DemoGame.Editor
     /// </summary>
     public abstract class Tool : IDisposable
     {
+        /// <summary>
+        /// Notifies the <see cref="Tool"/> that before a <see cref="MapBase"/>'s GUI was drawn.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        public void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+            // TODO: !! Call this
+            if (!IsEnabled || IsDisposed)
+                return;
+
+            HandleBeforeDrawMapGUI(spriteBatch, map);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="MapBase"/> has been draw.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        protected virtual void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/> that after a <see cref="MapBase"/>'s GUI was drawn.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        public void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+            // TODO: !! Call this
+            if (!IsEnabled || IsDisposed)
+                return;
+
+            HandleAfterDrawMapGUI(spriteBatch, map);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles performing drawing after the GUI for a <see cref="MapBase"/> has been draw.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        protected virtual void HandleAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles updating the <see cref="Tool"/>.
+        /// </summary>
+        /// <param name="currentTime">The current game time.</param>
+        protected virtual void HandleUpdate(TickCount currentTime)
+        {
+            // TODO: !! Add listener to get this called each tick
+        }
+
+
+
+
+
+
         /// <summary>
         /// Delegate for handling events from the <see cref="Tool"/>.
         /// </summary>

@@ -86,6 +86,10 @@ namespace DemoGame.Editor
             set { _map = value; }
         }
 
+        /// <summary>
+        /// Changes the current map being displayed.
+        /// </summary>
+        /// <param name="mapID">The <see cref="MapID"/> to change to.</param>
         public void ChangeMap(MapID mapID)
         {
             if (Map != null && Map.ID == mapID)
@@ -95,6 +99,10 @@ namespace DemoGame.Editor
             Map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
         }
 
+        /// <summary>
+        /// Handles drawing the GUI for the map.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
         protected virtual void DrawMapGUI(ISpriteBatch sb)
         {
             // Cursor coordinates
@@ -107,6 +115,10 @@ namespace DemoGame.Editor
             sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
         }
 
+        /// <summary>
+        /// Handles drawing the map.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
         protected virtual void DrawMapWorld(ISpriteBatch sb)
         {
             // Check for a valid map
