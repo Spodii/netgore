@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using NetGore.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Editor
 {
@@ -37,22 +32,9 @@ namespace DemoGame.Editor
             var x = ToolManager.Instance;
         }
 
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var frm = new EditMapForm();
-            frm.MapScreenControl.ChangeMap(new NetGore.World.MapID(1));
-
-            frm.Show(dockPanel);
-        }
-
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // TODO: !!
         }
 
         /// <summary>
@@ -60,10 +42,23 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void dockPanel_Click(object sender, EventArgs e)
+        void dockPanel_Click(object sender, EventArgs e)
         {
             // Clear the ToolBarVisibility
             ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
+        }
+
+        void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new EditMapForm();
+            frm.MapScreenControl.ChangeMap(new MapID(1));
+
+            frm.Show(dockPanel);
+        }
+
+        void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // TODO: !!
         }
     }
 }

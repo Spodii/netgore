@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Client;
-using NetGore.EditorTools;
-using NetGore.Graphics;
-using NetGore.World;
-using SFML.Graphics;
 
 namespace DemoGame.Editor
 {

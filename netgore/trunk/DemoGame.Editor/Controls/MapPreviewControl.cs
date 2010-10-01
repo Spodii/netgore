@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
@@ -23,22 +24,28 @@ namespace DemoGame.Editor
         [Browsable(false)]
         public ICamera2D Camera { get; set; }
 
-        /// <summary>
-        /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
-        /// </summary>
-        /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
-        protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
+        void FocusCameraAtScreenPoint(MouseEventArgs e)
         {
-            base.OnRenderWindowCreated(newRenderWindow);
+            if (Camera == null || Camera.Map == null)
+                return;
 
-            _spriteBatch.RenderTarget = newRenderWindow;
+            if (e.Button == MouseButtons.Left)
+            {
+                var percent = new Vector2(e.X, e.Y) / new Vector2(Size.Width, Size.Height);
+                var min = Vector2.Zero;
+                var max = Vector2.One;
+                Vector2.Clamp(ref percent, ref min, ref max, out percent);
+
+                var worldPos = Camera.Map.Size * percent;
+                Camera.CenterOn(worldPos);
+            }
         }
 
         /// <summary>
         /// When overridden in the derived class, draws the graphics to the control.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        protected override void HandleDraw(NetGore.TickCount currentTime)
+        protected override void HandleDraw(TickCount currentTime)
         {
             // Clear the background
             RenderWindow.Clear(Color.Black);
@@ -85,23 +92,6 @@ namespace DemoGame.Editor
             }
         }
 
-        void FocusCameraAtScreenPoint(MouseEventArgs e)
-        {
-            if (Camera == null || Camera.Map == null)
-                return;
-
-            if (e.Button == MouseButtons.Left)
-            {
-                var percent = new Vector2(e.X, e.Y) / new Vector2(Size.Width, Size.Height);
-                var min = Vector2.Zero;
-                var max = Vector2.One;
-                Vector2.Clamp(ref percent, ref min, ref max, out percent);
-
-                var worldPos = Camera.Map.Size * percent;
-                Camera.CenterOn(worldPos);
-            }
-        }
-
         /// <summary>
         /// Handles MouseDown events.
         /// </summary>
@@ -122,6 +112,17 @@ namespace DemoGame.Editor
             base.OnMouseMove(e);
 
             FocusCameraAtScreenPoint(e);
+        }
+
+        /// <summary>
+        /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
+        /// </summary>
+        /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
+        protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
+        {
+            base.OnRenderWindowCreated(newRenderWindow);
+
+            _spriteBatch.RenderTarget = newRenderWindow;
         }
     }
 }

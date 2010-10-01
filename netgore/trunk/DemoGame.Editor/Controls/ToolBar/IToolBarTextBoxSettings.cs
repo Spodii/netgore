@@ -1,4 +1,9 @@
-﻿namespace DemoGame.Editor
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Contains the settings specific to the <see cref="ToolBarControlType.TextBox"/>.
@@ -6,103 +11,34 @@
     public interface IToolBarTextBoxSettings : IToolBarControlSettings
     {
         /// <summary>
-        /// Appends text to the current text of the control.
+        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.AcceptsTab"/> property changes.
         /// </summary>
-        /// <param name="text">The text to append.</param>
-        void AppendText(string text);
+        event EventHandler AcceptsTabChanged;
 
         /// <summary>
-        /// Clears all of the text from the control.
+        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.BorderStyle"/> property changes.
         /// </summary>
-        void Clear();
+        event EventHandler BorderStyleChanged;
 
         /// <summary>
-        /// Clears information about the most recent operation from the undo buffer of the control.
+        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.HideSelection"/> property changes.
         /// </summary>
-        void ClearUndo();
+        event EventHandler HideSelectionChanged;
 
         /// <summary>
-        /// Copies the current selection in the control to the Clipboard.
+        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.Modified"/> property changes.
         /// </summary>
-        void Copy();
+        event EventHandler ModifiedChanged;
 
         /// <summary>
-        /// Moves the current selection in the control to the Clipboard.
+        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.ReadOnly"/> property changes.
         /// </summary>
-        void Cut();
+        event EventHandler ReadOnlyChanged;
 
         /// <summary>
-        /// Deselects all of the text in the control.
+        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.TextBoxTextAlign"/> property changes.
         /// </summary>
-        void DeselectAll();
-
-        /// <summary>
-        /// Retrieves the character that is closest to the specified location within the control.
-        /// </summary>
-        /// <param name="pt">The location from which to seek the nearest character.</param>
-        /// <returns>The character at the specified location.</returns>
-        char GetCharFromPosition(System.Drawing.Point pt);
-
-        /// <summary>
-        /// Retrieves the index of the character nearest to the specified location.
-        /// </summary>
-        /// <param name="pt">The location to search.</param>
-        /// <returns>The zero-based character index at the specified location.</returns>
-        int GetCharIndexFromPosition(System.Drawing.Point pt);
-
-        /// <summary>
-        /// Retrieves the index of the first character of a given line.
-        /// </summary>
-        /// <param name="lineNumber">The line for which to get the index of its first character.</param>
-        /// <returns>The zero-based character index in the specified line.</returns>
-        int GetFirstCharIndexFromLine(int lineNumber);
-
-        /// <summary>
-        /// Retrieves the index of the first character of the current line.
-        /// </summary>
-        /// <returns>The zero-based character index in the current line.</returns>
-        int GetFirstCharIndexOfCurrentLine();
-
-        /// <summary>
-        /// Retrieves the line number from the specified character position within the text of the control.
-        /// </summary>
-        /// <param name="index">The character index position to search.</param>
-        /// <returns>The zero-based line number in which the character index is located.</returns>
-        int GetLineFromCharIndex(int index);
-
-        /// <summary>
-        /// Retrieves the location within the control at the specified character index.
-        /// </summary>
-        /// <param name="index">The index of the character for which to retrieve the location.</param>
-        /// <returns>The location of the specified character.</returns>
-        System.Drawing.Point GetPositionFromCharIndex(int index);
-
-        /// <summary>
-        /// Replaces the current selection in the text box with the contents of the Clipboard.
-        /// </summary>
-        void Paste();
-
-        /// <summary>
-        /// Scrolls the contents of the control to the current caret position.
-        /// </summary>
-        void ScrollToCaret();
-
-        /// <summary>
-        /// Selects a range of text in the text box.
-        /// </summary>
-        /// <param name="start">The position of the first character in the current text selection within the text box.</param>
-        /// <param name="length">The number of characters to select.</param>
-        void Select(int start, int length);
-
-        /// <summary>
-        /// Selects all text in the text box.
-        /// </summary>
-        void SelectAll();
-
-        /// <summary>
-        /// Undoes the last edit operation in the text box.
-        /// </summary>
-        void Undo();
+        event EventHandler TextBoxTextAlignChanged;
 
         /// <summary>
         /// Gets or sets a value indicating whether pressing ENTER in a multiline <see cref="System.Windows.Forms.TextBox"/>
@@ -120,23 +56,23 @@
         /// Gets or sets a custom string collection to use when the
         /// <see cref="System.Windows.Forms.ToolStripTextBox.AutoCompleteSource"/> property is set to CustomSource.
         /// </summary>
-        System.Windows.Forms.AutoCompleteStringCollection AutoCompleteCustomSource { set; get; }
+        AutoCompleteStringCollection AutoCompleteCustomSource { set; get; }
 
         /// <summary>
         /// Gets or sets an option that controls how automatic completion works for the
         /// <see cref="System.Windows.Forms.ToolStripTextBox"/>.
         /// </summary>
-        System.Windows.Forms.AutoCompleteMode AutoCompleteMode { set; get; }
+        AutoCompleteMode AutoCompleteMode { set; get; }
 
         /// <summary>
         /// Gets or sets a value specifying the source of complete strings used for automatic completion.
         /// </summary>
-        System.Windows.Forms.AutoCompleteSource AutoCompleteSource { set; get; }
+        AutoCompleteSource AutoCompleteSource { set; get; }
 
         /// <summary>
         /// Gets or sets the border type of the <see cref="System.Windows.Forms.ToolStripTextBox"/> control.
         /// </summary>
-        System.Windows.Forms.BorderStyle BorderStyle { set; get; }
+        BorderStyle BorderStyle { set; get; }
 
         /// <summary>
         /// Gets a value indicating whether the user can undo the previous operation in a
@@ -148,7 +84,7 @@
         /// Gets or sets whether the <see cref="System.Windows.Forms.ToolStripTextBox"/> control modifies the case of
         /// characters as they are typed.
         /// </summary>
-        System.Windows.Forms.CharacterCasing CharacterCasing { set; get; }
+        CharacterCasing CharacterCasing { set; get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the selected text in the text box control remains
@@ -201,12 +137,12 @@
         /// <summary>
         /// Gets the hosted <see cref="System.Windows.Forms.TextBox"/> control.
         /// </summary>
-        System.Windows.Forms.TextBox TextBox { get; }
+        TextBox TextBox { get; }
 
         /// <summary>
         /// Gets or sets how text is aligned in a <see cref="System.Windows.Forms.TextBox"/> control.
         /// </summary>
-        System.Windows.Forms.HorizontalAlignment TextBoxTextAlign { set; get; }
+        HorizontalAlignment TextBoxTextAlign { set; get; }
 
         /// <summary>
         /// Gets the length of text in the control.
@@ -214,33 +150,102 @@
         int TextLength { get; }
 
         /// <summary>
-        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.AcceptsTab"/> property changes.
+        /// Appends text to the current text of the control.
         /// </summary>
-        event System.EventHandler AcceptsTabChanged;
+        /// <param name="text">The text to append.</param>
+        void AppendText(string text);
 
         /// <summary>
-        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.BorderStyle"/> property changes.
+        /// Clears all of the text from the control.
         /// </summary>
-        event System.EventHandler BorderStyleChanged;
+        void Clear();
 
         /// <summary>
-        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.HideSelection"/> property changes.
+        /// Clears information about the most recent operation from the undo buffer of the control.
         /// </summary>
-        event System.EventHandler HideSelectionChanged;
+        void ClearUndo();
 
         /// <summary>
-        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.Modified"/> property changes.
+        /// Copies the current selection in the control to the Clipboard.
         /// </summary>
-        event System.EventHandler ModifiedChanged;
+        void Copy();
 
         /// <summary>
-        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.ReadOnly"/> property changes.
+        /// Moves the current selection in the control to the Clipboard.
         /// </summary>
-        event System.EventHandler ReadOnlyChanged;
+        void Cut();
 
         /// <summary>
-        /// Notifies listeners when the <see cref="IToolBarTextBoxSettings.TextBoxTextAlign"/> property changes.
+        /// Deselects all of the text in the control.
         /// </summary>
-        event System.EventHandler TextBoxTextAlignChanged;
+        void DeselectAll();
+
+        /// <summary>
+        /// Retrieves the character that is closest to the specified location within the control.
+        /// </summary>
+        /// <param name="pt">The location from which to seek the nearest character.</param>
+        /// <returns>The character at the specified location.</returns>
+        char GetCharFromPosition(Point pt);
+
+        /// <summary>
+        /// Retrieves the index of the character nearest to the specified location.
+        /// </summary>
+        /// <param name="pt">The location to search.</param>
+        /// <returns>The zero-based character index at the specified location.</returns>
+        int GetCharIndexFromPosition(Point pt);
+
+        /// <summary>
+        /// Retrieves the index of the first character of a given line.
+        /// </summary>
+        /// <param name="lineNumber">The line for which to get the index of its first character.</param>
+        /// <returns>The zero-based character index in the specified line.</returns>
+        int GetFirstCharIndexFromLine(int lineNumber);
+
+        /// <summary>
+        /// Retrieves the index of the first character of the current line.
+        /// </summary>
+        /// <returns>The zero-based character index in the current line.</returns>
+        int GetFirstCharIndexOfCurrentLine();
+
+        /// <summary>
+        /// Retrieves the line number from the specified character position within the text of the control.
+        /// </summary>
+        /// <param name="index">The character index position to search.</param>
+        /// <returns>The zero-based line number in which the character index is located.</returns>
+        int GetLineFromCharIndex(int index);
+
+        /// <summary>
+        /// Retrieves the location within the control at the specified character index.
+        /// </summary>
+        /// <param name="index">The index of the character for which to retrieve the location.</param>
+        /// <returns>The location of the specified character.</returns>
+        Point GetPositionFromCharIndex(int index);
+
+        /// <summary>
+        /// Replaces the current selection in the text box with the contents of the Clipboard.
+        /// </summary>
+        void Paste();
+
+        /// <summary>
+        /// Scrolls the contents of the control to the current caret position.
+        /// </summary>
+        void ScrollToCaret();
+
+        /// <summary>
+        /// Selects a range of text in the text box.
+        /// </summary>
+        /// <param name="start">The position of the first character in the current text selection within the text box.</param>
+        /// <param name="length">The number of characters to select.</param>
+        void Select(int start, int length);
+
+        /// <summary>
+        /// Selects all text in the text box.
+        /// </summary>
+        void SelectAll();
+
+        /// <summary>
+        /// Undoes the last edit operation in the text box.
+        /// </summary>
+        void Undo();
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace DemoGame.Editor
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Contains the settings specific to the <see cref="ToolBarControlType.DropDownButton"/>.
@@ -6,17 +11,19 @@
     public interface IToolBarSplitButtonSettings : IToolBarDropDownItemSettings
     {
         /// <summary>
-        /// Retrieves the size of a rectangular area into which a <see cref="System.Windows.Forms.ToolStripSplitButton"/> can be fitted.
+        /// Occurs when the standard button portion of a <see cref="System.Windows.Forms.ToolStripSplitButton"/> is clicked.
         /// </summary>
-        /// <param name="constrainingSize">The custom-sized area for a control.</param>
-        /// <returns>An ordered pair of type <see cref="System.Drawing.Size"/>, representing the width and height of a rectangle.</returns>
-        System.Drawing.Size GetPreferredSize(System.Drawing.Size constrainingSize);
+        event EventHandler ButtonClick;
 
         /// <summary>
-        /// If the <see cref="System.Windows.Forms.ToolStripItem.Enabled"/> property is true,
-        /// calls the <see cref="System.Windows.Forms.ToolStripSplitButton.OnButtonClick(System.EventArgs)"/> method.
+        /// Occurs when the standard button portion of a <see cref="System.Windows.Forms.ToolStripSplitButton"/> is double-clicked.
         /// </summary>
-        void PerformButtonClick();
+        event EventHandler ButtonDoubleClick;
+
+        /// <summary>
+        /// Occurs when the <see cref="System.Windows.Forms.ToolStripSplitButton.DefaultItem"/> has changed.
+        /// </summary>
+        event EventHandler DefaultItemChanged;
 
         /// <summary>
         /// Gets or sets a value indicating whether default or custom <see cref="System.Windows.Forms.ToolTip"/> text
@@ -27,7 +34,7 @@
         /// <summary>
         /// Gets the size and location of the standard button portion of a <see cref="System.Windows.Forms.ToolStripSplitButton"/>.
         /// </summary>
-        System.Drawing.Rectangle ButtonBounds { get; }
+        Rectangle ButtonBounds { get; }
 
         /// <summary>
         /// Gets a value indicating whether the button portion of the <see cref="System.Windows.Forms.ToolStripSplitButton"/>
@@ -45,13 +52,13 @@
         /// Gets or sets the portion of the <see cref="System.Windows.Forms.ToolStripSplitButton"/> that is activated when the
         /// control is first selected.
         /// </summary>
-        System.Windows.Forms.ToolStripItem DefaultItem { set; get; }
+        ToolStripItem DefaultItem { set; get; }
 
         /// <summary>
         /// Gets the size and location, in screen coordinates, of the drop-down button portion of a
         /// <see cref="System.Windows.Forms.ToolStripSplitButton"/>.
         /// </summary>
-        System.Drawing.Rectangle DropDownButtonBounds { get; }
+        Rectangle DropDownButtonBounds { get; }
 
         /// <summary>
         /// Gets a value indicating whether the drop-down portion of the <see cref="System.Windows.Forms.ToolStripSplitButton"/>
@@ -74,21 +81,19 @@
         /// Gets the boundaries of the separator between the standard and drop-down button portions of a
         /// <see cref="System.Windows.Forms.ToolStripSplitButton"/>.
         /// </summary>
-        System.Drawing.Rectangle SplitterBounds { get; }
+        Rectangle SplitterBounds { get; }
 
         /// <summary>
-        /// Occurs when the standard button portion of a <see cref="System.Windows.Forms.ToolStripSplitButton"/> is clicked.
+        /// Retrieves the size of a rectangular area into which a <see cref="System.Windows.Forms.ToolStripSplitButton"/> can be fitted.
         /// </summary>
-        event System.EventHandler ButtonClick;
+        /// <param name="constrainingSize">The custom-sized area for a control.</param>
+        /// <returns>An ordered pair of type <see cref="System.Drawing.Size"/>, representing the width and height of a rectangle.</returns>
+        Size GetPreferredSize(Size constrainingSize);
 
         /// <summary>
-        /// Occurs when the standard button portion of a <see cref="System.Windows.Forms.ToolStripSplitButton"/> is double-clicked.
+        /// If the <see cref="System.Windows.Forms.ToolStripItem.Enabled"/> property is true,
+        /// calls the <see cref="System.Windows.Forms.ToolStripSplitButton.OnButtonClick(System.EventArgs)"/> method.
         /// </summary>
-        event System.EventHandler ButtonDoubleClick;
-
-        /// <summary>
-        /// Occurs when the <see cref="System.Windows.Forms.ToolStripSplitButton.DefaultItem"/> has changed.
-        /// </summary>
-        event System.EventHandler DefaultItemChanged;
+        void PerformButtonClick();
     }
 }

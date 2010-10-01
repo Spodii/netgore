@@ -1,15 +1,12 @@
-﻿namespace DemoGame.Editor
+﻿using System.Linq;
+
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Interface for a <see cref="Editor.Tool"/>'s control used in a <see cref="ToolBar"/>.
     /// </summary>
     public interface IToolBarControl
     {
-        /// <summary>
-        /// Gets the <see cref="Editor.Tool"/> that this control is for.
-        /// </summary>
-        Tool Tool { get; }
-
         /// <summary>
         /// Gets the <see cref="IToolBarControlSettings"/> for this control. Can be safely up-casted to the appropriate
         /// interface for a more specific type using the <see cref="IToolBarControl.ControlType"/> property.
@@ -21,13 +18,18 @@
         IToolBarControlSettings ControlSettings { get; }
 
         /// <summary>
+        /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
+        /// </summary>
+        ToolBarControlType ControlType { get; }
+
+        /// <summary>
         /// Gets if this control is currently on a <see cref="ToolBar"/>.
         /// </summary>
         bool IsOnToolBar { get; }
 
         /// <summary>
-        /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
+        /// Gets the <see cref="Editor.Tool"/> that this control is for.
         /// </summary>
-        ToolBarControlType ControlType { get; }
+        Tool Tool { get; }
     }
 }

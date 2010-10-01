@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Editor
+﻿using System.Linq;
+
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Contains the settings specific to the <see cref="ToolBarControlType.Label"/>.

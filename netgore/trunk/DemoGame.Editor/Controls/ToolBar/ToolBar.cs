@@ -581,102 +581,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.SplitButton"/>.
-        /// </summary>
-        internal sealed class ToolBarItemSplitButton : ToolStripSplitButton, IToolBarControl, IToolBarSplitButtonSettings
-        {
-            readonly Tool _tool;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ToolBarItemSplitButton"/> class.
-            /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
-            /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemSplitButton(Tool tool)
-            {
-                if (tool == null)
-                    throw new ArgumentNullException("tool");
-
-                _tool = tool;
-
-                Initialize();
-            }
-
-            /// <summary>
-            /// Initializes the control with the initial values.
-            /// </summary>
-            void Initialize()
-            {
-                InitializeGeneral(_tool, this);
-            }
-
-            /// <summary>
-            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.OwnerChanged"/> event.
-            /// </summary>
-            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-            protected override void OnOwnerChanged(EventArgs e)
-            {
-                base.OnOwnerChanged(e);
-
-                // If we changed to something that is not a ToolBar, get it out of there!
-                if (!(Owner is ToolBar))
-                {
-                    const string errmsg = "Attempted to add ToolBar item `{0}` to regular ToolStrip `{1}`!";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, this, Owner);
-                    Debug.Fail(string.Format(errmsg, this, Owner));
-
-                    Owner.Items.Remove(this);
-                }
-            }
-
-            #region IToolBarControl Members
-
-            /// <summary>
-            /// Gets the <see cref="IToolBarControlSettings"/> for this control. Can be safely up-casted to the appropriate
-            /// interface for a more specific type using the <see cref="IToolBarControl.ControlType"/> property.
-            /// </summary>
-            /// <example>
-            /// When <see cref="IToolBarControl.ControlType"/> equals <see cref="ToolBarControlType.SplitButton"/>, the
-            /// <see cref="IToolBarControl.ControlSettings"/> can be up-casted to <see cref="IToolBarSplitButtonSettings"/>.
-            /// </example>
-            public IToolBarControlSettings ControlSettings
-            {
-                get { return this; }
-            }
-
-            /// <summary>
-            /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
-            /// </summary>
-            public ToolBarControlType ControlType
-            {
-                get { return ToolBarControlType.SplitButton; }
-            }
-
-            /// <summary>
-            /// Gets if this control is currently on a <see cref="ToolBar"/>.
-            /// </summary>
-            public bool IsOnToolBar
-            {
-                get
-                {
-                    Debug.Assert(Owner == null || Owner is ToolBar);
-                    return (Owner as ToolBar) != null;
-                }
-            }
-
-            /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
-            /// </summary>
-            public Tool Tool
-            {
-                get { return _tool; }
-            }
-
-            #endregion
-        }
-
-        /// <summary>
         /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Label"/>.
         /// </summary>
         internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl, IToolBarLabelSettings
@@ -823,6 +727,102 @@ namespace DemoGame.Editor
             public ToolBarControlType ControlType
             {
                 get { return ToolBarControlType.ProgressBar; }
+            }
+
+            /// <summary>
+            /// Gets if this control is currently on a <see cref="ToolBar"/>.
+            /// </summary>
+            public bool IsOnToolBar
+            {
+                get
+                {
+                    Debug.Assert(Owner == null || Owner is ToolBar);
+                    return (Owner as ToolBar) != null;
+                }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// </summary>
+            public Tool Tool
+            {
+                get { return _tool; }
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.SplitButton"/>.
+        /// </summary>
+        internal sealed class ToolBarItemSplitButton : ToolStripSplitButton, IToolBarControl, IToolBarSplitButtonSettings
+        {
+            readonly Tool _tool;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ToolBarItemSplitButton"/> class.
+            /// </summary>
+            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
+            public ToolBarItemSplitButton(Tool tool)
+            {
+                if (tool == null)
+                    throw new ArgumentNullException("tool");
+
+                _tool = tool;
+
+                Initialize();
+            }
+
+            /// <summary>
+            /// Initializes the control with the initial values.
+            /// </summary>
+            void Initialize()
+            {
+                InitializeGeneral(_tool, this);
+            }
+
+            /// <summary>
+            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.OwnerChanged"/> event.
+            /// </summary>
+            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+            protected override void OnOwnerChanged(EventArgs e)
+            {
+                base.OnOwnerChanged(e);
+
+                // If we changed to something that is not a ToolBar, get it out of there!
+                if (!(Owner is ToolBar))
+                {
+                    const string errmsg = "Attempted to add ToolBar item `{0}` to regular ToolStrip `{1}`!";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, Owner);
+                    Debug.Fail(string.Format(errmsg, this, Owner));
+
+                    Owner.Items.Remove(this);
+                }
+            }
+
+            #region IToolBarControl Members
+
+            /// <summary>
+            /// Gets the <see cref="IToolBarControlSettings"/> for this control. Can be safely up-casted to the appropriate
+            /// interface for a more specific type using the <see cref="IToolBarControl.ControlType"/> property.
+            /// </summary>
+            /// <example>
+            /// When <see cref="IToolBarControl.ControlType"/> equals <see cref="ToolBarControlType.SplitButton"/>, the
+            /// <see cref="IToolBarControl.ControlSettings"/> can be up-casted to <see cref="IToolBarSplitButtonSettings"/>.
+            /// </example>
+            public IToolBarControlSettings ControlSettings
+            {
+                get { return this; }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
+            /// </summary>
+            public ToolBarControlType ControlType
+            {
+                get { return ToolBarControlType.SplitButton; }
             }
 
             /// <summary>
