@@ -16,51 +16,15 @@ namespace DemoGame.Editor
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static ToolBarVisibility _currentToolBarVisibility = ToolBarVisibility.Global;
-        static ToolBar _nonGlobalToolBar;
         static ToolBar _globalToolBar;
+        static ToolBar _nonGlobalToolBar;
 
         /// <summary>
-        /// Gets or sets the global <see cref="ToolBar"/>.
+        /// Initializes a new instance of the <see cref="ToolBar"/> class.
         /// </summary>
-        public static ToolBar GlobalToolBar
+        public ToolBar()
         {
-            get
-            {
-                return _globalToolBar;
-            }
-            set
-            {
-                if (_globalToolBar == value)
-                    return;
-
-                _globalToolBar = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the non-global <see cref="ToolBar"/>.
-        /// </summary>
-        public static ToolBar NonGlobalToolBar
-        {
-            get
-            {
-                return _nonGlobalToolBar;
-            }
-            set
-            {
-                if (_nonGlobalToolBar == value)
-                    return;
-
-                _nonGlobalToolBar = value;
-
-                if (_nonGlobalToolBar != null)
-                {
-                    if (CurrentToolBarVisibility == ToolBarVisibility.Global)
-                        _nonGlobalToolBar.Visible = false;
-                    else
-                        _nonGlobalToolBar.Visible = true;
-                }
-            }
+            AllowItemReorder = true;
         }
 
         /// <summary>
@@ -68,10 +32,7 @@ namespace DemoGame.Editor
         /// </summary>
         public static ToolBarVisibility CurrentToolBarVisibility
         {
-            get
-            {
-                return _currentToolBarVisibility;
-            }
+            get { return _currentToolBarVisibility; }
             set
             {
                 if (_currentToolBarVisibility == value)
@@ -88,6 +49,44 @@ namespace DemoGame.Editor
                 {
                     if (NonGlobalToolBar != null)
                         NonGlobalToolBar.Visible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the global <see cref="ToolBar"/>.
+        /// </summary>
+        public static ToolBar GlobalToolBar
+        {
+            get { return _globalToolBar; }
+            set
+            {
+                if (_globalToolBar == value)
+                    return;
+
+                _globalToolBar = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the non-global <see cref="ToolBar"/>.
+        /// </summary>
+        public static ToolBar NonGlobalToolBar
+        {
+            get { return _nonGlobalToolBar; }
+            set
+            {
+                if (_nonGlobalToolBar == value)
+                    return;
+
+                _nonGlobalToolBar = value;
+
+                if (_nonGlobalToolBar != null)
+                {
+                    if (CurrentToolBarVisibility == ToolBarVisibility.Global)
+                        _nonGlobalToolBar.Visible = false;
+                    else
+                        _nonGlobalToolBar.Visible = true;
                 }
             }
         }
@@ -109,26 +108,6 @@ namespace DemoGame.Editor
             Debug.Assert(!tb.Items.Contains(c));
 
             tb.Items.Add(c);
-        }
-
-        public static ToolBar GetToolBar(ToolBarVisibility visibility)
-        {
-            switch (visibility)
-            {
-                case ToolBarVisibility.Global:
-                    return GlobalToolBar;
-
-                default:
-                    return NonGlobalToolBar;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToolBar"/> class.
-        /// </summary>
-        public ToolBar()
-        {
-            AllowItemReorder = true;
         }
 
         /// <summary>
@@ -173,6 +152,18 @@ namespace DemoGame.Editor
             }
 
             return (IToolBarControl)c;
+        }
+
+        public static ToolBar GetToolBar(ToolBarVisibility visibility)
+        {
+            switch (visibility)
+            {
+                case ToolBarVisibility.Global:
+                    return GlobalToolBar;
+
+                default:
+                    return NonGlobalToolBar;
+            }
         }
 
         /// <summary>
@@ -279,21 +270,23 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
-            /// Gets if this control is currently on a <see cref="ToolBar"/>.
-            /// </summary>
-            public bool IsOnToolBar
-            {
-                get {
-                    Debug.Assert(Owner == null || Owner is ToolBar);
-                    return (Owner as ToolBar) != null; }
-            }
-
-            /// <summary>
             /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
             /// </summary>
             public ToolBarControlType ControlType
             {
                 get { return ToolBarControlType.Button; }
+            }
+
+            /// <summary>
+            /// Gets if this control is currently on a <see cref="ToolBar"/>.
+            /// </summary>
+            public bool IsOnToolBar
+            {
+                get
+                {
+                    Debug.Assert(Owner == null || Owner is ToolBar);
+                    return (Owner as ToolBar) != null;
+                }
             }
 
             /// <summary>
@@ -313,18 +306,6 @@ namespace DemoGame.Editor
         internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl, IToolBarLabelSettings
         {
             readonly Tool _tool;
-
-            /// <summary>
-            /// Gets if this control is currently on a <see cref="ToolBar"/>.
-            /// </summary>
-            public bool IsOnToolBar
-            {
-                get
-                {
-                    Debug.Assert(Owner == null || Owner is ToolBar);
-                    return (Owner as ToolBar) != null;
-                }
-            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemLabel"/> class.
@@ -371,6 +352,18 @@ namespace DemoGame.Editor
             public ToolBarControlType ControlType
             {
                 get { return ToolBarControlType.Button; }
+            }
+
+            /// <summary>
+            /// Gets if this control is currently on a <see cref="ToolBar"/>.
+            /// </summary>
+            public bool IsOnToolBar
+            {
+                get
+                {
+                    Debug.Assert(Owner == null || Owner is ToolBar);
+                    return (Owner as ToolBar) != null;
+                }
             }
 
             /// <summary>

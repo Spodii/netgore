@@ -52,5 +52,16 @@ namespace DemoGame.Editor
         {
             // TODO: !!
         }
+
+        /// <summary>
+        /// Handles the Click event of the dockPanel control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void dockPanel_Click(object sender, EventArgs e)
+        {
+            // Clear the ToolBarVisibility
+            ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
+        }
     }
 }

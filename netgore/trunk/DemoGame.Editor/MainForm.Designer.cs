@@ -55,9 +55,9 @@ namespace DemoGame.Editor
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
+            this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
             this.tbNonGlobal = new DemoGame.Editor.ToolBar();
             this.tbGlobal = new DemoGame.Editor.ToolBar();
-            this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,18 +120,6 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.ssStatus, "ssStatus");
             this.ssStatus.Name = "ssStatus";
             // 
-            // tbNonGlobal
-            // 
-            this.tbNonGlobal.AllowItemReorder = true;
-            resources.ApplyResources(this.tbNonGlobal, "tbNonGlobal");
-            this.tbNonGlobal.Name = "tbNonGlobal";
-            // 
-            // tbGlobal
-            // 
-            this.tbGlobal.AllowItemReorder = true;
-            resources.ApplyResources(this.tbGlobal, "tbGlobal");
-            this.tbGlobal.Name = "tbGlobal";
-            // 
             // dockPanel
             // 
             this.dockPanel.ActiveAutoHideContent = null;
@@ -183,6 +171,19 @@ namespace DemoGame.Editor
             dockPaneStripSkin1.ToolWindowGradient = dockPaneStripToolWindowGradient1;
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this.dockPanel.Skin = dockPanelSkin1;
+            this.dockPanel.Click += new System.EventHandler(this.dockPanel_Click);
+            // 
+            // tbNonGlobal
+            // 
+            this.tbNonGlobal.AllowItemReorder = true;
+            resources.ApplyResources(this.tbNonGlobal, "tbNonGlobal");
+            this.tbNonGlobal.Name = "tbNonGlobal";
+            // 
+            // tbGlobal
+            // 
+            this.tbGlobal.AllowItemReorder = true;
+            resources.ApplyResources(this.tbGlobal, "tbGlobal");
+            this.tbGlobal.Name = "tbGlobal";
             // 
             // MainForm
             // 
