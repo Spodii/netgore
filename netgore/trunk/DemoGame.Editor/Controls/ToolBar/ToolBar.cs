@@ -92,12 +92,11 @@ namespace DemoGame.Editor
                 if (value != ToolBarVisibility.None)
                 {
                     if (!_toolBars.ContainsKey(value))
-                    {
                         _toolBars.Add(value, this);
-                    }
                     else
                     {
-                        const string errmsg = "Setting ToolBar `{0}` as the ToolBar with visibility `{1}`, though ToolBar `{2}` was already there." +
+                        const string errmsg =
+                            "Setting ToolBar `{0}` as the ToolBar with visibility `{1}`, though ToolBar `{2}` was already there." +
                             " Make sure you do not have multiple ToolBars with the same ToolBarVisibility.";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, this, value, _toolBars[value]);
@@ -140,30 +139,6 @@ namespace DemoGame.Editor
             tb.Items.Add(c);
 
             Debug.Assert(tb.Items.Contains(c));
-        }
-
-        /// <summary>
-        /// Removes a <see cref="Tool"/> from its <see cref="ToolBar"/>.
-        /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to remove from its <see cref="ToolBar"/>.</param>
-        public static void RemoveFromToolBar(Tool tool)
-        {
-            if (!tool.ToolBarControl.IsOnToolBar)
-                return;
-
-            var c = TryGetToolStripItem(tool);
-            if (c == null)
-                return;
-
-            var tb = GetToolBar(tool.ToolBarVisibility);
-            if (tb == null)
-                return;
-
-            Debug.Assert(tb.Items.Contains(c));
-
-            tb.Items.Remove(c);
-
-            Debug.Assert(!tb.Items.Contains(c));
         }
 
         /// <summary>
@@ -232,7 +207,8 @@ namespace DemoGame.Editor
             ToolBar ret;
             if (!_toolBars.TryGetValue(visibility, out ret))
             {
-                const string errmsg = "No ToolBar found for ToolBarVisibility `{0}`. Did you forget to create a ToolBar for that visibility?";
+                const string errmsg =
+                    "No ToolBar found for ToolBarVisibility `{0}`. Did you forget to create a ToolBar for that visibility?";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, visibility);
                 Debug.Fail(string.Format(errmsg, visibility));
@@ -240,6 +216,43 @@ namespace DemoGame.Editor
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// General <see cref="ToolStripItem"/> initialization.
+        /// </summary>
+        /// <param name="t">The <see cref="Tool"/>.</param>
+        /// <param name="c">The <see cref="ToolStripItem"/>.</param>
+        static void InitializeGeneral(Tool t, ToolStripItem c)
+        {
+            c.Text = t.Name;
+            c.Name = t.Name;
+            c.AutoToolTip = true;
+            c.ToolTipText = t.Name;
+        }
+
+        /// <summary>
+        /// Removes a <see cref="Tool"/> from its <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="tool">The <see cref="Tool"/> to remove from its <see cref="ToolBar"/>.</param>
+        public static void RemoveFromToolBar(Tool tool)
+        {
+            if (!tool.ToolBarControl.IsOnToolBar)
+                return;
+
+            var c = TryGetToolStripItem(tool);
+            if (c == null)
+                return;
+
+            var tb = GetToolBar(tool.ToolBarVisibility);
+            if (tb == null)
+                return;
+
+            Debug.Assert(tb.Items.Contains(c));
+
+            tb.Items.Remove(c);
+
+            Debug.Assert(!tb.Items.Contains(c));
         }
 
         /// <summary>
@@ -306,8 +319,7 @@ namespace DemoGame.Editor
             /// </summary>
             void Initialize()
             {
-                Text = Tool.Name;
-                Name = Tool.Name;
+                InitializeGeneral(_tool, this);
             }
 
             /// <summary>
@@ -403,8 +415,7 @@ namespace DemoGame.Editor
             /// </summary>
             void Initialize()
             {
-                Text = Tool.Name;
-                Name = Tool.Name;
+                InitializeGeneral(_tool, this);
             }
 
             #region IToolBarControl Members

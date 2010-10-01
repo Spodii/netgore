@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -9,6 +10,76 @@ namespace DemoGame.Editor
     /// </summary>
     public interface IToolBarControlSettings
     {
+        /// <summary>
+        /// Notifies listeners when the <see cref="IToolBarControlSettings.BackColor"/> property changes.
+        /// </summary>
+        event EventHandler BackColorChanged;
+
+        /// <summary>
+        /// Notifies listeners when this control was clicked.
+        /// </summary>
+        event EventHandler Click;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IToolBarControlSettings.DisplayStyle"/> property changes.
+        /// </summary>
+        event EventHandler DisplayStyleChanged;
+
+        /// <summary>
+        /// Notifies listeners when this control was double-clicked.
+        /// </summary>
+        event EventHandler DoubleClick;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IToolBarControlSettings.Enabled"/> property changes.
+        /// </summary>
+        event EventHandler EnabledChanged;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IToolBarControlSettings.ForeColor"/> property changes.
+        /// </summary>
+        event EventHandler ForeColorChanged;
+
+        /// <summary>
+        /// Notifies listeners when the mouse pointer is over the control and a mouse button is pressed.
+        /// </summary>
+        event MouseEventHandler MouseDown;
+
+        /// <summary>
+        /// Notifies listeners when the mouse pointer enters the control.
+        /// </summary>
+        event EventHandler MouseEnter;
+
+        /// <summary>
+        /// Notifies listeners when the mouse pointer hovers over the control.
+        /// </summary>
+        event EventHandler MouseHover;
+
+        /// <summary>
+        /// Notifies listeners when the mouse pointer leaves the control.
+        /// </summary>
+        event EventHandler MouseLeave;
+
+        /// <summary>
+        /// Notifies listeners when the mouse pointer moves over the control.
+        /// </summary>
+        event MouseEventHandler MouseMove;
+
+        /// <summary>
+        /// Notifies listeners when the mouse pointer is over the control and a mouse button is released.
+        /// </summary>
+        event MouseEventHandler MouseUp;
+
+        /// <summary>
+        /// Notifies listeners when the control is redrawn.
+        /// </summary>
+        event PaintEventHandler Paint;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="IToolBarControlSettings.Text"/> property changes.
+        /// </summary>
+        event EventHandler TextChanged;
+
         /// <summary>
         /// Gets or sets a value indicating whether the control is automatically sized.
         /// </summary>
@@ -82,6 +153,11 @@ namespace DemoGame.Editor
         ToolStripItemImageScaling ImageScaling { set; get; }
 
         /// <summary>
+        /// Gets or sets the color to treat as transparent in the control's image.
+        /// </summary>
+        Color ImageTransparentColor { set; get; }
+
+        /// <summary>
         /// Gets or sets the internal spacing, in pixels, between the item's contents and its edges.
         /// </summary>
         Padding Padding { set; get; }
@@ -100,6 +176,11 @@ namespace DemoGame.Editor
         /// Gets or sets the size of the control.
         /// </summary>
         Size Size { set; get; }
+
+        /// <summary>
+        /// Gets or sets the text that is to be displayed on the control.
+        /// </summary>
+        string Text { set; get; }
 
         /// <summary>
         /// Gets or sets the alignment of the text.
