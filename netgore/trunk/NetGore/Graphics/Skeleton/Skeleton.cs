@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         public Skeleton(string skeletonName, ContentPaths contentPath)
         {
             var filePath = GetFilePath(skeletonName, contentPath);
-            var reader = GenericValueReader.ReadFile(filePath, _rootNodeName);
+            var reader = GenericValueReader.CreateFromFile(filePath, _rootNodeName);
             Read(reader);
         }
 

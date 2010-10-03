@@ -53,9 +53,8 @@ namespace DemoGame.Editor.Tools
                 return;
 
             // Load the settings into an IValueReader and apply them
-            //using (var reader = new GenericValueReader(
+            //using (var reader = GenericValueReader
         }
-
 
         /// <summary>
         /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class

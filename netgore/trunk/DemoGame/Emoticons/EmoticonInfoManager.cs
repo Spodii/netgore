@@ -43,7 +43,7 @@ namespace DemoGame
         /// <param name="filePath">The file path to load from.</param>
         public static EmoticonInfoManager Load(string filePath)
         {
-            var r = GenericValueReader.ReadFile(filePath, _rootNodeName);
+            var r = GenericValueReader.CreateFromFile(filePath, _rootNodeName);
 
             var ret = new EmoticonInfoManager();
             ret.Read(r);

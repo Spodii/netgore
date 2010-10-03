@@ -43,30 +43,42 @@ namespace NetGore.IO
         /// <summary>
         /// Creates a <see cref="IValueReader"/> for reading the contents of a file.
         /// </summary>
-        /// <param name="filePath">The path to the file to load.</param>
+        /// <param name="filePath">The path to the file to read.</param>
         /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="rootNodeName"/> is null or empty.</exception>
         /// <exception cref="FileLoadException"><paramref name="filePath"/> contains an unsupported format.</exception>
-        public static IValueReader ReadFile(string filePath, string rootNodeName, bool? useEnumNames = null)
+        public static IValueReader CreateFromFile(string filePath, string rootNodeName, bool? useEnumNames = null)
         {
-            return new GenericValueReader(SourceType.File, filePath, rootNodeName, useEnumNames);
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException("filePath");
+            if (string.IsNullOrEmpty(rootNodeName))
+                throw new ArgumentNullException("rootNodeName");
+
+            var reader = CreateReaderFromFile(filePath, rootNodeName, useEnumNames);
+            return new GenericValueReader(reader);
         }
 
         /// <summary>
-        /// Enum describing the different sources for a <see cref="GenericValueReader"/>.
+        /// Creates a <see cref="IValueReader"/> for reading the contents of a string.
         /// </summary>
-        enum SourceType : byte
+        /// <param name="data">The string to read.</param>
+        /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
+        /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
+        /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="rootNodeName"/> is null or empty.</exception>
+        public static IValueReader CreateFromString(string data, string rootNodeName, bool? useEnumNames = null)
         {
-            /// <summary>
-            /// Read from a file.
-            /// </summary>
-            File,
+            if (string.IsNullOrEmpty(data))
+                throw new ArgumentNullException("data");
+            if (string.IsNullOrEmpty(rootNodeName))
+                throw new ArgumentNullException("rootNodeName");
 
-            /// <summary>
-            /// Read from an in-memory string.
-            /// </summary>
-            String,
+            var reader = CreateReaderFromString(data, rootNodeName, useEnumNames);
+            return new GenericValueReader(reader);
         }
         
         /// <summary>
@@ -76,7 +88,7 @@ namespace NetGore.IO
         /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
-        static IValueReader CreateFromString(string data, string rootNodeName, bool? useEnumNames = null)
+        static IValueReader CreateReaderFromString(string data, string rootNodeName, bool? useEnumNames = null)
         {
             // Discover the format
             var format = FindContentFormatForString(data);
@@ -111,7 +123,7 @@ namespace NetGore.IO
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
         /// <exception cref="FileLoadException"><paramref name="filePath"/> contains an unsupported format.</exception>
-        static IValueReader CreateFromFile(string filePath, string rootNodeName, bool? useEnumNames = null)
+        static IValueReader CreateReaderFromFile(string filePath, string rootNodeName, bool? useEnumNames = null)
         {
             // Discover the format
             var format = FindContentFormatForFile(filePath);
@@ -141,39 +153,15 @@ namespace NetGore.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericValueReader"/> class.
         /// </summary>
-        /// <param name="src">The <see cref="SourceType"/>.</param>
-        /// <param name="data">The data to load. When <see cref="SourceType.File"/>, it is a file path.
-        /// When <see cref="SourceType.String"/>, it is the raw string.</param>
-        /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
-        /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
-        /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
-        GenericValueReader(SourceType src, string data, string rootNodeName, bool? useEnumNames = null)
+        /// <param name="reader">The <see cref="IValueReader"/> to use to read.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="reader"/> is null or empty.</exception>
+        GenericValueReader(IValueReader reader)
         {
-            GenericValueIOFormat format;
+            if (reader == null)
+                throw new ArgumentNullException("reader");
 
-            switch (src)
-            {
-                case SourceType.File:
-                    _reader = CreateFromFile(data, rootNodeName, useEnumNames);
-                    break;
-
-                case SourceType.String:
-                    format = FindContentFormatForString(data);
-
-                    break;
-
-                default:
-                    const string srcTypeErrMsg = "Invalid SourceType `{0}`.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(srcTypeErrMsg, src);
-                    Debug.Fail(string.Format(srcTypeErrMsg, src));
-                    throw new ArgumentException("Invalid SoruceType `{0}`.", "src");
-            }
-
-            Debug.Assert(_reader != null);
+            _reader = reader;
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Checks if the header bytes are equal to the expected bytes.

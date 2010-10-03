@@ -138,7 +138,7 @@ namespace NetGore.Db.Schema
         /// <returns>The loaded <see cref="SchemaReader"/></returns>
         public static SchemaReader Load(string filePath)
         {
-            var reader = GenericValueReader.ReadFile(filePath, _rootNodeName);
+            var reader = GenericValueReader.CreateFromFile(filePath, _rootNodeName);
             return new SchemaReader(reader);
         }
 

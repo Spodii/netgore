@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         /// <param name="skeletonBodyName">Name of the skeleton body.</param>
         /// <param name="contentPath">The content path.</param>
         public SkeletonBodyInfo(string skeletonBodyName, ContentPaths contentPath)
-            : this(GenericValueReader.ReadFile(GetFilePath(skeletonBodyName, contentPath), _rootNodeName))
+            : this(GenericValueReader.CreateFromFile(GetFilePath(skeletonBodyName, contentPath), _rootNodeName))
         {
         }
 

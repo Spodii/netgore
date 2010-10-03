@@ -67,7 +67,7 @@ namespace NetGore.Db
             }
 
             // Read the values
-            var reader = GenericValueReader.ReadFile(destSettingsFile, _rootNodeName);
+            var reader = GenericValueReader.CreateFromFile(destSettingsFile, _rootNodeName);
             ((IPersistable)this).ReadState(reader);
         }
 
@@ -159,7 +159,7 @@ namespace NetGore.Db
         /// </summary>
         public void Reload()
         {
-            var reader = GenericValueReader.ReadFile(FilePath, _rootNodeName);
+            var reader = GenericValueReader.CreateFromFile(FilePath, _rootNodeName);
             ((IPersistable)this).ReadState(reader);
         }
 
