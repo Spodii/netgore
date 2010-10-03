@@ -20,9 +20,8 @@ namespace DemoGame.Editor
     public class MapScreenControl : GraphicsDeviceControl, IMapBoundControl, IGetTime
     {
         readonly ICamera2D _camera;
-        readonly ScreenGrid _grid;
-        Vector2 _cameraVelocity = Vector2.Zero;
 
+        Vector2 _cameraVelocity = Vector2.Zero;
         Vector2 _cursorPos;
         DrawingManager _drawingManager;
         TickCount _lastUpdateTime = TickCount.MinValue;
@@ -36,7 +35,6 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            _grid = new ScreenGrid();
             _camera = new Camera2D(new Vector2(ClientSize.Width, ClientSize.Height));
         }
 
@@ -65,15 +63,6 @@ namespace DemoGame.Editor
         public IDrawingManager DrawingManager
         {
             get { return _drawingManager; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ScreenGrid"/> to display for the <see cref="Map"/>.
-        /// </summary>
-        [Browsable(false)]
-        public ScreenGrid Grid
-        {
-            get { return _grid; }
         }
 
         /// <summary>
@@ -165,10 +154,6 @@ namespace DemoGame.Editor
             /*
             CursorManager.DrawSelection(sb);
             */
-
-            // Grid
-            // TODO: !! if (chkDrawGrid.Checked)
-            Grid.Draw(sb, Camera);
 
             // Light sources
             // TODO: !! if (chkLightSources.Checked)

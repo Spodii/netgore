@@ -70,14 +70,13 @@ namespace DemoGame.Editor
             _name = name;
             _toolManager = toolManager;
             _toolBarVisibility = toolBarVisibility;
+            _toolBarControl = ToolBar.CreateToolControl(this, toolBarControlType);
 
             var exts = GetMapDrawingExtensions();
             if (exts == null || exts.IsEmpty())
                 _mapDrawingExtensions = Enumerable.Empty<IMapDrawingExtension>();
             else
                 _mapDrawingExtensions = exts.ToImmutable();
-
-            _toolBarControl = ToolBar.CreateToolControl(this, toolBarControlType);
 
             // TODO: !! Grab from the tool settings if this should be shown on the toolbar
             AddToToolBar();
@@ -168,7 +167,8 @@ namespace DemoGame.Editor
                 GlobalState.Instance.Tick += tickCallback;
 
             // If we were disabled, remove the MapDrawingExtensions. Otherwise, add them.
-            if (!IsEnabled)
+            Debug.Assert(_mapDrawingExtensions != null, "IsEnabled seems to have changed before the _mapDrawingExtensions were set.");
+            if (IsEnabled)
             {
                 ToolManager.MapDrawingExtensions.Add(_mapDrawingExtensions);
             }

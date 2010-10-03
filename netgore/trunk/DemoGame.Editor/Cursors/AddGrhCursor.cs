@@ -117,11 +117,15 @@ namespace DemoGame.Editor
             if (grhToPlace.GrhData == null)
                 return;
 
+            /*
+            // TODO: !!!
             Vector2 drawPos;
             if (_mnuSnapToGrid.Checked)
                 drawPos = MSC.Grid.AlignDown(MSC.CursorPos);
             else
                 drawPos = MSC.CursorPos;
+            */
+            var drawPos = MSC.CursorPos; // HACK: !! Temp replacement for the above
 
             // If we fail to draw the selected Grh, just ignore it
             try
@@ -191,11 +195,15 @@ namespace DemoGame.Editor
                         return;
 
                     // Find the position the MapGrh will be created at
+                    /*
+                    // TODO: !!!
                     Vector2 drawPos;
                     if (_mnuSnapToGrid.Checked)
                         drawPos = MSC.Grid.AlignDown(cursorPos);
                     else
                         drawPos = cursorPos;
+                    */
+                    var drawPos = cursorPos; // HACK: Temp replacement for the above
 
                     // Check if a MapGrh of the same type already exists at the location
                     var selGrhGrhIndex = grhToPlace.GrhData.GrhIndex;

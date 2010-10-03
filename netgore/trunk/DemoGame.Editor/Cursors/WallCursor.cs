@@ -261,8 +261,11 @@ namespace DemoGame.Editor
                         map.SafeTeleportEntity(selEntity, map.SnapToWalls(selEntity));
 
                     // Wall-to-grid snapping
+                    // TODO: !!
+                    /*
                     if (_mnuSnapToGrid.Checked)
                         MSC.Grid.Align(selEntity);
+                    */
                 }
             }
             else
@@ -272,8 +275,11 @@ namespace DemoGame.Editor
                 {
                     var oldMaxY = selEntity.Max.Y;
                     map.SafeTeleportEntity(selEntity, new Vector2(selEntity.Position.X, cursorPos.Y));
+                    // TODO: !!
+                    /*
                     if (_mnuSnapToGrid.Checked)
                         MSC.Grid.SnapToGridPosition(selEntity);
+                    */
 
                     selEntity.Resize(new Vector2(selEntity.Size.X, oldMaxY - selEntity.Position.Y));
                 }
@@ -282,23 +288,33 @@ namespace DemoGame.Editor
                 {
                     var oldMaxX = selEntity.Max.X;
                     map.SafeTeleportEntity(selEntity, new Vector2(cursorPos.X, selEntity.Position.Y));
+                    // TODO: !!
+                    /*
                     if (_mnuSnapToGrid.Checked)
                         MSC.Grid.SnapToGridPosition(selEntity);
+                    */
+
                     selEntity.Resize(new Vector2(oldMaxX - selEntity.Position.X, selEntity.Size.Y));
                 }
 
                 if (((Container.SelectedTransBox.TransType & TransBoxType.Bottom) > 0) && selEntity.Position.Y < cursorPos.Y)
                 {
                     selEntity.Resize(new Vector2(selEntity.Size.X, cursorPos.Y - selEntity.Position.Y));
+                    // TODO: !!
+                    /*
                     if (_mnuSnapToGrid.Checked)
                         MSC.Grid.SnapToGridSize(selEntity);
+                    */
                 }
 
                 if (((Container.SelectedTransBox.TransType & TransBoxType.Right) > 0) && selEntity.Position.X < cursorPos.X)
                 {
                     selEntity.Resize(new Vector2(cursorPos.X - selEntity.Position.X, selEntity.Size.Y));
+                    // TODO: !!
+                    /*
                     if (_mnuSnapToGrid.Checked)
                         MSC.Grid.SnapToGridSize(selEntity);
+                    */
                 }
             }
 
