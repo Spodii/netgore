@@ -112,8 +112,11 @@ namespace DemoGame.Editor
             // Create the new wall
             var w = new WallEntity(MSC.Camera.ToWorld(e.X, e.Y), Vector2.One);
             MSC.Map.AddEntity(w);
+            // TODO: !!
+            /*
             if (_mnuSnapToGrid.Checked)
                 MSC.Grid.Align(w);
+            */
 
             // Create the transformation boxes for the wall and select the bottom/right one
             Container.TransBoxes.Clear();

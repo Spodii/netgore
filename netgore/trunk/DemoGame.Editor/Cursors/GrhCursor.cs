@@ -235,8 +235,11 @@ namespace DemoGame.Editor
                     foreach (var mg in _selectedMapGrhs)
                     {
                         var pos = cursorPos - _selectedEntityOffset;
+                        // TODO: !!
+                        /*
                         if (_mnuSnapToGrid.Checked)
                             pos = MSC.Grid.AlignDown(pos);
+                        */
                         mg.Position = pos;
                     }
                 }
