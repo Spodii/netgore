@@ -35,13 +35,26 @@ namespace NetGore.IO
         bool _isDisposed;
 
         /// <summary>
+        /// Creates a <see cref="XmlValueWriter"/> for writing to a file.
+        /// </summary>
+        /// <param name="filePath">The path to the file to write to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="XmlValueWriter"/> instance.</returns>
+        public static XmlValueWriter Create(string filePath, string nodeName, bool useEnumNames = true)
+        {
+            return new XmlValueWriter(filePath, nodeName, useEnumNames);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
         /// <param name="filePath">The path to the file to write to.</param>
         /// <param name="nodeName">Name to give the root node containing the values.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public XmlValueWriter(string filePath, string nodeName, bool useEnumNames = true)
+        XmlValueWriter(string filePath, string nodeName, bool useEnumNames = true)
         {
             _useEnumNames = useEnumNames;
             _disposeWriter = true;
@@ -60,13 +73,26 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
+        /// Creates a <see cref="XmlValueWriter"/> for writing to an <see cref="XmlWriter"/>.
         /// </summary>
-        /// <param name="writer">XmlWriter to write the values to.</param>
+        /// <param name="writer"><see cref="XmlWriter"/> to write the values to.</param>
         /// <param name="nodeName">Name to give the root node containing the values.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public XmlValueWriter(XmlWriter writer, string nodeName, bool useEnumNames = true)
+        /// <returns>The <see cref="XmlValueWriter"/> instance.</returns>
+        public static XmlValueWriter Create(XmlWriter writer, string nodeName, bool useEnumNames = true)
+        {
+            return new XmlValueWriter(writer, nodeName, useEnumNames);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
+        /// </summary>
+        /// <param name="writer"><see cref="XmlWriter"/> to write the values to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        XmlValueWriter(XmlWriter writer, string nodeName, bool useEnumNames = true)
         {
             _useEnumNames = useEnumNames;
 
@@ -78,7 +104,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// XmlValueWriter constructor.
+        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
         /// <param name="writer">XmlWriter to write the values to.</param>
         /// <param name="nodeName">Name to give the root node containing the values.</param>
@@ -86,6 +112,8 @@ namespace NetGore.IO
         /// <param name="attributeValue">Value of the attribute.</param>
         public XmlValueWriter(XmlWriter writer, string nodeName, string attributeName, string attributeValue)
         {
+            // TODO: !! Remove the usage of this. It is provided just to write an attribute which is something that probably shouldn't be done - at least not this way.
+
             if (writer == null)
                 throw new ArgumentNullException("writer");
             if (string.IsNullOrEmpty(attributeName))

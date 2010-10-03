@@ -94,7 +94,7 @@ namespace NetGore.Features.ActionDisplays
             if (!File.Exists(path))
                 return new ActionDisplayCollection();
 
-            var reader = new XmlValueReader(path, _fileRootName);
+            var reader = XmlValueReader.CreateFromFile(path, _fileRootName);
             return new ActionDisplayCollection(reader);
         }
 
@@ -125,7 +125,7 @@ namespace NetGore.Features.ActionDisplays
         /// <param name="path">The path of the file to write to.</param>
         public void Save(string path)
         {
-            using (var writer = new XmlValueWriter(path, _fileRootName))
+            using (var writer = XmlValueWriter.Create(path, _fileRootName))
             {
                 ((IPersistable)this).WriteState(writer);
             }

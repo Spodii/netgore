@@ -23,14 +23,14 @@ namespace NetGore.EditorTools.NPCChat
 
             var stream = new BitStream(256);
 
-            using (var writer = new BinaryValueWriter(stream))
+            using (var writer = BinaryValueWriter.Create(stream))
             {
                 source.Write(writer);
             }
 
             stream.PositionBits = 0;
 
-            IValueReader reader = new BinaryValueReader(stream);
+            IValueReader reader = BinaryValueReader.Create(stream);
 
             Read(reader);
         }
@@ -73,14 +73,14 @@ namespace NetGore.EditorTools.NPCChat
         {
             var stream = new BitStream(256);
 
-            using (var writer = new BinaryValueWriter(stream))
+            using (var writer = BinaryValueWriter.Create(stream))
             {
                 Write(writer);
             }
 
             stream.PositionBits = 0;
 
-            IValueReader reader = new BinaryValueReader(stream);
+            var reader = BinaryValueReader.Create(stream);
 
             dest.Read(reader);
         }

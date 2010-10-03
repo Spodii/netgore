@@ -43,7 +43,7 @@ namespace DemoGame
         /// <param name="filePath">The file path to load from.</param>
         public static SkillInfoManager Load(string filePath)
         {
-            var r = new GenericValueReader(filePath, _rootNodeName);
+            var r = GenericValueReader.ReadFile(filePath, _rootNodeName);
 
             var ret = new SkillInfoManager();
             ret.Read(r);

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.IO
 {
@@ -39,17 +41,45 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericValueReader"/> class.
+        /// Creates a <see cref="IValueReader"/> for reading the contents of a file.
         /// </summary>
         /// <param name="filePath">The path to the file to load.</param>
         /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
         /// <exception cref="FileLoadException"><paramref name="filePath"/> contains an unsupported format.</exception>
-        public GenericValueReader(string filePath, string rootNodeName, bool? useEnumNames = null)
+        public static IValueReader ReadFile(string filePath, string rootNodeName, bool? useEnumNames = null)
+        {
+            return new GenericValueReader(SourceType.File, filePath, rootNodeName, useEnumNames);
+        }
+
+        /// <summary>
+        /// Enum describing the different sources for a <see cref="GenericValueReader"/>.
+        /// </summary>
+        enum SourceType : byte
+        {
+            /// <summary>
+            /// Read from a file.
+            /// </summary>
+            File,
+
+            /// <summary>
+            /// Read from an in-memory string.
+            /// </summary>
+            String,
+        }
+        
+        /// <summary>
+        /// Initializes the <see cref="GenericValueReader"/> for reading a string.
+        /// </summary>
+        /// <param name="data">The string to read.</param>
+        /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
+        /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
+        /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
+        static IValueReader CreateFromString(string data, string rootNodeName, bool? useEnumNames = null)
         {
             // Discover the format
-            var format = FindFileFormat(filePath);
+            var format = FindContentFormatForString(data);
             Debug.Assert(EnumHelper<GenericValueIOFormat>.IsDefined(format));
 
             // Create the IValueReader of the needed type
@@ -57,26 +87,93 @@ namespace NetGore.IO
             {
                 case GenericValueIOFormat.Binary:
                     if (useEnumNames.HasValue)
-                        _reader = new BinaryValueReader(filePath, useEnumNames.Value);
+                        return BinaryValueReader.CreateFromString(data, useEnumNames.Value);
                     else
-                        _reader = new BinaryValueReader(filePath);
-                    break;
+                        return BinaryValueReader.CreateFromString(data);
 
                 case GenericValueIOFormat.Xml:
                     if (useEnumNames.HasValue)
-                        _reader = new XmlValueReader(filePath, rootNodeName, useEnumNames.Value);
+                        return XmlValueReader.CreateFromString(data, rootNodeName, useEnumNames.Value);
                     else
-                        _reader = new XmlValueReader(filePath, rootNodeName);
+                        return XmlValueReader.CreateFromString(data, rootNodeName);
+            }
+
+            const string errmsg = "Ran into unsupported format `{0}`. Format value was acquired from FindFileFormat().";
+            Debug.Fail(string.Format(errmsg, format));
+            throw new FileLoadException(string.Format(errmsg, format));
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="GenericValueReader"/> for reading a file.
+        /// </summary>
+        /// <param name="filePath">The path to the file to read.</param>
+        /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
+        /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
+        /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
+        /// <exception cref="FileLoadException"><paramref name="filePath"/> contains an unsupported format.</exception>
+        static IValueReader CreateFromFile(string filePath, string rootNodeName, bool? useEnumNames = null)
+        {
+            // Discover the format
+            var format = FindContentFormatForFile(filePath);
+            Debug.Assert(EnumHelper<GenericValueIOFormat>.IsDefined(format));
+
+            // Create the IValueReader of the needed type
+            switch (format)
+            {
+                case GenericValueIOFormat.Binary:
+                    if (useEnumNames.HasValue)
+                        return BinaryValueReader.CreateFromFile(filePath, useEnumNames.Value);
+                    else
+                        return BinaryValueReader.CreateFromFile(filePath);
+
+                case GenericValueIOFormat.Xml:
+                    if (useEnumNames.HasValue)
+                        return XmlValueReader.CreateFromFile(filePath, rootNodeName, useEnumNames.Value);
+                    else
+                        return XmlValueReader.CreateFromFile(filePath, rootNodeName);
+            }
+
+            const string errmsg = "Ran into unsupported format `{0}`. Format value was acquired from FindFileFormat().";
+            Debug.Fail(string.Format(errmsg, format));
+            throw new FileLoadException(string.Format(errmsg, format));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericValueReader"/> class.
+        /// </summary>
+        /// <param name="src">The <see cref="SourceType"/>.</param>
+        /// <param name="data">The data to load. When <see cref="SourceType.File"/>, it is a file path.
+        /// When <see cref="SourceType.String"/>, it is the raw string.</param>
+        /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
+        /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
+        /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
+        GenericValueReader(SourceType src, string data, string rootNodeName, bool? useEnumNames = null)
+        {
+            GenericValueIOFormat format;
+
+            switch (src)
+            {
+                case SourceType.File:
+                    _reader = CreateFromFile(data, rootNodeName, useEnumNames);
+                    break;
+
+                case SourceType.String:
+                    format = FindContentFormatForString(data);
+
                     break;
 
                 default:
-                    const string errmsg = "Ran into unsupported format `{0}`. Format value was acquired from FindFileFormat().";
-                    Debug.Fail(string.Format(errmsg, format));
-                    throw new FileLoadException(string.Format(errmsg, format));
+                    const string srcTypeErrMsg = "Invalid SourceType `{0}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(srcTypeErrMsg, src);
+                    Debug.Fail(string.Format(srcTypeErrMsg, src));
+                    throw new ArgumentException("Invalid SoruceType `{0}`.", "src");
             }
 
             Debug.Assert(_reader != null);
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Checks if the header bytes are equal to the expected bytes.
@@ -100,11 +197,47 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Peeks into a file to figure out what format it uses.
+        /// Checks if the header bytes are equal to the expected bytes.
+        /// </summary>
+        /// <param name="header">The read header bytes.</param>
+        /// <param name="headerLength">The actual length of the header.</param>
+        /// <param name="expected">The expected bytes for the header.</param>
+        /// <returns>True if the <paramref name="header"/> matches the <paramref name="expected"/>; otherwise false.</returns>
+        static bool CheckFormatHeader(string header, int headerLength, IList<char> expected)
+        {
+            if (headerLength < expected.Count)
+                return false;
+
+            for (var i = 0; i < expected.Count; i++)
+            {
+                if (header[i] != expected[i])
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Finds the <see cref="GenericValueIOFormat"/> is being used for a string.
+        /// </summary>
+        /// <param name="str">The string to check.</param>
+        /// <returns>The <see cref="GenericValueIOFormat"/> being used for the content in the <paramref name="str"/>.</returns>
+        public static GenericValueIOFormat FindContentFormatForString(string str)
+        {
+            // Check for Xml
+            if (CheckFormatHeader(str, str.Length, _xmlHeader))
+                return GenericValueIOFormat.Xml;
+
+            // Assume everything else is binary
+            return GenericValueIOFormat.Binary;
+        }
+
+        /// <summary>
+        /// Finds the <see cref="GenericValueIOFormat"/> is being used for a file.
         /// </summary>
         /// <param name="filePath">The path to the file to check.</param>
-        /// <returns>The <see cref="GenericValueIOFormat"/> being used for the <paramref name="filePath"/>.</returns>
-        public static GenericValueIOFormat FindFileFormat(string filePath)
+        /// <returns>The <see cref="GenericValueIOFormat"/> being used for the content at the <paramref name="filePath"/>.</returns>
+        public static GenericValueIOFormat FindContentFormatForFile(string filePath)
         {
             // Grab enough characters from the file to determine the format
             var header = new char[_maxHeaderLength];

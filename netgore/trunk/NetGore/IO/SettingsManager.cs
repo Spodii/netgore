@@ -309,7 +309,7 @@ namespace NetGore.IO
 
             try
             {
-                IValueReader reader = new GenericValueReader(path, _rootNode);
+                var reader = GenericValueReader.ReadFile(path, _rootNode);
 
                 reader = reader.ReadNode(_itemsNodeName);
                 var count = reader.ReadInt(_countValueName);

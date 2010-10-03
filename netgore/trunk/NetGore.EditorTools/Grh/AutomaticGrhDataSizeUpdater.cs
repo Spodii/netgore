@@ -91,7 +91,7 @@ namespace NetGore.EditorTools
                 return ret;
 
             // Load the items
-            var r = new XmlValueReader(CacheFile, "AutoGrhDataSizes");
+            var r = XmlValueReader.CreateFromFile(CacheFile, "AutoGrhDataSizes");
             var loadedItems = r.ReadManyNodes("Item", x => new CacheItemInfo(x));
 
             ret.AddRange(loadedItems);
@@ -104,7 +104,7 @@ namespace NetGore.EditorTools
         /// </summary>
         public virtual void Save()
         {
-            using (var writer = new XmlValueWriter(CacheFile, "AutoGrhDataSizes"))
+            using (var writer = XmlValueWriter.Create(CacheFile, "AutoGrhDataSizes"))
             {
                 writer.WriteManyNodes("Item", _cache.Values.OrderBy(x => x.GrhIndex), (w, x) => x.WriteState(w));
             }

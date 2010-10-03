@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using NetGore;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace DemoGame.Editor
 {
@@ -15,7 +16,7 @@ namespace DemoGame.Editor
     /// be shown in a <see cref="ToolBar"/>, but can also be completely invisible to the user interface and function purely in the
     /// background.
     /// </summary>
-    public abstract class Tool : IDisposable
+    public abstract class Tool : IDisposable, IPersistable
     {
         /// <summary>
         /// Delegate for handling events from the <see cref="Tool"/>.
@@ -424,5 +425,50 @@ namespace DemoGame.Editor
         }
 
         #endregion
+
+        /// <summary>
+        /// Handles reading custom state information for this <see cref="Tool"/> from an <see cref="IValueReader"/> for when
+        /// persisting the <see cref="Tool"/>'s state.
+        /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
+        /// reading and writing the state.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        protected virtual void ReadCustomToolState(IValueReader reader)
+        {
+        }
+
+        /// <summary>
+        /// Handles writing custom state information for this <see cref="Tool"/> to an <see cref="IValueWriter"/> for when
+        /// persisting the <see cref="Tool"/>'s state.
+        /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
+        /// reading and writing the state.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        protected virtual void WriteCustomToolState(IValueWriter writer)
+        {
+        }
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            PersistableHelper.Read(this, reader);
+
+            ReadCustomToolState(reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
+
+            WriteCustomToolState(writer);
+        }
     }
 }

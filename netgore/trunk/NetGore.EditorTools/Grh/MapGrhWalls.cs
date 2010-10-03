@@ -125,7 +125,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Read the values
-            var reader = new XmlValueReader(filePath, _rootNodeName);
+            var reader = XmlValueReader.CreateFromFile(filePath, _rootNodeName);
             var loadedWalls = reader.ReadManyNodes(_rootNodeName, x => ReadWalls(x, createWall));
 
             foreach (var wall in loadedWalls)
@@ -173,7 +173,7 @@ namespace NetGore.EditorTools
             }
 
             // Write the values
-            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = XmlValueWriter.Create(filePath, _rootNodeName))
             {
                 writer.WriteManyNodes(_rootNodeName, wallsToWrite, WriteWalls);
             }

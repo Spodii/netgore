@@ -752,7 +752,7 @@ namespace DemoGame
                 throw new ArgumentException("filePath");
             }
 
-            var r = new XmlValueReader(filePath, _rootNodeName);
+            var r = XmlValueReader.CreateFromFile(filePath, _rootNodeName);
             LoadHeader(r);
             LoadWalls(r);
             LoadDynamicEntities(r, loadDynamicEntities, dynamicEntityFactory);
@@ -958,8 +958,9 @@ namespace DemoGame
             if (dynamicEntityFactory == null)
                 throw new ArgumentNullException("dynamicEntityFactory");
 
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            using (IValueWriter w = new XmlValueWriter(filePath, _rootNodeName))
+            var dirName = Path.GetDirectoryName(filePath);
+            Directory.CreateDirectory(dirName);
+            using (var w = XmlValueWriter.Create(filePath, _rootNodeName))
             {
                 SaveHeader(w);
                 SaveWalls(w);

@@ -135,7 +135,7 @@ namespace NetGore.NPCChat
                 return;
             }
 
-            var reader = new GenericValueReader(filePath, _rootNodeName);
+            var reader = GenericValueReader.ReadFile(filePath, _rootNodeName);
             var items = reader.ReadManyNodes(_chatDialogsNodeName, CreateDialog);
 
             for (var i = 0; i < items.Length; i++)
