@@ -16,19 +16,14 @@ namespace DemoGame.Client
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that was just drawn.</param>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
+        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
+        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera)
         {
             if (layer != MapRenderLayer.SpriteForeground)
                 return;
 
-            if (map.Camera == null)
-            {
-                Debug.Fail("Expected the map's Camera to not be null.");
-                return;
-            }
-
             // Get the visible area
-            var visibleArea = map.Camera.GetViewArea();
+            var visibleArea = camera.GetViewArea();
 
             // Get and draw all entities except walls (they are drawn differently) and entities that can require drawing even when they
             // are not in view (e.g. TeleportEntity)
@@ -36,7 +31,7 @@ namespace DemoGame.Client
 
             foreach (var entity in visibleEntities)
             {
-                EntityDrawer.Draw(spriteBatch, map.Camera, entity);
+                EntityDrawer.Draw(spriteBatch, camera, entity);
             }
 
             // Get and draw the TeleportEntities in view
@@ -45,8 +40,8 @@ namespace DemoGame.Client
             foreach (var te in visibleTeleportEntities)
             {
                 // If the source is in view, or if the destination is on the same map and in view, then draw
-                if (map.Camera.InView(te) || (te.DestinationMap == map.ID && map.Camera.InView(te.Destination, te.Size)))
-                    EntityDrawer.Draw(spriteBatch, map.Camera, te);
+                if (camera.InView(te) || (te.DestinationMap == map.ID && camera.InView(te.Destination, te.Size)))
+                    EntityDrawer.Draw(spriteBatch, camera, te);
             }
         }
     }

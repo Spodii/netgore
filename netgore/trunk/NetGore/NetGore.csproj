@@ -178,6 +178,7 @@
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
+    <Compile Include="Graphics\Map\MapDrawEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffectEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffect.cs" />
@@ -315,7 +316,7 @@
     <Compile Include="Graphics\Map\DrawableSorter.cs" />
     <Compile Include="Graphics\Map\IDrawableMap.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\ITemporaryMapEffect.cs" />
-    <Compile Include="Graphics\Map\MapDrawEventHandler.cs" />
+    <Compile Include="Graphics\Map\MapDrawLayerEventHandler.cs" />
     <Compile Include="Graphics\Map\MapDrawingExtension\IMapDrawingExtension.cs" />
     <Compile Include="Graphics\Map\MapDrawingExtension\MapDrawingExtension.cs" />
     <Compile Include="Graphics\Map\MapDrawingExtension\MapDrawingExtensionCollection.cs" />

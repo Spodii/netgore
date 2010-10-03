@@ -6,6 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
@@ -30,6 +31,9 @@ namespace DemoGame.Editor
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ToolManager _instance;
 
+        public MapDrawingExtensionCollection MapDrawingExtensions { get { return _mapDrawingExtensions; } }
+
+        readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
         readonly Dictionary<Type, Tool> _tools = new Dictionary<Type, Tool>();
 
         /// <summary>

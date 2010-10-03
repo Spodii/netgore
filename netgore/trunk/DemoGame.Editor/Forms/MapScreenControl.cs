@@ -105,6 +105,9 @@ namespace DemoGame.Editor
         /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
         protected virtual void DrawMapGUI(ISpriteBatch sb)
         {
+            foreach (var t in ToolManager.Instance.EnabledTools)
+                t.InvokeBeforeDrawMapGUI(sb, Map);
+
             // Cursor coordinates
             var font = GlobalState.Instance.DefaultRenderFont;
 
@@ -113,6 +116,9 @@ namespace DemoGame.Editor
                                    new Vector2(4);
 
             sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
+
+            foreach (var t in ToolManager.Instance.EnabledTools)
+                t.InvokeAfterDrawMapGUI(sb, Map);
         }
 
         /// <summary>
@@ -173,21 +179,6 @@ namespace DemoGame.Editor
                     AddLightCursor.LightSprite.Draw(sb, light.Position - offset);
                 }
             }
-
-            // TODO: !! Tool interface
-            //CursorManager.DrawInterface(sb);
-
-            // Focused selected object (don't draw it for lights, though)
-            /*
-            var som = GlobalState.Instance.Map.SelectedObjsManager;
-            foreach (var selected in som.SelectedObjects.Where(x => !(x is ILight)))
-            {
-                if (selected == som.Focused)
-                    _focusedSpatialDrawer.DrawFocused(selected as ISpatial, sb);
-                else
-                    FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
-            }
-            */
         }
 
         /// <summary>
@@ -210,6 +201,8 @@ namespace DemoGame.Editor
 
             // Update
             UpdateMap(currentTime, deltaTime);
+
+            ToolManager.Instance.MapDrawingExtensions.Map = Map;
 
             // Draw the world
             var worldSB = DrawingManager.BeginDrawWorld(Camera);
@@ -362,6 +355,11 @@ namespace DemoGame.Editor
             Camera.Size = clientSize * Camera.Scale;
         }
 
+        /// <summary>
+        /// Updates the map.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <param name="deltaTime">The amount of time that has elapsed since the last update.</param>
         protected virtual void UpdateMap(TickCount currentTime, int deltaTime)
         {
             Cursor = Cursors.Default;

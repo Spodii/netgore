@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore;
 using NetGore.Features.GameTime;
 using NetGore.Graphics;
@@ -589,14 +591,24 @@ namespace DemoGame.Client
         #region IDrawableMap Members
 
         /// <summary>
+        /// Notifies listeners immediately before any of the map's layers are drawn.
+        /// </summary>
+        public event MapDrawEventHandler BeginDrawMap;
+
+        /// <summary>
         /// Notifies listeners immediately before a layer has started drawing.
         /// </summary>
-        public event MapDrawEventHandler BeginDrawLayer;
+        public event MapDrawLayerEventHandler BeginDrawMapLayer;
+
+        /// <summary>
+        /// Notifies listeners immediately after any of the map's layers are drawn.
+        /// </summary>
+        public event MapDrawEventHandler EndDrawMap;
 
         /// <summary>
         /// Notifies listeners immediately after a layer has finished drawing.
         /// </summary>
-        public event MapDrawEventHandler EndDrawLayer;
+        public event MapDrawLayerEventHandler EndDrawMapLayer;
 
         /// <summary>
         /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
@@ -647,6 +659,8 @@ namespace DemoGame.Client
             _mapEffects.Add(e);
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Draws the map.
         /// </summary>
@@ -654,31 +668,44 @@ namespace DemoGame.Client
         [Browsable(false)]
         public void Draw(ISpriteBatch sb)
         {
+            var cam = Camera;
+            if (cam == null)
+            {
+                const string errmsg = "The camera on map `{0}` was null - cannot draw map.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
             // Find the drawable objects that are in view and pass the filter (if one is provided)
-            var viewArea = Camera.GetViewArea();
+            var viewArea = cam.GetViewArea();
 
             IEnumerable<IDrawable> drawableInView;
             IEnumerable<IDrawable> bgInView;
             if (DrawFilter != null)
             {
                 drawableInView = Spatial.GetMany<IDrawable>(viewArea, x => DrawFilter(x));
-                bgInView = _backgroundImages.Cast<IDrawable>().Where(x => DrawFilter(x) && x.InView(Camera));
+                bgInView = _backgroundImages.Cast<IDrawable>().Where(x => DrawFilter(x) && x.InView(cam));
             }
             else
             {
                 drawableInView = Spatial.GetMany<IDrawable>(viewArea);
-                bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(Camera));
+                bgInView = _backgroundImages.Cast<IDrawable>().Where(x => x.InView(cam));
             }
 
             // Concat the background images (to the start of the list) since they aren't in any spatials
             drawableInView = bgInView.Concat(drawableInView);
 
+            if (BeginDrawMap != null)
+                BeginDrawMap(this, sb, cam);
+
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
             foreach (var layer in _drawableSorter.GetSorted(drawableInView))
             {
                 // Notify the layer has started drawing
-                if (BeginDrawLayer != null)
-                    BeginDrawLayer(this, layer.Key, sb);
+                if (BeginDrawMapLayer != null)
+                    BeginDrawMapLayer(this, layer.Key, sb, cam);
 
                 // Draw the normal map objects
                 foreach (var drawable in layer.Value)
@@ -710,8 +737,8 @@ namespace DemoGame.Client
                 }
 
                 // Notify the layer has finished drawing
-                if (EndDrawLayer != null)
-                    EndDrawLayer(this, layer.Key, sb);
+                if (EndDrawMapLayer != null)
+                    EndDrawMapLayer(this, layer.Key, sb, cam);
             }
 
             // Draw the particle effects
@@ -722,6 +749,9 @@ namespace DemoGame.Client
                     pe.Draw(sb);
                 }
             }
+
+            if (EndDrawMap != null)
+                EndDrawMap(this, sb, cam);
         }
 
         #endregion

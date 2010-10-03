@@ -55,6 +55,7 @@
     <Compile Include="Controls\ToolBar\IToolBarComboBoxSettings.cs" />
     <Compile Include="Controls\ToolBar\IToolBarControlSettings.cs" />
     <Compile Include="Controls\ToolBar\IToolBarControl.cs" />
+    <Compile Include="Controls\ToolBar\IToolBarControlSettingsExtensions.cs" />
     <Compile Include="Controls\ToolBar\IToolBarDropDownButtonSettings.cs" />
     <Compile Include="Controls\ToolBar\IToolBarDropDownItemSettings.cs" />
     <Compile Include="Controls\ToolBar\IToolBarLabelSettings.cs" />
