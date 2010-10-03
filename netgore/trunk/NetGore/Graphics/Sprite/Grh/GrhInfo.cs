@@ -540,7 +540,7 @@ namespace NetGore.Graphics
                 _grhDatas.ItemRemoved += RemoveHandler;
 
                 // Read and add the GrhDatas in order by their type
-                var reader = GenericValueReader.ReadFile(path, _rootNodeName);
+                var reader = GenericValueReader.CreateFromFile(path, _rootNodeName);
 
                 LoadGrhDatas(reader, _nonAnimatedGrhDatasNodeName, x => StationaryGrhData.Read(x, cm));
                 LoadGrhDatas(reader, _animatedGrhDatasNodeName, AnimatedGrhData.Read);

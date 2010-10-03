@@ -49,7 +49,7 @@ namespace NetGore.Graphics
         /// <param name="skeletonSetName">Name of the <see cref="SkeletonSet"/>.</param>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to load from.</param>
         public SkeletonSet(string skeletonSetName, ContentPaths contentPath)
-            : this(GenericValueReader.ReadFile(GetFilePath(skeletonSetName, contentPath), _rootNodeName), contentPath)
+            : this(GenericValueReader.CreateFromFile(GetFilePath(skeletonSetName, contentPath), _rootNodeName), contentPath)
         {
         }
 

@@ -352,7 +352,7 @@ namespace NetGore.Scripting
                 if (!File.Exists(CacheDataFilePath))
                     return;
 
-                var r = GenericValueReader.ReadFile(CacheDataFilePath, _rootNodeName);
+                var r = GenericValueReader.CreateFromFile(CacheDataFilePath, _rootNodeName);
                 var items = r.ReadManyNodes(_cacheItemNodeName, x => new CacheItem(x));
 
                 foreach (var item in items)
