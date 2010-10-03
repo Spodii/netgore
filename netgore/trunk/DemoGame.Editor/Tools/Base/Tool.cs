@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using NetGore;
@@ -15,66 +17,6 @@ namespace DemoGame.Editor
     /// </summary>
     public abstract class Tool : IDisposable
     {
-        /// <summary>
-        /// Notifies the <see cref="Tool"/> that before a <see cref="MapBase"/>'s GUI was drawn.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        public void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
-        {
-            // TODO: !! Call this
-            if (!IsEnabled || IsDisposed)
-                return;
-
-            HandleBeforeDrawMapGUI(spriteBatch, map);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="MapBase"/> has been draw.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        protected virtual void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
-        {
-        }
-
-        /// <summary>
-        /// Notifies the <see cref="Tool"/> that after a <see cref="MapBase"/>'s GUI was drawn.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        public void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
-        {
-            // TODO: !! Call this
-            if (!IsEnabled || IsDisposed)
-                return;
-
-            HandleAfterDrawMapGUI(spriteBatch, map);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles performing drawing after the GUI for a <see cref="MapBase"/> has been draw.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        protected virtual void HandleAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles updating the <see cref="Tool"/>.
-        /// </summary>
-        /// <param name="currentTime">The current game time.</param>
-        protected virtual void HandleUpdate(TickCount currentTime)
-        {
-            // TODO: !! Add listener to get this called each tick
-        }
-
-
-
-
-
-
         /// <summary>
         /// Delegate for handling events from the <see cref="Tool"/>.
         /// </summary>
@@ -93,6 +35,7 @@ namespace DemoGame.Editor
         readonly IToolBarControl _toolBarControl;
         readonly ToolBarVisibility _toolBarVisibility;
         readonly ToolManager _toolManager;
+        readonly IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
 
         bool _canShowInToolbar = true;
         bool _isDisposed;
@@ -101,8 +44,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Initializes a new instance of the <see cref="Tool"/> class.
         /// </summary>
-        /// <param name="name">The name of the tool.</param>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
+        /// <param name="name">The name of the tool.</param>
         /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="Tool"/>
         /// in a toolbar.</param>
         /// <param name="toolBarVisibility">The visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.</param>
@@ -112,7 +55,7 @@ namespace DemoGame.Editor
         /// <see cref="ToolBarControlType"/> enum.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarVisibility"/> does not contain a defined value of the
         /// <see cref="ToolBarVisibility"/> enum.</exception>
-        protected Tool(string name, ToolManager toolManager, ToolBarControlType toolBarControlType,
+        protected Tool( ToolManager toolManager, string name, ToolBarControlType toolBarControlType,
                        ToolBarVisibility toolBarVisibility)
         {
             if (string.IsNullOrEmpty(name))
@@ -127,6 +70,12 @@ namespace DemoGame.Editor
             _name = name;
             _toolManager = toolManager;
             _toolBarVisibility = toolBarVisibility;
+
+            var exts = GetMapDrawingExtensions();
+            if (exts == null || exts.IsEmpty())
+                _mapDrawingExtensions = Enumerable.Empty<IMapDrawingExtension>();
+            else
+                _mapDrawingExtensions = exts.ToImmutable();
 
             _toolBarControl = ToolBar.CreateToolControl(this, toolBarControlType);
 
@@ -182,24 +131,62 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets if this tool is enabled. When disabled, this <see cref="Tool"/> will not perform regular updating and drawing.
+        /// Gets or sets if this tool is enabled. When disabled, this <see cref="Tool"/> will not perform regular updating and drawing.
         /// Default is false.
         /// </summary>
         [DefaultValue(false)]
         public bool IsEnabled
         {
             get { return _isEnabled; }
-            private set
+            set
             {
                 if (_isEnabled == value)
                     return;
 
                 _isEnabled = value;
 
+                // Raise event
                 OnEnabledChanged(!IsEnabled, IsEnabled);
                 if (EnabledChanged != null)
                     EnabledChanged(this, !IsEnabled, IsEnabled);
+
+                // Internal handling
+                HandleEnabledChangedInternal();
             }
+        }
+
+        /// <summary>
+        /// Internally handles when <see cref="IsEnabled"/> has changed.
+        /// </summary>
+        void HandleEnabledChangedInternal()
+        {
+            // Ensure the update hook is removed
+            GlobalState.Instance.Tick -= tickCallback;
+
+            // Add the update hook if we became enabled (since we just removed it, we know we won't have it added twice)
+            if (IsEnabled)
+                GlobalState.Instance.Tick += tickCallback;
+
+            // If we were disabled, remove the MapDrawingExtensions. Otherwise, add them.
+            if (!IsEnabled)
+            {
+                ToolManager.MapDrawingExtensions.Add(_mapDrawingExtensions);
+            }
+            else
+            {
+                ToolManager.MapDrawingExtensions.Remove(_mapDrawingExtensions);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="GlobalState.Tick"/> event.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        void tickCallback(TickCount currentTime)
+        {
+            Debug.Assert(IsEnabled);
+
+            HandleUpdate(currentTime);
         }
 
         /// <summary>
@@ -266,6 +253,17 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
+        /// <see cref="Tool"/>.
+        /// </summary>
+        /// <returns>The <see cref="IMapDrawingExtension"/>s used by this <see cref="Tool"/>. Can be null or empty if none
+        /// are used. Default is null.</returns>
+        protected virtual IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles disposing this object.
         /// </summary>
         /// <param name="disposeManaged">When true, <see cref="IDisposable.Dispose"/> was called directly and managed resources need to be
@@ -282,6 +280,58 @@ namespace DemoGame.Editor
         {
             _isDisposed = true;
             Dispose(false);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles performing drawing after the GUI for a <see cref="MapBase"/> has been draw.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        protected virtual void HandleAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="MapBase"/> has been draw.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        protected virtual void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles updating the <see cref="Tool"/>.
+        /// </summary>
+        /// <param name="currentTime">The current game time.</param>
+        protected virtual void HandleUpdate(TickCount currentTime)
+        {
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/> that after a <see cref="MapBase"/>'s GUI was drawn.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        public void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+            if (!IsEnabled || IsDisposed)
+                return;
+
+            HandleAfterDrawMapGUI(spriteBatch, map);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/> that before a <see cref="MapBase"/>'s GUI was drawn.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
+        public void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        {
+            if (!IsEnabled || IsDisposed)
+                return;
+
+            HandleBeforeDrawMapGUI(spriteBatch, map);
         }
 
         protected virtual void OnCanShowInToolBarChanged(bool oldValue, bool newValue)

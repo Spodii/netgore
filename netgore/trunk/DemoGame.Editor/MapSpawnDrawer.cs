@@ -27,7 +27,8 @@ namespace DemoGame.Editor
         /// <param name="map">The map the drawing is taking place on.</param>
         /// <param name="layer">The layer that was just drawn.</param>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
+        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
+        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera)
         {
             if (layer != MapRenderLayer.SpriteForeground)
                 return;
@@ -38,7 +39,7 @@ namespace DemoGame.Editor
             foreach (var item in MapSpawns)
             {
                 var rect = item.SpawnArea.ToRectangle(map);
-                if (map.Camera.InView(rect))
+                if (camera.InView(rect))
                     RenderRectangle.Draw(spriteBatch, rect, _drawColor);
             }
         }

@@ -11,8 +11,10 @@ namespace NetGore.Graphics
     public class MapDrawingExtensionCollection : ICollection<IMapDrawingExtension>
     {
         readonly List<IMapDrawingExtension> _extensions = new List<IMapDrawingExtension>();
-        readonly MapDrawEventHandler _handleBeginDraw;
-        readonly MapDrawEventHandler _handleEndDraw;
+        readonly MapDrawLayerEventHandler _handleBeginDrawMapLayer;
+        readonly MapDrawLayerEventHandler _handleEndDrawMapLayer;
+        readonly MapDrawEventHandler _handleBeginDrawMap;
+        readonly MapDrawEventHandler _handleEndDrawMap;
 
         IDrawableMap _map;
 
@@ -21,8 +23,10 @@ namespace NetGore.Graphics
         /// </summary>
         public MapDrawingExtensionCollection()
         {
-            _handleBeginDraw = Map_BeginDrawLayer;
-            _handleEndDraw = Map_EndDrawLayer;
+            _handleBeginDrawMapLayer = BeginDrawMapLayerCallback;
+            _handleEndDrawMapLayer = EndDrawMapLayerCallback;
+            _handleBeginDrawMap = BeginDrawMapCallback;
+            _handleEndDrawMap = EndDrawMapCallback;
         }
 
         /// <summary>
@@ -39,8 +43,10 @@ namespace NetGore.Graphics
                 // Remove the event hooks from the old map
                 if (Map != null)
                 {
-                    Map.BeginDrawLayer -= _handleBeginDraw;
-                    Map.EndDrawLayer -= _handleEndDraw;
+                    Map.BeginDrawMap -= _handleBeginDrawMap;
+                    Map.EndDrawMap -= _handleEndDrawMap;
+                    Map.BeginDrawMapLayer -= _handleBeginDrawMapLayer;
+                    Map.EndDrawMapLayer -= _handleEndDrawMapLayer;
                 }
 
                 // Set the new map
@@ -49,8 +55,10 @@ namespace NetGore.Graphics
                 // Set the event hooks on the new map
                 if (Map != null)
                 {
-                    Map.BeginDrawLayer += _handleBeginDraw;
-                    Map.EndDrawLayer += _handleEndDraw;
+                    Map.BeginDrawMap += _handleBeginDrawMap;
+                    Map.EndDrawMap += _handleEndDrawMap;
+                    Map.BeginDrawMapLayer += _handleBeginDrawMapLayer;
+                    Map.EndDrawMapLayer += _handleEndDrawMapLayer;
                 }
             }
         }
@@ -68,38 +76,94 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Handles the OnStartDrawLayer event from the current map.
+        /// Removes items from this collection.
+        /// </summary>
+        /// <param name="extensions">The items to remove.</param>
+        /// <returns>The number of items that were successfully removed from the collection. If all items were removed successfully, this
+        /// value will be equal to the number of items in the <paramref name="extensions"/>.</returns>
+        public virtual int Remove(IEnumerable<IMapDrawingExtension> extensions)
+        {
+            int c = 0;
+
+            foreach (var item in extensions)
+            {
+                if (Remove(item))
+                    c++;
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IDrawableMap.BeginDrawMapLayer"/> event from the current map.
         /// </summary>
         /// <param name="map">The map.</param>
         /// <param name="layer">The layer.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
-        void Map_BeginDrawLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
+        /// <param name="camera">The camera.</param>
+        void BeginDrawMapLayerCallback(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera)
         {
             Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null);
+            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
 
             foreach (var extension in _extensions)
             {
-                extension.DrawBeforeLayer(map, layer, spriteBatch);
+                extension.DrawBeforeLayer(map, layer, spriteBatch, camera);
             }
         }
 
         /// <summary>
-        /// Handles the OnEndDrawLayer event from the current map.
+        /// Handles the <see cref="IDrawableMap.EndDrawMapLayer"/> event from the current map.
         /// </summary>
         /// <param name="map">The map.</param>
         /// <param name="layer">The layer.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
-        void Map_EndDrawLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch)
+        /// <param name="camera">The camera.</param>
+        void EndDrawMapLayerCallback(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera)
         {
             Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null);
+            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
 
             foreach (var extension in _extensions)
             {
-                extension.DrawAfterLayer(map, layer, spriteBatch);
+                extension.DrawAfterLayer(map, layer, spriteBatch, camera);
             }
         }
+
+        /// <summary>
+        /// Handles the <see cref="IDrawableMap.BeginDrawMap"/> event from the current map.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        /// <param name="camera">The camera.</param>
+        void BeginDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        {
+            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
+            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+
+            foreach (var extension in _extensions)
+            {
+                extension.DrawBeforeMap(map, spriteBatch, camera);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IDrawableMap.EndDrawMap"/> event from the current map.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        /// <param name="camera">The camera.</param>
+        void EndDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        {
+            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
+            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+
+            foreach (var extension in _extensions)
+            {
+                extension.DrawAfterMap(map, spriteBatch, camera);
+            }
+        }
+
 
         #region ICollection<IMapDrawingExtension> Members
 
