@@ -56,7 +56,9 @@ namespace NetGore.Features.Quests
         /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
         void Load(ContentPaths contentPath)
         {
-            ReadState(new XmlValueReader(GetFilePath(contentPath), _rootFileNodeName));
+            var filePath = GetFilePath(contentPath);
+            var reader = XmlValueReader.CreateFromFile(filePath, _rootFileNodeName);
+            ReadState(reader);
         }
 
         /// <summary>
@@ -73,7 +75,8 @@ namespace NetGore.Features.Quests
         /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
         public void Save(ContentPaths contentPath)
         {
-            using (var w = new XmlValueWriter(GetFilePath(contentPath), _rootFileNodeName))
+            var filePath =GetFilePath(contentPath);
+            using (var w = XmlValueWriter.Create(filePath, _rootFileNodeName))
             {
                 WriteState(w);
             }

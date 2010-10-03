@@ -180,7 +180,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                var reader = new XmlValueReader(_dataFile, _rootNodeName);
+                var reader = XmlValueReader.CreateFromFile(_dataFile, _rootNodeName);
                 var loadedHashes = reader.ReadManyNodes(_rootNodeName, Read);
 
                 foreach (var hash in loadedHashes)
@@ -226,11 +226,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        ///   Saves the collection to file.
+        /// Saves the collection to file.
         /// </summary>
         void Save()
         {
-            using (IValueWriter w = new XmlValueWriter(_dataFile, _rootNodeName))
+            using (var w = XmlValueWriter.Create(_dataFile, _rootNodeName))
             {
                 w.WriteManyNodes(_rootNodeName, _textureHash, Write);
             }

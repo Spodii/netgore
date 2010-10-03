@@ -122,7 +122,7 @@ namespace NetGore.Graphics.ParticleEngine
             _effects.Clear();
 
             var filePath = GetFilePath(contentPath);
-            var reader = new GenericValueReader(filePath, _rootNodeName);
+            var reader = GenericValueReader.ReadFile(filePath, _rootNodeName);
             var readEffects = reader.ReadManyNodes(_particleEffectsNodeName, r => new ParticleEffect(r));
 
             // Ensure the ParticleEffects were properly loaded into here

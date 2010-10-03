@@ -19,7 +19,7 @@ namespace NetGore.IO
         /// <param name="reader">BitStream that will be used to read from.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BinaryValueReader(BitStream reader, bool useEnumNames = true)
+        BinaryValueReader(BitStream reader, bool useEnumNames = true)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
@@ -29,19 +29,36 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryValueReader"/> class.
+        /// Creates a <see cref="BinaryValueReader"/> for reading a <see cref="BitStream"/>.
+        /// </summary>
+        /// <param name="reader">BitStream that will be used to read from.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="reader"/> is null.</exception>
+        public static BinaryValueReader Create(BitStream reader, bool useEnumNames = true)
+        {
+            if (reader == null)
+                throw new ArgumentNullException("reader");
+
+            return new BinaryValueReader(reader, useEnumNames);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="BinaryValueReader"/> for reading a file.
         /// </summary>
         /// <param name="filePath">The path of the file to read from.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BinaryValueReader(string filePath, bool useEnumNames = true)
+        /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
+        /// <exception cref="IOException"><paramref name="filePath"/> is invalid, inaccessible, or no file exists at that path.</exception>
+        public static BinaryValueReader CreateFromFile(string filePath, bool useEnumNames = true)
         {
-            if (!File.Exists(filePath))
-                throw new ArgumentException("The specified file could not be found.", "filePath");
+            if (filePath == null)
+                throw new ArgumentNullException("filePath");
 
-            _useEnumNames = useEnumNames;
             var bytes = File.ReadAllBytes(filePath);
-            _reader = new BitStream(bytes);
+            var reader = new BitStream(bytes);
+            return new BinaryValueReader(reader, useEnumNames);
         }
 
         /// <summary>
@@ -53,6 +70,23 @@ namespace NetGore.IO
             var bitLength = ReadUInt(null);
             var bs = _reader.ReadBits((int)bitLength);
             return new BinaryValueReader(bs);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="BinaryValueReader"/> for reading a string.
+        /// </summary>
+        /// <param name="data">The string to read.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
+        public static BinaryValueReader CreateFromString(string data, bool useEnumNames = true)
+        {
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            var bytes = BitStream.StringToByteArray(data);
+            var reader = new BitStream(bytes);
+            return new BinaryValueReader(reader, useEnumNames);
         }
 
         #region IValueReader Members

@@ -88,7 +88,7 @@ namespace DemoGame
         /// </returns>
         static BodyInfoManager Load(string filePath)
         {
-            var reader = new XmlValueReader(filePath, _rootNodeName);
+            var reader = XmlValueReader.CreateFromFile(filePath, _rootNodeName);
             return new BodyInfoManager(reader);
         }
 
@@ -125,7 +125,7 @@ namespace DemoGame
         /// <param name="filePath">The file to save to.</param>
         public void Save(string filePath)
         {
-            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = XmlValueWriter.Create(filePath, _rootNodeName))
             {
                 Write(writer);
             }

@@ -55,16 +55,16 @@ namespace NetGore.IO
             {
                 case GenericValueIOFormat.Binary:
                     if (useEnumNames.HasValue)
-                        _writer = new BinaryValueWriter(filePath, useEnumNames.Value);
+                        _writer = BinaryValueWriter.Create(filePath, useEnumNames.Value);
                     else
-                        _writer = new BinaryValueWriter(filePath);
+                        _writer = BinaryValueWriter.Create(filePath);
                     break;
 
                 case GenericValueIOFormat.Xml:
                     if (useEnumNames.HasValue)
-                        _writer = new XmlValueWriter(filePath, rootNodeName, useEnumNames.Value);
+                        _writer = XmlValueWriter.Create(filePath, rootNodeName, useEnumNames.Value);
                     else
-                        _writer = new XmlValueWriter(filePath, rootNodeName);
+                        _writer = XmlValueWriter.Create(filePath, rootNodeName);
                     break;
 
                 default:

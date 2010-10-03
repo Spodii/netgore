@@ -671,7 +671,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="bytes">The byte array.</param>
         /// <returns>The string created from the <paramref name="bytes"/>.</returns>
-        static string StringFromByteArray(byte[] bytes)
+        public static string StringFromByteArray(byte[] bytes)
         {
             return Encoding.UTF8.GetString(bytes);
         }
@@ -681,7 +681,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="str">The string.</param>
         /// <returns>The byte array for the <paramref name="str"/>.</returns>
-        static byte[] StringToByteArray(string str)
+        public static byte[] StringToByteArray(string str)
         {
             return Encoding.UTF8.GetBytes(str);
         }
