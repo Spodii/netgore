@@ -15,6 +15,13 @@ namespace DemoGame.Editor
             InitializeComponent();
         }
 
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            ToolManager.Instance.SaveSettings();
+
+            base.OnClosing(e);
+        }
+
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>

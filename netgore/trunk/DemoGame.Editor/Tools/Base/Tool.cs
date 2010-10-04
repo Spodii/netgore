@@ -93,7 +93,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Notifies listeners when the <see cref="IsEnabled"/> property has changed.
         /// </summary>
-        public event ValueChangedEventHandler<bool> EnabledChanged;
+        public event ValueChangedEventHandler<bool> IsEnabledChanged;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IsOnToolBar"/> property has changed.
@@ -142,9 +142,9 @@ namespace DemoGame.Editor
                 _isEnabled = value;
 
                 // Raise event
-                OnEnabledChanged(!IsEnabled, IsEnabled);
-                if (EnabledChanged != null)
-                    EnabledChanged(this, !IsEnabled, IsEnabled);
+                OnIsEnabledChanged(!IsEnabled, IsEnabled);
+                if (IsEnabledChanged != null)
+                    IsEnabledChanged(this, !IsEnabled, IsEnabled);
 
                 // Internal handling
                 HandleEnabledChangedInternal();
@@ -383,11 +383,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="Tool.EnabledChanged"/> event.
+        /// When overridden in the derived class, allows for handling the <see cref="IsEnabledChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
-        protected virtual void OnEnabledChanged(bool oldValue, bool newValue)
+        protected virtual void OnIsEnabledChanged(bool oldValue, bool newValue)
         {
         }
 

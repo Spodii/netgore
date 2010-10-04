@@ -17,7 +17,21 @@ namespace DemoGame.Editor
         {
             var btn = ToolBarControl.ControlSettings.AsButtonSettings();
             btn.CheckOnClick = true;
+            btn.Checked = IsEnabled;
             btn.CheckedChanged += btn_CheckedChanged;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
+        /// </summary>
+        /// <param name="oldValue">The old (previous) value.</param>
+        /// <param name="newValue">The new (current) value.</param>
+        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
+        {
+            base.OnIsEnabledChanged(oldValue, newValue);
+
+            // Ensure the Checked value on the control is the same as the IsEnabled value
+            ToolBarControl.ControlSettings.AsButtonSettings().Checked = newValue;
         }
 
         /// <summary>

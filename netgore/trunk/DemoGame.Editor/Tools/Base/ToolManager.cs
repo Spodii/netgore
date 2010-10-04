@@ -42,10 +42,10 @@ namespace DemoGame.Editor
         readonly Timer _autoSaveSettingsTimer;
 
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
-        readonly ToolSettingsManager _settingsManager = new ToolSettingsManager();
+        readonly ToolSettingsManager _toolSettings = new ToolSettingsManager();
         readonly Dictionary<Type, Tool> _tools = new Dictionary<Type, Tool>();
-        bool _isDisposed;
 
+        bool _isDisposed;
         string _toolSettingsProfileName;
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DemoGame.Editor
             ToolSettingsProfileName = "User";
 
             // Create the auto-saver
-            _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _settingsManager, _autoSaveSettingsRate,
+            _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolSettings, _autoSaveSettingsRate,
                                                _autoSaveSettingsRate);
         }
 
@@ -100,6 +100,14 @@ namespace DemoGame.Editor
         public IEnumerable<Tool> EnabledTools
         {
             get { return _tools.Values.Where(x => x.IsEnabled && !x.IsDisposed).ToImmutable(); }
+        }
+
+        /// <summary>
+        /// Forces the settings for the <see cref="Tool"/>s to be saved.
+        /// </summary>
+        public void SaveSettings()
+        {
+            _toolSettings.Save();
         }
 
         /// <summary>
@@ -136,7 +144,7 @@ namespace DemoGame.Editor
 
                 _toolSettingsProfileName = value;
 
-                _settingsManager.CurrentSettingsFile = ToolSettingsManager.GetFilePath(ContentPaths.Build,
+                _toolSettings.CurrentSettingsFile = ToolSettingsManager.GetFilePath(ContentPaths.Build,
                                                                                        _toolSettingsProfileName);
             }
         }
@@ -191,7 +199,7 @@ namespace DemoGame.Editor
             if (disposeManaged)
             {
                 _autoSaveSettingsTimer.Dispose();
-                _settingsManager.Save();
+                _toolSettings.Save();
             }
         }
 
@@ -341,7 +349,7 @@ namespace DemoGame.Editor
                 }
 
                 // Add to the settings manager
-                _settingsManager.Add(tool);
+                _toolSettings.Add(tool);
 
                 // Notify listeners
                 if (ToolAdded != null)
