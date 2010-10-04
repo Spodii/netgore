@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
@@ -30,6 +31,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than
         /// or equal to zero.</exception>
+        [Browsable(false)]
         public float Height
         {
             get { return Size.Y; }
@@ -65,6 +67,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than
         /// or equal to zero.</exception>
+        [Browsable(false)]
         public float Width
         {
             get { return Size.X; }
