@@ -27,11 +27,6 @@ namespace DemoGame.Editor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // NOTE: Forces SFML to load early on instead of later, causing a LoaderLock exception. Can probably be removed later.
-            using (new Image())
-            {
-            }
-
             // Initialize stuff
             EngineSettingsInitializer.Initialize();
             GlobalState.Initailize();
