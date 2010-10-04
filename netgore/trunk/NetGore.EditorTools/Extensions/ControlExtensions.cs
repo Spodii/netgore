@@ -8,7 +8,7 @@ using NetGore.IO;
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// Extension methods for the <see cref="Control"/>.
+    /// Extension methods for the <see cref="Control"/> class.
     /// </summary>
     public static class ControlExtensions
     {
