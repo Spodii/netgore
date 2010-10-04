@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
@@ -163,12 +165,25 @@ namespace DemoGame.Editor
             IsOnToolBar = isOnToolBar;
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Resets all of the values of the <see cref="Tool"/> back to the default value.
         /// </summary>
         public void ResetValues()
         {
-            HandleResetValues(_defaultIsEnabled, _defaultIsOnToolBar);
+            try
+            {
+                HandleResetValues(_defaultIsEnabled, _defaultIsOnToolBar);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Error while trying to reset values for tool `{0}`." + 
+                    " Check HandleResetValues() on the derived class ({1}). Exception: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this, GetType().FullName, ex);
+                Debug.Fail(string.Format(errmsg, this, GetType().FullName, ex));
+            }
         }
 
         /// <summary>

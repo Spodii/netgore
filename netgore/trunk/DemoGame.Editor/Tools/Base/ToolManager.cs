@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using NetGore;
 using NetGore.Collections;
@@ -14,19 +15,8 @@ namespace DemoGame.Editor
     /// <summary>
     /// The manager for the <see cref="Tool"/>s. Contains an instance of all the available <see cref="Tool"/>s.
     /// </summary>
-    public sealed class ToolManager
+    public sealed class ToolManager : IDisposable
     {
-        readonly ToolSettingsManager _settingsManager = new ToolSettingsManager();
-
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="ToolManager"/> is reclaimed by garbage collection.
-        /// </summary>
-        ~ToolManager()
-        {
-            _settingsManager.Save(ContentPaths.Build);
-        }
-
         /// <summary>
         /// Delegate for handling events from the <see cref="ToolManager"/>.
         /// </summary>
@@ -41,12 +31,22 @@ namespace DemoGame.Editor
         public delegate void ToolEventHandler(ToolManager sender, Tool tool);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly ToolManager _instance;
 
-        public MapDrawingExtensionCollection MapDrawingExtensions { get { return _mapDrawingExtensions; } }
+        /// <summary>
+        /// How frequently to auto-save the tool settings.
+        /// Default is every 3 minutes.
+        /// </summary>
+        const int _autoSaveSettingsRate = 1000 * 60 * 3;
+
+        static readonly ToolManager _instance;
+        readonly Timer _autoSaveSettingsTimer;
 
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
+        readonly ToolSettingsManager _settingsManager = new ToolSettingsManager();
         readonly Dictionary<Type, Tool> _tools = new Dictionary<Type, Tool>();
+        bool _isDisposed;
+
+        string _toolSettingsProfileName;
 
         /// <summary>
         /// Initializes the <see cref="ToolManager"/> class.
@@ -61,6 +61,7 @@ namespace DemoGame.Editor
         /// </summary>
         ToolManager()
         {
+            // Create the type filter
             var tfc = new TypeFilterCreator
             {
                 IsClass = true,
@@ -72,7 +73,15 @@ namespace DemoGame.Editor
 
             var filter = tfc.GetFilter();
 
+            // Create the type factory to load the tools
             new TypeFactory(filter, typeFactory_TypeLoaded);
+
+            // Change to the generic "user" profile
+            ToolSettingsProfileName = "User";
+
+            // Create the auto-saver
+            _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _settingsManager, _autoSaveSettingsRate,
+                                               _autoSaveSettingsRate);
         }
 
         /// <summary>
@@ -102,11 +111,99 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        public MapDrawingExtensionCollection MapDrawingExtensions
+        {
+            get { return _mapDrawingExtensions; }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the profile to use for the tool settings.
+        /// </summary>
+        public string ToolSettingsProfileName
+        {
+            get { return _toolSettingsProfileName; }
+            set
+            {
+                if (StringComparer.Ordinal.Equals(_toolSettingsProfileName, value))
+                    return;
+
+                _toolSettingsProfileName = value;
+
+                _settingsManager.CurrentSettingsFile = ToolSettingsManager.GetFilePath(ContentPaths.Build,
+                                                                                       _toolSettingsProfileName);
+            }
+        }
+
+        /// <summary>
         /// Gets all of the <see cref="Tool"/>s.
         /// </summary>
         public IEnumerable<Tool> Tools
         {
             get { return _tools.Values.ToImmutable(); }
+        }
+
+        /// <summary>
+        /// Callback for the <see cref="_autoSaveSettingsTimer"/>.
+        /// </summary>
+        /// <param name="state">The state object, which is the <see cref="ToolSettingsManager"/> to save.</param>
+        static void AutoSaveSettingsTimerCallback(object state)
+        {
+            // Get the state object as a ToolSettingsManager
+            var tsm = state as ToolSettingsManager;
+            if (tsm == null)
+            {
+                const string errmsg = "Expected state to be a ToolSettingsManager instance, but was `{0}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, state);
+                Debug.Fail(string.Format(errmsg, state));
+                return;
+            }
+
+            // Try to auto-save
+            try
+            {
+                tsm.Save();
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Error occured while auto-saving the ToolSettingsManager `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, tsm, ex);
+                Debug.Fail(string.Format(errmsg, tsm, ex));
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
+        /// only unmanaged resources.</param>
+        void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+            {
+                _autoSaveSettingsTimer.Dispose();
+                _settingsManager.Save();
+            }
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="ToolManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~ToolManager()
+        {
+            _isDisposed = true;
+
+            Dispose(false);
         }
 
         /// <summary>
@@ -258,5 +355,24 @@ namespace DemoGame.Editor
                 Debug.Fail(string.Format(errmsg, loadedType, ex));
             }
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            GC.SuppressFinalize(this);
+
+            _isDisposed = true;
+
+            Dispose(true);
+        }
+
+        #endregion
     }
 }
