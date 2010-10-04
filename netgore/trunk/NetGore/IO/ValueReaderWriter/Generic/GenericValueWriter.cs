@@ -16,6 +16,8 @@ namespace NetGore.IO
     /// </summary>
     public class GenericValueWriter : IValueWriter
     {
+        // TODO: !! GenericValueWriter.Create();
+
         readonly IValueWriter _writer;
 
         /// <summary>

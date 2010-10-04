@@ -7,6 +7,7 @@ using log4net;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace DemoGame.Editor
 {
@@ -15,6 +16,17 @@ namespace DemoGame.Editor
     /// </summary>
     public sealed class ToolManager
     {
+        readonly ToolSettingsManager _settingsManager = new ToolSettingsManager();
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="ToolManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~ToolManager()
+        {
+            _settingsManager.Save(ContentPaths.Build);
+        }
+
         /// <summary>
         /// Delegate for handling events from the <see cref="ToolManager"/>.
         /// </summary>
@@ -230,6 +242,9 @@ namespace DemoGame.Editor
 
                     return;
                 }
+
+                // Add to the settings manager
+                _settingsManager.Add(tool);
 
                 // Notify listeners
                 if (ToolAdded != null)
