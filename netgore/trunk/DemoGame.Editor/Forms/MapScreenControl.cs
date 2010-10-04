@@ -100,7 +100,14 @@ namespace DemoGame.Editor
         public Map Map
         {
             get { return _map; }
-            set { _map = value; }
+            set {
+                if (_map == value)
+                    return;
+
+                _map = value;
+
+                Camera.Map = Map;
+            }
         }
 
         /// <summary>
