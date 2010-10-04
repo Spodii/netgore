@@ -1,6 +1,6 @@
-﻿using NetGore.EditorTools;
-using NetGore.EditorTools.Docking;
-using NetGore.EditorTools.EditorTool;
+﻿using NetGore.Editor;
+using NetGore.Editor.Docking;
+using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor
 {
@@ -33,21 +33,21 @@ namespace DemoGame.Editor
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            NetGore.EditorTools.Docking.DockPanelSkin dockPanelSkin1 = new NetGore.EditorTools.Docking.DockPanelSkin();
-            NetGore.EditorTools.Docking.AutoHideStripSkin autoHideStripSkin1 = new NetGore.EditorTools.Docking.AutoHideStripSkin();
-            NetGore.EditorTools.Docking.DockPanelGradient dockPanelGradient1 = new NetGore.EditorTools.Docking.DockPanelGradient();
-            NetGore.EditorTools.Docking.TabGradient tabGradient1 = new NetGore.EditorTools.Docking.TabGradient();
-            NetGore.EditorTools.Docking.DockPaneStripSkin dockPaneStripSkin1 = new NetGore.EditorTools.Docking.DockPaneStripSkin();
-            NetGore.EditorTools.Docking.DockPaneStripGradient dockPaneStripGradient1 = new NetGore.EditorTools.Docking.DockPaneStripGradient();
-            NetGore.EditorTools.Docking.TabGradient tabGradient2 = new NetGore.EditorTools.Docking.TabGradient();
-            NetGore.EditorTools.Docking.DockPanelGradient dockPanelGradient2 = new NetGore.EditorTools.Docking.DockPanelGradient();
-            NetGore.EditorTools.Docking.TabGradient tabGradient3 = new NetGore.EditorTools.Docking.TabGradient();
-            NetGore.EditorTools.Docking.DockPaneStripToolWindowGradient dockPaneStripToolWindowGradient1 = new NetGore.EditorTools.Docking.DockPaneStripToolWindowGradient();
-            NetGore.EditorTools.Docking.TabGradient tabGradient4 = new NetGore.EditorTools.Docking.TabGradient();
-            NetGore.EditorTools.Docking.TabGradient tabGradient5 = new NetGore.EditorTools.Docking.TabGradient();
-            NetGore.EditorTools.Docking.DockPanelGradient dockPanelGradient3 = new NetGore.EditorTools.Docking.DockPanelGradient();
-            NetGore.EditorTools.Docking.TabGradient tabGradient6 = new NetGore.EditorTools.Docking.TabGradient();
-            NetGore.EditorTools.Docking.TabGradient tabGradient7 = new NetGore.EditorTools.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPanelSkin dockPanelSkin1 = new NetGore.Editor.Docking.DockPanelSkin();
+            NetGore.Editor.Docking.AutoHideStripSkin autoHideStripSkin1 = new NetGore.Editor.Docking.AutoHideStripSkin();
+            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient1 = new NetGore.Editor.Docking.DockPanelGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient1 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPaneStripSkin dockPaneStripSkin1 = new NetGore.Editor.Docking.DockPaneStripSkin();
+            NetGore.Editor.Docking.DockPaneStripGradient dockPaneStripGradient1 = new NetGore.Editor.Docking.DockPaneStripGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient2 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient2 = new NetGore.Editor.Docking.DockPanelGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient3 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPaneStripToolWindowGradient dockPaneStripToolWindowGradient1 = new NetGore.Editor.Docking.DockPaneStripToolWindowGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient4 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient5 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient3 = new NetGore.Editor.Docking.DockPanelGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient6 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient7 = new NetGore.Editor.Docking.TabGradient();
             this.msMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,9 +57,9 @@ namespace DemoGame.Editor
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
-            this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
-            this.tbMap = new NetGore.EditorTools.EditorTool.ToolBar();
-            this.tbGlobal = new NetGore.EditorTools.EditorTool.ToolBar();
+            this.dockPanel = new NetGore.Editor.Docking.DockPanel();
+            this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
+            this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 

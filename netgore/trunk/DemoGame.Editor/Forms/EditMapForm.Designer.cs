@@ -69,7 +69,7 @@
             this.HideOnClose = false;
             this.Name = "EditMapForm";
             this.Text = "Map";
-            this.ToolBarVisibility = NetGore.EditorTools.EditorTool.ToolBarVisibility.Map;
+            this.ToolBarVisibility = NetGore.Editor.EditorTool.ToolBarVisibility.Map;
             this.cmsMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 

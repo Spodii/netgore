@@ -1,5 +1,4 @@
-﻿using NetGore.EditorTools;
-using NetGore.EditorTools.NPCChat;
+﻿using NetGore.Editor.NPCChat;
 
 namespace DemoGame.NPCChatEditor
 {
@@ -33,7 +32,7 @@ namespace DemoGame.NPCChatEditor
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.cmbSelectedDialog = new NetGore.EditorTools.NPCChat.NPCChatDialogComboBox();
+            this.cmbSelectedDialog = new NPCChatDialogComboBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -42,7 +41,7 @@ namespace DemoGame.NPCChatEditor
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.npcChatDialogView = new NetGore.EditorTools.NPCChat.NPCChatDialogView();
+            this.npcChatDialogView = new NPCChatDialogView();
             this.gbSelectedNode = new System.Windows.Forms.GroupBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
@@ -75,7 +74,7 @@ namespace DemoGame.NPCChatEditor
             this.label4 = new System.Windows.Forms.Label();
             this.gbConditionals = new System.Windows.Forms.GroupBox();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstConditionals = new NetGore.EditorTools.NPCChat.NPCChatConditionalsListBox();
+            this.lstConditionals = new NPCChatConditionalsListBox();
             this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnAddConditional = new System.Windows.Forms.Button();

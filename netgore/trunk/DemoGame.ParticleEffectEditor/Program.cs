@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.EditorTools;
+using NetGore.Editor.WinForms;
 
 namespace DemoGame.ParticleEffectEditor
 {

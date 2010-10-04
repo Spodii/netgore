@@ -25,7 +25,7 @@ any other feature, though there can be cases where features will expand other fe
 projects - the same namespace is used for all parts of the feature.
 
 NetGore.Features.Editor is a sort of special-case project. It contains stuff for features in NetGore.Features that is specific to
-editors. This is similar to how NetGore.EditorTools behaves. This project only appears in editor projects, and never in the client
+editors. This is similar to how NetGore.Editor behaves. This project only appears in editor projects, and never in the client
 or server. The purpose of this project is to allow developers of features to provide classes that can be used to help edit features.
 It also allows you to have features that are purely focused on the editors.
 

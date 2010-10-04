@@ -232,7 +232,7 @@
     <value>dockPanel</value>
   </data>
   <data name="&gt;&gt;dockPanel.Type" xml:space="preserve">
-    <value>NetGore.EditorTools.Docking.DockPanel, NetGore.EditorTools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>NetGore.Editor.Docking.DockPanel, NetGore.Editor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;dockPanel.Parent" xml:space="preserve">
     <value>$this</value>

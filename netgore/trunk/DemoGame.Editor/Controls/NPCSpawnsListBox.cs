@@ -4,8 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
 using NetGore.Db;
-using NetGore.EditorTools;
-using NetGore.EditorTools.WinForms;
+using NetGore.Editor;
+using NetGore.Editor.WinForms;
 using NetGore.World;
 
 namespace DemoGame.Editor

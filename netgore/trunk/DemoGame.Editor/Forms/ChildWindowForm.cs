@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using NetGore.EditorTools;
-using NetGore.EditorTools.Docking;
-using NetGore.EditorTools.EditorTool;
+using NetGore.Editor;
+using NetGore.Editor.Docking;
+using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor
 {
@@ -20,9 +20,9 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="NetGore.EditorTools.EditorTool.ToolBarVisibility"/> for this form. Use <see cref="NetGore.EditorTools.EditorTool.ToolBarVisibility.Global"/>
+        /// Gets or sets the <see cref="NetGore.Editor.EditorTool.ToolBarVisibility"/> for this form. Use <see cref="NetGore.Editor.EditorTool.ToolBarVisibility.Global"/>
         /// to not set any special visibility.
-        /// Default value is <see cref="NetGore.EditorTools.EditorTool.ToolBarVisibility.Global"/>.
+        /// Default value is <see cref="NetGore.Editor.EditorTool.ToolBarVisibility.Global"/>.
         /// </summary>
         [Description("The ToolBarVisibility for this form. Use Global to not set any special visibility.")]
         [DefaultValue(ToolBarVisibility.Global)]
