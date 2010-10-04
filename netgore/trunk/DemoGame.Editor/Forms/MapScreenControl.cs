@@ -47,7 +47,10 @@ namespace DemoGame.Editor
         {
             if (disposing)
             {
-                _instances.Remove(this);
+                lock (_instancesSync)
+                {
+                    _instances.Remove(this);
+                }
             }
 
             base.Dispose(disposing);
