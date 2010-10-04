@@ -38,7 +38,6 @@ namespace DemoGame.Editor
 
             _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
 
-
             lock (_instancesSync)
             {
                 _instances.Add(this);
@@ -53,9 +52,12 @@ namespace DemoGame.Editor
         {
             if (disposing)
             {
-                lock (_instancesSync)
+                if (!DesignMode)
                 {
-                    _instances.Remove(this);
+                    lock (_instancesSync)
+                    {
+                        _instances.Remove(this);
+                    }
                 }
             }
 
@@ -164,6 +166,12 @@ namespace DemoGame.Editor
         /// <param name="currentTime">The current time.</param>
         protected override void HandleDraw(TickCount currentTime)
         {
+            if (DesignMode)
+            {
+                base.HandleDraw(currentTime);
+                return;
+            }
+
             int deltaTime;
             if (_lastUpdateTime == TickCount.MinValue)
                 deltaTime = 30;
@@ -225,6 +233,11 @@ namespace DemoGame.Editor
         /// </returns>
         protected override bool IsInputKey(Keys keyData)
         {
+            if (DesignMode)
+            {
+                return base.IsInputKey(keyData);
+            }
+
             var s = Settings.Default;
 
             if (keyData == s.Screen_ScrollLeft || keyData == s.Screen_ScrollRight || keyData == s.Screen_ScrollUp ||
@@ -241,6 +254,9 @@ namespace DemoGame.Editor
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+
+            if (DesignMode)
+                return;
 
             // Update the camera velocity
             var s = Settings.Default;
@@ -262,6 +278,9 @@ namespace DemoGame.Editor
         {
             base.OnKeyUp(e);
 
+            if (DesignMode)
+                return;
+
             // Update the camera velocity
             var s = Settings.Default;
             if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollRight)
@@ -278,6 +297,9 @@ namespace DemoGame.Editor
         {
             base.OnLostFocus(e);
 
+            if (DesignMode)
+                return;
+
             _cameraVelocity = Vector2.Zero;
         }
 
@@ -288,6 +310,9 @@ namespace DemoGame.Editor
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
+
+            if (DesignMode)
+                return;
 
             if (((IMapBoundControl)this).IMap != null)
                 Focus();
@@ -301,6 +326,9 @@ namespace DemoGame.Editor
         {
             base.OnMouseMove(e);
 
+            if (DesignMode)
+                return;
+
             if (Camera != null)
                 _cursorPos = Camera.ToWorld(e.X, e.Y);
         }
@@ -312,6 +340,9 @@ namespace DemoGame.Editor
         protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
         {
             base.OnRenderWindowCreated(newRenderWindow);
+
+            if (DesignMode)
+                return;
 
             // Update the DrawingManager
             if (_drawingManager == null || _drawingManager.IsDisposed)
@@ -327,6 +358,9 @@ namespace DemoGame.Editor
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
+
+            if (DesignMode)
+                return;
 
             Camera.Size = ClientSize.ToVector2() * Camera.Scale;
         }
