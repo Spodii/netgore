@@ -9,8 +9,8 @@ This file contains information about this project in general. One is provided fo
 all to get a basic understanding of NetGore's code structure.
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
-DemoGame.EditorTools is the same in concept as NetGore.EditorTools in that it provides stuff specific
-to editors. However, the difference is that NetGore.EditorTools provides generalized objects while DemoGame.EditorTools
+DemoGame.EditorTools is the same in concept as NetGore.Editor in that it provides stuff specific
+to editors. However, the difference is that NetGore.Editor provides generalized objects while DemoGame.EditorTools
 provides the hooking-up to specific types (often defined in a DemoGame project).
 
 For the most part, you won't be changing anything in here. However, you may find the need to add to it when you

@@ -10,7 +10,7 @@ using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
 using NetGore;
 using NetGore.Db;
-using NetGore.EditorTools;
+using NetGore.Editor;
 using NetGore.Features.Quests;
 using NetGore.IO;
 

@@ -1,7 +1,7 @@
 using System.Linq;
 using NetGore.Db;
-using NetGore.EditorTools;
-using NetGore.EditorTools.UI;
+using NetGore.Editor;
+using NetGore.Editor.UI;
 
 namespace DemoGame.EditorTools
 {

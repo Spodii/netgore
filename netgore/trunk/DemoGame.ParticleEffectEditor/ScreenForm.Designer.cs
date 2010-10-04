@@ -1,4 +1,6 @@
-﻿using NetGore.EditorTools;
+﻿
+
+using NetGore.Editor.WinForms;
 
 namespace DemoGame.ParticleEffectEditor
 {
@@ -34,7 +36,7 @@ namespace DemoGame.ParticleEffectEditor
             this.tabEffect = new System.Windows.Forms.TabPage();
             this.pgEffect = new System.Windows.Forms.PropertyGrid();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
-            this.cmbEmitter = new NetGore.EditorTools.ParticleEmitterComboBox();
+            this.cmbEmitter = new ParticleEmitterComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
             this.btnLoad = new System.Windows.Forms.Button();
@@ -94,7 +96,7 @@ namespace DemoGame.ParticleEffectEditor
             this.cmbEmitter.Name = "cmbEmitter";
             this.cmbEmitter.Size = new System.Drawing.Size(196, 21);
             this.cmbEmitter.TabIndex = 1;
-            this.cmbEmitter.SelectedEmitterChanged += new NetGore.EditorTools.ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
+            this.cmbEmitter.SelectedEmitterChanged += new ParticleEmitterComboBoxHandler(this.cmbEmitter_SelectedEmitterChanged);
             // 
             // label1
             // 

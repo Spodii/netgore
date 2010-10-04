@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.SkeletonEditor", "
 		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA} = {7A762FC3-FBD4-48D9-894E-D2279A6D33FA}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.EditorTools", "NetGore.EditorTools\NetGore.EditorTools.csproj", "{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Editor", "NetGore.Editor\NetGore.Editor.csproj", "{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.GUITester", "DemoGame.GUITester\DemoGame.GUITester.csproj", "{E35B4F33-9ECB-448B-8D6F-EA1CC4FC87B9}"
 	ProjectSection(ProjectDependencies) = postProject

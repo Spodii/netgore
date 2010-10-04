@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.EditorTools;
-using NetGore.EditorTools.EditorTool;
+using NetGore.Editor;
+using NetGore.Editor.EditorTool;
 using NetGore.World;
-using ToolBar = NetGore.EditorTools.EditorTool.ToolBar;
+using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
 {

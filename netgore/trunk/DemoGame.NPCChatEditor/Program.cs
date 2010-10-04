@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.Server.NPCChat.Conditionals;
-using NetGore.EditorTools;
+using NetGore.Editor.WinForms;
 
 namespace DemoGame.NPCChatEditor
 {

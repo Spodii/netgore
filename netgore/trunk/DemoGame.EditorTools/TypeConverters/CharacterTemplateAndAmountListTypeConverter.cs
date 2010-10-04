@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using DemoGame.Server;
-using NetGore.EditorTools;
+using NetGore.Editor;
 
 namespace DemoGame.EditorTools
 {

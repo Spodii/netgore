@@ -196,9 +196,9 @@
       <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
       <Name>NetGore.Db</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
+    <ProjectReference Include="..\NetGore.Editor\NetGore.Editor.csproj">
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
-      <Name>NetGore.EditorTools</Name>
+      <Name>NetGore.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Features.Client\NetGore.Features.Client.csproj">
       <Project>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</Project>

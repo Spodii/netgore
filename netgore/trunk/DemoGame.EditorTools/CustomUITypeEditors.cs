@@ -10,8 +10,8 @@ using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db;
-using NetGore.EditorTools;
-using NetGore.EditorTools.UI;
+using NetGore.Editor;
+using NetGore.Editor.UI;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
@@ -98,7 +98,7 @@ namespace DemoGame.EditorTools
             // Add all of our custom UITypeEditors. Note that for value types, we have to make a call for both the
             // regular type and nullable type if we want to support nullable types. It is important that the
             // UITypeEditor, too, also supports the nullable type.
-            NetGore.EditorTools.UI.CustomUITypeEditors.AddEditorsHelper(
+            NetGore.Editor.UI.CustomUITypeEditors.AddEditorsHelper(
                 new EditorTypes(typeof(CharacterTemplateID), typeof(CharacterTemplateIDEditor)),
                 new EditorTypes(typeof(CharacterTemplateID?), typeof(CharacterTemplateIDEditor)),
                 new EditorTypes(typeof(ItemTemplateID), typeof(ItemTemplateIDEditor)),
@@ -149,9 +149,9 @@ namespace DemoGame.EditorTools
                                          new TypeConverterAttribute(typeof(AllianceIDListTypeConverter)));
 
             // Add the custom UITypeEditors defined by the base engine
-            NetGore.EditorTools.UI.CustomUITypeEditors.AddEditors();
-            NetGore.EditorTools.UI.CustomUITypeEditors.AddNPCChatDialogEditor(NPCChatManager.Instance);
-            NetGore.EditorTools.UI.CustomUITypeEditors.AddAIIDEditor(AIFactory.Instance);
+            NetGore.Editor.UI.CustomUITypeEditors.AddEditors();
+            NetGore.Editor.UI.CustomUITypeEditors.AddNPCChatDialogEditor(NPCChatManager.Instance);
+            NetGore.Editor.UI.CustomUITypeEditors.AddAIIDEditor(AIFactory.Instance);
 
             AddAdvancedClassTypeConverters();
             AddExtraTextProviders();

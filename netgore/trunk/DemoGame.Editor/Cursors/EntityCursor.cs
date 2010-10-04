@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.Properties;
-using NetGore.EditorTools;
+using NetGore.Editor;
 using NetGore.Graphics;
 using NetGore.World;
 using SFML.Graphics;

@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using NetGore;
-using NetGore.EditorTools;
-using NetGore.EditorTools.NPCChat;
+using NetGore.Editor;
+using NetGore.Editor.NPCChat;
+using NetGore.Editor.UI;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 

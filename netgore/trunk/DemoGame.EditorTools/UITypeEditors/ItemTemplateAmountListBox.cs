@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
 using NetGore;
-using NetGore.EditorTools;
+using NetGore.Editor;
 
 namespace DemoGame.EditorTools
 {

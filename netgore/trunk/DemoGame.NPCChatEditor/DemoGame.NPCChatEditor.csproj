@@ -145,9 +145,9 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
+    <ProjectReference Include="..\NetGore.Editor\NetGore.Editor.csproj">
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
-      <Name>NetGore.EditorTools</Name>
+      <Name>NetGore.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
