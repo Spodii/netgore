@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -18,18 +19,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets the number of living <see cref="Particle"/>s.
         /// </summary>
         int ActiveParticles { get; }
-
-        /// <summary>
-        /// Gets the <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.
-        /// </summary>
-        IParticleEffect Owner { get; }
-
-        /// <summary>
-        /// Forces the <see cref="IParticleEmitter"/> to be reset from the start. This only resets state variables such as
-        /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
-        /// Has no effect when disposed.
-        /// </summary>
-        void Reset();
 
         /// <summary>
         /// Gets the <see cref="BlendMode"/> to use when rendering the <see cref="Particle"/>s
@@ -83,6 +72,11 @@ namespace NetGore.Graphics.ParticleEngine
         Vector2 Origin { get; }
 
         /// <summary>
+        /// Gets the <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.
+        /// </summary>
+        IParticleEffect Owner { get; }
+
+        /// <summary>
         /// Gets the life of each <see cref="Particle"/> emitted.
         /// </summary>
         VariableInt ParticleLife { get; }
@@ -134,5 +128,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets the <see cref="ISprite"/> to draw the <see cref="Particle"/>s.
         /// </summary>
         Grh Sprite { get; }
+
+        /// <summary>
+        /// Forces the <see cref="IParticleEmitter"/> to be reset from the start. This only resets state variables such as
+        /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
+        /// Has no effect when disposed.
+        /// </summary>
+        void Reset();
     }
 }

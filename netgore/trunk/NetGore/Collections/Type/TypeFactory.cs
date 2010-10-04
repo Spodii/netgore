@@ -144,7 +144,8 @@ namespace NetGore.Collections
         /// <returns>An instance of the Type.</returns>
         public static object GetTypeInstance(Type type, params object[] arguments)
         {
-            const BindingFlags bf = BindingFlags.CreateInstance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            const BindingFlags bf =
+                BindingFlags.CreateInstance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
             Binder binder = null;
             CultureInfo ci = null;
 

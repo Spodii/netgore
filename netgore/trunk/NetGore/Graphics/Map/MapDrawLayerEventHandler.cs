@@ -9,5 +9,6 @@ namespace NetGore.Graphics
     /// <param name="layer">The layer that the drawing event is related to.</param>
     /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> that was used to do the drawing.</param>
     /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-    public delegate void MapDrawLayerEventHandler(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera);
+    public delegate void MapDrawLayerEventHandler(
+        IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera);
 }

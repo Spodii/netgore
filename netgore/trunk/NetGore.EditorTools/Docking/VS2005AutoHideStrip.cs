@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools.Docking
@@ -318,7 +319,7 @@ namespace NetGore.EditorTools.Docking
 
             int x, y, width;
 
-            int height = MeasureHeight();
+            var height = MeasureHeight();
             if (dockState == DockState.DockLeftAutoHide && leftPanes > 0)
             {
                 x = 0;

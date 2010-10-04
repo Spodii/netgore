@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using log4net;
-using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
@@ -103,27 +102,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Updates the <see cref="ToolManager"/> and the tools in it.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        public void Update(TickCount currentTime)
-        {
-            foreach (var tool in _tools.Values)
-            {
-                if (tool.IsEnabled)
-                    tool.Update(currentTime);
-            }
-        }
-
-        /// <summary>
-        /// Forces the settings for the <see cref="Tool"/>s to be saved.
-        /// </summary>
-        public void SaveSettings()
-        {
-            _toolSettings.Save();
-        }
-
-        /// <summary>
         /// Gets the <see cref="ToolManager"/> instance.
         /// </summary>
         public static ToolManager Instance
@@ -157,8 +135,7 @@ namespace NetGore.EditorTools
 
                 _toolSettingsProfileName = value;
 
-                _toolSettings.CurrentSettingsFile = ToolSettingsManager.GetFilePath(ContentPaths.Build,
-                                                                                       _toolSettingsProfileName);
+                _toolSettings.CurrentSettingsFile = ToolSettingsManager.GetFilePath(ContentPaths.Build, _toolSettingsProfileName);
             }
         }
 
@@ -228,6 +205,14 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Forces the settings for the <see cref="Tool"/>s to be saved.
+        /// </summary>
+        public void SaveSettings()
+        {
+            _toolSettings.Save();
+        }
+
+        /// <summary>
         /// Sets the event listeners for a <see cref="Tool"/>.
         /// </summary>
         /// <param name="tool">The <see cref="Tool"/> to set the events on.</param>
@@ -275,6 +260,19 @@ namespace NetGore.EditorTools
             var ret = TryGetTool(typeof(T));
             Debug.Assert(ret is T);
             return ret as T;
+        }
+
+        /// <summary>
+        /// Updates the <see cref="ToolManager"/> and the tools in it.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        public void Update(TickCount currentTime)
+        {
+            foreach (var tool in _tools.Values)
+            {
+                if (tool.IsEnabled)
+                    tool.Update(currentTime);
+            }
         }
 
         /// <summary>

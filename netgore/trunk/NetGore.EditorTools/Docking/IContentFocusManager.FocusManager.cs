@@ -1,4 +1,6 @@
-﻿namespace NetGore.EditorTools.Docking
+﻿using System.Linq;
+
+namespace NetGore.EditorTools.Docking
 {
     interface IContentFocusManager
     {

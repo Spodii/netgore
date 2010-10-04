@@ -95,7 +95,9 @@ namespace DemoGame.Editor
         protected virtual void DrawMapGUI(ISpriteBatch sb)
         {
             foreach (var t in ToolManager.Instance.EnabledTools)
+            {
                 t.InvokeBeforeDrawMapGUI(sb, Map);
+            }
 
             // Cursor coordinates
             var font = GlobalState.Instance.DefaultRenderFont;
@@ -107,7 +109,9 @@ namespace DemoGame.Editor
             sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
 
             foreach (var t in ToolManager.Instance.EnabledTools)
+            {
                 t.InvokeAfterDrawMapGUI(sb, Map);
+            }
         }
 
         /// <summary>

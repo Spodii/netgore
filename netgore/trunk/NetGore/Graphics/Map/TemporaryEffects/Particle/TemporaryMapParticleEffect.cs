@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.Graphics
@@ -11,8 +9,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class TemporaryMapParticleEffect : ITemporaryMapEffect
     {
-        readonly IParticleEffect _particleEffect;
         readonly bool _isForeground;
+        readonly IParticleEffect _particleEffect;
 
         bool _isAlive = true;
 

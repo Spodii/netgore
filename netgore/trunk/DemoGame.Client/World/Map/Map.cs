@@ -20,6 +20,7 @@ namespace DemoGame.Client
     /// </summary>
     public class Map : MapBase, IDisposable, IDrawableMap
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _bgImagesNodeName = "BackgroundImages";
         const string _lightingNodeName = "Lighting";
         const string _lightsNodeName = "Lights";
@@ -658,8 +659,6 @@ namespace DemoGame.Client
             // Add to the MapEffects list and the spatial
             _mapEffects.Add(e);
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Draws the map.

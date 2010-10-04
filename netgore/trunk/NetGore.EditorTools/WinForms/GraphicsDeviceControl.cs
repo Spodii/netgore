@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
-using NetGore.Graphics;
 using SFML.Graphics;
 using Color = System.Drawing.Color;
 
@@ -110,23 +109,6 @@ namespace NetGore.EditorTools
                 return Text + Environment.NewLine + Environment.NewLine + GetType();
 
             return null;
-        }
-
-        void RecreateRenderWindow(IntPtr handle)
-        {
-            if (_rw != null)
-            {
-                if (!_rw.IsDisposed)
-                    _rw.Dispose();
-
-                _rw = null;
-            }
-
-            _rw = new RenderWindow(handle);
-            _rw.UseVerticalSync(false);
-            _rw.Show(true);
-
-            OnRenderWindowCreated(_rw);
         }
 
         /// <summary>
@@ -296,6 +278,23 @@ namespace NetGore.EditorTools
             {
                 graphics.DrawString(text, Font, brush, ClientRectangle, _errorMessageStringFormat);
             }
+        }
+
+        void RecreateRenderWindow(IntPtr handle)
+        {
+            if (_rw != null)
+            {
+                if (!_rw.IsDisposed)
+                    _rw.Dispose();
+
+                _rw = null;
+            }
+
+            _rw = new RenderWindow(handle);
+            _rw.UseVerticalSync(false);
+            _rw.Show(true);
+
+            OnRenderWindowCreated(_rw);
         }
     }
 }

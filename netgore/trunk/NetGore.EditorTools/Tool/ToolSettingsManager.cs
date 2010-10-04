@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -21,6 +20,10 @@ namespace NetGore.EditorTools
         const string _kvpKeyName = "Key";
         const string _kvpValueNodeName = "Value";
         const string _rootNodeName = "ToolSettingsManager";
+        const string _separatorClassName = "|";
+        const string _toolBarItemsKeyName = "ToolBarVisibility";
+        const string _toolBarItemsNodeName = "ToolBarItems";
+        const string _toolBarItemsValueName = "Order";
         const string _toolSettingsNodeName = "ToolSettings";
 
         /// <summary>
@@ -29,11 +32,23 @@ namespace NetGore.EditorTools
         static readonly StringComparer _keyComp = StringComparer.Ordinal;
 
         readonly object _saveSync = new object();
+
+        readonly IDictionary<ToolBarVisibility, IEnumerable<string>> _toolBarOrder =
+            new TSDictionary<ToolBarVisibility, IEnumerable<string>>(EnumComparer<ToolBarVisibility>.Instance);
+
         readonly IDictionary<string, IValueReader> _toolSettings = new TSDictionary<string, IValueReader>(_keyComp);
-        readonly IDictionary<ToolBarVisibility, IEnumerable<string>> _toolBarOrder = new TSDictionary<ToolBarVisibility, IEnumerable<string>>(EnumComparer<ToolBarVisibility>.Instance);
+
         readonly IDictionary<string, Tool> _tools = new TSDictionary<string, Tool>(_keyComp);
 
         string _currentSettingsFile;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ToolSettingsManager"/> class.
+        /// </summary>
+        public ToolSettingsManager()
+        {
+            CurrentSettingsFile = GetFilePath(ContentPaths.Build, null);
+        }
 
         /// <summary>
         /// Gets or sets the file path to the current settings file. When this value is changed, the settings of the <see cref="Tool"/>s
@@ -45,10 +60,7 @@ namespace NetGore.EditorTools
         /// </summary>
         public string CurrentSettingsFile
         {
-            get
-            {
-                return _currentSettingsFile;
-            }
+            get { return _currentSettingsFile; }
             set
             {
                 if (StringComparer.Ordinal.Equals(_currentSettingsFile, value))
@@ -72,14 +84,13 @@ namespace NetGore.EditorTools
 
                 // If the new path does not exist, save the current settings to it
                 if (!File.Exists(value))
-                {
                     Save(value);
-                }
 
                 // Load from the new file
                 if (!TryLoad(value))
                 {
-                    const string errmsg = "Failed to load from the settings file at `{0}`. See previous log entries to see why. Aborting property change.";
+                    const string errmsg =
+                        "Failed to load from the settings file at `{0}`. See previous log entries to see why. Aborting property change.";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, value);
                     Debug.Fail(string.Format(errmsg, value));
@@ -98,14 +109,6 @@ namespace NetGore.EditorTools
         /// Default value is null.
         /// </summary>
         public static GenericValueIOFormat? EncodingFormat { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToolSettingsManager"/> class.
-        /// </summary>
-        public ToolSettingsManager()
-        {
-            CurrentSettingsFile = GetFilePath(ContentPaths.Build, null);
-        }
 
         /// <summary>
         /// Adds a <see cref="Tool"/> to this <see cref="ToolSettingsManager"/>. If settings already exist for the
@@ -171,7 +174,7 @@ namespace NetGore.EditorTools
         /// </returns>
         public static string GetFilePath(ContentPaths contentPath, string profileName)
         {
-            string fileName = "EditorToolSettings";
+            var fileName = "EditorToolSettings";
             if (!string.IsNullOrEmpty(profileName))
                 fileName += "." + profileName;
 
@@ -205,6 +208,20 @@ namespace NetGore.EditorTools
             var kvpValue = reader.ReadNode(_kvpValueNodeName);
 
             return new KeyValuePair<string, IValueReader>(kvpKey, kvpValue);
+        }
+
+        /// <summary>
+        /// Reads the items order for a <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <returns>The <see cref="KeyValuePair{T,U}"/> where the key is the <see cref="ToolBarVisibility"/> and the value
+        /// is an ordered list of the control names.</returns>
+        static KeyValuePair<ToolBarVisibility, IEnumerable<string>> ReadToolBarItems(IValueReader reader)
+        {
+            var kvpKey = reader.ReadEnum<ToolBarVisibility>(_toolBarItemsKeyName);
+            var kvpValue = reader.ReadMany(_toolBarItemsValueName, (r, name) => r.ReadString(name));
+
+            return new KeyValuePair<ToolBarVisibility, IEnumerable<string>>(kvpKey, kvpValue);
         }
 
         /// <summary>
@@ -297,7 +314,7 @@ namespace NetGore.EditorTools
         /// <param name="profileName">The name of the settings profile to use. Use null for the default profile.</param>
         public void Save(ContentPaths contentPath, string profileName)
         {
-            var filePath = GetFilePath(contentPath ,profileName);
+            var filePath = GetFilePath(contentPath, profileName);
             Save(filePath);
         }
 
@@ -323,42 +340,10 @@ namespace NetGore.EditorTools
                 using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
                 {
                     writer.WriteManyNodes(_toolSettingsNodeName, kvps, WriteKVP);
-                    writer.WriteManyNodes(_toolBarItemsNodeName, toolBars, WriteToolBarItems); 
+                    writer.WriteManyNodes(_toolBarItemsNodeName, toolBars, WriteToolBarItems);
                 }
             }
         }
-
-        /// <summary>
-        /// Reads the items order for a <see cref="ToolBar"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        /// <returns>The <see cref="KeyValuePair{T,U}"/> where the key is the <see cref="ToolBarVisibility"/> and the value
-        /// is an ordered list of the control names.</returns>
-        static KeyValuePair<ToolBarVisibility, IEnumerable<string>> ReadToolBarItems(IValueReader reader)
-        {
-            var kvpKey = reader.ReadEnum<ToolBarVisibility>(_toolBarItemsKeyName);
-            var kvpValue = reader.ReadMany(_toolBarItemsValueName, (r, name) => r.ReadString(name));
-
-            return new KeyValuePair<ToolBarVisibility, IEnumerable<string>>(kvpKey, kvpValue);
-        }
-
-        /// <summary>
-        /// Writes the items in a <see cref="ToolBar"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        /// <param name="tb">The <see cref="ToolBar"/> containing the items to write.</param>
-        static void WriteToolBarItems(IValueWriter writer, ToolBar tb)
-        {
-            var tbItems = tb.GetItems().Select(x => x == null ? _separatorClassName : (GetToolKey(x.Tool) ?? _separatorClassName));
-
-            writer.WriteEnum(_toolBarItemsKeyName, tb.ToolBarVisibility);
-            writer.WriteMany(_toolBarItemsValueName, tbItems, writer.Write);
-        }
-
-        const string _separatorClassName = "|";
-        const string _toolBarItemsNodeName = "ToolBarItems";
-        const string _toolBarItemsKeyName = "ToolBarVisibility";
-        const string _toolBarItemsValueName = "Order";
 
         /// <summary>
         /// Loads the settings from the <see cref="CurrentSettingsFile"/>.
@@ -417,7 +402,8 @@ namespace NetGore.EditorTools
                     catch (Exception ex)
                     {
                         // When there is an error adding to the collection, just skip the item
-                        const string errmsg = "Failed to add item to _toolSettings dictionary. Key: {0}. Value: {1}. Exception: {2}";
+                        const string errmsg =
+                            "Failed to add item to _toolSettings dictionary. Key: {0}. Value: {1}. Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, kvp.Key, kvp.Value, ex);
                         Debug.Fail(string.Format(errmsg, kvp.Key, kvp.Value, ex));
@@ -433,7 +419,8 @@ namespace NetGore.EditorTools
                     catch (Exception ex)
                     {
                         // When there is an error adding to the collection, just skip the item
-                        const string errmsg = "Failed to add item to _toolBarOrder dictionary. Key: {0}. Value: {1}. Exception: {2}";
+                        const string errmsg =
+                            "Failed to add item to _toolBarOrder dictionary. Key: {0}. Value: {1}. Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, kvp.Key, kvp.Value, ex);
                         Debug.Fail(string.Format(errmsg, kvp.Key, kvp.Value, ex));
@@ -469,6 +456,19 @@ namespace NetGore.EditorTools
                 kvp.Value.WriteState(writer);
             }
             writer.WriteEndNode(_kvpValueNodeName);
+        }
+
+        /// <summary>
+        /// Writes the items in a <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        /// <param name="tb">The <see cref="ToolBar"/> containing the items to write.</param>
+        static void WriteToolBarItems(IValueWriter writer, ToolBar tb)
+        {
+            var tbItems = tb.GetItems().Select(x => x == null ? _separatorClassName : (GetToolKey(x.Tool) ?? _separatorClassName));
+
+            writer.WriteEnum(_toolBarItemsKeyName, tb.ToolBarVisibility);
+            writer.WriteMany(_toolBarItemsValueName, tbItems, writer.Write);
         }
 
         #region IPersistable Members

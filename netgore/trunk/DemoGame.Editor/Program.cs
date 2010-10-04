@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using log4net;
 using NetGore;
 using NetGore.IO;
-using SFML.Graphics;
 
 namespace DemoGame.Editor
 {

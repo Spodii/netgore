@@ -1,4 +1,6 @@
-﻿namespace NetGore.Graphics
+﻿using System.Linq;
+
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Handler for Map drawing events.

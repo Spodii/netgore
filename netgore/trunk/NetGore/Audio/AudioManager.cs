@@ -92,7 +92,7 @@ namespace NetGore.Audio
         internal static IEnumerable<KeyValuePair<string, int>> LoadValues(string fileName, string rootNode)
         {
             var r = GenericValueReader.CreateFromFile(ContentPaths.Build.Data.Join(fileName + EngineSettings.DataFileSuffix),
-                                                    rootNode);
+                                                      rootNode);
             var ret = r.ReadManyNodes("Items", ReadValue);
             return ret;
         }

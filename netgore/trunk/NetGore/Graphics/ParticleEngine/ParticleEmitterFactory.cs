@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -39,7 +35,7 @@ namespace NetGore.Graphics.ParticleEngine
                 IsClass = true,
                 IsAbstract = false,
                 RequireConstructor = true,
-                ConstructorParameters = new Type[] { typeof(IParticleEffect)},
+                ConstructorParameters = new Type[] { typeof(IParticleEffect) },
                 Subclass = typeof(ParticleEmitter)
             };
 

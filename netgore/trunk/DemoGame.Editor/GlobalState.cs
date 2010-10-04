@@ -109,20 +109,20 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Gets the <see cref="GlobalState"/> instance.
+        /// </summary>
+        public static GlobalState Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
         /// Gets or sets if the <see cref="GlobalState.Tick"/> event will be trigger.
         /// </summary>
         public bool IsTickEnabled
         {
             get { return _timer.Enabled; }
             set { _timer.Enabled = value; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="GlobalState"/> instance.
-        /// </summary>
-        public static GlobalState Instance
-        {
-            get { return _instance; }
         }
 
         /// <summary>

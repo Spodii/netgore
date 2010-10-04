@@ -1,4 +1,6 @@
-﻿namespace NetGore.EditorTools.Docking.Win32
+﻿using System.Linq;
+
+namespace NetGore.EditorTools.Docking.Win32
 {
     enum WindowExStyles
     {

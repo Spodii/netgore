@@ -62,17 +62,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads the next node.
-        /// </summary>
-        /// <returns>An IValueReader for reading the next node.</returns>
-        IValueReader ReadNode()
-        {
-            var bitLength = ReadUInt(null);
-            var bs = _reader.ReadBits((int)bitLength);
-            return new BinaryValueReader(bs);
-        }
-
-        /// <summary>
         /// Creates a <see cref="BinaryValueReader"/> for reading a string.
         /// </summary>
         /// <param name="data">The string to read.</param>
@@ -87,6 +76,17 @@ namespace NetGore.IO
             var bytes = BitStream.StringToByteArray(data);
             var reader = new BitStream(bytes);
             return new BinaryValueReader(reader, useEnumNames);
+        }
+
+        /// <summary>
+        /// Reads the next node.
+        /// </summary>
+        /// <returns>An IValueReader for reading the next node.</returns>
+        IValueReader ReadNode()
+        {
+            var bitLength = ReadUInt(null);
+            var bs = _reader.ReadBits((int)bitLength);
+            return new BinaryValueReader(bs);
         }
 
         #region IValueReader Members

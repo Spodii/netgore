@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools.Docking
@@ -1266,8 +1267,9 @@ namespace NetGore.EditorTools.Docking
         {
             get
             {
-                const TextFormatFlags textFormat = TextFormatFlags.EndEllipsis | TextFormatFlags.SingleLine | TextFormatFlags.VerticalCenter |
-                                                   TextFormatFlags.HorizontalCenter;
+                const TextFormatFlags textFormat =
+                    TextFormatFlags.EndEllipsis | TextFormatFlags.SingleLine | TextFormatFlags.VerticalCenter |
+                    TextFormatFlags.HorizontalCenter;
                 if (RightToLeft == RightToLeft.Yes)
                     return textFormat | TextFormatFlags.RightToLeft;
                 else
@@ -1379,8 +1381,9 @@ namespace NetGore.EditorTools.Docking
         {
             get
             {
-                const TextFormatFlags textFormat = TextFormatFlags.EndEllipsis | TextFormatFlags.HorizontalCenter | TextFormatFlags.SingleLine |
-                                                   TextFormatFlags.VerticalCenter;
+                const TextFormatFlags textFormat =
+                    TextFormatFlags.EndEllipsis | TextFormatFlags.HorizontalCenter | TextFormatFlags.SingleLine |
+                    TextFormatFlags.VerticalCenter;
                 if (RightToLeft == RightToLeft.Yes)
                     return textFormat | TextFormatFlags.RightToLeft | TextFormatFlags.Right;
                 else
