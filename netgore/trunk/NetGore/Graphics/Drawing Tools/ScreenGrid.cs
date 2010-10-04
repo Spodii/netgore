@@ -45,6 +45,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the size of the <see cref="ScreenGrid"/>.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Either the X or Y on the <paramref name="value"/> is less than
+        /// or equal to zero.</exception>
         [SyncValue]
         public Vector2 Size
         {

@@ -20,7 +20,8 @@ namespace DemoGame.Editor
             return new ToolSettings("MapGrh Bound Walls Draw")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
-                MapDrawingExtensions = new IMapDrawingExtension[] { new MapGrhBoundWallsDrawingExtension() }
+                MapDrawingExtensions = new IMapDrawingExtension[] { new MapGrhBoundWallsDrawingExtension() },
+                OnToolBarByDefault = true,
             };
         }
 
