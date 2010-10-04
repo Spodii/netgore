@@ -280,7 +280,7 @@ namespace NetGore.Tests.NetGore
             try
             {
                 var sources = new List<DE>(count);
-                using (var writer = new XmlValueWriter(filePath, "DynamicEntities"))
+                using (var writer = XmlValueWriter.Create(filePath, "DynamicEntities"))
                 {
                     writer.Write("Count", count);
                     for (var i = 0; i < count; i++)
@@ -294,7 +294,7 @@ namespace NetGore.Tests.NetGore
                     }
                 }
 
-                var reader = new XmlValueReader(filePath, "DynamicEntities");
+                var reader = XmlValueReader.CreateFromFile(filePath, "DynamicEntities");
                 for (var i = 0; i < count; i++)
                 {
                     var key = "Entity" + Parser.Invariant.ToString(i);
