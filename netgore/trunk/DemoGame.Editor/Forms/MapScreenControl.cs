@@ -35,7 +35,7 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            _camera = new Camera2D(new Vector2(ClientSize.Width, ClientSize.Height));
+            _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
         }
 
         /// <summary>
@@ -340,8 +340,7 @@ namespace DemoGame.Editor
         {
             base.OnResize(e);
 
-            var clientSize = new Vector2(ClientSize.Width, ClientSize.Height);
-            Camera.Size = clientSize * Camera.Scale;
+            Camera.Size = ClientSize.ToVector2() * Camera.Scale;
         }
 
         /// <summary>
