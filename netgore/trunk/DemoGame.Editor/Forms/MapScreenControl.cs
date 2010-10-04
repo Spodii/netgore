@@ -156,16 +156,6 @@ namespace DemoGame.Editor
             /*
             CursorManager.DrawSelection(sb);
             */
-
-            // Light sources
-            // TODO: !! if (chkLightSources.Checked)
-            {
-                var offset = AddLightCursor.LightSprite.Size / 2f;
-                foreach (var light in DrawingManager.LightManager)
-                {
-                    AddLightCursor.LightSprite.Draw(sb, light.Position - offset);
-                }
-            }
         }
 
         /// <summary>
