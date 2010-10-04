@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using NetGore.Content;
 using NetGore.Graphics;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     public partial class MissingTexturesForm : Form
     {

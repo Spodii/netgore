@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Client;
 using NetGore.EditorTools;
+using NetGore.EditorTools.WinForms;
 using NetGore.Graphics;
 
 namespace DemoGame.Editor

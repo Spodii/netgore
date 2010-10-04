@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
+using NetGore.EditorTools.WinForms;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     /// A <see cref="TextBox"/> for a <see cref="GrhData"/>'s category.

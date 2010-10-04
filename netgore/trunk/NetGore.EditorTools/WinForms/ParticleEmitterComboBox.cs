@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     public delegate void ParticleEmitterComboBoxHandler(ParticleEmitterComboBox sender, ParticleEmitter emitter);
 

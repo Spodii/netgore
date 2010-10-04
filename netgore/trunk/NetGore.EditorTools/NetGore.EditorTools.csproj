@@ -254,34 +254,34 @@
     </Compile>
     <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
     <Compile Include="MutablePair.cs" />
-    <Compile Include="Tool\ToggledButtonTool.cs" />
-    <Compile Include="Tool\Tool.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarButtonSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarComboBoxSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarControl.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarControlSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarControlSettingsExtensions.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarDropDownButtonSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarDropDownItemSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarLabelSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarProgressBarSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarSplitButtonSettings.cs" />
-    <Compile Include="Tool\ToolBar\IToolBarTextBoxSettings.cs" />
-    <Compile Include="Tool\ToolBar\ToolBar.cs">
+    <Compile Include="EditorTool\ToggledButtonTool.cs" />
+    <Compile Include="EditorTool\Tool.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarButtonSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarComboBoxSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarControl.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarControlSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarControlSettingsExtensions.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarDropDownButtonSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarDropDownItemSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarLabelSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarProgressBarSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarSplitButtonSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\IToolBarTextBoxSettings.cs" />
+    <Compile Include="EditorTool\ToolBar\ToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tool\ToolBar\ToolBarControlType.cs" />
-    <Compile Include="Tool\ToolBar\ToolBarVisibility.cs" />
-    <Compile Include="Tool\ToolManager.cs" />
-    <Compile Include="Tool\ToolSettingsManager.cs" />
-    <Compile Include="UI Editors\AdvancedClassTypeConverter.cs" />
-    <Compile Include="UI Editors\AdvancedPropertyDescriptor.cs" />
-    <Compile Include="UI Editors\AIIDEditor.cs" />
-    <Compile Include="UI Editors\AIIDUITypeEditorForm.cs">
+    <Compile Include="EditorTool\ToolBar\ToolBarControlType.cs" />
+    <Compile Include="EditorTool\ToolBar\ToolBarVisibility.cs" />
+    <Compile Include="EditorTool\ToolManager.cs" />
+    <Compile Include="EditorTool\ToolSettingsManager.cs" />
+    <Compile Include="UI\Editors\AdvancedClassTypeConverter.cs" />
+    <Compile Include="UI\Editors\AdvancedPropertyDescriptor.cs" />
+    <Compile Include="UI\Editors\AIIDEditor.cs" />
+    <Compile Include="UI\Editors\AIIDUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\CustomUITypeEditors.cs" />
-    <Compile Include="UI Editors\EditorTypes.cs" />
+    <Compile Include="UI\Editors\CustomUITypeEditors.cs" />
+    <Compile Include="UI\Editors\EditorTypes.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
@@ -289,53 +289,53 @@
     <Compile Include="Grh\Controls\GrhTreeView\WallsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI Editors\GrhUITypeEditorForm.cs">
+    <Compile Include="UI\Editors\GrhUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\GrhUITypeEditorForm.Designer.cs">
+    <Compile Include="UI\Editors\GrhUITypeEditorForm.Designer.cs">
       <DependentUpon>GrhUITypeEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI Editors\EmitterModifierCollectionEditor.cs" />
-    <Compile Include="UI Editors\GrhEditor.cs" />
-    <Compile Include="Persistable Controls\PersistableCheckBox.cs">
+    <Compile Include="UI\Editors\EmitterModifierCollectionEditor.cs" />
+    <Compile Include="UI\Editors\GrhEditor.cs" />
+    <Compile Include="WinForms\Persistable Controls\PersistableCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Persistable Controls\PersistableForm.cs">
+    <Compile Include="WinForms\Persistable Controls\PersistableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Persistable Controls\PersistableRadioButton.cs">
+    <Compile Include="WinForms\Persistable Controls\PersistableRadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Persistable Controls\PersistableTextBox.cs">
+    <Compile Include="WinForms\Persistable Controls\PersistableTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SelectedObjectManagerEventHandler.cs" />
     <Compile Include="SelectedObjectsManager.cs" />
-    <Compile Include="UI Editors\MusicEditor.cs" />
-    <Compile Include="UI Editors\MusicUITypeEditorForm.cs">
+    <Compile Include="UI\Editors\MusicEditor.cs" />
+    <Compile Include="UI\Editors\MusicUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\NPCChatDialogEditor.cs" />
-    <Compile Include="UI Editors\NPCChatDialogUITypeEditorForm.cs">
+    <Compile Include="UI\Editors\NPCChatDialogEditor.cs" />
+    <Compile Include="UI\Editors\NPCChatDialogUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\ParticleEffectUITypeEditorForm.cs">
+    <Compile Include="UI\Editors\ParticleEffectUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\SoundEditor.cs" />
-    <Compile Include="UI Editors\SoundUITypeEditorForm.cs">
+    <Compile Include="UI\Editors\SoundEditor.cs" />
+    <Compile Include="UI\Editors\SoundUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\UITypeEditorListForm.cs">
+    <Compile Include="UI\Editors\UITypeEditorListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\UITypeEditorListForm.Designer.cs">
+    <Compile Include="UI\Editors\UITypeEditorListForm.Designer.cs">
       <DependentUpon>UITypeEditorListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI Editors\UITypeEditorListFormListBox.cs">
+    <Compile Include="UI\Editors\UITypeEditorListFormListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI Editors\PolygonPointCollectionEditor.cs" />
+    <Compile Include="UI\Editors\PolygonPointCollectionEditor.cs" />
     <Compile Include="Undo Manager\IUndoEvent.cs" />
     <Compile Include="Undo Manager\IUndoManager.cs" />
     <Compile Include="Undo Manager\UndoManagerBase.cs" />
@@ -351,11 +351,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WinForms\PropertyGridHelper.cs" />
-    <Compile Include="UI Editors\SFMLColorEditor.cs" />
+    <Compile Include="UI\Editors\SFMLColorEditor.cs" />
     <Compile Include="WinForms\AutoValidateTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CreateWallEntity\CreateWallEntityFromReaderHandler.cs" />
+    <Compile Include="CreateWallEntityFromReaderHandler.cs" />
     <Compile Include="Grh\AutomaticGrhData\AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
     <Compile Include="Grh\Controls\GrhDataCategoryTextBox.cs">
@@ -365,7 +365,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Grh\GrhImageList.cs" />
-    <Compile Include="CreateWallEntity\CreateWallEntityHandler.cs" />
+    <Compile Include="CreateWallEntityHandler.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -430,7 +430,7 @@
     <Compile Include="WinForms\ParticleEmitterComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI Editors\ParticleModifierCollectionEditor.cs" />
+    <Compile Include="UI\Editors\ParticleModifierCollectionEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -480,7 +480,7 @@
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI Editors\GrhUITypeEditorForm.resx">
+    <EmbeddedResource Include="UI\Editors\GrhUITypeEditorForm.resx">
       <DependentUpon>GrhUITypeEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -493,7 +493,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI Editors\UITypeEditorListForm.resx">
+    <EmbeddedResource Include="UI\Editors\UITypeEditorListForm.resx">
       <DependentUpon>UITypeEditorListForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -545,7 +545,9 @@
     <Content Include="Docking\Resources\DockPane_Option.bmp" />
     <Content Include="Docking\Resources\DockPane_OptionOverflow.bmp" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CreateWallEntity\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using NetGore.Content;
+using NetGore.EditorTools.WinForms;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     public class GrhDataTextureTextBox : AutoValidateTextBox
     {

@@ -10,7 +10,7 @@ using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     /// Handles updating the size of a <see cref="StationaryGrhData"/> where <see cref="StationaryGrhData.AutomaticSize"/> is set. This

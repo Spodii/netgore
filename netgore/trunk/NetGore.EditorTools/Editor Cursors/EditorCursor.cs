@@ -6,6 +6,8 @@ using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {
+    // TODO: Remove when done with the new editor
+
     /// <summary>
     /// Base handler for a cursor used to modify the map in different ways. All derived classes must have a constructor
     /// that takes no parameters.

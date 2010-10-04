@@ -8,6 +8,8 @@ using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {
+    // TODO: Remove when done with the new editor
+
     /// <summary>
     /// Manages multiple <see cref="EditorCursor{TContainer}"/>.
     /// </summary>

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     public partial class GrhDataUpdaterProgressForm : Form
     {

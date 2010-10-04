@@ -6,7 +6,7 @@ using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     /// Contains information on what WallEntities are bound to the given MapGrh

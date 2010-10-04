@@ -13,7 +13,7 @@ using SFML;
 using SFML.Graphics;
 using Point = System.Drawing.Point;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     public partial class EditGrhForm : Form
     {

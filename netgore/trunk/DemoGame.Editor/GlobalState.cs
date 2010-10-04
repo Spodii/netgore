@@ -9,6 +9,8 @@ using NetGore.Content;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.EditorTools;
+using NetGore.EditorTools.EditorTool;
+using NetGore.EditorTools.Grhs;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;

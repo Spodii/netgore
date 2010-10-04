@@ -2,7 +2,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.World;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// Interface for a <see cref="Control"/> that needs to know what the current <see cref="IMap"/> is.
