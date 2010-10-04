@@ -20,9 +20,9 @@ namespace DemoGame.Editor
         [STAThread]
         static void Main(string[] args)
         {
-            ThreadAsserts.IsMainThread();
-
             log.Info("Starting editor...");
+
+            ThreadAsserts.IsMainThread();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
