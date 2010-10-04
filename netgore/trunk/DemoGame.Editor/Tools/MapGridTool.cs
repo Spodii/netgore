@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetGore.EditorTools;
 using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
     /// <summary>
-    /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
+    /// A <see cref="ToolBase"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
     /// </summary>
     public class MapGridTool : Tool
     {
@@ -22,7 +23,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
+        /// When overridden in the derived class, allows for handling the <see cref="ToolBase.IsEnabledChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
@@ -36,10 +37,10 @@ namespace DemoGame.Editor
 
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
-        /// <see cref="Tool"/>.
+        /// <see cref="ToolBase"/>.
         /// </summary>
         /// <returns>
-        /// The <see cref="IMapDrawingExtension"/>s used by this <see cref="Tool"/>. Can be null or empty if none
+        /// The <see cref="IMapDrawingExtension"/>s used by this <see cref="ToolBase"/>. Can be null or empty if none
         /// are used. Default is null.
         /// </returns>
         protected override IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
@@ -48,7 +49,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the <see cref="Tool.ToolBarControl"/>.
+        /// Handles the CheckedChanged event of the <see cref="ToolBase.ToolBarControl"/>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>

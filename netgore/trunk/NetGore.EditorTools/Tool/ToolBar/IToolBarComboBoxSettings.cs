@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Contains the settings specific to the <see cref="ToolBarControlType.ComboBox"/>.

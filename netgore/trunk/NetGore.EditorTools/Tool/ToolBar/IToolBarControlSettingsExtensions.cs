@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Extension methods for the <see cref="IToolBarControlSettings"/>.

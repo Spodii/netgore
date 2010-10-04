@@ -8,10 +8,10 @@ using System.Windows.Forms;
 using log4net;
 using NetGore;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
-    /// A <see cref="ToolStrip"/> for displaying the <see cref="Tool"/>s in the <see cref="ToolManager"/>.
+    /// A <see cref="ToolStrip"/> for displaying the <see cref="ToolBase"/>s in the <see cref="ToolManager"/>.
     /// </summary>
     public class ToolBar : ToolStrip
     {
@@ -123,10 +123,10 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Adds a <see cref="Tool"/> go its <see cref="ToolBar"/>.
+        /// Adds a <see cref="ToolBase"/> go its <see cref="ToolBar"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to add to its <see cref="ToolBar"/>.</param>
-        public static void AddToToolBar(Tool tool)
+        /// <param name="tool">The <see cref="ToolBase"/> to add to its <see cref="ToolBar"/>.</param>
+        public static void AddToToolBar(ToolBase tool)
         {
             if (!tool.CanShowInToolbar)
                 return;
@@ -150,9 +150,9 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Creates the <see cref="IToolBarControl"/> for a <see cref="Tool"/>.
+        /// Creates the <see cref="IToolBarControl"/> for a <see cref="ToolBase"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to create the control for.</param>
+        /// <param name="tool">The <see cref="ToolBase"/> to create the control for.</param>
         /// <param name="controlType">The type of control.</param>
         /// <returns>The <see cref="IToolBarControl"/> for the <paramref name="tool"/> using the given
         /// <paramref name="controlType"/>, or null if the <paramref name="controlType"/> is
@@ -160,7 +160,7 @@ namespace DemoGame.Editor
         /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="controlType"/> does not contain a defined value of the
         /// <see cref="ToolBarControlType"/> enum.</exception>
-        public static IToolBarControl CreateToolControl(Tool tool, ToolBarControlType controlType)
+        public static IToolBarControl CreateToolControl(ToolBase tool, ToolBarControlType controlType)
         {
             if (tool == null)
                 throw new ArgumentNullException("tool");
@@ -279,9 +279,9 @@ namespace DemoGame.Editor
         /// <summary>
         /// General <see cref="ToolStripItem"/> initialization.
         /// </summary>
-        /// <param name="t">The <see cref="Tool"/>.</param>
+        /// <param name="t">The <see cref="ToolBase"/>.</param>
         /// <param name="c">The <see cref="ToolStripItem"/>.</param>
-        static void InitializeGeneral(Tool t, ToolStripItem c)
+        static void InitializeGeneral(ToolBase t, ToolStripItem c)
         {
             c.Text = t.Name;
             c.Name = t.Name;
@@ -290,10 +290,10 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Removes a <see cref="Tool"/> from its <see cref="ToolBar"/>.
+        /// Removes a <see cref="ToolBase"/> from its <see cref="ToolBar"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to remove from its <see cref="ToolBar"/>.</param>
-        public static void RemoveFromToolBar(Tool tool)
+        /// <param name="tool">The <see cref="ToolBase"/> to remove from its <see cref="ToolBar"/>.</param>
+        public static void RemoveFromToolBar(ToolBase tool)
         {
             if (!tool.ToolBarControl.IsOnToolBar)
                 return;
@@ -314,11 +314,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Tries to get the <see cref="ToolStripItem"/> for a <see cref="Tool"/>.
+        /// Tries to get the <see cref="ToolStripItem"/> for a <see cref="ToolBase"/>.
         /// </summary>
         /// <param name="tool">The tool to get the <see cref="ToolStripItem"/> for.</param>
         /// <returns>The <see cref="ToolStripItem"/> for the <paramref name="tool"/>, or null if unable to get it.</returns>
-        protected static ToolStripItem TryGetToolStripItem(Tool tool)
+        protected static ToolStripItem TryGetToolStripItem(ToolBase tool)
         {
             if (tool == null)
             {
@@ -393,14 +393,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemButton : ToolStripButton, IToolBarControl, IToolBarButtonSettings
         {
-            readonly Tool _tool;
+            readonly ToolBase _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemButton"/> class.
             /// </summary>
             /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemButton(Tool tool)
+            public ToolBarItemButton(ToolBase tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -476,7 +476,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public Tool Tool
+            public ToolBase Tool
             {
                 get { return _tool; }
             }
@@ -507,14 +507,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemComboBox : ToolStripComboBox, IToolBarControl, IToolBarComboBoxSettings
         {
-            readonly Tool _tool;
+            readonly ToolBase _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemComboBox"/> class.
             /// </summary>
             /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemComboBox(Tool tool)
+            public ToolBarItemComboBox(ToolBase tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -590,7 +590,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public Tool Tool
+            public ToolBase Tool
             {
                 get { return _tool; }
             }
@@ -621,14 +621,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemDropDownButton : ToolStripDropDownButton, IToolBarControl, IToolBarDropDownButtonSettings
         {
-            readonly Tool _tool;
+            readonly ToolBase _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemDropDownButton"/> class.
             /// </summary>
             /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemDropDownButton(Tool tool)
+            public ToolBarItemDropDownButton(ToolBase tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -704,7 +704,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public Tool Tool
+            public ToolBase Tool
             {
                 get { return _tool; }
             }
@@ -735,14 +735,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl, IToolBarLabelSettings
         {
-            readonly Tool _tool;
+            readonly ToolBase _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemLabel"/> class.
             /// </summary>
             /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemLabel(Tool tool)
+            public ToolBarItemLabel(ToolBase tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -798,7 +798,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public Tool Tool
+            public ToolBase Tool
             {
                 get { return _tool; }
             }
@@ -829,14 +829,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemProgressBar : ToolStripProgressBar, IToolBarControl, IToolBarProgressBarSettings
         {
-            readonly Tool _tool;
+            readonly ToolBase _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemProgressBar"/> class.
             /// </summary>
             /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemProgressBar(Tool tool)
+            public ToolBarItemProgressBar(ToolBase tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -912,7 +912,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public Tool Tool
+            public ToolBase Tool
             {
                 get { return _tool; }
             }
@@ -943,14 +943,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemSplitButton : ToolStripSplitButton, IToolBarControl, IToolBarSplitButtonSettings
         {
-            readonly Tool _tool;
+            readonly ToolBase _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemSplitButton"/> class.
             /// </summary>
             /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemSplitButton(Tool tool)
+            public ToolBarItemSplitButton(ToolBase tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -1026,7 +1026,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public Tool Tool
+            public ToolBase Tool
             {
                 get { return _tool; }
             }
@@ -1057,14 +1057,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemTextBox : ToolStripTextBox, IToolBarControl, IToolBarTextBoxSettings
         {
-            readonly Tool _tool;
+            readonly ToolBase _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemTextBox"/> class.
             /// </summary>
             /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemTextBox(Tool tool)
+            public ToolBarItemTextBox(ToolBase tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -1140,7 +1140,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public Tool Tool
+            public ToolBase Tool
             {
                 get { return _tool; }
             }

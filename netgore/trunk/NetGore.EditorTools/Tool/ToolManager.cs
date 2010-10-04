@@ -10,10 +10,10 @@ using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
-    /// The manager for the <see cref="Tool"/>s. Contains an instance of all the available <see cref="Tool"/>s.
+    /// The manager for the <see cref="ToolBase"/>s. Contains an instance of all the available <see cref="ToolBase"/>s.
     /// </summary>
     public sealed class ToolManager : IDisposable
     {
@@ -27,8 +27,8 @@ namespace DemoGame.Editor
         /// Delegate for handling events from the <see cref="ToolManager"/>.
         /// </summary>
         /// <param name="sender">The <see cref="ToolManager"/> the event came from.</param>
-        /// <param name="tool">The <see cref="Tool"/> that the event relates to.</param>
-        public delegate void ToolEventHandler(ToolManager sender, Tool tool);
+        /// <param name="tool">The <see cref="ToolBase"/> that the event relates to.</param>
+        public delegate void ToolEventHandler(ToolManager sender, ToolBase tool);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -43,7 +43,7 @@ namespace DemoGame.Editor
 
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
         readonly ToolSettingsManager _toolSettings = new ToolSettingsManager();
-        readonly Dictionary<Type, Tool> _tools = new Dictionary<Type, Tool>();
+        readonly Dictionary<Type, ToolBase> _tools = new Dictionary<Type, ToolBase>();
 
         bool _isDisposed;
         string _toolSettingsProfileName;
@@ -68,7 +68,7 @@ namespace DemoGame.Editor
                 IsAbstract = false,
                 RequireConstructor = true,
                 ConstructorParameters = new Type[] { typeof(ToolManager) },
-                Subclass = typeof(Tool),
+                Subclass = typeof(ToolBase),
             };
 
             var filter = tfc.GetFilter();
@@ -85,25 +85,25 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Notifies listeners when a <see cref="Tool"/> instance has been added to this <see cref="ToolManager"/>.
+        /// Notifies listeners when a <see cref="ToolBase"/> instance has been added to this <see cref="ToolManager"/>.
         /// </summary>
         public event ToolEventHandler ToolAdded;
 
         /// <summary>
-        /// Notifies listeners when a <see cref="Tool"/> instance has been removed from this <see cref="ToolManager"/>.
+        /// Notifies listeners when a <see cref="ToolBase"/> instance has been removed from this <see cref="ToolManager"/>.
         /// </summary>
         public event ToolEventHandler ToolRemoved;
 
         /// <summary>
-        /// Gets all of the enabled <see cref="Tool"/>s.
+        /// Gets all of the enabled <see cref="ToolBase"/>s.
         /// </summary>
-        public IEnumerable<Tool> EnabledTools
+        public IEnumerable<ToolBase> EnabledTools
         {
             get { return _tools.Values.Where(x => x.IsEnabled && !x.IsDisposed).ToImmutable(); }
         }
 
         /// <summary>
-        /// Forces the settings for the <see cref="Tool"/>s to be saved.
+        /// Forces the settings for the <see cref="ToolBase"/>s to be saved.
         /// </summary>
         public void SaveSettings()
         {
@@ -150,9 +150,9 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets all of the <see cref="Tool"/>s.
+        /// Gets all of the <see cref="ToolBase"/>s.
         /// </summary>
-        public IEnumerable<Tool> Tools
+        public IEnumerable<ToolBase> Tools
         {
             get { return _tools.Values.ToImmutable(); }
         }
@@ -215,11 +215,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Sets the event listeners for a <see cref="Tool"/>.
+        /// Sets the event listeners for a <see cref="ToolBase"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to set the events on.</param>
+        /// <param name="tool">The <see cref="ToolBase"/> to set the events on.</param>
         /// <param name="add">True if the events should be added; false if they should be removed.</param>
-        void SetToolListeners(Tool tool, bool add)
+        void SetToolListeners(ToolBase tool, bool add)
         {
             if (add)
             {
@@ -239,13 +239,13 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Tries to get a <see cref="Tool"/> from its <see cref="Type"/>.
+        /// Tries to get a <see cref="ToolBase"/> from its <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The type of the tool to get.</param>
         /// <returns>The tool of the given <paramref name="type"/>, or null if not found.</returns>
-        public Tool TryGetTool(Type type)
+        public ToolBase TryGetTool(Type type)
         {
-            Tool ret;
+            ToolBase ret;
             if (!_tools.TryGetValue(type, out ret))
                 return null;
 
@@ -253,11 +253,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Tries to get a <see cref="Tool"/> from its type.
+        /// Tries to get a <see cref="ToolBase"/> from its type.
         /// </summary>
         /// <typeparam name="T">The type of the tool to get.</typeparam>
         /// <returns>The tool of type <typeparamref name="T"/>, or null if not found.</returns>
-        public T TryGetTool<T>() where T : Tool
+        public T TryGetTool<T>() where T : ToolBase
         {
             var ret = TryGetTool(typeof(T));
             Debug.Assert(ret is T);
@@ -265,10 +265,10 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the <see cref="Tool.Disposed"/> event of a <see cref="Tool"/> in this <see cref="ToolManager"/>.
+        /// Handles the <see cref="ToolBase.Disposed"/> event of a <see cref="ToolBase"/> in this <see cref="ToolManager"/>.
         /// </summary>
-        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
-        void tool_Disposed(Tool sender)
+        /// <param name="sender">The <see cref="ToolBase"/> the event came from.</param>
+        void tool_Disposed(ToolBase sender)
         {
             if (sender == null)
             {
@@ -312,10 +312,10 @@ namespace DemoGame.Editor
             try
             {
                 // Instantiate the type
-                Tool tool;
+                ToolBase tool;
                 try
                 {
-                    tool = (Tool)TypeFactory.GetTypeInstance(loadedType, this);
+                    tool = (ToolBase)TypeFactory.GetTypeInstance(loadedType, this);
                 }
                 catch (Exception ex)
                 {
