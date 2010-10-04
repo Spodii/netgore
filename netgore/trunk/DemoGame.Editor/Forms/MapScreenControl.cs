@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,7 +18,7 @@ namespace DemoGame.Editor
     /// The <see cref="GraphicsDeviceControl"/> that provides all the actual displaying and interaction of a <see cref="Map"/>
     /// instance.
     /// </summary>
-    public class MapScreenControl : GraphicsDeviceControl, IMapBoundControl, IGetTime
+    public partial class MapScreenControl : GraphicsDeviceControl, IMapBoundControl, IGetTime
     {
         readonly ICamera2D _camera;
 
@@ -36,6 +37,20 @@ namespace DemoGame.Editor
                 return;
 
             _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
+        }
+
+        /// <summary>
+        /// Disposes the control
+        /// </summary>
+        /// <param name="disposing">If true, disposes of managed resources</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _instances.Remove(this);
+            }
+
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -127,11 +142,6 @@ namespace DemoGame.Editor
             DrawingManager.LightManager.Ambient = Map.AmbientLight;
 
             Map.Draw(sb);
-
-            // TODO: !! Border
-            /*
-            _mapBorderDrawer.Draw(sb, Map, _camera);
-            */
 
             // TODO: !! Selection area
             /*

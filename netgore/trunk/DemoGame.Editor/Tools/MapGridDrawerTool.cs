@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 
@@ -7,14 +9,14 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
     /// </summary>
-    public class MapBorderTool : ToggledButtonTool
+    public class MapGridDrawerTool : ToggledButtonTool
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapBorderTool"/> class.
+        /// Initializes a new instance of the <see cref="MapGridDrawerTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapBorderTool(ToolManager toolManager)
-            : base(toolManager, "Map Border", ToolBarVisibility.Map)
+        protected MapGridDrawerTool(ToolManager toolManager)
+            : base(toolManager, "Map Grid Drawer", ToolBarVisibility.Map)
         {
         }
 
@@ -28,12 +30,12 @@ namespace DemoGame.Editor
         /// </returns>
         protected override IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
         {
-            return new IMapDrawingExtension[] { new MapBorderDrawingExtension() };
+            return new IMapDrawingExtension[] { new MapGridDrawingExtension() };
         }
 
-        class MapBorderDrawingExtension : MapDrawingExtension
+        class MapGridDrawingExtension : MapDrawingExtension
         {
-            readonly MapBorderDrawer _border = new MapBorderDrawer();
+            readonly ScreenGrid _grid = new ScreenGrid();
 
             /// <summary>
             /// When overridden in the derived class, handles drawing to the map after all of the map drawing finishes.
@@ -43,7 +45,7 @@ namespace DemoGame.Editor
             /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
             protected override void HandleDrawAfterMap(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
             {
-                _border.Draw(spriteBatch, map, camera);
+                _grid.Draw(spriteBatch, camera);
             }
         }
     }
