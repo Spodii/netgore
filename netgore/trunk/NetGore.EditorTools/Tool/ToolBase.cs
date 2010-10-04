@@ -10,29 +10,29 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
-    /// The base class for tools in the editor. <see cref="Tool"/>s are the primary component in the editor for expanding on the
+    /// The base class for tools in the editor. <see cref="ToolBase"/>s are the primary component in the editor for expanding on the
     /// functions and displays of the editor. They can be global to the whole editor, or valid only to specific screens. They can
     /// be shown in a <see cref="ToolBar"/>, but can also be completely invisible to the user interface and function purely in the
     /// background.
     /// </summary>
-    public abstract class Tool : IDisposable, IPersistable
+    public abstract class ToolBase : IDisposable, IPersistable
     {
         /// <summary>
-        /// Delegate for handling events from the <see cref="Tool"/>.
+        /// Delegate for handling events from the <see cref="ToolBase"/>.
         /// </summary>
-        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
-        public delegate void EventHandler(Tool sender);
+        /// <param name="sender">The <see cref="ToolBase"/> the event came from.</param>
+        public delegate void EventHandler(ToolBase sender);
 
         /// <summary>
-        /// Delegate for handling events from the <see cref="Tool"/>.
+        /// Delegate for handling events from the <see cref="ToolBase"/>.
         /// </summary>
-        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
+        /// <param name="sender">The <see cref="ToolBase"/> the event came from.</param>
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
-        public delegate void ValueChangedEventHandler<in T>(Tool sender, T oldValue, T newValue);
+        public delegate void ValueChangedEventHandler<in T>(ToolBase sender, T oldValue, T newValue);
 
         readonly IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
 
@@ -48,20 +48,20 @@ namespace DemoGame.Editor
         const bool _defaultIsOnToolBar = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Tool"/> class.
+        /// Initializes a new instance of the <see cref="ToolBase"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
         /// <param name="name">The name of the tool.</param>
-        /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="Tool"/>
+        /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="ToolBase"/>
         /// in a toolbar.</param>
-        /// <param name="toolBarVisibility">The visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.</param>
+        /// <param name="toolBarVisibility">The visibility of this <see cref="ToolBase"/> in a <see cref="ToolBar"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="toolManager"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarControlType"/> does not contain a defined value of the
         /// <see cref="ToolBarControlType"/> enum.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarVisibility"/> does not contain a defined value of the
         /// <see cref="ToolBarVisibility"/> enum.</exception>
-        protected Tool(ToolManager toolManager, string name, ToolBarControlType toolBarControlType,
+        protected ToolBase(ToolManager toolManager, string name, ToolBarControlType toolBarControlType,
                        ToolBarVisibility toolBarVisibility)
         {
             if (string.IsNullOrEmpty(name))
@@ -126,7 +126,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets or sets if this tool is enabled. When disabled, this <see cref="Tool"/> will not perform regular updating and drawing.
+        /// Gets or sets if this tool is enabled. When disabled, this <see cref="ToolBase"/> will not perform regular updating and drawing.
         /// Default is true.
         /// </summary>
         [DefaultValue(_defaultIsEnabled)]
@@ -157,8 +157,8 @@ namespace DemoGame.Editor
         /// can just be repeated from the parameters passed to the overridden method to use the default behavior, or can be altered
         /// to provide custom values. For simplicity, all default values should be constant, no matter the current state.
         /// </summary>
-        /// <param name="isEnabled">The default value for <see cref="Tool.IsEnabled"/>.</param>
-        /// <param name="isOnToolBar">The default value for <see cref="Tool.IsOnToolBar"/>.</param>
+        /// <param name="isEnabled">The default value for <see cref="ToolBase.IsEnabled"/>.</param>
+        /// <param name="isOnToolBar">The default value for <see cref="ToolBase.IsOnToolBar"/>.</param>
         protected virtual void HandleResetValues(bool isEnabled, bool isOnToolBar)
         {
             IsEnabled = isEnabled;
@@ -168,7 +168,7 @@ namespace DemoGame.Editor
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Resets all of the values of the <see cref="Tool"/> back to the default value.
+        /// Resets all of the values of the <see cref="ToolBase"/> back to the default value.
         /// </summary>
         public void ResetValues()
         {
@@ -235,8 +235,8 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets the <see cref="IToolBarControl"/> to use for displaying this <see cref="Tool"/> in a <see cref="ToolBar"/>.
-        /// This property is set in the <see cref="Tool"/>'s constructor and remains the same throughout the life of the object.
+        /// Gets the <see cref="IToolBarControl"/> to use for displaying this <see cref="ToolBase"/> in a <see cref="ToolBar"/>.
+        /// This property is set in the <see cref="ToolBase"/>'s constructor and remains the same throughout the life of the object.
         /// This can be null when the derived class sets the <see cref="ToolBarControlType"/> to
         /// <see cref="ToolBarControlType.None"/>.
         /// </summary>
@@ -246,7 +246,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets the visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.
+        /// Gets the visibility of this <see cref="ToolBase"/> in a <see cref="ToolBar"/>.
         /// </summary>
         public ToolBarVisibility ToolBarVisibility
         {
@@ -290,9 +290,9 @@ namespace DemoGame.Editor
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="Tool"/> is reclaimed by garbage collection.
+        /// <see cref="ToolBase"/> is reclaimed by garbage collection.
         /// </summary>
-        ~Tool()
+        ~ToolBase()
         {
             _isDisposed = true;
             Dispose(false);
@@ -300,9 +300,9 @@ namespace DemoGame.Editor
 
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
-        /// <see cref="Tool"/>.
+        /// <see cref="ToolBase"/>.
         /// </summary>
-        /// <returns>The <see cref="IMapDrawingExtension"/>s used by this <see cref="Tool"/>. Can be null or empty if none
+        /// <returns>The <see cref="IMapDrawingExtension"/>s used by this <see cref="ToolBase"/>. Can be null or empty if none
         /// are used. Default is null.</returns>
         protected virtual IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
         {
@@ -310,22 +310,32 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles performing drawing after the GUI for a <see cref="MapBase"/> has been draw.
+        /// When overridden in the derived class, handles performing drawing after the GUI for a <see cref="IDrawableMap"/> has been draw.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        protected virtual void HandleAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
+        protected virtual void HandleAfterDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="MapBase"/> has been draw.
+        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="IDrawableMap"/> has been draw.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        protected virtual void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
+        protected virtual void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
         }
+
+        /// <summary>
+        /// When overridden in the derived class, sets this <see cref="ToolBase"/> up to be updated every game tick.
+        /// </summary>
+        protected abstract void AddUpdateHook();
+
+        /// <summary>
+        /// When overridden in the derived class, removes this <see cref="ToolBase"/> from being updated every game tick.
+        /// </summary>
+        protected abstract void RemoveUpdateHook();
 
         /// <summary>
         /// Internally handles when <see cref="IsEnabled"/> has changed.
@@ -333,11 +343,11 @@ namespace DemoGame.Editor
         void HandleEnabledChangedInternal()
         {
             // Ensure the update hook is removed
-            GlobalState.Instance.Tick -= tickCallback;
+            RemoveUpdateHook();
 
             // Add the update hook if we became enabled (since we just removed it, we know we won't have it added twice)
             if (IsEnabled)
-                GlobalState.Instance.Tick += tickCallback;
+                AddUpdateHook();
 
             // If we were disabled, remove the MapDrawingExtensions. Otherwise, add them.
             Debug.Assert(_mapDrawingExtensions != null,
@@ -349,7 +359,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles updating the <see cref="Tool"/>.
+        /// When overridden in the derived class, handles updating the <see cref="ToolBase"/>.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
         protected virtual void HandleUpdate(TickCount currentTime)
@@ -357,11 +367,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Notifies the <see cref="Tool"/> that after a <see cref="MapBase"/>'s GUI was drawn.
+        /// Notifies the <see cref="ToolBase"/> that after a <see cref="IDrawableMap"/>'s GUI was drawn.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        public void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
+        public void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
             if (!IsEnabled || IsDisposed)
                 return;
@@ -370,11 +380,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Notifies the <see cref="Tool"/> that before a <see cref="MapBase"/>'s GUI was drawn.
+        /// Notifies the <see cref="ToolBase"/> that before a <see cref="IDrawableMap"/>'s GUI was drawn.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
-        public void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
+        /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
+        public void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
             if (!IsEnabled || IsDisposed)
                 return;
@@ -404,8 +414,8 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles reading custom state information for this <see cref="Tool"/> from an <see cref="IValueReader"/> for when
-        /// persisting the <see cref="Tool"/>'s state.
+        /// Handles reading custom state information for this <see cref="ToolBase"/> from an <see cref="IValueReader"/> for when
+        /// persisting the <see cref="ToolBase"/>'s state.
         /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
         /// reading and writing the state.
         /// </summary>
@@ -453,7 +463,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="enable">When true, try to set to enabled. When false, try to set to disabled.</param>
         /// <returns>True if the tool's enabled state was changed to the value given by <paramref name="enable"/> or
-        /// <paramref name="enable"/> already equals the current <see cref="Tool.IsEnabled"/> state; false if the
+        /// <paramref name="enable"/> already equals the current <see cref="ToolBase.IsEnabled"/> state; false if the
         /// state failed to change.</returns>
         public bool TrySetEnabled(bool enable)
         {
@@ -464,25 +474,14 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles writing custom state information for this <see cref="Tool"/> to an <see cref="IValueWriter"/> for when
-        /// persisting the <see cref="Tool"/>'s state.
+        /// Handles writing custom state information for this <see cref="ToolBase"/> to an <see cref="IValueWriter"/> for when
+        /// persisting the <see cref="ToolBase"/>'s state.
         /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
         /// reading and writing the state.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
         protected virtual void WriteCustomToolState(IValueWriter writer)
         {
-        }
-
-        /// <summary>
-        /// Handles the <see cref="GlobalState.Tick"/> event.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        void tickCallback(TickCount currentTime)
-        {
-            Debug.Assert(IsEnabled);
-
-            HandleUpdate(currentTime);
         }
 
         #region IDisposable Members

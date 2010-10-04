@@ -1,4 +1,5 @@
-﻿using NetGore.EditorTools.Docking;
+﻿using NetGore.EditorTools;
+using NetGore.EditorTools.Docking;
 
 namespace DemoGame.Editor
 {
@@ -56,8 +57,8 @@ namespace DemoGame.Editor
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
-            this.tbMap = new DemoGame.Editor.ToolBar();
-            this.tbGlobal = new DemoGame.Editor.ToolBar();
+            this.tbMap = new NetGore.EditorTools.ToolBar();
+            this.tbGlobal = new NetGore.EditorTools.ToolBar();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 

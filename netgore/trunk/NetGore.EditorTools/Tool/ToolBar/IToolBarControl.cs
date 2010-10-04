@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Interface for a <see cref="Editor.Tool"/>'s control used in a <see cref="ToolBar"/>.
@@ -30,7 +30,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets the <see cref="Editor.Tool"/> that this control is for.
         /// </summary>
-        Tool Tool { get; }
+        ToolBase Tool { get; }
 
         /// <summary>
         /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when

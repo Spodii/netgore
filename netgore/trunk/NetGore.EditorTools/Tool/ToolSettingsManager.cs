@@ -9,10 +9,10 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
-    /// Handles loading and saving the persistent settings for <see cref="Tool"/>s.
+    /// Handles loading and saving the persistent settings for <see cref="ToolBase"/>s.
     /// </summary>
     public class ToolSettingsManager : IPersistable
     {
@@ -24,21 +24,21 @@ namespace DemoGame.Editor
         const string _toolSettingsNodeName = "ToolSettings";
 
         /// <summary>
-        /// The <see cref="StringComparer"/> to use for comparing a <see cref="Tool"/>'s key.
+        /// The <see cref="StringComparer"/> to use for comparing a <see cref="ToolBase"/>'s key.
         /// </summary>
         static readonly StringComparer _keyComp = StringComparer.Ordinal;
 
         readonly object _saveSync = new object();
         readonly IDictionary<string, IValueReader> _toolSettings = new TSDictionary<string, IValueReader>(_keyComp);
         readonly IDictionary<ToolBarVisibility, IEnumerable<string>> _toolBarOrder = new TSDictionary<ToolBarVisibility, IEnumerable<string>>(EnumComparer<ToolBarVisibility>.Instance);
-        readonly IDictionary<string, Tool> _tools = new TSDictionary<string, Tool>(_keyComp);
+        readonly IDictionary<string, ToolBase> _tools = new TSDictionary<string, ToolBase>(_keyComp);
 
         string _currentSettingsFile;
 
         /// <summary>
-        /// Gets or sets the file path to the current settings file. When this value is changed, the settings of the <see cref="Tool"/>s
+        /// Gets or sets the file path to the current settings file. When this value is changed, the settings of the <see cref="ToolBase"/>s
         /// will be saved to the old path (if it is value) then loaded from the new path only if the file exists at the new path. If
-        /// the new path does not exist, no settings will be loaded and the <see cref="Tool"/>s will be unaltered.
+        /// the new path does not exist, no settings will be loaded and the <see cref="ToolBase"/>s will be unaltered.
         /// If the value is set to an invalid file path or one that cannot be written to or read from, an <see cref="Exception"/> will
         /// be thrown and this property will not be changed.
         /// If the value is set to a file that does not exist, the current settings will be written to that file.
@@ -108,14 +108,14 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Adds a <see cref="Tool"/> to this <see cref="ToolSettingsManager"/>. If settings already exist for the
+        /// Adds a <see cref="ToolBase"/> to this <see cref="ToolSettingsManager"/>. If settings already exist for the
         /// <paramref name="tool"/>, they will be applied automatically. Only one instance of each type can be added.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to add.</param>
+        /// <param name="tool">The <see cref="ToolBase"/> to add.</param>
         /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
         /// <exception cref="ArgumentException">The <paramref name="tool"/>, or a different instance of the same class, is already
         /// in the collection.</exception>
-        public void Add(Tool tool)
+        public void Add(ToolBase tool)
         {
             if (tool == null)
                 throw new ArgumentNullException("tool");
@@ -127,10 +127,10 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Reloads or resets the settings for a specific <see cref="Tool"/>.
+        /// Reloads or resets the settings for a specific <see cref="ToolBase"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to reset the settings of.</param>
-        void ApplyToolSettings(Tool tool)
+        /// <param name="tool">The <see cref="ToolBase"/> to reset the settings of.</param>
+        void ApplyToolSettings(ToolBase tool)
         {
             var key = GetToolKey(tool);
 
@@ -181,12 +181,12 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets the string key for a <see cref="Tool"/>.
+        /// Gets the string key for a <see cref="ToolBase"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to get the key for.</param>
+        /// <param name="tool">The <see cref="ToolBase"/> to get the key for.</param>
         /// <returns>The key for the <paramref name="tool"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-        protected static string GetToolKey(Tool tool)
+        protected static string GetToolKey(ToolBase tool)
         {
             if (tool == null)
                 throw new ArgumentNullException("tool");
@@ -195,7 +195,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Reads a <see cref="KeyValuePair{T,U}"/> for a <see cref="Tool"/>.
+        /// Reads a <see cref="KeyValuePair{T,U}"/> for a <see cref="ToolBase"/>.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
         /// <returns>The <see cref="KeyValuePair{T,U}"/>.</returns>
@@ -208,12 +208,12 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Removes a <see cref="Tool"/> from this <see cref="ToolSettingsManager"/>.
+        /// Removes a <see cref="ToolBase"/> from this <see cref="ToolSettingsManager"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="Tool"/> to add.</param>
+        /// <param name="tool">The <see cref="ToolBase"/> to add.</param>
         /// <returns>True if the <paramref name="tool"/> was successfully removed; false if it was not in the collection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-        public bool Remove(Tool tool)
+        public bool Remove(ToolBase tool)
         {
             if (tool == null)
                 throw new ArgumentNullException("tool");
@@ -223,8 +223,8 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Resets all of the <see cref="Tool"/>s in this object back to the state defined by the currently loaded settings.
-        /// <see cref="Tool"/>s in this object that have no settings specified in the loaded file will have their values
+        /// Resets all of the <see cref="ToolBase"/>s in this object back to the state defined by the currently loaded settings.
+        /// <see cref="ToolBase"/>s in this object that have no settings specified in the loaded file will have their values
         /// reset to default.
         /// </summary>
         public void ResetTools()
@@ -279,7 +279,7 @@ namespace DemoGame.Editor
                     else
                     {
                         // Find the Tool with the same key and, if found, push it to the head
-                        Tool toolForKey;
+                        ToolBase toolForKey;
                         if (_tools.TryGetValue(key, out toolForKey))
                         {
                             if (toolForKey.ToolBarControl != null)
@@ -370,8 +370,8 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Loads the settings from file, and applies loaded settings to the <see cref="Tool"/>s in this object.
-        /// <see cref="Tool"/>s in this object that have no settings specified in the loaded file will have their values
+        /// Loads the settings from file, and applies loaded settings to the <see cref="ToolBase"/>s in this object.
+        /// <see cref="ToolBase"/>s in this object that have no settings specified in the loaded file will have their values
         /// reset to default.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to load from.</param>
@@ -384,8 +384,8 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Loads the settings from file, and applies loaded settings to the <see cref="Tool"/>s in this object.
-        /// <see cref="Tool"/>s in this object that have no settings specified in the loaded file will have their values
+        /// Loads the settings from file, and applies loaded settings to the <see cref="ToolBase"/>s in this object.
+        /// <see cref="ToolBase"/>s in this object that have no settings specified in the loaded file will have their values
         /// reset to default.
         /// </summary>
         /// <param name="filePath">The file to load from.</param>
@@ -456,11 +456,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Writes a <see cref="KeyValuePair{T,U}"/> for a <see cref="Tool"/>.
+        /// Writes a <see cref="KeyValuePair{T,U}"/> for a <see cref="ToolBase"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         /// <param name="kvp">The value to write.</param>
-        static void WriteKVP(IValueWriter writer, KeyValuePair<string, Tool> kvp)
+        static void WriteKVP(IValueWriter writer, KeyValuePair<string, ToolBase> kvp)
         {
             writer.Write(_kvpKeyName, kvp.Key);
 

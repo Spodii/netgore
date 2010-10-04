@@ -51,23 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\ToolBar\IToolBarButtonSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarComboBoxSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarControlSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarControl.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarControlSettingsExtensions.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarDropDownButtonSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarDropDownItemSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarLabelSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarProgressBarSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarSplitButtonSettings.cs" />
-    <Compile Include="Controls\ToolBar\IToolBarTextBoxSettings.cs" />
-    <Compile Include="Controls\ToolBar\ToolBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ToolBar\ToolBarControlType.cs" />
-    <Compile Include="Tools\Base\Tool.cs" />
-    <Compile Include="Tools\Base\ToolManager.cs" />
     <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Controls\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
@@ -141,10 +124,9 @@
     <Compile Include="Forms\ChildWindowForm.Designer.cs">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ToolBar\ToolBarVisibility.cs" />
     <Compile Include="Tools\MapGridTool.cs" />
     <Compile Include="Tools\TestTools.cs" />
-    <Compile Include="Tools\Base\ToolSettingsManager.cs" />
+    <Compile Include="Tools\Tool.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\ChildWindowForm.resx">
@@ -234,7 +216,9 @@
       <Name>NetGore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Tools\Base\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\cursor_entitiesadd.png" />
   </ItemGroup>

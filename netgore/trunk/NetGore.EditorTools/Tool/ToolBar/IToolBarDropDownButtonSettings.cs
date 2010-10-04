@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
     /// Contains the settings specific to the <see cref="ToolBarControlType.DropDownButton"/>.

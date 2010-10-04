@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 
-namespace DemoGame.Editor
+namespace NetGore.EditorTools
 {
     /// <summary>
-    /// Describes the different places that a <see cref="Tool"/> is visible in a <see cref="ToolBar"/>.
+    /// Describes the different places that a <see cref="ToolBase"/> is visible in a <see cref="ToolBar"/>.
     /// </summary>
     public enum ToolBarVisibility : byte
     {
@@ -13,12 +13,12 @@ namespace DemoGame.Editor
         None,
 
         /// <summary>
-        /// The <see cref="Tool"/> is visible from every part of the editor.
+        /// The <see cref="ToolBase"/> is visible from every part of the editor.
         /// </summary>
         Global,
 
         /// <summary>
-        /// The <see cref="Tool"/> is only displayed when editing maps.
+        /// The <see cref="ToolBase"/> is only displayed when editing maps.
         /// </summary>
         Map,
     }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.EditorTools;
 using NetGore.World;
+using ToolBar = System.Windows.Forms.ToolBar;
 
 namespace DemoGame.Editor
 {
@@ -56,7 +58,7 @@ namespace DemoGame.Editor
         void dockPanel_Click(object sender, EventArgs e)
         {
             // Clear the ToolBarVisibility
-            ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
+            NetGore.EditorTools.ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
         }
 
         void loadToolStripMenuItem_Click(object sender, EventArgs e)
