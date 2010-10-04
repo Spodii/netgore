@@ -6,12 +6,11 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
-using NetGore;
 
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// A <see cref="ToolStrip"/> for displaying the <see cref="ToolBase"/>s in the <see cref="ToolManager"/>.
+    /// A <see cref="ToolStrip"/> for displaying the <see cref="Tool"/>s in the <see cref="ToolManager"/>.
     /// </summary>
     public class ToolBar : ToolStrip
     {
@@ -59,7 +58,8 @@ namespace NetGore.EditorTools
 
         /// <summary>
         /// Gets or sets the visibility of this <see cref="ToolBar"/>. This value should NOT be changed after it is set!
-        /// If set to <see cref="Editor.ToolBarVisibility.None"/>, it won't automatically show any tools, making it quite useless.
+        /// If set to <see cref="NetGore.EditorTools.ToolBarVisibility.None"/>, it won't automatically show any tools,
+        /// making it quite useless.
         /// </summary>
         [Browsable(true)]
         [Description("The ToolBarVisibility handled by this ToolBar.")]
@@ -123,10 +123,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Adds a <see cref="ToolBase"/> go its <see cref="ToolBar"/>.
+        /// Adds a <see cref="Tool"/> go its <see cref="ToolBar"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="ToolBase"/> to add to its <see cref="ToolBar"/>.</param>
-        public static void AddToToolBar(ToolBase tool)
+        /// <param name="tool">The <see cref="Tool"/> to add to its <see cref="ToolBar"/>.</param>
+        public static void AddToToolBar(Tool tool)
         {
             if (!tool.CanShowInToolbar)
                 return;
@@ -150,9 +150,9 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Creates the <see cref="IToolBarControl"/> for a <see cref="ToolBase"/>.
+        /// Creates the <see cref="IToolBarControl"/> for a <see cref="Tool"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="ToolBase"/> to create the control for.</param>
+        /// <param name="tool">The <see cref="Tool"/> to create the control for.</param>
         /// <param name="controlType">The type of control.</param>
         /// <returns>The <see cref="IToolBarControl"/> for the <paramref name="tool"/> using the given
         /// <paramref name="controlType"/>, or null if the <paramref name="controlType"/> is
@@ -160,7 +160,7 @@ namespace NetGore.EditorTools
         /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="controlType"/> does not contain a defined value of the
         /// <see cref="ToolBarControlType"/> enum.</exception>
-        public static IToolBarControl CreateToolControl(ToolBase tool, ToolBarControlType controlType)
+        public static IToolBarControl CreateToolControl(Tool tool, ToolBarControlType controlType)
         {
             if (tool == null)
                 throw new ArgumentNullException("tool");
@@ -211,18 +211,6 @@ namespace NetGore.EditorTools
             }
 
             return (IToolBarControl)c;
-        }
-
-        /// <summary>
-        /// Adds a separator into the <see cref="ToolBar"/>.
-        /// </summary>
-        /// <param name="index">The 0-based index to insert the separator into.</param>
-        /// <returns>The <see cref="ToolStripSeparator"/> that was added.</returns>
-        public ToolStripSeparator InsertSeparator(int index)
-        {
-            var c = new ToolStripSeparator();
-            Items.Insert(index, c);
-            return c;
         }
 
         /// <summary>
@@ -279,9 +267,9 @@ namespace NetGore.EditorTools
         /// <summary>
         /// General <see cref="ToolStripItem"/> initialization.
         /// </summary>
-        /// <param name="t">The <see cref="ToolBase"/>.</param>
+        /// <param name="t">The <see cref="Tool"/>.</param>
         /// <param name="c">The <see cref="ToolStripItem"/>.</param>
-        static void InitializeGeneral(ToolBase t, ToolStripItem c)
+        static void InitializeGeneral(Tool t, ToolStripItem c)
         {
             c.Text = t.Name;
             c.Name = t.Name;
@@ -290,10 +278,22 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Removes a <see cref="ToolBase"/> from its <see cref="ToolBar"/>.
+        /// Adds a separator into the <see cref="ToolBar"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="ToolBase"/> to remove from its <see cref="ToolBar"/>.</param>
-        public static void RemoveFromToolBar(ToolBase tool)
+        /// <param name="index">The 0-based index to insert the separator into.</param>
+        /// <returns>The <see cref="ToolStripSeparator"/> that was added.</returns>
+        public ToolStripSeparator InsertSeparator(int index)
+        {
+            var c = new ToolStripSeparator();
+            Items.Insert(index, c);
+            return c;
+        }
+
+        /// <summary>
+        /// Removes a <see cref="Tool"/> from its <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="tool">The <see cref="Tool"/> to remove from its <see cref="ToolBar"/>.</param>
+        public static void RemoveFromToolBar(Tool tool)
         {
             if (!tool.ToolBarControl.IsOnToolBar)
                 return;
@@ -314,11 +314,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Tries to get the <see cref="ToolStripItem"/> for a <see cref="ToolBase"/>.
+        /// Tries to get the <see cref="ToolStripItem"/> for a <see cref="Tool"/>.
         /// </summary>
         /// <param name="tool">The tool to get the <see cref="ToolStripItem"/> for.</param>
         /// <returns>The <see cref="ToolStripItem"/> for the <paramref name="tool"/>, or null if unable to get it.</returns>
-        protected static ToolStripItem TryGetToolStripItem(ToolBase tool)
+        protected static ToolStripItem TryGetToolStripItem(Tool tool)
         {
             if (tool == null)
             {
@@ -393,14 +393,14 @@ namespace NetGore.EditorTools
         /// </summary>
         internal sealed class ToolBarItemButton : ToolStripButton, IToolBarControl, IToolBarButtonSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemButton"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemButton(ToolBase tool)
+            public ToolBarItemButton(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -474,9 +474,9 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// Gets the <see cref="Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
             }
@@ -507,14 +507,14 @@ namespace NetGore.EditorTools
         /// </summary>
         internal sealed class ToolBarItemComboBox : ToolStripComboBox, IToolBarControl, IToolBarComboBoxSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemComboBox"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemComboBox(ToolBase tool)
+            public ToolBarItemComboBox(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -588,9 +588,9 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// Gets the <see cref="Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
             }
@@ -621,14 +621,14 @@ namespace NetGore.EditorTools
         /// </summary>
         internal sealed class ToolBarItemDropDownButton : ToolStripDropDownButton, IToolBarControl, IToolBarDropDownButtonSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemDropDownButton"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemDropDownButton(ToolBase tool)
+            public ToolBarItemDropDownButton(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -702,9 +702,9 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// Gets the <see cref="Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
             }
@@ -735,14 +735,14 @@ namespace NetGore.EditorTools
         /// </summary>
         internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl, IToolBarLabelSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemLabel"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemLabel(ToolBase tool)
+            public ToolBarItemLabel(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -796,9 +796,9 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// Gets the <see cref="Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
             }
@@ -829,14 +829,14 @@ namespace NetGore.EditorTools
         /// </summary>
         internal sealed class ToolBarItemProgressBar : ToolStripProgressBar, IToolBarControl, IToolBarProgressBarSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemProgressBar"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemProgressBar(ToolBase tool)
+            public ToolBarItemProgressBar(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -910,9 +910,9 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// Gets the <see cref="Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
             }
@@ -943,14 +943,14 @@ namespace NetGore.EditorTools
         /// </summary>
         internal sealed class ToolBarItemSplitButton : ToolStripSplitButton, IToolBarControl, IToolBarSplitButtonSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemSplitButton"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemSplitButton(ToolBase tool)
+            public ToolBarItemSplitButton(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -1024,9 +1024,9 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// Gets the <see cref="Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
             }
@@ -1057,14 +1057,14 @@ namespace NetGore.EditorTools
         /// </summary>
         internal sealed class ToolBarItemTextBox : ToolStripTextBox, IToolBarControl, IToolBarTextBoxSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemTextBox"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemTextBox(ToolBase tool)
+            public ToolBarItemTextBox(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -1138,9 +1138,9 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Editor.Tool"/> for this item.
+            /// Gets the <see cref="Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
             }

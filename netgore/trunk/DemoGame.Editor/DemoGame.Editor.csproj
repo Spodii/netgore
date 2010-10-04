@@ -126,7 +126,6 @@
     </Compile>
     <Compile Include="Tools\MapGridTool.cs" />
     <Compile Include="Tools\TestTools.cs" />
-    <Compile Include="Tools\Tool.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\ChildWindowForm.resx">
