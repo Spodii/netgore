@@ -93,6 +93,9 @@
     <Compile Include="Forms\MapScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\MapScreenControl.Static.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\SelectedMapObjectsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,9 +127,10 @@
     <Compile Include="Forms\ChildWindowForm.Designer.cs">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MapBorderTool.cs" />
-    <Compile Include="Tools\MapGridTool.cs" />
-    <Compile Include="Tools\MapMapGrhBoundWallsTool.cs" />
+    <Compile Include="Tools\MapBorderDrawerTool.cs" />
+    <Compile Include="Tools\MapGridDrawerTool.cs" />
+    <Compile Include="Tools\MapGrhBoundWallsDrawerTool.cs" />
+    <Compile Include="Tools\MapLightSourceDrawerTool.cs" />
     <Compile Include="Tools\TestTools.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />

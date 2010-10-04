@@ -8,14 +8,14 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="MapGrh"/>'s bound walls on the map.
     /// </summary>
-    public class MapMapGrhBoundWallsTool : ToggledButtonTool
+    public class MapGrhBoundWallsDrawerTool : ToggledButtonTool
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapGridTool"/> class.
+        /// Initializes a new instance of the <see cref="MapGridDrawerTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapMapGrhBoundWallsTool(ToolManager toolManager)
-            : base(toolManager, "Map MapGrh Bound Walls", ToolBarVisibility.Map)
+        protected MapGrhBoundWallsDrawerTool(ToolManager toolManager)
+            : base(toolManager, "MapGrh Bound Walls Draw", ToolBarVisibility.Map)
         {
         }
 

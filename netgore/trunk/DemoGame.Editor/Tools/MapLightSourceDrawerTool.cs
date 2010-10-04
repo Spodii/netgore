@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 
@@ -9,14 +7,14 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
     /// </summary>
-    public class MapGridTool : ToggledButtonTool
+    public class MapLightSourceDrawerTool : ToggledButtonTool
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapGridTool"/> class.
+        /// Initializes a new instance of the <see cref="MapBorderDrawerTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapGridTool(ToolManager toolManager)
-            : base(toolManager, "Map Grid", ToolBarVisibility.Map)
+        protected MapLightSourceDrawerTool(ToolManager toolManager)
+            : base(toolManager, "Map Light Source Drawer", ToolBarVisibility.Map)
         {
         }
 
@@ -30,13 +28,11 @@ namespace DemoGame.Editor
         /// </returns>
         protected override IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
         {
-            return new IMapDrawingExtension[] { new MapGridDrawingExtension() };
+            return new IMapDrawingExtension[] { new MapBorderDrawingExtension() };
         }
 
-        class MapGridDrawingExtension : MapDrawingExtension
+        class MapBorderDrawingExtension : MapDrawingExtension
         {
-            readonly ScreenGrid _grid = new ScreenGrid();
-
             /// <summary>
             /// When overridden in the derived class, handles drawing to the map after all of the map drawing finishes.
             /// </summary>
@@ -45,7 +41,23 @@ namespace DemoGame.Editor
             /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
             protected override void HandleDrawAfterMap(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
             {
-                _grid.Draw(spriteBatch, camera);
+                var msc = MapScreenControl.TryFindInstance(map);
+                if (msc == null)
+                    return;
+
+                var dm = msc.DrawingManager;
+                if (dm == null)
+                    return;
+
+                var lm = dm.LightManager;
+                if (lm == null)
+                    return;
+
+                var offset = AddLightCursor.LightSprite.Size / 2f;
+                foreach (var light in lm)
+                {
+                    AddLightCursor.LightSprite.Draw(spriteBatch, light.Position - offset);
+                }
             }
         }
     }
