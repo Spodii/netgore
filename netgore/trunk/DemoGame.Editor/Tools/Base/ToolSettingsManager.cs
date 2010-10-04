@@ -29,8 +29,9 @@ namespace DemoGame.Editor
         static readonly StringComparer _keyComp = StringComparer.Ordinal;
 
         readonly object _saveSync = new object();
-        readonly IDictionary<string, IValueReader> _toolSettings = new SortedDictionary<string, IValueReader>(_keyComp);
-        readonly IDictionary<string, Tool> _tools = new SortedDictionary<string, Tool>(_keyComp);
+        readonly IDictionary<string, IValueReader> _toolSettings = new TSDictionary<string, IValueReader>(_keyComp);
+        readonly IDictionary<ToolBarVisibility, IEnumerable<string>> _toolBarOrder = new TSDictionary<ToolBarVisibility, IEnumerable<string>>(EnumComparer<ToolBarVisibility>.Instance);
+        readonly IDictionary<string, Tool> _tools = new TSDictionary<string, Tool>(_keyComp);
 
         string _currentSettingsFile;
 
@@ -228,9 +229,64 @@ namespace DemoGame.Editor
         /// </summary>
         public void ResetTools()
         {
+            // Remove everything from the ToolBars first
+            foreach (var tb in ToolBar.ToolBars)
+            {
+                try
+                {
+                    tb.Items.Clear();
+                }
+                catch (Exception ex)
+                {
+                    // Log but ignore when there is an error clearing for some reason
+                    const string errmsg = "Unexpected error while trying to clear ToolBar `{0}`. Exception: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, tb, ex);
+                    Debug.Fail(string.Format(errmsg, tb, ex));
+                    continue;
+                }
+            }
+
+            // Apply the settings to all the tools
             foreach (var tool in _tools.Values)
             {
                 ApplyToolSettings(tool);
+            }
+
+            // Re-order the tools one ToolBar at a time
+            foreach (var kvp in _toolBarOrder)
+            {
+                // Get the ToolBar
+                var tb = ToolBar.GetToolBar(kvp.Key);
+                if (tb == null)
+                {
+                    const string errmsg = "Could not find ToolBar using ToolBarVisibility `{0}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, kvp.Key);
+                    Debug.Fail(string.Format(errmsg, kvp.Key));
+                    continue;
+                }
+
+                // Loop through the control keys in reverse since we will be pushing everything to the head. This will result
+                // in the tools not in our ordering list to appear at the tail.
+                foreach (var key in kvp.Value.Reverse())
+                {
+                    if (StringComparer.Ordinal.Equals(_separatorClassName, key))
+                    {
+                        // If it is a separator, then add the new separator
+                        tb.InsertSeparator(0);
+                    }
+                    else
+                    {
+                        // Find the Tool with the same key and, if found, push it to the head
+                        Tool toolForKey;
+                        if (_tools.TryGetValue(key, out toolForKey))
+                        {
+                            if (toolForKey.ToolBarControl != null)
+                                toolForKey.ToolBarControl.MoveToHead();
+                        }
+                    }
+                }
             }
         }
 
@@ -260,15 +316,49 @@ namespace DemoGame.Editor
         public void Save(string filePath)
         {
             var kvps = _tools.ToArray();
-      
+            var toolBars = ToolBar.ToolBars;
+
             lock (_saveSync)
             {
                 using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
                 {
                     writer.WriteManyNodes(_toolSettingsNodeName, kvps, WriteKVP);
+                    writer.WriteManyNodes(_toolBarItemsNodeName, toolBars, WriteToolBarItems); 
                 }
             }
         }
+
+        /// <summary>
+        /// Reads the items order for a <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <returns>The <see cref="KeyValuePair{T,U}"/> where the key is the <see cref="ToolBarVisibility"/> and the value
+        /// is an ordered list of the control names.</returns>
+        static KeyValuePair<ToolBarVisibility, IEnumerable<string>> ReadToolBarItems(IValueReader reader)
+        {
+            var kvpKey = reader.ReadEnum<ToolBarVisibility>(_toolBarItemsKeyName);
+            var kvpValue = reader.ReadMany(_toolBarItemsValueName, (r, name) => r.ReadString(name));
+
+            return new KeyValuePair<ToolBarVisibility, IEnumerable<string>>(kvpKey, kvpValue);
+        }
+
+        /// <summary>
+        /// Writes the items in a <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        /// <param name="tb">The <see cref="ToolBar"/> containing the items to write.</param>
+        static void WriteToolBarItems(IValueWriter writer, ToolBar tb)
+        {
+            var tbItems = tb.GetItems().Select(x => x == null ? _separatorClassName : (GetToolKey(x.Tool) ?? _separatorClassName));
+
+            writer.WriteEnum(_toolBarItemsKeyName, tb.ToolBarVisibility);
+            writer.WriteMany(_toolBarItemsValueName, tbItems, writer.Write);
+        }
+
+        const string _separatorClassName = "|";
+        const string _toolBarItemsNodeName = "ToolBarItems";
+        const string _toolBarItemsKeyName = "ToolBarVisibility";
+        const string _toolBarItemsValueName = "Order";
 
         /// <summary>
         /// Loads the settings from the <see cref="CurrentSettingsFile"/>.
@@ -310,13 +400,15 @@ namespace DemoGame.Editor
                 var reader = GenericValueReader.CreateFromFile(filePath, _rootNodeName);
 
                 // Read in the settings
-                var kvps = reader.ReadManyNodes(_toolSettingsNodeName, ReadKVP);
+                var toolKVPs = reader.ReadManyNodes(_toolSettingsNodeName, ReadKVP);
+                var toolBarKVPS = reader.ReadManyNodes(_toolBarItemsNodeName, ReadToolBarItems);
 
-                // Clear out the old settings
+                // Out with the old
                 _toolSettings.Clear();
+                _toolBarOrder.Clear();
 
-                // Add in the new
-                foreach (var kvp in kvps)
+                // And in with the new
+                foreach (var kvp in toolKVPs)
                 {
                     try
                     {
@@ -326,6 +418,22 @@ namespace DemoGame.Editor
                     {
                         // When there is an error adding to the collection, just skip the item
                         const string errmsg = "Failed to add item to _toolSettings dictionary. Key: {0}. Value: {1}. Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, kvp.Key, kvp.Value, ex);
+                        Debug.Fail(string.Format(errmsg, kvp.Key, kvp.Value, ex));
+                    }
+                }
+
+                foreach (var kvp in toolBarKVPS)
+                {
+                    try
+                    {
+                        _toolBarOrder.Add(kvp);
+                    }
+                    catch (Exception ex)
+                    {
+                        // When there is an error adding to the collection, just skip the item
+                        const string errmsg = "Failed to add item to _toolBarOrder dictionary. Key: {0}. Value: {1}. Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, kvp.Key, kvp.Value, ex);
                         Debug.Fail(string.Format(errmsg, kvp.Key, kvp.Value, ex));

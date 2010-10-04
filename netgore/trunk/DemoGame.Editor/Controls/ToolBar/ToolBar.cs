@@ -115,6 +115,14 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Gets the <see cref="ToolBar"/> instances.
+        /// </summary>
+        public static IEnumerable<ToolBar> ToolBars
+        {
+            get { return _toolBars.Values; }
+        }
+
+        /// <summary>
         /// Adds a <see cref="Tool"/> go its <see cref="ToolBar"/>.
         /// </summary>
         /// <param name="tool">The <see cref="Tool"/> to add to its <see cref="ToolBar"/>.</param>
@@ -203,6 +211,36 @@ namespace DemoGame.Editor
             }
 
             return (IToolBarControl)c;
+        }
+
+        /// <summary>
+        /// Adds a separator into the <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="index">The 0-based index to insert the separator into.</param>
+        /// <returns>The <see cref="ToolStripSeparator"/> that was added.</returns>
+        public ToolStripSeparator InsertSeparator(int index)
+        {
+            var c = new ToolStripSeparator();
+            Items.Insert(index, c);
+            return c;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IToolBarControl"/>s on the <see cref="ToolBar"/>.
+        /// </summary>
+        /// <returns>The <see cref="IToolBarControl"/>s on the <see cref="ToolBar"/>, ordered by the same order that they appear.
+        /// Separators and other non-<see cref="IToolBarControl"/> items are denoted with a null value.</returns>
+        public IEnumerable<IToolBarControl> GetItems()
+        {
+            var ret = new IToolBarControl[Items.Count];
+
+            for (var i = 0; i < ret.Length; i++)
+            {
+                var item = Items[i];
+                ret[i] = item as IToolBarControl;
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -312,6 +350,44 @@ namespace DemoGame.Editor
             return tool.ToolBarControl as ToolStripItem;
         }
 
+        static class ToolBarControlHelper
+        {
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            /// <param name="c">The <see cref="IToolBarControl"/>.</param>
+            public static void MoveToHead(ToolStripItem c)
+            {
+                if (c == null)
+                    return;
+
+                var owner = c.Owner;
+                if (owner == null)
+                    return;
+
+                owner.Items.Insert(0, c);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            /// <param name="c">The <see cref="IToolBarControl"/>.</param>
+            public static void MoveToTail(ToolStripItem c)
+            {
+                if (c == null)
+                    return;
+
+                var owner = c.Owner;
+                if (owner == null)
+                    return;
+
+                var i = Math.Max(owner.Items.Count - 1, 0);
+                owner.Items.Insert(i, c);
+            }
+        }
+
         /// <summary>
         /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Button"/>.
         /// </summary>
@@ -403,6 +479,24 @@ namespace DemoGame.Editor
             public Tool Tool
             {
                 get { return _tool; }
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToHead()
+            {
+                ToolBarControlHelper.MoveToHead(this);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToTail()
+            {
+                ToolBarControlHelper.MoveToTail(this);
             }
 
             #endregion
@@ -501,6 +595,24 @@ namespace DemoGame.Editor
                 get { return _tool; }
             }
 
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToHead()
+            {
+                ToolBarControlHelper.MoveToHead(this);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToTail()
+            {
+                ToolBarControlHelper.MoveToTail(this);
+            }
+
             #endregion
         }
 
@@ -597,6 +709,24 @@ namespace DemoGame.Editor
                 get { return _tool; }
             }
 
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToHead()
+            {
+                ToolBarControlHelper.MoveToHead(this);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToTail()
+            {
+                ToolBarControlHelper.MoveToTail(this);
+            }
+
             #endregion
         }
 
@@ -671,6 +801,24 @@ namespace DemoGame.Editor
             public Tool Tool
             {
                 get { return _tool; }
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToHead()
+            {
+                ToolBarControlHelper.MoveToHead(this);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToTail()
+            {
+                ToolBarControlHelper.MoveToTail(this);
             }
 
             #endregion
@@ -769,6 +917,24 @@ namespace DemoGame.Editor
                 get { return _tool; }
             }
 
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToHead()
+            {
+                ToolBarControlHelper.MoveToHead(this);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToTail()
+            {
+                ToolBarControlHelper.MoveToTail(this);
+            }
+
             #endregion
         }
 
@@ -865,6 +1031,24 @@ namespace DemoGame.Editor
                 get { return _tool; }
             }
 
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToHead()
+            {
+                ToolBarControlHelper.MoveToHead(this);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToTail()
+            {
+                ToolBarControlHelper.MoveToTail(this);
+            }
+
             #endregion
         }
 
@@ -959,6 +1143,24 @@ namespace DemoGame.Editor
             public Tool Tool
             {
                 get { return _tool; }
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToHead()
+            {
+                ToolBarControlHelper.MoveToHead(this);
+            }
+
+            /// <summary>
+            /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+            /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+            /// </summary>
+            public void MoveToTail()
+            {
+                ToolBarControlHelper.MoveToTail(this);
             }
 
             #endregion

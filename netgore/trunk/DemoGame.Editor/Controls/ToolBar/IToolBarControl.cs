@@ -31,5 +31,17 @@ namespace DemoGame.Editor
         /// Gets the <see cref="Editor.Tool"/> that this control is for.
         /// </summary>
         Tool Tool { get; }
+
+        /// <summary>
+        /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
+        /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+        /// </summary>
+        void MoveToHead();
+
+        /// <summary>
+        /// Moves the <see cref="IToolBarControl"/> to the end of the <see cref="ToolBar"/>. Only valid when
+        /// <see cref="IToolBarControl.IsOnToolBar"/> is set.
+        /// </summary>
+        void MoveToTail();
     }
 }
