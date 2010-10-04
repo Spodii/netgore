@@ -11,13 +11,26 @@ namespace NetGore.Editor.EditorTool
     public abstract class ToggledButtonTool : Tool
     {
         /// <summary>
+        /// Processes the <see cref="ToolSettings"/> passed to this class's object constructor, modifies it, and returns
+        /// the modified <see cref="ToolSettings"/>. This way, it can force certain settings.
+        /// </summary>
+        /// <param name="settings">The <see cref="ToolSettings"/>.</param>
+        /// <returns>The modified <see cref="ToolSettings"/>.</returns>
+        static ToolSettings ProcessToolSettings(ToolSettings settings)
+        {
+            settings.ToolBarControlType = ToolBarControlType.Button;
+            return settings;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ToggledButtonTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        /// <param name="name">The name of the tool.</param>
-        /// <param name="toolBarVisibility">The visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.</param>
-        protected ToggledButtonTool(ToolManager toolManager, string name, ToolBarVisibility toolBarVisibility)
-            : base(toolManager, name, ToolBarControlType.Button, toolBarVisibility)
+        /// <param name="settings">The <see cref="ToolSettings"/> to use to create this <see cref="Tool"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="toolManager"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="settings"/> is null.</exception>
+        protected ToggledButtonTool(ToolManager toolManager, ToolSettings settings)
+            : base(toolManager, ProcessToolSettings(settings))
         {
             var btn = ToolBarControl.ControlSettings.AsButtonSettings();
             btn.CheckOnClick = true;
@@ -35,7 +48,7 @@ namespace NetGore.Editor.EditorTool
             base.OnIsEnabledChanged(oldValue, newValue);
 
             // Ensure the Checked value on the control is the same as the IsEnabled value
-            ToolBarControl.ControlSettings.AsButtonSettings().Checked = newValue;
+            ToolBarControl.ControlSettings.AsButtonSettings().Checked = IsEnabled;
         }
 
         /// <summary>

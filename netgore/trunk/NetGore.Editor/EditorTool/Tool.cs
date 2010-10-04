@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -34,13 +32,12 @@ namespace NetGore.Editor.EditorTool
         public delegate void ValueChangedEventHandler<in T>(Tool sender, T oldValue, T newValue);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        const bool _defaultIsEnabled = true;
-        const bool _defaultIsOnToolBar = true;
 
-        readonly IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
-        readonly string _name;
+        internal const bool defaultIsEnabled = true;
+        internal const bool defaultIsOnToolBar = true;
+
+        readonly ToolSettings _settings;
         readonly IToolBarControl _toolBarControl;
-        readonly ToolBarVisibility _toolBarVisibility;
         readonly ToolManager _toolManager;
 
         bool _isDisposed;
@@ -50,38 +47,22 @@ namespace NetGore.Editor.EditorTool
         /// Initializes a new instance of the <see cref="Tool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        /// <param name="name">The name of the tool.</param>
-        /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="Tool"/>
-        /// in a toolbar.</param>
-        /// <param name="toolBarVisibility">The visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
+        /// <param name="settings">The <see cref="ToolSettings"/> to use to create this <see cref="Tool"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="toolManager"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarControlType"/> does not contain a defined value of the
-        /// <see cref="ToolBarControlType"/> enum.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarVisibility"/> does not contain a defined value of the
-        /// <see cref="ToolBarVisibility"/> enum.</exception>
-        protected Tool(ToolManager toolManager, string name, ToolBarControlType toolBarControlType,
-                       ToolBarVisibility toolBarVisibility)
+        /// <exception cref="ArgumentNullException"><paramref name="settings"/> is null.</exception>
+        protected Tool(ToolManager toolManager, ToolSettings settings)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
             if (toolManager == null)
                 throw new ArgumentNullException("toolManager");
-            if (!EnumHelper<ToolBarControlType>.IsDefined(toolBarControlType))
-                throw new ArgumentOutOfRangeException("toolBarControlType");
-            if (!EnumHelper<ToolBarVisibility>.IsDefined(toolBarVisibility))
-                throw new ArgumentOutOfRangeException("toolBarVisibility");
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
-            _name = name;
+            settings.Lock();
+
+            // Set the properties
             _toolManager = toolManager;
-            _toolBarVisibility = toolBarVisibility;
-            _toolBarControl = ToolBar.CreateToolControl(this, toolBarControlType);
-
-            var exts = GetMapDrawingExtensions();
-            if (exts == null || exts.IsEmpty())
-                _mapDrawingExtensions = Enumerable.Empty<IMapDrawingExtension>();
-            else
-                _mapDrawingExtensions = exts.ToImmutable();
+            _settings = settings;
+            _toolBarControl = ToolBar.CreateToolControl(this, ToolSettings.ToolBarControlType);
         }
 
         /// <summary>
@@ -115,6 +96,18 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
+        /// Gets the name of the group that this <see cref="Tool"/> is in for restricting the enabled status of <see cref="Tool"/>s.
+        /// When this value is non-null, only one <see cref="Tool"/> from this group will be allowed to be enabled at a time. Enabling
+        /// the <see cref="Tool"/> will disable all others in the group. When null, this feature will be disabled.
+        /// Default value is null.
+        /// </summary>
+        [DefaultValue((string)null)]
+        public string EnabledToolsGroup
+        {
+            get { return ToolSettings.EnabledToolsGroup; }
+        }
+
+        /// <summary>
         /// Gets if this object has been disposed.
         /// </summary>
         [DefaultValue(false)]
@@ -128,7 +121,7 @@ namespace NetGore.Editor.EditorTool
         /// Gets or sets if this tool is enabled. When disabled, this <see cref="Tool"/> will not perform regular updating and drawing.
         /// Default is true.
         /// </summary>
-        [DefaultValue(_defaultIsEnabled)]
+        [DefaultValue(defaultIsEnabled)]
         [SyncValue]
         public bool IsEnabled
         {
@@ -155,7 +148,7 @@ namespace NetGore.Editor.EditorTool
         /// then this property will always be false.
         /// Default value is true, but can be altered by the derived class to default to false.
         /// </summary>
-        [DefaultValue(_defaultIsOnToolBar)]
+        [DefaultValue(defaultIsOnToolBar)]
         [SyncValue]
         public bool IsOnToolBar
         {
@@ -195,7 +188,7 @@ namespace NetGore.Editor.EditorTool
         /// </summary>
         public string Name
         {
-            get { return _name; }
+            get { return ToolSettings.Name; }
         }
 
         /// <summary>
@@ -214,7 +207,7 @@ namespace NetGore.Editor.EditorTool
         /// </summary>
         public ToolBarVisibility ToolBarVisibility
         {
-            get { return _toolBarVisibility; }
+            get { return ToolSettings.ToolBarVisibility; }
         }
 
         /// <summary>
@@ -223,6 +216,14 @@ namespace NetGore.Editor.EditorTool
         public ToolManager ToolManager
         {
             get { return _toolManager; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ToolSettings"/> instance that this <see cref="Tool"/> was created with.
+        /// </summary>
+        protected ToolSettings ToolSettings
+        {
+            get { return _settings; }
         }
 
         /// <summary>
@@ -263,17 +264,6 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
-        /// <see cref="Tool"/>.
-        /// </summary>
-        /// <returns>The <see cref="IMapDrawingExtension"/>s used by this <see cref="Tool"/>. Can be null or empty if none
-        /// are used. Default is null.</returns>
-        protected virtual IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles performing drawing after the GUI for a <see cref="IDrawableMap"/> has been draw.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
@@ -297,27 +287,26 @@ namespace NetGore.Editor.EditorTool
         void HandleEnabledChangedInternal()
         {
             // If we were disabled, remove the MapDrawingExtensions. Otherwise, add them.
-            Debug.Assert(_mapDrawingExtensions != null,
-                         "IsEnabled seems to have changed before the _mapDrawingExtensions were set.");
-
             if (IsEnabled)
-                ToolManager.MapDrawingExtensions.Add(_mapDrawingExtensions);
+                ToolManager.MapDrawingExtensions.Add(ToolSettings.MapDrawingExtensions);
             else
-                ToolManager.MapDrawingExtensions.Remove(_mapDrawingExtensions);
+                ToolManager.MapDrawingExtensions.Remove(ToolSettings.MapDrawingExtensions);
+
+            // If we were enabled, and an EnabledToolsGroup is provided, disable all other tools in the group
+            if (IsEnabled && EnabledToolsGroup != null)
+            {
+                var toDisable = ToolManager.Tools.Where(x => x.IsEnabled && ToolSettings.GroupNameComparer.Equals(EnabledToolsGroup, x.EnabledToolsGroup));
+                foreach (var groupTool in toDisable)
+                    groupTool.IsEnabled = false;
+            }
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling resetting the default values. The overriding method should
-        /// set the properties specific to the derived class, then call this base method. The parameters passed to the base method
-        /// can just be repeated from the parameters passed to the overridden method to use the default behavior, or can be altered
-        /// to provide custom values. For simplicity, all default values should be constant, no matter the current state.
+        /// When overridden in the derived class, allows for handling resetting the state of this <see cref="Tool"/>.
+        /// For simplicity, all default values should be constant, no matter the current state.
         /// </summary>
-        /// <param name="isEnabled">The default value for <see cref="Tool.IsEnabled"/>.</param>
-        /// <param name="isOnToolBar">The default value for <see cref="Tool.IsOnToolBar"/>.</param>
-        protected virtual void HandleResetValues(bool isEnabled, bool isOnToolBar)
+        protected virtual void HandleResetState()
         {
-            IsEnabled = isEnabled;
-            IsOnToolBar = isOnToolBar;
         }
 
         /// <summary>
@@ -363,15 +352,12 @@ namespace NetGore.Editor.EditorTool
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the <see cref="IsOnToolBarChanged"/> event.
+        /// </summary>
+        /// <param name="oldValue">The old (previous) value.</param>
+        /// <param name="newValue">The new (current) value.</param>
         protected virtual void OnIsOnToolBarChanged(bool oldValue, bool newValue)
-        {
-        }
-
-        protected virtual void OnToolBarPriorityChanged(int oldValue, int newValue)
-        {
-        }
-
-        protected virtual void OnToolbarIconChanged(Image oldValue, Image newValue)
         {
         }
 
@@ -387,13 +373,28 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// Resets all of the values of the <see cref="Tool"/> back to the default value.
+        /// Resets all of the state values of the <see cref="Tool"/> back to the default value.
         /// </summary>
-        public void ResetValues()
+        public void ResetState()
         {
+            // Reset the state
             try
             {
-                HandleResetValues(_defaultIsEnabled, _defaultIsOnToolBar);
+                IsEnabled = ToolSettings.EnabledByDefault;
+                IsOnToolBar = ToolSettings.OnToolBarByDefault;
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Error while trying to reset values for tool `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this, ex);
+                Debug.Fail(string.Format(errmsg, this, ex));
+            }
+
+            // Reset the state in the derived class
+            try
+            {
+                HandleResetState();
             }
             catch (Exception ex)
             {
@@ -404,55 +405,6 @@ namespace NetGore.Editor.EditorTool
                     log.ErrorFormat(errmsg, this, GetType().FullName, ex);
                 Debug.Fail(string.Format(errmsg, this, GetType().FullName, ex));
             }
-        }
-
-        /// <summary>
-        /// Tries to disable this tool.
-        /// </summary>
-        /// <returns>True if the tool was successfully disabled or was already disabled; otherwise false.</returns>
-        public bool TryDisable()
-        {
-            if (!IsEnabled)
-                return true;
-
-            if (!CanDisable())
-                return false;
-
-            IsEnabled = false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to enable this tool.
-        /// </summary>
-        /// <returns>True if the tool was successfully enabled or was already enabled; otherwise false.</returns>
-        public bool TryEnable()
-        {
-            if (IsEnabled)
-                return true;
-
-            if (!CanEnable())
-                return false;
-
-            IsEnabled = true;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to set the enabled state of this tool.
-        /// </summary>
-        /// <param name="enable">When true, try to set to enabled. When false, try to set to disabled.</param>
-        /// <returns>True if the tool's enabled state was changed to the value given by <paramref name="enable"/> or
-        /// <paramref name="enable"/> already equals the current <see cref="Tool.IsEnabled"/> state; false if the
-        /// state failed to change.</returns>
-        public bool TrySetEnabled(bool enable)
-        {
-            if (enable)
-                return TryEnable();
-            else
-                return TryDisable();
         }
 
         /// <summary>

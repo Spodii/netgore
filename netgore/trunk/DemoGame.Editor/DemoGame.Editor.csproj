@@ -131,7 +131,6 @@
     <Compile Include="Tools\MapGridDrawerTool.cs" />
     <Compile Include="Tools\MapGrhBoundWallsDrawerTool.cs" />
     <Compile Include="Tools\MapLightSourceDrawerTool.cs" />
-    <Compile Include="Tools\TestTools.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\ChildWindowForm.resx">
