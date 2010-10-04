@@ -37,6 +37,12 @@ namespace DemoGame.Editor
                 return;
 
             _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
+
+
+            lock (_instancesSync)
+            {
+                _instances.Add(this);
+            }
         }
 
         /// <summary>
