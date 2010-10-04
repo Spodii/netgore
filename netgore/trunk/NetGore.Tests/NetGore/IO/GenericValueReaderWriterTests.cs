@@ -24,7 +24,7 @@ namespace NetGore.Tests.NetGore.IO
                     writer.Write("Test", "asdf");
                 }
 
-                var reader = new GenericValueReader(filePath, "Root");
+                var reader = GenericValueReader.CreateFromFile(filePath, "Root");
                 var s = reader.ReadString("Test");
                 Assert.AreEqual("asdf", s);
             }
@@ -49,7 +49,7 @@ namespace NetGore.Tests.NetGore.IO
                     writer.Write("Test", "asdf");
                 }
 
-                var reader = new GenericValueReader(filePath, "Root");
+                var reader = GenericValueReader.CreateFromFile(filePath, "Root");
                 var s = reader.ReadString("Test");
                 Assert.AreEqual("asdf", s);
             }

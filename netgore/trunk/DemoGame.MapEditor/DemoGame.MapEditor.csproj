@@ -126,9 +126,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\ScreenForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Forms\ScreenForm.cs" />
     <Compile Include="Forms\ScreenForm.Designer.cs">
       <DependentUpon>ScreenForm.cs</DependentUpon>
     </Compile>

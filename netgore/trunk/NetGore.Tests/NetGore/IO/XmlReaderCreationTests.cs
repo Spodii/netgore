@@ -66,7 +66,7 @@ namespace NetGore.Tests.IO
             var xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "Values");
 
-            var r = new XmlValueReader(xmlReader, "Values");
+            var r = XmlValueReader.Create(xmlReader, "Values");
             TestXmlValueReader(r);
         }
 
@@ -77,7 +77,7 @@ namespace NetGore.Tests.IO
             var xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "MyInt");
 
-            var r = new XmlValueReader(xmlReader, "Values");
+            var r = XmlValueReader.Create(xmlReader, "Values");
             TestXmlValueReader(r);
         }
 

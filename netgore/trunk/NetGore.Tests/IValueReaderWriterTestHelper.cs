@@ -207,7 +207,7 @@ namespace NetGore.Tests
             /// <returns>The IValueWriter instance.</returns>
             public override IValueReader GetReader()
             {
-                return new BinaryValueReader(_filePath);
+                return BinaryValueReader.CreateFromFile(_filePath);
             }
 
             /// <summary>
@@ -216,7 +216,7 @@ namespace NetGore.Tests
             /// <returns>The IValueReader instance.</returns>
             public override IValueWriter GetWriter()
             {
-                return new BinaryValueWriter(_filePath);
+                return BinaryValueWriter.Create(_filePath);
             }
         }
 
@@ -251,7 +251,7 @@ namespace NetGore.Tests
             public override IValueReader GetReader()
             {
                 _stream.PositionBits = 0;
-                return new BinaryValueReader(_stream);
+                return BinaryValueReader.Create(_stream);
             }
 
             /// <summary>
@@ -260,7 +260,7 @@ namespace NetGore.Tests
             /// <returns>The IValueReader instance.</returns>
             public override IValueWriter GetWriter()
             {
-                return new BinaryValueWriter(_stream);
+                return BinaryValueWriter.Create(_stream);
             }
         }
 
@@ -312,7 +312,7 @@ namespace NetGore.Tests
             /// <returns>The IValueWriter instance.</returns>
             public override IValueReader GetReader()
             {
-                return new XmlValueReader(_filePath, _rootNodeName);
+                return XmlValueReader.CreateFromFile(_filePath, _rootNodeName);
             }
 
             /// <summary>
@@ -321,7 +321,7 @@ namespace NetGore.Tests
             /// <returns>The IValueReader instance.</returns>
             public override IValueWriter GetWriter()
             {
-                return new XmlValueWriter(_filePath, _rootNodeName);
+                return XmlValueWriter.Create(_filePath, _rootNodeName);
             }
         }
     }
