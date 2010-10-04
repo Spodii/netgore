@@ -32,15 +32,18 @@ namespace DemoGame.Editor
         /// <param name="newValue">The new (current) value.</param>
         public delegate void ValueChangedEventHandler<in T>(Tool sender, T oldValue, T newValue);
 
+        readonly IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
+
         readonly string _name;
         readonly IToolBarControl _toolBarControl;
         readonly ToolBarVisibility _toolBarVisibility;
         readonly ToolManager _toolManager;
-        readonly IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
 
-        bool _canShowInToolbar = true;
         bool _isDisposed;
         bool _isEnabled;
+
+        const bool _defaultIsEnabled = true;
+        const bool _defaultIsOnToolBar = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tool"/> class.
@@ -56,7 +59,7 @@ namespace DemoGame.Editor
         /// <see cref="ToolBarControlType"/> enum.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarVisibility"/> does not contain a defined value of the
         /// <see cref="ToolBarVisibility"/> enum.</exception>
-        protected Tool( ToolManager toolManager, string name, ToolBarControlType toolBarControlType,
+        protected Tool(ToolManager toolManager, string name, ToolBarControlType toolBarControlType,
                        ToolBarVisibility toolBarVisibility)
         {
             if (string.IsNullOrEmpty(name))
@@ -78,15 +81,7 @@ namespace DemoGame.Editor
                 _mapDrawingExtensions = Enumerable.Empty<IMapDrawingExtension>();
             else
                 _mapDrawingExtensions = exts.ToImmutable();
-
-            // TODO: !! Grab from the tool settings if this should be shown on the toolbar
-            AddToToolBar();
         }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="CanShowInToolbar"/> property has changed.
-        /// </summary>
-        public event ValueChangedEventHandler<bool> CanShowInToolbarChanged;
 
         /// <summary>
         /// Notifies listeners when this object has been disposed.
@@ -99,24 +94,22 @@ namespace DemoGame.Editor
         public event ValueChangedEventHandler<bool> EnabledChanged;
 
         /// <summary>
-        /// Gets or sets if this tool can be shown in the <see cref="ToolBar"/>. This does not mean that the tool will be shown in the
-        /// <see cref="ToolBar"/>, just if it is allowed to be.
-        /// Default is true.
+        /// Notifies listeners when the <see cref="IsOnToolBar"/> property has changed.
         /// </summary>
-        [DefaultValue(true)]
+        public event ValueChangedEventHandler<bool> IsOnToolBarChanged;
+
+        /// <summary>
+        /// Gets if this tool can be shown in the <see cref="ToolBar"/>. This does not mean that the tool will be shown in the
+        /// <see cref="ToolBar"/>, just if it is allowed to be.
+        /// </summary>
         public bool CanShowInToolbar
         {
-            get { return _canShowInToolbar; }
-            set
+            get
             {
-                if (_canShowInToolbar == value)
-                    return;
+                if (ToolBarControl == null || ToolBarVisibility == ToolBarVisibility.None)
+                    return false;
 
-                _canShowInToolbar = value;
-
-                OnCanShowInToolBarChanged(!CanShowInToolbar, CanShowInToolbar);
-                if (CanShowInToolbarChanged != null)
-                    CanShowInToolbarChanged(this, !CanShowInToolbar, CanShowInToolbar);
+                return true;
             }
         }
 
@@ -132,9 +125,10 @@ namespace DemoGame.Editor
 
         /// <summary>
         /// Gets or sets if this tool is enabled. When disabled, this <see cref="Tool"/> will not perform regular updating and drawing.
-        /// Default is false.
+        /// Default is true.
         /// </summary>
-        [DefaultValue(false)]
+        [DefaultValue(_defaultIsEnabled)]
+        [SyncValue]
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -156,38 +150,64 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Internally handles when <see cref="IsEnabled"/> has changed.
+        /// When overridden in the derived class, allows for handling resetting the default values. The overriding method should
+        /// set the properties specific to the derived class, then call this base method. The parameters passed to the base method
+        /// can just be repeated from the parameters passed to the overridden method to use the default behavior, or can be altered
+        /// to provide custom values. For simplicity, all default values should be constant, no matter the current state.
         /// </summary>
-        void HandleEnabledChangedInternal()
+        /// <param name="isEnabled">The default value for <see cref="Tool.IsEnabled"/>.</param>
+        /// <param name="isOnToolBar">The default value for <see cref="Tool.IsOnToolBar"/>.</param>
+        protected virtual void HandleResetValues(bool isEnabled, bool isOnToolBar)
         {
-            // Ensure the update hook is removed
-            GlobalState.Instance.Tick -= tickCallback;
-
-            // Add the update hook if we became enabled (since we just removed it, we know we won't have it added twice)
-            if (IsEnabled)
-                GlobalState.Instance.Tick += tickCallback;
-
-            // If we were disabled, remove the MapDrawingExtensions. Otherwise, add them.
-            Debug.Assert(_mapDrawingExtensions != null, "IsEnabled seems to have changed before the _mapDrawingExtensions were set.");
-            if (IsEnabled)
-            {
-                ToolManager.MapDrawingExtensions.Add(_mapDrawingExtensions);
-            }
-            else
-            {
-                ToolManager.MapDrawingExtensions.Remove(_mapDrawingExtensions);
-            }
+            IsEnabled = isEnabled;
+            IsOnToolBar = isOnToolBar;
         }
 
         /// <summary>
-        /// Handles the <see cref="GlobalState.Tick"/> event.
+        /// Resets all of the values of the <see cref="Tool"/> back to the default value.
         /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        void tickCallback(TickCount currentTime)
+        public void ResetValues()
         {
-            Debug.Assert(IsEnabled);
+            HandleResetValues(_defaultIsEnabled, _defaultIsOnToolBar);
+        }
 
-            HandleUpdate(currentTime);
+        /// <summary>
+        /// Gets or sets if this tool is currently on the <see cref="ToolBar"/>. If <see cref="CanShowInToolbar"/> is false,
+        /// then this property will always be false.
+        /// Default value is true, but can be altered by the derived class to default to false.
+        /// </summary>
+        [DefaultValue(_defaultIsOnToolBar)]
+        [SyncValue]
+        public bool IsOnToolBar
+        {
+            get
+            {
+                if (!CanShowInToolbar)
+                    return false;
+
+                return ToolBarControl.IsOnToolBar;
+            }
+            set
+            {
+                if (!CanShowInToolbar)
+                    value = false;
+
+                var oldValue = IsOnToolBar;
+
+                if (value)
+                    ToolBar.AddToToolBar(this);
+                else
+                    ToolBar.RemoveFromToolBar(this);
+
+                var newValue = IsOnToolBar;
+
+                if (oldValue != newValue)
+                {
+                    OnIsOnToolBarChanged(oldValue, newValue);
+                    if (IsOnToolBarChanged != null)
+                        IsOnToolBarChanged(this, oldValue, newValue);
+                }
+            }
         }
 
         /// <summary>
@@ -227,15 +247,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Tries to add this <see cref="Tool"/> to the appropriate <see cref="ToolBar"/> if it is not already on the
-        /// <see cref="ToolBar"/>.
-        /// </summary>
-        public void AddToToolBar()
-        {
-            ToolBar.AddToToolBar(this);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets if this tool is allowed to be disabled at this time.
         /// </summary>
         /// <returns>True if the tool can be enabled; otherwise false.</returns>
@@ -251,17 +262,6 @@ namespace DemoGame.Editor
         protected virtual bool CanEnable()
         {
             return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
-        /// <see cref="Tool"/>.
-        /// </summary>
-        /// <returns>The <see cref="IMapDrawingExtension"/>s used by this <see cref="Tool"/>. Can be null or empty if none
-        /// are used. Default is null.</returns>
-        protected virtual IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
-        {
-            return null;
         }
 
         /// <summary>
@@ -284,6 +284,17 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
+        /// <see cref="Tool"/>.
+        /// </summary>
+        /// <returns>The <see cref="IMapDrawingExtension"/>s used by this <see cref="Tool"/>. Can be null or empty if none
+        /// are used. Default is null.</returns>
+        protected virtual IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles performing drawing after the GUI for a <see cref="MapBase"/> has been draw.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
@@ -299,6 +310,27 @@ namespace DemoGame.Editor
         /// <param name="map">The <see cref="MapBase"/> being drawn.</param>
         protected virtual void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, MapBase map)
         {
+        }
+
+        /// <summary>
+        /// Internally handles when <see cref="IsEnabled"/> has changed.
+        /// </summary>
+        void HandleEnabledChangedInternal()
+        {
+            // Ensure the update hook is removed
+            GlobalState.Instance.Tick -= tickCallback;
+
+            // Add the update hook if we became enabled (since we just removed it, we know we won't have it added twice)
+            if (IsEnabled)
+                GlobalState.Instance.Tick += tickCallback;
+
+            // If we were disabled, remove the MapDrawingExtensions. Otherwise, add them.
+            Debug.Assert(_mapDrawingExtensions != null,
+                         "IsEnabled seems to have changed before the _mapDrawingExtensions were set.");
+            if (IsEnabled)
+                ToolManager.MapDrawingExtensions.Add(_mapDrawingExtensions);
+            else
+                ToolManager.MapDrawingExtensions.Remove(_mapDrawingExtensions);
         }
 
         /// <summary>
@@ -335,10 +367,6 @@ namespace DemoGame.Editor
             HandleBeforeDrawMapGUI(spriteBatch, map);
         }
 
-        protected virtual void OnCanShowInToolBarChanged(bool oldValue, bool newValue)
-        {
-        }
-
         /// <summary>
         /// When overridden in the derived class, allows for handling the <see cref="Tool.EnabledChanged"/> event.
         /// </summary>
@@ -348,11 +376,26 @@ namespace DemoGame.Editor
         {
         }
 
+        protected virtual void OnIsOnToolBarChanged(bool oldValue, bool newValue)
+        {
+        }
+
         protected virtual void OnToolBarPriorityChanged(int oldValue, int newValue)
         {
         }
 
         protected virtual void OnToolbarIconChanged(Image oldValue, Image newValue)
+        {
+        }
+
+        /// <summary>
+        /// Handles reading custom state information for this <see cref="Tool"/> from an <see cref="IValueReader"/> for when
+        /// persisting the <see cref="Tool"/>'s state.
+        /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
+        /// reading and writing the state.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        protected virtual void ReadCustomToolState(IValueReader reader)
         {
         }
 
@@ -405,6 +448,28 @@ namespace DemoGame.Editor
                 return TryDisable();
         }
 
+        /// <summary>
+        /// Handles writing custom state information for this <see cref="Tool"/> to an <see cref="IValueWriter"/> for when
+        /// persisting the <see cref="Tool"/>'s state.
+        /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
+        /// reading and writing the state.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        protected virtual void WriteCustomToolState(IValueWriter writer)
+        {
+        }
+
+        /// <summary>
+        /// Handles the <see cref="GlobalState.Tick"/> event.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        void tickCallback(TickCount currentTime)
+        {
+            Debug.Assert(IsEnabled);
+
+            HandleUpdate(currentTime);
+        }
+
         #region IDisposable Members
 
         /// <summary>
@@ -426,27 +491,7 @@ namespace DemoGame.Editor
 
         #endregion
 
-        /// <summary>
-        /// Handles reading custom state information for this <see cref="Tool"/> from an <see cref="IValueReader"/> for when
-        /// persisting the <see cref="Tool"/>'s state.
-        /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
-        /// reading and writing the state.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        protected virtual void ReadCustomToolState(IValueReader reader)
-        {
-        }
-
-        /// <summary>
-        /// Handles writing custom state information for this <see cref="Tool"/> to an <see cref="IValueWriter"/> for when
-        /// persisting the <see cref="Tool"/>'s state.
-        /// When possible, it is preferred that you use the <see cref="SyncValueAttribute"/> instead of manually handling
-        /// reading and writing the state.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-        protected virtual void WriteCustomToolState(IValueWriter writer)
-        {
-        }
+        #region IPersistable Members
 
         /// <summary>
         /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
@@ -470,5 +515,7 @@ namespace DemoGame.Editor
 
             WriteCustomToolState(writer);
         }
+
+        #endregion
     }
 }
