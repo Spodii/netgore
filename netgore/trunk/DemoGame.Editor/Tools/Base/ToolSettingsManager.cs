@@ -347,43 +347,6 @@ namespace DemoGame.Editor
             return true;
         }
 
-        static int SortToolsComparer(Tool a, Tool b)
-        {
-            Debug.Assert(a != null);
-            Debug.Assert(b != null);
-            
-            // Nulls are equal
-            if (a == null && b == null)
-                return 0;
-
-            // Non-nulls come before nulls
-            if (a != null && b == null)
-                return -1;
-
-            if (a == null && b != null)
-                return 1;
-
-            // If not part of the same ToolBar, consider them equal (doesn't really matter anyways)
-            if (a.ToolBarVisibility == b.ToolBarVisibility)
-                return 0;
-
-            // If neither are on the ToolBar, it doesn't matter
-            if (!a.IsOnToolBar && !b.IsOnToolBar)
-                return 0;
-
-            // Ones currently on the ToolBar come before those that are not
-            if (a.IsOnToolBar && !b.IsOnToolBar)
-                return -1;
-
-            if (!a.IsOnToolBar && b.IsOnToolBar)
-                return 1;
-
-            // If we got this far, they are both on the ToolBar and use the same ToolBarVisibility, so we have to
-            // determine which one comes first on the appropriate ToolBar
-            var tb = ToolBar.GetToolBar(a.ToolBarVisibility);
-     
-        }
-
         /// <summary>
         /// Writes a <see cref="KeyValuePair{T,U}"/> for a <see cref="Tool"/>.
         /// </summary>
