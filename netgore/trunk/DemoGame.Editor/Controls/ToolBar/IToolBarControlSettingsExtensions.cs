@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace DemoGame.Editor
 {
@@ -23,6 +24,8 @@ namespace DemoGame.Editor
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
 
+            Debug.Assert(controlSettings is IToolBarButtonSettings);
+
             return controlSettings as IToolBarButtonSettings;
         }
 
@@ -42,6 +45,8 @@ namespace DemoGame.Editor
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
 
+            Debug.Assert(controlSettings is IToolBarComboBoxSettings);
+
             return controlSettings as IToolBarComboBoxSettings;
         }
 
@@ -60,6 +65,8 @@ namespace DemoGame.Editor
         {
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
+
+            Debug.Assert(controlSettings is IToolBarDropDownButtonSettings);
 
             return controlSettings as IToolBarDropDownButtonSettings;
         }
@@ -81,6 +88,8 @@ namespace DemoGame.Editor
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
 
+            Debug.Assert(controlSettings is IToolBarDropDownItemSettings);
+
             return controlSettings as IToolBarDropDownItemSettings;
         }
 
@@ -99,6 +108,8 @@ namespace DemoGame.Editor
         {
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
+
+            Debug.Assert(controlSettings is IToolBarLabelSettings);
 
             return controlSettings as IToolBarLabelSettings;
         }
@@ -119,6 +130,8 @@ namespace DemoGame.Editor
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
 
+            Debug.Assert(controlSettings is IToolBarProgressBarSettings);
+
             return controlSettings as IToolBarProgressBarSettings;
         }
 
@@ -138,6 +151,8 @@ namespace DemoGame.Editor
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
 
+            Debug.Assert(controlSettings is IToolBarSplitButtonSettings);
+
             return controlSettings as IToolBarSplitButtonSettings;
         }
 
@@ -156,6 +171,8 @@ namespace DemoGame.Editor
         {
             if (controlSettings == null)
                 throw new ArgumentNullException("controlSettings");
+
+            Debug.Assert(controlSettings is IToolBarTextBoxSettings);
 
             return controlSettings as IToolBarTextBoxSettings;
         }
