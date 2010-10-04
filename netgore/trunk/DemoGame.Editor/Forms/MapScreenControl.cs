@@ -128,27 +128,6 @@ namespace DemoGame.Editor
 
             Map.Draw(sb);
 
-            // TODO: !! MapGrh bound walls
-            /*
-            if (chkDrawAutoWalls.Checked)
-            {
-                foreach (var mg in Map.MapGrhs)
-                {
-                    if (!_camera.InView(mg.Grh, mg.Position))
-                        continue;
-
-                    var boundWalls = _mapGrhWalls[mg.Grh.GrhData];
-                    if (boundWalls == null)
-                        continue;
-
-                    foreach (var wall in boundWalls)
-                    {
-                        EntityDrawer.Draw(sb, Camera, wall, mg.Position);
-                    }
-                }
-            }
-            */
-
             // TODO: !! Border
             /*
             _mapBorderDrawer.Draw(sb, Map, _camera);

@@ -36,6 +36,12 @@ namespace DemoGame.Editor
         readonly Font _defaultRenderFont;
         readonly MapState _mapState;
         readonly Timer _timer;
+        readonly MapGrhWalls _mapGrhWalls;
+
+        /// <summary>
+        /// Gets the <see cref="MapGrhWalls"/> instance.
+        /// </summary>
+        public MapGrhWalls MapGrhWalls { get { return _mapGrhWalls; } }
 
         /// <summary>
         /// Initializes the <see cref="GlobalState"/> class.
@@ -52,7 +58,7 @@ namespace DemoGame.Editor
         {
             ThreadAsserts.IsMainThread();
 
-            _mapState = new MapState();
+            // Load all sorts of stuff
             _contentManager = NetGore.Content.ContentManager.Create();
 
             var dbConnSettings = new DbConnectionSettings();
@@ -66,6 +72,11 @@ namespace DemoGame.Editor
 
             GrhInfo.Load(ContentPaths.Dev, ContentManager);
             AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
+
+            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev, x => new WallEntity(x));
+
+            // Load the child classes
+            _mapState = new MapState();
 
             // Grab the audio manager instances, which will ensure that they are property initialized
             // before something that can't pass it an ContentManager tries to get an instance
