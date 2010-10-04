@@ -124,6 +124,7 @@
     <Compile Include="Forms\ChildWindowForm.Designer.cs">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\MapBorderTool.cs" />
     <Compile Include="Tools\MapGridTool.cs" />
     <Compile Include="Tools\TestTools.cs" />
     <Compile Include="TransBox.cs" />

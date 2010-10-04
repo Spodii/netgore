@@ -6,75 +6,18 @@ using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
-    /*
-    public class MapBorderTool : Tool
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapBorderTool"/> class.
-        /// </summary>
-        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapBorderTool(ToolManager toolManager) : base(toolManager, "Map Border", ToolBarControlType.Button, ToolBarVisibility.Map)
-        {
-            var btn = ToolBarControl.ControlSettings.AsButtonSettings();
-            btn.CheckOnClick = true;
-            btn.Checked = IsEnabled;
-            btn.CheckedChanged += btn_CheckedChanged;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
-        /// <see cref="ToolBase"/>.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IMapDrawingExtension"/>s used by this <see cref="ToolBase"/>. Can be null or empty if none
-        /// are used. Default is null.
-        /// </returns>
-        protected override IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
-        {
-            return new IMapDrawingExtension[] { new MapGridDrawingExtension() };
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="ToolBase.IsEnabledChanged"/> event.
-        /// </summary>
-        /// <param name="oldValue">The old (previous) value.</param>
-        /// <param name="newValue">The new (current) value.</param>
-        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
-        {
-            base.OnIsEnabledChanged(oldValue, newValue);
-
-            // Ensure the Checked value on the control is the same as the IsEnabled value
-            ToolBarControl.ControlSettings.AsButtonSettings().Checked = newValue;
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the <see cref="ToolBase.ToolBarControl"/>.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btn_CheckedChanged(object sender, EventArgs e)
-        {
-            IsEnabled = ToolBarControl.ControlSettings.AsButtonSettings().Checked;
-        }
-    }
-    */
-
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
     /// </summary>
-    public class MapGridTool : Tool // TODO: !! : ToggledButtonTool
+    public class MapGridTool : ToggledButtonTool
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGridTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
         protected MapGridTool(ToolManager toolManager)
-            : base(toolManager, "Map Grid", ToolBarControlType.Button, ToolBarVisibility.Map)
+            : base(toolManager, "Map Grid", ToolBarVisibility.Map)
         {
-            var btn = ToolBarControl.ControlSettings.AsButtonSettings();
-            btn.CheckOnClick = true;
-            btn.Checked = IsEnabled;
-            btn.CheckedChanged += btn_CheckedChanged;
         }
 
         /// <summary>
@@ -88,29 +31,6 @@ namespace DemoGame.Editor
         protected override IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
         {
             return new IMapDrawingExtension[] { new MapGridDrawingExtension() };
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
-        /// </summary>
-        /// <param name="oldValue">The old (previous) value.</param>
-        /// <param name="newValue">The new (current) value.</param>
-        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
-        {
-            base.OnIsEnabledChanged(oldValue, newValue);
-
-            // Ensure the Checked value on the control is the same as the IsEnabled value
-            ToolBarControl.ControlSettings.AsButtonSettings().Checked = newValue;
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the <see cref="Tool.ToolBarControl"/>.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btn_CheckedChanged(object sender, EventArgs e)
-        {
-            IsEnabled = ToolBarControl.ControlSettings.AsButtonSettings().Checked;
         }
 
         class MapGridDrawingExtension : MapDrawingExtension
