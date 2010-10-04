@@ -216,9 +216,7 @@
       <Name>NetGore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tools\Base\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\cursor_entitiesadd.png" />
   </ItemGroup>
