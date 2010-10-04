@@ -35,7 +35,6 @@ namespace NetGore.EditorTools
         public delegate void ValueChangedEventHandler<in T>(Tool sender, T oldValue, T newValue);
 
         readonly IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
-
         readonly string _name;
         readonly IToolBarControl _toolBarControl;
         readonly ToolBarVisibility _toolBarVisibility;
