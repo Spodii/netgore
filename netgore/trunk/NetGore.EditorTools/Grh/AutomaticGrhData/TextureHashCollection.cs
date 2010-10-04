@@ -10,7 +10,7 @@ using log4net;
 using NetGore.Content;
 using NetGore.IO;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     ///   A collection of hashes for textures.

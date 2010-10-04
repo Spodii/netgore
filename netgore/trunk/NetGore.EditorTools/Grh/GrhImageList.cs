@@ -13,7 +13,7 @@ using SFML;
 
 // FUTURE: Unload images that have not been used for an extended period of time
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     /// Contains the <see cref="ImageList"/> used for the <see cref="GrhData"/>s to display the shrunken

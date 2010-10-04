@@ -8,7 +8,7 @@ using NetGore.Graphics;
 using NetGore.IO;
 using SFML;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     /// A <see cref="TreeNode"/> for the <see cref="GrhTreeView"/> that represents a single <see cref="GrhData"/>.

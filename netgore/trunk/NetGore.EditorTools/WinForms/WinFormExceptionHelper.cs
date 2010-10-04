@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// Provides helper methods for handling <see cref="Exception"/>s in WinForm applications.

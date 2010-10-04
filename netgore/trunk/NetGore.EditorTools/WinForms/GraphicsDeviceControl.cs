@@ -9,7 +9,7 @@ using log4net;
 using SFML.Graphics;
 using Color = System.Drawing.Color;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// Custom control that uses the graphics device to draw onto a WinForms control.

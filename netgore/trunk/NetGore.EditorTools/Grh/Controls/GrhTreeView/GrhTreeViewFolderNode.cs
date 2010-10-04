@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using NetGore.IO;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     /// A <see cref="TreeNode"/> for the <see cref="GrhTreeView"/> that represents a folder containing one or more

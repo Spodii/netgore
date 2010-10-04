@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     public delegate void TypedComboBoxChangeEventHandler<T>(TypedComboBox<T> sender, T item);
 }

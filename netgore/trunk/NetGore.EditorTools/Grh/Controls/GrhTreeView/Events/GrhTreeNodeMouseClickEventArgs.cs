@@ -2,7 +2,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     public class GrhTreeNodeMouseClickEventArgs : TreeNodeMouseClickEventArgs
     {

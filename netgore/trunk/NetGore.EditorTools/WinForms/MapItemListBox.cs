@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.World;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// Special <see cref="ListBox"/> that is designed for displaying a list of items in a map.

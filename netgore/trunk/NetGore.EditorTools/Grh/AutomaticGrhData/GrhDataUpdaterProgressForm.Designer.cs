@@ -1,4 +1,4 @@
-﻿namespace NetGore.EditorTools
+﻿namespace NetGore.EditorTools.Grhs
 {
     partial class GrhDataUpdaterProgressForm
     {

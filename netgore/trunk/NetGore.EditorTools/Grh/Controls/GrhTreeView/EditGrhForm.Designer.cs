@@ -3,7 +3,7 @@
 // ReSharper disable RedundantDelegateCreation
 // ReSharper disable RedundantCast
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     partial class EditGrhForm
     {
@@ -38,7 +38,7 @@ namespace NetGore.EditorTools
             this.label10 = new System.Windows.Forms.Label();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtCategory = new NetGore.EditorTools.GrhDataCategoryTextBox();
+            this.txtCategory = new NetGore.EditorTools.Grhs.GrhDataCategoryTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.radioStationary = new System.Windows.Forms.RadioButton();
             this.radioAnimated = new System.Windows.Forms.RadioButton();
@@ -71,7 +71,7 @@ namespace NetGore.EditorTools
             this.label5 = new System.Windows.Forms.Label();
             this.txtX = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtTexture = new NetGore.EditorTools.GrhDataTextureTextBox();
+            this.txtTexture = new NetGore.EditorTools.Grhs.GrhDataTextureTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.chkPlatform = new System.Windows.Forms.CheckBox();
             this.gbCategorization.SuspendLayout();

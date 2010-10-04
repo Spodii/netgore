@@ -9,7 +9,7 @@ using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.Grhs
 {
     /// <summary>
     /// Handles the automatic GrhData generation.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// Handles when the <see cref="ParticleEffectListBox"/> requests to create a particle effect instance.

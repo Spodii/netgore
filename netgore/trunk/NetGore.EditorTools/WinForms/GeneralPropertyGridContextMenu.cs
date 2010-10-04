@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.EditorTools.UI;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// A general <see cref="ContextMenu"/> for usage on a <see cref="PropertyGrid"/>.
