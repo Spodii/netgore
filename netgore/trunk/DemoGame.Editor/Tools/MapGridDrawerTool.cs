@@ -13,25 +13,25 @@ namespace DemoGame.Editor
     public class MapGridDrawerTool : ToggledButtonTool
     {
         /// <summary>
+        /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
+        /// </summary>
+        /// <returns>The <see cref="ToolSettings"/>.</returns>
+        static ToolSettings CreateSettings()
+        {
+            return new ToolSettings("Map Grid Drawer")
+            {
+                ToolBarVisibility = ToolBarVisibility.Map,
+                MapDrawingExtensions = new IMapDrawingExtension[] { new MapGridDrawingExtension() }
+            };
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MapGridDrawerTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
         protected MapGridDrawerTool(ToolManager toolManager)
-            : base(toolManager, "Map Grid Drawer", ToolBarVisibility.Map)
+            : base(toolManager, CreateSettings())
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
-        /// <see cref="Tool"/>.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IMapDrawingExtension"/>s used by this <see cref="Tool"/>. Can be null or empty if none
-        /// are used. Default is null.
-        /// </returns>
-        protected override IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
-        {
-            return new IMapDrawingExtension[] { new MapGridDrawingExtension() };
         }
 
         class MapGridDrawingExtension : MapDrawingExtension

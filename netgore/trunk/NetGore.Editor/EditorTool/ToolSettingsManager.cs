@@ -141,7 +141,7 @@ namespace NetGore.Editor.EditorTool
             if (!_toolSettings.TryGetValue(key, out s))
             {
                 // No settings provided, reset the tool
-                tool.ResetValues();
+                tool.ResetState();
             }
             else
             {
@@ -159,7 +159,7 @@ namespace NetGore.Editor.EditorTool
                     Debug.Fail(string.Format(errmsg, tool, ex));
 
                     // When loading from settings fails, reset to default values
-                    tool.ResetValues();
+                    tool.ResetState();
                 }
             }
         }
