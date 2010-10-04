@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -143,7 +144,11 @@ namespace NetGore.Collections
         /// <returns>An instance of the Type.</returns>
         public static object GetTypeInstance(Type type, params object[] arguments)
         {
-            var instance = Activator.CreateInstance(type, arguments);
+            const BindingFlags bf = BindingFlags.CreateInstance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            Binder binder = null;
+            CultureInfo ci = null;
+
+            var instance = Activator.CreateInstance(type, bf, binder, arguments, ci);
             return instance;
         }
 
