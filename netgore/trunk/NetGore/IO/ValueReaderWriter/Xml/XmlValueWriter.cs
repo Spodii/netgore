@@ -35,16 +35,26 @@ namespace NetGore.IO
         bool _isDisposed;
 
         /// <summary>
-        /// Creates a <see cref="XmlValueWriter"/> for writing to a file.
+        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
-        /// <param name="filePath">The path to the file to write to.</param>
+        /// <param name="writer">XmlWriter to write the values to.</param>
         /// <param name="nodeName">Name to give the root node containing the values.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        /// <returns>The <see cref="XmlValueWriter"/> instance.</returns>
-        public static XmlValueWriter Create(string filePath, string nodeName, bool useEnumNames = true)
+        /// <param name="attributeName">Name of the attribute.</param>
+        /// <param name="attributeValue">Value of the attribute.</param>
+        public XmlValueWriter(XmlWriter writer, string nodeName, string attributeName, string attributeValue)
         {
-            return new XmlValueWriter(filePath, nodeName, useEnumNames);
+            // TODO: !! Remove the usage of this. It is provided just to write an attribute which is something that probably shouldn't be done - at least not this way.
+
+            if (writer == null)
+                throw new ArgumentNullException("writer");
+            if (string.IsNullOrEmpty(attributeName))
+                throw new ArgumentNullException("attributeName");
+            if (string.IsNullOrEmpty(attributeValue))
+                throw new ArgumentNullException("attributeValue");
+
+            _writer = writer;
+            _writer.WriteStartElement(nodeName);
+            _writer.WriteAttributeString(attributeName, attributeValue);
         }
 
         /// <summary>
@@ -73,19 +83,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Creates a <see cref="XmlValueWriter"/> for writing to an <see cref="XmlWriter"/>.
-        /// </summary>
-        /// <param name="writer"><see cref="XmlWriter"/> to write the values to.</param>
-        /// <param name="nodeName">Name to give the root node containing the values.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        /// <returns>The <see cref="XmlValueWriter"/> instance.</returns>
-        public static XmlValueWriter Create(XmlWriter writer, string nodeName, bool useEnumNames = true)
-        {
-            return new XmlValueWriter(writer, nodeName, useEnumNames);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
         /// <param name="writer"><see cref="XmlWriter"/> to write the values to.</param>
@@ -104,34 +101,37 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
-        /// </summary>
-        /// <param name="writer">XmlWriter to write the values to.</param>
-        /// <param name="nodeName">Name to give the root node containing the values.</param>
-        /// <param name="attributeName">Name of the attribute.</param>
-        /// <param name="attributeValue">Value of the attribute.</param>
-        public XmlValueWriter(XmlWriter writer, string nodeName, string attributeName, string attributeValue)
-        {
-            // TODO: !! Remove the usage of this. It is provided just to write an attribute which is something that probably shouldn't be done - at least not this way.
-
-            if (writer == null)
-                throw new ArgumentNullException("writer");
-            if (string.IsNullOrEmpty(attributeName))
-                throw new ArgumentNullException("attributeName");
-            if (string.IsNullOrEmpty(attributeValue))
-                throw new ArgumentNullException("attributeValue");
-
-            _writer = writer;
-            _writer.WriteStartElement(nodeName);
-            _writer.WriteAttributeString(attributeName, attributeValue);
-        }
-
-        /// <summary>
         /// Gets if this <see cref="XmlValueWriter"/> has been disposed.
         /// </summary>
         public bool IsDisposed
         {
             get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="XmlValueWriter"/> for writing to a file.
+        /// </summary>
+        /// <param name="filePath">The path to the file to write to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="XmlValueWriter"/> instance.</returns>
+        public static XmlValueWriter Create(string filePath, string nodeName, bool useEnumNames = true)
+        {
+            return new XmlValueWriter(filePath, nodeName, useEnumNames);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="XmlValueWriter"/> for writing to an <see cref="XmlWriter"/>.
+        /// </summary>
+        /// <param name="writer"><see cref="XmlWriter"/> to write the values to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="XmlValueWriter"/> instance.</returns>
+        public static XmlValueWriter Create(XmlWriter writer, string nodeName, bool useEnumNames = true)
+        {
+            return new XmlValueWriter(writer, nodeName, useEnumNames);
         }
 
         /// <summary>

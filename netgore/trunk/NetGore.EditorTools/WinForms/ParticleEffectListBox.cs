@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
-using NetGore.IO;
 
 namespace NetGore.EditorTools
 {

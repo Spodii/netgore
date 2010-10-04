@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 
@@ -61,7 +62,7 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
     /// </summary>
-    public class MapGridTool : Tool
+    public class MapGridTool : Tool // TODO: !! : ToggledButtonTool
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGridTool"/> class.
@@ -77,19 +78,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
-        /// </summary>
-        /// <param name="oldValue">The old (previous) value.</param>
-        /// <param name="newValue">The new (current) value.</param>
-        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
-        {
-            base.OnIsEnabledChanged(oldValue, newValue);
-
-            // Ensure the Checked value on the control is the same as the IsEnabled value
-            ToolBarControl.ControlSettings.AsButtonSettings().Checked = newValue;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets the <see cref="IMapDrawingExtension"/>s that are used by this
         /// <see cref="Tool"/>.
         /// </summary>
@@ -100,6 +88,19 @@ namespace DemoGame.Editor
         protected override IEnumerable<IMapDrawingExtension> GetMapDrawingExtensions()
         {
             return new IMapDrawingExtension[] { new MapGridDrawingExtension() };
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
+        /// </summary>
+        /// <param name="oldValue">The old (previous) value.</param>
+        /// <param name="newValue">The new (current) value.</param>
+        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
+        {
+            base.OnIsEnabledChanged(oldValue, newValue);
+
+            // Ensure the Checked value on the control is the same as the IsEnabled value
+            ToolBarControl.ControlSettings.AsButtonSettings().Checked = newValue;
         }
 
         /// <summary>

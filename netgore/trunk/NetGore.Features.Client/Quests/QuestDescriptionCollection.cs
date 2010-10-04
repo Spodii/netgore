@@ -75,7 +75,7 @@ namespace NetGore.Features.Quests
         /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
         public void Save(ContentPaths contentPath)
         {
-            var filePath =GetFilePath(contentPath);
+            var filePath = GetFilePath(contentPath);
             using (var w = XmlValueWriter.Create(filePath, _rootFileNodeName))
             {
                 WriteState(w);

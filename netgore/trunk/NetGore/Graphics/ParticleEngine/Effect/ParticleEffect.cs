@@ -27,6 +27,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _particleEffectNodeName = "ParticleEffect";
 
         readonly ParticleEffectConfig _effectConfig;
+
         readonly Dictionary<string, ParticleEmitter> _emitters =
             new Dictionary<string, ParticleEmitter>(ParticleEmitter.EmitterNameComparer);
 
@@ -403,7 +404,6 @@ namespace NetGore.Graphics.ParticleEngine
         {
             if (IsDisposed)
                 return;
-
 
             // Check if we have expired due to the elapsed time
             if (RemainingLife == 0)

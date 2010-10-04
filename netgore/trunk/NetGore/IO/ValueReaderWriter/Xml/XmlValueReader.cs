@@ -26,48 +26,6 @@ namespace NetGore.IO
         readonly Dictionary<string, List<string>> _values;
 
         /// <summary>
-        /// Creates a <see cref="XmlValueReader"/> for reading from an <see cref="XmlReader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="XmlReader"/> that the values will be read from.</param>
-        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        /// <returns>The <see cref="XmlValueReader"/> instance.</returns>
-        public static XmlValueReader Create(XmlReader reader, string rootNodeName, bool useEnumNames = true)
-        {
-            return new XmlValueReader(reader, rootNodeName, false, useEnumNames);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="XmlValueReader"/> for reading from a file.
-        /// </summary>
-        /// <param name="filePath">Path of the file to read.</param>
-        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        /// <returns>The <see cref="XmlValueReader"/> instance.</returns>
-        public static XmlValueReader CreateFromFile(string filePath, string rootNodeName, bool useEnumNames = true)
-        {
-            return new XmlValueReader(filePath, rootNodeName, useEnumNames);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="XmlValueReader"/> for reading from a string.
-        /// </summary>
-        /// <param name="data">The string to read.</param>
-        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        /// <returns>The <see cref="XmlValueReader"/> instance.</returns>
-        public static XmlValueReader CreateFromString(string data, string rootNodeName, bool useEnumNames = true)
-        {
-            var bytes = Encoding.UTF8.GetBytes(data);
-            var stream = new MemoryStream(bytes);
-            var xmlReader = XmlReader.Create(stream);
-            return new XmlValueReader(xmlReader, rootNodeName, true, useEnumNames);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
         /// </summary>
         /// <param name="filePath">Path of the file to read.</param>
@@ -112,9 +70,22 @@ namespace NetGore.IO
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
-            
+
             _useEnumNames = useEnumNames;
             _values = ReadNodesIntoDictionary(reader, rootNodeName, readAllContent);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="XmlValueReader"/> for reading from an <see cref="XmlReader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="XmlReader"/> that the values will be read from.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="XmlValueReader"/> instance.</returns>
+        public static XmlValueReader Create(XmlReader reader, string rootNodeName, bool useEnumNames = true)
+        {
+            return new XmlValueReader(reader, rootNodeName, false, useEnumNames);
         }
 
         static ArgumentException CreateDuplicateKeysException(string key)
@@ -125,6 +96,35 @@ namespace NetGore.IO
                 " This method requires that the key's name is unique.";
 
             return new ArgumentException(string.Format(errmsg, key), parameterName);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="XmlValueReader"/> for reading from a file.
+        /// </summary>
+        /// <param name="filePath">Path of the file to read.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="XmlValueReader"/> instance.</returns>
+        public static XmlValueReader CreateFromFile(string filePath, string rootNodeName, bool useEnumNames = true)
+        {
+            return new XmlValueReader(filePath, rootNodeName, useEnumNames);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="XmlValueReader"/> for reading from a string.
+        /// </summary>
+        /// <param name="data">The string to read.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="XmlValueReader"/> instance.</returns>
+        public static XmlValueReader CreateFromString(string data, string rootNodeName, bool useEnumNames = true)
+        {
+            var bytes = Encoding.UTF8.GetBytes(data);
+            var stream = new MemoryStream(bytes);
+            var xmlReader = XmlReader.Create(stream);
+            return new XmlValueReader(xmlReader, rootNodeName, true, useEnumNames);
         }
 
         static ArgumentException CreateKeyNotFoundException(string key)

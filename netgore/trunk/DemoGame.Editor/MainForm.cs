@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.EditorTools;
 using NetGore.World;
-using ToolBar = System.Windows.Forms.ToolBar;
+using ToolBar = NetGore.EditorTools.ToolBar;
 
 namespace DemoGame.Editor
 {
@@ -21,7 +22,7 @@ namespace DemoGame.Editor
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
             ToolManager.Instance.SaveSettings();
 
@@ -58,7 +59,7 @@ namespace DemoGame.Editor
         void dockPanel_Click(object sender, EventArgs e)
         {
             // Clear the ToolBarVisibility
-            NetGore.EditorTools.ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
+            ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
         }
 
         void loadToolStripMenuItem_Click(object sender, EventArgs e)

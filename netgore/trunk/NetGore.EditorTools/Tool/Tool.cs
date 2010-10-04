@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 
@@ -34,6 +33,10 @@ namespace NetGore.EditorTools
         /// <param name="newValue">The new (current) value.</param>
         public delegate void ValueChangedEventHandler<in T>(Tool sender, T oldValue, T newValue);
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const bool _defaultIsEnabled = true;
+        const bool _defaultIsOnToolBar = true;
+
         readonly IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
         readonly string _name;
         readonly IToolBarControl _toolBarControl;
@@ -42,9 +45,6 @@ namespace NetGore.EditorTools
 
         bool _isDisposed;
         bool _isEnabled;
-
-        const bool _defaultIsEnabled = true;
-        const bool _defaultIsOnToolBar = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tool"/> class.
@@ -147,41 +147,6 @@ namespace NetGore.EditorTools
 
                 // Internal handling
                 HandleEnabledChangedInternal();
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling resetting the default values. The overriding method should
-        /// set the properties specific to the derived class, then call this base method. The parameters passed to the base method
-        /// can just be repeated from the parameters passed to the overridden method to use the default behavior, or can be altered
-        /// to provide custom values. For simplicity, all default values should be constant, no matter the current state.
-        /// </summary>
-        /// <param name="isEnabled">The default value for <see cref="Tool.IsEnabled"/>.</param>
-        /// <param name="isOnToolBar">The default value for <see cref="Tool.IsOnToolBar"/>.</param>
-        protected virtual void HandleResetValues(bool isEnabled, bool isOnToolBar)
-        {
-            IsEnabled = isEnabled;
-            IsOnToolBar = isOnToolBar;
-        }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Resets all of the values of the <see cref="Tool"/> back to the default value.
-        /// </summary>
-        public void ResetValues()
-        {
-            try
-            {
-                HandleResetValues(_defaultIsEnabled, _defaultIsOnToolBar);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Error while trying to reset values for tool `{0}`." + 
-                    " Check HandleResetValues() on the derived class ({1}). Exception: {2}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this, GetType().FullName, ex);
-                Debug.Fail(string.Format(errmsg, this, GetType().FullName, ex));
             }
         }
 
@@ -327,15 +292,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Updates the <see cref="Tool"/>.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        public void Update(TickCount currentTime)
-        {
-            HandleUpdate(currentTime);
-        }
-
-        /// <summary>
         /// Internally handles when <see cref="IsEnabled"/> has changed.
         /// </summary>
         void HandleEnabledChangedInternal()
@@ -348,6 +304,20 @@ namespace NetGore.EditorTools
                 ToolManager.MapDrawingExtensions.Add(_mapDrawingExtensions);
             else
                 ToolManager.MapDrawingExtensions.Remove(_mapDrawingExtensions);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling resetting the default values. The overriding method should
+        /// set the properties specific to the derived class, then call this base method. The parameters passed to the base method
+        /// can just be repeated from the parameters passed to the overridden method to use the default behavior, or can be altered
+        /// to provide custom values. For simplicity, all default values should be constant, no matter the current state.
+        /// </summary>
+        /// <param name="isEnabled">The default value for <see cref="Tool.IsEnabled"/>.</param>
+        /// <param name="isOnToolBar">The default value for <see cref="Tool.IsOnToolBar"/>.</param>
+        protected virtual void HandleResetValues(bool isEnabled, bool isOnToolBar)
+        {
+            IsEnabled = isEnabled;
+            IsOnToolBar = isOnToolBar;
         }
 
         /// <summary>
@@ -417,6 +387,26 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Resets all of the values of the <see cref="Tool"/> back to the default value.
+        /// </summary>
+        public void ResetValues()
+        {
+            try
+            {
+                HandleResetValues(_defaultIsEnabled, _defaultIsOnToolBar);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg =
+                    "Error while trying to reset values for tool `{0}`." +
+                    " Check HandleResetValues() on the derived class ({1}). Exception: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this, GetType().FullName, ex);
+                Debug.Fail(string.Format(errmsg, this, GetType().FullName, ex));
+            }
+        }
+
+        /// <summary>
         /// Tries to disable this tool.
         /// </summary>
         /// <returns>True if the tool was successfully disabled or was already disabled; otherwise false.</returns>
@@ -463,6 +453,15 @@ namespace NetGore.EditorTools
                 return TryEnable();
             else
                 return TryDisable();
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Tool"/>.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        public void Update(TickCount currentTime)
+        {
+            HandleUpdate(currentTime);
         }
 
         /// <summary>

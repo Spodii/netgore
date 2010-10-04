@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NetGore.EditorTools.Docking.Win32
 {
     // Hook Types  

@@ -13,8 +13,8 @@ namespace NetGore.Graphics.ParticleEngine
     {
         const string _categoryName = "Map Particle Effect";
 
-        string _particleEffectName;
         IParticleEffect _particleEffect;
+        string _particleEffectName;
         Vector2 _position;
 
         /// <summary>
@@ -33,6 +33,22 @@ namespace NetGore.Graphics.ParticleEngine
         public ParticleEffectReference(string particleEffectName)
         {
             ParticleEffectName = particleEffectName;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ParticleEffect"/> instance. Can be null.
+        /// </summary>
+        [Browsable(false)]
+        protected IParticleEffect ParticleEffect
+        {
+            get { return _particleEffect; }
+            private set
+            {
+                if (_particleEffect == value)
+                    return;
+
+                _particleEffect = value;
+            }
         }
 
         /// <summary>
@@ -58,22 +74,6 @@ namespace NetGore.Graphics.ParticleEngine
 
                 if (ParticleEffect != null)
                     ParticleEffect.Position = Position;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ParticleEffect"/> instance. Can be null.
-        /// </summary>
-        [Browsable(false)]
-        protected IParticleEffect ParticleEffect
-        {
-            get { return _particleEffect; }
-            private set
-            {
-                if (_particleEffect == value)
-                    return;
-
-                _particleEffect = value;
             }
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using NetGore.EditorTools.Docking.Win32;
 using ScrollBars = NetGore.EditorTools.Docking.Win32.ScrollBars;

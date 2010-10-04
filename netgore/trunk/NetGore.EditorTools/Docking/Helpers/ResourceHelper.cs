@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Resources;
 
 namespace NetGore.EditorTools.Docking

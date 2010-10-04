@@ -11,10 +11,10 @@ namespace NetGore.Graphics
     public class MapDrawingExtensionCollection : ICollection<IMapDrawingExtension>
     {
         readonly List<IMapDrawingExtension> _extensions = new List<IMapDrawingExtension>();
-        readonly MapDrawLayerEventHandler _handleBeginDrawMapLayer;
-        readonly MapDrawLayerEventHandler _handleEndDrawMapLayer;
         readonly MapDrawEventHandler _handleBeginDrawMap;
+        readonly MapDrawLayerEventHandler _handleBeginDrawMapLayer;
         readonly MapDrawEventHandler _handleEndDrawMap;
+        readonly MapDrawLayerEventHandler _handleEndDrawMapLayer;
 
         IDrawableMap _map;
 
@@ -76,22 +76,20 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Removes items from this collection.
+        /// Handles the <see cref="IDrawableMap.BeginDrawMap"/> event from the current map.
         /// </summary>
-        /// <param name="extensions">The items to remove.</param>
-        /// <returns>The number of items that were successfully removed from the collection. If all items were removed successfully, this
-        /// value will be equal to the number of items in the <paramref name="extensions"/>.</returns>
-        public virtual int Remove(IEnumerable<IMapDrawingExtension> extensions)
+        /// <param name="map">The map.</param>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        /// <param name="camera">The camera.</param>
+        void BeginDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
         {
-            int c = 0;
+            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
+            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
 
-            foreach (var item in extensions)
+            foreach (var extension in _extensions)
             {
-                if (Remove(item))
-                    c++;
+                extension.DrawBeforeMap(map, spriteBatch, camera);
             }
-
-            return c;
         }
 
         /// <summary>
@@ -109,6 +107,23 @@ namespace NetGore.Graphics
             foreach (var extension in _extensions)
             {
                 extension.DrawBeforeLayer(map, layer, spriteBatch, camera);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IDrawableMap.EndDrawMap"/> event from the current map.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="spriteBatch">The sprite batch.</param>
+        /// <param name="camera">The camera.</param>
+        void EndDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        {
+            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
+            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+
+            foreach (var extension in _extensions)
+            {
+                extension.DrawAfterMap(map, spriteBatch, camera);
             }
         }
 
@@ -131,39 +146,23 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Handles the <see cref="IDrawableMap.BeginDrawMap"/> event from the current map.
+        /// Removes items from this collection.
         /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        void BeginDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="extensions">The items to remove.</param>
+        /// <returns>The number of items that were successfully removed from the collection. If all items were removed successfully, this
+        /// value will be equal to the number of items in the <paramref name="extensions"/>.</returns>
+        public virtual int Remove(IEnumerable<IMapDrawingExtension> extensions)
         {
-            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+            var c = 0;
 
-            foreach (var extension in _extensions)
+            foreach (var item in extensions)
             {
-                extension.DrawBeforeMap(map, spriteBatch, camera);
+                if (Remove(item))
+                    c++;
             }
+
+            return c;
         }
-
-        /// <summary>
-        /// Handles the <see cref="IDrawableMap.EndDrawMap"/> event from the current map.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        void EndDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
-        {
-            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
-
-            foreach (var extension in _extensions)
-            {
-                extension.DrawAfterMap(map, spriteBatch, camera);
-            }
-        }
-
 
         #region ICollection<IMapDrawingExtension> Members
 

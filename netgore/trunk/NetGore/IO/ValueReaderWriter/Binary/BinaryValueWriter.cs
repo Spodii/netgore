@@ -27,22 +27,6 @@ namespace NetGore.IO
         Stack<int> _nodeOffsetStack = null;
 
         /// <summary>
-        /// Creates a <see cref="BinaryValueWriter"/> to write to a <see cref="BitStream"/>.
-        /// </summary>
-        /// <param name="writer"><see cref="BitStream"/> that will be written to.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        /// <returns>The <see cref="BinaryValueWriter"/> instance.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
-        public static BinaryValueWriter Create(BitStream writer, bool useEnumNames = true)
-        {
-            if (writer == null)
-                throw new ArgumentNullException("writer");
-
-            return new BinaryValueWriter(writer, useEnumNames);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
         /// </summary>
         /// <param name="writer"><see cref="BitStream"/> that will be written to.</param>
@@ -57,22 +41,6 @@ namespace NetGore.IO
                 throw new ArgumentNullException("writer");
 
             _writer = writer;
-        }
-
-        /// <summary>
-        /// Creates a <see cref="BinaryValueWriter"/> to write to a file.
-        /// </summary>
-        /// <param name="filePath">Path to the file to write to.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        /// <returns>The <see cref="BinaryValueWriter"/> instance.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
-        public static BinaryValueWriter Create(string filePath, bool useEnumNames = true)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentNullException("filePath");
-
-            return new BinaryValueWriter(filePath, useEnumNames);
         }
 
         /// <summary>
@@ -93,6 +61,38 @@ namespace NetGore.IO
         public bool IsDisposed
         {
             get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="BinaryValueWriter"/> to write to a <see cref="BitStream"/>.
+        /// </summary>
+        /// <param name="writer"><see cref="BitStream"/> that will be written to.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="BinaryValueWriter"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
+        public static BinaryValueWriter Create(BitStream writer, bool useEnumNames = true)
+        {
+            if (writer == null)
+                throw new ArgumentNullException("writer");
+
+            return new BinaryValueWriter(writer, useEnumNames);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="BinaryValueWriter"/> to write to a file.
+        /// </summary>
+        /// <param name="filePath">Path to the file to write to.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <returns>The <see cref="BinaryValueWriter"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
+        public static BinaryValueWriter Create(string filePath, bool useEnumNames = true)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException("filePath");
+
+            return new BinaryValueWriter(filePath, useEnumNames);
         }
 
         /// <summary>

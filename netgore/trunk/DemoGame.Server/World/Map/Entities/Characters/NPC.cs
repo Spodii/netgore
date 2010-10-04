@@ -26,6 +26,12 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly IAIFactory<Character> _aiFactory = AIFactory.Instance;
+
+        /// <summary>
+        /// Cache of an empty enumerable of quests.
+        /// </summary>
+        static readonly IEnumerable<IQuest<User>> _emptyQuests = Enumerable.Empty<IQuest<User>>();
+
         static readonly NPCChatManagerBase _npcChatManager = NPCChatManager.Instance;
 
         IAI _ai;
@@ -63,25 +69,6 @@ namespace DemoGame.Server
                 log.InfoFormat("Created persistent NPC `{0}` from CharacterID `{1}`.", this, characterID);
 
             LoadPersistentNPCTemplateInfo();
-        }
-
-        /// <summary>
-        /// Cache of an empty enumerable of quests.
-        /// </summary>
-        static readonly IEnumerable<IQuest<User>> _emptyQuests = Enumerable.Empty<IQuest<User>>();
-
-        /// <summary>
-        /// Gets the quests that this <see cref="NPC"/> should provide.
-        /// </summary>
-        /// <param name="charTemplate">The <see cref="CharacterTemplate"/> that this <see cref="NPC"/> was loaded from.</param>
-        /// <returns>The quests that this <see cref="NPC"/> should provide. Return an empty or null collection to make
-        /// this <see cref="NPC"/> not provide any quests.</returns>
-        protected virtual IEnumerable<IQuest<User>> GetProvidedQuests(CharacterTemplate charTemplate)
-        {
-            if (charTemplate == null)
-                return _emptyQuests;
-
-            return charTemplate.Quests;
         }
 
         /// <summary>
@@ -303,6 +290,20 @@ namespace DemoGame.Server
             }
 
             return Position;
+        }
+
+        /// <summary>
+        /// Gets the quests that this <see cref="NPC"/> should provide.
+        /// </summary>
+        /// <param name="charTemplate">The <see cref="CharacterTemplate"/> that this <see cref="NPC"/> was loaded from.</param>
+        /// <returns>The quests that this <see cref="NPC"/> should provide. Return an empty or null collection to make
+        /// this <see cref="NPC"/> not provide any quests.</returns>
+        protected virtual IEnumerable<IQuest<User>> GetProvidedQuests(CharacterTemplate charTemplate)
+        {
+            if (charTemplate == null)
+                return _emptyQuests;
+
+            return charTemplate.Quests;
         }
 
         /// <summary>

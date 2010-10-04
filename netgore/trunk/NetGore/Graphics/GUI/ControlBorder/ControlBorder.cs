@@ -25,31 +25,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const int _maxDrawCallsBeforeDebugWarning = 30;
 
-        /// <summary>
-        /// Checks that the amount being drawn for a tiled draw call is a sane amount.
-        /// </summary>
-        /// <param name="min">The starting draw coordinate.</param>
-        /// <param name="max">The ending draw coordinate.</param>
-        /// <param name="spriteSize">The size of the sprite being drawn.</param>
-        /// <param name="side">The <see cref="ControlBorderSpriteType"/>.</param>
-        [Conditional("DEBUG")]
-        void AssertSaneDrawTilingAmount(int min, int max, float spriteSize, ControlBorderSpriteType side)
-        {
-            const string errmsg = 
-            "Too many draw calls being made to draw the ControlBorder `{0}` on side `{1}` - performance will suffer." +
-            " Either use a larger sprite, or use ControlBorderDrawStyle.Stretch instead of ControlBorderDrawStyle.Tile." + 
-            " This may also be an indication that you are using ControlBorderDrawStyle.Tile unintentionally.";
-
-            int drawCalls = (int)((max - min) / spriteSize);
-            if (drawCalls <= _maxDrawCallsBeforeDebugWarning)
-                return;
-
-            if (log.IsWarnEnabled)
-                log.WarnFormat(errmsg, this, side);
-
-            Debug.Fail(string.Format(errmsg, this, side));
-        }
-
         static readonly object _drawSync = new object();
         static readonly ControlBorder _empty;
         static readonly List<Func<Control, Color, Color>> _globalColorTransformations = new List<Func<Control, Color, Color>>();
@@ -233,6 +208,31 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Checks that the amount being drawn for a tiled draw call is a sane amount.
+        /// </summary>
+        /// <param name="min">The starting draw coordinate.</param>
+        /// <param name="max">The ending draw coordinate.</param>
+        /// <param name="spriteSize">The size of the sprite being drawn.</param>
+        /// <param name="side">The <see cref="ControlBorderSpriteType"/>.</param>
+        [Conditional("DEBUG")]
+        void AssertSaneDrawTilingAmount(int min, int max, float spriteSize, ControlBorderSpriteType side)
+        {
+            const string errmsg =
+                "Too many draw calls being made to draw the ControlBorder `{0}` on side `{1}` - performance will suffer." +
+                " Either use a larger sprite, or use ControlBorderDrawStyle.Stretch instead of ControlBorderDrawStyle.Tile." +
+                " This may also be an indication that you are using ControlBorderDrawStyle.Tile unintentionally.";
+
+            var drawCalls = (int)((max - min) / spriteSize);
+            if (drawCalls <= _maxDrawCallsBeforeDebugWarning)
+                return;
+
+            if (log.IsWarnEnabled)
+                log.WarnFormat(errmsg, this, side);
+
+            Debug.Fail(string.Format(errmsg, this, side));
+        }
+
+        /// <summary>
         /// Draws the <see cref="ControlBorder"/> to the specified region.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw with.</param>
@@ -405,8 +405,6 @@ namespace NetGore.Graphics.GUI
             var region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
             Draw(sb, region, color);
         }
-
-        
 
         /// <summary>
         /// Gets the <see cref="ControlBorderDrawStyle"/> for the given <see cref="ControlBorderSpriteType"/>.

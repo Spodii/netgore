@@ -1,4 +1,6 @@
-﻿namespace NetGore.Graphics.ParticleEngine
+﻿using System.Linq;
+
+namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
     /// Delegate for handling events from the <see cref="IParticleEffect"/>.

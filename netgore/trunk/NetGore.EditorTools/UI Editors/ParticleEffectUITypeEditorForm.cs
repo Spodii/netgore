@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using NetGore.Graphics.ParticleEngine;
-using NetGore.IO;
 using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
