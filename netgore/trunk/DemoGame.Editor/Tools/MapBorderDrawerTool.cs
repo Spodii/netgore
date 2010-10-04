@@ -19,7 +19,8 @@ namespace DemoGame.Editor
             return new ToolSettings("Map Border Drawer")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
-                MapDrawingExtensions = new IMapDrawingExtension[] { new MapBorderDrawingExtension() }
+                MapDrawingExtensions = new IMapDrawingExtension[] { new MapBorderDrawingExtension() },
+                OnToolBarByDefault = false,
             };
         }
 

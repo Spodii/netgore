@@ -21,7 +21,8 @@ namespace DemoGame.Editor
             return new ToolSettings("Map Grid Drawer")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
-                MapDrawingExtensions = new IMapDrawingExtension[] { new MapGridDrawingExtension() }
+                MapDrawingExtensions = new IMapDrawingExtension[] { new MapGridDrawingExtension() },
+                OnToolBarByDefault = true
             };
         }
 
