@@ -77,7 +77,6 @@ namespace DemoGame.Editor
             // Set up the timer
             _timer = new Timer { Interval = 1000 / 60 };
             _timer.Tick += _timer_Tick;
-            _timer.Start();
         }
 
         /// <summary>
@@ -107,6 +106,15 @@ namespace DemoGame.Editor
         public Font DefaultRenderFont
         {
             get { return _defaultRenderFont; }
+        }
+
+        /// <summary>
+        /// Gets or sets if the <see cref="GlobalState.Tick"/> event will be trigger.
+        /// </summary>
+        public bool IsTickEnabled
+        {
+            get { return _timer.Enabled; }
+            set { _timer.Enabled = value; }
         }
 
         /// <summary>
@@ -144,6 +152,11 @@ namespace DemoGame.Editor
 
             var now = TickCount.Now;
 
+            // Some manual update calls
+            if (ToolManager.Instance != null)
+                ToolManager.Instance.Update(now);
+
+            // Raise event
             if (Tick != null)
                 Tick(now);
         }

@@ -41,8 +41,8 @@ namespace DemoGame.Editor
             tbGlobal.ToolBarVisibility = ToolBarVisibility.Global;
             tbMap.ToolBarVisibility = ToolBarVisibility.Map;
 
-            // HACK: Force the ToolManager to initialize. Won't be needed when we load the settings here instead.
-            var x = ToolManager.Instance;
+            // Enable the update timer
+            GlobalState.Instance.IsTickEnabled = true;
         }
 
         void closeToolStripMenuItem_Click(object sender, EventArgs e)

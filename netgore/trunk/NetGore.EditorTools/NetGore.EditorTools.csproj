@@ -253,7 +253,7 @@
     </Compile>
     <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
     <Compile Include="MutablePair.cs" />
-    <Compile Include="Tool\ToolBase.cs" />
+    <Compile Include="Tool\Tool.cs" />
     <Compile Include="Tool\ToolBar\IToolBarButtonSettings.cs" />
     <Compile Include="Tool\ToolBar\IToolBarComboBoxSettings.cs" />
     <Compile Include="Tool\ToolBar\IToolBarControl.cs" />

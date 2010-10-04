@@ -30,7 +30,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets the <see cref="Editor.Tool"/> that this control is for.
         /// </summary>
-        ToolBase Tool { get; }
+        Tool Tool { get; }
 
         /// <summary>
         /// Moves the <see cref="IToolBarControl"/> to the start of the <see cref="ToolBar"/>. Only valid when
