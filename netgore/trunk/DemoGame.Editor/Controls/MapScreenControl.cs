@@ -130,6 +130,8 @@ namespace DemoGame.Editor
             {
                 if (!DesignMode)
                 {
+                    ToolManager.Instance.ToolTargetContainers.Remove(this);
+
                     lock (_instancesSync)
                     {
                         _instances.Remove(this);
@@ -236,6 +238,8 @@ namespace DemoGame.Editor
             // We don't want to initialize any of this stuff in the design mode
             if (DesignMode)
                 return;
+
+            ToolManager.Instance.ToolTargetContainers.Add(this);
 
             // Add an event hook to the tick timer so we can update ourself
             GlobalState.Instance.Tick -= InvokeDrawing;
