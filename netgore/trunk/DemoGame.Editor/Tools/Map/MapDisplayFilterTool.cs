@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using NetGore;
@@ -17,11 +18,12 @@ namespace DemoGame.Editor
 
         readonly FilterCollection _filterCollection;
         readonly IList<IToolTargetMapContainer> _mapContainers = new List<IToolTargetMapContainer>();
+        readonly ToolStripButton _tsManageFilters;
 
         MapDrawFilterHelper _currentFilter;
 
         // TODO: !! Make use of the FilterCollection... add ToolStripItems for each filter, ability to add/remove filters, etc
-
+      
         /// <summary>
         /// Initializes a new instance of the <see cref="MapDisplayFilterTool"/> class.
         /// </summary>
@@ -33,6 +35,17 @@ namespace DemoGame.Editor
             var s = ToolBarControl.ControlSettings.AsSplitButtonSettings();
             s.ToolTipText = "Filters what is displayed on the map";
             s.ClickToEnable = true;
+
+            // Set up the DropDownItems
+            _tsManageFilters = new ToolStripButton("Manage Filters...", null, _tsManageFilters_Click);
+
+            s.DropDownItems.Add(new ToolStripSeparator());
+            s.DropDownItems.Add(_tsManageFilters);
+        }
+
+        void _tsManageFilters_Click(object sender, EventArgs e)
+        {
+            // TODO: !! Show filter editor
         }
 
         /// <summary>
