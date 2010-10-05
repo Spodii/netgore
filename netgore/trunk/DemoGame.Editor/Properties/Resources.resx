@@ -118,30 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cursor_entities" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_select.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cursor_entitiesadd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_entitiesadd.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cursor_grhs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_grhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cursor_grhsadd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_grhsadd.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cursor_lights" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_lights.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cursor_lightsadd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_lightsadd.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cursor_walls" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_walls.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cursor_wallsadd" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cursor_wallsadd.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="MapWallsDrawerTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MapWallsDrawerTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -154,11 +130,35 @@
   <data name="MapGridDrawerTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MapGridDrawerTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="MapLightSourceDrawerTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MapLightSourceDrawerTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MapLightSourceDrawerTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MapLightSourceDrawerTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MapEntityCursorTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapEntityCursorTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapEntityCursorTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapEntityCursorTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapGrhCursorTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapGrhCursorTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapGrhCursorTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapGrhCursorTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapLightCursorTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapLightCursorTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapLightCursorTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapLightCursorTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapWallCursorTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapWallCursorTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapWallCursorTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapWallCursorTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

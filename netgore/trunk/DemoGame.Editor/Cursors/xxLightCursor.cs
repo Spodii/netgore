@@ -22,7 +22,7 @@ namespace DemoGame.Editor
         /// </summary>
         public override Image CursorImage
         {
-            get { return Resources.cursor_lights; }
+            get { return null; }
         }
 
         /// <summary>

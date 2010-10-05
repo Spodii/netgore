@@ -27,7 +27,7 @@ namespace DemoGame.Editor
         /// </summary>
         public override Image CursorImage
         {
-            get { return Resources.cursor_wallsadd; }
+            get { return null; }
         }
 
         /// <summary>
