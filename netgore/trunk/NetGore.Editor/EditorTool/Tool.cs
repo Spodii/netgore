@@ -376,6 +376,47 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
+        /// Invokes the <see cref="Tool.ToolTargetContainerAdded"/> method.
+        /// </summary>
+        /// <param name="c">The <see cref="IToolTargetContainer"/> to pass.</param>
+        internal void InvokeToolTargetContainerAdded(IToolTargetContainer c)
+        {
+            ToolTargetContainerAdded(c);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Tool.ToolTargetContainerRemoved"/> method.
+        /// </summary>
+        /// <param name="c">The <see cref="IToolTargetContainer"/> to pass.</param>
+        internal void InvokeToolTargetContainerRemoved(IToolTargetContainer c)
+        {
+            ToolTargetContainerRemoved(c);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles setting up event listeners for a <see cref="IToolTargetContainer"/>.
+        /// This will be invoked once for every <see cref="Tool"/> instance for every <see cref="IToolTargetContainer"/> available.
+        /// When the <see cref="Tool"/> is newly added to the <see cref="ToolManager"/>, all existing <see cref="IToolTargetContainer"/>s
+        /// will be sent through this method. As new ones are added while this <see cref="Tool"/> exists, those new
+        /// <see cref="IToolTargetContainer"/>s will also be passed through. What events to listen to and on what instances is
+        /// purely up to the derived <see cref="Tool"/>.
+        /// Make sure that all attached event listeners are also removed in the <see cref="Tool.ToolTargetContainerRemoved"/> method.
+        /// </summary>
+        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
+        protected virtual void ToolTargetContainerAdded(IToolTargetContainer c)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles tearing down event listeners for a <see cref="IToolTargetContainer"/>.
+        /// Any event listeners set up in <see cref="Tool.ToolTargetContainerAdded"/> should be torn down here.
+        /// </summary>
+        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
+        protected virtual void ToolTargetContainerRemoved(IToolTargetContainer c)
+        {
+        }
+
+        /// <summary>
         /// Updates the <see cref="Tool"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>

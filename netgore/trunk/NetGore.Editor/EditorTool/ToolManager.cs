@@ -38,8 +38,9 @@ namespace NetGore.Editor.EditorTool
         const int _autoSaveSettingsRate = 1000 * 60 * 3;
 
         static readonly ToolManager _instance;
-        readonly Timer _autoSaveSettingsTimer;
 
+        readonly Timer _autoSaveSettingsTimer;
+        readonly ToolTargetContainerCollection _containers = new ToolTargetContainerCollection();
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
         readonly ToolStateManager _toolState = new ToolStateManager();
         readonly Dictionary<Type, Tool> _tools = new Dictionary<Type, Tool>();
@@ -77,6 +78,10 @@ namespace NetGore.Editor.EditorTool
 
             // Change to the generic "user" profile
             ToolSettingsProfileName = "User";
+
+            // Listen for containers being added and removed
+            ToolTargetContainers.Added += ToolTargetContainers_Added;
+            ToolTargetContainers.Removed += ToolTargetContainers_Removed;
 
             // Create the auto-saver
             _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolState, _autoSaveSettingsRate,
@@ -117,6 +122,10 @@ namespace NetGore.Editor.EditorTool
             get { return _isDisposed; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="MapDrawingExtensionCollection"/> used by this <see cref="ToolManager"/> to manage the
+        /// <see cref="IMapDrawingExtension"/>s implemented by the <see cref="Tool"/>s in this <see cref="ToolManager"/>.
+        /// </summary>
         public MapDrawingExtensionCollection MapDrawingExtensions
         {
             get { return _mapDrawingExtensions; }
@@ -137,6 +146,15 @@ namespace NetGore.Editor.EditorTool
 
                 _toolState.CurrentSettingsFile = ToolStateManager.GetFilePath(ContentPaths.Build, _toolSettingsProfileName);
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ToolTargetContainerCollection"/> that holds the <see cref="IToolTargetContainer"/>s to be used
+        /// by the <see cref="Tool"/>s in this <see cref="ToolManager"/>.
+        /// </summary>
+        public ToolTargetContainerCollection ToolTargetContainers
+        {
+            get { return _containers; }
         }
 
         /// <summary>
@@ -279,6 +297,57 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
+        /// Handles the <see cref="ToolTargetContainerCollection.Added"/> event for the <see cref="_containers"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="c">The <see cref="IToolTargetContainer"/> that was added.</param>
+        void ToolTargetContainers_Added(ToolTargetContainerCollection sender, IToolTargetContainer c)
+        {
+            // Notify all tools that it was added
+            foreach (var tool in Tools)
+            {
+                try
+                {
+                    tool.InvokeToolTargetContainerAdded(c);
+                }
+                catch (Exception ex)
+                {
+                    // When there is an error, log it but move on to the next tool
+                    const string errmsg = "Error while adding container `{0}` to tool `{1}` in ToolManager `{2}`. Exception: {3}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, c, tool, this, ex);
+                    Debug.Fail(string.Format(errmsg, c, tool, this, ex));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="ToolTargetContainerCollection.Removed"/> event for the <see cref="_containers"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="c">The <see cref="IToolTargetContainer"/> that was removed.</param>
+        void ToolTargetContainers_Removed(ToolTargetContainerCollection sender, IToolTargetContainer c)
+        {
+            // Notify all tools that it was removed
+            foreach (var tool in Tools)
+            {
+                try
+                {
+                    tool.InvokeToolTargetContainerRemoved(c);
+                }
+                catch (Exception ex)
+                {
+                    // When there is an error, log it but move on to the next tool
+                    const string errmsg =
+                        "Error while removing container `{0}` from tool `{1}` in ToolManager `{2}`. Exception: {3}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, c, tool, this, ex);
+                    Debug.Fail(string.Format(errmsg, c, tool, this, ex));
+                }
+            }
+        }
+
+        /// <summary>
         /// Tries to get a <see cref="Tool"/> from its <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The type of the tool to get.</param>
@@ -403,6 +472,23 @@ namespace NetGore.Editor.EditorTool
 
                 // Add to the settings manager
                 _toolState.Add(tool);
+
+                // Notify the Tool about all the containers already in this ToolManager
+                foreach (var container in ToolTargetContainers)
+                {
+                    try
+                    {
+                        tool.InvokeToolTargetContainerAdded(container);
+                    }
+                    catch (Exception ex)
+                    {
+                        // When there is an error when adding, log it but move on
+                        const string errmsg = "Error when notifying `{0}` about container `{1}`. Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, tool, container, ex);
+                        Debug.Fail(string.Format(errmsg, tool, container, ex));
+                    }
+                }
 
                 // Notify listeners
                 if (ToolAdded != null)
