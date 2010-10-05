@@ -64,14 +64,14 @@
     <Compile Include="Controls\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Cursors\AddEntityCursor.cs" />
-    <Compile Include="Cursors\AddGrhCursor.cs" />
-    <Compile Include="Cursors\AddLightCursor.cs" />
-    <Compile Include="Cursors\AddWallCursor.cs" />
-    <Compile Include="Cursors\EntityCursor.cs" />
-    <Compile Include="Cursors\GrhCursor.cs" />
-    <Compile Include="Cursors\LightCursor.cs" />
-    <Compile Include="Cursors\WallCursor.cs" />
+    <Compile Include="Cursors\xxAddEntityCursor.cs" />
+    <Compile Include="Cursors\xxAddGrhCursor.cs" />
+    <Compile Include="Cursors\xxAddLightCursor.cs" />
+    <Compile Include="Cursors\xxAddWallCursor.cs" />
+    <Compile Include="Cursors\xxEntityCursor.cs" />
+    <Compile Include="Cursors\xxGrhCursor.cs" />
+    <Compile Include="Cursors\xxLightCursor.cs" />
+    <Compile Include="Cursors\xxWallCursor.cs" />
     <Compile Include="Forms\EditMapCursorsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +128,7 @@
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\MapBorderDrawerTool.cs" />
+    <Compile Include="Tools\MapCursorToolBase.cs" />
     <Compile Include="Tools\MapGridDrawerTool.cs" />
     <Compile Include="Tools\MapWallsDrawerTool.cs" />
     <Compile Include="Tools\MapLightSourceDrawerTool.cs" />

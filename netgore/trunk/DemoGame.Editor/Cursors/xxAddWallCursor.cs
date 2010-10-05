@@ -3,32 +3,23 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.Properties;
 using NetGore.Editor;
-using NetGore.World;
 using SFML.Graphics;
 using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class AddEntityCursor : EditorCursor<EditMapForm>
+    sealed class xxAddWallCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
-        readonly MenuItem[] _menuEntityTypeChild;
-        readonly MenuItem _mnuEntityType;
-
-        Type _selectedType;
+        readonly MenuItem _mnuSnapToGrid;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddEntityCursor"/> class.
+        /// Initializes a new instance of the <see cref="xxAddWallCursor"/> class.
         /// </summary>
-        public AddEntityCursor()
+        public xxAddWallCursor()
         {
-            var types = MapFileEntityAttribute.GetTypes().OrderBy(x => x.Name);
-            _menuEntityTypeChild = types.Select(x => new MenuItem(x.Name, Menu_EntityTypeChild_Click) { Tag = x }).ToArray();
-
-            _mnuEntityType = new MenuItem("Entity type", _menuEntityTypeChild);
-            _contextMenu = new ContextMenu(new MenuItem[] { _mnuEntityType });
-
-            _selectedType = types.FirstOrDefault();
+            _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
+            _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
         }
 
         /// <summary>
@@ -36,7 +27,7 @@ namespace DemoGame.Editor
         /// </summary>
         public override Image CursorImage
         {
-            get { return Resources.cursor_entitiesadd; }
+            get { return Resources.cursor_wallsadd; }
         }
 
         /// <summary>
@@ -53,7 +44,7 @@ namespace DemoGame.Editor
         /// </summary>
         public override string Name
         {
-            get { return "Add Entity"; }
+            get { return "Add Wall"; }
         }
 
         /// <summary>
@@ -61,7 +52,7 @@ namespace DemoGame.Editor
         /// </summary>
         public override int ToolbarPriority
         {
-            get { return 1; }
+            get { return 10; }
         }
 
         /// <summary>
@@ -104,18 +95,9 @@ namespace DemoGame.Editor
             return _contextMenu;
         }
 
-        void Menu_EntityTypeChild_Click(object sender, EventArgs e)
+        void Menu_SnapToGrid_Click(object sender, EventArgs e)
         {
-            var mi = (MenuItem)sender;
-            var type = (Type)mi.Tag;
-
-            foreach (var x in _menuEntityTypeChild)
-            {
-                x.Checked = false;
-            }
-
-            mi.Checked = true;
-            _selectedType = type;
+            _mnuSnapToGrid.Checked = !_mnuSnapToGrid.Checked;
         }
 
         /// <summary>
@@ -124,16 +106,31 @@ namespace DemoGame.Editor
         /// <param name="e">Mouse events.</param>
         public override void MouseDown(MouseEventArgs e)
         {
-            if (_selectedType == null)
-                return;
+            // Switch to the wall editing tool
+            // TODO: !! Container.CursorManager.SelectedCursor = Container.CursorManager.TryGetCursor<WallCursor>();
 
-            // Create the Entity
-            var entity = (Entity)Activator.CreateInstance(_selectedType);
-            MSC.Map.AddEntity(entity);
+            // Create the new wall
+            var w = new WallEntity(MSC.Camera.ToWorld(e.X, e.Y), Vector2.One);
+            MSC.Map.AddEntity(w);
+            // TODO: !!
+            /*
+            if (_mnuSnapToGrid.Checked)
+                MSC.Grid.Align(w);
+            */
 
-            // Move to the center of the screen
-            entity.Size = new Vector2(64);
-            entity.Position = MSC.CursorPos - (entity.Size / 2f);
+            // Create the transformation boxes for the wall and select the bottom/right one
+            Container.TransBoxes.Clear();
+            TransBox.SurroundEntity(w, Container.TransBoxes);
+            foreach (var tBox in Container.TransBoxes)
+            {
+                if (tBox.TransType == TransBoxType.BottomRight)
+                {
+                    Container.SelectedTransBox = tBox;
+                    break;
+                }
+            }
+
+            GlobalState.Instance.Map.SelectedObjsManager.SetSelected(w);
         }
     }
 }

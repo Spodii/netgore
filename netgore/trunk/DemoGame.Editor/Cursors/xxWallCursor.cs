@@ -13,7 +13,7 @@ using Point = System.Drawing.Point;
 
 namespace DemoGame.Editor
 {
-    sealed class WallCursor : EditorCursor<EditMapForm>
+    sealed class xxWallCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
@@ -24,9 +24,9 @@ namespace DemoGame.Editor
         Vector2 _mouseDragStart = Vector2.Zero;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WallCursor"/> class.
+        /// Initializes a new instance of the <see cref="xxWallCursor"/> class.
         /// </summary>
-        public WallCursor()
+        public xxWallCursor()
         {
             _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
             _mnuSnapToWalls = new MenuItem("Snap to walls", Menu_SnapToWalls_Click) { Checked = true };
