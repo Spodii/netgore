@@ -71,12 +71,6 @@
     <Compile Include="Cursors\xxGrhCursor.cs" />
     <Compile Include="Cursors\xxLightCursor.cs" />
     <Compile Include="Cursors\xxWallCursor.cs" />
-    <Compile Include="Forms\EditMapCursorsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\EditMapCursorsForm.Designer.cs">
-      <DependentUpon>EditMapCursorsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\InputNewMapIDForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,9 +130,6 @@
     <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\ChildWindowForm.resx">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditMapCursorsForm.resx">
-      <DependentUpon>EditMapCursorsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputNewMapIDForm.resx">
       <DependentUpon>InputNewMapIDForm.cs</DependentUpon>

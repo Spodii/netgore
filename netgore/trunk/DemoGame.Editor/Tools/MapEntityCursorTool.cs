@@ -57,6 +57,8 @@ namespace DemoGame.Editor
 
         bool GetEntityUnderCursorFilter(Entity entity)
         {
+            return true;
+
             if (entity is CharacterEntity)
                 return false;
 
@@ -64,20 +66,6 @@ namespace DemoGame.Editor
                 return false;
 
             return true;
-        }
-
-        /// <summary>
-        /// Gets the position to display the tooltip text.
-        /// </summary>
-        /// <param name="font">The font to use.</param>
-        /// <param name="text">The tooltip text.</param>
-        /// <param name="entity">The entity the tooltip is for.</param>
-        /// <returns>The position to display the tooltip text.</returns>
-        public static Vector2 GetToolTipPos(Font font, string text, ISpatial entity)
-        {
-            var pos = new Vector2(entity.Max.X, entity.Position.Y);
-            pos -= new Vector2(5, (font.GetLineSpacing() * text.Split('\n').Length) + 5);
-            return pos;
         }
 
         /// <summary>
@@ -89,8 +77,12 @@ namespace DemoGame.Editor
         {
             base.HandleBeforeDrawMapGUI(spriteBatch, map);
 
+            var m = map as Map;
+            if (m == null)
+                return;
+
             if (!string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White,
+                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos - m.Camera.Min, Color.White,
                                              Color.Black);
         }
 
@@ -117,7 +109,7 @@ namespace DemoGame.Editor
         {
             base.OnIsEnabledChanged(oldValue, newValue);
 
-            // HandleResetState();
+            HandleResetState();
         }
 
         /// <summary>
@@ -235,7 +227,7 @@ namespace DemoGame.Editor
                     _toolTipObject = hoverEntity;
                     _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X,
                                              hoverEntity.Size.Y);
-                    _toolTipPos = GetToolTipPos(GlobalState.Instance.DefaultRenderFont, _toolTip, hoverEntity);
+                    _toolTipPos = worldPos;
                 }
             }
         }
