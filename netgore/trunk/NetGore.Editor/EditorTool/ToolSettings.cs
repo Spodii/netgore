@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using NetGore.Collections;
 using NetGore.Graphics;
@@ -12,7 +13,9 @@ namespace NetGore.Editor.EditorTool
     /// </summary>
     public class ToolSettings
     {
+        Image _disabledImage;
         bool _enabledByDefault = Tool.defaultIsEnabled;
+        Image _enabledImage;
         string _enabledToolsGroup;
         bool _isLocked = false;
         IEnumerable<IMapDrawingExtension> _mapDrawingExtensions;
@@ -20,12 +23,6 @@ namespace NetGore.Editor.EditorTool
         bool _onToolBarByDefault = Tool.defaultIsOnToolBar;
         ToolBarControlType _toolBarControlType = ToolBarControlType.Button;
         ToolBarVisibility _toolBarVisibility = ToolBarVisibility.Global;
-
-        /// <summary>
-        /// Gets the <see cref="StringComparer"/> to use for comparing the group names of <see cref="Tool"/>s.
-        /// Uses <see cref="StringComparer.Ordinal"/>, so comparisons are case-sensitive.
-        /// </summary>
-        public static StringComparer GroupNameComparer { get { return StringComparer.Ordinal; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolSettings"/> class.
@@ -36,6 +33,35 @@ namespace NetGore.Editor.EditorTool
         public ToolSettings(string name)
         {
             Name = name;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Image"/> to display for the <see cref="Tool"/> when the <see cref="Tool.IsEnabled"/> state is irrelevant.
+        /// If <see cref="EnabledImage"/> is set, this will return that <see cref="Image"/>. If <see cref="DisabledImage"/> is
+        /// set and <see cref="EnabledImage"/> is not, then <see cref="DisabledImage"/> will be used. If none are set, null
+        /// will be returned.
+        /// </summary>
+        public Image DefaultImage
+        {
+            get { return EnabledImage ?? DisabledImage; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Image"/> to display when the <see cref="Tool"/> is disabled. When null, the <see cref="Image"/>
+        /// will not change when the <see cref="Tool"/> is disabled.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="ToolSettings.IsLocked"/>
+        /// is set.</exception>
+        public Image DisabledImage
+        {
+            get { return _disabledImage; }
+            set
+            {
+                if (IsLocked)
+                    throw GetIsLockedException("DisabledImage");
+
+                _disabledImage = value;
+            }
         }
 
         /// <summary>
@@ -59,6 +85,24 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="Image"/> to display when the <see cref="Tool"/> is enabled. When null, the <see cref="Image"/>
+        /// will not change when the <see cref="Tool"/> is enabled.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="ToolSettings.IsLocked"/>
+        /// is set.</exception>
+        public Image EnabledImage
+        {
+            get { return _enabledImage; }
+            set
+            {
+                if (IsLocked)
+                    throw GetIsLockedException("EnabledImage");
+
+                _enabledImage = value;
+            }
+        }
+
+        /// <summary>
         /// Gets the name of the group that the <see cref="Tool"/> is in for restricting the enabled status of <see cref="Tool"/>s.
         /// When this value is non-null, only one <see cref="Tool"/> from this group will be allowed to be enabled at a time. Enabling
         /// a <see cref="Tool"/> will disable all others in the group. When null, this feature will be disabled.
@@ -77,6 +121,15 @@ namespace NetGore.Editor.EditorTool
 
                 _enabledToolsGroup = value;
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="StringComparer"/> to use for comparing the group names of <see cref="Tool"/>s.
+        /// Uses <see cref="StringComparer.Ordinal"/>, so comparisons are case-sensitive.
+        /// </summary>
+        public static StringComparer GroupNameComparer
+        {
+            get { return StringComparer.Ordinal; }
         }
 
         /// <summary>

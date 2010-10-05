@@ -8,7 +8,7 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
     /// </summary>
-    public class MapBorderDrawerTool : ToggledButtonTool
+    public class MapBorderDrawerTool : Tool
     {
         /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
@@ -21,6 +21,7 @@ namespace DemoGame.Editor
                 ToolBarVisibility = ToolBarVisibility.Map,
                 MapDrawingExtensions = new IMapDrawingExtension[] { new MapBorderDrawingExtension() },
                 OnToolBarByDefault = false,
+                ToolBarControlType = ToolBarControlType.Button
             };
         }
 
@@ -31,6 +32,7 @@ namespace DemoGame.Editor
         protected MapBorderDrawerTool(ToolManager toolManager)
             : base(toolManager, CreateSettings())
         {
+            ToolBarControl.ControlSettings.AsButtonSettings().ClickToEnable = true;
         }
 
         class MapBorderDrawingExtension : MapDrawingExtension

@@ -142,4 +142,11 @@
   <data name="cursor_wallsadd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cursor_wallsadd.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MapWallsDrawerTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapWallsDrawerTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapWallsDrawerTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapWallsDrawerTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

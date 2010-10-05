@@ -22,7 +22,7 @@ namespace DemoGame.Editor.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace DemoGame.Editor.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DemoGame.Editor.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace DemoGame.Editor.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,58 +60,72 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_entities {
+        public static System.Drawing.Bitmap cursor_entities {
             get {
                 object obj = ResourceManager.GetObject("cursor_entities", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_entitiesadd {
+        public static System.Drawing.Bitmap cursor_entitiesadd {
             get {
                 object obj = ResourceManager.GetObject("cursor_entitiesadd", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_grhs {
+        public static System.Drawing.Bitmap cursor_grhs {
             get {
                 object obj = ResourceManager.GetObject("cursor_grhs", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_grhsadd {
+        public static System.Drawing.Bitmap cursor_grhsadd {
             get {
                 object obj = ResourceManager.GetObject("cursor_grhsadd", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_lights {
+        public static System.Drawing.Bitmap cursor_lights {
             get {
                 object obj = ResourceManager.GetObject("cursor_lights", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_lightsadd {
+        public static System.Drawing.Bitmap cursor_lightsadd {
             get {
                 object obj = ResourceManager.GetObject("cursor_lightsadd", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_walls {
+        public static System.Drawing.Bitmap cursor_walls {
             get {
                 object obj = ResourceManager.GetObject("cursor_walls", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap cursor_wallsadd {
+        public static System.Drawing.Bitmap cursor_wallsadd {
             get {
                 object obj = ResourceManager.GetObject("cursor_wallsadd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapWallsDrawerTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapWallsDrawerTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapWallsDrawerTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapWallsDrawerTool_Enabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

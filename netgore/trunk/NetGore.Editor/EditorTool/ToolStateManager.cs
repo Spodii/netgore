@@ -11,15 +11,15 @@ using NetGore.IO;
 namespace NetGore.Editor.EditorTool
 {
     /// <summary>
-    /// Handles loading and saving the persistent settings for <see cref="Tool"/>s.
+    /// Handles loading and saving the persistent state for <see cref="Tool"/>s.
     /// </summary>
-    public class ToolSettingsManager : IPersistable
+    public class ToolStateManager : IPersistable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         const string _kvpKeyName = "Key";
         const string _kvpValueNodeName = "Value";
-        const string _rootNodeName = "ToolSettingsManager";
+        const string _rootNodeName = "ToolStateManager";
         const string _separatorClassName = "|";
         const string _toolBarItemsKeyName = "ToolBarVisibility";
         const string _toolBarItemsNodeName = "ToolBarItems";
@@ -43,9 +43,9 @@ namespace NetGore.Editor.EditorTool
         string _currentSettingsFile;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ToolSettingsManager"/> class.
+        /// Initializes a new instance of the <see cref="ToolStateManager"/> class.
         /// </summary>
-        public ToolSettingsManager()
+        public ToolStateManager()
         {
             CurrentSettingsFile = GetFilePath(ContentPaths.Build, null);
         }
@@ -111,7 +111,7 @@ namespace NetGore.Editor.EditorTool
         public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
-        /// Adds a <see cref="Tool"/> to this <see cref="ToolSettingsManager"/>. If settings already exist for the
+        /// Adds a <see cref="Tool"/> to this <see cref="ToolStateManager"/>. If settings already exist for the
         /// <paramref name="tool"/>, they will be applied automatically. Only one instance of each type can be added.
         /// </summary>
         /// <param name="tool">The <see cref="Tool"/> to add.</param>
@@ -165,16 +165,16 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// Gets the default file path for the <see cref="ToolSettingsManager"/> settings file.
+        /// Gets the default file path for the <see cref="ToolStateManager"/> settings file.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to get the path for.</param>
         /// <param name="profileName">The name of the settings profile to use. Use null for the default profile.</param>
         /// <returns>
-        /// The default file path for the <see cref="ToolSettingsManager"/> settings file.
+        /// The default file path for the <see cref="ToolStateManager"/> settings file.
         /// </returns>
         public static string GetFilePath(ContentPaths contentPath, string profileName)
         {
-            var fileName = "EditorToolSettings";
+            var fileName = "EditorToolStates";
             if (!string.IsNullOrEmpty(profileName))
                 fileName += "." + profileName;
 
@@ -225,7 +225,7 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// Removes a <see cref="Tool"/> from this <see cref="ToolSettingsManager"/>.
+        /// Removes a <see cref="Tool"/> from this <see cref="ToolStateManager"/>.
         /// </summary>
         /// <param name="tool">The <see cref="Tool"/> to add.</param>
         /// <returns>True if the <paramref name="tool"/> was successfully removed; false if it was not in the collection.</returns>
