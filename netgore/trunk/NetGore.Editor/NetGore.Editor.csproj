@@ -241,7 +241,10 @@
     <Compile Include="Docking\Win32\NativeMethods.cs" />
     <Compile Include="Editor Cursors\EditorCursor.cs" />
     <Compile Include="Editor Cursors\EditorCursorManager.cs" />
+    <Compile Include="EditorTool\ToolTargetContainer\IToolTargetContainer.cs" />
     <Compile Include="EditorTool\ToolSettings.cs" />
+    <Compile Include="EditorTool\ToolTargetContainer\IToolTargetContainerExtensions.cs" />
+    <Compile Include="EditorTool\ToolTargetContainer\IToolTargetMapContainer.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />
