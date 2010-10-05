@@ -8,7 +8,7 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.
     /// </summary>
-    public class MapLightSourceDrawerTool : ToggledButtonTool
+    public class MapLightSourceDrawerTool : Tool
     {
         /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
@@ -19,7 +19,8 @@ namespace DemoGame.Editor
             return new ToolSettings("Map Light Source Drawer")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
-                MapDrawingExtensions = new IMapDrawingExtension[] { new MapLightSourceDrawingExtension() }
+                MapDrawingExtensions = new IMapDrawingExtension[] { new MapLightSourceDrawingExtension() },
+                ToolBarControlType = ToolBarControlType.Button
             };
         }
 
@@ -30,6 +31,8 @@ namespace DemoGame.Editor
         protected MapLightSourceDrawerTool(ToolManager toolManager)
             : base(toolManager, CreateSettings())
         {
+            ToolBarControl.ControlSettings.ToolTipText = "Toggles the display of the map light sources";
+            ToolBarControl.ControlSettings.AsButtonSettings().ClickToEnable = true;
         }
 
         class MapLightSourceDrawingExtension : MapDrawingExtension

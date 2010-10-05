@@ -41,7 +41,7 @@ namespace NetGore.Editor.EditorTool
         readonly Timer _autoSaveSettingsTimer;
 
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
-        readonly ToolSettingsManager _toolSettings = new ToolSettingsManager();
+        readonly ToolStateManager _toolState = new ToolStateManager();
         readonly Dictionary<Type, Tool> _tools = new Dictionary<Type, Tool>();
 
         bool _isDisposed;
@@ -79,7 +79,7 @@ namespace NetGore.Editor.EditorTool
             ToolSettingsProfileName = "User";
 
             // Create the auto-saver
-            _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolSettings, _autoSaveSettingsRate,
+            _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolState, _autoSaveSettingsRate,
                                                _autoSaveSettingsRate);
         }
 
@@ -135,7 +135,7 @@ namespace NetGore.Editor.EditorTool
 
                 _toolSettingsProfileName = value;
 
-                _toolSettings.CurrentSettingsFile = ToolSettingsManager.GetFilePath(ContentPaths.Build, _toolSettingsProfileName);
+                _toolState.CurrentSettingsFile = ToolStateManager.GetFilePath(ContentPaths.Build, _toolSettingsProfileName);
             }
         }
 
@@ -150,11 +150,11 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Callback for the <see cref="_autoSaveSettingsTimer"/>.
         /// </summary>
-        /// <param name="state">The state object, which is the <see cref="ToolSettingsManager"/> to save.</param>
+        /// <param name="state">The state object, which is the <see cref="ToolStateManager"/> to save.</param>
         static void AutoSaveSettingsTimerCallback(object state)
         {
             // Get the state object as a ToolSettingsManager
-            var tsm = state as ToolSettingsManager;
+            var tsm = state as ToolStateManager;
             if (tsm == null)
             {
                 const string errmsg = "Expected state to be a ToolSettingsManager instance, but was `{0}`.";
@@ -189,7 +189,7 @@ namespace NetGore.Editor.EditorTool
             if (disposeManaged)
             {
                 _autoSaveSettingsTimer.Dispose();
-                _toolSettings.Save();
+                _toolState.Save();
             }
         }
 
@@ -209,7 +209,7 @@ namespace NetGore.Editor.EditorTool
         /// </summary>
         public void SaveSettings()
         {
-            _toolSettings.Save();
+            _toolState.Save();
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace NetGore.Editor.EditorTool
                 }
 
                 // Add to the settings manager
-                _toolSettings.Add(tool);
+                _toolState.Add(tool);
 
                 // Notify listeners
                 if (ToolAdded != null)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DemoGame.Client;
+using DemoGame.Editor.Properties;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
@@ -7,9 +8,9 @@ using NetGore.Graphics;
 namespace DemoGame.Editor
 {
     /// <summary>
-    /// A <see cref="Tool"/> that displays the <see cref="MapGrh"/>'s bound walls on the map.
+    /// A <see cref="Tool"/> that displays the walls on the map.
     /// </summary>
-    public class MapGrhBoundWallsDrawerTool : ToggledButtonTool
+    public class MapWallsDrawerTool : Tool
     {
         /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
@@ -17,11 +18,14 @@ namespace DemoGame.Editor
         /// <returns>The <see cref="ToolSettings"/>.</returns>
         static ToolSettings CreateSettings()
         {
-            return new ToolSettings("MapGrh Bound Walls Draw")
+            return new ToolSettings("Map Walls Drawer")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
                 MapDrawingExtensions = new IMapDrawingExtension[] { new MapGrhBoundWallsDrawingExtension() },
                 OnToolBarByDefault = true,
+                ToolBarControlType = ToolBarControlType.SplitButton,
+                EnabledImage = Resources.MapWallsDrawerTool_Enabled,
+                DisabledImage = Resources.MapWallsDrawerTool_Disabled
             };
         }
 
@@ -29,9 +33,19 @@ namespace DemoGame.Editor
         /// Initializes a new instance of the <see cref="MapGridDrawerTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapGrhBoundWallsDrawerTool(ToolManager toolManager)
+        protected MapWallsDrawerTool(ToolManager toolManager)
             : base(toolManager, CreateSettings())
         {
+            var s = ToolBarControl.ControlSettings.AsSplitButtonSettings();
+
+            s.ToolTipText = "Toggles the display of the walls on the map";
+            s.Click += ToolBarControl_Click;
+        }
+
+        void ToolBarControl_Click(object sender, System.EventArgs e)
+        {
+            if (ToolBarControl.ControlSettings.AsSplitButtonSettings().ButtonPressed)
+                IsEnabled = !IsEnabled;
         }
 
         class MapGrhBoundWallsDrawingExtension : MapDrawingExtension

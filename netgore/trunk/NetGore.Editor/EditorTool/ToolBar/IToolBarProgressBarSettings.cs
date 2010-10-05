@@ -9,6 +9,12 @@ namespace NetGore.Editor.EditorTool
     public interface IToolBarProgressBarSettings : IToolBarControlSettings
     {
         /// <summary>
+        /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
+        /// will be toggle by clicking this control.
+        /// </summary>
+        bool ClickToEnable { set; get; }
+
+        /// <summary>
         /// Gets or sets a value representing the delay between each
         /// <see cref="System.Windows.Forms.ProgressBarStyle.Marquee"/> display update, in milliseconds.
         /// </summary>

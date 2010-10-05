@@ -63,6 +63,16 @@ namespace NetGore.Editor.EditorTool
             _toolManager = toolManager;
             _settings = settings;
             _toolBarControl = ToolBar.CreateToolControl(this, ToolSettings.ToolBarControlType);
+
+            if (ToolBarControl != null)
+            {
+                // Set the default image
+                ToolBarControl.ControlSettings.Image = ToolSettings.DisabledImage ?? ToolSettings.DefaultImage;
+
+                // If an image is set, then default to showing only the image
+                if (ToolBarControl.ControlSettings.Image != null)
+                    ToolBarControl.ControlSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            }
         }
 
         /// <summary>
@@ -298,6 +308,23 @@ namespace NetGore.Editor.EditorTool
                 var toDisable = ToolManager.Tools.Where(x => x.IsEnabled && ToolSettings.GroupNameComparer.Equals(EnabledToolsGroup, x.EnabledToolsGroup));
                 foreach (var groupTool in toDisable)
                     groupTool.IsEnabled = false;
+            }
+
+            // Update the ToolBarControl image, if possible
+            if (ToolBarControl != null)
+            {
+                if (IsEnabled)
+                {
+                    // Change to Enabled image
+                    if (ToolSettings.EnabledImage != null)
+                        ToolBarControl.ControlSettings.Image = ToolSettings.EnabledImage;
+                }
+                else
+                {
+                    // Change to Disabled image
+                    if (ToolSettings.DisabledImage != null)
+                        ToolBarControl.ControlSettings.Image = ToolSettings.DisabledImage;
+                }
             }
         }
 

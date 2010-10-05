@@ -255,7 +255,6 @@
     </Compile>
     <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
     <Compile Include="MutablePair.cs" />
-    <Compile Include="EditorTool\ToggledButtonTool.cs" />
     <Compile Include="EditorTool\Tool.cs" />
     <Compile Include="EditorTool\ToolBar\IToolBarButtonSettings.cs" />
     <Compile Include="EditorTool\ToolBar\IToolBarComboBoxSettings.cs" />
@@ -274,7 +273,7 @@
     <Compile Include="EditorTool\ToolBar\ToolBarControlType.cs" />
     <Compile Include="EditorTool\ToolBar\ToolBarVisibility.cs" />
     <Compile Include="EditorTool\ToolManager.cs" />
-    <Compile Include="EditorTool\ToolSettingsManager.cs" />
+    <Compile Include="EditorTool\ToolStateManager.cs" />
     <Compile Include="UI\Editors\AdvancedClassTypeConverter.cs" />
     <Compile Include="UI\Editors\AdvancedPropertyDescriptor.cs" />
     <Compile Include="UI\Editors\AIIDEditor.cs" />
