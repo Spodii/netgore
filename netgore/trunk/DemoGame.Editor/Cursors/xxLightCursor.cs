@@ -200,7 +200,7 @@ namespace DemoGame.Editor
                 return;
 
             _toolTip = string.Format("{0}\n{1} ({2}x{3})", light, light.Position, light.Size.X, light.Size.Y);
-            _toolTipPos = xxEntityCursor.GetToolTipPos(GlobalState.Instance.DefaultRenderFont, _toolTip, light);
+            //_toolTipPos = xxEntityCursor.GetToolTipPos(GlobalState.Instance.DefaultRenderFont, _toolTip, light);
             _toolTipPos.X = light.Position.X + 5;
         }
     }

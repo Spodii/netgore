@@ -308,7 +308,7 @@ namespace NetGore.Editor.EditorTool
             {
                 var toDisable =
                     ToolManager.Tools.Where(
-                        x => x.IsEnabled && ToolSettings.GroupNameComparer.Equals(EnabledToolsGroup, x.EnabledToolsGroup));
+                        x => x.IsEnabled && x != this && ToolSettings.GroupNameComparer.Equals(EnabledToolsGroup, x.EnabledToolsGroup));
                 foreach (var groupTool in toDisable)
                 {
                     groupTool.IsEnabled = false;
@@ -426,7 +426,7 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="IsEnabledChanged"/> event.
+        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
@@ -435,7 +435,7 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="IsOnToolBarChanged"/> event.
+        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsOnToolBarChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
