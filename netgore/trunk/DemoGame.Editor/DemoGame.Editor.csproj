@@ -114,12 +114,12 @@
     <Compile Include="Forms\Dockable\ToolTargetFormBase.Designer.cs">
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MapBorderDrawerTool.cs" />
-    <Compile Include="Tools\MapCursorToolBase.cs" />
-    <Compile Include="Tools\MapEntityCursorTool.cs" />
-    <Compile Include="Tools\MapGridDrawerTool.cs" />
-    <Compile Include="Tools\MapWallsDrawerTool.cs" />
-    <Compile Include="Tools\MapLightSourceDrawerTool.cs" />
+    <Compile Include="Tools\Map\MapBorderDrawerTool.cs" />
+    <Compile Include="Tools\Map\Cursors\MapCursorToolBase.cs" />
+    <Compile Include="Tools\Map\Cursors\MapEntityCursorTool.cs" />
+    <Compile Include="Tools\Map\MapGridDrawerTool.cs" />
+    <Compile Include="Tools\Map\MapWallsDrawerTool.cs" />
+    <Compile Include="Tools\Map\MapLightSourceDrawerTool.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\Dockable\ToolTargetFormBase.resx">

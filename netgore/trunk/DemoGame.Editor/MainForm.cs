@@ -84,7 +84,7 @@ namespace DemoGame.Editor
         {
             var frm =SelectedObjectsForm.Instance;
             if (selectedObjectsToolStripMenuItem.Checked)
-                frm.Show(dockPanel);
+                frm.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
             else
                 frm.Hide();
         }
