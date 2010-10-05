@@ -70,6 +70,12 @@
     <Compile Include="Cursors\xxGrhCursor.cs" />
     <Compile Include="Cursors\xxLightCursor.cs" />
     <Compile Include="Cursors\xxWallCursor.cs" />
+    <Compile Include="Forms\DisplayFilterManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DisplayFilterManagerForm.Designer.cs">
+      <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputNewMapIDForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +128,9 @@
     <Compile Include="Tools\Map\MapLightSourceDrawerTool.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />
+    <EmbeddedResource Include="Forms\DisplayFilterManagerForm.resx">
+      <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\ToolTargetFormBase.resx">
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
     </EmbeddedResource>
