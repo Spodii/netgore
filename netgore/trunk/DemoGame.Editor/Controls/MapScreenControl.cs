@@ -20,7 +20,7 @@ namespace DemoGame.Editor
     /// The <see cref="GraphicsDeviceControl"/> that provides all the actual displaying and interaction of a <see cref="Map"/>
     /// instance.
     /// </summary>
-    public partial class MapScreenControl : GraphicsDeviceControl, IMapBoundControl, IGetTime
+    public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetContainer
     {
         /// <summary>
         /// Delegate for handling events from the <see cref="MapScreenControl"/>.
@@ -119,7 +119,10 @@ namespace DemoGame.Editor
 
                 // Load
                 if (_map != null)
+                {
                     _map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
+                    _map.Camera = Camera;
+                }
 
                 // Raise events
                 OnMapChanged(oldValue, value);
@@ -305,9 +308,6 @@ namespace DemoGame.Editor
                 _cameraVelocity.X = 0;
             else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
                 _cameraVelocity.Y = 0;
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnKeyUp(Map, e);
         }
 
         /// <summary>
@@ -390,114 +390,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseClick"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseClick(MouseEventArgs e)
-        {
-            base.OnMouseClick(e);
-
-            if (DesignMode)
-                return;
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnMouseClick(Map, e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyPress"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyPressEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyPress(KeyPressEventArgs e)
-        {
-            base.OnKeyPress(e);
-
-            if (DesignMode)
-                return;
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnKeyPress(Map, e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDoubleClick"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
-        {
-            base.OnMouseDoubleClick(e);
-
-            if (DesignMode)
-                return;
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnMouseDoubleClick(Map, e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseWheel(MouseEventArgs e)
-        {
-            base.OnMouseWheel(e);
-
-            if (DesignMode)
-                return;
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnMouseWheel(Map, e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            if (DesignMode)
-                return;
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnMouseDown(Map, e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            base.OnMouseUp(e);
-
-            if (DesignMode)
-                return;
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnMouseUp(Map, e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-
-            if (DesignMode)
-                return;
-
-            if (Camera != null)
-                _cursorPos = Camera.ToWorld(e.X, e.Y);
-
-            if (Map != null)
-                ToolManager.Instance.InvokeMapOnMouseMove(Map, e);
-        }
-
-        /// <summary>
         /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
         /// </summary>
         /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
@@ -549,15 +441,6 @@ namespace DemoGame.Editor
         {
             return TickCount.Now;
         }
-
-        #endregion
-
-        #region IMapBoundControl Members
-
-        /// <summary>
-        /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
-        /// </summary>
-        IMap IMapBoundControl.IMap { get; set; }
 
         #endregion
     }
