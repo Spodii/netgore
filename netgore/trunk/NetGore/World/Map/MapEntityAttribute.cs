@@ -5,8 +5,9 @@ using System.Linq;
 namespace NetGore.World
 {
     /// <summary>
-    /// Attribute that marks an Entity as being able to be stored in the map file. Entities with this attribute
-    /// will appear in the map editor.
+    /// Attribute that marks an <see cref="Entity"/> as being able to be stored in the map file. Entities with this attribute
+    /// will appear in the map editor. This is purely for the convenience of the editor, and is not actually required
+    /// for storing an <see cref="Entity"/> in a map file.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class MapFileEntityAttribute : Attribute

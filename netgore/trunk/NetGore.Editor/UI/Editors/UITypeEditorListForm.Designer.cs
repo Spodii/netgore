@@ -31,11 +31,11 @@ namespace NetGore.Editor.UI
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.txtFilter = new System.Windows.Forms.TextBox();
+            this.cmbFilterType = new System.Windows.Forms.ComboBox();
             this.btnApplyFilter = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lstItems = new NetGore.Editor.UI.UITypeEditorListFormListBox();
-            this.cmbFilterType = new System.Windows.Forms.ComboBox();
-            this.txtFilter = new System.Windows.Forms.TextBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -63,6 +63,24 @@ namespace NetGore.Editor.UI
             this.splitContainer1.Size = new System.Drawing.Size(274, 329);
             this.splitContainer1.SplitterDistance = 30;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // txtFilter
+            // 
+            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFilter.Location = new System.Drawing.Point(35, 3);
+            this.txtFilter.Name = "txtFilter";
+            this.txtFilter.Size = new System.Drawing.Size(130, 20);
+            this.txtFilter.TabIndex = 6;
+            // 
+            // cmbFilterType
+            // 
+            this.cmbFilterType.Dock = System.Windows.Forms.DockStyle.Right;
+            this.cmbFilterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFilterType.FormattingEnabled = true;
+            this.cmbFilterType.Location = new System.Drawing.Point(165, 3);
+            this.cmbFilterType.Name = "cmbFilterType";
+            this.cmbFilterType.Size = new System.Drawing.Size(64, 21);
+            this.cmbFilterType.TabIndex = 5;
             // 
             // btnApplyFilter
             // 
@@ -93,27 +111,9 @@ namespace NetGore.Editor.UI
             this.lstItems.FormattingEnabled = true;
             this.lstItems.Location = new System.Drawing.Point(0, 0);
             this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(274, 290);
+            this.lstItems.Size = new System.Drawing.Size(274, 295);
             this.lstItems.TabIndex = 1;
             this.lstItems.DoubleClick += new System.EventHandler(this.lstItems_DoubleClick);
-            // 
-            // cmbFilterType
-            // 
-            this.cmbFilterType.Dock = System.Windows.Forms.DockStyle.Right;
-            this.cmbFilterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFilterType.FormattingEnabled = true;
-            this.cmbFilterType.Location = new System.Drawing.Point(165, 3);
-            this.cmbFilterType.Name = "cmbFilterType";
-            this.cmbFilterType.Size = new System.Drawing.Size(64, 21);
-            this.cmbFilterType.TabIndex = 5;
-            // 
-            // txtFilter
-            // 
-            this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtFilter.Location = new System.Drawing.Point(35, 3);
-            this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(130, 20);
-            this.txtFilter.TabIndex = 6;
             // 
             // UITypeEditorListForm
             // 
