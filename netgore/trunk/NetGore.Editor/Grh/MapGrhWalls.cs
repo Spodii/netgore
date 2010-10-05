@@ -70,10 +70,8 @@ namespace NetGore.Editor.Grhs
         /// Creates a List of the <see cref="WallEntityBase"/>s used for a set of <see cref="MapGrh"/>s.
         /// </summary>
         /// <param name="mapGrhs">Set of <see cref="MapGrh"/>s to get the walls for</param>
-        /// <param name="createWall">Delegate that describes how to create the <see cref="WallEntityBase"/>
-        /// instances.</param>
         /// <returns>List of each bound wall for all the <see cref="MapGrh"/>s.</returns>
-        public IEnumerable<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs, CreateWallEntityHandler createWall)
+        public IEnumerable<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs)
         {
             var ret = new List<WallEntityBase>();
 
@@ -88,10 +86,8 @@ namespace NetGore.Editor.Grhs
                 // Create a new instance of each of the walls and add it to the return List
                 foreach (var wall in mgWalls)
                 {
-                    var position = mg.Position + wall.Position;
-                    var size = wall.Size;
-
-                    var newWallEntity = createWall(position, size);
+                    var newWallEntity = wall.DeepCopy();
+                    newWallEntity.Position = mg.Position + wall.Position;
                     ret.Add(newWallEntity);
                 }
             }

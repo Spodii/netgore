@@ -28,6 +28,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteBatch"/> class.
+        /// </summary>
+        public SpriteBatch()
+        {
+        }
+
+        /// <summary>
         /// Checks if an asset is in a valid state to be used.
         /// </summary>
         /// <param name="asset">The asset to check if valid.</param>

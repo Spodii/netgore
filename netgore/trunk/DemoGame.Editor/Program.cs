@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using log4net;
 using NetGore;
+using NetGore.Editor.WinForms;
 using NetGore.IO;
 
 namespace DemoGame.Editor
@@ -22,6 +23,10 @@ namespace DemoGame.Editor
             log.Info("Starting editor...");
 
             ThreadAsserts.IsMainThread();
+
+#if DEBUG
+            WinFormExceptionHelper.AddUnhandledExceptionHooks();
+#endif
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

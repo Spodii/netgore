@@ -46,12 +46,10 @@ namespace NetGore.Editor.WinForms
         /// </summary>
         public GraphicsDeviceControl()
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ForeColor = Color.White;
             BackColor = Color.Black;
             DoubleBuffered = false;
             ResizeRedraw = false;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -117,18 +115,26 @@ namespace NetGore.Editor.WinForms
         /// <param name="disposing">If true, disposes of managed resources</param>
         protected override void Dispose(bool disposing)
         {
-            if (!DesignMode && !disposing && _rw != null)
+            if (!DesignMode && disposing)
             {
-                try
+                // Stop the redraw timer
+                _redrawTimer.Stop();
+                _redrawTimer.Dispose();
+
+                // Dispose the RenderWindow
+                if (_rw != null)
                 {
-                    _rw.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    const string errmsg = "Failed to dispose RenderWindow: {0}";
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, ex);
-                    Debug.Fail(string.Format(errmsg, ex));
+                    try
+                    {
+                        _rw.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose RenderWindow: {0}";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, ex);
+                        Debug.Fail(string.Format(errmsg, ex));
+                    }
                 }
 
                 _rw = null;
@@ -184,6 +190,10 @@ namespace NetGore.Editor.WinForms
             }
         }
 
+        bool _isInitialized = false;
+
+        readonly Timer _redrawTimer = new Timer { Interval = 1000 / 100 };
+
         /// <summary>
         /// Initializes the control.
         /// </summary>
@@ -194,13 +204,17 @@ namespace NetGore.Editor.WinForms
             {
                 RecreateRenderWindow(Handle);
 
-                // Give derived classes a chance to initialize themselves
-                Initialize();
+                if (!_isInitialized)
+                {
+                    // Give derived classes a chance to initialize themselves
+                    Initialize();
 
-                // Create the redraw timer
-                var t = new Timer { Interval = 1000 / 100 };
-                t.Tick += delegate { Invalidate(); };
-                t.Start();
+                    // Create the redraw timer
+                    _redrawTimer.Tick += delegate { Invalidate(); };
+                    _redrawTimer.Start();
+
+                    _isInitialized = true;
+                }
             }
 
             base.OnCreateControl();

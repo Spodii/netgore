@@ -21,6 +21,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RoundedSpriteBatch"/> class.
+        /// </summary>
+        public RoundedSpriteBatch()
+        {
+        }
+
+        /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
         /// color tint, rotation, origin, effects, and sort depth.
         /// </summary>
