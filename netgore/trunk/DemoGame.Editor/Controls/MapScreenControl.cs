@@ -22,6 +22,14 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IMapBoundControl, IGetTime
     {
+        /// <summary>
+        /// Delegate for handling events from the <see cref="MapScreenControl"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="MapScreenControl"/> the event came from.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        public delegate void MapChangedEventHandler(MapScreenControl sender, Map oldValue, Map newValue);
+
         readonly ICamera2D _camera;
 
         Vector2 _cameraVelocity = Vector2.Zero;
@@ -104,9 +112,12 @@ namespace DemoGame.Editor
                 if (_map == value)
                     return;
 
+                var oldValue = _map;
                 _map = value;
 
-                Camera.Map = Map;
+                OnMapChanged(oldValue, value);
+                if (MapChanged != null)
+                    MapChanged(this, oldValue, value);
             }
         }
 
@@ -296,6 +307,69 @@ namespace DemoGame.Editor
                 _cameraVelocity.X = 0;
             else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
                 _cameraVelocity.Y = 0;
+        }
+
+        /// <summary>
+        /// Notifies listeners when the map has changed.
+        /// </summary>
+        public event MapChangedEventHandler MapChanged;
+
+        /// <summary>
+        /// Handles the <see cref="MapScreenControl.MapChanged"/> event.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnMapChanged(Map oldValue, Map newValue)
+        {
+            // Update some references
+            Camera.Map = Map;
+
+            // Remove all of the walls previously created from the MapGrhs
+            var grhWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(Map.MapGrhs, (pos, size) => new WallEntity(pos, size));
+            var dupeWalls = Map.FindDuplicateWalls(grhWalls);
+            foreach (var dupeWall in dupeWalls)
+            {
+                Map.RemoveEntity(dupeWall);
+            }
+
+            // Reset some of the state values
+            Camera.Min = Vector2.Zero;
+
+            // Remove all lights for the old map from the light manager
+            if (oldValue != null)
+            {
+                foreach (var light in oldValue.Lights)
+                {
+                    DrawingManager.LightManager.Remove(light);
+                }
+            }
+
+            // Add the lights from the new map
+            if (newValue != null)
+            {
+                foreach (var light in newValue.Lights)
+                {
+                    DrawingManager.LightManager.Add(light);
+                }
+            }
+
+            // Remove the refraction effects from the old map
+            if (oldValue != null)
+            {
+                foreach (var fx in oldValue.RefractionEffects)
+                {
+                    DrawingManager.RefractionManager.Remove(fx);
+                }
+            }
+
+            // Add the refraction effects for the new map
+            if (newValue != null)
+            {
+                foreach (var fx in newValue.RefractionEffects)
+                {
+                    DrawingManager.RefractionManager.Add(fx);
+                }
+            }
         }
 
         /// <summary>
