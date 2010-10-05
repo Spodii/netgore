@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
@@ -51,28 +50,16 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets the <see cref="Entity"/> currently under the cursor.
+        /// Filter used by <see cref="MapCursorToolBase.CursorSelectObjects"/> to determine if an object should be selected.
         /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="worldPos">The world position.</param>
-        /// <returns>The <see cref="Entity"/> currently under the cursor, or null if none.</returns>
-        protected virtual Entity GetEntityUnderCursor(IMap map, Vector2 worldPos)
-        {
-            return map.Spatial.Get<Entity>(worldPos, GetEntityUnderCursorFilter);
-        }
-
+        /// <param name="obj">The object to check if should be selected.</param>
+        /// <returns>
+        /// True if the object should be selected; otherwise false.
+        /// </returns>
         protected override bool CursorSelectObjectsFilter(object obj)
         {
-            return GetEntityUnderCursorFilter(obj as Entity);
-        }
+            var entity = obj as Entity;
 
-        /// <summary>
-        /// Filter for <see cref="GetEntityUnderCursor"/> to ignore entities we are not interested int.
-        /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to check if will be ignored.</param>
-        /// <returns>True if the <see cref="Entity"/> is to be used; otherwise false.</returns>
-        protected virtual bool GetEntityUnderCursorFilter(Entity entity)
-        {
             if (entity == null)
                 return false;
 
@@ -83,6 +70,17 @@ namespace DemoGame.Editor
                 return false;
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Entity"/> currently under the cursor.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="worldPos">The world position.</param>
+        /// <returns>The <see cref="Entity"/> currently under the cursor, or null if none.</returns>
+        protected virtual Entity GetEntityUnderCursor(IMap map, Vector2 worldPos)
+        {
+            return map.Spatial.Get<Entity>(worldPos, CursorSelectObjectsFilter);
         }
 
         /// <summary>
@@ -99,8 +97,10 @@ namespace DemoGame.Editor
                 return;
 
             if (!string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos - m.Camera.Min, Color.White,
-                                             Color.Black);
+            {
+                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos - m.Camera.Min,
+                                             Color.White, Color.Black);
+            }
         }
 
         /// <summary>
@@ -173,9 +173,7 @@ namespace DemoGame.Editor
                 foreach (var x in SOM.SelectedObjects.OfType<Entity>())
                 {
                     if (map.Entities.Contains(x))
-                    {
                         x.Dispose();
-                    }
                 }
             }
         }
