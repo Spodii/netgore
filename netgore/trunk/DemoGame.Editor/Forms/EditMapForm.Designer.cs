@@ -29,24 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.cmsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.resetSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapScreen = new DemoGame.Editor.MapScreenControl();
-            this.cmsMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // cmsMenu
-            // 
-            this.cmsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.resetSizeToolStripMenuItem});
-            this.cmsMenu.Name = "cmsMenu";
-            this.cmsMenu.Size = new System.Drawing.Size(126, 26);
-            // 
-            // resetSizeToolStripMenuItem
-            // 
-            this.resetSizeToolStripMenuItem.Name = "resetSizeToolStripMenuItem";
-            this.resetSizeToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
-            this.resetSizeToolStripMenuItem.Text = "Reset Size";
             // 
             // mapScreen
             // 
@@ -64,21 +48,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
-            this.ContextMenuStrip = this.cmsMenu;
             this.Controls.Add(this.mapScreen);
             this.HideOnClose = false;
             this.Name = "EditMapForm";
             this.Text = "Map";
             this.ToolBarVisibility = NetGore.Editor.EditorTool.ToolBarVisibility.Map;
-            this.cmsMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ContextMenuStrip cmsMenu;
-        private System.Windows.Forms.ToolStripMenuItem resetSizeToolStripMenuItem;
         private MapScreenControl mapScreen;
     }
 }
