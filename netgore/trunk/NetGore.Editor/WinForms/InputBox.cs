@@ -83,7 +83,7 @@ namespace NetGore.Editor.WinForms
             {
                 var result = ib.ShowDialog();
 
-                if (result != DialogResult.OK || result != DialogResult.Yes)
+                if (result != DialogResult.OK && result != DialogResult.Yes)
                     return null;
 
                 return ib.Value;
