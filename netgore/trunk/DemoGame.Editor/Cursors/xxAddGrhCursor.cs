@@ -10,7 +10,7 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class AddGrhCursor : EditorCursor<EditMapForm>
+    sealed class xxAddGrhCursor : EditorCursor<EditMapForm>
     {
         /// <summary>
         /// Color of the Grh preview when placing new Grhs.
@@ -22,9 +22,9 @@ namespace DemoGame.Editor
         readonly MenuItem _mnuSnapToGrid;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddGrhCursor"/> class.
+        /// Initializes a new instance of the <see cref="xxAddGrhCursor"/> class.
         /// </summary>
-        public AddGrhCursor()
+        public xxAddGrhCursor()
         {
             _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
             _mnuForeground = new MenuItem("Foreground", Menu_Foreground_Click) { Checked = false };

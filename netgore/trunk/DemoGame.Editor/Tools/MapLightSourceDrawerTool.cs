@@ -60,10 +60,10 @@ namespace DemoGame.Editor
                 if (lm == null)
                     return;
 
-                var offset = AddLightCursor.LightSprite.Size / 2f;
+                var offset = xxAddLightCursor.LightSprite.Size / 2f;
                 foreach (var light in lm)
                 {
-                    AddLightCursor.LightSprite.Draw(spriteBatch, light.Position - offset);
+                    xxAddLightCursor.LightSprite.Draw(spriteBatch, light.Position - offset);
                 }
             }
         }

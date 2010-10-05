@@ -10,7 +10,7 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class EntityCursor : EditorCursor<EditMapForm>
+    sealed class xxEntityCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuIgnoreWalls;
@@ -21,9 +21,9 @@ namespace DemoGame.Editor
         Vector2 _toolTipPos;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityCursor"/> class.
+        /// Initializes a new instance of the <see cref="xxEntityCursor"/> class.
         /// </summary>
-        public EntityCursor()
+        public xxEntityCursor()
         {
             _mnuIgnoreWalls = new MenuItem("Ignore Walls", Menu_IgnoreWalls_Click) { Checked = true };
             _contextMenu = new ContextMenu(new MenuItem[] { _mnuIgnoreWalls });

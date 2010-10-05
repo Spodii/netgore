@@ -11,7 +11,7 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class GrhCursor : EditorCursor<EditMapForm>
+    sealed class xxGrhCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
@@ -23,9 +23,9 @@ namespace DemoGame.Editor
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "GrhCursor" /> class.
+        ///   Initializes a new instance of the <see cref = "xxGrhCursor" /> class.
         /// </summary>
-        public GrhCursor()
+        public xxGrhCursor()
         {
             _mnuSnapToGrid = new MenuItem("Snap to grid", Menu_SnapToGrid_Click) { Checked = true };
             _contextMenu = new ContextMenu(new MenuItem[] { _mnuSnapToGrid });
