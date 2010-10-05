@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
+using System.Windows.Forms;
 using log4net;
 using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
+using Timer = System.Threading.Timer;
 
 namespace NetGore.Editor.EditorTool
 {
@@ -213,6 +214,196 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.KeyPressEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnKeyPress(IDrawableMap map, KeyEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnKeyUp(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.KeyPressEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnKeyPress(IDrawableMap map, KeyPressEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnKeyPress(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnMouseDoubleClick(IDrawableMap map, MouseEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnMouseDoubleClick(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnMouseClick(IDrawableMap map, MouseEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnMouseClick(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnMouseWheel(IDrawableMap map, MouseEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnMouseWheel(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnMouseUp(IDrawableMap map, MouseEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnMouseUp(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnMouseDown(IDrawableMap map, MouseEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnMouseDown(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="e"/> is null.</exception>
+        public void InvokeMapOnMouseMove(IDrawableMap map, MouseEventArgs e)
+        {
+            if (e == null)
+                throw new ArgumentNullException("e");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeMapOnMouseMove(map, e);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/>.</param>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="spriteBatch"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        public void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
+        {
+            if (spriteBatch == null)
+                throw new ArgumentNullException("spriteBatch");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeAfterDrawMapGUI(spriteBatch, map);
+        }
+
+        /// <summary>
+        /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
+        /// It is the responsibility of the application to make sure this method is called at the appropriate time.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/>.</param>
+        /// <param name="map">The <see cref="IDrawableMap"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="spriteBatch"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="map"/> is null.</exception>
+        public void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
+        {
+            if (spriteBatch == null)
+                throw new ArgumentNullException("spriteBatch");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            foreach (var t in EnabledTools)
+                t.InvokeBeforeDrawMapGUI(spriteBatch, map);
+        }
+
+        /// <summary>
         /// Sets the event listeners for a <see cref="Tool"/>.
         /// </summary>
         /// <param name="tool">The <see cref="Tool"/> to set the events on.</param>
@@ -271,7 +462,7 @@ namespace NetGore.Editor.EditorTool
             foreach (var tool in _tools.Values)
             {
                 if (tool.IsEnabled)
-                    tool.Update(currentTime);
+                    tool.InvokeUpdate(currentTime);
             }
         }
 

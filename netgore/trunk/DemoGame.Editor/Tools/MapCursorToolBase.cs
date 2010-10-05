@@ -16,7 +16,6 @@ namespace DemoGame.Editor
         {
             return new ToolSettings("Map Entity Cursor")
             {
-                ToolBarVisibility = ToolBarVisibility.Map,
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.SplitButton,
                 //DisabledImage = Resources.MapGridDrawerTool_Disabled,
@@ -45,6 +44,7 @@ namespace DemoGame.Editor
         /// <returns>The <see cref="ToolSettings"/></returns>
         static ToolSettings ModifyToolSettings(ToolSettings settings)
         {
+            settings.ToolBarVisibility = ToolBarVisibility.Map;
             settings.EnabledToolsGroup = _enabledToolsGroup;
             return settings;
         }
