@@ -146,10 +146,7 @@ namespace DemoGame.Editor
         /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
         protected virtual void DrawMapGUI(ISpriteBatch sb)
         {
-            foreach (var t in ToolManager.Instance.EnabledTools)
-            {
-                t.InvokeBeforeDrawMapGUI(sb, Map);
-            }
+            ToolManager.Instance.InvokeBeforeDrawMapGUI(sb, Map);
 
             // Cursor coordinates
             var font = GlobalState.Instance.DefaultRenderFont;
@@ -160,10 +157,7 @@ namespace DemoGame.Editor
 
             sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
 
-            foreach (var t in ToolManager.Instance.EnabledTools)
-            {
-                t.InvokeAfterDrawMapGUI(sb, Map);
-            }
+            ToolManager.Instance.InvokeAfterDrawMapGUI(sb, Map);
         }
 
         /// <summary>
@@ -311,6 +305,9 @@ namespace DemoGame.Editor
                 _cameraVelocity.X = 0;
             else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
                 _cameraVelocity.Y = 0;
+
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnKeyUp(Map, e);
         }
 
         /// <summary>
@@ -393,9 +390,69 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles MouseDown events.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseClick"/> event.
         /// </summary>
-        /// <param name="e">Event args.</param>
+        /// <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            base.OnMouseClick(e);
+
+            if (DesignMode)
+                return;
+
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnMouseClick(Map, e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyPress"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyPressEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            base.OnKeyPress(e);
+
+            if (DesignMode)
+                return;
+
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnKeyPress(Map, e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDoubleClick"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        {
+            base.OnMouseDoubleClick(e);
+
+            if (DesignMode)
+                return;
+
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnMouseDoubleClick(Map, e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            if (DesignMode)
+                return;
+
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnMouseWheel(Map, e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -403,8 +460,23 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            if (((IMapBoundControl)this).IMap != null)
-                Focus();
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnMouseDown(Map, e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if (DesignMode)
+                return;
+
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnMouseUp(Map, e);
         }
 
         /// <summary>
@@ -420,6 +492,9 @@ namespace DemoGame.Editor
 
             if (Camera != null)
                 _cursorPos = Camera.ToWorld(e.X, e.Y);
+
+            if (Map != null)
+                ToolManager.Instance.InvokeMapOnMouseMove(Map, e);
         }
 
         /// <summary>

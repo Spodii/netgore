@@ -345,11 +345,11 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// Notifies the <see cref="Tool"/> that after a <see cref="IDrawableMap"/>'s GUI was drawn.
+        /// Notifies the <see cref="Tool"/> after a <see cref="IDrawableMap"/>'s GUI was drawn.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
-        public void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
+        internal void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
             if (!IsEnabled || IsDisposed)
                 return;
@@ -358,11 +358,11 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// Notifies the <see cref="Tool"/> that before a <see cref="IDrawableMap"/>'s GUI was drawn.
+        /// Notifies the <see cref="Tool"/> before a <see cref="IDrawableMap"/>'s GUI was drawn.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
-        public void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
+        internal void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
             if (!IsEnabled || IsDisposed)
                 return;
@@ -438,7 +438,7 @@ namespace NetGore.Editor.EditorTool
         /// Updates the <see cref="Tool"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        public void Update(TickCount currentTime)
+        internal void InvokeUpdate(TickCount currentTime)
         {
             HandleUpdate(currentTime);
         }
