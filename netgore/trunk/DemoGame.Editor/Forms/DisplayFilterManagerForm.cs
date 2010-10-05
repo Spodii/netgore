@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DemoGame.Client;
+using NetGore.Editor;
 using NetGore.Editor.WinForms;
 
 namespace DemoGame.Editor
@@ -15,11 +16,17 @@ namespace DemoGame.Editor
     {
         MapDrawFilterHelperCollection _collection;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DisplayFilterManagerForm"/> class.
+        /// </summary>
         public DisplayFilterManagerForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="MapDrawFilterHelperCollection"/> to edit.
+        /// </summary>
         public MapDrawFilterHelperCollection Collection
         {
             get
@@ -44,6 +51,8 @@ namespace DemoGame.Editor
 
                 _collection = value;
 
+                lstItems.Collection = _collection;
+
                 if (_collection != null)
                 {
                     // Add the items for the new value
@@ -59,17 +68,19 @@ namespace DemoGame.Editor
 
         void _collection_Renamed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter, string oldName)
         {
-            // TODO: !!
+            var index = lstItems.Items.IndexOf(filter.Value);
+            if (index >= 0)
+                lstItems.RefreshItemAt(index);
         }
 
         void _collection_Removed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
         {
-            // TODO: !!
+            lstItems.Items.Remove(filter.Value);
         }
 
         void _collection_Added(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
         {
-            // TODO: !!
+            lstItems.Items.Add(filter.Value);
         }
 
         /// <summary>

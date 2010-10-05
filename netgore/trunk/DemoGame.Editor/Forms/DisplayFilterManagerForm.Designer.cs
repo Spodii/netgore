@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Editor
+﻿using DemoGame.Editor.Forms;
+
+namespace DemoGame.Editor
 {
     partial class DisplayFilterManagerForm
     {
@@ -30,7 +32,7 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.lstItems = new System.Windows.Forms.ListBox();
+            this.lstItems = new MapDrawFilterHelperListBox();
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.pgItem = new System.Windows.Forms.PropertyGrid();
@@ -142,7 +144,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.PropertyGrid pgItem;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.ListBox lstItems;
+        private MapDrawFilterHelperListBox lstItems;
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.Button btnAdd;
     }
