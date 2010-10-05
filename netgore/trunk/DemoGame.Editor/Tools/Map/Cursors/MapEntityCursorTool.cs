@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
+using log4net;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
@@ -16,6 +20,7 @@ namespace DemoGame.Editor
         string _toolTip = string.Empty;
         object _toolTipObject = null;
         Vector2 _toolTipPos;
+        Type _lastCreatedType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapEntityCursorTool"/> class.
@@ -130,6 +135,24 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles tearing down event listeners for a <see cref="IToolTargetContainer"/>.
+        /// Any event listeners set up in <see cref="Tool.ToolTargetContainerAdded"/> should be torn down here.
+        /// </summary>
+        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
+        protected override void ToolTargetContainerRemoved(IToolTargetContainer c)
+        {
+            base.ToolTargetContainerAdded(c);
+
+            var mapContainer = c.AsMapContainer();
+            if (mapContainer == null)
+                return;
+
+            mapContainer.KeyUp -= mapContainer_KeyUp;
+            mapContainer.MouseMove -= mapContainer_MouseMove;
+            mapContainer.MouseUp -= mapContainer_MouseUp;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles setting up event listeners for a <see cref="IToolTargetContainer"/>.
         /// This will be invoked once for every <see cref="Tool"/> instance for every <see cref="IToolTargetContainer"/> available.
         /// When the <see cref="Tool"/> is newly added to the <see cref="ToolManager"/>, all existing <see cref="IToolTargetContainer"/>s
@@ -149,7 +172,81 @@ namespace DemoGame.Editor
 
             mapContainer.KeyUp += mapContainer_KeyUp;
             mapContainer.MouseMove += mapContainer_MouseMove;
+            mapContainer.MouseUp += mapContainer_MouseUp;
         }
+
+        /// <summary>
+        /// Handles the MouseUp event of the mapContainer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void mapContainer_MouseUp(object sender, MouseEventArgs e)
+        {
+            var c = sender as IToolTargetMapContainer;
+            if (c == null)
+                return;
+
+            var map = c.Map as Map;
+            if (map == null)
+                return;
+
+            var camera = map.Camera;
+            if (camera == null)
+                return;
+
+            var cursorPos = e.Position();
+            var worldPos = camera.ToWorld(cursorPos);
+
+            // Create entity
+            if (e.Button == MouseButtons.Right)
+            {
+                Type createType = null;
+
+                // Create using same type as the last entity, if possible
+                if ((Control.ModifierKeys & Keys.Control) != 0)
+                {
+                    createType = _lastCreatedType;
+                }
+
+                // Display selection dialog
+                if (createType == null)
+                {
+                    using (var frm = new NetGore.Editor.UI.EntityTypeUITypeEditorForm(_lastCreatedType))
+                    {
+                        if (frm.ShowDialog(sender as IWin32Window) == DialogResult.OK)
+                        {
+                            createType = frm.SelectedItem;
+                        }
+                    }
+                }
+
+                // Create the type
+                if (createType != null)
+                {
+                    _lastCreatedType = null;
+
+                    try
+                    {
+                        // Create the Entity
+                        var entity = (Entity)Activator.CreateInstance(createType);
+                        map.AddEntity(entity);
+                        entity.Size = new Vector2(64);
+                        entity.Position = worldPos - (entity.Size / 2f);
+
+                        _lastCreatedType = createType;
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to create entity of type `{0}` on map `{1}`. Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, createType, map, ex);
+                        Debug.Fail(string.Format(errmsg, createType, map, ex));
+                    }
+                }
+            }
+        }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Handles the KeyUp event of the mapContainer control.
