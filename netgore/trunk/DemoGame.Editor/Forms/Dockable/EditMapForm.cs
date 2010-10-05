@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Client;
+using NetGore.Editor.Docking;
 
 namespace DemoGame.Editor
 {
     /// <summary>
     /// A form that displays a <see cref="Map"/> and provides interactive editing of it.
     /// </summary>
-    public sealed partial class EditMapForm : ChildWindowForm
+    public sealed partial class EditMapForm : ToolTargetFormBase
     {
         readonly List<TransBox> _transBoxes = new List<TransBox>(9);
 

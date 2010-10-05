@@ -1,6 +1,6 @@
 ﻿namespace DemoGame.Editor
 {
-    partial class ChildWindowForm
+    partial class SelectedObjectsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,20 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.pgSelected = new System.Windows.Forms.PropertyGrid();
+            this.lstItems = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // ChildWindowForm
+            // pgSelected
+            // 
+            this.pgSelected.Location = new System.Drawing.Point(12, 12);
+            this.pgSelected.Name = "pgSelected";
+            this.pgSelected.Size = new System.Drawing.Size(205, 252);
+            this.pgSelected.TabIndex = 0;
+            // 
+            // lstItems
+            // 
+            this.lstItems.FormattingEnabled = true;
+            this.lstItems.Location = new System.Drawing.Point(223, 12);
+            this.lstItems.Name = "lstItems";
+            this.lstItems.Size = new System.Drawing.Size(205, 251);
+            this.lstItems.TabIndex = 1;
+            // 
+            // SelectedObjectsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "ChildWindowForm";
-            this.Text = "ChildWindowForm";
+            this.ClientSize = new System.Drawing.Size(440, 276);
+            this.Controls.Add(this.lstItems);
+            this.Controls.Add(this.pgSelected);
+            this.Name = "SelectedObjectsForm";
+            this.Text = "Selected Objects";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.PropertyGrid pgSelected;
+        private System.Windows.Forms.ListBox lstItems;
     }
 }
