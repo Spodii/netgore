@@ -256,8 +256,11 @@ namespace DemoGame.Client
                 foreach (var b in compareTo)
                 {
                     // Check for duplicate location and collision type
-                    if (a.Position == b.Position && a.Size == b.Size && a.GetType() == b.GetType())
+                    if (a.Position == b.Position && a.Size == b.Size && a.GetType() == b.GetType() && a.Weight == b.Weight &&
+                        a.IsPlatform == b.IsPlatform)
+                    {
                         ret.Add(a);
+                    }
                 }
             }
 

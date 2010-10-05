@@ -335,7 +335,7 @@ namespace DemoGame.Editor
             // Reset some of the state values
             Camera.Min = Vector2.Zero;
 
-            // Remove all lights for the old map from the light manager
+            // Remove all of the old lights and add the new ones
             if (oldValue != null)
             {
                 foreach (var light in oldValue.Lights)
@@ -344,7 +344,6 @@ namespace DemoGame.Editor
                 }
             }
 
-            // Add the lights from the new map
             if (newValue != null)
             {
                 foreach (var light in newValue.Lights)
@@ -353,7 +352,7 @@ namespace DemoGame.Editor
                 }
             }
 
-            // Remove the refraction effects from the old map
+            // Remove all of the old refraction effects and add the new ones
             if (oldValue != null)
             {
                 foreach (var fx in oldValue.RefractionEffects)
