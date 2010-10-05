@@ -90,10 +90,10 @@
     <Compile Include="Forms\MapCursorForm.Designer.cs">
       <DependentUpon>MapCursorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MapScreenControl.cs">
+    <Compile Include="Controls\MapScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\MapScreenControl.Static.cs">
+    <Compile Include="Controls\MapScreenControl.Static.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\SelectedMapObjectsForm.cs">
