@@ -248,6 +248,7 @@
     <Compile Include="EditorTool\ToolTargetContainer\ToolTargetContainerCollection.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
+    <Compile Include="Extensions\MouseEventArgsExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />
     <Compile Include="Extensions\SizeExtensions.cs" />
     <Compile Include="Grh\AutomaticGrhDataSizeUpdater.cs" />
