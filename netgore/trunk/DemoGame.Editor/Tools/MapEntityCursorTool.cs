@@ -50,15 +50,24 @@ namespace DemoGame.Editor
             };
         }
 
-        Entity GetEntityUnderCursor(IMap map, Vector2 worldPos)
+        /// <summary>
+        /// Gets the <see cref="Entity"/> currently under the cursor.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="worldPos">The world position.</param>
+        /// <returns>The <see cref="Entity"/> currently under the cursor, or null if none.</returns>
+        protected virtual Entity GetEntityUnderCursor(IMap map, Vector2 worldPos)
         {
             return map.Spatial.Get<Entity>(worldPos, GetEntityUnderCursorFilter);
         }
 
-        bool GetEntityUnderCursorFilter(Entity entity)
+        /// <summary>
+        /// Filter for <see cref="GetEntityUnderCursor"/> to ignore entities we are not interested int.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to check if will be ignored.</param>
+        /// <returns>True if the <see cref="Entity"/> is to be used; otherwise false.</returns>
+        protected virtual bool GetEntityUnderCursorFilter(Entity entity)
         {
-            return true;
-
             if (entity is CharacterEntity)
                 return false;
 
