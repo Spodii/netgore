@@ -97,7 +97,7 @@ namespace DemoGame.Editor
                 // Load
                 if (_map != null)
                 {
-                    _map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
+                    _map.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
                     _map.Camera = Camera;
                 }
 
