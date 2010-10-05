@@ -1,4 +1,4 @@
-﻿namespace DemoGame.Editor.Forms
+﻿namespace DemoGame.Editor
 {
     partial class DisplayFilterManagerForm
     {
@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pgItem = new System.Windows.Forms.PropertyGrid();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lstItems = new System.Windows.Forms.ListBox();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.pgItem = new System.Windows.Forms.PropertyGrid();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -59,18 +59,11 @@
             this.splitContainer1.SplitterDistance = 147;
             this.splitContainer1.TabIndex = 0;
             // 
-            // pgItem
-            // 
-            this.pgItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgItem.Location = new System.Drawing.Point(0, 0);
-            this.pgItem.Name = "pgItem";
-            this.pgItem.Size = new System.Drawing.Size(295, 316);
-            this.pgItem.TabIndex = 0;
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.IsSplitterFixed = true;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -96,6 +89,16 @@
             this.lstItems.Size = new System.Drawing.Size(147, 286);
             this.lstItems.TabIndex = 1;
             // 
+            // btnRemove
+            // 
+            this.btnRemove.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnRemove.Location = new System.Drawing.Point(73, 0);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(73, 26);
+            this.btnRemove.TabIndex = 1;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            // 
             // btnAdd
             // 
             this.btnAdd.Dock = System.Windows.Forms.DockStyle.Left;
@@ -107,15 +110,13 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // btnRemove
+            // pgItem
             // 
-            this.btnRemove.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnRemove.Location = new System.Drawing.Point(73, 0);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(73, 26);
-            this.btnRemove.TabIndex = 1;
-            this.btnRemove.Text = "Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
+            this.pgItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgItem.Location = new System.Drawing.Point(0, 0);
+            this.pgItem.Name = "pgItem";
+            this.pgItem.Size = new System.Drawing.Size(295, 316);
+            this.pgItem.TabIndex = 0;
             // 
             // DisplayFilterManagerForm
             // 
