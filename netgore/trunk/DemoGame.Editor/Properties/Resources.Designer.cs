@@ -60,58 +60,30 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
-        public static System.Drawing.Bitmap cursor_entities {
+        public static System.Drawing.Bitmap MapEntityCursorTool_Disabled {
             get {
-                object obj = ResourceManager.GetObject("cursor_entities", resourceCulture);
+                object obj = ResourceManager.GetObject("MapEntityCursorTool_Disabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap cursor_entitiesadd {
+        public static System.Drawing.Bitmap MapEntityCursorTool_Enabled {
             get {
-                object obj = ResourceManager.GetObject("cursor_entitiesadd", resourceCulture);
+                object obj = ResourceManager.GetObject("MapEntityCursorTool_Enabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap cursor_grhs {
+        public static System.Drawing.Bitmap MapGrhCursorTool_Disabled {
             get {
-                object obj = ResourceManager.GetObject("cursor_grhs", resourceCulture);
+                object obj = ResourceManager.GetObject("MapGrhCursorTool_Disabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap cursor_grhsadd {
+        public static System.Drawing.Bitmap MapGrhCursorTool_Enabled {
             get {
-                object obj = ResourceManager.GetObject("cursor_grhsadd", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap cursor_lights {
-            get {
-                object obj = ResourceManager.GetObject("cursor_lights", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap cursor_lightsadd {
-            get {
-                object obj = ResourceManager.GetObject("cursor_lightsadd", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap cursor_walls {
-            get {
-                object obj = ResourceManager.GetObject("cursor_walls", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap cursor_wallsadd {
-            get {
-                object obj = ResourceManager.GetObject("cursor_wallsadd", resourceCulture);
+                object obj = ResourceManager.GetObject("MapGrhCursorTool_Enabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -130,6 +102,20 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapLightCursorTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapLightCursorTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapLightCursorTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapLightCursorTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapLightSourceDrawerTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapLightSourceDrawerTool_Disabled", resourceCulture);
@@ -140,6 +126,20 @@ namespace DemoGame.Editor.Properties {
         public static System.Drawing.Bitmap MapLightSourceDrawerTool_Enabled {
             get {
                 object obj = ResourceManager.GetObject("MapLightSourceDrawerTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapWallCursorTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapWallCursorTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapWallCursorTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapWallCursorTool_Enabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

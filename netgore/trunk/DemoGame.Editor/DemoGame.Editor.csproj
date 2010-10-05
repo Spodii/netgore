@@ -264,6 +264,30 @@
   <ItemGroup>
     <None Include="Resources\MapLightSourceDrawerTool_Enabled.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapEntityCursorTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapEntityCursorTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapGrhCursorTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapGrhCursorTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapLightCursorTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapLightCursorTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapWallCursorTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapWallCursorTool_Enabled.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

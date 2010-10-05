@@ -1,4 +1,5 @@
-﻿using NetGore.Editor.EditorTool;
+﻿using DemoGame.Editor.Properties;
+using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor
 {
@@ -22,8 +23,8 @@ namespace DemoGame.Editor
             {
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.SplitButton,
-                //DisabledImage = Resources.MapGridDrawerTool_Disabled,
-                //EnabledImage = Resources.MapGridDrawerTool_Enabled,
+                DisabledImage = Resources.MapEntityCursorTool_Disabled,
+                EnabledImage = Resources.MapEntityCursorTool_Enabled,
             };
         }
     }
