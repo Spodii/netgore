@@ -233,6 +233,7 @@ namespace DemoGame.Editor
             }
         }
 
+        /*
         /// <summary>
         /// When overridden in the derived class, handles when the delete button has been pressed.
         /// </summary>
@@ -245,5 +246,6 @@ namespace DemoGame.Editor
 
             SOM.Clear();
         }
+        */
     }
 }
