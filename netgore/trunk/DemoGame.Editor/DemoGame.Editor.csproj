@@ -116,6 +116,7 @@
     <Compile Include="Tools\Map\MapBorderDrawerTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapCursorToolBase.cs" />
     <Compile Include="Tools\Map\Cursors\MapEntityCursorTool.cs" />
+    <Compile Include="Tools\Map\MapDisplayFilterTool.cs" />
     <Compile Include="Tools\Map\MapGridDrawerTool.cs" />
     <Compile Include="Tools\Map\MapWallsDrawerTool.cs" />
     <Compile Include="Tools\Map\MapLightSourceDrawerTool.cs" />
@@ -246,6 +247,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MapWallCursorTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayFilterTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayFilterTool_Enabled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

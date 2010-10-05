@@ -60,6 +60,20 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapDisplayFilterTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayFilterTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapDisplayFilterTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayFilterTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapEntityCursorTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapEntityCursorTool_Disabled", resourceCulture);
