@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
+using System.Threading;
 using log4net;
 using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
-using Timer = System.Threading.Timer;
 
 namespace NetGore.Editor.EditorTool
 {
@@ -206,14 +205,6 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// Forces the settings for the <see cref="Tool"/>s to be saved.
-        /// </summary>
-        public void SaveSettings()
-        {
-            _toolState.Save();
-        }
-
-        /// <summary>
         /// Notifies the <see cref="Tool"/>s in this <see cref="ToolManager"/> about the corresponding event.
         /// It is the responsibility of the application to make sure this method is called at the appropriate time.
         /// </summary>
@@ -229,7 +220,9 @@ namespace NetGore.Editor.EditorTool
                 throw new ArgumentNullException("map");
 
             foreach (var t in EnabledTools)
+            {
                 t.InvokeAfterDrawMapGUI(spriteBatch, map);
+            }
         }
 
         /// <summary>
@@ -248,7 +241,17 @@ namespace NetGore.Editor.EditorTool
                 throw new ArgumentNullException("map");
 
             foreach (var t in EnabledTools)
+            {
                 t.InvokeBeforeDrawMapGUI(spriteBatch, map);
+            }
+        }
+
+        /// <summary>
+        /// Forces the settings for the <see cref="Tool"/>s to be saved.
+        /// </summary>
+        public void SaveSettings()
+        {
+            _toolState.Save();
         }
 
         /// <summary>

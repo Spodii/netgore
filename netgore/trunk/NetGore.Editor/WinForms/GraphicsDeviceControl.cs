@@ -32,6 +32,9 @@ namespace NetGore.Editor.WinForms
         static readonly StringFormat _errorMessageStringFormat = new StringFormat
         { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
+        readonly Timer _redrawTimer = new Timer { Interval = 1000 / 100 };
+        bool _isInitialized = false;
+
         string _lastDrawError = null;
 
         /// <summary>
@@ -189,10 +192,6 @@ namespace NetGore.Editor.WinForms
                 _lastDrawError = "Exception thrown while drawing: " + ex;
             }
         }
-
-        bool _isInitialized = false;
-
-        readonly Timer _redrawTimer = new Timer { Interval = 1000 / 100 };
 
         /// <summary>
         /// Initializes the control.

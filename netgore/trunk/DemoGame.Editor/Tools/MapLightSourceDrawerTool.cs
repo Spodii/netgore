@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using DemoGame.Editor.Properties;
-using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 
@@ -11,6 +10,16 @@ namespace DemoGame.Editor
     /// </summary>
     public class MapLightSourceDrawerTool : Tool
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapBorderDrawerTool"/> class.
+        /// </summary>
+        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
+        protected MapLightSourceDrawerTool(ToolManager toolManager) : base(toolManager, CreateSettings())
+        {
+            ToolBarControl.ControlSettings.ToolTipText = "Toggles the display of the map light sources";
+            ToolBarControl.ControlSettings.AsButtonSettings().ClickToEnable = true;
+        }
+
         /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
         /// </summary>
@@ -25,17 +34,6 @@ namespace DemoGame.Editor
                 DisabledImage = Resources.MapLightSourceDrawerTool_Disabled,
                 EnabledImage = Resources.MapLightSourceDrawerTool_Enabled,
             };
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapBorderDrawerTool"/> class.
-        /// </summary>
-        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapLightSourceDrawerTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
-        {
-            ToolBarControl.ControlSettings.ToolTipText = "Toggles the display of the map light sources";
-            ToolBarControl.ControlSettings.AsButtonSettings().ClickToEnable = true;
         }
 
         class MapLightSourceDrawingExtension : MapDrawingExtension

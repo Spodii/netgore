@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using log4net;
 using NetGore.Graphics;
 using NetGore.IO;
@@ -71,7 +72,7 @@ namespace NetGore.Editor.EditorTool
 
                 // If an image is set, then default to showing only the image
                 if (ToolBarControl.ControlSettings.Image != null)
-                    ToolBarControl.ControlSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+                    ToolBarControl.ControlSettings.DisplayStyle = ToolStripItemDisplayStyle.Image;
             }
         }
 
@@ -305,9 +306,13 @@ namespace NetGore.Editor.EditorTool
             // If we were enabled, and an EnabledToolsGroup is provided, disable all other tools in the group
             if (IsEnabled && EnabledToolsGroup != null)
             {
-                var toDisable = ToolManager.Tools.Where(x => x.IsEnabled && ToolSettings.GroupNameComparer.Equals(EnabledToolsGroup, x.EnabledToolsGroup));
+                var toDisable =
+                    ToolManager.Tools.Where(
+                        x => x.IsEnabled && ToolSettings.GroupNameComparer.Equals(EnabledToolsGroup, x.EnabledToolsGroup));
                 foreach (var groupTool in toDisable)
+                {
                     groupTool.IsEnabled = false;
+                }
             }
 
             // Update the ToolBarControl image, if possible
@@ -368,6 +373,15 @@ namespace NetGore.Editor.EditorTool
                 return;
 
             HandleBeforeDrawMapGUI(spriteBatch, map);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Tool"/>.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        internal void InvokeUpdate(TickCount currentTime)
+        {
+            HandleUpdate(currentTime);
         }
 
         /// <summary>
@@ -432,15 +446,6 @@ namespace NetGore.Editor.EditorTool
                     log.ErrorFormat(errmsg, this, GetType().FullName, ex);
                 Debug.Fail(string.Format(errmsg, this, GetType().FullName, ex));
             }
-        }
-
-        /// <summary>
-        /// Updates the <see cref="Tool"/>.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        internal void InvokeUpdate(TickCount currentTime)
-        {
-            HandleUpdate(currentTime);
         }
 
         /// <summary>

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using NetGore.IO;
 using NetGore.World;

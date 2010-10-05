@@ -1,4 +1,6 @@
-﻿namespace NetGore.Editor.EditorTool
+﻿using System.Linq;
+
+namespace NetGore.Editor.EditorTool
 {
     /// <summary>
     /// Extension methods for the <see cref="IToolTargetContainer"/> interface.

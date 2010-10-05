@@ -1,6 +1,5 @@
 using System.Linq;
 using NetGore.Db;
-using NetGore.Editor;
 using NetGore.Editor.UI;
 
 namespace DemoGame.EditorTools

@@ -42,8 +42,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingManager"/> class.
         /// </summary>
-        public DrawingManager()
-            : this(null)
+        public DrawingManager() : this(null)
         {
         }
 

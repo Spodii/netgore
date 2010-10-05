@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.World;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;

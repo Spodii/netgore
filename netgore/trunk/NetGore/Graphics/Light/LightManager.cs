@@ -187,14 +187,14 @@ namespace NetGore.Graphics
                 else
                 {
                     // No sprite was given, and no DefaultSprite to be used
-                    const string errmsg = "Added light `{0}` to `{1}` with no sprite, but couldn't use LightManager.DefaultSprite" +
+                    const string errmsg =
+                        "Added light `{0}` to `{1}` with no sprite, but couldn't use LightManager.DefaultSprite" +
                         " because the property is null.";
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, item, this);
                     Debug.Fail(string.Format(errmsg, item, this));
                 }
             }
-
 
             if (!_list.Contains(item))
                 _list.Add(item);

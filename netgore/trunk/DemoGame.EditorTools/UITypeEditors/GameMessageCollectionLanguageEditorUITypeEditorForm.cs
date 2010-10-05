@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
-using NetGore.Editor;
 using NetGore.Editor.UI;
 
 namespace DemoGame.EditorTools

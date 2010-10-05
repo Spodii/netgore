@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -22,15 +21,6 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
-        /// <summary>
-        /// Gets the <see cref="IDrawableMap"/> that this <see cref="IToolTargetMapContainer"/> holds.
-        /// Can be null.
-        /// </summary>
-        IDrawableMap IToolTargetMapContainer.Map
-        {
-            get { return Map; }
-        }
-
         /// <summary>
         /// Delegate for handling events from the <see cref="MapScreenControl"/>.
         /// </summary>
@@ -66,24 +56,9 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Disposes the control
+        /// Notifies listeners when the map has changed.
         /// </summary>
-        /// <param name="disposing">If true, disposes of managed resources</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (!DesignMode)
-                {
-                    lock (_instancesSync)
-                    {
-                        _instances.Remove(this);
-                    }
-                }
-            }
-
-            base.Dispose(disposing);
-        }
+        public event MapChangedEventHandler MapChanged;
 
         /// <summary>
         /// Gets the camera used to view the map.
@@ -105,21 +80,14 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets the <see cref="IDrawingManager"/> used to display the map.
-        /// </summary>
-        public IDrawingManager DrawingManager
-        {
-            get { return _drawingManager; }
-        }
-
-        /// <summary>
         /// Gets or sets the map being displayed on this <see cref="MapScreenControl"/>.
         /// </summary>
         [Browsable(false)]
         public Map Map
         {
             get { return _map; }
-            set {
+            set
+            {
                 if (_map == value)
                     return;
 
@@ -150,6 +118,26 @@ namespace DemoGame.Editor
                 return;
 
             Map = new Map(mapID, Camera, this);
+        }
+
+        /// <summary>
+        /// Disposes the control
+        /// </summary>
+        /// <param name="disposing">If true, disposes of managed resources</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (!DesignMode)
+                {
+                    lock (_instancesSync)
+                    {
+                        _instances.Remove(this);
+                    }
+                }
+            }
+
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -264,9 +252,7 @@ namespace DemoGame.Editor
         protected override bool IsInputKey(Keys keyData)
         {
             if (DesignMode)
-            {
                 return base.IsInputKey(keyData);
-            }
 
             var s = Settings.Default;
 
@@ -320,9 +306,18 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Notifies listeners when the map has changed.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.
         /// </summary>
-        public event MapChangedEventHandler MapChanged;
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+
+            if (DesignMode)
+                return;
+
+            _cameraVelocity = Vector2.Zero;
+        }
 
         /// <summary>
         /// Handles the <see cref="MapScreenControl.MapChanged"/> event.
@@ -385,20 +380,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLostFocus(EventArgs e)
-        {
-            base.OnLostFocus(e);
-
-            if (DesignMode)
-                return;
-
-            _cameraVelocity = Vector2.Zero;
-        }
-
-        /// <summary>
         /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
         /// </summary>
         /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
@@ -449,6 +430,27 @@ namespace DemoGame.Editor
         public TickCount GetTime()
         {
             return TickCount.Now;
+        }
+
+        #endregion
+
+        #region IToolTargetMapContainer Members
+
+        /// <summary>
+        /// Gets the <see cref="IDrawingManager"/> used to display the map.
+        /// </summary>
+        public IDrawingManager DrawingManager
+        {
+            get { return _drawingManager; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDrawableMap"/> that this <see cref="IToolTargetMapContainer"/> holds.
+        /// Can be null.
+        /// </summary>
+        IDrawableMap IToolTargetMapContainer.Map
+        {
+            get { return Map; }
         }
 
         #endregion

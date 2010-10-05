@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using NetGore;
-using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 using NetGore.World;
@@ -17,6 +14,54 @@ namespace DemoGame.Editor
     /// </summary>
     public class MapWallsDrawerTool : Tool
     {
+        readonly ToolStripButton _ddMapGrhWalls;
+        readonly ToolStripButton _ddWalls;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapGridDrawerTool"/> class.
+        /// </summary>
+        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
+        protected MapWallsDrawerTool(ToolManager toolManager) : base(toolManager, CreateSettings())
+        {
+            var s = ToolBarControl.ControlSettings.AsSplitButtonSettings();
+
+            s.ToolTipText = "Toggles the display of the walls on the map";
+            s.ClickToEnable = true;
+
+            // Set the Parent property in the MapDrawingExtension
+            var exts = ToolSettings.MapDrawingExtensions.OfType<ToolMapDrawingExtension>();
+            foreach (var ext in exts)
+            {
+                ext.Parent = this;
+            }
+
+            // Create the drop-down items
+            _ddMapGrhWalls = new ToolStripButton("MapGrh walls") { CheckOnClick = true };
+            _ddWalls = new ToolStripButton("Walls") { CheckOnClick = true };
+
+            s.DropDownItems.AddRange(new ToolStripItem[] { _ddMapGrhWalls, _ddWalls });
+        }
+
+        /// <summary>
+        /// Gets or sets if the automatic walls for a <see cref="MapGrh"/> are drawn.
+        /// </summary>
+        [SyncValue]
+        public bool DrawMapGrhWalls
+        {
+            get { return _ddMapGrhWalls.Checked; }
+            set { _ddMapGrhWalls.Checked = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets if normal walls on the map are drawn.
+        /// </summary>
+        [SyncValue]
+        public bool DrawWalls
+        {
+            get { return _ddWalls.Checked; }
+            set { _ddWalls.Checked = value; }
+        }
+
         /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
         /// </summary>
@@ -33,45 +78,6 @@ namespace DemoGame.Editor
                 DisabledImage = Resources.MapWallsDrawerTool_Disabled
             };
         }
-
-        readonly ToolStripButton _ddMapGrhWalls;
-        readonly ToolStripButton _ddWalls;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapGridDrawerTool"/> class.
-        /// </summary>
-        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapWallsDrawerTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
-        {
-            var s = ToolBarControl.ControlSettings.AsSplitButtonSettings();
-
-            s.ToolTipText = "Toggles the display of the walls on the map";
-            s.ClickToEnable = true;
-
-            // Set the Parent property in the MapDrawingExtension
-            var exts = ToolSettings.MapDrawingExtensions.OfType<ToolMapDrawingExtension>();
-            foreach (var ext in exts)
-                ext.Parent = this;
-
-            // Create the drop-down items
-            _ddMapGrhWalls = new ToolStripButton("MapGrh walls") { CheckOnClick = true};
-            _ddWalls = new ToolStripButton("Walls") { CheckOnClick = true};
-
-            s.DropDownItems.AddRange(new ToolStripItem[] { _ddMapGrhWalls, _ddWalls });
-        }
-
-        /// <summary>
-        /// Gets or sets if normal walls on the map are drawn.
-        /// </summary>
-        [SyncValue]
-        public bool DrawWalls { get { return _ddWalls.Checked; } set { _ddWalls.Checked = value; } }
-
-        /// <summary>
-        /// Gets or sets if the automatic walls for a <see cref="MapGrh"/> are drawn.
-        /// </summary>
-        [SyncValue]
-        public bool DrawMapGrhWalls { get { return _ddMapGrhWalls.Checked; } set { _ddMapGrhWalls.Checked = value; } }
 
         /// <summary>
         /// When overridden in the derived class, allows for handling resetting the state of this <see cref="Tool"/>.
@@ -93,7 +99,7 @@ namespace DemoGame.Editor
             /// <summary>
             /// Gets or sets the <see cref="MapWallsDrawerTool"/>.
             /// </summary>
-            public MapWallsDrawerTool Parent {get;set;}
+            public MapWallsDrawerTool Parent { get; set; }
 
             /// <summary>
             /// When overridden in the derived class, handles drawing to the map after all of the map drawing finishes.
@@ -123,7 +129,7 @@ namespace DemoGame.Editor
                         EntityDrawer.Draw(spriteBatch, camera, wall);
                     }
                 }
-                
+
                 // Draw the MapGrh walls
                 if (p.DrawMapGrhWalls)
                 {
