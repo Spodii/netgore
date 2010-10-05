@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
+using NetGore;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Editor
 {
@@ -21,13 +26,16 @@ namespace DemoGame.Editor
             return new ToolSettings("Map Walls Drawer")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
-                MapDrawingExtensions = new IMapDrawingExtension[] { new MapGrhBoundWallsDrawingExtension() },
+                MapDrawingExtensions = new IMapDrawingExtension[] { new ToolMapDrawingExtension() },
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.SplitButton,
                 EnabledImage = Resources.MapWallsDrawerTool_Enabled,
                 DisabledImage = Resources.MapWallsDrawerTool_Disabled
             };
         }
+
+        readonly ToolStripButton _ddMapGrhWalls;
+        readonly ToolStripButton _ddWalls;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGridDrawerTool"/> class.
@@ -40,10 +48,53 @@ namespace DemoGame.Editor
 
             s.ToolTipText = "Toggles the display of the walls on the map";
             s.ClickToEnable = true;
+
+            // Set the Parent property in the MapDrawingExtension
+            var exts = ToolSettings.MapDrawingExtensions.OfType<ToolMapDrawingExtension>();
+            foreach (var ext in exts)
+                ext.Parent = this;
+
+            // Create the drop-down items
+            _ddMapGrhWalls = new ToolStripButton("MapGrh walls") { CheckOnClick = true};
+            _ddWalls = new ToolStripButton("Walls") { CheckOnClick = true};
+
+            s.DropDownItems.AddRange(new ToolStripItem[] { _ddMapGrhWalls, _ddWalls });
         }
 
-        class MapGrhBoundWallsDrawingExtension : MapDrawingExtension
+        /// <summary>
+        /// Gets or sets if normal walls on the map are drawn.
+        /// </summary>
+        [SyncValue]
+        public bool DrawWalls { get { return _ddWalls.Checked; } set { _ddWalls.Checked = value; } }
+
+        /// <summary>
+        /// Gets or sets if the automatic walls for a <see cref="MapGrh"/> are drawn.
+        /// </summary>
+        [SyncValue]
+        public bool DrawMapGrhWalls { get { return _ddMapGrhWalls.Checked; } set { _ddMapGrhWalls.Checked = value; } }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling resetting the state of this <see cref="Tool"/>.
+        /// For simplicity, all default values should be constant, no matter the current state.
+        /// </summary>
+        protected override void HandleResetState()
         {
+            DrawWalls = true;
+            DrawMapGrhWalls = true;
+
+            base.HandleResetState();
+        }
+
+        /// <summary>
+        /// The <see cref="MapDrawingExtension"/> for the <see cref="MapWallsDrawerTool"/>.
+        /// </summary>
+        class ToolMapDrawingExtension : MapDrawingExtension
+        {
+            /// <summary>
+            /// Gets or sets the <see cref="MapWallsDrawerTool"/>.
+            /// </summary>
+            public MapWallsDrawerTool Parent {get;set;}
+
             /// <summary>
             /// When overridden in the derived class, handles drawing to the map after all of the map drawing finishes.
             /// </summary>
@@ -52,22 +103,43 @@ namespace DemoGame.Editor
             /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
             protected override void HandleDrawAfterMap(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
             {
+                var p = Parent;
+                if (p == null)
+                    return;
+
+                // Ensure the map is valid
                 var clientMap = map as Map;
                 if (clientMap == null)
                     return;
 
-                foreach (var mg in clientMap.MapGrhs)
+                var viewArea = camera.GetViewArea();
+
+                // Draw the walls
+                if (p.DrawWalls)
                 {
-                    if (!camera.InView(mg.Grh, mg.Position))
-                        continue;
-
-                    var boundWalls = GlobalState.Instance.MapGrhWalls[mg.Grh.GrhData];
-                    if (boundWalls == null)
-                        continue;
-
-                    foreach (var wall in boundWalls)
+                    var visibleWalls = map.Spatial.GetMany<WallEntityBase>(viewArea);
+                    foreach (var wall in visibleWalls)
                     {
-                        EntityDrawer.Draw(spriteBatch, camera, wall, mg.Position);
+                        EntityDrawer.Draw(spriteBatch, camera, wall);
+                    }
+                }
+                
+                // Draw the MapGrh walls
+                if (p.DrawMapGrhWalls)
+                {
+                    foreach (var mg in clientMap.MapGrhs)
+                    {
+                        if (!camera.InView(mg.Grh, mg.Position))
+                            continue;
+
+                        var boundWalls = GlobalState.Instance.MapGrhWalls[mg.Grh.GrhData];
+                        if (boundWalls == null)
+                            continue;
+
+                        foreach (var wall in boundWalls)
+                        {
+                            EntityDrawer.Draw(spriteBatch, camera, wall, mg.Position);
+                        }
                     }
                 }
             }
