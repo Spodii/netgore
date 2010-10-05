@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DemoGame.Editor.Properties;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
@@ -20,7 +21,9 @@ namespace DemoGame.Editor
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
                 MapDrawingExtensions = new IMapDrawingExtension[] { new MapLightSourceDrawingExtension() },
-                ToolBarControlType = ToolBarControlType.Button
+                ToolBarControlType = ToolBarControlType.Button,
+                DisabledImage = Resources.MapLightSourceDrawerTool_Disabled,
+                EnabledImage = Resources.MapLightSourceDrawerTool_Enabled,
             };
         }
 

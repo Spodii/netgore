@@ -116,6 +116,34 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapGridDrawerTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapGridDrawerTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapGridDrawerTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapGridDrawerTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapLightSourceDrawerTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapLightSourceDrawerTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap MapLightSourceDrawerTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapLightSourceDrawerTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapWallsDrawerTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapWallsDrawerTool_Disabled", resourceCulture);
