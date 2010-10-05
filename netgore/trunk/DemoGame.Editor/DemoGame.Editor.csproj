@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Tools\MapBorderDrawerTool.cs" />
     <Compile Include="Tools\MapCursorToolBase.cs" />
+    <Compile Include="Tools\MapEntityCursorTool.cs" />
     <Compile Include="Tools\MapGridDrawerTool.cs" />
     <Compile Include="Tools\MapWallsDrawerTool.cs" />
     <Compile Include="Tools\MapLightSourceDrawerTool.cs" />
