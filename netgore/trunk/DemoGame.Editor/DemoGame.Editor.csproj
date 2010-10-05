@@ -77,12 +77,6 @@
     <Compile Include="Forms\InputNewMapIDForm.Designer.cs">
       <DependentUpon>InputNewMapIDForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MapCursorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MapCursorForm.Designer.cs">
-      <DependentUpon>MapCursorForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\MapScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
