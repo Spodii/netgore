@@ -136,7 +136,6 @@
   <data name="MapLightSourceDrawerTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MapLightSourceDrawerTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="MapEntityCursorTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MapEntityCursorTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -160,5 +159,12 @@
   </data>
   <data name="MapWallCursorTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MapWallCursorTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MapDisplayFilterTool_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapDisplayFilterTool_Disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MapDisplayFilterTool_Enabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MapDisplayFilterTool_Enabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
