@@ -20,8 +20,17 @@ namespace DemoGame.Editor
     /// The <see cref="GraphicsDeviceControl"/> that provides all the actual displaying and interaction of a <see cref="Map"/>
     /// instance.
     /// </summary>
-    public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetContainer
+    public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
+        /// <summary>
+        /// Gets the <see cref="IDrawableMap"/> that this <see cref="IToolTargetMapContainer"/> holds.
+        /// Can be null.
+        /// </summary>
+        IDrawableMap IToolTargetMapContainer.Map
+        {
+            get { return Map; }
+        }
+
         /// <summary>
         /// Delegate for handling events from the <see cref="MapScreenControl"/>.
         /// </summary>
