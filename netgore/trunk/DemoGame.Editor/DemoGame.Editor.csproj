@@ -55,6 +55,9 @@
     <Compile Include="Controls\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\MapDrawFilterHelperListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>

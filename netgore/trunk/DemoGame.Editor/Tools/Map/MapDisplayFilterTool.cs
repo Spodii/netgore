@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
@@ -12,140 +10,6 @@ using NetGore.IO;
 
 namespace DemoGame.Editor
 {
-    public class MapDrawFilterHelperCollection : IPersistable
-    {
-        const string _filterKeyValueName = "Name";
-        const string _filterValueValueName = "Value";
-        const string _filtersNodeName = "DisplayFilters";
-
-        readonly IDictionary<string, MapDrawFilterHelper> _filters =
-            new Dictionary<string, MapDrawFilterHelper>(StringComparer.Ordinal);
-
-        public delegate void EventHandler(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter);
-
-        public delegate void RenamedEventHandler(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter, string oldName);
-
-        public event EventHandler Added;
-        public event EventHandler Removed;
-        public event RenamedEventHandler Renamed;
-
-        public IEnumerable<KeyValuePair<string, MapDrawFilterHelper>> Filters
-        {
-            get { return _filters; }
-        }
-
-        public void RenameFilter(string oldName, string newName)
-        {
-            var filter = TryGetFilter(oldName);
-            if (filter == null)
-                return;
-
-            if (TryGetFilter(newName) != null)
-                return;
-
-            _filters.Remove(oldName);
-            _filters.Add(newName, filter);
-
-            if (Renamed != null)
-                Renamed(this, new KeyValuePair<string, MapDrawFilterHelper>(newName, filter), oldName);
-        }
-
-        public void AddFilter(string name, MapDrawFilterHelper filter)
-        {
-            if (_filters.ContainsKey(name))
-                return;
-
-            _filters.Add(name, filter);
-
-            if (Added != null)
-                Added(this, new KeyValuePair<string, MapDrawFilterHelper>(name, filter));
-        }
-
-        static KeyValuePair<string, MapDrawFilterHelper> ReadFilter(IValueReader reader)
-        {
-            var key = reader.ReadString(_filterKeyValueName);
-            var valueReader = reader.ReadNode(_filterValueValueName);
-            var value = new MapDrawFilterHelper(valueReader);
-
-            return new KeyValuePair<string, MapDrawFilterHelper>(key, value);
-        }
-
-        public void RemoveFilter(string name)
-        {
-            var filter = TryGetFilter(name);
-            if (filter == null)
-                return;
-
-            bool removed = _filters.Remove(name);
-
-            if (removed)
-            {
-                if (Removed != null)
-                    Removed(this, new KeyValuePair<string, MapDrawFilterHelper>(name, filter));
-            }
-        }
-
-        public MapDrawFilterHelper TryGetFilter(string name)
-        {
-            MapDrawFilterHelper ret;
-            if (!_filters.TryGetValue(name, out ret))
-                return null;
-
-            return ret;
-        }
-
-        public string TryGetName(MapDrawFilterHelper filter)
-        {
-            return _filters.FirstOrDefault(x => x.Value == filter).Key;
-        }
-
-        static void WriteFilter(IValueWriter writer, KeyValuePair<string, MapDrawFilterHelper> kvp)
-        {
-            writer.Write(_filterKeyValueName, kvp.Key);
-            kvp.Value.WriteState(writer);
-        }
-
-        #region IPersistable Members
-
-        /// <summary>
-        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
-        /// same order as they were written.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        public void ReadState(IValueReader reader)
-        {
-            var readFilters = reader.ReadManyNodes(_filtersNodeName, ReadFilter);
-
-            // Remove the existing filters
-            var toRemove = _filters.Keys.ToImmutable();
-            foreach (var key in toRemove)
-            {
-                RemoveFilter(key);
-            }
-
-            Debug.Assert(_filters.IsEmpty());
-
-            _filters.Clear();
-
-            // Add the new filters
-            foreach (var f in readFilters)
-            {
-                AddFilter(f.Key, f.Value);
-            }
-        }
-
-        /// <summary>
-        /// Writes the state of the object to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-        public void WriteState(IValueWriter writer)
-        {
-            writer.WriteManyNodes(_filtersNodeName, _filters, WriteFilter);
-        }
-
-        #endregion
-    }
-
     public class MapDisplayFilterTool : Tool
     {
         const string _filterCollectionNodeName = "FilterCollection";
@@ -177,9 +41,18 @@ namespace DemoGame.Editor
             s.DropDownItems.Add(_tsManageFilters);
         }
 
+        /// <summary>
+        /// Handles the Click event of the <see cref="_tsManageFilters"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void _tsManageFilters_Click(object sender, EventArgs e)
         {
-            // TODO: !! Show filter editor
+            using (var frm = new DisplayFilterManagerForm())
+            {
+                frm.Collection = _filterCollection;
+                frm.ShowDialog(sender as IWin32Window);
+            }
         }
 
         /// <summary>
@@ -300,6 +173,7 @@ namespace DemoGame.Editor
             {
                 _filterCollection.WriteState(writer);
             }
+            writer.WriteEndNode(_filterCollectionNodeName);
         }
     }
 }
