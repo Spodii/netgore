@@ -126,12 +126,15 @@ namespace DemoGame.Editor
         /// <param name="disposing">If true, disposes of managed resources</param>
         protected override void Dispose(bool disposing)
         {
+            if (!DesignMode)
+            {
+                ToolManager.Instance.ToolTargetContainers.Remove(this);
+            }
+
             if (disposing)
             {
                 if (!DesignMode)
                 {
-                    ToolManager.Instance.ToolTargetContainers.Remove(this);
-
                     lock (_instancesSync)
                     {
                         _instances.Remove(this);
