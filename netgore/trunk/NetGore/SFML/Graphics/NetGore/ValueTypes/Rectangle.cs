@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using NetGore;
 using SFML.Graphics.Design;
 
 namespace SFML.Graphics
@@ -235,6 +236,20 @@ namespace SFML.Graphics
                 result.Width = 0;
                 result.Height = 0;
             }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Rectangle"/> from two points.
+        /// </summary>
+        /// <param name="a">The first point.</param>
+        /// <param name="b">The second point.</param>
+        /// <returns>A <see cref="Rectangle"/> created from the two points <paramref name="a"/> and <paramref name="b"/>.</returns>
+        public static Rectangle FromPoints(Vector2 a, Vector2 b)
+        {
+            var pos = Vector2.Min(a, b).Floor();
+            var size = (a - b).Ceiling().Abs();
+            var rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            return rect;
         }
 
         /// <summary>Creates a new Rectangle that exactly contains two other rectangles.</summary>

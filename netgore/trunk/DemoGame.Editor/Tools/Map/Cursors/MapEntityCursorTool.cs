@@ -61,6 +61,11 @@ namespace DemoGame.Editor
             return map.Spatial.Get<Entity>(worldPos, GetEntityUnderCursorFilter);
         }
 
+        protected override bool CursorSelectObjectsFilter(object obj)
+        {
+            return GetEntityUnderCursorFilter(obj as Entity);
+        }
+
         /// <summary>
         /// Filter for <see cref="GetEntityUnderCursor"/> to ignore entities we are not interested int.
         /// </summary>
@@ -68,6 +73,9 @@ namespace DemoGame.Editor
         /// <returns>True if the <see cref="Entity"/> is to be used; otherwise false.</returns>
         protected virtual bool GetEntityUnderCursorFilter(Entity entity)
         {
+            if (entity == null)
+                return false;
+
             if (entity is CharacterEntity)
                 return false;
 
@@ -162,17 +170,13 @@ namespace DemoGame.Editor
             if (e.KeyCode == Keys.Delete)
             {
                 // Only delete when it is an Entity that is on this map
-                var removed = new List<object>();
                 foreach (var x in SOM.SelectedObjects.OfType<Entity>())
                 {
                     if (map.Entities.Contains(x))
                     {
                         x.Dispose();
-                        removed.Add(x);
                     }
                 }
-
-                SOM.SetManySelected(SOM.SelectedObjects.Except(removed));
             }
         }
 
@@ -212,6 +216,7 @@ namespace DemoGame.Editor
                             size.X = 4;
                         if (size.Y < 4)
                             size.Y = 4;
+
                         map.SafeResizeEntity(focusedEntity, size);
                     }
                     else
