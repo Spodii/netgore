@@ -97,10 +97,10 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditMapForm.cs">
+    <Compile Include="Forms\Dockable\EditMapForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\EditMapForm.Designer.cs">
+    <Compile Include="Forms\Dockable\EditMapForm.Designer.cs">
       <DependentUpon>EditMapForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MapEditorCharacter.cs" />
@@ -136,7 +136,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditMapForm.resx">
+    <EmbeddedResource Include="Forms\Dockable\EditMapForm.resx">
       <DependentUpon>EditMapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
