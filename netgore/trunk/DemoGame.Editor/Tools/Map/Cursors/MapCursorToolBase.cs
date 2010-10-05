@@ -14,7 +14,23 @@ namespace DemoGame.Editor
     public abstract class MapCursorToolBase : Tool
     {
         const string _enabledToolsGroup = "Map Cursors";
+
+        /// <summary>
+        /// The minimum size the selection area must be before it is drawn.
+        /// </summary>
+        const int _minSelectionAreaDrawSize = 4;
+
         const MouseButtons _selectButton = MouseButtons.Left;
+
+        /// <summary>
+        /// The <see cref="Color"/> of the inner area of the selection rectangle.
+        /// </summary>
+        static readonly Color _selectionAreaColorInner = new Color(0, 255, 0, 100);
+
+        /// <summary>
+        /// The <see cref="Color"/> of the outer area of the selection rectangle.
+        /// </summary>
+        static readonly Color _selectionAreaColorOuter = new Color(0, 150, 0, 200);
 
         readonly bool _canSelect;
         readonly bool _canSelectArea;
@@ -80,6 +96,36 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="IDrawableMap"/> has been draw.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="imap">The <see cref="IDrawableMap"/> being drawn.</param>
+        protected override void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap imap)
+        {
+            base.HandleBeforeDrawMapGUI(spriteBatch, imap);
+
+            var map = imap as Map;
+            if (map == null)
+                return;
+
+            var camera = map.Camera;
+            if (camera == null)
+                return;
+
+            // Draw the selection area
+            if (_isSelecting)
+            {
+                var a = camera.ToScreen(_selectionStart);
+                var b = camera.ToScreen(_selectionEnd);
+                if (a.QuickDistance(b) > _minSelectionAreaDrawSize)
+                {
+                    var rect = Rectangle.FromPoints(a, b);
+                    RenderRectangle.Draw(spriteBatch, rect, _selectionAreaColorInner, _selectionAreaColorOuter);
+                }
+            }
+        }
+
+        /// <summary>
         /// Modifies the <see cref="ToolSettings"/> as it is passed to the base class constructor.
         /// </summary>
         /// <param name="settings">The <see cref="ToolSettings"/>.</param>
@@ -137,44 +183,6 @@ namespace DemoGame.Editor
             mapContainer.MouseUp -= mapContainer_MouseUp;
             mapContainer.MouseMove -= mapContainer_MouseMove;
         }
-
-        /// <summary>
-        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="IDrawableMap"/> has been draw.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="imap">The <see cref="IDrawableMap"/> being drawn.</param>
-        protected override void HandleBeforeDrawMapGUI(NetGore.Graphics.ISpriteBatch spriteBatch, NetGore.Graphics.IDrawableMap imap)
-        {
-            base.HandleBeforeDrawMapGUI(spriteBatch, imap);
-
-            var map = imap as Map;
-            if (map == null)
-                return;
-
-            var camera = map.Camera;
-            if (camera == null)
-                return;
-
-            // Draw the selection area
-            if (_isSelecting)
-            {
-                var a = camera.ToScreen(_selectionStart);
-                var b = camera.ToScreen(_selectionEnd);
-                if (a.QuickDistance(b) > _minSelectionAreaDrawSize)
-                {
-                    var rect = Rectangle.FromPoints(a,b);
-                    RenderRectangle.Draw(spriteBatch, rect, _selectionAreaColorInner, _selectionAreaColorOuter);
-                }
-            }
-        }
-
-        static readonly Color _selectionAreaColorInner = new Color(0, 255, 0, 100);
-        static readonly Color _selectionAreaColorOuter = new Color(0, 150, 0, 200);
-
-        /// <summary>
-        /// The minimum size the selection area must be before it is drawn.
-        /// </summary>
-        const int _minSelectionAreaDrawSize = 4;
 
         /// <summary>
         /// Handles the MouseDown event of the mapContainer control.
