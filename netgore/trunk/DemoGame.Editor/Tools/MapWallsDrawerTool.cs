@@ -39,13 +39,7 @@ namespace DemoGame.Editor
             var s = ToolBarControl.ControlSettings.AsSplitButtonSettings();
 
             s.ToolTipText = "Toggles the display of the walls on the map";
-            s.Click += ToolBarControl_Click;
-        }
-
-        void ToolBarControl_Click(object sender, System.EventArgs e)
-        {
-            if (ToolBarControl.ControlSettings.AsSplitButtonSettings().ButtonPressed)
-                IsEnabled = !IsEnabled;
+            s.ClickToEnable = true;
         }
 
         class MapGrhBoundWallsDrawingExtension : MapDrawingExtension
