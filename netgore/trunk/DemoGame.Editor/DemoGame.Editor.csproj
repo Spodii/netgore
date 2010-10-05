@@ -226,30 +226,6 @@
     <None Include="Resources\MapWallsDrawerTool_Disabled.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\cursor_entitiesadd.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursor_grhs.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursor_grhsadd.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursor_lights.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursor_lightsadd.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursor_select.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursor_walls.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursor_wallsadd.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\MapWallsDrawerTool_Enabled.png" />
   </ItemGroup>
   <ItemGroup>
