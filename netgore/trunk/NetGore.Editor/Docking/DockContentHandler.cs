@@ -681,7 +681,7 @@ namespace NetGore.Editor.Docking
 
             if (Form.ContainsFocus)
             {
-                if (DockState == DockState.Hidden || DockState == DockState.Unknown)
+                if (DockPanel != null && (DockState == DockState.Hidden || DockState == DockState.Unknown))
                     DockPanel.ContentFocusManager.GiveUpFocus(Content);
             }
 
@@ -702,10 +702,13 @@ namespace NetGore.Editor.Docking
 
             if (oldDockState != DockState)
             {
-                if (DockState == DockState.Hidden || DockState == DockState.Unknown || DockHelper.IsDockStateAutoHide(DockState))
-                    DockPanel.ContentFocusManager.RemoveFromList(Content);
-                else
-                    DockPanel.ContentFocusManager.AddToList(Content);
+                if (DockPanel != null)
+                {
+                    if (DockState == DockState.Hidden || DockState == DockState.Unknown || DockHelper.IsDockStateAutoHide(DockState))
+                        DockPanel.ContentFocusManager.RemoveFromList(Content);
+                    else
+                        DockPanel.ContentFocusManager.AddToList(Content);
+                }
 
                 OnDockStateChanged(EventArgs.Empty);
             }
