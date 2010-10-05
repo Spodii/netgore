@@ -31,10 +31,10 @@ namespace DemoGame.Editor
         public delegate void MapChangedEventHandler(MapScreenControl sender, Map oldValue, Map newValue);
 
         readonly ICamera2D _camera;
+        readonly DrawingManager _drawingManager = new DrawingManager();
 
         Vector2 _cameraVelocity = Vector2.Zero;
         Vector2 _cursorPos;
-        DrawingManager _drawingManager;
         TickCount _lastUpdateTime = TickCount.MinValue;
         Map _map;
 
@@ -47,6 +47,8 @@ namespace DemoGame.Editor
                 return;
 
             _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
+
+            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
             lock (_instancesSync)
             {
@@ -115,6 +117,11 @@ namespace DemoGame.Editor
                 var oldValue = _map;
                 _map = value;
 
+                // Load
+                if (_map != null)
+                    _map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
+
+                // Raise events
                 OnMapChanged(oldValue, value);
                 if (MapChanged != null)
                     MapChanged(this, oldValue, value);
@@ -131,7 +138,6 @@ namespace DemoGame.Editor
                 return;
 
             Map = new Map(mapID, Camera, this);
-            Map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
         }
 
         /// <summary>
@@ -237,8 +243,6 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            _drawingManager = new DrawingManager(RenderWindow);
-
             // Add an event hook to the tick timer so we can update ourself
             GlobalState.Instance.Tick -= InvokeDrawing;
             GlobalState.Instance.Tick += InvokeDrawing;
@@ -322,14 +326,17 @@ namespace DemoGame.Editor
         protected virtual void OnMapChanged(Map oldValue, Map newValue)
         {
             // Update some references
-            Camera.Map = Map;
+            Camera.Map = newValue;
 
             // Remove all of the walls previously created from the MapGrhs
-            var grhWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(Map.MapGrhs, (pos, size) => new WallEntity(pos, size));
-            var dupeWalls = Map.FindDuplicateWalls(grhWalls);
-            foreach (var dupeWall in dupeWalls)
+            if (newValue != null)
             {
-                Map.RemoveEntity(dupeWall);
+                var grhWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(newValue.MapGrhs);
+                var dupeWalls = newValue.FindDuplicateWalls(grhWalls);
+                foreach (var dupeWall in dupeWalls)
+                {
+                    newValue.RemoveEntity(dupeWall);
+                }
             }
 
             // Reset some of the state values
@@ -427,10 +434,7 @@ namespace DemoGame.Editor
                 return;
 
             // Update the DrawingManager
-            if (_drawingManager == null || _drawingManager.IsDisposed)
-                _drawingManager = new DrawingManager(newRenderWindow);
-            else
-                _drawingManager.RenderWindow = newRenderWindow;
+            _drawingManager.RenderWindow = newRenderWindow;
         }
 
         /// <summary>

@@ -240,30 +240,31 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Finds all duplicate (same position, size and type) walls
+        /// Finds all <see cref="WallEntityBase"/>s where <see cref="WallEntityBase.AreValuesEqual"/> are true with another
+        /// set of <see cref="WallEntityBase"/>s.
         /// </summary>
-        /// <param name="compareTo">Walls to compare against</param>
-        /// <returns>A list of all duplicate walls in the map</returns>
+        /// <param name="compareTo">Walls to compare against.</param>
+        /// <returns>A list of all duplicate walls in the map. The <see cref="WallEntityBase"/> on the map is the one returned, not
+        /// the references in the <paramref name="compareTo"/> parameter.</returns>
         public IEnumerable<WallEntityBase> FindDuplicateWalls(IEnumerable<WallEntityBase> compareTo)
         {
             // List to store all the duplicates
             var ret = new List<WallEntityBase>(32);
 
-            // Loop through each entity in the map
-            foreach (var a in Entities.OfType<WallEntityBase>())
+            // Loop through the supplied list of walls
+            foreach (var cmpTo in compareTo)
             {
-                // Loop through each WallEntity in the comparison enum
-                foreach (var b in compareTo)
-                {
-                    // Check for duplicate location and collision type
-                    if (a.Position == b.Position && a.Size == b.Size && a.GetType() == b.GetType() && a.Weight == b.Weight &&
-                        a.IsPlatform == b.IsPlatform)
-                    {
-                        ret.Add(a);
-                    }
-                }
+                // Get the area of walls to look for, adding some padding just in case there are rounding issues
+                var cmpToArea = new Rectangle((int)cmpTo.Position.X - 2, (int)cmpTo.Position.Y - 2, 4, 4);
+
+                // Check for any matches by comparing to the map walls in the area
+                var matches = Spatial.GetMany<WallEntityBase>(cmpToArea, x => x.AreValuesEqual(cmpTo));
+
+                // Add all matches to the return list
+                ret.AddRange(matches);
             }
 
+            // Return the distinct list of matches
             return ret.Distinct();
         }
 

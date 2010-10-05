@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -177,7 +178,23 @@ namespace NetGore.Graphics
         public void Add(ILight item)
         {
             if (item.Sprite == null)
-                item.Sprite = DefaultSprite.DeepCopy();
+            {
+                if (DefaultSprite != null)
+                {
+                    // Use a copy of the DefaultSprite
+                    item.Sprite = DefaultSprite.DeepCopy();
+                }
+                else
+                {
+                    // No sprite was given, and no DefaultSprite to be used
+                    const string errmsg = "Added light `{0}` to `{1}` with no sprite, but couldn't use LightManager.DefaultSprite" +
+                        " because the property is null.";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, item, this);
+                    Debug.Fail(string.Format(errmsg, item, this));
+                }
+            }
+
 
             if (!_list.Contains(item))
                 _list.Add(item);

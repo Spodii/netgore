@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NetGore.IO;
 using NetGore.World;
@@ -22,6 +23,15 @@ namespace DemoGame
         /// <param name="r">The r.</param>
         public WallEntity(IValueReader r) : base(r)
         {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a deep copy of this object.
+        /// </summary>
+        /// <returns>The deep copy of this object.</returns>
+        public override WallEntityBase DeepCopy()
+        {
+            return new WallEntity(Position, Size) { IsPlatform = IsPlatform, Weight = Weight };
         }
     }
 }

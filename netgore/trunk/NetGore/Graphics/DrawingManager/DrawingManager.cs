@@ -21,7 +21,6 @@ namespace NetGore.Graphics
         static readonly Color _clearGUIBufferColor = new Color(0, 0, 0, 0);
 
         readonly SFML.Graphics.Sprite _drawBufferToWindowSprite;
-
         readonly ILightManager _lightManager;
         readonly IRefractionManager _refractionManager;
         readonly ISpriteBatch _sb;
@@ -43,13 +42,23 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingManager"/> class.
         /// </summary>
+        public DrawingManager()
+            : this(null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawingManager"/> class.
+        /// </summary>
         /// <param name="rw">The <see cref="RenderWindow"/>.</param>
         public DrawingManager(RenderWindow rw)
         {
             BackgroundColor = new Color(100, 149, 237);
 
-            _rw = rw;
-            _sb = new RoundedSpriteBatch(_rw);
+            // Create the objects
+            _sb = new RoundedSpriteBatch();
+            _lightManager = CreateLightManager();
+            _refractionManager = CreateRefractionManager();
 
             // Set up the sprite used to draw the light map
             _drawBufferToWindowSprite = new SFML.Graphics.Sprite
@@ -62,13 +71,8 @@ namespace NetGore.Graphics
                 Position = Vector2.Zero
             };
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            _lightManager = CreateLightManager();
-            _refractionManager = CreateRefractionManager();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
-            _lightManager.Initialize(_rw);
-            _refractionManager.Initialize(_rw);
+            // Set the RenderWindow
+            RenderWindow = rw;
         }
 
         /// <summary>
@@ -83,6 +87,14 @@ namespace NetGore.Graphics
                     return;
 
                 _rw = value;
+
+                _sb.RenderTarget = _rw;
+
+                if (_rw != null)
+                {
+                    LightManager.Initialize(_rw);
+                    RefractionManager.Initialize(_rw);
+                }
 
                 OnRenderWindowChanged(_rw);
             }
