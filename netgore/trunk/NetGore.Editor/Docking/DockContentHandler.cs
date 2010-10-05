@@ -724,6 +724,7 @@ namespace NetGore.Editor.Docking
             {
                 if (Form.Parent is DockPane)
                     SetParent(null);
+
                 if (Form.MdiParent != DockPanel.ParentForm)
                 {
                     FlagClipWindow = true;
