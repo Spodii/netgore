@@ -6,12 +6,16 @@ using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor
 {
-    public partial class ChildWindowForm : DockContent
+    /// <summary>
+    /// Base class for a dockable <see cref="System.Windows.Forms.Form"/> in the editor that is the source of input and interaction
+    /// for <see cref="Tool"/>s.
+    /// </summary>
+    public partial class ToolTargetFormBase : DockContent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChildWindowForm"/> class.
+        /// Initializes a new instance of the <see cref="ToolTargetFormBase"/> class.
         /// </summary>
-        public ChildWindowForm()
+        public ToolTargetFormBase()
         {
             HideOnClose = true;
 
@@ -28,6 +32,10 @@ namespace DemoGame.Editor
         [Browsable(true)]
         public ToolBarVisibility ToolBarVisibility { get; set; }
 
+        /// <summary>
+        /// Raises the <see cref="System.Windows.Forms.Form.Activated"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);

@@ -74,5 +74,19 @@ namespace DemoGame.Editor
         {
             // TODO: !!
         }
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the selectedObjectsToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void selectedObjectsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            var frm =SelectedObjectsForm.Instance;
+            if (selectedObjectsToolStripMenuItem.Checked)
+                frm.Show(dockPanel);
+            else
+                frm.Hide();
+        }
     }
 }

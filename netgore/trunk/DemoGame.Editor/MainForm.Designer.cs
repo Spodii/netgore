@@ -55,11 +55,11 @@ namespace DemoGame.Editor
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.Editor.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
+            this.selectedObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,14 +108,9 @@ namespace DemoGame.Editor
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miniMapToolStripMenuItem});
+            this.selectedObjectsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
-            // 
-            // miniMapToolStripMenuItem
-            // 
-            this.miniMapToolStripMenuItem.Name = "miniMapToolStripMenuItem";
-            resources.ApplyResources(this.miniMapToolStripMenuItem, "miniMapToolStripMenuItem");
             // 
             // ssStatus
             // 
@@ -187,6 +182,13 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
             // 
+            // selectedObjectsToolStripMenuItem
+            // 
+            this.selectedObjectsToolStripMenuItem.CheckOnClick = true;
+            this.selectedObjectsToolStripMenuItem.Name = "selectedObjectsToolStripMenuItem";
+            resources.ApplyResources(this.selectedObjectsToolStripMenuItem, "selectedObjectsToolStripMenuItem");
+            this.selectedObjectsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.selectedObjectsToolStripMenuItem_CheckedChanged);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -213,13 +215,13 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem miniMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mapToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private ToolBar tbGlobal;
         private ToolBar tbMap;
         private DockPanel dockPanel;
+        private System.Windows.Forms.ToolStripMenuItem selectedObjectsToolStripMenuItem;
     }
 }
 
