@@ -1,13 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor
 {
     public class MapEntityCursorTool : MapCursorToolBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapEntityCursorTool"/> class.
+        /// </summary>
+        /// <param name="toolManager">The tool manager.</param>
+        public MapEntityCursorTool(ToolManager toolManager) : base(toolManager, CreateSettings())
+        {
+        }
+
         /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
         /// </summary>
@@ -22,32 +28,11 @@ namespace DemoGame.Editor
                 //EnabledImage = Resources.MapGridDrawerTool_Enabled,
             };
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapEntityCursorTool"/> class.
-        /// </summary>
-        /// <param name="toolManager">The tool manager.</param>
-        public MapEntityCursorTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
-        {
-        }
     }
 
     public abstract class MapCursorToolBase : Tool
     {
         const string _enabledToolsGroup = "Map Cursors";
-
-        /// <summary>
-        /// Modifies the <see cref="ToolSettings"/> as it is passed to the base class constructor.
-        /// </summary>
-        /// <param name="settings">The <see cref="ToolSettings"/>.</param>
-        /// <returns>The <see cref="ToolSettings"/></returns>
-        static ToolSettings ModifyToolSettings(ToolSettings settings)
-        {
-            settings.ToolBarVisibility = ToolBarVisibility.Map;
-            settings.EnabledToolsGroup = _enabledToolsGroup;
-            return settings;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapCursorToolBase"/> class.
@@ -59,6 +44,18 @@ namespace DemoGame.Editor
         protected MapCursorToolBase(ToolManager toolManager, ToolSettings settings)
             : base(toolManager, ModifyToolSettings(settings))
         {
+        }
+
+        /// <summary>
+        /// Modifies the <see cref="ToolSettings"/> as it is passed to the base class constructor.
+        /// </summary>
+        /// <param name="settings">The <see cref="ToolSettings"/>.</param>
+        /// <returns>The <see cref="ToolSettings"/></returns>
+        static ToolSettings ModifyToolSettings(ToolSettings settings)
+        {
+            settings.ToolBarVisibility = ToolBarVisibility.Map;
+            settings.EnabledToolsGroup = _enabledToolsGroup;
+            return settings;
         }
     }
 }

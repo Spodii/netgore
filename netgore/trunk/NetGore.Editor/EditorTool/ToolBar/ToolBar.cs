@@ -419,6 +419,19 @@ namespace NetGore.Editor.EditorTool
             }
 
             /// <summary>
+            /// Raises the <see cref="E:System.Windows.Forms.Control.Click"/> event.
+            /// </summary>
+            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+            protected override void OnClick(EventArgs e)
+            {
+                // Toggle IsEnabled when clicked
+                if (ClickToEnable)
+                    Tool.IsEnabled = !Tool.IsEnabled;
+
+                base.OnClick(e);
+            }
+
+            /// <summary>
             /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.OwnerChanged"/> event.
             /// </summary>
             /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -438,20 +451,17 @@ namespace NetGore.Editor.EditorTool
                 }
             }
 
-            /// <summary>
-            /// Raises the <see cref="E:System.Windows.Forms.Control.Click"/> event.
-            /// </summary>
-            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-            protected override void OnClick(EventArgs e)
-            {
-                // Toggle IsEnabled when clicked
-                if (ClickToEnable)
-                {
-                    Tool.IsEnabled = !Tool.IsEnabled;
-                }
+            #region IToolBarButtonSettings Members
 
-                base.OnClick(e);
-            }
+            /// <summary>
+            /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
+            /// will be toggle by clicking this control. Some types of controls may ignore this value when it makes no logical
+            /// sense to behave this way.
+            /// </summary>
+            /// <value></value>
+            public bool ClickToEnable { get; set; }
+
+            #endregion
 
             #region IToolBarControl Members
 
@@ -515,18 +525,6 @@ namespace NetGore.Editor.EditorTool
             }
 
             #endregion
-
-            /// <summary>
-            /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
-            /// will be toggle by clicking this control. Some types of controls may ignore this value when it makes no logical
-            /// sense to behave this way.
-            /// </summary>
-            /// <value></value>
-            public bool ClickToEnable
-            {
-                get;
-                set;
-            }
         }
 
         /// <summary>
@@ -795,9 +793,7 @@ namespace NetGore.Editor.EditorTool
             {
                 // Toggle IsEnabled when clicked
                 if (ClickToEnable)
-                {
                     Tool.IsEnabled = !Tool.IsEnabled;
-                }
 
                 base.OnClick(e);
             }
@@ -865,16 +861,16 @@ namespace NetGore.Editor.EditorTool
 
             #endregion
 
+            #region IToolBarLabelSettings Members
+
             /// <summary>
             /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
             /// will be toggle by clicking this control. Some types of controls may ignore this value when it makes no logical
             /// sense to behave this way.
             /// </summary>
-            public bool ClickToEnable
-            {
-                get;
-                set;
-            }
+            public bool ClickToEnable { get; set; }
+
+            #endregion
         }
 
         /// <summary>
@@ -908,6 +904,19 @@ namespace NetGore.Editor.EditorTool
             }
 
             /// <summary>
+            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.Click"/> event.
+            /// </summary>
+            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+            protected override void OnClick(EventArgs e)
+            {
+                // Toggle IsEnabled when clicked
+                if (ClickToEnable)
+                    Tool.IsEnabled = !Tool.IsEnabled;
+
+                base.OnClick(e);
+            }
+
+            /// <summary>
             /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.OwnerChanged"/> event.
             /// </summary>
             /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -925,21 +934,6 @@ namespace NetGore.Editor.EditorTool
 
                     Owner.Items.Remove(this);
                 }
-            }
-
-            /// <summary>
-            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.Click"/> event.
-            /// </summary>
-            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-            protected override void OnClick(EventArgs e)
-            {
-                // Toggle IsEnabled when clicked
-                if (ClickToEnable)
-                {
-                    Tool.IsEnabled = !Tool.IsEnabled;
-                }
-
-                base.OnClick(e);
             }
 
             #region IToolBarControl Members
@@ -1005,15 +999,15 @@ namespace NetGore.Editor.EditorTool
 
             #endregion
 
+            #region IToolBarProgressBarSettings Members
+
             /// <summary>
             /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
             /// will be toggle by clicking this control.
             /// </summary>
-            public bool ClickToEnable
-            {
-                get;
-                set;
-            }
+            public bool ClickToEnable { get; set; }
+
+            #endregion
         }
 
         /// <summary>
@@ -1044,6 +1038,19 @@ namespace NetGore.Editor.EditorTool
             void Initialize()
             {
                 InitializeGeneral(_tool, this);
+            }
+
+            /// <summary>
+            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.Click"/> event.
+            /// </summary>
+            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+            protected override void OnClick(EventArgs e)
+            {
+                // Toggle IsEnabled when clicked
+                if (ClickToEnable && ButtonPressed)
+                    Tool.IsEnabled = !Tool.IsEnabled;
+
+                base.OnClick(e);
             }
 
             /// <summary>
@@ -1129,30 +1136,15 @@ namespace NetGore.Editor.EditorTool
 
             #endregion
 
+            #region IToolBarSplitButtonSettings Members
+
             /// <summary>
             /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
             /// will be toggle by clicking this control.
             /// </summary>
-            public bool ClickToEnable
-            {
-                get;
-                set;
-            }
+            public bool ClickToEnable { get; set; }
 
-            /// <summary>
-            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.Click"/> event.
-            /// </summary>
-            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-            protected override void OnClick(EventArgs e)
-            {
-                // Toggle IsEnabled when clicked
-                if (ClickToEnable && ButtonPressed)
-                {
-                    Tool.IsEnabled = !Tool.IsEnabled;
-                }
-
-                base.OnClick(e);
-            }
+            #endregion
         }
 
         /// <summary>

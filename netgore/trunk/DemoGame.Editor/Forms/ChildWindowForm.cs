@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using NetGore.Editor;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 

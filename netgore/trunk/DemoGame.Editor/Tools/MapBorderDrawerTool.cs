@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NetGore.Editor;
+﻿using System.Linq;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 
@@ -10,6 +9,15 @@ namespace DemoGame.Editor
     /// </summary>
     public class MapBorderDrawerTool : Tool
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapBorderDrawerTool"/> class.
+        /// </summary>
+        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
+        protected MapBorderDrawerTool(ToolManager toolManager) : base(toolManager, CreateSettings())
+        {
+            ToolBarControl.ControlSettings.AsButtonSettings().ClickToEnable = true;
+        }
+
         /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
         /// </summary>
@@ -23,16 +31,6 @@ namespace DemoGame.Editor
                 OnToolBarByDefault = false,
                 ToolBarControlType = ToolBarControlType.Button
             };
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapBorderDrawerTool"/> class.
-        /// </summary>
-        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapBorderDrawerTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
-        {
-            ToolBarControl.ControlSettings.AsButtonSettings().ClickToEnable = true;
         }
 
         class MapBorderDrawingExtension : MapDrawingExtension

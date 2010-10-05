@@ -30,35 +30,6 @@ namespace NetGore.World
         const string _sizeValueKey = "Size";
 
         /// <summary>
-        /// Gets if the values of this <see cref="WallEntityBase"/> equal the values of another, and if they are of the
-        /// same type. Not all values need to be taken into consideration, just relevant ones to seeing if two walls are
-        /// functionally the same.
-        /// </summary>
-        /// <param name="other">The <see cref="WallEntityBase"/> to compare to. Can be null.</param>
-        /// <returns>True if this <see cref="WallEntityBase"/> has the same values and type as the <paramref name="other"/>;
-        /// otherwise false. Also returns false when <paramref name="other"/> is null.</returns>
-        public virtual bool AreValuesEqual(WallEntityBase other)
-        {
-            if (other == null)
-                return false;
-
-            // Check if the same object instance
-            if (this == other)
-                return true;
-
-            // Check the values
-            if (Position != other.Position || Size != other.Size || IsPlatform != other.IsPlatform || Weight != other.Weight
-                || Velocity != other.Velocity)
-                return false;
-
-            // Check for the same type
-            if (GetType() != other.GetType())
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
         /// </summary>
         /// <param name="r">The r.</param>
@@ -66,12 +37,6 @@ namespace NetGore.World
         {
             Read(r);
         }
-
-        /// <summary>
-        /// When overridden in the derived class, creates a deep copy of this object.
-        /// </summary>
-        /// <returns>The deep copy of this object.</returns>
-        public abstract WallEntityBase DeepCopy();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
@@ -113,6 +78,41 @@ namespace NetGore.World
             get { return 0; }
             set { }
         }
+
+        /// <summary>
+        /// Gets if the values of this <see cref="WallEntityBase"/> equal the values of another, and if they are of the
+        /// same type. Not all values need to be taken into consideration, just relevant ones to seeing if two walls are
+        /// functionally the same.
+        /// </summary>
+        /// <param name="other">The <see cref="WallEntityBase"/> to compare to. Can be null.</param>
+        /// <returns>True if this <see cref="WallEntityBase"/> has the same values and type as the <paramref name="other"/>;
+        /// otherwise false. Also returns false when <paramref name="other"/> is null.</returns>
+        public virtual bool AreValuesEqual(WallEntityBase other)
+        {
+            if (other == null)
+                return false;
+
+            // Check if the same object instance
+            if (this == other)
+                return true;
+
+            // Check the values
+            if (Position != other.Position || Size != other.Size || IsPlatform != other.IsPlatform || Weight != other.Weight ||
+                Velocity != other.Velocity)
+                return false;
+
+            // Check for the same type
+            if (GetType() != other.GetType())
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a deep copy of this object.
+        /// </summary>
+        /// <returns>The deep copy of this object.</returns>
+        public abstract WallEntityBase DeepCopy();
 
         /// <summary>
         /// Performs the collision handling for an <see cref="Entity"/> colliding into this <see cref="WallEntityBase"/>.

@@ -11,12 +11,6 @@ namespace NetGore.Editor.EditorTool
     public interface IToolBarSplitButtonSettings : IToolBarDropDownItemSettings
     {
         /// <summary>
-        /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
-        /// will be toggle by clicking this control.
-        /// </summary>
-        bool ClickToEnable { set; get; }
-
-        /// <summary>
         /// Occurs when the standard button portion of a <see cref="System.Windows.Forms.ToolStripSplitButton"/> is clicked.
         /// </summary>
         event EventHandler ButtonClick;
@@ -53,6 +47,12 @@ namespace NetGore.Editor.EditorTool
         /// is selected or the <see cref="System.Windows.Forms.ToolStripSplitButton.DropDownButtonPressed"/> property is true.
         /// </summary>
         bool ButtonSelected { get; }
+
+        /// <summary>
+        /// Gets or sets if the <see cref="Tool"/>'s <see cref="NetGore.Editor.EditorTool.Tool.IsEnabled"/> state
+        /// will be toggle by clicking this control.
+        /// </summary>
+        bool ClickToEnable { set; get; }
 
         /// <summary>
         /// Gets or sets the portion of the <see cref="System.Windows.Forms.ToolStripSplitButton"/> that is activated when the

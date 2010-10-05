@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.EditorTools;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Audio;
@@ -14,7 +15,6 @@ using NetGore.Editor.Grhs;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
-using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
 
 namespace DemoGame.Editor
 {
@@ -36,14 +36,9 @@ namespace DemoGame.Editor
         readonly IContentManager _contentManager;
         readonly IDbController _dbController;
         readonly Font _defaultRenderFont;
+        readonly MapGrhWalls _mapGrhWalls;
         readonly MapState _mapState;
         readonly Timer _timer;
-        readonly MapGrhWalls _mapGrhWalls;
-
-        /// <summary>
-        /// Gets the <see cref="MapGrhWalls"/> instance.
-        /// </summary>
-        public MapGrhWalls MapGrhWalls { get { return _mapGrhWalls; } }
 
         /// <summary>
         /// Initializes the <see cref="GlobalState"/> class.
@@ -144,6 +139,14 @@ namespace DemoGame.Editor
         public MapState Map
         {
             get { return _mapState; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MapGrhWalls"/> instance.
+        /// </summary>
+        public MapGrhWalls MapGrhWalls
+        {
+            get { return _mapGrhWalls; }
         }
 
         /// <summary>
