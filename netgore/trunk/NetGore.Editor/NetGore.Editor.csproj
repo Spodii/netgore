@@ -279,6 +279,11 @@
     <Compile Include="EditorTool\ToolBar\ToolBarVisibility.cs" />
     <Compile Include="EditorTool\ToolManager.cs" />
     <Compile Include="EditorTool\ToolStateManager.cs" />
+    <Compile Include="TransBox\TransBoxManager.cs" />
+    <Compile Include="TransBox\TransBoxManager.ITransBox.cs" />
+    <Compile Include="TransBox\TransBoxManager.MoveManyTransBox.cs" />
+    <Compile Include="TransBox\TransBoxManager.TransBox.cs" />
+    <Compile Include="TransBox\TransBoxManager.TransBoxType.cs" />
     <Compile Include="UI\Editors\AdvancedClassTypeConverter.cs" />
     <Compile Include="UI\Editors\AdvancedPropertyDescriptor.cs" />
     <Compile Include="UI\Editors\AIIDEditor.cs" />
