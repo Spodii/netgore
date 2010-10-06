@@ -69,10 +69,8 @@
     </Compile>
     <Compile Include="Cursors\xxAddGrhCursor.cs" />
     <Compile Include="Cursors\xxAddLightCursor.cs" />
-    <Compile Include="Cursors\xxAddWallCursor.cs" />
     <Compile Include="Cursors\xxGrhCursor.cs" />
     <Compile Include="Cursors\xxLightCursor.cs" />
-    <Compile Include="Cursors\xxWallCursor.cs" />
     <Compile Include="Forms\DisplayFilterManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>

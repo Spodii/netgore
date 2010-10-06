@@ -184,7 +184,7 @@ namespace DemoGame.Editor
         {
             readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
 
-            Vector2 _gridSize;
+            Vector2 _gridSize = new Vector2(32);
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MapState"/> class.
