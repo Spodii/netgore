@@ -122,7 +122,7 @@ namespace NetGore.Editor
         /// Adds a new object to the collection of selected objects.
         /// </summary>
         /// <param name="obj">The object to add.</param>
-        public void AddSelected(T obj)
+        public void Add(T obj)
         {
             if (_selectedObjs.Contains(obj))
                 return;
