@@ -29,6 +29,14 @@ namespace NetGore.Editor
         ITransBox _underCursor;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TransBoxManager"/> class.
+        /// </summary>
+        public TransBoxManager()
+        {
+            DragButton = MouseButtons.Left;
+        }
+
+        /// <summary>
         /// Gets the <see cref="Cursor"/> that represents the transformation box under the cursor.
         /// </summary>
         public Cursor CurrentCursor
@@ -40,14 +48,6 @@ namespace NetGore.Editor
 
                 return _underCursor.MouseCursor;
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransBoxManager"/> class.
-        /// </summary>
-        public TransBoxManager()
-        {
-            DragButton = MouseButtons.Left;
         }
 
         /// <summary>
@@ -177,6 +177,12 @@ namespace NetGore.Editor
             return GetSprite(type).Size;
         }
 
+        /// <summary>
+        /// Handles when a mouse button is pressed down.
+        /// </summary>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> describing the current view.</param>
+        /// <returns>True if the <see cref="TransBoxManager"/> handled the event; otherwise false.</returns>
         public bool HandleMouseDown(MouseEventArgs e, ICamera2D camera)
         {
             if (e.Button == DragButton)
@@ -196,6 +202,12 @@ namespace NetGore.Editor
             return _selectedTransBox != null;
         }
 
+        /// <summary>
+        /// Handles when the mouse moves.
+        /// </summary>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> describing the current view.</param>
+        /// <returns>True if the <see cref="TransBoxManager"/> handled the event; otherwise false.</returns>
         public bool HandleMouseMove(MouseEventArgs e, ICamera2D camera)
         {
             if (_transBoxes.Count == 0)
@@ -223,6 +235,12 @@ namespace NetGore.Editor
             return _selectedTransBox != null;
         }
 
+        /// <summary>
+        /// Handles when a mouse button is raised.
+        /// </summary>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> describing the current view.</param>
+        /// <returns>True if the <see cref="TransBoxManager"/> handled the event; otherwise false.</returns>
         public bool HandleMouseUp(MouseEventArgs e, ICamera2D camera)
         {
             if (e.Button == _selectedTransBoxButton)
@@ -248,18 +266,6 @@ namespace NetGore.Editor
             foreach (var type in types)
             {
                 IgnoreType(type);
-            }
-        }
-
-        /// <summary>
-        /// Updates the <see cref="TransBoxManager"/>.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        public void Update(TickCount currentTime)
-        {
-            foreach (var tb in _transBoxes)
-            {
-                tb.Update(currentTime);
             }
         }
 
@@ -327,6 +333,18 @@ namespace NetGore.Editor
         public static void UnignoreType(Type type)
         {
             _typesToIgnore.Remove(type);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="TransBoxManager"/>.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        public void Update(TickCount currentTime)
+        {
+            foreach (var tb in _transBoxes)
+            {
+                tb.Update(currentTime);
+            }
         }
 
         /// <summary>
