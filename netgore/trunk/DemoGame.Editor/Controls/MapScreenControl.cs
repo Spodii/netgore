@@ -181,6 +181,8 @@ namespace DemoGame.Editor
 
             sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
 
+            TransBoxManager.Draw(sb, Camera);
+
             ToolManager.Instance.InvokeAfterDrawMapGUI(sb, Map);
         }
 
