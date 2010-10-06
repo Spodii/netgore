@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -27,6 +28,9 @@ namespace NetGore.Editor
         MouseButtons _selectedTransBoxButton = MouseButtons.None;
         ITransBox _underCursor;
 
+        /// <summary>
+        /// Gets the <see cref="Cursor"/> that represents the transformation box under the cursor.
+        /// </summary>
         public Cursor CurrentCursor
         {
             get
@@ -39,8 +43,18 @@ namespace NetGore.Editor
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="MouseButtons"/> to use for interacting with the transformation boxes.
+        /// Initializes a new instance of the <see cref="TransBoxManager"/> class.
         /// </summary>
+        public TransBoxManager()
+        {
+            DragButton = MouseButtons.Left;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="MouseButtons"/> to use for interacting with the transformation boxes.
+        /// Default is <see cref="MouseButtons.Left"/>.
+        /// </summary>
+        [DefaultValue(MouseButtons.Left)]
         public MouseButtons DragButton { get; set; }
 
         /// <summary>
@@ -171,7 +185,12 @@ namespace NetGore.Editor
 
                 _underCursor = FindBoxAt(worldPos);
                 _selectedTransBox = _underCursor;
-                _selectedTransBoxButton = e.Button;
+                _lastWorldPos = worldPos;
+
+                if (_selectedTransBox != null)
+                    _selectedTransBoxButton = e.Button;
+                else
+                    _selectedTransBoxButton = MouseButtons.None;
             }
 
             return _selectedTransBox != null;
@@ -194,9 +213,11 @@ namespace NetGore.Editor
             if (_selectedTransBox != null)
             {
                 var delta = worldPos - _lastWorldPos;
-                _lastWorldPos = worldPos;
-
-                _selectedTransBox.CursorMoved(delta);
+                if (delta != Vector2.Zero)
+                {
+                    _lastWorldPos = worldPos;
+                    _selectedTransBox.CursorMoved(delta);
+                }
             }
 
             return _selectedTransBox != null;
@@ -227,6 +248,18 @@ namespace NetGore.Editor
             foreach (var type in types)
             {
                 IgnoreType(type);
+            }
+        }
+
+        /// <summary>
+        /// Updates the <see cref="TransBoxManager"/>.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        public void Update(TickCount currentTime)
+        {
+            foreach (var tb in _transBoxes)
+            {
+                tb.Update(currentTime);
             }
         }
 
