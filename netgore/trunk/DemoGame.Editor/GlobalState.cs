@@ -184,11 +184,32 @@ namespace DemoGame.Editor
         {
             readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
 
+            Vector2 _gridSize;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="MapState"/> class.
             /// </summary>
             internal MapState()
             {
+            }
+
+            /// <summary>
+            /// Gets or sets the size of the map grid in pixels. Must be greater than or equal to 1.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">The <paramref name="value"/>'s X or Y field are less than one.</exception>
+            public Vector2 GridSize
+            {
+                get
+                {
+                    return _gridSize;
+                }
+                set
+                {
+                    if (_gridSize.X <= float.Epsilon || _gridSize.Y <= float.Epsilon)
+                        throw new ArgumentOutOfRangeException("value", "The X and Y fields of the value must be greater than or equal to 1.");
+
+                    _gridSize = value;
+                }
             }
 
             /// <summary>

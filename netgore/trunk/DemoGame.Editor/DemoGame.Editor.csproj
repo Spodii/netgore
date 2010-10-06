@@ -122,6 +122,7 @@
     <Compile Include="Forms\Dockable\ToolTargetFormBase.Designer.cs">
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Map\Cursors\MapWallCursorTool.cs" />
     <Compile Include="Tools\Map\MapBorderDrawerTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapCursorToolBase.cs" />
     <Compile Include="Tools\Map\Cursors\MapEntityCursorTool.cs" />
