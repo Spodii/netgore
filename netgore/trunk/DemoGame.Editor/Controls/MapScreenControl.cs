@@ -188,11 +188,6 @@ namespace DemoGame.Editor
             DrawingManager.LightManager.Ambient = Map.AmbientLight;
 
             Map.Draw(sb);
-
-            // TODO: !! Selection area
-            /*
-            CursorManager.DrawSelection(sb);
-            */
         }
 
         /// <summary>
