@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.World;
 using SFML.Graphics;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
@@ -32,7 +33,6 @@ namespace NetGore.Editor.Grhs
         IContentManager _contentManager;
         CreateWallEntityHandler _createWall;
         EditGrhForm _editGrhDataForm;
-        Vector2 _gameScreenSize;
         MapGrhWalls _mapGrhWalls;
 
         /// <summary>
@@ -151,6 +151,11 @@ namespace NetGore.Editor.Grhs
         /// <returns>True if the editing started successfully; otherwise false.</returns>
         bool BeginEditGrhData(TreeNode node, GrhData gd, bool deleteOnCancel)
         {
+            // TODO: !! Add back in support for this
+
+            return false;
+
+            /*
             if ((_editGrhDataForm != null && !_editGrhDataForm.IsDisposed) || node == null || gd == null)
                 return false;
 
@@ -175,8 +180,9 @@ namespace NetGore.Editor.Grhs
             };
 
             _editGrhDataForm.Show();
-
+            
             return true;
+            */
         }
 
         void CheckForMissingTextures()
@@ -480,11 +486,9 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         /// <param name="cm">The <see cref="IContentManager"/> used for loading content needed by the
         /// <see cref="GrhTreeView"/>.</param>
-        /// <param name="gameScreenSize">The size of the game screen.</param>
         /// <param name="createWall">Delegate used to create a <see cref="WallEntityBase"/>.</param>
         /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance to use.</param>
-        public void Initialize(IContentManager cm, Vector2 gameScreenSize, CreateWallEntityHandler createWall,
-                               MapGrhWalls mapGrhWalls)
+        public void Initialize(IContentManager cm, CreateWallEntityHandler createWall, MapGrhWalls mapGrhWalls)
         {
             if (DesignMode)
                 return;
@@ -495,7 +499,6 @@ namespace NetGore.Editor.Grhs
                 throw new ArgumentNullException("mapGrhWalls");
 
             _contentManager = cm;
-            _gameScreenSize = gameScreenSize;
             _createWall = createWall;
             _mapGrhWalls = mapGrhWalls;
 

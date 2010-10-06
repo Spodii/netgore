@@ -157,6 +157,12 @@
   <data name="selectedObjectsToolStripMenuItem.Text" xml:space="preserve">
     <value>Selected Objects</value>
   </data>
+  <data name="grhDatasToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 22</value>
+  </data>
+  <data name="grhDatasToolStripMenuItem.Text" xml:space="preserve">
+    <value>GrhDatas</value>
+  </data>
   <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 20</value>
   </data>
@@ -303,6 +309,9 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>687, 521</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>NetGore Editor</value>
   </data>
@@ -346,6 +355,12 @@
     <value>selectedObjectsToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;selectedObjectsToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grhDatasToolStripMenuItem.Name" xml:space="preserve">
+    <value>grhDatasToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;grhDatasToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

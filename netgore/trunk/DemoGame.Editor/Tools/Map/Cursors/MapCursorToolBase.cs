@@ -134,6 +134,7 @@ namespace DemoGame.Editor
         {
             settings.ToolBarVisibility = ToolBarVisibility.Map;
             settings.EnabledToolsGroup = _enabledToolsGroup;
+            settings.EnabledByDefault = false;
             return settings;
         }
 

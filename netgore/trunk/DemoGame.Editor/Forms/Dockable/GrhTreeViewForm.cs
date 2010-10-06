@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Windows.Forms;
 using NetGore.Editor.Docking;
 
 namespace DemoGame.Editor
 {
-    public partial class SelectedObjectsForm : DockContent
+    public partial class GrhTreeViewForm : DockContent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectedObjectsForm"/> class.
+        /// Initializes a new instance of the <see cref="GrhTreeViewForm"/> class.
         /// </summary>
-        public SelectedObjectsForm()
+        public GrhTreeViewForm()
         {
             InitializeComponent();
         }
@@ -23,9 +22,11 @@ namespace DemoGame.Editor
         {
             base.OnLoad(e);
 
-            var som = GlobalState.Instance.Map.SelectedObjsManager;
-            som.SelectedListBox = lstItems;
-            som.PropertyGrid = pgSelected;
+            if (DesignMode)
+                return;
+
+            gtv.Initialize(GlobalState.Instance.ContentManager, (pos, size) => new WallEntity(pos, size),
+                           GlobalState.Instance.MapGrhWalls);
         }
     }
 }

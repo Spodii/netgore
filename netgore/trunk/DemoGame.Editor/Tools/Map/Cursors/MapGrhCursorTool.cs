@@ -18,8 +18,13 @@ namespace DemoGame.Editor
         Map _mouseOverMap;
         Vector2 _mousePos;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapGrhCursorTool"/> class.
+        /// </summary>
+        /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
         public MapGrhCursorTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
+            ToolBarControl.ControlSettings.AsSplitButtonSettings().ClickToEnable = true;
         }
 
         /// <summary>
@@ -141,7 +146,8 @@ namespace DemoGame.Editor
                 return;
 
             var g = new Grh(grh.GrhData, AnimType.Loop, map.GetTime());
-            map.AddMapGrh(new MapGrh(g, drawPos, false));
+            var mg = new MapGrh(g, drawPos, false);
+            map.AddMapGrh(mg);
         }
 
         /// <summary>
