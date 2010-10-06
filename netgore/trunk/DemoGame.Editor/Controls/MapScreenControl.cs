@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -21,6 +22,27 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
+        readonly List<TransBox> _transBoxes = new List<TransBox>(9);
+
+        TransBox _selTransBox;
+
+        /// <summary>
+        /// Gets or sets the selected transformation box.
+        /// </summary>
+        public TransBox SelectedTransBox
+        {
+            get { return _selTransBox; }
+            set { _selTransBox = value; }
+        }
+
+        /// <summary>
+        /// Gets the list of the current <see cref="TransBox"/>es.
+        /// </summary>
+        public List<TransBox> TransBoxes
+        {
+            get { return _transBoxes; }
+        }
+
         /// <summary>
         /// Delegate for handling events from the <see cref="MapScreenControl"/>.
         /// </summary>
@@ -215,19 +237,33 @@ namespace DemoGame.Editor
             ToolManager.Instance.MapDrawingExtensions.Map = Map;
 
             // Draw the world
-            var worldSB = DrawingManager.BeginDrawWorld(Camera);
-            if (worldSB != null)
+            try
             {
-                DrawMapWorld(worldSB);
-                DrawingManager.EndDrawWorld();
+                var worldSB = DrawingManager.BeginDrawWorld(Camera);
+                if (worldSB != null)
+                {
+                    DrawMapWorld(worldSB);
+                }
+            }
+            finally
+            {
+                if (DrawingManager.State != DrawingManagerState.Idle)
+                    DrawingManager.EndDrawWorld();
             }
 
             // Draw the GUI
-            var guiSB = DrawingManager.BeginDrawGUI();
-            if (guiSB != null)
+            try
             {
-                DrawMapGUI(guiSB);
-                DrawingManager.EndDrawGUI();
+                var guiSB = DrawingManager.BeginDrawGUI();
+                if (guiSB != null)
+                {
+                    DrawMapGUI(guiSB);
+                }
+            }
+            finally
+            {
+                if (DrawingManager.State != DrawingManagerState.Idle)
+                    DrawingManager.EndDrawGUI();
             }
         }
 

@@ -10,10 +10,6 @@ namespace DemoGame.Editor
     /// </summary>
     public sealed partial class EditMapForm : ToolTargetFormBase
     {
-        readonly List<TransBox> _transBoxes = new List<TransBox>(9);
-
-        TransBox _selTransBox;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EditMapForm"/> class.
         /// </summary>
@@ -28,23 +24,6 @@ namespace DemoGame.Editor
         public MapScreenControl MapScreenControl
         {
             get { return mapScreen; }
-        }
-
-        /// <summary>
-        /// Gets or sets the selected transformation box.
-        /// </summary>
-        public TransBox SelectedTransBox
-        {
-            get { return _selTransBox; }
-            set { _selTransBox = value; }
-        }
-
-        /// <summary>
-        /// Gets the list of the current <see cref="TransBox"/>es.
-        /// </summary>
-        public List<TransBox> TransBoxes
-        {
-            get { return _transBoxes; }
         }
     }
 }

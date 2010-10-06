@@ -125,8 +125,8 @@ namespace DemoGame.Editor
         {
             var cursorPos = MSC.CursorPos;
 
-            if (_mouseDragStart == Vector2.Zero || Container.SelectedTransBox != null)
-                return;
+            //if (_mouseDragStart == Vector2.Zero || Container.SelectedTransBox != null)
+            //    return;
 
             var drawColor = new Color(0, 255, 0, 150);
 
@@ -190,7 +190,7 @@ namespace DemoGame.Editor
 
                     if ((v.X <= cp.X) && (v.X + w >= cp.X) && (v.Y <= cp.Y) && (v.Y + h >= cp.Y))
                     {
-                        Container.SelectedTransBox = _mapGrhMoveBox;
+                        //Container.SelectedTransBox = _mapGrhMoveBox;
                         return;
                     }
 
@@ -246,7 +246,7 @@ namespace DemoGame.Editor
             }
             else if (e.Button == MouseButtons.Left && _mapGrhMoveBox != null)
             {
-                if (Container.SelectedTransBox == _mapGrhMoveBox)
+                //if (Container.SelectedTransBox == _mapGrhMoveBox)
                 {
                     var offset = _mapGrhMoveBox.Position - cursorPos;
                     offset.X = (float)Math.Round(offset.X);
@@ -258,7 +258,7 @@ namespace DemoGame.Editor
                     }
 
                     _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
-                    Container.SelectedTransBox = _mapGrhMoveBox;
+                    //Container.SelectedTransBox = _mapGrhMoveBox;
                 }
             }
 
@@ -306,7 +306,7 @@ namespace DemoGame.Editor
                     else
                     {
                         _mapGrhMoveBox = null;
-                        Container.SelectedTransBox = null;
+                        //Container.SelectedTransBox = null;
                         _selectedMapGrhs.Clear();
                     }
 
