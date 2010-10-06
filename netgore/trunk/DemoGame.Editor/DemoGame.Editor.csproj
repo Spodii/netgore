@@ -67,7 +67,6 @@
     <Compile Include="Controls\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Cursors\xxAddGrhCursor.cs" />
     <Compile Include="Cursors\xxAddLightCursor.cs" />
     <Compile Include="Cursors\xxLightCursor.cs" />
     <Compile Include="Forms\DisplayFilterManagerForm.cs">
