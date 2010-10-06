@@ -7,30 +7,12 @@ namespace DemoGame.Editor
 {
     public partial class SelectedObjectsForm : DockContent
     {
-        static readonly SelectedObjectsForm _instance;
-
-        /// <summary>
-        /// Initializes the <see cref="SelectedObjectsForm"/> class.
-        /// </summary>
-        static SelectedObjectsForm()
-        {
-            _instance = new SelectedObjectsForm();
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedObjectsForm"/> class.
         /// </summary>
-        SelectedObjectsForm()
+        public SelectedObjectsForm()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Gets the <see cref="SelectedObjectsForm"/> instance.
-        /// </summary>
-        public static SelectedObjectsForm Instance
-        {
-            get { return _instance; }
         }
 
         /// <summary>

@@ -10,6 +10,9 @@ namespace DemoGame.Editor
 {
     public partial class MainForm : Form
     {
+        GrhTreeViewForm _frmGrhTreeView;
+        SelectedObjectsForm _frmSelectedObjs;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
         /// </summary>
@@ -45,12 +48,45 @@ namespace DemoGame.Editor
             // Enable the update timer
             GlobalState.Instance.IsTickEnabled = true;
 
+            // Create the child form instances
+            _frmGrhTreeView = new GrhTreeViewForm();
+            _frmGrhTreeView.VisibleChanged += new EventHandler(_frmGrhTreeView_VisibleChanged);
+
+            _frmSelectedObjs = new SelectedObjectsForm();
+            _frmSelectedObjs.VisibleChanged += new EventHandler(_frmSelectedObjs_VisibleChanged);
+
+            // Load the first map
             // NOTE: Temp
             var frm = new EditMapForm();
             frm.MapScreenControl.ChangeMap(new MapID(1));
             frm.Show(dockPanel);
         }
 
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmSelectedObjs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmSelectedObjs_VisibleChanged(object sender, EventArgs e)
+        {
+            selectedObjectsToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmGrhTreeView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmGrhTreeView_VisibleChanged(object sender, EventArgs e)
+        {
+            grhDatasToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the closeToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
@@ -67,6 +103,11 @@ namespace DemoGame.Editor
             ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
         }
 
+        /// <summary>
+        /// Handles the Click event of the loadToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var frm = new EditMapForm();
@@ -75,23 +116,40 @@ namespace DemoGame.Editor
             frm.Show(dockPanel);
         }
 
+        /// <summary>
+        /// Handles the Click event of the newToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // TODO: !!
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the selectedObjectsToolStripMenuItem control.
+        /// Handles the CheckedChanged event of the <see cref="selectedObjectsToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void selectedObjectsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            var frm =SelectedObjectsForm.Instance;
             if (selectedObjectsToolStripMenuItem.Checked)
-                frm.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+                _frmSelectedObjs.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
             else
-                frm.Hide();
+                _frmSelectedObjs.Hide();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="grhDatasToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void grhDatasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (grhDatasToolStripMenuItem.Checked)
+                _frmGrhTreeView.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+            else
+                _frmGrhTreeView.Hide();
         }
     }
 }
