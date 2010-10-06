@@ -182,6 +182,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void mapContainer_MouseUp(object sender, MouseEventArgs e)
         {
+            if (!IsEnabled)
+                return;
+
             var c = sender as IToolTargetMapContainer;
             if (c == null)
                 return;
@@ -255,6 +258,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         void mapContainer_KeyUp(object sender, KeyEventArgs e)
         {
+            if (!IsEnabled)
+                return;
+
             var c = sender as IToolTargetMapContainer;
             if (c == null)
                 return;
@@ -282,6 +288,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void mapContainer_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!IsEnabled)
+                return;
+
             var c = sender as IToolTargetMapContainer;
             if (c == null)
                 return;
