@@ -33,6 +33,12 @@ namespace NetGore.Editor
             Vector2 Size { get; }
 
             /// <summary>
+            /// Updates the <see cref="ITransBox"/>.
+            /// </summary>
+            /// <param name="currentTime">The current time.</param>
+            void Update(TickCount currentTime);
+
+            /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.
             /// </summary>
             /// <param name="worldPos">The world point.</param>

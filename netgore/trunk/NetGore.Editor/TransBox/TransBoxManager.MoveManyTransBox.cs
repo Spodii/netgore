@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
@@ -66,6 +67,14 @@ namespace NetGore.Editor
             }
 
             /// <summary>
+            /// Updates the <see cref="ITransBox"/>.
+            /// </summary>
+            /// <param name="currentTime">The current time.</param>
+            public void Update(TickCount currentTime)
+            {
+            }
+
+            /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.
             /// </summary>
             /// <param name="worldPos">The world point.</param>
@@ -86,7 +95,7 @@ namespace NetGore.Editor
             {
                 foreach (var s in _spatials)
                 {
-                    s.TryMove(offset);
+                    s.TryMove(s.Position + offset);
                 }
 
                 _position += offset;

@@ -44,6 +44,11 @@ namespace DemoGame.Editor
 
             // Enable the update timer
             GlobalState.Instance.IsTickEnabled = true;
+
+            // NOTE: Temp
+            var frm = new EditMapForm();
+            frm.MapScreenControl.ChangeMap(new MapID(1));
+            frm.Show(dockPanel);
         }
 
         void closeToolStripMenuItem_Click(object sender, EventArgs e)

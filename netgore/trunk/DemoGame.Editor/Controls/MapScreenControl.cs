@@ -213,6 +213,7 @@ namespace DemoGame.Editor
                 return;
             }
 
+            TransBoxManager.Update(currentTime);
             Cursor = TransBoxManager.CurrentCursor;
 
             int deltaTime;
@@ -356,6 +357,42 @@ namespace DemoGame.Editor
                 return;
 
             _cameraVelocity = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnMouseDown(e);
+                return;
+            }
+
+            if (TransBoxManager.HandleMouseDown(e, Camera))
+                return;
+
+            base.OnMouseDown(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnMouseUp(e);
+                return;
+            }
+
+            if (TransBoxManager.HandleMouseUp(e, Camera))
+                return;
+
+            base.OnMouseUp(e);
         }
 
         /// <summary>

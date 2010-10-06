@@ -24,18 +24,61 @@ namespace NetGore.Editor
             Vector2 _position;
 
             /// <summary>
+            /// Gets the position to use for the <see cref="TransBox"/>.
+            /// </summary>
+            /// <returns>The position for the <see cref="TransBox"/>.</returns>
+            Vector2 GetPosition()
+            {
+                switch (_type)
+                {
+                    case TransBoxType.Bottom:
+                        return new Vector2(_spatial.Center.X - (Size.X / 2f), _spatial.Max.Y);
+
+                    case TransBoxType.BottomLeft:
+                        return new Vector2(_spatial.Position.X - Size.X, _spatial.Max.Y);
+
+                    case TransBoxType.BottomRight:
+                        return _spatial.Max;
+
+                    case TransBoxType.Left:
+                        return new Vector2(_spatial.Position.X - Size.X, _spatial.Center.Y - (Size.Y / 2f));
+
+                    case TransBoxType.Move:
+                        return new Vector2(_spatial.Center.X - (Size.X / 2f), _spatial.Position.Y - Size.Y - GetTransBoxSize(TransBoxType.Top).Y);
+
+                    case TransBoxType.Right:
+                        return new Vector2(_spatial.Max.X, _spatial.Center.Y - (Size.Y / 2f));
+
+                    case TransBoxType.Top:
+                        return new Vector2(_spatial.Center.X - (Size.X / 2f), _spatial.Position.Y - Size.Y);
+
+                    case TransBoxType.TopLeft:
+                        return _spatial.Position - Size;
+
+                    case TransBoxType.TopRight:
+                        return new Vector2(_spatial.Max.X, _spatial.Position.Y - Size.Y);
+
+                    default:
+                        const string errmsg = "Unsupported TransBoxType `{0}`.";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, _type);
+                        Debug.Fail(string.Format(errmsg, _type));
+                        return _spatial.Center;
+                }
+            }
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="TransBox"/> class.
             /// </summary>
             /// <param name="type">The <see cref="TransBoxType"/>.</param>
             /// <param name="spatial">The <see cref="ISpatial"/>.</param>
-            /// <param name="position">The position.</param>
-            TransBox(TransBoxType type, ISpatial spatial, Vector2 position)
+            TransBox(TransBoxType type, ISpatial spatial)
             {
                 _type = type;
-                _position = position;
                 _spatial = spatial;
 
                 _size = GetTransBoxSize(type);
+                _position = GetPosition();
             }
 
             /// <summary>
@@ -45,46 +88,31 @@ namespace NetGore.Editor
             public static IEnumerable<ITransBox> SurroundEntity(ISpatial entity)
             {
                 var ret = new List<ITransBox>(entity.SupportsResize ? 9 : 1);
-
-                var min = entity.Position;
-                var max = entity.Max;
-
-                var moveSize = GetTransBoxSize(TransBoxType.Move);
-                var moveHalfSize = moveSize / 2f;
-
                 var scaleSize = GetTransBoxSize(TransBoxType.BottomLeft);
-                var scaleHalfSize = scaleSize / 2f;
-
-                // Find the center of the sides for the resize and move icons
-                var sizeCenter = min + (entity.Size / 2f) - scaleHalfSize;
-                sizeCenter = sizeCenter.Round();
-
-                var moveCenterX = min.X + (entity.Size.X / 2f) - moveHalfSize.X;
-                moveCenterX = (float)Math.Round(moveCenterX);
 
                 // Move box
-                ret.Add(new TransBox(TransBoxType.Move, entity, new Vector2(moveCenterX, min.Y - moveSize.Y - scaleSize.Y)));
+                ret.Add(new TransBox(TransBoxType.Move, entity));
 
                 if (entity.SupportsResize)
                 {
                     // Four corners
-                    ret.Add(new TransBox(TransBoxType.TopLeft, entity, new Vector2(min.X - scaleSize.X, min.Y - scaleSize.Y)));
-                    ret.Add(new TransBox(TransBoxType.TopRight, entity, new Vector2(max.X, min.Y - scaleSize.Y)));
-                    ret.Add(new TransBox(TransBoxType.BottomLeft, entity, new Vector2(min.X - scaleSize.X, max.Y)));
-                    ret.Add(new TransBox(TransBoxType.BottomRight, entity, max));
+                    ret.Add(new TransBox(TransBoxType.TopLeft, entity));
+                    ret.Add(new TransBox(TransBoxType.TopRight, entity));
+                    ret.Add(new TransBox(TransBoxType.BottomLeft, entity));
+                    ret.Add(new TransBox(TransBoxType.BottomRight, entity));
 
                     // Horizontal sides
                     if (entity.Size.X > scaleSize.X + 4)
                     {
-                        ret.Add(new TransBox(TransBoxType.Top, entity, new Vector2(sizeCenter.X, min.Y - scaleSize.Y)));
-                        ret.Add(new TransBox(TransBoxType.Bottom, entity, new Vector2(sizeCenter.X, max.Y)));
+                        ret.Add(new TransBox(TransBoxType.Top, entity));
+                        ret.Add(new TransBox(TransBoxType.Bottom, entity));
                     }
 
                     // Vertical sides
                     if (entity.Size.Y > scaleSize.Y + 4)
                     {
-                        ret.Add(new TransBox(TransBoxType.Left, entity, new Vector2(min.X - scaleSize.X, sizeCenter.Y)));
-                        ret.Add(new TransBox(TransBoxType.Right, entity, new Vector2(max.X, sizeCenter.Y)));
+                        ret.Add(new TransBox(TransBoxType.Left, entity));
+                        ret.Add(new TransBox(TransBoxType.Right, entity));
                     }
                 }
 
@@ -126,6 +154,15 @@ namespace NetGore.Editor
             }
 
             /// <summary>
+            /// Updates the <see cref="ITransBox"/>.
+            /// </summary>
+            /// <param name="currentTime">The current time.</param>
+            public void Update(TickCount currentTime)
+            {
+                _position = GetPosition();
+            }
+
+            /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.
             /// </summary>
             /// <param name="worldPos">The world point.</param>
@@ -147,44 +184,44 @@ namespace NetGore.Editor
                 switch (_type)
                 {
                     case TransBoxType.Bottom:
-                        _spatial.TryResize(new Vector2(0, offset.Y));
+                        _spatial.TryResize(_spatial.Size + new Vector2(0, offset.Y));
                         break;
 
                     case TransBoxType.BottomLeft:
-                        if (_spatial.TryResize(new Vector2(-offset.X, offset.Y)))
-                            _spatial.TryMove(new Vector2(-offset.X, 0));
+                        if (_spatial.TryResize(_spatial.Size + new Vector2(-offset.X, offset.Y)))
+                            _spatial.TryMove(_spatial.Position + new Vector2(offset.X, 0));
                         break;
 
                     case TransBoxType.BottomRight:
-                        _spatial.TryResize(offset);
+                        _spatial.TryResize(_spatial.Size + offset);
                         break;
 
                     case TransBoxType.Left:
-                        if (_spatial.TryResize(new Vector2(-offset.X, 0)))
-                            _spatial.TryMove(new Vector2(-offset.X, 0));
+                        if (_spatial.TryResize(_spatial.Size + new Vector2(-offset.X, 0)))
+                            _spatial.TryMove(_spatial.Position + new Vector2(offset.X, 0));
                         break;
 
                     case TransBoxType.Move:
-                        _spatial.TryMove(offset);
+                        _spatial.TryMove(_spatial.Position + offset);
                         break;
 
                     case TransBoxType.Right:
-                        _spatial.TryResize(new Vector2(offset.X, 0));
+                        _spatial.TryResize(_spatial.Size + new Vector2(offset.X, 0));
                         break;
 
                     case TransBoxType.Top:
-                        if (_spatial.TryResize(new Vector2(0, -offset.Y)))
-                            _spatial.TryMove(new Vector2(0, -offset.Y));
+                        if (_spatial.TryResize(_spatial.Size + new Vector2(0, -offset.Y)))
+                            _spatial.TryMove(_spatial.Position + new Vector2(0, offset.Y));
                         break;
 
                     case TransBoxType.TopLeft:
-                        if (_spatial.TryResize(-offset))
-                            _spatial.TryMove(-offset);
+                        if (_spatial.TryResize(_spatial.Size + -offset))
+                            _spatial.TryMove(_spatial.Position + offset);
                         break;
 
                     case TransBoxType.TopRight:
-                        if (_spatial.TryResize(new Vector2(offset.X, -offset.Y)))
-                            _spatial.TryResize(new Vector2(offset.X, -offset.Y));
+                        if (_spatial.TryResize(_spatial.Size + new Vector2(offset.X, -offset.Y)))
+                            _spatial.TryMove(_spatial.Position + new Vector2(0, offset.Y));
                         break;
 
                     default:
@@ -195,7 +232,7 @@ namespace NetGore.Editor
                         break;
                 }
 
-                _position += offset;
+                _position = GetPosition();
             }
 
             /// <summary>
