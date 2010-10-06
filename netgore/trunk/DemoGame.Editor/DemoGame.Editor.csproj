@@ -128,8 +128,7 @@
     <Compile Include="Tools\Map\MapGridDrawerTool.cs" />
     <Compile Include="Tools\Map\MapWallsDrawerTool.cs" />
     <Compile Include="Tools\Map\MapLightSourceDrawerTool.cs" />
-    <Compile Include="TransBox.cs" />
-    <Compile Include="TransBoxType.cs" />
+    <Compile Include="TransBoxManager.cs" />
     <EmbeddedResource Include="Forms\DisplayFilterManagerForm.resx">
       <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -22,26 +22,12 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
-        readonly List<TransBox> _transBoxes = new List<TransBox>(9);
-
-        TransBox _selTransBox;
+        readonly TransBoxManager _transBoxManager = new TransBoxManager();
 
         /// <summary>
-        /// Gets or sets the selected transformation box.
+        /// Gets the <see cref="TransBoxManager"/> for this <see cref="MapScreenControl"/>.
         /// </summary>
-        public TransBox SelectedTransBox
-        {
-            get { return _selTransBox; }
-            set { _selTransBox = value; }
-        }
-
-        /// <summary>
-        /// Gets the list of the current <see cref="TransBox"/>es.
-        /// </summary>
-        public List<TransBox> TransBoxes
-        {
-            get { return _transBoxes; }
-        }
+        public TransBoxManager TransBoxManager { get { return _transBoxManager; } }
 
         /// <summary>
         /// Delegate for handling events from the <see cref="MapScreenControl"/>.
@@ -115,6 +101,8 @@ namespace DemoGame.Editor
 
                 var oldValue = _map;
                 _map = value;
+
+                TransBoxManager.Clear();
 
                 // Load
                 if (_map != null)
