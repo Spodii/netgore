@@ -14,40 +14,20 @@ namespace DemoGame.Editor
 {
     public class TransBoxManager
     {
-        static readonly Vector2 _transBoxSize = Vector2.Max(SystemSprites.Move.Size, SystemSprites.Resize.Size);
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly List<Type> _typesToIgnore = new List<Type>();
 
         readonly List<ISpatial> _items = new List<ISpatial>();
         readonly List<ITransBox> _transBoxes = new List<ITransBox>();
 
-        public static IEnumerable<Type> TypesToIgnore { get { return _typesToIgnore; } }
-
-        public static void IgnoreType(IEnumerable<Type> types)
-        {
-            foreach (var type in types)
-                IgnoreType(type);
-        }
-
-        public static void IgnoreType(Type type)
-        {
-            if (!_typesToIgnore.Contains(type))
-                _typesToIgnore.Add(type);
-        }
-
-        public static void UnignoreType(IEnumerable<Type> types)
-        {
-            foreach (var type in types)
-                UnignoreType(type);
-        }
-
-        public static void UnignoreType(Type type)
-        {
-            _typesToIgnore.Remove(type);
-        }
-
         public IEnumerable<ISpatial> Items
         {
             get { return _items; }
+        }
+
+        public static IEnumerable<Type> TypesToIgnore
+        {
+            get { return _typesToIgnore; }
         }
 
         public void Clear()
@@ -60,6 +40,77 @@ namespace DemoGame.Editor
             UpdateTransBoxes();
         }
 
+        public void Draw(ISpriteBatch spriteBatch, ICamera2D camera)
+        {
+            foreach (var tb in _transBoxes)
+            {
+                tb.Draw(spriteBatch, camera);
+            }
+        }
+
+        static Cursor GetCursor(TransBoxType t)
+        {
+            switch (t)
+            {
+                case TransBoxType.Bottom:
+                case TransBoxType.Top:
+                    return Cursors.SizeNS;
+
+                case TransBoxType.Left:
+                case TransBoxType.Right:
+                    return Cursors.SizeWE;
+
+                case TransBoxType.TopLeft:
+                case TransBoxType.BottomRight:
+                    return Cursors.SizeNESW;
+
+                case TransBoxType.TopRight:
+                case TransBoxType.BottomLeft:
+                    return Cursors.SizeNWSE;
+
+                case TransBoxType.Move:
+                    return Cursors.SizeAll;
+
+                default:
+                    const string errmsg = "Unsupported TransBoxType `{0}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, t);
+                    Debug.Fail(string.Format(errmsg, t));
+                    return Cursors.Default;
+            }
+        }
+
+        static ISprite GetSprite(TransBoxType t)
+        {
+            switch (t)
+            {
+                case TransBoxType.Move:
+                    return SystemSprites.Move;
+
+                default:
+                    return SystemSprites.Resize;
+            }
+        }
+
+        static Vector2 GetTransBoxSize(TransBoxType type)
+        {
+            return GetSprite(type).Size;
+        }
+
+        public static void IgnoreType(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                IgnoreType(type);
+            }
+        }
+
+        public static void IgnoreType(Type type)
+        {
+            if (!_typesToIgnore.Contains(type))
+                _typesToIgnore.Add(type);
+        }
+
         public void SetItems(IEnumerable<ISpatial> items)
         {
             Clear();
@@ -68,6 +119,19 @@ namespace DemoGame.Editor
             _items.AddRange(toAdd);
 
             UpdateTransBoxes();
+        }
+
+        public static void UnignoreType(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                UnignoreType(type);
+            }
+        }
+
+        public static void UnignoreType(Type type)
+        {
+            _typesToIgnore.Remove(type);
         }
 
         void UpdateTransBoxes()
@@ -130,11 +194,14 @@ namespace DemoGame.Editor
             /// Draws the <see cref="ITransBox"/>.
             /// </summary>
             /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-            void Draw(ISpriteBatch spriteBatch);
+            /// <param name="camera">The <see cref="ICamera2D"/>.</param>
+            void Draw(ISpriteBatch spriteBatch, ICamera2D camera);
         }
 
         sealed class MoveManyTransBox : ITransBox
         {
+            static readonly Vector2 _size = GetTransBoxSize(TransBoxType.Move);
+
             readonly IEnumerable<ISpatial> _spatials;
 
             Vector2 _position;
@@ -157,7 +224,7 @@ namespace DemoGame.Editor
 
             static Vector2 Size
             {
-                get { return _transBoxSize; }
+                get { return _size; }
             }
 
             #region ITransBox Members
@@ -201,9 +268,12 @@ namespace DemoGame.Editor
             /// Draws the <see cref="ITransBox"/>.
             /// </summary>
             /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-            public void Draw(ISpriteBatch spriteBatch)
+            /// <param name="camera">The <see cref="ICamera2D"/>.</param>
+            public void Draw(ISpriteBatch spriteBatch, ICamera2D camera)
             {
-                var r = new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+                var p = camera.ToScreen(Position).Round();
+                var s = Size.Round();
+                var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
                 SystemSprites.Move.Draw(spriteBatch, r, Color.White);
             }
 
@@ -212,7 +282,7 @@ namespace DemoGame.Editor
 
         sealed class TransBox : ITransBox
         {
-            static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+            readonly Vector2 _size;
             readonly ISpatial _spatial;
             readonly TransBoxType _type;
 
@@ -223,6 +293,8 @@ namespace DemoGame.Editor
                 _type = type;
                 _position = position;
                 _spatial = spatial;
+
+                _size = GetTransBoxSize(type);
             }
 
             Vector2 Max
@@ -235,9 +307,9 @@ namespace DemoGame.Editor
                 get { return _position; }
             }
 
-            static Vector2 Size
+            Vector2 Size
             {
-                get { return _transBoxSize; }
+                get { return _size; }
             }
 
             /// <summary>
@@ -251,36 +323,39 @@ namespace DemoGame.Editor
                 var min = entity.Position;
                 var max = entity.Max;
 
-                var size = _transBoxSize;
-                var halfSize = size / 2f;
+                var moveSize = GetTransBoxSize(TransBoxType.Move);
+                var moveHalfSize = moveSize / 2f;
+
+                var scaleSize = GetTransBoxSize(TransBoxType.BottomLeft);
+                var scaleHalfSize = scaleSize / 2f;
 
                 // Find the center of the sides for the resize and move icons
-                var sizeCenter = min + (entity.Size / 2f) - halfSize;
+                var sizeCenter = min + (entity.Size / 2f) - scaleHalfSize;
                 sizeCenter = sizeCenter.Round();
 
-                var moveCenterX = min.X + (entity.Size.X / 2f) - (size.X / 2f);
+                var moveCenterX = min.X + (entity.Size.X / 2f) - moveHalfSize.X;
                 moveCenterX = (float)Math.Round(moveCenterX);
 
                 // Move box
-                ret.Add(new TransBox(TransBoxType.Move, entity, new Vector2(moveCenterX, min.Y - size.Y - 8)));
+                ret.Add(new TransBox(TransBoxType.Move, entity, new Vector2(moveCenterX, min.Y - moveSize.Y - scaleSize.Y)));
 
                 // Four corners
-                ret.Add(new TransBox(TransBoxType.TopLeft, entity, new Vector2(min.X - size.X, min.Y - size.Y)));
-                ret.Add(new TransBox(TransBoxType.TopRight, entity, new Vector2(max.X, min.Y - size.Y)));
-                ret.Add(new TransBox(TransBoxType.BottomLeft, entity, new Vector2(min.X - size.X, max.Y)));
+                ret.Add(new TransBox(TransBoxType.TopLeft, entity, new Vector2(min.X - scaleSize.X, min.Y - scaleSize.Y)));
+                ret.Add(new TransBox(TransBoxType.TopRight, entity, new Vector2(max.X, min.Y - scaleSize.Y)));
+                ret.Add(new TransBox(TransBoxType.BottomLeft, entity, new Vector2(min.X - scaleSize.X, max.Y)));
                 ret.Add(new TransBox(TransBoxType.BottomRight, entity, max));
 
                 // Horizontal sides
-                if (entity.Size.X > size.X + 4)
+                if (entity.Size.X > scaleSize.X + 4)
                 {
-                    ret.Add(new TransBox(TransBoxType.Top, entity, new Vector2(sizeCenter.X, min.Y - size.Y)));
+                    ret.Add(new TransBox(TransBoxType.Top, entity, new Vector2(sizeCenter.X, min.Y - scaleSize.Y)));
                     ret.Add(new TransBox(TransBoxType.Bottom, entity, new Vector2(sizeCenter.X, max.Y)));
                 }
 
                 // Veritcal sides
-                if (entity.Size.Y > size.Y + 4)
+                if (entity.Size.Y > scaleSize.Y + 4)
                 {
-                    ret.Add(new TransBox(TransBoxType.Left, entity, new Vector2(min.X - size.X, sizeCenter.Y)));
+                    ret.Add(new TransBox(TransBoxType.Left, entity, new Vector2(min.X - scaleSize.X, sizeCenter.Y)));
                     ret.Add(new TransBox(TransBoxType.Right, entity, new Vector2(max.X, sizeCenter.Y)));
                 }
 
@@ -294,7 +369,7 @@ namespace DemoGame.Editor
             /// </summary>
             public Cursor MouseCursor
             {
-                get { return Cursors.SizeAll; }
+                get { return GetCursor(_type); }
             }
 
             /// <summary>
@@ -374,10 +449,18 @@ namespace DemoGame.Editor
             /// Draws the <see cref="ITransBox"/>.
             /// </summary>
             /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-            public void Draw(ISpriteBatch spriteBatch)
+            /// <param name="camera">The <see cref="ICamera2D"/>.</param>
+            public void Draw(ISpriteBatch spriteBatch, ICamera2D camera)
             {
-                var r = new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
-                SystemSprites.Move.Draw(spriteBatch, r, Color.White);
+                var sprite = GetSprite(_type);
+                if (sprite == null)
+                    return;
+
+                var p = camera.ToScreen(Position).Round();
+                var s = Size.Round();
+                var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
+
+                sprite.Draw(spriteBatch, r, Color.White);
             }
 
             #endregion
