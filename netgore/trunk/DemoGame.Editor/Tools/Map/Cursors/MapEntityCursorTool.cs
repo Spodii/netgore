@@ -265,7 +265,7 @@ namespace DemoGame.Editor
             if (c == null)
                 return;
 
-            var map = c.Map;
+            var map = c.Map as Map;
             if (map == null)
                 return;
 
@@ -275,8 +275,8 @@ namespace DemoGame.Editor
                 // Only delete when it is an Entity that is on this map
                 foreach (var x in SOM.SelectedObjects.OfType<Entity>())
                 {
-                    if (map.Entities.Contains(x))
-                        x.Dispose();
+                    if (map.Spatial.Contains(x))
+                        map.RemoveEntity(x);
                 }
             }
         }
