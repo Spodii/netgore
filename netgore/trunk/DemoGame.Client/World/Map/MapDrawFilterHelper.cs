@@ -12,6 +12,8 @@ namespace DemoGame.Client
     /// </summary>
     public class MapDrawFilterHelper : IPersistable
     {
+        const string _categoryName = "Map Draw Filter";
+
         const bool _defaultDrawBackground = true;
         const bool _defaultDrawCharacters = true;
         const bool _defaultDrawItems = true;
@@ -48,7 +50,10 @@ namespace DemoGame.Client
         /// The default value is true.
         /// </summary>
         [SyncValue]
+        [Category(_categoryName)]
         [DefaultValue(_defaultDrawBackground)]
+        [Browsable(true)]
+        [Description("If the map background is drawn.")]
         public bool DrawBackground { get; set; }
 
         /// <summary>
@@ -56,7 +61,10 @@ namespace DemoGame.Client
         /// The default value is true.
         /// </summary>
         [SyncValue]
+        [Category(_categoryName)]
         [DefaultValue(_defaultDrawCharacters)]
+        [Browsable(true)]
+        [Description("If characters on the map are drawn.")]
         public bool DrawCharacters { get; set; }
 
         /// <summary>
@@ -64,7 +72,10 @@ namespace DemoGame.Client
         /// The default value is true.
         /// </summary>
         [SyncValue]
+        [Category(_categoryName)]
         [DefaultValue(_defaultDrawItems)]
+        [Browsable(true)]
+        [Description("If items on the map are drawn.")]
         public bool DrawItems { get; set; }
 
         /// <summary>
@@ -72,7 +83,10 @@ namespace DemoGame.Client
         /// The default value is true.
         /// </summary>
         [SyncValue]
+        [Category(_categoryName)]
         [DefaultValue(_defaultDrawMapGrhs)]
+        [Browsable(true)]
+        [Description("If the MapGrhs are drawn.")]
         public bool DrawMapGrhs { get; set; }
 
         /// <summary>
@@ -101,6 +115,7 @@ namespace DemoGame.Client
         /// Gets a Func describing this filter.
         /// </summary>
         /// <returns>A Func describing this filter.</returns>
+        [Browsable(false)]
         public Func<IDrawable, bool> FilterFunc { get { return _filterFunc; } }
 
         #region IPersistable Members

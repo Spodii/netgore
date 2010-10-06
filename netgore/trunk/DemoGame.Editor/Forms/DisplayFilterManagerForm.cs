@@ -131,5 +131,15 @@ namespace DemoGame.Editor
                 lstItems.SelectedItem = filter;
             }
         }
+
+        /// <summary>
+        /// Handles the SelectedValueChanged event of the <see cref="lstItems"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lstItems_SelectedValueChanged(object sender, EventArgs e)
+        {
+            pgItem.SelectedObject = lstItems.SelectedItem;
+        }
     }
 }
