@@ -134,12 +134,28 @@ namespace DemoGame.Client
         static KeyValuePair<string, MapDrawFilterHelper> ReadFilter(IValueReader reader)
         {
             var key = reader.ReadString(_filterKeyValueName);
+
             var valueReader = reader.ReadNode(_filterValueValueName);
             var value = new MapDrawFilterHelper(valueReader);
 
             return new KeyValuePair<string, MapDrawFilterHelper>(key, value);
         }
 
+        /// <summary>
+        /// Writes a filter to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        /// <param name="kvp">The filter name and object to write.</param>
+        static void WriteFilter(IValueWriter writer, KeyValuePair<string, MapDrawFilterHelper> kvp)
+        {
+            writer.Write(_filterKeyValueName, kvp.Key);
+
+            writer.WriteStartNode(_filterValueValueName);
+            {
+                kvp.Value.WriteState(writer);
+            }
+            writer.WriteEndNode(_filterValueValueName);
+        }
 
         /// <summary>
         /// Removes a filter from this collection.
@@ -197,17 +213,6 @@ namespace DemoGame.Client
                 return null;
 
             return _filters.FirstOrDefault(x => x.Value == filter).Key;
-        }
-
-        /// <summary>
-        /// Writes a filter to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        /// <param name="kvp">The filter name and object to write.</param>
-        static void WriteFilter(IValueWriter writer, KeyValuePair<string, MapDrawFilterHelper> kvp)
-        {
-            writer.Write(_filterKeyValueName, kvp.Key);
-            kvp.Value.WriteState(writer);
         }
 
         #region IPersistable Members

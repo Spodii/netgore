@@ -56,7 +56,8 @@ namespace DemoGame.Editor
                 if (_collection != null)
                 {
                     // Add the items for the new value
-                    lstItems.Items.AddRange(_collection.Filters.Cast<object>().ToArray());
+                    var toAdd = _collection.Filters.Select(x => x.Value).Cast<object>().ToArray();
+                    lstItems.Items.AddRange(toAdd);
 
                     // Add the event hooks
                     _collection.Added += _collection_Added;
