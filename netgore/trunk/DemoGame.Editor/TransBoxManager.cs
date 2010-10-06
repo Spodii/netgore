@@ -15,9 +15,35 @@ namespace DemoGame.Editor
     public class TransBoxManager
     {
         static readonly Vector2 _transBoxSize = Vector2.Max(SystemSprites.Move.Size, SystemSprites.Resize.Size);
+        static readonly List<Type> _typesToIgnore = new List<Type>();
 
         readonly List<ISpatial> _items = new List<ISpatial>();
         readonly List<ITransBox> _transBoxes = new List<ITransBox>();
+
+        public static IEnumerable<Type> TypesToIgnore { get { return _typesToIgnore; } }
+
+        public static void IgnoreType(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+                IgnoreType(type);
+        }
+
+        public static void IgnoreType(Type type)
+        {
+            if (!_typesToIgnore.Contains(type))
+                _typesToIgnore.Add(type);
+        }
+
+        public static void UnignoreType(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+                UnignoreType(type);
+        }
+
+        public static void UnignoreType(Type type)
+        {
+            _typesToIgnore.Remove(type);
+        }
 
         public IEnumerable<ISpatial> Items
         {
@@ -38,7 +64,8 @@ namespace DemoGame.Editor
         {
             Clear();
 
-            _items.AddRange(items);
+            var toAdd = items.Where(x => !TypesToIgnore.Any(y => x.GetType().IsSubclassOf(y)));
+            _items.AddRange(toAdd);
 
             UpdateTransBoxes();
         }
