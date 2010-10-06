@@ -22,6 +22,26 @@ namespace NetGore.Editor
 
         readonly List<ISpatial> _items = new List<ISpatial>();
         readonly List<ITransBox> _transBoxes = new List<ITransBox>();
+        Vector2 _lastWorldPos;
+        ITransBox _selectedTransBox;
+        MouseButtons _selectedTransBoxButton = MouseButtons.None;
+        ITransBox _underCursor;
+
+        public Cursor CurrentCursor
+        {
+            get
+            {
+                if (_underCursor == null)
+                    return Cursors.Default;
+
+                return _underCursor.MouseCursor;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="MouseButtons"/> to use for interacting with the transformation boxes.
+        /// </summary>
+        public MouseButtons DragButton { get; set; }
 
         /// <summary>
         /// Gets the <see cref="ISpatial"/>s that are currently in this <see cref="TransBoxManager"/> and are part of the
@@ -69,6 +89,17 @@ namespace NetGore.Editor
         }
 
         /// <summary>
+        /// Finds the <see cref="ITransBox"/> at the given <paramref name="worldPos"/>.
+        /// </summary>
+        /// <param name="worldPos">The world position.</param>
+        /// <returns>The <see cref="ITransBox"/> at the <paramref name="worldPos"/>, or null if none at that position.</returns>
+        ITransBox FindBoxAt(Vector2 worldPos)
+        {
+            var ret = _transBoxes.FirstOrDefault(x => x.ContainsPoint(worldPos));
+            return ret;
+        }
+
+        /// <summary>
         /// Gets the <see cref="Cursor"/> for a <see cref="ITransBox"/>.
         /// </summary>
         /// <param name="type">The <see cref="TransBoxType"/>.</param>
@@ -87,11 +118,11 @@ namespace NetGore.Editor
 
                 case TransBoxType.TopLeft:
                 case TransBoxType.BottomRight:
-                    return Cursors.SizeNESW;
+                    return Cursors.SizeNWSE;
 
                 case TransBoxType.TopRight:
                 case TransBoxType.BottomLeft:
-                    return Cursors.SizeNWSE;
+                    return Cursors.SizeNESW;
 
                 case TransBoxType.Move:
                     return Cursors.SizeAll;
@@ -130,6 +161,56 @@ namespace NetGore.Editor
         static Vector2 GetTransBoxSize(TransBoxType type)
         {
             return GetSprite(type).Size;
+        }
+
+        public bool HandleMouseDown(MouseEventArgs e, ICamera2D camera)
+        {
+            if (e.Button == DragButton)
+            {
+                var worldPos = camera.ToWorld(e.Position());
+
+                _underCursor = FindBoxAt(worldPos);
+                _selectedTransBox = _underCursor;
+                _selectedTransBoxButton = e.Button;
+            }
+
+            return _selectedTransBox != null;
+        }
+
+        public bool HandleMouseMove(MouseEventArgs e, ICamera2D camera)
+        {
+            if (_transBoxes.Count == 0)
+                return false;
+
+            var worldPos = camera.ToWorld(e.Position());
+
+            // Update what transbox is under the cursor
+            if (_selectedTransBox != null)
+                _underCursor = _selectedTransBox;
+            else
+                _underCursor = FindBoxAt(worldPos);
+
+            // Update position
+            if (_selectedTransBox != null)
+            {
+                var delta = worldPos - _lastWorldPos;
+                _lastWorldPos = worldPos;
+
+                _selectedTransBox.CursorMoved(delta);
+            }
+
+            return _selectedTransBox != null;
+        }
+
+        public bool HandleMouseUp(MouseEventArgs e, ICamera2D camera)
+        {
+            if (e.Button == _selectedTransBoxButton)
+            {
+                _selectedTransBox = null;
+                _selectedTransBoxButton = MouseButtons.None;
+            }
+
+            return _selectedTransBox != null;
         }
 
         /// <summary>
@@ -220,6 +301,9 @@ namespace NetGore.Editor
         /// </summary>
         void UpdateTransBoxes()
         {
+            _selectedTransBox = null;
+            _underCursor = null;
+
             // Clear the old boxes
             _transBoxes.Clear();
 
