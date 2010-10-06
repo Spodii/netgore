@@ -75,7 +75,7 @@ namespace NetGore.Editor
                 var w = worldPos;
                 var lo = Position;
                 var hi = Max;
-                return (lo.X >= w.X && lo.Y >= w.Y && hi.X <= w.X && hi.Y <= w.Y);
+                return (lo.X <= w.X) && (lo.Y <= w.Y) && (hi.X >= w.X) && (hi.Y >= w.Y);
             }
 
             /// <summary>

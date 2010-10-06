@@ -213,6 +213,8 @@ namespace DemoGame.Editor
                 return;
             }
 
+            Cursor = TransBoxManager.CurrentCursor;
+
             int deltaTime;
             if (_lastUpdateTime == TickCount.MinValue)
                 deltaTime = 30;
@@ -357,6 +359,24 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnMouseMove(e);
+                return;
+            }
+
+            if (TransBoxManager.HandleMouseMove(e, Camera))
+                return;
+
+            base.OnMouseMove(e);
+        }
+
+        /// <summary>
         /// Handles the <see cref="MapScreenControl.MapChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old value.</param>
@@ -452,8 +472,6 @@ namespace DemoGame.Editor
         /// <param name="deltaTime">The amount of time that has elapsed since the last update.</param>
         protected virtual void UpdateMap(TickCount currentTime, int deltaTime)
         {
-            Cursor = Cursors.Default;
-
             if (Map != null)
                 Map.Update(deltaTime);
         }
