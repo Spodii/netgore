@@ -245,11 +245,8 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void _tsManageFilters_Click(object sender, EventArgs e)
         {
-            using (var frm = new DisplayFilterManagerForm())
-            {
-                frm.Collection = _filterCollection;
-                frm.ShowDialog(sender as IWin32Window);
-            }
+            var frm = new DisplayFilterManagerForm { Collection = _filterCollection };
+            frm.Show();
         }
 
         void ftsi_CheckedChanged(object sender, EventArgs e)

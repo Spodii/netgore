@@ -32,10 +32,10 @@ namespace DemoGame.Editor
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.lstItems = new MapDrawFilterHelperListBox();
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.pgItem = new System.Windows.Forms.PropertyGrid();
+            this.lstItems = new DemoGame.Editor.Forms.MapDrawFilterHelperListBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -82,15 +82,6 @@ namespace DemoGame.Editor
             this.splitContainer2.SplitterDistance = 286;
             this.splitContainer2.TabIndex = 0;
             // 
-            // lstItems
-            // 
-            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstItems.FormattingEnabled = true;
-            this.lstItems.Location = new System.Drawing.Point(0, 0);
-            this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(147, 286);
-            this.lstItems.TabIndex = 1;
-            // 
             // btnRemove
             // 
             this.btnRemove.Dock = System.Windows.Forms.DockStyle.Left;
@@ -117,8 +108,23 @@ namespace DemoGame.Editor
             this.pgItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgItem.Location = new System.Drawing.Point(0, 0);
             this.pgItem.Name = "pgItem";
+            this.pgItem.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.pgItem.Size = new System.Drawing.Size(295, 316);
             this.pgItem.TabIndex = 0;
+            this.pgItem.ToolbarVisible = false;
+            // 
+            // lstItems
+            // 
+            this.lstItems.Collection = null;
+            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstItems.FormattingEnabled = true;
+            this.lstItems.Location = new System.Drawing.Point(0, 0);
+            this.lstItems.Name = "lstItems";
+            this.lstItems.Size = new System.Drawing.Size(147, 286);
+            this.lstItems.Sorted = true;
+            this.lstItems.TabIndex = 1;
+            this.lstItems.SelectedValueChanged += new System.EventHandler(this.lstItems_SelectedValueChanged);
             // 
             // DisplayFilterManagerForm
             // 
