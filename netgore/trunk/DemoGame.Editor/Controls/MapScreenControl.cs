@@ -57,10 +57,18 @@ namespace DemoGame.Editor
 
             DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
+            GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
+
             lock (_instancesSync)
             {
                 _instances.Add(this);
             }
+        }
+
+        void SelectedObjsManager_SelectedChanged(SelectedObjectsManager<object> sender)
+        {
+            var items = sender.SelectedObjects.OfType<ISpatial>();
+            TransBoxManager.SetItems(items);
         }
 
         /// <summary>
@@ -139,6 +147,7 @@ namespace DemoGame.Editor
             if (!DesignMode)
             {
                 ToolManager.Instance.ToolTargetContainers.Remove(this);
+                GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged -= SelectedObjsManager_SelectedChanged;
             }
 
             if (disposing)
