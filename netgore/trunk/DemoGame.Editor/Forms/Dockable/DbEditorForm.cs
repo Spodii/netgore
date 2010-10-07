@@ -15,6 +15,7 @@ using NetGore.Content;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.Editor;
+using NetGore.Editor.Docking;
 using NetGore.Editor.WinForms;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
@@ -22,9 +23,9 @@ using NetGore.Graphics;
 using NetGore.IO;
 using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
 
-namespace DemoGame.DbEditor
+namespace DemoGame.Editor
 {
-    public partial class DbEditorForm : Form
+    public partial class DbEditorForm : DockContent
     {
         IDbController _dbController;
         GameMessage? _editingGameMessage;

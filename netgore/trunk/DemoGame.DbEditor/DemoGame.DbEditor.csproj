@@ -107,31 +107,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DbEditorForm.Designer.cs">
-      <DependentUpon>DbEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GameMessageValueListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="LanguageNameForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LanguageNameForm.Designer.cs">
-      <DependentUpon>LanguageNameForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DbEditorForm.resx">
-      <DependentUpon>DbEditorForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LanguageNameForm.resx">
-      <DependentUpon>LanguageNameForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor;
 
-namespace DemoGame.DbEditor
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A <see cref="ListBox"/> for a <see cref="GameMessage"/> and its corresponding value string.

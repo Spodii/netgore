@@ -55,6 +55,9 @@
     <Compile Include="Controls\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GameMessageValueListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\MapDrawFilterHelperListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -72,6 +75,12 @@
     </Compile>
     <Compile Include="Forms\DisplayFilterManagerForm.Designer.cs">
       <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Dockable\DbEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dockable\DbEditorForm.Designer.cs">
+      <DependentUpon>DbEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Dockable\GrhTreeViewForm.cs">
       <SubType>Form</SubType>
@@ -102,6 +111,12 @@
     </Compile>
     <Compile Include="Forms\Dockable\SelectedMapObjectsForm.Designer.cs">
       <DependentUpon>SelectedMapObjectsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LanguageNameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LanguageNameForm.Designer.cs">
+      <DependentUpon>LanguageNameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalState.cs" />
     <Compile Include="Input.cs" />
@@ -164,6 +179,10 @@
     <EmbeddedResource Include="Forms\DisplayFilterManagerForm.resx">
       <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dockable\DbEditorForm.resx">
+      <DependentUpon>DbEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\GrhTreeViewForm.resx">
       <DependentUpon>GrhTreeViewForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -180,6 +199,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\SelectedMapObjectsForm.resx">
       <DependentUpon>SelectedMapObjectsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LanguageNameForm.resx">
+      <DependentUpon>LanguageNameForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
