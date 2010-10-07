@@ -32,7 +32,8 @@ namespace NetGore.Editor.WinForms
         static readonly StringFormat _errorMessageStringFormat = new StringFormat
         { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
-        readonly Timer _redrawTimer = new Timer { Interval = 1000 / 100 };
+        readonly Timer _redrawTimer;
+
         bool _isInitialized = false;
 
         string _lastDrawError = null;
@@ -53,6 +54,11 @@ namespace NetGore.Editor.WinForms
             BackColor = Color.Black;
             DoubleBuffered = false;
             ResizeRedraw = false;
+
+            if (!DesignMode)
+            {
+                _redrawTimer = new Timer { Interval = 1000 / 100 };
+            }
         }
 
         /// <summary>
