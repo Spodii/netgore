@@ -19,10 +19,6 @@ namespace DemoGame.Editor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         Type _lastCreatedType;
-        Vector2 _selectionOffset;
-        string _toolTip = string.Empty;
-        object _toolTipObject = null;
-        Vector2 _toolTipPos;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapEntityCursorTool"/> class.
@@ -67,40 +63,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="IDrawableMap"/> has been draw.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
-        protected override void HandleBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
-        {
-            base.HandleBeforeDrawMapGUI(spriteBatch, map);
-
-            var m = map as Map;
-            if (m == null)
-                return;
-
-            if (!string.IsNullOrEmpty(_toolTip))
-            {
-                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos - m.Camera.Min,
-                                             Color.White, Color.Black);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling resetting the state of this <see cref="Tool"/>.
-        /// For simplicity, all default values should be constant, no matter the current state.
-        /// </summary>
-        protected override void HandleResetState()
-        {
-            _toolTip = string.Empty;
-            _selectionOffset = Vector2.Zero;
-            _toolTipObject = null;
-            _toolTipPos = Vector2.Zero;
-
-            base.HandleResetState();
-        }
-
-        /// <summary>
         /// Handles when a key is raised on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
@@ -121,71 +83,6 @@ namespace DemoGame.Editor
             }
 
             base.MapContainer_KeyUp(sender, map, camera, e);
-        }
-
-        /// <summary>
-        /// Handles when the mouse moves over a map.
-        /// </summary>
-        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
-        {
-            base.MapContainer_MouseMove(sender, map, camera, e);
-
-            if (IsSelecting)
-                return;
-
-            var cursorPos = e.Position();
-            var worldPos = map.Camera.ToWorld(cursorPos);
-
-            // Ensure in the map bounds
-            if (!map.IsInMapBoundaries(worldPos))
-                return;
-
-            var focusedEntity = SOM.Focused as Entity;
-
-            if (focusedEntity != null)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    if (Input.IsCtrlDown)
-                    {
-                        // Resize the entity
-                        var size = worldPos - focusedEntity.Position;
-                        if (size.X < 4)
-                            size.X = 4;
-                        if (size.Y < 4)
-                            size.Y = 4;
-
-                        map.SafeResizeEntity(focusedEntity, size);
-                    }
-                    else
-                    {
-                        // Move the entity
-                        map.SafeTeleportEntity(focusedEntity, worldPos - _selectionOffset);
-                    }
-                }
-            }
-            else
-            {
-                // Set the tooltip to the entity under the cursor
-                var hoverEntity = GetObjUnderCursor(map, worldPos) as Entity;
-
-                if (hoverEntity == null)
-                {
-                    _toolTip = string.Empty;
-                    _toolTipObject = null;
-                }
-                else if (_toolTipObject != hoverEntity)
-                {
-                    _toolTipObject = hoverEntity;
-                    _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X,
-                                             hoverEntity.Size.Y);
-                    _toolTipPos = worldPos;
-                }
-            }
         }
 
         /// <summary>
