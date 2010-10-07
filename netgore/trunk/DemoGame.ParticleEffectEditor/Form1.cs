@@ -143,7 +143,7 @@ namespace DemoGame.ParticleEffectEditor
 
             CustomUITypeEditors.AddEditors();
 
-            ParticleEffect = ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
+            gameScreen.ParticleEffect = ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
 
             Timer t = new Timer { Interval = 1000 / 60 };
             t.Tick += (EventHandler)((x,y) => gameScreen.InvokeDrawing(TickCount.Now));
