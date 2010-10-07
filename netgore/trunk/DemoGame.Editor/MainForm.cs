@@ -12,6 +12,7 @@ namespace DemoGame.Editor
     {
         GrhTreeViewForm _frmGrhTreeView;
         SelectedObjectsForm _frmSelectedObjs;
+        NPCChatEditorForm _frmNPCChatEditor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
@@ -55,11 +56,24 @@ namespace DemoGame.Editor
             _frmSelectedObjs = new SelectedObjectsForm();
             _frmSelectedObjs.VisibleChanged += _frmSelectedObjs_VisibleChanged;
 
+            _frmNPCChatEditor = new NPCChatEditorForm();
+            _frmNPCChatEditor.VisibleChanged += _frmNPCChatEditor_VisibleChanged;
+
             // Load the first map
             // NOTE: Temp
             var frm = new EditMapForm();
             frm.MapScreenControl.ChangeMap(new MapID(1));
             frm.Show(dockPanel);
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmNPCChatEditor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmNPCChatEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            NPCChatEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -123,7 +137,10 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // TODO: !!
+            if (newToolStripMenuItem.Checked)
+                _frmNPCChatEditor.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+            else
+                _frmNPCChatEditor.Hide();
         }
 
         /// <summary>
@@ -150,6 +167,19 @@ namespace DemoGame.Editor
                 _frmGrhTreeView.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
             else
                 _frmGrhTreeView.Hide();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the NPCChatEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void NPCChatEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (NPCChatEditorToolStripMenuItem.Checked)
+                _frmNPCChatEditor.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+            else
+                _frmNPCChatEditor.Hide();
         }
     }
 }
