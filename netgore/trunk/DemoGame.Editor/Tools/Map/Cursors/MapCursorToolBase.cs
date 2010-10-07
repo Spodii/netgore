@@ -15,7 +15,12 @@ namespace DemoGame.Editor
     public abstract class MapCursorToolBase : MapToolBase
     {
         /// <summary>
-        /// The mouse button used to 
+        /// The key used to perform an area selection;
+        /// </summary>
+        public const Keys SelectKey = Keys.Shift;
+
+        /// <summary>
+        /// The mouse button used to perform an area selection;
         /// </summary>
         public const MouseButtons SelectMouseButton = MouseButtons.Left;
 
@@ -53,13 +58,19 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets or sets if this <see cref="MapCursorToolBase"/> is currently performing an area selection.
+        /// Gets if this <see cref="MapCursorToolBase"/> is currently performing an area selection.
         /// </summary>
         public bool IsSelecting
         {
             get { return _isSelecting; }
-            set { _isSelecting = value; }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this cursor can select the given object.
+        /// </summary>
+        /// <param name="obj">The object to try to select.</param>
+        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
+        protected abstract bool CanSelect(object obj);
 
         /// <summary>
         /// Gets the map objects to select in the given region.
@@ -70,6 +81,19 @@ namespace DemoGame.Editor
         protected virtual IEnumerable<object> CursorSelectObjects(Map map, Rectangle selectionArea)
         {
             return map.Spatial.GetMany<object>(selectionArea, CanSelect);
+        }
+
+        /// <summary>
+        /// Gets the selectable object currently under the cursor.
+        /// </summary>
+        /// <param name="map">The map.</param>
+        /// <param name="worldPos">The world position.</param>
+        /// <returns>The selectable object currently under the cursor, or null if none.</returns>
+        protected virtual object GetObjUnderCursor(IMap map, Vector2 worldPos)
+        {
+            // By default, this will only get anything that implements ISpatial since its much faster that way and most
+            // map cursors will be working with types that implement ISpatial
+            return map.Spatial.Get(worldPos, CanSelect);
         }
 
         /// <summary>
@@ -90,10 +114,11 @@ namespace DemoGame.Editor
                 return;
 
             // Draw the selection area
-            if (_isSelecting)
+            if (IsSelecting)
             {
                 var a = camera.ToScreen(_selectionStart);
                 var b = camera.ToScreen(_selectionEnd);
+
                 if (a.QuickDistance(b) > _minSelectionAreaDrawSize)
                 {
                     var rect = Rectangle.FromPoints(a, b);
@@ -111,27 +136,25 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
         protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            if (e.Button != SelectMouseButton)
-                return;
+            // Terminate any current area selection when any mouse button is pressed
+            _selectionStart = Vector2.Zero;
+            _selectionEnd = Vector2.Zero;
+            _isSelecting = false;
+            
+            var worldPos = camera.ToWorld(e.Position());
+            var underCursor = GetObjUnderCursor(map, worldPos);
 
-            _selectionStart = camera.ToWorld(e.Position());
-            _selectionEnd = _selectionStart;
-            _isSelecting = true;
+            GlobalState.Instance.Map.SelectedObjsManager.SetSelected(underCursor);
+
+            if (e.Button == SelectMouseButton && ((Control.ModifierKeys & SelectKey) != 0))
+            {
+                // Start area selection
+                _selectionStart = worldPos;
+                _selectionEnd = _selectionStart;
+                _isSelecting = true;
+            }
 
             base.MapContainer_MouseDown(sender, map, camera, e);
-        }
-
-        /// <summary>
-        /// Gets the selectable object currently under the cursor.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="worldPos">The world position.</param>
-        /// <returns>The selectable object currently under the cursor, or null if none.</returns>
-        protected virtual object GetObjUnderCursor(IMap map, Vector2 worldPos)
-        {
-            // By default, this will only get anything that implements ISpatial since its much faster that way and most
-            // map cursors will be working with types that implement ISpatial
-            return map.Spatial.Get(worldPos, CanSelect);
         }
 
         /// <summary>
@@ -143,20 +166,13 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
         protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            if (!_isSelecting)
-                return;
-
-            _selectionEnd = camera.ToWorld(e.Position());
+            if (IsSelecting)
+            {
+                _selectionEnd = camera.ToWorld(e.Position());
+            }
 
             base.MapContainer_MouseMove(sender, map, camera, e);
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if this cursor can select the given object.
-        /// </summary>
-        /// <param name="obj">The object to try to select.</param>
-        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
-        protected abstract bool CanSelect(object obj);
 
         /// <summary>
         /// Handles when the mouse button is raised on a map.
@@ -167,23 +183,21 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
         protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            if (e.Button != SelectMouseButton)
-                return;
+            if (IsSelecting && e.Button == SelectMouseButton)
+            {
+                // End the mass selection
 
-            if (!IsSelecting)
-                return;
+                _selectionEnd = camera.ToWorld(e.Position());
 
-            _selectionEnd = camera.ToWorld(e.Position());
+                var area = Rectangle.FromPoints(_selectionStart, _selectionEnd);
 
-            var area = Rectangle.FromPoints(_selectionStart, _selectionEnd);
+                var selected = CursorSelectObjects(map, area);
+                GlobalState.Instance.Map.SelectedObjsManager.SetManySelected(selected);
 
-            var selected = CursorSelectObjects(map, area);
-            GlobalState.Instance.Map.SelectedObjsManager.SetManySelected(selected);
-
-            _selectionStart = Vector2.Zero;
-            _selectionEnd = Vector2.Zero;
-
-            IsSelecting = false;
+                _isSelecting = false;
+                _selectionStart = Vector2.Zero;
+                _selectionEnd = Vector2.Zero;
+            }
 
             base.MapContainer_MouseUp(sender, map, camera, e);
         }
