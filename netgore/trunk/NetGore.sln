@@ -34,8 +34,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Server", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.EditorTools", "DemoGame.EditorTools\DemoGame.EditorTools.csproj", "{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbEditor", "DemoGame.DbEditor\DemoGame.DbEditor.csproj", "{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Editor", "NetGore.Features.Editor\NetGore.Features.Editor.csproj", "{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Editor", "DemoGame.Editor\DemoGame.Editor.csproj", "{5F863755-2701-4934-9445-73EF9C1749BF}"
@@ -274,20 +272,6 @@ Global
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Debug|x86.ActiveCfg = Debug|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Debug|x86.Build.0 = Debug|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.DebugTopDown|x86.Build.0 = DebugTopDown|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Mono|x86.ActiveCfg = Mono|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Mono|x86.Build.0 = Mono|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.MonoTopDown|x86.ActiveCfg = MonoTopDown|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.MonoTopDown|x86.Build.0 = MonoTopDown|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Release|x86.ActiveCfg = Release|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.Release|x86.Build.0 = Release|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
-		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 		{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}.Debug|x86.ActiveCfg = Debug|x86
 		{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}.Debug|x86.Build.0 = Debug|x86
 		{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
