@@ -132,6 +132,11 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
         protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
+            base.MapContainer_MouseMove(sender, map, camera, e);
+
+            if (IsSelecting)
+                return;
+
             var cursorPos = e.Position();
             var worldPos = map.Camera.ToWorld(cursorPos);
 
@@ -181,8 +186,6 @@ namespace DemoGame.Editor
                     _toolTipPos = worldPos;
                 }
             }
-
-            base.MapContainer_MouseMove(sender, map, camera, e);
         }
 
         /// <summary>
