@@ -8,6 +8,26 @@ using NetGore;
 using NetGore.Editor.WinForms;
 using NetGore.IO;
 
+// Highest priority (do these first!):
+// TODO: Map loading
+// TODO: Map saving + save as
+// TODO: Creating a new map
+// TODO: Displaying the map propeties
+// TODO: Only show a single map in one screen (if trying to load a form with a map that is already open, just focus the existing form)
+// TODO: Snapping to grid while placing, resizing, and moving spatials
+// TODO: Right-click instead of left-click while holding control will, instead of place object, delete (for MapGrh cursor only)
+// TODO: Selected objects form needs to be improved (dock the controls, only show list when more than one item available)
+
+// Medium priority (do these only when the highest priority ones are done):
+// TODO: Figure out why the GrhDatas view takes so long to load
+// TODO: Selected objects form be able to choose how the split for the listing is done (horizontal or vertical)
+// TODO: Ability to toggle the ToolTip display on the map cursors
+// TODO: Display some indication on which object the cursor is over when multiple are available
+
+// Lowest priority (save these for the very end):
+// TODO: Save the layout settings
+// TODO: Move most of the keys & other configs into the Settings.settings so they can be changed at runtime
+
 namespace DemoGame.Editor
 {
     static class Program
