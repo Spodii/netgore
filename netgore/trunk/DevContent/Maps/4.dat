@@ -8,7 +8,7 @@
     <Indoors>False</Indoors>
   </Header>
   <Walls>
-    <Count>64</Count>
+    <Count>0</Count>
     <Item0>
       <Position>0,928</Position>
       <Size>32,32</Size>
@@ -1180,7 +1180,7 @@
       <Lights>
         <Count>9</Count>
         <Item0>
-          <Position>86,876</Position>
+          <Position>-42,748</Position>
           <Size>256,256</Size>
           <Color>255,0,0,255</Color>
           <Rotation>0</Rotation>
@@ -1188,7 +1188,7 @@
           <Sprite>176</Sprite>
         </Item0>
         <Item1>
-          <Position>485,917</Position>
+          <Position>229,661</Position>
           <Size>512,512</Size>
           <Color>255,0,0,255</Color>
           <Rotation>0</Rotation>
@@ -1196,7 +1196,7 @@
           <Sprite>176</Sprite>
         </Item1>
         <Item2>
-          <Position>824,910</Position>
+          <Position>568,654</Position>
           <Size>512,512</Size>
           <Color>0,255,0,255</Color>
           <Rotation>0</Rotation>
@@ -1204,7 +1204,7 @@
           <Sprite>176</Sprite>
         </Item2>
         <Item3>
-          <Position>1421,909</Position>
+          <Position>1165,653</Position>
           <Size>512,512</Size>
           <Color>0,0,255,255</Color>
           <Rotation>0</Rotation>
@@ -1212,7 +1212,7 @@
           <Sprite>176</Sprite>
         </Item3>
         <Item4>
-          <Position>1141,905</Position>
+          <Position>629,393</Position>
           <Size>1024,1024</Size>
           <Color>255,0,255,255</Color>
           <Rotation>0</Rotation>
@@ -1220,7 +1220,7 @@
           <Sprite>176</Sprite>
         </Item4>
         <Item5>
-          <Position>645,906</Position>
+          <Position>389,750</Position>
           <Size>512,512</Size>
           <Color>0,0,255,255</Color>
           <Rotation>0</Rotation>
@@ -1228,7 +1228,7 @@
           <Sprite>176</Sprite>
         </Item5>
         <Item6>
-          <Position>162,776</Position>
+          <Position>34,648</Position>
           <Size>256,256</Size>
           <Color>0,255,0,255</Color>
           <Rotation>0</Rotation>
@@ -1236,7 +1236,7 @@
           <Sprite>176</Sprite>
         </Item6>
         <Item7>
-          <Position>21,774</Position>
+          <Position>-107,646</Position>
           <Size>256,256</Size>
           <Color>0,0,255,255</Color>
           <Rotation>0</Rotation>
@@ -1244,7 +1244,7 @@
           <Sprite>176</Sprite>
         </Item7>
         <Item8>
-          <Position>85,768</Position>
+          <Position>21,704</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>

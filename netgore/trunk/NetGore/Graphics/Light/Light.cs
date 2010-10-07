@@ -102,12 +102,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the center position of the <see cref="ISpatial"/>.
+        /// Gets or sets the center position of the <see cref="ISpatial"/>.
         /// </summary>
         [Browsable(false)]
         public Vector2 Center
         {
-            get { return Position; }
+            get { return Position + (Size / 2f); }
+            set { Position = value - (Size / 2f); }
         }
 
         /// <summary>
@@ -253,7 +254,8 @@ namespace NetGore.Graphics
                 return;
 
             // Draw
-            s.Draw(spriteBatch, Position - (Size / 2f), Color, SpriteEffects.None, Rotation, Vector2.Zero, Size / s.Size);
+            var scale = Size / s.Size;
+            s.Draw(spriteBatch, Position, Color, SpriteEffects.None, Rotation, scale / 2f, scale);
         }
 
         /// <summary>
