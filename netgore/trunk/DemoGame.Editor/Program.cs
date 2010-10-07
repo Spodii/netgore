@@ -28,6 +28,7 @@ using NetGore.IO;
 // Lowest priority (save these for the very end):
 // TODO: Save the layout settings
 // TODO: Move most of the keys & other configs into the Settings.settings so they can be changed at runtime
+// TODO: Try to optimize the loading so that the editor loads as fast as possible, and move as much as possible into background loading
 
 namespace DemoGame.Editor
 {
