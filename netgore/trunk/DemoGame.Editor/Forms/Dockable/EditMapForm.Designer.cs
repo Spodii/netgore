@@ -34,7 +34,6 @@
             // 
             // mapScreen
             // 
-            this.mapScreen.CursorPos = new SFML.Graphics.Vector2(0F, 0F);
             this.mapScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mapScreen.Location = new System.Drawing.Point(0, 0);
             this.mapScreen.Map = null;

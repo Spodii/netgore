@@ -7,6 +7,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
+    /*
     sealed class xxAddLightCursor : EditorCursor<EditMapForm>
     {
         static readonly ISprite _lightSprite = SystemSprites.Lightblub;
@@ -104,4 +105,5 @@ namespace DemoGame.Editor
             MSC.Map.AddLight(light);
         }
     }
+    */
 }

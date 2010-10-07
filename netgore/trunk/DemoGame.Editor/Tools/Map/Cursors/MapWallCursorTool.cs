@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
+using NetGore.Graphics;
 using NetGore.World;
 using SFML.Graphics;
 
@@ -56,62 +58,14 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles setting up event listeners for a <see cref="IToolTargetContainer"/>.
-        /// This will be invoked once for every <see cref="Tool"/> instance for every <see cref="IToolTargetContainer"/> available.
-        /// When the <see cref="Tool"/> is newly added to the <see cref="ToolManager"/>, all existing <see cref="IToolTargetContainer"/>s
-        /// will be sent through this method. As new ones are added while this <see cref="Tool"/> exists, those new
-        /// <see cref="IToolTargetContainer"/>s will also be passed through. What events to listen to and on what instances is
-        /// purely up to the derived <see cref="Tool"/>.
-        /// Make sure that all attached event listeners are also removed in the <see cref="Tool.ToolTargetContainerRemoved"/> method.
+        /// Handles when a key is raised on a map.
         /// </summary>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
-        protected override void ToolTargetContainerAdded(IToolTargetContainer c)
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
         {
-            base.ToolTargetContainerAdded(c);
-
-            var mapContainer = c.AsMapContainer();
-            if (mapContainer == null)
-                return;
-
-            mapContainer.KeyUp += mapContainer_KeyUp;
-            mapContainer.MouseUp += mapContainer_MouseUp;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles tearing down event listeners for a <see cref="IToolTargetContainer"/>.
-        /// Any event listeners set up in <see cref="Tool.ToolTargetContainerAdded"/> should be torn down here.
-        /// </summary>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
-        protected override void ToolTargetContainerRemoved(IToolTargetContainer c)
-        {
-            base.ToolTargetContainerRemoved(c);
-
-            var mapContainer = c.AsMapContainer();
-            if (mapContainer == null)
-                return;
-
-            mapContainer.KeyUp -= mapContainer_KeyUp;
-            mapContainer.MouseUp -= mapContainer_MouseUp;
-        }
-
-        /// <summary>
-        /// Handles the KeyUp event of the mapContainer control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-        void mapContainer_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (!IsEnabled)
-                return;
-
-            var c = sender as IToolTargetMapContainer;
-            if (c == null)
-                return;
-
-            var map = c.Map;
-            if (map == null)
-                return;
-
             // Handle delete
             if (e.KeyCode == Keys.Delete)
             {
@@ -122,30 +76,19 @@ namespace DemoGame.Editor
                         x.Dispose();
                 }
             }
+
+            base.MapContainer_KeyUp(sender, map, camera, e);
         }
 
         /// <summary>
-        /// Handles the MouseUp event of the mapContainer control.
+        /// Handles when the mouse button is raised on a map.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        void mapContainer_MouseUp(object sender, MouseEventArgs e)
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            if (!IsEnabled)
-                return;
-
-            var c = sender as IToolTargetMapContainer;
-            if (c == null)
-                return;
-
-            var map = c.Map as Map;
-            if (map == null)
-                return;
-
-            var camera = map.Camera;
-            if (camera == null)
-                return;
-
             var cursorPos = e.Position();
             var worldPos = camera.ToWorld(cursorPos);
 
@@ -155,6 +98,18 @@ namespace DemoGame.Editor
                 var entity = new WallEntity(worldPos, new Vector2(32));
                 map.AddEntity(entity);
             }
+
+            base.MapContainer_MouseUp(sender, map, camera, e);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this cursor can select the given object.
+        /// </summary>
+        /// <param name="obj">The object to try to select.</param>
+        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
+        protected override bool CanSelect(object obj)
+        {
+            return obj is WallEntityBase;
         }
     }
 }

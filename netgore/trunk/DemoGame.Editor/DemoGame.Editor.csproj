@@ -125,6 +125,7 @@
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
+    <Compile Include="Tools\Map\MapToolBase.cs" />
     <Compile Include="Tools\Map\Cursors\MapWallCursorTool.cs" />
     <Compile Include="Tools\Map\MapBorderDrawerTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapCursorToolBase.cs" />

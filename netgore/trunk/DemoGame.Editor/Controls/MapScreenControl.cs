@@ -41,7 +41,6 @@ namespace DemoGame.Editor
         readonly DrawingManager _drawingManager = new DrawingManager();
 
         Vector2 _cameraVelocity = Vector2.Zero;
-        Vector2 _cursorPos;
         TickCount _lastUpdateTime = TickCount.MinValue;
         Map _map;
 
@@ -83,16 +82,6 @@ namespace DemoGame.Editor
         public ICamera2D Camera
         {
             get { return _camera; }
-        }
-
-        /// <summary>
-        /// Gets or sets the current position of the cursor in the world.
-        /// </summary>
-        [Browsable(false)]
-        public Vector2 CursorPos
-        {
-            get { return _cursorPos; }
-            set { _cursorPos = value; }
         }
 
         /// <summary>
@@ -171,15 +160,6 @@ namespace DemoGame.Editor
         protected virtual void DrawMapGUI(ISpriteBatch sb)
         {
             ToolManager.Instance.InvokeBeforeDrawMapGUI(sb, Map);
-
-            // Cursor coordinates
-            var font = GlobalState.Instance.DefaultRenderFont;
-
-            var cursorPosText = CursorPos.ToString();
-            var cursorPosTextPos = new Vector2(ClientSize.Width, ClientSize.Height) - font.MeasureString(cursorPosText) -
-                                   new Vector2(4);
-
-            sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
 
             TransBoxManager.Draw(sb, Camera);
 

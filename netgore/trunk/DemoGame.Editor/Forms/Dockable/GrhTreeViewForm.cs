@@ -28,5 +28,10 @@ namespace DemoGame.Editor
             gtv.Initialize(GlobalState.Instance.ContentManager, (pos, size) => new WallEntity(pos, size),
                            GlobalState.Instance.MapGrhWalls);
         }
+
+        private void gtv_GrhAfterSelect(object sender, NetGore.Editor.Grhs.GrhTreeViewEventArgs e)
+        {
+            GlobalState.Instance.Map.GrhToPlace.SetGrh(e.GrhData);
+        }
     }
 }

@@ -7,20 +7,24 @@ using NetGore;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
+using NetGore.World;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
-    public abstract class MapCursorToolBase : Tool
+    public abstract class MapCursorToolBase : MapToolBase
     {
+        /// <summary>
+        /// The mouse button used to 
+        /// </summary>
+        public const MouseButtons SelectMouseButton = MouseButtons.Left;
+
         const string _enabledToolsGroup = "Map Cursors";
 
         /// <summary>
         /// The minimum size the selection area must be before it is drawn.
         /// </summary>
         const int _minSelectionAreaDrawSize = 4;
-
-        const MouseButtons _selectButton = MouseButtons.Left;
 
         /// <summary>
         /// The <see cref="Color"/> of the inner area of the selection rectangle.
@@ -32,9 +36,6 @@ namespace DemoGame.Editor
         /// </summary>
         static readonly Color _selectionAreaColorOuter = new Color(0, 150, 0, 200);
 
-        readonly bool _canSelect;
-        readonly bool _canSelectArea;
-
         bool _isSelecting = false;
         Vector2 _selectionEnd = Vector2.Zero;
         Vector2 _selectionStart = Vector2.Zero;
@@ -44,31 +45,20 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
         /// <param name="settings">The <see cref="ToolSettings"/> to use to create this <see cref="Tool"/>.</param>
-        /// <param name="canSelect">If the cursor supports selecting objects on the map.</param>
-        /// <param name="canSelectArea">If the cursor supports selecting a group of objects on the map.</param>
         /// <exception cref="ArgumentNullException"><paramref name="toolManager"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="settings"/> is null.</exception>
-        protected MapCursorToolBase(ToolManager toolManager, ToolSettings settings, bool canSelect = true,
-                                    bool canSelectArea = true) : base(toolManager, ModifyToolSettings(settings))
+        protected MapCursorToolBase(ToolManager toolManager, ToolSettings settings)
+            : base(toolManager, ModifyToolSettings(settings))
         {
-            _canSelect = canSelect;
-            _canSelectArea = canSelectArea;
         }
 
         /// <summary>
-        /// Gets if the cursor supports selecting objects on the map.
+        /// Gets or sets if this <see cref="MapCursorToolBase"/> is currently performing an area selection.
         /// </summary>
-        public bool CanSelect
+        public bool IsSelecting
         {
-            get { return _canSelect; }
-        }
-
-        /// <summary>
-        /// Gets if the cursor supports selecting groups of objects on the map.
-        /// </summary>
-        public bool CanSelectArea
-        {
-            get { return _canSelectArea; }
+            get { return _isSelecting; }
+            set { _isSelecting = value; }
         }
 
         /// <summary>
@@ -79,20 +69,7 @@ namespace DemoGame.Editor
         /// <returns>The objects to select.</returns>
         protected virtual IEnumerable<object> CursorSelectObjects(Map map, Rectangle selectionArea)
         {
-            return map.Spatial.GetMany<object>(selectionArea, CursorSelectObjectsFilter);
-        }
-
-        /// <summary>
-        /// Filter used by <see cref="MapCursorToolBase.CursorSelectObjects"/> to determine if an object should be selected.
-        /// </summary>
-        /// <param name="obj">The object to check if should be selected.</param>
-        /// <returns>True if the object should be selected; otherwise false.</returns>
-        protected virtual bool CursorSelectObjectsFilter(object obj)
-        {
-            if (obj == null)
-                return false;
-
-            return true;
+            return map.Spatial.GetMany<object>(selectionArea, CanSelect);
         }
 
         /// <summary>
@@ -126,142 +103,74 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Modifies the <see cref="ToolSettings"/> as it is passed to the base class constructor.
+        /// Handles when a mouse button is pressed on a map.
         /// </summary>
-        /// <param name="settings">The <see cref="ToolSettings"/>.</param>
-        /// <returns>The <see cref="ToolSettings"/></returns>
-        static ToolSettings ModifyToolSettings(ToolSettings settings)
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            settings.ToolBarVisibility = ToolBarVisibility.Map;
-            settings.EnabledToolsGroup = _enabledToolsGroup;
-            settings.EnabledByDefault = false;
-            return settings;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles setting up event listeners for a <see cref="IToolTargetContainer"/>.
-        /// This will be invoked once for every <see cref="Tool"/> instance for every <see cref="IToolTargetContainer"/> available.
-        /// When the <see cref="Tool"/> is newly added to the <see cref="ToolManager"/>, all existing <see cref="IToolTargetContainer"/>s
-        /// will be sent through this method. As new ones are added while this <see cref="Tool"/> exists, those new
-        /// <see cref="IToolTargetContainer"/>s will also be passed through. What events to listen to and on what instances is
-        /// purely up to the derived <see cref="Tool"/>.
-        /// Make sure that all attached event listeners are also removed in the <see cref="Tool.ToolTargetContainerRemoved"/> method.
-        /// </summary>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
-        protected override void ToolTargetContainerAdded(IToolTargetContainer c)
-        {
-            base.ToolTargetContainerAdded(c);
-
-            if (!CanSelect && !CanSelectArea)
-                return;
-
-            var mapContainer = c.AsMapContainer();
-            if (mapContainer == null)
-                return;
-
-            mapContainer.MouseDown += mapContainer_MouseDown;
-            mapContainer.MouseUp += mapContainer_MouseUp;
-            mapContainer.MouseMove += mapContainer_MouseMove;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles tearing down event listeners for a <see cref="IToolTargetContainer"/>.
-        /// Any event listeners set up in <see cref="Tool.ToolTargetContainerAdded"/> should be torn down here.
-        /// </summary>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
-        protected override void ToolTargetContainerRemoved(IToolTargetContainer c)
-        {
-            base.ToolTargetContainerRemoved(c);
-
-            if (!CanSelect && !CanSelectArea)
-                return;
-
-            var mapContainer = c.AsMapContainer();
-            if (mapContainer == null)
-                return;
-
-            mapContainer.MouseDown -= mapContainer_MouseDown;
-            mapContainer.MouseUp -= mapContainer_MouseUp;
-            mapContainer.MouseMove -= mapContainer_MouseMove;
-        }
-
-        /// <summary>
-        /// Handles the MouseDown event of the mapContainer control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        void mapContainer_MouseDown(object sender, MouseEventArgs e)
-        {
-            var mapContainer = sender as IToolTargetMapContainer;
-            if (mapContainer == null)
-                return;
-
-            var map = mapContainer.Map as Map;
-            if (map == null)
-                return;
-
-            var camera = map.Camera;
-            if (camera == null)
-                return;
-
-            if (e.Button != _selectButton)
+            if (e.Button != SelectMouseButton)
                 return;
 
             _selectionStart = camera.ToWorld(e.Position());
             _selectionEnd = _selectionStart;
             _isSelecting = true;
+
+            base.MapContainer_MouseDown(sender, map, camera, e);
         }
 
         /// <summary>
-        /// Handles the MouseMove event of the mapContainer control.
+        /// Gets the selectable object currently under the cursor.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        void mapContainer_MouseMove(object sender, MouseEventArgs e)
+        /// <param name="map">The map.</param>
+        /// <param name="worldPos">The world position.</param>
+        /// <returns>The selectable object currently under the cursor, or null if none.</returns>
+        protected virtual object GetObjUnderCursor(IMap map, Vector2 worldPos)
         {
-            var mapContainer = sender as IToolTargetMapContainer;
-            if (mapContainer == null)
-                return;
+            // By default, this will only get anything that implements ISpatial since its much faster that way and most
+            // map cursors will be working with types that implement ISpatial
+            return map.Spatial.Get(worldPos, CanSelect);
+        }
 
-            var map = mapContainer.Map as Map;
-            if (map == null)
-                return;
-
-            var camera = map.Camera;
-            if (camera == null)
-                return;
-
+        /// <summary>
+        /// Handles when the mouse moves over a map.
+        /// </summary>
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        {
             if (!_isSelecting)
                 return;
 
             _selectionEnd = camera.ToWorld(e.Position());
+
+            base.MapContainer_MouseMove(sender, map, camera, e);
         }
 
         /// <summary>
-        /// Handles the MouseUp event of the mapContainer control.
+        /// When overridden in the derived class, gets if this cursor can select the given object.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        void mapContainer_MouseUp(object sender, MouseEventArgs e)
+        /// <param name="obj">The object to try to select.</param>
+        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
+        protected abstract bool CanSelect(object obj);
+
+        /// <summary>
+        /// Handles when the mouse button is raised on a map.
+        /// </summary>
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            if (e.Button != _selectButton)
+            if (e.Button != SelectMouseButton)
                 return;
 
-            if (!_isSelecting)
-                return;
-
-            _isSelecting = false;
-
-            var mapContainer = sender as IToolTargetMapContainer;
-            if (mapContainer == null)
-                return;
-
-            var map = mapContainer.Map as Map;
-            if (map == null)
-                return;
-
-            var camera = map.Camera;
-            if (camera == null)
+            if (!IsSelecting)
                 return;
 
             _selectionEnd = camera.ToWorld(e.Position());
@@ -273,6 +182,23 @@ namespace DemoGame.Editor
 
             _selectionStart = Vector2.Zero;
             _selectionEnd = Vector2.Zero;
+
+            IsSelecting = false;
+
+            base.MapContainer_MouseUp(sender, map, camera, e);
+        }
+
+        /// <summary>
+        /// Modifies the <see cref="ToolSettings"/> as it is passed to the base class constructor.
+        /// </summary>
+        /// <param name="settings">The <see cref="ToolSettings"/>.</param>
+        /// <returns>The <see cref="ToolSettings"/></returns>
+        static ToolSettings ModifyToolSettings(ToolSettings settings)
+        {
+            settings.ToolBarVisibility = ToolBarVisibility.Map;
+            settings.EnabledToolsGroup = _enabledToolsGroup;
+            settings.EnabledByDefault = false;
+            return settings;
         }
     }
 }
