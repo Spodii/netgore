@@ -54,6 +54,17 @@ namespace DemoGame.Editor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // Ensure the content is copied over
+            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
+            {
+                const string errmsg =
+                    "Failed to copy the content from the dev to build path." +
+                    " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg);
+                Debug.Fail(errmsg);
+            }
+
             // Initialize stuff
             EngineSettingsInitializer.Initialize();
             GlobalState.Initailize();
