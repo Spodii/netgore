@@ -1,4 +1,4 @@
-﻿namespace DemoGame.DbEditor
+﻿namespace DemoGame.Editor
 {
     partial class DbEditorForm
     {
@@ -85,7 +85,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
+            this.lstMessages = new DemoGame.Editor.GameMessageValueListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtSelectedMessage = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();

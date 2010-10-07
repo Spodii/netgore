@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace DemoGame.DbEditor
+namespace DemoGame.Editor
 {
     public partial class LanguageNameForm : Form
     {

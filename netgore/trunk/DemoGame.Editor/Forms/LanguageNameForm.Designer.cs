@@ -1,4 +1,4 @@
-﻿namespace DemoGame.DbEditor
+﻿namespace DemoGame.Editor
 {
     partial class LanguageNameForm
     {

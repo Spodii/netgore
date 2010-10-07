@@ -31,6 +31,7 @@ using NetGore.IO;
 // TODO: Try to optimize the loading so that the editor loads as fast as possible, and move as much as possible into background loading
 // TODO: Make the NPCChatEditorForm more "dock-alicious" and able to support opening & editing multiple different dialogs at once
 // TODO: Make the SkeletonEditorForm more "dock-alicious" and able to support opening & editing multiple different dialogs at once
+// TODO: Also split up the DbEditorForm into separate forms and able to open multiple instances at a time
 
 namespace DemoGame.Editor
 {
