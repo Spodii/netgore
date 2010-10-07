@@ -6,9 +6,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using NetGore;
+using NetGore.Content;
 using NetGore.Editor;
+using NetGore.Editor.UI;
 using NetGore.Editor.WinForms;
+using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
+using NetGore.IO;
 
 namespace DemoGame.ParticleEffectEditor
 {
@@ -23,12 +28,12 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="newValue">The new value.</param>
         public delegate void PropertyChangedEventHandler<T>(Form1 sender, T oldValue, T newValue);
 
-        ParticleEffect _particleEffect;
+        IParticleEffect _particleEffect;
 
         /// <summary>
         /// Gets or sets the <see cref="IParticleEffect"/> to edit.
         /// </summary>
-        public ParticleEffect ParticleEffect
+        public IParticleEffect ParticleEffect
         {
             get
             {
@@ -90,7 +95,7 @@ namespace DemoGame.ParticleEffectEditor
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        protected virtual void OnParticleEffectChanged(ParticleEffect oldValue, ParticleEffect newValue)
+        protected virtual void OnParticleEffectChanged(IParticleEffect oldValue, IParticleEffect newValue)
         {
             // Update the PropertyGrid
             pgEffect.SelectedObject = ParticleEffect;
@@ -100,7 +105,7 @@ namespace DemoGame.ParticleEffectEditor
 
             if (newValue != null)
             {
-                lstEmitters.AddItems(newValue.Emitters.OfType<IParticleEmitter>());
+                lstEmitters.AddItems(newValue.Emitters);
 
                 // Select the first emitter
                 if (lstEmitters.Items.Count > 0)
@@ -119,6 +124,30 @@ namespace DemoGame.ParticleEffectEditor
         public Form1()
         {
             InitializeComponent();
+        }
+
+        IContentManager _content;
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            // NOTE: !! Temp
+
+            _content = ContentManager.Create();
+            GrhInfo.Load(ContentPaths.Build, _content);
+
+            CustomUITypeEditors.AddEditors();
+
+            ParticleEffect = ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
+
+            Timer t = new Timer { Interval = 1000 / 60 };
+            t.Tick += (EventHandler)((x,y) => gameScreen.InvokeDrawing(TickCount.Now));
+            t.Start();
         }
 
         private void lstEmitters_TypedSelectedItemChanged(TypedListBox<IParticleEmitter> sender, IParticleEmitter value)
