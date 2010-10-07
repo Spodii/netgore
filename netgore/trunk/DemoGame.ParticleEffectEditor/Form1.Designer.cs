@@ -29,26 +29,26 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tc = new System.Windows.Forms.TabControl();
+            this.tpEffect = new System.Windows.Forms.TabPage();
+            this.pgEffect = new System.Windows.Forms.PropertyGrid();
             this.tpEmitter = new System.Windows.Forms.TabPage();
-            this.tpSettings = new System.Windows.Forms.TabPage();
-            this.gameScreen = new DemoGame.ParticleEffectEditor.GameScreenControl();
             this.pgEmitter = new System.Windows.Forms.PropertyGrid();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
-            this.pButtons = new System.Windows.Forms.Panel();
-            this.btnNewEmitter = new System.Windows.Forms.Button();
-            this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.lbEmitters = new DemoGame.ParticleEffectEditor.ParticleEmitterListBox();
-            this.tpEffect = new System.Windows.Forms.TabPage();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.pButtons = new System.Windows.Forms.Panel();
+            this.btnDeleteEmitter = new System.Windows.Forms.Button();
+            this.btnNewEmitter = new System.Windows.Forms.Button();
+            this.tpSettings = new System.Windows.Forms.TabPage();
+            this.gameScreen = new DemoGame.ParticleEffectEditor.GameScreenControl();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tc.SuspendLayout();
+            this.tpEffect.SuspendLayout();
             this.tpEmitter.SuspendLayout();
             this.gbEmitter.SuspendLayout();
             this.pButtons.SuspendLayout();
-            this.tpEffect.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -59,7 +59,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel1.Controls.Add(this.tc);
             // 
             // splitContainer1.Panel2
             // 
@@ -68,17 +68,36 @@
             this.splitContainer1.SplitterDistance = 262;
             this.splitContainer1.TabIndex = 0;
             // 
-            // tabControl1
+            // tc
             // 
-            this.tabControl1.Controls.Add(this.tpEffect);
-            this.tabControl1.Controls.Add(this.tpEmitter);
-            this.tabControl1.Controls.Add(this.tpSettings);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(262, 501);
-            this.tabControl1.TabIndex = 0;
+            this.tc.Controls.Add(this.tpEffect);
+            this.tc.Controls.Add(this.tpEmitter);
+            this.tc.Controls.Add(this.tpSettings);
+            this.tc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tc.Location = new System.Drawing.Point(0, 0);
+            this.tc.Name = "tc";
+            this.tc.SelectedIndex = 0;
+            this.tc.Size = new System.Drawing.Size(262, 501);
+            this.tc.TabIndex = 0;
+            // 
+            // tpEffect
+            // 
+            this.tpEffect.Controls.Add(this.pgEffect);
+            this.tpEffect.Location = new System.Drawing.Point(4, 22);
+            this.tpEffect.Name = "tpEffect";
+            this.tpEffect.Padding = new System.Windows.Forms.Padding(3);
+            this.tpEffect.Size = new System.Drawing.Size(254, 475);
+            this.tpEffect.TabIndex = 2;
+            this.tpEffect.Text = "Effect";
+            this.tpEffect.UseVisualStyleBackColor = true;
+            // 
+            // pgEffect
+            // 
+            this.pgEffect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgEffect.Location = new System.Drawing.Point(3, 3);
+            this.pgEffect.Name = "pgEffect";
+            this.pgEffect.Size = new System.Drawing.Size(248, 469);
+            this.pgEffect.TabIndex = 0;
             // 
             // tpEmitter
             // 
@@ -91,26 +110,6 @@
             this.tpEmitter.TabIndex = 0;
             this.tpEmitter.Text = "Emitters";
             this.tpEmitter.UseVisualStyleBackColor = true;
-            // 
-            // tpSettings
-            // 
-            this.tpSettings.Location = new System.Drawing.Point(4, 22);
-            this.tpSettings.Name = "tpSettings";
-            this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSettings.Size = new System.Drawing.Size(254, 475);
-            this.tpSettings.TabIndex = 1;
-            this.tpSettings.Text = "Settings";
-            this.tpSettings.UseVisualStyleBackColor = true;
-            // 
-            // gameScreen
-            // 
-            this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameScreen.Location = new System.Drawing.Point(0, 0);
-            this.gameScreen.Name = "gameScreen";
-            this.gameScreen.ScreenForm = null;
-            this.gameScreen.Size = new System.Drawing.Size(549, 501);
-            this.gameScreen.TabIndex = 0;
-            this.gameScreen.Text = "gameScreenControl1";
             // 
             // pgEmitter
             // 
@@ -132,6 +131,16 @@
             this.gbEmitter.TabStop = false;
             this.gbEmitter.Text = "Emitters";
             // 
+            // lbEmitters
+            // 
+            this.lbEmitters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbEmitters.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbEmitters.FormattingEnabled = true;
+            this.lbEmitters.Location = new System.Drawing.Point(3, 16);
+            this.lbEmitters.Name = "lbEmitters";
+            this.lbEmitters.Size = new System.Drawing.Size(242, 131);
+            this.lbEmitters.TabIndex = 1;
+            // 
             // pButtons
             // 
             this.pButtons.Controls.Add(this.btnDeleteEmitter);
@@ -143,16 +152,6 @@
             this.pButtons.Size = new System.Drawing.Size(242, 31);
             this.pButtons.TabIndex = 0;
             // 
-            // btnNewEmitter
-            // 
-            this.btnNewEmitter.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnNewEmitter.Location = new System.Drawing.Point(3, 3);
-            this.btnNewEmitter.Name = "btnNewEmitter";
-            this.btnNewEmitter.Size = new System.Drawing.Size(75, 25);
-            this.btnNewEmitter.TabIndex = 0;
-            this.btnNewEmitter.Text = "New";
-            this.btnNewEmitter.UseVisualStyleBackColor = true;
-            // 
             // btnDeleteEmitter
             // 
             this.btnDeleteEmitter.Dock = System.Windows.Forms.DockStyle.Left;
@@ -163,34 +162,35 @@
             this.btnDeleteEmitter.Text = "Delete";
             this.btnDeleteEmitter.UseVisualStyleBackColor = true;
             // 
-            // lbEmitters
+            // btnNewEmitter
             // 
-            this.lbEmitters.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbEmitters.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lbEmitters.FormattingEnabled = true;
-            this.lbEmitters.Location = new System.Drawing.Point(3, 16);
-            this.lbEmitters.Name = "lbEmitters";
-            this.lbEmitters.Size = new System.Drawing.Size(242, 131);
-            this.lbEmitters.TabIndex = 1;
+            this.btnNewEmitter.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnNewEmitter.Location = new System.Drawing.Point(3, 3);
+            this.btnNewEmitter.Name = "btnNewEmitter";
+            this.btnNewEmitter.Size = new System.Drawing.Size(75, 25);
+            this.btnNewEmitter.TabIndex = 0;
+            this.btnNewEmitter.Text = "New";
+            this.btnNewEmitter.UseVisualStyleBackColor = true;
             // 
-            // tpEffect
+            // tpSettings
             // 
-            this.tpEffect.Controls.Add(this.propertyGrid1);
-            this.tpEffect.Location = new System.Drawing.Point(4, 22);
-            this.tpEffect.Name = "tpEffect";
-            this.tpEffect.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEffect.Size = new System.Drawing.Size(254, 475);
-            this.tpEffect.TabIndex = 2;
-            this.tpEffect.Text = "Effect";
-            this.tpEffect.UseVisualStyleBackColor = true;
+            this.tpSettings.Location = new System.Drawing.Point(4, 22);
+            this.tpSettings.Name = "tpSettings";
+            this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSettings.Size = new System.Drawing.Size(254, 475);
+            this.tpSettings.TabIndex = 1;
+            this.tpSettings.Text = "Settings";
+            this.tpSettings.UseVisualStyleBackColor = true;
             // 
-            // propertyGrid1
+            // gameScreen
             // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(3, 3);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(248, 469);
-            this.propertyGrid1.TabIndex = 0;
+            this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gameScreen.Location = new System.Drawing.Point(0, 0);
+            this.gameScreen.Name = "gameScreen";
+            this.gameScreen.ScreenForm = null;
+            this.gameScreen.Size = new System.Drawing.Size(549, 501);
+            this.gameScreen.TabIndex = 0;
+            this.gameScreen.Text = "gameScreenControl1";
             // 
             // Form1
             // 
@@ -204,11 +204,11 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tc.ResumeLayout(false);
+            this.tpEffect.ResumeLayout(false);
             this.tpEmitter.ResumeLayout(false);
             this.gbEmitter.ResumeLayout(false);
             this.pButtons.ResumeLayout(false);
-            this.tpEffect.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -216,7 +216,7 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tc;
         private System.Windows.Forms.TabPage tpEmitter;
         private System.Windows.Forms.TabPage tpSettings;
         private GameScreenControl gameScreen;
@@ -227,7 +227,7 @@
         private System.Windows.Forms.Button btnDeleteEmitter;
         private System.Windows.Forms.Button btnNewEmitter;
         private System.Windows.Forms.TabPage tpEffect;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private System.Windows.Forms.PropertyGrid pgEffect;
 
     }
 }
