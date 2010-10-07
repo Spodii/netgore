@@ -1,6 +1,6 @@
 ﻿namespace DemoGame.DbEditor
 {
-    partial class frmMain
+    partial class DbEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -1049,7 +1049,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(476, 415);
             this.Controls.Add(this.tc);
-            this.Name = "frmMain";
+            this.Name = "DbEditorForm";
             this.Padding = new System.Windows.Forms.Padding(6);
             this.Text = "NetGore Database Editor";
             this.tc.ResumeLayout(false);
