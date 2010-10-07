@@ -9,6 +9,7 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
+    /*
     sealed class xxLightCursor : EditorCursor<EditMapForm>
     {
         ILight _selectedLight;
@@ -204,4 +205,5 @@ namespace DemoGame.Editor
             _toolTipPos.X = light.Position.X + 5;
         }
     }
+    */
 }

@@ -183,6 +183,7 @@ namespace DemoGame.Editor
         public class MapState
         {
             readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
+            readonly Grh _grhToPlace = new Grh();
 
             Vector2 _gridSize = new Vector2(32);
 
@@ -213,9 +214,14 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
-            /// Gets or sets the <see cref="Grh"/> that has been selected to be placed on the map.
+            /// Gets the <see cref="Grh"/> that has been selected to be placed on the map. When placing the <see cref="Grh"/>,
+            /// create a deep copy.
+            /// This property will never be null, but the <see cref="GrhData"/> can be unset.
             /// </summary>
-            public Grh GrhToPlace { get; set; }
+            public Grh GrhToPlace
+            {
+                get { return _grhToPlace; }
+            }
 
             /// <summary>
             /// Gets the <see cref="SelectedObjectsManager{T}"/> that contains the currently selected map objects.

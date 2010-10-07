@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
@@ -13,7 +14,7 @@ namespace DemoGame.Editor
 {
     public class MapGrhCursorTool : MapCursorToolBase
     {
-        const Keys _placeMapGrhKey = Keys.Shift;
+        const Keys _placeMapGrhKey = Keys.Control;
 
         Map _mouseOverMap;
         Vector2 _mousePos;
@@ -66,8 +67,7 @@ namespace DemoGame.Editor
                 return;
 
             var grh = GlobalState.Instance.Map.GrhToPlace;
-            if (grh != null)
-                grh.Draw(spriteBatch, _mousePos);
+            grh.Draw(spriteBatch, _mousePos);
         }
 
         /// <summary>
@@ -95,93 +95,51 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles setting up event listeners for a <see cref="IToolTargetContainer"/>.
-        /// This will be invoked once for every <see cref="Tool"/> instance for every <see cref="IToolTargetContainer"/> available.
-        /// When the <see cref="Tool"/> is newly added to the <see cref="ToolManager"/>, all existing <see cref="IToolTargetContainer"/>s
-        /// will be sent through this method. As new ones are added while this <see cref="Tool"/> exists, those new
-        /// <see cref="IToolTargetContainer"/>s will also be passed through. What events to listen to and on what instances is
-        /// purely up to the derived <see cref="Tool"/>.
-        /// Make sure that all attached event listeners are also removed in the <see cref="Tool.ToolTargetContainerRemoved"/> method.
+        /// Handles when a mouse button is pressed on a map.
         /// </summary>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
-        protected override void ToolTargetContainerAdded(IToolTargetContainer c)
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            base.ToolTargetContainerAdded(c);
+            if (e.Button == MouseButtons.Left)
+            {
+                // Left-click
 
-            var mapContainer = c.AsMapContainer();
-            if (mapContainer == null)
-                return;
+                if ((Control.ModifierKeys & _placeMapGrhKey) != 0)
+                {
+                    // Place MapGrh
 
-            mapContainer.MouseDown += mapContainer_MouseDown;
-            mapContainer.MouseMove += mapContainer_MouseMove;
-            mapContainer.MouseWheel += mapContainer_MouseWheel;
-            mapContainer.KeyUp += mapContainer_KeyUp;
-        }
+                    var gd = GlobalState.Instance.Map.GrhToPlace.GrhData;
+                    if (gd == null)
+                        return;
 
-        void mapContainer_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (!IsEnabled)
-                return;
+                    var drawPos = camera.ToWorld(e.Position());
+                    var selGrhGrhIndex = gd.GrhIndex;
 
-            var c = sender as IToolTargetMapContainer;
-            if (c == null)
-                return;
+                    // Make sure the same GrhData doesn't already exist at that position
+                    if (map.MapGrhs.Any(x => x.Position == drawPos && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
+                        return;
 
-            var map = c.Map as Map;
-            if (map == null)
-                return;
+                    var g = new Grh(gd, AnimType.Loop, map.GetTime());
+                    var mg = new MapGrh(g, drawPos, false);
+                    map.AddMapGrh(mg);
+                }
+            }
 
-            var camera = map.Camera;
-            if (camera == null)
-                return;
-
-            var grh = GlobalState.Instance.Map.GrhToPlace;
-            if (grh == null || grh.GrhData == null)
-                return;
-
-            var drawPos = camera.ToWorld(e.Position());
-            var selGrhGrhIndex = grh.GrhData.GrhIndex;
-
-            if (map.MapGrhs.Any(x => x.Position == drawPos && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
-                return;
-
-            var g = new Grh(grh.GrhData, AnimType.Loop, map.GetTime());
-            var mg = new MapGrh(g, drawPos, false);
-            map.AddMapGrh(mg);
+            base.MapContainer_MouseDown(sender, map, camera, e);
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles tearing down event listeners for a <see cref="IToolTargetContainer"/>.
-        /// Any event listeners set up in <see cref="Tool.ToolTargetContainerAdded"/> should be torn down here.
+        /// Handles when a key is raised on a map.
         /// </summary>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> to optionally listen to events on.</param>
-        protected override void ToolTargetContainerRemoved(IToolTargetContainer c)
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
         {
-            base.ToolTargetContainerRemoved(c);
-
-            var mapContainer = c.AsMapContainer();
-            if (mapContainer == null)
-                return;
-
-            mapContainer.MouseDown -= mapContainer_MouseDown;
-            mapContainer.MouseMove -= mapContainer_MouseMove;
-            mapContainer.MouseWheel -= mapContainer_MouseWheel;
-            mapContainer.KeyUp -= mapContainer_KeyUp;
-        }
-
-        void mapContainer_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (!IsEnabled)
-                return;
-
-            var c = sender as IToolTargetMapContainer;
-            if (c == null)
-                return;
-
-            var map = c.Map as Map;
-            if (map == null)
-                return;
-
             // Handle deletes
             if (e.KeyCode == Keys.Delete)
             {
@@ -192,41 +150,37 @@ namespace DemoGame.Editor
                         map.RemoveMapGrh(x);
                 }
             }
+
+            base.MapContainer_KeyUp(sender, map, camera, e);
         }
 
-        void mapContainer_MouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Handles when the mouse moves over a map.
+        /// </summary>
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            if (!IsEnabled)
-                return;
-
-            var c = sender as IToolTargetMapContainer;
-            if (c == null)
-                return;
-
-            var map = c.Map as Map;
-            if (map == null)
-                return;
-
             var cursorPos = e.Position();
 
             _mouseOverMap = map;
             _mousePos = cursorPos;
+
+            base.MapContainer_MouseMove(sender, map, camera, e);
         }
 
-        void mapContainer_MouseWheel(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Handles when the mouse wheel is moved while over a map.
+        /// </summary>
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_MouseWheel(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
-            if (!IsEnabled)
-                return;
-
             if (e.Delta == 0)
-                return;
-
-            var c = sender as IToolTargetMapContainer;
-            if (c == null)
-                return;
-
-            var map = c.Map;
-            if (map == null)
                 return;
 
             // Only change depth on selected MapGrh if only one is selected
@@ -240,6 +194,18 @@ namespace DemoGame.Editor
 
             // Change layer depth, making sure it is clamped in the needed range
             focusedMapGrh.LayerDepth = (short)(focusedMapGrh.LayerDepth + e.Delta).Clamp(short.MinValue, short.MaxValue);
+
+            base.MapContainer_MouseWheel(sender, map, camera, e);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this cursor can select the given object.
+        /// </summary>
+        /// <param name="obj">The object to try to select.</param>
+        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
+        protected override bool CanSelect(object obj)
+        {
+            return obj is MapGrh;
         }
     }
 }
