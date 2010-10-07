@@ -7,12 +7,13 @@ using System.Text;
 using System.Windows.Forms;
 using NetGore;
 using NetGore.Editor;
+using NetGore.Editor.Docking;
 using NetGore.Editor.NPCChat;
 using NetGore.Editor.UI;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
-namespace DemoGame.NPCChatEditor
+namespace DemoGame.Editor
 {
     // TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
     // TODO: Do not allow responses immediately under a branch to be altered in any ways
@@ -20,7 +21,7 @@ namespace DemoGame.NPCChatEditor
     // TODO: An indicator for when a dialog characterID or response has conditionals
     // TODO: An indicator for when a response has actions
 
-    public partial class frmMain : Form
+    public partial class NPCChatEditorForm : DockContent
     {
         /// <summary>
         /// Contains the <see cref="NPCChatConditionalBase"/>s available.
@@ -31,17 +32,17 @@ namespace DemoGame.NPCChatEditor
         object _editingObj;
 
         /// <summary>
-        /// Initializes the <see cref="frmMain"/> class.
+        /// Initializes the <see cref="NPCChatEditorForm"/> class.
         /// </summary>
-        static frmMain()
+        static NPCChatEditorForm()
         {
             _npcChatConditionals = NPCChatConditionalBase.Conditionals.OrderBy(x => x.Name).ToArray();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="frmMain"/> class.
+        /// Initializes a new instance of the <see cref="NPCChatEditorForm"/> class.
         /// </summary>
-        public frmMain()
+        public NPCChatEditorForm()
         {
             InitializeComponent();
         }

@@ -2,7 +2,7 @@
 
 namespace DemoGame.NPCChatEditor
 {
-    partial class frmMain
+    partial class NPCChatEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@ namespace DemoGame.NPCChatEditor
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.cmbSelectedDialog = new NPCChatDialogComboBox();
+            this.cmbSelectedDialog = new NetGore.Editor.NPCChat.NPCChatDialogComboBox();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -41,7 +41,7 @@ namespace DemoGame.NPCChatEditor
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.npcChatDialogView = new NPCChatDialogView();
+            this.npcChatDialogView = new NetGore.Editor.NPCChat.NPCChatDialogView();
             this.gbSelectedNode = new System.Windows.Forms.GroupBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
@@ -74,7 +74,7 @@ namespace DemoGame.NPCChatEditor
             this.label4 = new System.Windows.Forms.Label();
             this.gbConditionals = new System.Windows.Forms.GroupBox();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstConditionals = new NPCChatConditionalsListBox();
+            this.lstConditionals = new NetGore.Editor.NPCChat.NPCChatConditionalsListBox();
             this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnAddConditional = new System.Windows.Forms.Button();
@@ -689,13 +689,13 @@ namespace DemoGame.NPCChatEditor
             this.btnDeleteConditional.UseVisualStyleBackColor = true;
             this.btnDeleteConditional.Click += new System.EventHandler(this.btnDeleteConditional_Click);
             // 
-            // frmMain
+            // NPCChatEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(936, 629);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "frmMain";
+            this.Name = "NPCChatEditorForm";
             this.Padding = new System.Windows.Forms.Padding(3);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NPC Chat Editor";
