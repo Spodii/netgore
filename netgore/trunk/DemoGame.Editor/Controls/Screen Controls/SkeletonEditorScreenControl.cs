@@ -8,17 +8,17 @@ using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
-    class GameScreenControl : GraphicsDeviceControl
+    public class SkeletonEditorScreenControl : GraphicsDeviceControl
     {
         readonly Timer t = new Timer();
 
         /// <summary>
-        /// Gets or sets the <see cref="ScreenForm"/>.
+        /// Gets or sets the <see cref="SkeletonEditorForm"/>.
         /// </summary>
         [Browsable(false)]
-        public ScreenForm ScreenForm { get; set; }
+        public SkeletonEditorForm SkeletonEditorForm { get; set; }
 
-        public GameScreenControl()
+        public SkeletonEditorScreenControl()
         {
             t.Elapsed += new ElapsedEventHandler(t_Elapsed);
             t.Interval = 1000 / 60;
@@ -37,8 +37,8 @@ namespace DemoGame.Editor
         /// <param name="currentTime">The current time.</param>
         protected override void HandleDraw(NetGore.TickCount currentTime)
         {
-            ScreenForm.UpdateGame();
-            ScreenForm.DrawGame();
+            SkeletonEditorForm.UpdateGame();
+            SkeletonEditorForm.DrawGame();
         }
     }
 }

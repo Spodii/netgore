@@ -7,13 +7,14 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Content;
 using NetGore.Editor;
+using NetGore.Editor.Docking;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
-    partial class ScreenForm : Form
+    public partial class SkeletonEditorForm : DockContent
     {
         const string _filterBody = "Skeleton body (*" + SkeletonBodyInfo.FileSuffix + ")|*" + SkeletonBodyInfo.FileSuffix;
         const string _filterFrame = "Skeleton frame (*" + Skeleton.FileSuffix + ")|*" + Skeleton.FileSuffix;
@@ -44,13 +45,13 @@ namespace DemoGame.Editor
         KeyEventArgs ks = new KeyEventArgs(Keys.None);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenForm"/> class.
+        /// Initializes a new instance of the <see cref="SkeletonEditorForm"/> class.
         /// </summary>
-        public ScreenForm()
+        public SkeletonEditorForm()
         {
             InitializeComponent();
             HookInput();
-            GameScreen.ScreenForm = this;
+            GameScreen.SkeletonEditorForm = this;
         }
 
         /// <summary>
@@ -353,32 +354,6 @@ namespace DemoGame.Editor
         public TickCount GetTime()
         {
             return _currentTime;
-        }
-
-        static void HandleSwitch_SaveAll()
-        {
-            var files = Directory.GetFiles(ContentPaths.Dev.Skeletons);
-
-            // Frames
-            foreach (var file in files.Where(x => x.EndsWith(Skeleton.FileSuffix, StringComparison.OrdinalIgnoreCase)))
-            {
-                var skeleton = SkeletonLoader.LoadSkeleton(file);
-                skeleton.Write(file);
-            }
-
-            // Sets
-            foreach (var file in files.Where(x => x.EndsWith(SkeletonSet.FileSuffix, StringComparison.OrdinalIgnoreCase)))
-            {
-                var set = SkeletonLoader.LoadSkeletonSet(file);
-                set.Write(file);
-            }
-
-            // Bodies
-            foreach (var file in files.Where(x => x.EndsWith(SkeletonBodyInfo.FileSuffix, StringComparison.OrdinalIgnoreCase)))
-            {
-                var body = SkeletonLoader.LoadSkeletonBodyInfo(file);
-                body.Save(file);
-            }
         }
 
         void HookInput()
