@@ -175,6 +175,9 @@ namespace NetGore.Editor.WinForms
         /// <param name="currentTime">The current time.</param>
         public void InvokeDrawing(TickCount currentTime)
         {
+            if (!Visible)
+                return;
+
             try
             {
                 _lastDrawError = BeginDraw();
