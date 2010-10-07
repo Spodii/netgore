@@ -164,8 +164,8 @@ namespace DemoGame.Editor
             this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GameScreen.Location = new System.Drawing.Point(0, 0);
             this.GameScreen.Name = "GameScreen";
-            this.GameScreen.SkeletonEditorForm = null;
             this.GameScreen.Size = new System.Drawing.Size(800, 575);
+            this.GameScreen.SkeletonEditorForm = null;
             this.GameScreen.TabIndex = 2;
             this.GameScreen.Text = "Game Screen";
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
@@ -1045,7 +1045,7 @@ namespace DemoGame.Editor
             this.radioEdit.Text = "Frame Editor";
             this.radioEdit.UseVisualStyleBackColor = true;
             // 
-            // ScreenForm
+            // SkeletonEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
