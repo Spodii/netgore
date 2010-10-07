@@ -289,19 +289,17 @@ Global
 		{5F863755-2701-4934-9445-73EF9C1749BF}.Debug|x86.ActiveCfg = Debug|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.Debug|x86.Build.0 = Debug|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugDbClassGen|x86.Build.0 = Debug|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugTopDown|x86.ActiveCfg = Debug|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugTopDown|x86.Build.0 = Debug|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.Mono|x86.ActiveCfg = Release|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.Mono|x86.Build.0 = Release|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.MonoTopDown|x86.ActiveCfg = Release|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.MonoTopDown|x86.Build.0 = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugTopDown|x86.Build.0 = DebugTopDown|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Mono|x86.ActiveCfg = Mono|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Mono|x86.Build.0 = Mono|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.MonoTopDown|x86.ActiveCfg = MonoTopDown|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.MonoTopDown|x86.Build.0 = MonoTopDown|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.Release|x86.ActiveCfg = Release|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.Release|x86.Build.0 = Release|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseClient|x86.Build.0 = Release|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseTopDown|x86.ActiveCfg = Release|x86
-		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseTopDown|x86.Build.0 = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
