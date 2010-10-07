@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db.ClassCreator", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.ParticleEffectEditor", "DemoGame.ParticleEffectEditor\DemoGame.ParticleEffectEditor.csproj", "{B754CB42-CD27-4602-809C-930677A8AD08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.MapEditor", "DemoGame.MapEditor\DemoGame.MapEditor.csproj", "{E45C879C-61AC-45F0-8E25-453EE46EB086}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbClassCreator", "DemoGame.DbClassCreator\DemoGame.DbClassCreator.csproj", "{D57B29DA-0305-41AA-BBF9-75F370AE33AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features", "NetGore.Features\NetGore.Features.csproj", "{21CBF812-F3DE-4CCD-BE43-4D28EC611272}"
@@ -222,19 +220,6 @@ Global
 		{B754CB42-CD27-4602-809C-930677A8AD08}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{B754CB42-CD27-4602-809C-930677A8AD08}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{B754CB42-CD27-4602-809C-930677A8AD08}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Debug|x86.ActiveCfg = Debug|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.DebugTopDown|x86.Build.0 = DebugTopDown|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Mono|x86.ActiveCfg = Mono|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Mono|x86.Build.0 = Mono|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.MonoTopDown|x86.ActiveCfg = MonoTopDown|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.MonoTopDown|x86.Build.0 = MonoTopDown|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Release|x86.ActiveCfg = Release|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.Release|x86.Build.0 = Release|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
-		{E45C879C-61AC-45F0-8E25-453EE46EB086}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.Debug|x86.ActiveCfg = Debug|x86
 		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.Debug|x86.Build.0 = Debug|x86
 		{D57B29DA-0305-41AA-BBF9-75F370AE33AE}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
