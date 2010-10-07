@@ -17,6 +17,7 @@ using NetGore.IO;
 // TODO: Snapping to grid while placing, resizing, and moving spatials
 // TODO: Right-click instead of left-click while holding control will, instead of place object, delete (for MapGrh cursor only)
 // TODO: Selected objects form needs to be improved (dock the controls, only show list when more than one item available)
+// TODO: Add back the editor for MapGrh-bound walls
 
 // Medium priority (do these only when the highest priority ones are done):
 // TODO: Figure out why the GrhDatas view takes so long to load
