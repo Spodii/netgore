@@ -96,6 +96,9 @@ namespace NetGore.Graphics.ParticleEngine
             _emitters.Add(newName, emitter);
 
             emitter.Disposed += emitter_Disposed;
+
+            if (EmitterAdded != null)
+                EmitterAdded(this, emitter);
         }
 
         /// <summary>
@@ -111,6 +114,9 @@ namespace NetGore.Graphics.ParticleEngine
             Debug.Assert(sender.Owner == this);
 
             _emitters.Remove(sender.Name);
+
+            if (EmitterRemoved != null)
+                EmitterRemoved(this, sender);
         }
 
         #region IParticleEffect Members
@@ -119,6 +125,16 @@ namespace NetGore.Graphics.ParticleEngine
         /// Notifies listeners when this <see cref="IParticleEffect"/> has bene disposed.
         /// </summary>
         public event IParticleEffectEventHandler Disposed;
+
+        /// <summary>
+        /// Notifies listeners when an <see cref="IParticleEmitter"/> has been added to this <see cref="IParticleEffect"/>.
+        /// </summary>
+        public event IParticleEffectEmitterEventHandler EmitterAdded;
+
+        /// <summary>
+        /// Notifies listeners when an <see cref="IParticleEmitter"/> has been removed from this <see cref="IParticleEffect"/>.
+        /// </summary>
+        public event IParticleEffectEmitterEventHandler EmitterRemoved;
 
         /// <summary>
         /// Gets if this <see cref="IParticleEffect"/> has been disposed.

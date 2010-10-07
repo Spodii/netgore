@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using NetGore.Editor;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics.ParticleEngine;
 
@@ -41,6 +42,20 @@ namespace DemoGame.ParticleEffectEditor
                 var oldValue = _particleEffect;
                 _particleEffect = value;
 
+                // Remove listeners from the old emitter
+                if (oldValue != null)
+                {
+                    value.EmitterAdded -= ParticleEffect_EmitterAdded;
+                    value.EmitterRemoved -= ParticleEffect_EmitterRemoved;
+                }
+
+                // Add listeners to the new emitter
+                if (value != null)
+                {
+                    value.EmitterAdded += ParticleEffect_EmitterAdded;
+                    value.EmitterRemoved += ParticleEffect_EmitterRemoved;
+                }
+
                 // Raise events
                 OnParticleEffectChanged(oldValue, value);
 
@@ -49,6 +64,32 @@ namespace DemoGame.ParticleEffectEditor
             }
         }
 
+        /// <summary>
+        /// Handles when a <see cref="IParticleEmitter"/> is added to the <see cref="Form1.ParticleEffect"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="emitter">The emitter.</param>
+        void ParticleEffect_EmitterAdded(IParticleEffect sender, IParticleEmitter emitter)
+        {
+            if (!lstEmitters.Items.Contains(emitter))
+                lstEmitters.AddItemAndReselect(emitter);
+        }
+
+        /// <summary>
+        /// Handles when a <see cref="IParticleEmitter"/> is removed from the <see cref="Form1.ParticleEffect"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="emitter">The emitter.</param>
+        void ParticleEffect_EmitterRemoved(IParticleEffect sender, IParticleEmitter emitter)
+        {
+            lstEmitters.RemoveItemAndReselect(emitter);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Form1.ParticleEffect"/> property has changed.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
         protected virtual void OnParticleEffectChanged(ParticleEffect oldValue, ParticleEffect newValue)
         {
             // Update the PropertyGrid
@@ -60,6 +101,10 @@ namespace DemoGame.ParticleEffectEditor
             if (newValue != null)
             {
                 lstEmitters.AddItems(newValue.Emitters.OfType<IParticleEmitter>());
+
+                // Select the first emitter
+                if (lstEmitters.Items.Count > 0)
+                    lstEmitters.SelectedIndex = 0;
             }
         }
 
@@ -79,6 +124,48 @@ namespace DemoGame.ParticleEffectEditor
         private void lstEmitters_TypedSelectedItemChanged(TypedListBox<IParticleEmitter> sender, IParticleEmitter value)
         {
             pgEmitter.SelectedObject = value;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnDeleteEmitter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnDeleteEmitter_Click(object sender, EventArgs e)
+        {
+            // Ensure a valid ParticleEffect is selected
+            var pe = ParticleEffect;
+            if (pe == null)
+                return;
+
+            // Get the selected emitter
+            var emitter = lstEmitters.TypedSelectedItem;
+            if (emitter == null)
+                return;
+
+            // Confirm deletion
+            const string confirmMsg = "Are you sure you with to delete the Particle Emitter `{0}`?";
+            if (MessageBox.Show(string.Format(confirmMsg, emitter.Name), "Delete emitter?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Delete
+            emitter.Dispose();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnNewEmitter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnNewEmitter_Click(object sender, EventArgs e)
+        {
+            // Ensure a valid ParticleEffect is selected
+            var pe = ParticleEffect;
+            if (pe == null)
+                return;
+
+            // Add new emitter. Default to PointEmitter. Type can be changed by the user later.
+            new PointEmitter(pe);
         }
 
     }
