@@ -8,7 +8,7 @@ using NetGore.Graphics.ParticleEngine;
 
 namespace DemoGame.ParticleEffectEditor
 {
-    public class ParticleEmitterListBox : TypedListBox<ParticleEmitter>
+    public class ParticleEmitterListBox : TypedListBox<IParticleEmitter>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterListBox"/> class.
@@ -33,7 +33,7 @@ namespace DemoGame.ParticleEffectEditor
             }
 
             // Get the selected emitter to draw
-            var emitter = (e.Index < 0 || e.Index >= Items.Count ? null : Items[e.Index]) as ParticleEmitter;
+            var emitter = (e.Index < 0 || e.Index >= Items.Count ? null : Items[e.Index]) as IParticleEmitter;
 
             // Let the base implementation handle an invalid item
             if (emitter == null)

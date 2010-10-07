@@ -8,8 +8,16 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Interface for an object that emits <see cref="Particle"/>s.
     /// </summary>
+    /// <remarks>
+    /// This interface is primarily intended to expose a <see cref="ParticleEmitter"/> to higher levels of the application where
+    /// the <see cref="ParticleEmitter"/> should not be modified at all, and instead just provide access to reading its values.
+    /// It is not provided so you can create your own implementation of an <see cref="IParticleEmitter"/> to use instead of
+    /// deriving from <see cref="ParticleEmitter"/> since doing so should be needed.
+    /// </remarks>
     public interface IParticleEmitter : IDisposable, IPersistable
     {
+        // TODO: Is this interface really something I need - or at least in this way? The whole "restriction" purpose seems a bit... useless. Wish I remember why I did it in the first place...
+
         /// <summary>
         /// Notifies listeners when this <see cref="IParticleEmitter"/> has bene disposed.
         /// </summary>
