@@ -61,6 +61,8 @@ namespace DemoGame.ParticleEffectEditor
                     value.EmitterRemoved += ParticleEffect_EmitterRemoved;
                 }
 
+                gameScreen.ParticleEffect = value;
+
                 // Raise events
                 OnParticleEffectChanged(oldValue, value);
 
@@ -143,11 +145,7 @@ namespace DemoGame.ParticleEffectEditor
 
             CustomUITypeEditors.AddEditors();
 
-            gameScreen.ParticleEffect = ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
-
-            Timer t = new Timer { Interval = 1000 / 60 };
-            t.Tick += (EventHandler)((x,y) => gameScreen.InvokeDrawing(TickCount.Now));
-            t.Start();
+            ParticleEffect = ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
         }
 
         private void lstEmitters_TypedSelectedItemChanged(TypedListBox<IParticleEmitter> sender, IParticleEmitter value)
