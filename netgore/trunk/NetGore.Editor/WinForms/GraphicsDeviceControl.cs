@@ -175,7 +175,7 @@ namespace NetGore.Editor.WinForms
         /// <param name="currentTime">The current time.</param>
         public void InvokeDrawing(TickCount currentTime)
         {
-            if (!Visible)
+            if (!Visible || DesignMode)
                 return;
 
             try

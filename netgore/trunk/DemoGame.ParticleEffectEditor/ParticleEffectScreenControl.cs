@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using NetGore;
 using NetGore.Editor;
-using NetGore.Editor.EditorTool;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
@@ -12,105 +13,45 @@ namespace DemoGame.ParticleEffectEditor
 {
     public class ParticleEffectScreenControl : GraphicsDeviceControl
     {
-        readonly DrawingManager _drawingManager = new DrawingManager();
-        readonly ICamera2D _camera = new Camera2D(new Vector2(400,300));
+        readonly ICamera2D _camera;
+        readonly DrawingManager _drawingManager;
 
         /// <summary>
-        /// Gets or sets the <see cref="IParticleEffect"/> to display.
+        /// Initializes a new instance of the <see cref="ParticleEffectScreenControl"/> class.
         /// </summary>
-        public IParticleEffect ParticleEffect { get; set; }
-
-        /// <summary>
-        /// Gets the <see cref="IDrawingManager"/>.
-        /// </summary>
-        public IDrawingManager DrawingManager { get { return _drawingManager; } }
+        public ParticleEffectScreenControl()
+        {
+            // Only create our objects when not in design mode
+            if (DesignMode)
+                return;
+            
+            _camera = new Camera2D(new Vector2(400, 300));
+            _drawingManager = new DrawingManager();
+        }
 
         /// <summary>
         /// Gets the <see cref="ICamera2D"/>.
         /// </summary>
-        public ICamera2D Camera { get { return _camera; } }
-
-        /// <summary>
-        /// Allows derived classes to handle when the <see cref="RenderWindow"/> is created or re-created.
-        /// </summary>
-        /// <param name="newRenderWindow">The current <see cref="RenderWindow"/>.</param>
-        protected override void OnRenderWindowCreated(SFML.Graphics.RenderWindow newRenderWindow)
+        [Browsable(false)]
+        public ICamera2D Camera
         {
-            base.OnRenderWindowCreated(newRenderWindow);
-
-            _drawingManager.RenderWindow = newRenderWindow;
-
-            Camera.Size = ClientSize.ToVector2();
+            get { return _camera; }
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
+        /// Gets the <see cref="IDrawingManager"/>.
         /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnResize(EventArgs e)
+        [Browsable(false)]
+        public IDrawingManager DrawingManager
         {
-            base.OnResize(e);
-
-            Camera.Size = ClientSize.ToVector2();
+            get { return _drawingManager; }
         }
 
         /// <summary>
-        /// Derived classes override this to initialize their drawing code.
+        /// Gets or sets the <see cref="IParticleEffect"/> to display.
         /// </summary>
-        protected override void Initialize()
-        {
-            base.Initialize();
-
-            Camera.Size = ClientSize.ToVector2();
-
-            Timer t = new Timer { Interval = 1000 / 60 };
-            t.Tick += (EventHandler)((x, y) => InvokeDrawing(TickCount.Now));
-            t.Start();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, draws the graphics to the control.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        protected override void HandleDraw(NetGore.TickCount currentTime)
-        {
-            var pe = ParticleEffect;
-            if (pe == null)
-                return;
-
-            // Update
-            pe.Update(currentTime);
-
-            // Draw the world
-            try
-            {
-                var worldSB = DrawingManager.BeginDrawWorld(Camera);
-                if (worldSB != null)
-                {
-                    DrawWorld(worldSB);
-                }
-            }
-            finally
-            {
-                if (DrawingManager.State != DrawingManagerState.Idle)
-                    DrawingManager.EndDrawWorld();
-            }
-
-            // Draw the GUI
-            try
-            {
-                var guiSB = DrawingManager.BeginDrawGUI();
-                if (guiSB != null)
-                {
-                    DrawGUI(guiSB);
-                }
-            }
-            finally
-            {
-                if (DrawingManager.State != DrawingManagerState.Idle)
-                    DrawingManager.EndDrawGUI();
-            }
-        }
+        [Browsable(false)]
+        public IParticleEffect ParticleEffect { get; set; }
 
         /// <summary>
         /// Handles drawing the GUI for the map.
@@ -131,6 +72,89 @@ namespace DemoGame.ParticleEffectEditor
                 return;
 
             pe.Draw(sb);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, draws the graphics to the control.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleDraw(TickCount currentTime)
+        {
+            var pe = ParticleEffect;
+            if (pe == null)
+                return;
+
+            // Update
+            pe.Update(currentTime);
+
+            // Draw the world
+            try
+            {
+                var worldSB = DrawingManager.BeginDrawWorld(Camera);
+                if (worldSB != null)
+                    DrawWorld(worldSB);
+            }
+            finally
+            {
+                if (DrawingManager.State != DrawingManagerState.Idle)
+                    DrawingManager.EndDrawWorld();
+            }
+
+            // Draw the GUI
+            try
+            {
+                var guiSB = DrawingManager.BeginDrawGUI();
+                if (guiSB != null)
+                    DrawGUI(guiSB);
+            }
+            finally
+            {
+                if (DrawingManager.State != DrawingManagerState.Idle)
+                    DrawingManager.EndDrawGUI();
+            }
+        }
+
+        /// <summary>
+        /// Derived classes override this to initialize their drawing code.
+        /// </summary>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            Camera.Size = ClientSize.ToVector2();
+            Camera.CenterOn(Vector2.Zero);
+
+            var t = new Timer { Interval = 1000 / 60 };
+            t.Tick += (EventHandler)((x, y) => InvokeDrawing(TickCount.Now));
+            t.Start();
+        }
+
+        /// <summary>
+        /// Allows derived classes to handle when the <see cref="RenderWindow"/> is created or re-created.
+        /// </summary>
+        /// <param name="newRenderWindow">The current <see cref="RenderWindow"/>.</param>
+        protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
+        {
+            base.OnRenderWindowCreated(newRenderWindow);
+
+            _drawingManager.RenderWindow = newRenderWindow;
+
+            var oldCenter = Camera.Center;
+            Camera.Size = ClientSize.ToVector2();
+            Camera.CenterOn(oldCenter);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            var oldCenter = Camera.Center;
+            Camera.Size = ClientSize.ToVector2();
+            Camera.CenterOn(oldCenter);
         }
     }
 }

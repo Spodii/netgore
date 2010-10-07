@@ -15,6 +15,9 @@ namespace DemoGame.ParticleEffectEditor
         /// </summary>
         public ParticleEmitterListBox()
         {
+            if (DesignMode)
+                return;
+
             DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
         }
 

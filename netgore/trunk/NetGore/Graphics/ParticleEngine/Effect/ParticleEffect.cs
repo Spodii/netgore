@@ -38,6 +38,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/>.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<IParticleEmitter> Emitters { get { return _emitters.Values.Cast<IParticleEmitter>(); } }
 
         /// <summary>
@@ -45,6 +46,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public ParticleEffect()
         {
+            Life = -1;
+
             _effectConfig = new ParticleEffectConfig(ParticleEffectManager.Instance.GenerateUniqueEffectName(DefaultEffectName));
             ParticleEffectManager.Instance.AddEffect(this);
         }
@@ -55,6 +58,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
         internal ParticleEffect(IValueReader r) : this()
         {
+            Life = -1;
+
             ReadState(r);
         }
 
@@ -64,6 +69,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="effectConfig">The <see cref="ParticleEffectConfig"/> to use.</param>
         ParticleEffect(ParticleEffectConfig effectConfig)
         {
+            Life = -1;
+
             _effectConfig = effectConfig;
         }
 
@@ -158,10 +165,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets or sets the life of the effect in milliseconds. After this amount of time has elapsed, all of the
         /// <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/> will be killed. If less than 0, the
         /// effect will live indefinitely.
+        /// The default value is -1.
         /// </summary>
         [Browsable(true)]
         [Category(_effectCategory)]
         [Description("The life of the particle effect, in milliseconds. If less than 0, it will live indefinitely.")]
+        [DefaultValue(-1)]
         [SyncValue]
         public int Life { get; set; }
 
@@ -171,8 +180,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
         [Browsable(true)]
         [Category(_effectCategory)]
-        [Description(
-            "The name of this particle effect. Should be unique for each particle effect to avoid overwriting existing effects.")]
+        [Description("The unique name of this particle effect.")]
         [SyncValue]
         public string Name
         {
@@ -187,6 +195,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_effectCategory)]
         [Description("The position of the particle effect.")]
         [SyncValue]
+        [DefaultValue(typeof(Vector2), "{0, 0}")]
         public Vector2 Position { get; set; }
 
         /// <summary>
