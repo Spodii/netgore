@@ -61,7 +61,7 @@
     <Compile Include="Controls\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\MapPreviewControl.cs">
+    <Compile Include="Controls\Screen Controls\MapPreviewScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\NPCSpawnsListBox.cs">
@@ -91,10 +91,10 @@
     <Compile Include="Forms\InputNewMapIDForm.Designer.cs">
       <DependentUpon>InputNewMapIDForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MapScreenControl.cs">
+    <Compile Include="Controls\Screen Controls\MapScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\MapScreenControl.Static.cs">
+    <Compile Include="Controls\Screen Controls\MapScreenControl.Static.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Dockable\SelectedMapObjectsForm.cs">
@@ -128,26 +128,26 @@
     <Compile Include="Forms\Dockable\ToolTargetFormBase.Designer.cs">
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Skeleton Editor\GameScreenControl.cs">
+    <Compile Include="Controls\Screen Controls\SkeletonEditorScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Skeleton Editor\SkeletonEditorForm.cs">
+    <Compile Include="Forms\Dockable\SkeletonEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Skeleton Editor\SkeletonEditorForm.Designer.cs">
+    <Compile Include="Forms\Dockable\SkeletonEditorForm.Designer.cs">
       <DependentUpon>SkeletonEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Skeleton Editor\ShiftNodesInputForm.cs">
+    <Compile Include="Forms\ShiftNodesInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Skeleton Editor\ShiftNodesInputForm.Designer.cs">
+    <Compile Include="Forms\ShiftNodesInputForm.Designer.cs">
       <DependentUpon>ShiftNodesInputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Skeleton Editor\SkeletonBodyItemsListBox.cs">
+    <Compile Include="Controls\SkeletonBodyItemsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Skeleton Editor\SkeletonLoader.cs" />
-    <Compile Include="Skeleton Editor\SkeletonNodesComboBox.cs">
+    <Compile Include="SkeletonLoader.cs" />
+    <Compile Include="Controls\SkeletonNodesComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
@@ -198,11 +198,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Skeleton Editor\SkeletonEditorForm.resx">
+    <EmbeddedResource Include="Forms\Dockable\SkeletonEditorForm.resx">
       <DependentUpon>SkeletonEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Skeleton Editor\ShiftNodesInputForm.resx">
+    <EmbeddedResource Include="Forms\ShiftNodesInputForm.resx">
       <DependentUpon>ShiftNodesInputForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -313,6 +313,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cursors\" />
+    <Folder Include="Skeleton Editor\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

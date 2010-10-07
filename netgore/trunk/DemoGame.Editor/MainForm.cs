@@ -13,6 +13,7 @@ namespace DemoGame.Editor
         GrhTreeViewForm _frmGrhTreeView;
         SelectedObjectsForm _frmSelectedObjs;
         NPCChatEditorForm _frmNPCChatEditor;
+        SkeletonEditorForm _frmSkeletonEditor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
@@ -59,11 +60,24 @@ namespace DemoGame.Editor
             _frmNPCChatEditor = new NPCChatEditorForm();
             _frmNPCChatEditor.VisibleChanged += _frmNPCChatEditor_VisibleChanged;
 
+            _frmSkeletonEditor = new SkeletonEditorForm();
+            _frmSkeletonEditor.VisibleChanged += _frmSkeletonEditor_VisibleChanged;
+
             // Load the first map
             // NOTE: Temp
             var frm = new EditMapForm();
             frm.MapScreenControl.ChangeMap(new MapID(1));
             frm.Show(dockPanel);
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmSkeletonEditor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmSkeletonEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            skeletonEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -180,6 +194,19 @@ namespace DemoGame.Editor
                 _frmNPCChatEditor.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
             else
                 _frmNPCChatEditor.Hide();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the skeletonEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void skeletonEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (skeletonEditorToolStripMenuItem.Checked)
+                _frmSkeletonEditor.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+            else
+                _frmSkeletonEditor.Hide();
         }
     }
 }

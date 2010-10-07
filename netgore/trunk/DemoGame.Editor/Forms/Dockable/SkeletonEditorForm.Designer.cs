@@ -5,7 +5,7 @@
 
 namespace DemoGame.Editor
 {
-    partial class ScreenForm
+    partial class SkeletonEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@ namespace DemoGame.Editor
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.GameScreen = new DemoGame.Editor.GameScreenControl();
+            this.GameScreen = new DemoGame.Editor.SkeletonEditorScreenControl();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabSkeleton = new System.Windows.Forms.TabPage();
             this.gbSkeletonActions = new System.Windows.Forms.GroupBox();
@@ -164,7 +164,7 @@ namespace DemoGame.Editor
             this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GameScreen.Location = new System.Drawing.Point(0, 0);
             this.GameScreen.Name = "GameScreen";
-            this.GameScreen.ScreenForm = null;
+            this.GameScreen.SkeletonEditorForm = null;
             this.GameScreen.Size = new System.Drawing.Size(800, 575);
             this.GameScreen.TabIndex = 2;
             this.GameScreen.Text = "Game Screen";
@@ -1051,7 +1051,9 @@ namespace DemoGame.Editor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1014, 575);
             this.Controls.Add(this.splitContainer2);
-            this.Name = "ScreenForm";
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HideOnClose = true;
+            this.Name = "SkeletonEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Skeleton Editor";
             this.splitContainer2.Panel1.ResumeLayout(false);
@@ -1086,7 +1088,7 @@ namespace DemoGame.Editor
         }
 
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private GameScreenControl GameScreen;
+        private SkeletonEditorScreenControl GameScreen;
         private System.Windows.Forms.GroupBox gbState;
         private System.Windows.Forms.CheckBox chkDrawBody;
         private System.Windows.Forms.CheckBox chkDrawSkel;
