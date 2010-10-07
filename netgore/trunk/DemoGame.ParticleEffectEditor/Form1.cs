@@ -26,7 +26,7 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="sender">The sender.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        public delegate void PropertyChangedEventHandler<T>(Form1 sender, T oldValue, T newValue);
+        public delegate void PropertyChangedEventHandler<in T>(Form1 sender, T oldValue, T newValue);
 
         IParticleEffect _particleEffect;
 
