@@ -18,6 +18,7 @@ namespace DemoGame.Editor
     public class MapEntityCursorTool : MapCursorToolBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         Type _lastCreatedType;
 
         /// <summary>

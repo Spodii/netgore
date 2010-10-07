@@ -101,7 +101,7 @@ namespace DemoGame.Editor
         /// <param name="map">The map.</param>
         /// <param name="worldPos">The world position.</param>
         /// <returns>The selectable object currently under the cursor, or null if none.</returns>
-        protected virtual object GetObjUnderCursor(IMap map, Vector2 worldPos)
+        protected virtual object GetObjUnderCursor(Map map, Vector2 worldPos)
         {
             // By default, this will only get anything that implements ISpatial since its much faster that way and most
             // map cursors will be working with types that implement ISpatial
