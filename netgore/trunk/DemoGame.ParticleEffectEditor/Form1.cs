@@ -138,6 +138,9 @@ namespace DemoGame.ParticleEffectEditor
         {
             base.OnLoad(e);
 
+            if (DesignMode)
+                return;
+
             // NOTE: !! Temp
 
             _content = ContentManager.Create();
