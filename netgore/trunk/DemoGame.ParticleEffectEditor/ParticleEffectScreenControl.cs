@@ -152,6 +152,9 @@ namespace DemoGame.ParticleEffectEditor
         {
             base.OnResize(e);
 
+            if (DesignMode)
+                return;
+
             var oldCenter = Camera.Center;
             Camera.Size = ClientSize.ToVector2();
             Camera.CenterOn(oldCenter);
