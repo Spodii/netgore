@@ -128,6 +128,28 @@
     <Compile Include="Forms\Dockable\ToolTargetFormBase.Designer.cs">
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Skeleton Editor\GameScreenControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Skeleton Editor\SkeletonEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Skeleton Editor\SkeletonEditorForm.Designer.cs">
+      <DependentUpon>SkeletonEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Skeleton Editor\ShiftNodesInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Skeleton Editor\ShiftNodesInputForm.Designer.cs">
+      <DependentUpon>ShiftNodesInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Skeleton Editor\SkeletonBodyItemsListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Skeleton Editor\SkeletonLoader.cs" />
+    <Compile Include="Skeleton Editor\SkeletonNodesComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapLightCursorTool.cs" />
     <Compile Include="Tools\Map\MapToolBase.cs" />
@@ -176,6 +198,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Skeleton Editor\SkeletonEditorForm.resx">
+      <DependentUpon>SkeletonEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Skeleton Editor\ShiftNodesInputForm.resx">
+      <DependentUpon>ShiftNodesInputForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
