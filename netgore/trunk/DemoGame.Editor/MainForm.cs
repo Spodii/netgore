@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.World;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
@@ -10,9 +11,10 @@ namespace DemoGame.Editor
 {
     public partial class MainForm : Form
     {
+        DbEditorForm _frmDbEditor;
         GrhTreeViewForm _frmGrhTreeView;
-        SelectedObjectsForm _frmSelectedObjs;
         NPCChatEditorForm _frmNPCChatEditor;
+        SelectedObjectsForm _frmSelectedObjs;
         SkeletonEditorForm _frmSkeletonEditor;
 
         /// <summary>
@@ -21,6 +23,19 @@ namespace DemoGame.Editor
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the NPCChatEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void NPCChatEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (NPCChatEditorToolStripMenuItem.Checked)
+                _frmNPCChatEditor.Show(dockPanel, DockState.Float);
+            else
+                _frmNPCChatEditor.Hide();
         }
 
         /// <summary>
@@ -63,6 +78,9 @@ namespace DemoGame.Editor
             _frmSkeletonEditor = new SkeletonEditorForm();
             _frmSkeletonEditor.VisibleChanged += _frmSkeletonEditor_VisibleChanged;
 
+            _frmDbEditor = new DbEditorForm();
+            _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
+
             // Load the first map
             // NOTE: Temp
             var frm = new EditMapForm();
@@ -71,13 +89,23 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmSkeletonEditor control.
+        /// Handles the VisibleChanged event of the _frmDbEditor control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void _frmSkeletonEditor_VisibleChanged(object sender, EventArgs e)
+        void _frmDbEditor_VisibleChanged(object sender, EventArgs e)
         {
-            skeletonEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+            dbEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmGrhTreeView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmGrhTreeView_VisibleChanged(object sender, EventArgs e)
+        {
+            grhDatasToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -101,13 +129,13 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmGrhTreeView control.
+        /// Handles the VisibleChanged event of the _frmSkeletonEditor control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void _frmGrhTreeView_VisibleChanged(object sender, EventArgs e)
+        void _frmSkeletonEditor_VisibleChanged(object sender, EventArgs e)
         {
-            grhDatasToolStripMenuItem.Checked = ((Form)sender).Visible;
+            skeletonEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -121,6 +149,19 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Handles the Click event of the dbEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void dbEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dbEditorToolStripMenuItem.Checked)
+                _frmDbEditor.Show(dockPanel, DockState.Float);
+            else
+                _frmDbEditor.Hide();
+        }
+
+        /// <summary>
         /// Handles the Click event of the dockPanel control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -129,6 +170,19 @@ namespace DemoGame.Editor
         {
             // Clear the ToolBarVisibility
             ToolBar.CurrentToolBarVisibility = ToolBarVisibility.Global;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="grhDatasToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void grhDatasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (grhDatasToolStripMenuItem.Checked)
+                _frmGrhTreeView.Show(dockPanel, DockState.Float);
+            else
+                _frmGrhTreeView.Hide();
         }
 
         /// <summary>
@@ -152,7 +206,7 @@ namespace DemoGame.Editor
         void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (newToolStripMenuItem.Checked)
-                _frmNPCChatEditor.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+                _frmNPCChatEditor.Show(dockPanel, DockState.Float);
             else
                 _frmNPCChatEditor.Hide();
         }
@@ -162,38 +216,12 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void selectedObjectsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        void selectedObjectsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             if (selectedObjectsToolStripMenuItem.Checked)
-                _frmSelectedObjs.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+                _frmSelectedObjs.Show(dockPanel, DockState.Float);
             else
                 _frmSelectedObjs.Hide();
-        }
-
-        /// <summary>
-        /// Handles the Click event of the <see cref="grhDatasToolStripMenuItem"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void grhDatasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (grhDatasToolStripMenuItem.Checked)
-                _frmGrhTreeView.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
-            else
-                _frmGrhTreeView.Hide();
-        }
-
-        /// <summary>
-        /// Handles the Click event of the NPCChatEditorToolStripMenuItem control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void NPCChatEditorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (NPCChatEditorToolStripMenuItem.Checked)
-                _frmNPCChatEditor.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
-            else
-                _frmNPCChatEditor.Hide();
         }
 
         /// <summary>
@@ -201,10 +229,10 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void skeletonEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        void skeletonEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (skeletonEditorToolStripMenuItem.Checked)
-                _frmSkeletonEditor.Show(dockPanel, NetGore.Editor.Docking.DockState.Float);
+                _frmSkeletonEditor.Show(dockPanel, DockState.Float);
             else
                 _frmSkeletonEditor.Hide();
         }

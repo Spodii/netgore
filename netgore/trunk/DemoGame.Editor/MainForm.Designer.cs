@@ -58,11 +58,12 @@ namespace DemoGame.Editor
             this.selectedObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grhDatasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NPCChatEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skeletonEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.Editor.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
-            this.skeletonEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dbEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,7 +115,8 @@ namespace DemoGame.Editor
             this.selectedObjectsToolStripMenuItem,
             this.grhDatasToolStripMenuItem,
             this.NPCChatEditorToolStripMenuItem,
-            this.skeletonEditorToolStripMenuItem});
+            this.skeletonEditorToolStripMenuItem,
+            this.dbEditorToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             // 
@@ -138,6 +140,13 @@ namespace DemoGame.Editor
             this.NPCChatEditorToolStripMenuItem.Name = "NPCChatEditorToolStripMenuItem";
             resources.ApplyResources(this.NPCChatEditorToolStripMenuItem, "NPCChatEditorToolStripMenuItem");
             this.NPCChatEditorToolStripMenuItem.Click += new System.EventHandler(this.NPCChatEditorToolStripMenuItem_Click);
+            // 
+            // skeletonEditorToolStripMenuItem
+            // 
+            this.skeletonEditorToolStripMenuItem.CheckOnClick = true;
+            this.skeletonEditorToolStripMenuItem.Name = "skeletonEditorToolStripMenuItem";
+            resources.ApplyResources(this.skeletonEditorToolStripMenuItem, "skeletonEditorToolStripMenuItem");
+            this.skeletonEditorToolStripMenuItem.Click += new System.EventHandler(this.skeletonEditorToolStripMenuItem_Click);
             // 
             // ssStatus
             // 
@@ -209,12 +218,12 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
             // 
-            // skeletonEditorToolStripMenuItem
+            // dbEditorToolStripMenuItem
             // 
-            this.skeletonEditorToolStripMenuItem.CheckOnClick = true;
-            this.skeletonEditorToolStripMenuItem.Name = "skeletonEditorToolStripMenuItem";
-            resources.ApplyResources(this.skeletonEditorToolStripMenuItem, "skeletonEditorToolStripMenuItem");
-            this.skeletonEditorToolStripMenuItem.Click += new System.EventHandler(this.skeletonEditorToolStripMenuItem_Click);
+            this.dbEditorToolStripMenuItem.CheckOnClick = true;
+            this.dbEditorToolStripMenuItem.Name = "dbEditorToolStripMenuItem";
+            resources.ApplyResources(this.dbEditorToolStripMenuItem, "dbEditorToolStripMenuItem");
+            this.dbEditorToolStripMenuItem.Click += new System.EventHandler(this.dbEditorToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -252,6 +261,7 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem grhDatasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NPCChatEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skeletonEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dbEditorToolStripMenuItem;
     }
 }
 

@@ -151,6 +151,12 @@
   <data name="skeletonEditorToolStripMenuItem.Text" xml:space="preserve">
     <value>Skeleton Editor</value>
   </data>
+  <data name="dbEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 22</value>
+  </data>
+  <data name="dbEditorToolStripMenuItem.Text" xml:space="preserve">
+    <value>Db Editor</value>
+  </data>
   <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 20</value>
   </data>
@@ -382,6 +388,12 @@
     <value>skeletonEditorToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;skeletonEditorToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dbEditorToolStripMenuItem.Name" xml:space="preserve">
+    <value>dbEditorToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;dbEditorToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
