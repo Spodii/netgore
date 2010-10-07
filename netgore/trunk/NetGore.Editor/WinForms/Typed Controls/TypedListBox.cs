@@ -68,6 +68,9 @@ namespace NetGore.Editor.WinForms
         {
             base.OnCreateControl();
 
+            if (DesignMode)
+                return;
+
             // Populate the list
             var items = GetInitialItems();
 
@@ -88,6 +91,9 @@ namespace NetGore.Editor.WinForms
         protected override void OnSelectedValueChanged(EventArgs e)
         {
             base.OnSelectedValueChanged(e);
+
+            if (DesignMode)
+                return;
 
             if (SelectedItem != null && SelectedItem is T)
             {
