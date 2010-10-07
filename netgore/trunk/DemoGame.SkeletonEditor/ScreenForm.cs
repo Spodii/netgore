@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore;
 using NetGore.Content;
-using NetGore.EditorTools;
+using NetGore.Editor;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;

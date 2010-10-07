@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.EditorTools;
+using NetGore.Editor;
+using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 
 namespace DemoGame.SkeletonEditor
