@@ -58,7 +58,7 @@ namespace DemoGame.Editor
             // Load the first map
             // NOTE: Temp
             var frm = new EditMapForm();
-            frm.MapScreenControl.ChangeMap(new MapID(4));
+            frm.MapScreenControl.ChangeMap(new MapID(1));
             frm.Show(dockPanel);
         }
 
