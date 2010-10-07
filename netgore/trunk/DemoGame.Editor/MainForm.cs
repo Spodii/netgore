@@ -50,15 +50,15 @@ namespace DemoGame.Editor
 
             // Create the child form instances
             _frmGrhTreeView = new GrhTreeViewForm();
-            _frmGrhTreeView.VisibleChanged += new EventHandler(_frmGrhTreeView_VisibleChanged);
+            _frmGrhTreeView.VisibleChanged += _frmGrhTreeView_VisibleChanged;
 
             _frmSelectedObjs = new SelectedObjectsForm();
-            _frmSelectedObjs.VisibleChanged += new EventHandler(_frmSelectedObjs_VisibleChanged);
+            _frmSelectedObjs.VisibleChanged += _frmSelectedObjs_VisibleChanged;
 
             // Load the first map
             // NOTE: Temp
             var frm = new EditMapForm();
-            frm.MapScreenControl.ChangeMap(new MapID(1));
+            frm.MapScreenControl.ChangeMap(new MapID(4));
             frm.Show(dockPanel);
         }
 
