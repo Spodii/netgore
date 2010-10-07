@@ -50,17 +50,6 @@ namespace DemoGame.Editor
         Vector2 _toolTipPos;
 
         /// <summary>
-        /// Gets or sets if a tooltip for the object currently under the cursor will be shown.
-        /// The default value is true.
-        /// </summary>
-        [DefaultValue(true)]
-        public bool ShowObjectToolTip
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MapCursorToolBase"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
@@ -80,6 +69,13 @@ namespace DemoGame.Editor
         {
             get { return _isSelecting; }
         }
+
+        /// <summary>
+        /// Gets or sets if a tooltip for the object currently under the cursor will be shown.
+        /// The default value is true.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool ShowObjectToolTip { get; set; }
 
         /// <summary>
         /// When overridden in the derived class, gets if this cursor can select the given object.
@@ -110,6 +106,38 @@ namespace DemoGame.Editor
             // By default, this will only get anything that implements ISpatial since its much faster that way and most
             // map cursors will be working with types that implement ISpatial
             return map.Spatial.Get(worldPos, CanSelect);
+        }
+
+        /// <summary>
+        /// Gets the tooltip to display for an object.
+        /// </summary>
+        /// <param name="obj">The object to display the tooltip for.</param>
+        /// <returns>The tooltip to display for the <paramref name="obj"/>.</returns>
+        protected virtual string GetObjectToolTip(object obj)
+        {
+            if (obj is MapGrh)
+            {
+                // MapGrh
+                const string format = "{0}\n{1} ({2}x{3})";
+                var o = (MapGrh)obj;
+                var gd = o.Grh != null ? o.Grh.GrhData : null;
+                var cat = gd != null ? gd.Categorization : null;
+                var catStr = cat != null ? cat.ToString() : "[GrhData not set]";
+
+                return string.Format(format, catStr, o.Position, o.Size.X, o.Size.Y);
+            }
+            else if (obj is ISpatial)
+            {
+                // ISpatial
+                const string format = "{0}\n{1} ({2}x{3})";
+                var o = (ISpatial)obj;
+                return string.Format(format, o, o.Position, o.Size.X, o.Size.Y);
+            }
+            else
+            {
+                // No custom support provided - just use ToString
+                return obj.ToString();
+            }
         }
 
         /// <summary>
@@ -165,7 +193,7 @@ namespace DemoGame.Editor
             _selectionStart = Vector2.Zero;
             _selectionEnd = Vector2.Zero;
             _isSelecting = false;
-            
+
             var worldPos = camera.ToWorld(e.Position());
             var underCursor = GetObjUnderCursor(map, worldPos);
 
@@ -221,38 +249,6 @@ namespace DemoGame.Editor
             }
 
             base.MapContainer_MouseMove(sender, map, camera, e);
-        }
-
-        /// <summary>
-        /// Gets the tooltip to display for an object.
-        /// </summary>
-        /// <param name="obj">The object to display the tooltip for.</param>
-        /// <returns>The tooltip to display for the <paramref name="obj"/>.</returns>
-        protected virtual string GetObjectToolTip(object obj)
-        {
-            if (obj is MapGrh)
-            {
-                // MapGrh
-                const string format = "{0}\n{1} ({2}x{3})";
-                var o = (MapGrh)obj;
-                var gd = o.Grh != null ? o.Grh.GrhData : null;
-                var cat = gd != null ? gd.Categorization : null;
-                var catStr = cat != null ? cat.ToString() : "[GrhData not set]";
-
-                return string.Format(format, catStr, o.Position, o.Size.X, o.Size.Y);
-            }
-            else if (obj is ISpatial)
-            {
-                // ISpatial
-                const string format = "{0}\n{1} ({2}x{3})";
-                var o = (ISpatial)obj;
-                return string.Format(format, o, o.Position, o.Size.X, o.Size.Y);
-            }
-            else
-            {
-                // No custom support provided - just use ToString
-                return obj.ToString();
-            }
         }
 
         /// <summary>
