@@ -116,7 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineSwitch.cs" />
-    <Compile Include="GameScreenControl.cs" />
+    <Compile Include="GameScreenControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,9 +161,13 @@
     <Compile Include="ShiftNodesInputForm.Designer.cs">
       <DependentUpon>ShiftNodesInputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SkeletonBodyItemsListBox.cs" />
+    <Compile Include="SkeletonBodyItemsListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SkeletonLoader.cs" />
-    <Compile Include="SkeletonNodesComboBox.cs" />
+    <Compile Include="SkeletonNodesComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
