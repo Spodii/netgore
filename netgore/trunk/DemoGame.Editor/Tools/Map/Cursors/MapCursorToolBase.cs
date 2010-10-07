@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -44,6 +45,20 @@ namespace DemoGame.Editor
         bool _isSelecting = false;
         Vector2 _selectionEnd = Vector2.Zero;
         Vector2 _selectionStart = Vector2.Zero;
+        string _toolTip = string.Empty;
+        object _toolTipObject = null;
+        Vector2 _toolTipPos;
+
+        /// <summary>
+        /// Gets or sets if a tooltip for the object currently under the cursor will be shown.
+        /// The default value is true.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool ShowObjectToolTip
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapCursorToolBase"/> class.
@@ -55,6 +70,7 @@ namespace DemoGame.Editor
         protected MapCursorToolBase(ToolManager toolManager, ToolSettings settings)
             : base(toolManager, ModifyToolSettings(settings))
         {
+            ShowObjectToolTip = true;
         }
 
         /// <summary>
@@ -113,9 +129,9 @@ namespace DemoGame.Editor
             if (camera == null)
                 return;
 
-            // Draw the selection area
             if (IsSelecting)
             {
+                // Draw the selection area
                 var a = camera.ToScreen(_selectionStart);
                 var b = camera.ToScreen(_selectionEnd);
 
@@ -123,6 +139,15 @@ namespace DemoGame.Editor
                 {
                     var rect = Rectangle.FromPoints(a, b);
                     RenderRectangle.Draw(spriteBatch, rect, _selectionAreaColorInner, _selectionAreaColorOuter);
+                }
+            }
+            else
+            {
+                // Draw the tooltip
+                if (_toolTipObject != null && _toolTip != null)
+                {
+                    var font = GlobalState.Instance.DefaultRenderFont;
+                    spriteBatch.DrawStringShaded(font, _toolTip, _toolTipPos, Color.White, Color.Black);
                 }
             }
         }
@@ -166,12 +191,68 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
         protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
         {
+            var worldPos = camera.ToWorld(e.Position());
+
             if (IsSelecting)
             {
-                _selectionEnd = camera.ToWorld(e.Position());
+                // Expand selection area
+                _selectionEnd = worldPos;
+            }
+            else
+            {
+                // Show the tooltip
+
+                if (ShowObjectToolTip)
+                {
+                    var hoverEntity = GetObjUnderCursor(map, worldPos);
+
+                    if (hoverEntity == null)
+                    {
+                        _toolTip = string.Empty;
+                        _toolTipObject = null;
+                    }
+                    else if (_toolTipObject != hoverEntity)
+                    {
+                        _toolTipObject = hoverEntity;
+                        _toolTipPos = e.Position();
+                        _toolTip = GetObjectToolTip(hoverEntity) ?? hoverEntity.ToString();
+                    }
+                }
             }
 
             base.MapContainer_MouseMove(sender, map, camera, e);
+        }
+
+        /// <summary>
+        /// Gets the tooltip to display for an object.
+        /// </summary>
+        /// <param name="obj">The object to display the tooltip for.</param>
+        /// <returns>The tooltip to display for the <paramref name="obj"/>.</returns>
+        protected virtual string GetObjectToolTip(object obj)
+        {
+            if (obj is MapGrh)
+            {
+                // MapGrh
+                const string format = "{0}\n{1} ({2}x{3})";
+                var o = (MapGrh)obj;
+                var gd = o.Grh != null ? o.Grh.GrhData : null;
+                var cat = gd != null ? gd.Categorization : null;
+                var catStr = cat != null ? cat.ToString() : "[GrhData not set]";
+
+                return string.Format(format, catStr, o.Position, o.Size.X, o.Size.Y);
+            }
+            else if (obj is ISpatial)
+            {
+                // ISpatial
+                const string format = "{0}\n{1} ({2}x{3})";
+                var o = (ISpatial)obj;
+                return string.Format(format, o, o.Position, o.Size.X, o.Size.Y);
+            }
+            else
+            {
+                // No custom support provided - just use ToString
+                return obj.ToString();
+            }
         }
 
         /// <summary>
