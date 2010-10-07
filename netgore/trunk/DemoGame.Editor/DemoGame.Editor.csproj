@@ -67,8 +67,6 @@
     <Compile Include="Controls\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Cursors\xxAddLightCursor.cs" />
-    <Compile Include="Cursors\xxLightCursor.cs" />
     <Compile Include="Forms\DisplayFilterManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +123,7 @@
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
+    <Compile Include="Tools\Map\Cursors\MapLightCursorTool.cs" />
     <Compile Include="Tools\Map\MapToolBase.cs" />
     <Compile Include="Tools\Map\Cursors\MapWallCursorTool.cs" />
     <Compile Include="Tools\Map\MapBorderDrawerTool.cs" />
@@ -271,6 +270,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MapDisplayFilterTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Cursors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
