@@ -24,15 +24,15 @@ using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
 
 namespace DemoGame.DbEditor
 {
-    public partial class frmMain : Form
+    public partial class DbEditorForm : Form
     {
         IDbController _dbController;
         GameMessage? _editingGameMessage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="frmMain"/> class.
+        /// Initializes a new instance of the <see cref="DbEditorForm"/> class.
         /// </summary>
-        public frmMain()
+        public DbEditorForm()
         {
             InitializeComponent();
         }

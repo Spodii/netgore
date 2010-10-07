@@ -107,11 +107,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmMain.cs">
+    <Compile Include="DbEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.Designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <Compile Include="DbEditorForm.Designer.cs">
+      <DependentUpon>DbEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GameMessageValueListBox.cs">
       <SubType>Component</SubType>
@@ -124,8 +124,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <EmbeddedResource Include="DbEditorForm.resx">
+      <DependentUpon>DbEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LanguageNameForm.resx">
