@@ -13,6 +13,11 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Base class for all <see cref="IParticleEmitter"/>s.
     /// </summary>
+    /// <remarks>
+    /// When passing the <see cref="ParticleEmitter"/> to higher levels of the application where the emitter should not be modified
+    /// at all, pass using the <see cref="IParticleEmitter"/> interface. All <see cref="IParticleEmitter"/>s should derive from
+    /// this class instead of trying to implement <see cref="IParticleEmitter"/> on their own.
+    /// </remarks>
     public abstract class ParticleEmitter : IParticleEmitter
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

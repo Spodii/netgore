@@ -36,6 +36,11 @@ namespace NetGore.Graphics.ParticleEngine
         TickCount _timeCreated = TickCount.Now;
 
         /// <summary>
+        /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="ParticleEffect"/>.
+        /// </summary>
+        public IEnumerable<IParticleEmitter> Emitters { get { return _emitters.Values.Cast<IParticleEmitter>(); } }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEffect"/> class.
         /// </summary>
         public ParticleEffect()
