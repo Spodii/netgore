@@ -180,6 +180,7 @@
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
     <Compile Include="Graphics\Map\MapDrawEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffectEmitterEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffectEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffectConfig.cs" />

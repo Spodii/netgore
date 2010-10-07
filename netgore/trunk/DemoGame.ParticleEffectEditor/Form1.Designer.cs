@@ -162,6 +162,7 @@
             this.btnDeleteEmitter.TabIndex = 1;
             this.btnDeleteEmitter.Text = "Delete";
             this.btnDeleteEmitter.UseVisualStyleBackColor = true;
+            this.btnDeleteEmitter.Click += new System.EventHandler(this.btnDeleteEmitter_Click);
             // 
             // btnNewEmitter
             // 
@@ -172,6 +173,7 @@
             this.btnNewEmitter.TabIndex = 0;
             this.btnNewEmitter.Text = "New";
             this.btnNewEmitter.UseVisualStyleBackColor = true;
+            this.btnNewEmitter.Click += new System.EventHandler(this.btnNewEmitter_Click);
             // 
             // tpSettings
             // 
