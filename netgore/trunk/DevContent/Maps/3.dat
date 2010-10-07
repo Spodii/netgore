@@ -8,7 +8,7 @@
     <Indoors>False</Indoors>
   </Header>
   <Walls>
-    <Count>387</Count>
+    <Count>0</Count>
     <Item0>
       <Position>0,928</Position>
       <Size>32,32</Size>
@@ -10984,7 +10984,7 @@
       <Lights>
         <Count>2</Count>
         <Item0>
-          <Position>48,800</Position>
+          <Position>-16,736</Position>
           <Size>256,256</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>
@@ -10992,7 +10992,7 @@
           <Sprite>176</Sprite>
         </Item0>
         <Item1>
-          <Position>1267,160</Position>
+          <Position>1203,96</Position>
           <Size>256,256</Size>
           <Color>255,255,0,255</Color>
           <Rotation>0</Rotation>

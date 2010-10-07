@@ -8,52 +8,12 @@
     <Indoors>False</Indoors>
   </Header>
   <Walls>
-    <Count>9</Count>
+    <Count>1</Count>
     <Item0>
       <Position>0,736</Position>
       <Size>1600,64</Size>
       <IsPlatform>False</IsPlatform>
     </Item0>
-    <Item1>
-      <Position>6,676</Position>
-      <Size>89,60</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item1>
-    <Item2>
-      <Position>0,482</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item2>
-    <Item3>
-      <Position>1280,610</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item3>
-    <Item4>
-      <Position>192,386</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item4>
-    <Item5>
-      <Position>352,322</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item5>
-    <Item6>
-      <Position>544,258</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item6>
-    <Item7>
-      <Position>736,162</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item7>
-    <Item8>
-      <Position>256,578</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item8>
   </Walls>
   <DynamicEntities>
     <Count>2</Count>
@@ -399,7 +359,7 @@
       <Lights>
         <Count>3</Count>
         <Item0>
-          <Position>405,107</Position>
+          <Position>341,43</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>
@@ -407,7 +367,7 @@
           <Sprite>176</Sprite>
         </Item0>
         <Item1>
-          <Position>848,701</Position>
+          <Position>784,637</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>
@@ -415,7 +375,7 @@
           <Sprite>176</Sprite>
         </Item1>
         <Item2>
-          <Position>784,131</Position>
+          <Position>720,67</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>

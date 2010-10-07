@@ -8,6 +8,7 @@ using NetGore;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
+using NetGore.World;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
@@ -37,10 +38,21 @@ namespace DemoGame.Editor
             if (closestLight == null)
                 return null;
 
-            if (worldPos.QuickDistance(closestLight.Position) > 5)
+            if (worldPos.QuickDistance(closestLight.Center) > 10)
                 return null;
 
             return closestLight;
+        }
+
+        /// <summary>
+        /// Gets the map objects to select in the given region.
+        /// </summary>
+        /// <param name="map">The <see cref="Map"/>.</param>
+        /// <param name="selectionArea">The selection box area.</param>
+        /// <returns>The objects to select.</returns>
+        protected override System.Collections.Generic.IEnumerable<object> CursorSelectObjects(Map map, Rectangle selectionArea)
+        {
+            return map.Lights.Where(x => x.Intersects(selectionArea)).Cast<object>();
         }
 
         /// <summary>
@@ -105,8 +117,7 @@ namespace DemoGame.Editor
                         if (dm != null)
                         {
                             var pos = camera.ToWorld(e.Position());
-                            var light = new Light { IsEnabled = true, Tag = map };
-                            light.Position = pos - (light.Size / 2f);
+                            var light = new Light { Center = pos, IsEnabled = true, Tag = map };
 
                             map.AddLight(light);
                             dm.LightManager.Add(light);
@@ -133,7 +144,7 @@ namespace DemoGame.Editor
                 if (imap == _mouseOverMap)
                 {
                     var lightSprite = SystemSprites.Lightblub;
-                    lightSprite.Draw(spriteBatch, _mousePos);
+                    lightSprite.Draw(spriteBatch, _mousePos - (lightSprite.Size / 2f));
                 }
             }
         }

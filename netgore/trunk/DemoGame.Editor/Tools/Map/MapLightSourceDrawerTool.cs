@@ -63,7 +63,7 @@ namespace DemoGame.Editor
                 var offset = lightSprite.Size / 2f;
                 foreach (var light in lm)
                 {
-                    lightSprite.Draw(spriteBatch, light.Position - offset);
+                    lightSprite.Draw(spriteBatch, light.Center - offset);
                 }
             }
         }
