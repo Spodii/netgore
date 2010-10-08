@@ -144,6 +144,13 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapSaveTool {
+            get {
+                object obj = ResourceManager.GetObject("MapSaveTool", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapWallCursorTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapWallCursorTool_Disabled", resourceCulture);

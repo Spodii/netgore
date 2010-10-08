@@ -43,6 +43,9 @@ namespace NetGore.Editor.EditorTool
                 if (_currentToolBarVisibility == value)
                     return;
 
+                if (value == ToolBarVisibility.None)
+                    return;
+
                 _currentToolBarVisibility = value;
 
                 // Update the visibility of all ToolBars
@@ -113,6 +116,13 @@ namespace NetGore.Editor.EditorTool
                     Visible = false;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the object that is the reason why this <see cref="ToolBar"/> is currently visible. Can be null.
+        /// Can also be of any type, though it is highly recommended that a consistent type is used for each
+        /// <see cref="ToolBarVisibility"/>.
+        /// </summary>
+        public object DisplayObject { get; set; }
 
         /// <summary>
         /// Gets the <see cref="ToolBar"/> instances.

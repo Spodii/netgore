@@ -244,6 +244,7 @@
     </Compile>
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapLightCursorTool.cs" />
+    <Compile Include="Tools\Map\MapSaveTool.cs" />
     <Compile Include="Tools\Map\MapToolBase.cs" />
     <Compile Include="Tools\Map\Cursors\MapWallCursorTool.cs" />
     <Compile Include="Tools\Map\MapBorderDrawerTool.cs" />
@@ -557,7 +558,9 @@
   <ItemGroup>
     <None Include="Resources\MapDisplayFilterTool_Enabled.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\MapSaveTool.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
