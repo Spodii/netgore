@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ToolStateManager>
+  <ToolSettings>
+    <Count>0</Count>
+  </ToolSettings>
+  <ToolBarItems>
+    <Count>2</Count>
+    <Item0>
+      <ToolBarVisibility>Global</ToolBarVisibility>
+      <Order>
+        <Count>0</Count>
+      </Order>
+    </Item0>
+    <Item1>
+      <ToolBarVisibility>Map</ToolBarVisibility>
+      <Order>
+        <Count>9</Count>
+        <Item0>DemoGame.Editor.MapLightSourceDrawerTool</Item0>
+        <Item1>DemoGame.Editor.MapWallsDrawerTool</Item1>
+        <Item2>DemoGame.Editor.MapGridDrawerTool</Item2>
+        <Item3>DemoGame.Editor.MapDisplayFilterTool</Item3>
+        <Item4>|</Item4>
+        <Item5>DemoGame.Editor.MapEntityCursorTool</Item5>
+        <Item6>DemoGame.Editor.MapWallCursorTool</Item6>
+        <Item7>DemoGame.Editor.MapGrhCursorTool</Item7>
+        <Item8>DemoGame.Editor.MapLightCursorTool</Item8>
+      </Order>
+    </Item1>
+  </ToolBarItems>
+</ToolStateManager>

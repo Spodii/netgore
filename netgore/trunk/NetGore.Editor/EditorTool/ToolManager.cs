@@ -76,12 +76,15 @@ namespace NetGore.Editor.EditorTool
             // Create the type factory to load the tools
             new TypeFactory(filter, typeFactory_TypeLoaded);
 
-            // Change to the generic "user" profile
-            ToolSettingsProfileName = "User";
-
             // Listen for containers being added and removed
             ToolTargetContainers.Added += ToolTargetContainers_Added;
             ToolTargetContainers.Removed += ToolTargetContainers_Removed;
+
+            // Load the default state settings
+            _toolState.CurrentSettingsFile = ToolStateManager.GetFilePath(ContentPaths.Build, null);
+
+            // Change to the generic "user" profile
+            ToolSettingsProfileName = "User";
 
             // Create the auto-saver
             _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolState, _autoSaveSettingsRate,
