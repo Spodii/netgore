@@ -40,6 +40,9 @@ namespace DemoGame.Editor
         {
             base.OnActivated(e);
 
+            if (DesignMode)
+                return;
+
             ToolBar.CurrentToolBarVisibility = ToolBarVisibility;
         }
     }

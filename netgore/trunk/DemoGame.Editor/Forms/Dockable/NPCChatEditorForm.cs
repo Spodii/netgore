@@ -173,7 +173,10 @@ namespace DemoGame.Editor
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (DesignMode)
+            {
+                base.OnFormClosing(e);
                 return;
+            }
 
             btnSave_Click(this, EventArgs.Empty);
 

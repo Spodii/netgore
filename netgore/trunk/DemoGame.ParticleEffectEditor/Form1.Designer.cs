@@ -40,7 +40,7 @@
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
-            this.gameScreen = new ParticleEffectScreenControl();
+            this.gameScreen = new DemoGame.ParticleEffectEditor.ParticleEffectScreenControl();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -190,9 +190,11 @@
             this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gameScreen.Location = new System.Drawing.Point(0, 0);
             this.gameScreen.Name = "gameScreen";
+            this.gameScreen.ParticleEffect = null;
             this.gameScreen.Size = new System.Drawing.Size(549, 516);
             this.gameScreen.TabIndex = 0;
             this.gameScreen.Text = "gameScreenControl1";
+            this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
             // 
             // Form1
             // 

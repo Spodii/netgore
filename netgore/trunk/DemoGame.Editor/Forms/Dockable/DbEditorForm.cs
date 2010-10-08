@@ -136,6 +136,12 @@ namespace DemoGame.Editor
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (DesignMode)
+            {
+                base.OnClosing(e);
+                return;
+            }
+
             var quitMsg = "If you quit without saving, changes will be lost. Are you sure you wish to quit?" + Environment.NewLine +
                           " Press No if you wish to go back and save anything that needs to be saved.";
 

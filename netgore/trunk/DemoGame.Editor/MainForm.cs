@@ -44,6 +44,12 @@ namespace DemoGame.Editor
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (DesignMode)
+            {
+                base.OnClosing(e);
+                return;
+            }
+
             ToolManager.Instance.SaveSettings();
 
             base.OnClosing(e);
@@ -56,6 +62,9 @@ namespace DemoGame.Editor
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            if (DesignMode)
+                return;
 
             // Set the ToolBarVisibility values. Do it here instead of setting the properties to avoid messing up
             // the controls order.
