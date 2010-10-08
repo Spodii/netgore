@@ -33,14 +33,18 @@
             this.tpEffect = new System.Windows.Forms.TabPage();
             this.pgEffect = new System.Windows.Forms.PropertyGrid();
             this.tpEmitter = new System.Windows.Forms.TabPage();
-            this.pgEmitter = new System.Windows.Forms.PropertyGrid();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
-            this.lstEmitters = new DemoGame.ParticleEffectEditor.ParticleEmitterListBox();
             this.pButtons = new System.Windows.Forms.Panel();
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
+            this.btnClone = new System.Windows.Forms.Button();
+            this.lstEmitters = new DemoGame.ParticleEffectEditor.ParticleEmitterListBox();
             this.gameScreen = new DemoGame.ParticleEffectEditor.ParticleEffectScreenControl();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbEmitterType = new NetGore.Editor.WinForms.ParticleEmitterComboBox();
+            this.pgEmitter = new System.Windows.Forms.PropertyGrid();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -49,6 +53,7 @@
             this.tpEmitter.SuspendLayout();
             this.gbEmitter.SuspendLayout();
             this.pButtons.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -102,6 +107,7 @@
             // tpEmitter
             // 
             this.tpEmitter.Controls.Add(this.pgEmitter);
+            this.tpEmitter.Controls.Add(this.panel1);
             this.tpEmitter.Controls.Add(this.gbEmitter);
             this.tpEmitter.Location = new System.Drawing.Point(4, 22);
             this.tpEmitter.Name = "tpEmitter";
@@ -110,14 +116,6 @@
             this.tpEmitter.TabIndex = 0;
             this.tpEmitter.Text = "Emitters";
             this.tpEmitter.UseVisualStyleBackColor = true;
-            // 
-            // pgEmitter
-            // 
-            this.pgEmitter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgEmitter.Location = new System.Drawing.Point(3, 184);
-            this.pgEmitter.Name = "pgEmitter";
-            this.pgEmitter.Size = new System.Drawing.Size(248, 303);
-            this.pgEmitter.TabIndex = 3;
             // 
             // gbEmitter
             // 
@@ -131,18 +129,9 @@
             this.gbEmitter.TabStop = false;
             this.gbEmitter.Text = "Emitters";
             // 
-            // lstEmitters
-            // 
-            this.lstEmitters.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstEmitters.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstEmitters.FormattingEnabled = true;
-            this.lstEmitters.Location = new System.Drawing.Point(3, 16);
-            this.lstEmitters.Name = "lstEmitters";
-            this.lstEmitters.Size = new System.Drawing.Size(242, 131);
-            this.lstEmitters.TabIndex = 1;
-            // 
             // pButtons
             // 
+            this.pButtons.Controls.Add(this.btnClone);
             this.pButtons.Controls.Add(this.btnDeleteEmitter);
             this.pButtons.Controls.Add(this.btnNewEmitter);
             this.pButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -155,9 +144,9 @@
             // btnDeleteEmitter
             // 
             this.btnDeleteEmitter.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnDeleteEmitter.Location = new System.Drawing.Point(78, 3);
+            this.btnDeleteEmitter.Location = new System.Drawing.Point(68, 3);
             this.btnDeleteEmitter.Name = "btnDeleteEmitter";
-            this.btnDeleteEmitter.Size = new System.Drawing.Size(75, 25);
+            this.btnDeleteEmitter.Size = new System.Drawing.Size(65, 25);
             this.btnDeleteEmitter.TabIndex = 1;
             this.btnDeleteEmitter.Text = "Delete";
             this.btnDeleteEmitter.UseVisualStyleBackColor = true;
@@ -168,7 +157,7 @@
             this.btnNewEmitter.Dock = System.Windows.Forms.DockStyle.Left;
             this.btnNewEmitter.Location = new System.Drawing.Point(3, 3);
             this.btnNewEmitter.Name = "btnNewEmitter";
-            this.btnNewEmitter.Size = new System.Drawing.Size(75, 25);
+            this.btnNewEmitter.Size = new System.Drawing.Size(65, 25);
             this.btnNewEmitter.TabIndex = 0;
             this.btnNewEmitter.Text = "New";
             this.btnNewEmitter.UseVisualStyleBackColor = true;
@@ -184,6 +173,27 @@
             this.tpSettings.Text = "Settings";
             this.tpSettings.UseVisualStyleBackColor = true;
             // 
+            // btnClone
+            // 
+            this.btnClone.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnClone.Location = new System.Drawing.Point(133, 3);
+            this.btnClone.Name = "btnClone";
+            this.btnClone.Size = new System.Drawing.Size(65, 25);
+            this.btnClone.TabIndex = 2;
+            this.btnClone.Text = "Clone";
+            this.btnClone.UseVisualStyleBackColor = true;
+            // 
+            // lstEmitters
+            // 
+            this.lstEmitters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstEmitters.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstEmitters.FormattingEnabled = true;
+            this.lstEmitters.Location = new System.Drawing.Point(3, 16);
+            this.lstEmitters.Name = "lstEmitters";
+            this.lstEmitters.Size = new System.Drawing.Size(242, 131);
+            this.lstEmitters.TabIndex = 1;
+            this.lstEmitters.SelectedValueChanged += new System.EventHandler(this.lstEmitters_SelectedValueChanged);
+            // 
             // gameScreen
             // 
             this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -195,13 +205,54 @@
             this.gameScreen.Text = "gameScreenControl1";
             this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
             // 
-            // Form1
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cmbEmitterType);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 184);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(248, 25);
+            this.panel1.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label1.Size = new System.Drawing.Size(65, 17);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Emitter type:";
+            // 
+            // cmbEmitterType
+            // 
+            this.cmbEmitterType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbEmitterType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbEmitterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEmitterType.FormattingEnabled = true;
+            this.cmbEmitterType.Location = new System.Drawing.Point(65, 0);
+            this.cmbEmitterType.Name = "cmbEmitterType";
+            this.cmbEmitterType.Size = new System.Drawing.Size(183, 21);
+            this.cmbEmitterType.TabIndex = 8;
+            this.cmbEmitterType.SelectedEmitterChanged += new NetGore.Editor.WinForms.ParticleEmitterComboBoxHandler(this.cmbEmitterType_SelectedEmitterChanged);
+            // 
+            // pgEmitter
+            // 
+            this.pgEmitter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgEmitter.Location = new System.Drawing.Point(3, 209);
+            this.pgEmitter.Name = "pgEmitter";
+            this.pgEmitter.Size = new System.Drawing.Size(248, 278);
+            this.pgEmitter.TabIndex = 7;
+            // 
+            // ParticleEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(823, 524);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form1";
+            this.Name = "ParticleEditorForm";
             this.Padding = new System.Windows.Forms.Padding(4);
             this.Text = "Form1";
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -212,6 +263,8 @@
             this.tpEmitter.ResumeLayout(false);
             this.gbEmitter.ResumeLayout(false);
             this.pButtons.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -223,7 +276,6 @@
         private System.Windows.Forms.TabPage tpEmitter;
         private System.Windows.Forms.TabPage tpSettings;
         private ParticleEffectScreenControl gameScreen;
-        private System.Windows.Forms.PropertyGrid pgEmitter;
         private System.Windows.Forms.GroupBox gbEmitter;
         private ParticleEmitterListBox lstEmitters;
         private System.Windows.Forms.Panel pButtons;
@@ -231,6 +283,11 @@
         private System.Windows.Forms.Button btnNewEmitter;
         private System.Windows.Forms.TabPage tpEffect;
         private System.Windows.Forms.PropertyGrid pgEffect;
+        private System.Windows.Forms.Button btnClone;
+        private System.Windows.Forms.PropertyGrid pgEmitter;
+        private System.Windows.Forms.Panel panel1;
+        private NetGore.Editor.WinForms.ParticleEmitterComboBox cmbEmitterType;
+        private System.Windows.Forms.Label label1;
 
     }
 }

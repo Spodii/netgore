@@ -112,11 +112,12 @@ namespace NetGore.Graphics.ParticleEngine
 
             _owner = owner;
 
+            ((ParticleEffect)owner).AddParticleEmitter(this);
+
             _budget = DefaultBudget;
             particles = new Particle[_initialParticleArraySize];
 
             // Set some default values
-            Name = DefaultName;
             BlendMode = _defaultBlendMode;
             ParticleLife = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
@@ -125,6 +126,7 @@ namespace NetGore.Graphics.ParticleEngine
             ReleaseRotation = new VariableFloat(0);
             ReleaseScale = new VariableFloat(1);
             ReleaseSpeed = new VariableFloat(50);
+            Name = DefaultName;
         }
 
         /// <summary>
@@ -179,21 +181,23 @@ namespace NetGore.Graphics.ParticleEngine
         /// Copies the values in this <see cref="ParticleEmitter"/> to another.
         /// </summary>
         /// <param name="destination">The <see cref="ParticleEmitter"/> to copy the values to.</param>
-        public void CopyValuesTo(ParticleEmitter destination)
+        public void CopyValuesTo(IParticleEmitter destination)
         {
-            destination.BlendMode = BlendMode;
-            destination.Budget = Budget;
-            destination.ParticleLife = ParticleLife;
-            destination.Origin = Origin;
-            destination.ReleaseAmount = ReleaseAmount;
-            destination.ReleaseColor = ReleaseColor;
-            destination.ReleaseRate = ReleaseRate;
-            destination.ReleaseRotation = ReleaseRotation;
-            destination.ReleaseScale = ReleaseScale;
-            destination.ReleaseSpeed = ReleaseSpeed;
-            destination.Sprite.SetGrh(Sprite.GrhData, Sprite.AnimType, Sprite.LastUpdated);
-            destination.ParticleModifiers = ParticleModifiers.DeepCopy();
-            destination.EmitterModifiers = EmitterModifiers.DeepCopy();
+            var d = (ParticleEmitter)destination;
+
+            d.BlendMode = BlendMode;
+            d.Budget = Budget;
+            d.ParticleLife = ParticleLife;
+            d.Origin = Origin;
+            d.ReleaseAmount = ReleaseAmount;
+            d.ReleaseColor = ReleaseColor;
+            d.ReleaseRate = ReleaseRate;
+            d.ReleaseRotation = ReleaseRotation;
+            d.ReleaseScale = ReleaseScale;
+            d.ReleaseSpeed = ReleaseSpeed;
+            d.Sprite.SetGrh(Sprite.GrhData, Sprite.AnimType, Sprite.LastUpdated);
+            d.ParticleModifiers = ParticleModifiers.DeepCopy();
+            d.EmitterModifiers = EmitterModifiers.DeepCopy();
         }
 
         /// <summary>
