@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
-using DemoGame.AI;
+using DemoGame.Server.AI;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;

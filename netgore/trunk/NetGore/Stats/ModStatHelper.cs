@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NetGore.Stats;
 
-namespace DemoGame
+namespace NetGore
 {
     /// <summary>
     /// Provides helper methods for working with the modified Stats.
