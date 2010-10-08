@@ -245,5 +245,9 @@ namespace DemoGame.Editor
             else
                 _frmSkeletonEditor.Hide();
         }
+
+        private void loadToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+        }
     }
 }

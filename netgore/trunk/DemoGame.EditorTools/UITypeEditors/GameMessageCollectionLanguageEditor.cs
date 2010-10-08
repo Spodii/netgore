@@ -1,8 +1,7 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Design;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
@@ -11,9 +10,9 @@ using log4net;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="BodyID"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="GameMessageCollection"/>.
     /// </summary>
-    public class BodyIDEditor : UITypeEditor
+    public class GameMessageCollectionLanguageEditor : UITypeEditor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -36,15 +35,13 @@ namespace DemoGame.EditorTools
 
             if (svc != null)
             {
-                using (var editorForm = new BodyInfoUITypeEditorForm(value))
+                using (var editorForm = new GameMessageCollectionLanguageEditorUITypeEditorForm(value))
                 {
                     var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (pt == typeof(BodyID) || pt == typeof(BodyID?))
-                            value = editorForm.SelectedItem.ID;
-                        else if (pt == typeof(BodyInfo))
-                            value = editorForm.SelectedItem;
+                        if (pt == typeof(string))
+                            value = editorForm;
                         else
                         {
                             const string errmsg =
@@ -53,11 +50,6 @@ namespace DemoGame.EditorTools
                                 log.ErrorFormat(errmsg, pt, value, editorForm.GetType());
                             Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));
                         }
-                    }
-                    else
-                    {
-                        if (pt == typeof(BodyID?))
-                            value = null;
                     }
                 }
             }

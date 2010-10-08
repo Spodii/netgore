@@ -156,6 +156,7 @@
     <Compile Include="UITypeEditors\CharacterTemplateInventoryItemListForm.Designer.cs">
       <DependentUpon>CharacterTemplateInventoryItemListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UITypeEditors\GameMessageCollectionLanguageEditor.cs" />
     <Compile Include="UITypeEditors\GameMessageCollectionLanguageEditorUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
