@@ -255,6 +255,7 @@ namespace DemoGame.Editor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(823, 524);
             this.Controls.Add(this.splitContainer1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ParticleEditorForm";
             this.Padding = new System.Windows.Forms.Padding(4);
             this.Text = "Particle Effect Editor";

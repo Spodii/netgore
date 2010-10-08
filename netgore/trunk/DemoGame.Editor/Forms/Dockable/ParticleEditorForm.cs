@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using NetGore.Collections;
 using NetGore.Content;
 using NetGore.Editor;
+using NetGore.Editor.Docking;
 using NetGore.Editor.UI;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
@@ -12,7 +13,7 @@ using NetGore.IO;
 
 namespace DemoGame.Editor
 {
-    public partial class ParticleEditorForm : Form
+    public partial class ParticleEditorForm : DockContent
     {
         GrhData _defaultEmitterSprite;
 

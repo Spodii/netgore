@@ -23,7 +23,10 @@ namespace NetGore.Editor.UI
         {
             InitializeComponent();
 
-            _filter.FilterChanged += _filter_FilterChanged;
+            if (!DesignMode)
+            {
+                _filter.FilterChanged += _filter_FilterChanged;
+            }
         }
 
         /// <summary>
