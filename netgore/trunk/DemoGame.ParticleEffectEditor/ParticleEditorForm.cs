@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.Collections;
 using NetGore.Content;
 using NetGore.Editor;
 using NetGore.Editor.UI;
@@ -90,11 +91,6 @@ namespace DemoGame.ParticleEffectEditor
             if (DesignMode)
                 return;
 
-            // Load the default emitter sprite
-            _defaultEmitterSprite = GrhInfo.GetData("Particle", "ball");
-            if (_defaultEmitterSprite == null)
-                _defaultEmitterSprite = GrhInfo.GetDatas("Particle").Select(x => x.Value).FirstOrDefault();
-
             // NOTE: !! Temp
 
             _content = ContentManager.Create();
@@ -104,6 +100,9 @@ namespace DemoGame.ParticleEffectEditor
 
             ParticleEffect =
                 ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
+
+            // Load the default emitter sprite
+            _defaultEmitterSprite = GrhInfo.GetData("Particle", "ball");
         }
 
         /// <summary>
@@ -175,6 +174,8 @@ namespace DemoGame.ParticleEffectEditor
 
             // Delete
             emitter.Dispose();
+
+            lstEmitters.RemoveItemAndReselect(emitter);
         }
 
         /// <summary>
@@ -217,9 +218,49 @@ namespace DemoGame.ParticleEffectEditor
                 lstEmitters.Items.Add(emitter);
         }
 
-        void lstEmitters_TypedSelectedItemChanged(TypedListBox<IParticleEmitter> sender, IParticleEmitter value)
+        private void lstEmitters_SelectedValueChanged(object sender, EventArgs e)
         {
-            pgEmitter.SelectedObject = value;
+            pgEmitter.SelectedObject = null;
+
+            var emitter = lstEmitters.SelectedItem as IParticleEmitter;
+            if (emitter != null)
+            {
+                cmbEmitterType.Enabled = true;
+                cmbEmitterType.SelectedItem = emitter.GetType();
+            }
+            else{
+                cmbEmitterType.Enabled = false;
+                cmbEmitterType.SelectedIndex = -1;
+            }
+            pgEmitter.SelectedObject = lstEmitters.SelectedItem;
+        }
+
+        private void cmbEmitterType_SelectedEmitterChanged(ParticleEmitterComboBox sender, Type newType)
+        {
+            if (newType == null)
+                return;
+
+            var emitter = pgEmitter.SelectedObject as ParticleEmitter;
+            if (emitter == null)
+                return;
+
+            if (emitter.GetType() == newType)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to change the emitter type from {0} to {1}?";
+            if (MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, newType.Name), "Change emitter type?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                return;
+
+            var newEmitter = (IParticleEmitter)TypeFactory.GetTypeInstance(newType, emitter.Owner);
+
+            emitter.CopyValuesTo(newEmitter);
+
+            lstEmitters.Items.Remove(emitter);
+
+            if (!lstEmitters.Items.Contains(newEmitter))
+                lstEmitters.Items.Add(newEmitter);
+
+            lstEmitters.SelectedItem = newEmitter;
         }
     }
 }

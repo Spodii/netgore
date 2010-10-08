@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.Collections;
 using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.Editor.WinForms
 {
-    public delegate void ParticleEmitterComboBoxHandler(ParticleEmitterComboBox sender, ParticleEmitter emitter);
+    public delegate void ParticleEmitterComboBoxHandler(ParticleEmitterComboBox sender, Type emitterType);
 
     /// <summary>
     /// A <see cref="ComboBox"/> containing the <see cref="ParticleEmitter"/>s.
@@ -57,21 +58,13 @@ namespace NetGore.Editor.WinForms
         /// <param name="item">The new selected value.</param>
         protected override void OnTypedSelectedItemChanged(Type item)
         {
-            // TODO: !!
-            /*
             base.OnTypedSelectedItemChanged(item);
 
             if (DesignMode)
                 return;
 
-            if (SelectedEmitterChanged == null)
-                return;
-
-            var emitter = (ParticleEmitter)TypeFactory.GetTypeInstance(item);
-
-            if (emitter != null)
-                SelectedEmitterChanged(this, emitter);
-            */
+            if (SelectedEmitterChanged != null && item != null)
+                SelectedEmitterChanged(this, item);
         }
     }
 }

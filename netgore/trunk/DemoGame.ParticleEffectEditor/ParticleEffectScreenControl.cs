@@ -26,7 +26,23 @@ namespace DemoGame.ParticleEffectEditor
             {
                 _camera = new Camera2D(new Vector2(400, 300));
                 _drawingManager = new DrawingManager();
+                DrawingManager.BackgroundColor = BackColor.ToColor();
             }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.BackColorChanged"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnBackColorChanged(EventArgs e)
+        {
+            base.OnBackColorChanged(e);
+
+            if (DesignMode)
+                return;
+
+            if (DrawingManager != null)
+                DrawingManager.BackgroundColor = BackColor.ToColor();
         }
 
         /// <summary>

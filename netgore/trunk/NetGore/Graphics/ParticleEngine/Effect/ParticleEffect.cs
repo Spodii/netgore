@@ -96,7 +96,7 @@ namespace NetGore.Graphics.ParticleEngine
             Debug.Assert(emitter.Owner == this);
 
             // Make sure the emitter's name is unique
-            var newName = GenerateUniqueEmitterName(emitter.Name);
+            var newName = GenerateUniqueEmitterName(emitter.Name ?? ParticleEmitter.DefaultName);
             emitter.ChangeName(newName);
 
             // Add
