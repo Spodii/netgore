@@ -472,10 +472,6 @@
       <Project>{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}</Project>
       <Name>DemoGame.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DemoGame.EditorTools\DemoGame.EditorTools.csproj">
-      <Project>{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}</Project>
-      <Name>DemoGame.EditorTools</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DemoGame.Server\DemoGame.Server.csproj">
       <Project>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</Project>
       <Name>DemoGame.Server</Name>
