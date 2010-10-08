@@ -10,7 +10,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 
-namespace DemoGame.ParticleEffectEditor
+namespace DemoGame.Editor
 {
     public partial class ParticleEditorForm : Form
     {

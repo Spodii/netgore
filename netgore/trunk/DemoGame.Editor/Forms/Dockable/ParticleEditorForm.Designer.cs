@@ -1,6 +1,6 @@
 ﻿using NetGore.Editor;
 
-namespace DemoGame.ParticleEffectEditor
+namespace DemoGame.Editor
 {
     partial class ParticleEditorForm
     {
@@ -46,7 +46,7 @@ namespace DemoGame.ParticleEffectEditor
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
-            this.gameScreen = new DemoGame.ParticleEffectEditor.ParticleEffectScreenControl();
+            this.gameScreen = new DemoGame.Editor.ParticleEffectScreenControl();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();

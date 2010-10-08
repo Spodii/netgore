@@ -105,20 +105,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParticleEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ParticleEditorForm.Designer.cs">
-      <DependentUpon>ParticleEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ParticleEffectScreenControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ParticleEditorForm.resx">
-      <DependentUpon>ParticleEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
