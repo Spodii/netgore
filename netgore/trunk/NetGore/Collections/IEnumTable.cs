@@ -19,6 +19,12 @@ namespace NetGore.Collections
         TValue this[TKey key] { get; set; }
 
         /// <summary>
+        /// Creates a deep copy of this enum table.
+        /// </summary>
+        /// <returns>A deep copy of this enum table.</returns>
+        IEnumTable<TKey, TValue> DeepCopy();
+
+        /// <summary>
         /// Sets every index in the table to the default value.
         /// </summary>
         void Clear();
