@@ -11,19 +11,19 @@ using NetGore.IO;
 
 namespace DemoGame.ParticleEffectEditor
 {
-    public partial class Form1 : Form
+    public partial class ParticleEditorForm : Form
     {
         /// <summary>
-        /// Delegate for handling events for properties changing on the <see cref="Form1"/>.
+        /// Delegate for handling events for properties changing on the <see cref="ParticleEditorForm"/>.
         /// </summary>
         /// <typeparam name="T">The type of the property.</typeparam>
         /// <param name="sender">The sender.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        public delegate void PropertyChangedEventHandler<in T>(Form1 sender, T oldValue, T newValue);
+        public delegate void PropertyChangedEventHandler<in T>(ParticleEditorForm sender, T oldValue, T newValue);
 
         /// <summary>
-        /// Notifies listeners when the <see cref="Form1.ParticleEffect"/> property has changed.
+        /// Notifies listeners when the <see cref="ParticleEditorForm.ParticleEffect"/> property has changed.
         /// </summary>
         public PropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
 
@@ -32,9 +32,9 @@ namespace DemoGame.ParticleEffectEditor
         IParticleEffect _particleEffect;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Form1"/> class.
+        /// Initializes a new instance of the <see cref="ParticleEditorForm"/> class.
         /// </summary>
-        public Form1()
+        public ParticleEditorForm()
         {
             InitializeComponent();
         }
@@ -100,7 +100,7 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         /// <summary>
-        /// Handles when the <see cref="Form1.ParticleEffect"/> property has changed.
+        /// Handles when the <see cref="ParticleEditorForm.ParticleEffect"/> property has changed.
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
@@ -123,7 +123,7 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         /// <summary>
-        /// Handles when a <see cref="IParticleEmitter"/> is added to the <see cref="Form1.ParticleEffect"/>.
+        /// Handles when a <see cref="IParticleEmitter"/> is added to the <see cref="ParticleEditorForm.ParticleEffect"/>.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="emitter">The emitter.</param>
@@ -134,7 +134,7 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         /// <summary>
-        /// Handles when a <see cref="IParticleEmitter"/> is removed from the <see cref="Form1.ParticleEffect"/>.
+        /// Handles when a <see cref="IParticleEmitter"/> is removed from the <see cref="ParticleEditorForm.ParticleEffect"/>.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="emitter">The emitter.</param>
