@@ -31,8 +31,6 @@ namespace DemoGame.Editor
         /// </summary>
         public PropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
 
-        IContentManager _content;
-
         IParticleEffect _particleEffect;
 
         /// <summary>
@@ -91,16 +89,6 @@ namespace DemoGame.Editor
 
             if (DesignMode)
                 return;
-
-            // NOTE: !! Temp
-
-            _content = ContentManager.Create();
-            GrhInfo.Load(ContentPaths.Build, _content);
-
-            CustomUITypeEditors.AddEditors();
-
-            ParticleEffect =
-                ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
 
             // Load the default emitter sprite
             _defaultEmitterSprite = GrhInfo.GetData("Particle", "sparkle alpha");

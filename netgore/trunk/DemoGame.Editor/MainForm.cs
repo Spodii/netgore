@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.EditorTools;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
@@ -90,12 +91,6 @@ namespace DemoGame.Editor
 
             _frmDbEditor = new DbEditorForm();
             _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
-
-            // Load the first map
-            // NOTE: Temp
-            var frm = new EditMapForm();
-            frm.MapScreenControl.ChangeMap(new MapID(1));
-            frm.Show(dockPanel);
         }
 
         /// <summary>
@@ -202,10 +197,21 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frm = new EditMapForm();
-            frm.MapScreenControl.ChangeMap(new MapID(1));
+            using (var uiFrm = new MapUITypeEditorForm(null))
+            {
+                var result = uiFrm.ShowDialog(this);
+                if (result != System.Windows.Forms.DialogResult.OK && result != System.Windows.Forms.DialogResult.Yes)
+                    return;
 
-            frm.Show(dockPanel);
+                var map = uiFrm.SelectedItem;
+                if (map == null)
+                    return;
+
+                var editorFrm = new EditMapForm();
+                editorFrm.MapScreenControl.ChangeMap(map.ID);
+
+                editorFrm.Show(dockPanel);
+            }
         }
 
         /// <summary>
