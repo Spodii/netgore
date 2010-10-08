@@ -102,7 +102,7 @@ namespace DemoGame.ParticleEffectEditor
                 ParticleEffectManager.Instance.TryCreateEffect(ParticleEffectManager.Instance.ParticleEffectNames.FirstOrDefault());
 
             // Load the default emitter sprite
-            _defaultEmitterSprite = GrhInfo.GetData("Particle", "ball");
+            _defaultEmitterSprite = GrhInfo.GetData("Particle", "sparkle alpha");
         }
 
         /// <summary>
@@ -255,7 +255,22 @@ namespace DemoGame.ParticleEffectEditor
 
             emitter.CopyValuesTo(newEmitter);
 
+            emitter.Dispose();
             lstEmitters.Items.Remove(emitter);
+
+            if (!lstEmitters.Items.Contains(newEmitter))
+                lstEmitters.Items.Add(newEmitter);
+
+            lstEmitters.SelectedItem = newEmitter;
+        }
+
+        private void btnClone_Click(object sender, EventArgs e)
+        {
+            var emitter = pgEmitter.SelectedObject as ParticleEmitter;
+            if (emitter == null)
+                return;
+
+            var newEmitter = emitter.DeepCopy(emitter.Owner);
 
             if (!lstEmitters.Items.Contains(newEmitter))
                 lstEmitters.Items.Add(newEmitter);
