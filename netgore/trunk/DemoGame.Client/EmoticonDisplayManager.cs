@@ -1,10 +1,9 @@
 using System.Linq;
-using DemoGame.Client;
 using NetGore.Features.Emoticons;
 using NetGore.World;
 using SFML.Graphics;
 
-namespace DemoGame
+namespace DemoGame.Client
 {
     /// <summary>
     /// Handles displaying the individual emoticon instances.

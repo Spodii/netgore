@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DemoGame.AI
+namespace DemoGame.Server.AI
 {
     public static class AISettings
     {

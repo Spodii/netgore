@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace DemoGame.Server.Queries
+namespace NetGore.Db
 {
     /// <summary>
     /// Provides methods that assist in making asserts on the database queries. This provides better run-time checking of the
