@@ -114,9 +114,6 @@
     <Compile Include="ParticleEffectScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ParticleEmitterListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ParticleEditorForm.resx">

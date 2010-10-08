@@ -1,4 +1,6 @@
-﻿namespace DemoGame.ParticleEffectEditor
+﻿using NetGore.Editor;
+
+namespace DemoGame.ParticleEffectEditor
 {
     partial class ParticleEditorForm
     {
@@ -40,7 +42,7 @@
             this.gbEmitter = new System.Windows.Forms.GroupBox();
             this.pButtons = new System.Windows.Forms.Panel();
             this.tpSettings = new System.Windows.Forms.TabPage();
-            this.lstEmitters = new DemoGame.ParticleEffectEditor.ParticleEmitterListBox();
+            this.lstEmitters = new ParticleEmitterListBox();
             this.gameScreen = new DemoGame.ParticleEffectEditor.ParticleEffectScreenControl();
             this.btnClone = new System.Windows.Forms.Button();
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
