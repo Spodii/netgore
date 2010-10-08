@@ -9,7 +9,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using SFML.Graphics;
 
-namespace DemoGame.ParticleEffectEditor
+namespace DemoGame.Editor
 {
     public class ParticleEffectScreenControl : GraphicsDeviceControl
     {

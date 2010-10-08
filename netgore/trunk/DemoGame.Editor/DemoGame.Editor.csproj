@@ -124,6 +124,9 @@
     <Compile Include="Controls\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Screen Controls\ParticleEffectScreenControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Screen Controls\MapPreviewScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -153,6 +156,12 @@
     </Compile>
     <Compile Include="Forms\Dockable\NPCChatEditorForm.Designer.cs">
       <DependentUpon>NPCChatEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Dockable\ParticleEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dockable\ParticleEditorForm.Designer.cs">
+      <DependentUpon>ParticleEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\InputNewMapIDForm.cs">
       <SubType>Form</SubType>
@@ -249,6 +258,9 @@
     <EmbeddedResource Include="Forms\Dockable\NPCChatEditorForm.resx">
       <DependentUpon>NPCChatEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dockable\ParticleEditorForm.resx">
+      <DependentUpon>ParticleEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\ToolTargetFormBase.resx">
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
