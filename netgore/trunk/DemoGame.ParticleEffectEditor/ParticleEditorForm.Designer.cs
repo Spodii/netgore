@@ -40,13 +40,13 @@ namespace DemoGame.ParticleEffectEditor
             this.cmbEmitterType = new NetGore.Editor.WinForms.ParticleEmitterComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
+            this.lstEmitters = new NetGore.Editor.ParticleEmitterListBox();
             this.pButtons = new System.Windows.Forms.Panel();
-            this.tpSettings = new System.Windows.Forms.TabPage();
-            this.lstEmitters = new ParticleEmitterListBox();
-            this.gameScreen = new DemoGame.ParticleEffectEditor.ParticleEffectScreenControl();
             this.btnClone = new System.Windows.Forms.Button();
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
+            this.tpSettings = new System.Windows.Forms.TabPage();
+            this.gameScreen = new DemoGame.ParticleEffectEditor.ParticleEffectScreenControl();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -172,28 +172,6 @@ namespace DemoGame.ParticleEffectEditor
             this.gbEmitter.TabStop = false;
             this.gbEmitter.Text = "Emitters";
             // 
-            // pButtons
-            // 
-            this.pButtons.Controls.Add(this.btnClone);
-            this.pButtons.Controls.Add(this.btnDeleteEmitter);
-            this.pButtons.Controls.Add(this.btnNewEmitter);
-            this.pButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtons.Location = new System.Drawing.Point(3, 147);
-            this.pButtons.Name = "pButtons";
-            this.pButtons.Padding = new System.Windows.Forms.Padding(3);
-            this.pButtons.Size = new System.Drawing.Size(242, 31);
-            this.pButtons.TabIndex = 0;
-            // 
-            // tpSettings
-            // 
-            this.tpSettings.Location = new System.Drawing.Point(4, 22);
-            this.tpSettings.Name = "tpSettings";
-            this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSettings.Size = new System.Drawing.Size(254, 490);
-            this.tpSettings.TabIndex = 1;
-            this.tpSettings.Text = "Settings";
-            this.tpSettings.UseVisualStyleBackColor = true;
-            // 
             // lstEmitters
             // 
             this.lstEmitters.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -205,16 +183,17 @@ namespace DemoGame.ParticleEffectEditor
             this.lstEmitters.TabIndex = 1;
             this.lstEmitters.SelectedValueChanged += new System.EventHandler(this.lstEmitters_SelectedValueChanged);
             // 
-            // gameScreen
+            // pButtons
             // 
-            this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameScreen.Location = new System.Drawing.Point(0, 0);
-            this.gameScreen.Name = "gameScreen";
-            this.gameScreen.ParticleEffect = null;
-            this.gameScreen.Size = new System.Drawing.Size(549, 516);
-            this.gameScreen.TabIndex = 0;
-            this.gameScreen.Text = "gameScreenControl1";
-            this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
+            this.pButtons.Controls.Add(this.btnClone);
+            this.pButtons.Controls.Add(this.btnDeleteEmitter);
+            this.pButtons.Controls.Add(this.btnNewEmitter);
+            this.pButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pButtons.Location = new System.Drawing.Point(3, 147);
+            this.pButtons.Name = "pButtons";
+            this.pButtons.Padding = new System.Windows.Forms.Padding(3);
+            this.pButtons.Size = new System.Drawing.Size(242, 31);
+            this.pButtons.TabIndex = 0;
             // 
             // btnClone
             // 
@@ -249,6 +228,27 @@ namespace DemoGame.ParticleEffectEditor
             this.btnNewEmitter.UseVisualStyleBackColor = true;
             this.btnNewEmitter.Click += new System.EventHandler(this.btnNewEmitter_Click);
             // 
+            // tpSettings
+            // 
+            this.tpSettings.Location = new System.Drawing.Point(4, 22);
+            this.tpSettings.Name = "tpSettings";
+            this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSettings.Size = new System.Drawing.Size(254, 490);
+            this.tpSettings.TabIndex = 1;
+            this.tpSettings.Text = "Settings";
+            this.tpSettings.UseVisualStyleBackColor = true;
+            // 
+            // gameScreen
+            // 
+            this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gameScreen.Location = new System.Drawing.Point(0, 0);
+            this.gameScreen.Name = "gameScreen";
+            this.gameScreen.ParticleEffect = null;
+            this.gameScreen.Size = new System.Drawing.Size(549, 516);
+            this.gameScreen.TabIndex = 0;
+            this.gameScreen.Text = "gameScreenControl1";
+            this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
+            // 
             // ParticleEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -257,7 +257,7 @@ namespace DemoGame.ParticleEffectEditor
             this.Controls.Add(this.splitContainer1);
             this.Name = "ParticleEditorForm";
             this.Padding = new System.Windows.Forms.Padding(4);
-            this.Text = "Form1";
+            this.Text = "Particle Effect Editor";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
