@@ -5,7 +5,7 @@ using NetGore.Editor;
 using NetGore.Features.Quests;
 using NetGore.IO;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     public class QuestIDListBox : ListBox
     {

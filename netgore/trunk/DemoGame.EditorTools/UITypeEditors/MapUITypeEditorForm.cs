@@ -6,7 +6,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.World;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="Form"/> for listing the character template information from the database.

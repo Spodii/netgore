@@ -4,7 +4,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server;
 using DemoGame.Server.DbObjs;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A struct that describes the creation of an inventory item for a <see cref="CharacterTemplate"/>.

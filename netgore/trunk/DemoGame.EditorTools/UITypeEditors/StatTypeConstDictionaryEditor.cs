@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms.Design;
 using DemoGame.DbObjs;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for editing the <see cref="StatTypeConstDictionary"/>.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor.UI;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="Form"/> for listing the <see cref="BodyInfo"/>.

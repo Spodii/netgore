@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Editor.UI;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="Form"/> for listing the <see cref="GameMessageCollection"/> language.

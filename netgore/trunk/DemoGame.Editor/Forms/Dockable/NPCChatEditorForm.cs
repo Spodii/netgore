@@ -194,8 +194,6 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            CustomUITypeEditors.AddEditors();
-
             // Set controls that are initially disabled in the tab control to always be disabled
             var controls = GetAllControls(tcChatDialogItem);
             foreach (var control in controls)

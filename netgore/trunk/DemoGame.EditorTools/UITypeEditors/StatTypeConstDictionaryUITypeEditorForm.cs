@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using DemoGame.DbObjs;
 using NetGore;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     public class StatTypeConstDictionaryUITypeEditorForm : Form
     {

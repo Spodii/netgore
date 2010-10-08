@@ -5,8 +5,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using DemoGame.Server;
+using CharacterTemplateInventoryItem = DemoGame.Editor.CharacterTemplateInventoryItem;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.TypeConverters
 {
     /// <summary>
     /// A <see cref="TypeConverter"/> for a collection of <see cref="CharacterTemplateInventoryItem"/>s and values.

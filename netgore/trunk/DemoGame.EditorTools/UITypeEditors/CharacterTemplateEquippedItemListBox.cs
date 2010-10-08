@@ -5,7 +5,7 @@ using DemoGame.Server;
 using NetGore;
 using NetGore.Editor;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     public class CharacterTemplateEquippedItemListBox : ListBox
     {

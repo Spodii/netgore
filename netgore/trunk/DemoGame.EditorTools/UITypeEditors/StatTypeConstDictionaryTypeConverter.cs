@@ -6,7 +6,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="TypeConverter"/> for the <see cref="StatTypeConstDictionary"/>.

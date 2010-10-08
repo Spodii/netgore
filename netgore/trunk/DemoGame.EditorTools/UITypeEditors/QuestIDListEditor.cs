@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms.Design;
 using NetGore.Features.Quests;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for a list of <see cref="QuestID"/>s.

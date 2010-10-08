@@ -6,7 +6,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server;
 using DemoGame.Server.Queries;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="Form"/> for listing the <see cref="Alliance"/> information from the database.

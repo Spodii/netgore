@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.EditorTools;
+using DemoGame.Editor.UITypeEditors;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;

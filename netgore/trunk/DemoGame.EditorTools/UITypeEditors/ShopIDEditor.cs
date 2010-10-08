@@ -10,7 +10,7 @@ using DemoGame.DbObjs;
 using log4net;
 using NetGore.Features.Shops;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="ShopID"/>.

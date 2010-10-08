@@ -12,7 +12,7 @@ using NetGore;
 using NetGore.Db;
 using NetGore.Features.Shops;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A <see cref="Shop"/> that is to be used in editors in a <see cref="PropertyGrid"/>.
