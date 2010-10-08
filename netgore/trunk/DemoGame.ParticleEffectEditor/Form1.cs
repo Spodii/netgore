@@ -114,7 +114,7 @@ namespace DemoGame.ParticleEffectEditor
 
             if (newValue != null)
             {
-                lstEmitters.AddItems(newValue.Emitters);
+                lstEmitters.Items.AddRange(newValue.Emitters.Cast<object>().ToArray());
 
                 // Select the first emitter
                 if (lstEmitters.Items.Count > 0)
@@ -156,7 +156,7 @@ namespace DemoGame.ParticleEffectEditor
                 return;
 
             // Get the selected emitter
-            var emitter = lstEmitters.TypedSelectedItem;
+            var emitter = lstEmitters.SelectedItem as ParticleEmitter;
             if (emitter == null)
                 return;
 
