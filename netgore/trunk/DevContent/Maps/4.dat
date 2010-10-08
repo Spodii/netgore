@@ -8,7 +8,7 @@
     <Indoors>False</Indoors>
   </Header>
   <Walls>
-    <Count>0</Count>
+    <Count>64</Count>
     <Item0>
       <Position>0,928</Position>
       <Size>32,32</Size>
@@ -262,72 +262,72 @@
     <Item50>
       <Position>64.5,799</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item50>
     <Item51>
       <Position>80.5,799</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item51>
     <Item52>
       <Position>96,799</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item52>
     <Item53>
       <Position>48,799</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item53>
     <Item54>
       <Position>112,799</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item54>
     <Item55>
       <Position>49,814</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item55>
     <Item56>
       <Position>112,814</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item56>
     <Item57>
       <Position>96.5,814</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item57>
     <Item58>
       <Position>80.5,814</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item58>
     <Item59>
       <Position>64.5,814.5</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item59>
     <Item60>
       <Position>176,895.5</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item60>
     <Item61>
       <Position>176.5,881</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item61>
     <Item62>
       <Position>192.5,895.5</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item62>
     <Item63>
       <Position>192,881</Position>
       <Size>16,16</Size>
-      <IsPlatform>False</IsPlatform>
+      <IsPlatform>True</IsPlatform>
     </Item63>
   </Walls>
   <DynamicEntities>
@@ -1253,13 +1253,13 @@
         </Item8>
       </Lights>
     </Lighting>
-	<Refraction>
-		<RefractionEffects>
-			<Count>0</Count>
-		</RefractionEffects>
-	</Refraction>
     <ParticleEffects>
       <Count>0</Count>
     </ParticleEffects>
+    <Refraction>
+      <RefractionEffects>
+        <Count>0</Count>
+      </RefractionEffects>
+    </Refraction>
   </Misc>
 </Map>
