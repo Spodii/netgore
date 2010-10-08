@@ -182,6 +182,30 @@ namespace NetGore.Collections
             }
 
             #endregion
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+            {
+                var values =_buffer.Select(x => new KeyValuePair<TKey, TValue>(KeyInfo<TKey>.FromInt(x.Key), x.Value));
+                foreach (var v in values)
+                    yield return v;
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         /// <summary>
@@ -377,6 +401,18 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Gets the key for an index in a RawTable.
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <returns>The key for the <paramref name="index"/>.</returns>
+            public static TKey RawTableGetKey(int index)
+            {
+                index -= _rawTableIndexOffset;
+                var key = FromInt(index);
+                return key;
+            }
+
+            /// <summary>
             /// Gets an integer value from a key.
             /// </summary>
             /// <param name="value">The key.</param>
@@ -425,6 +461,16 @@ namespace NetGore.Collections
             static int GetIndex(TKey key)
             {
                 return KeyInfo<TKey>.RawTableGetIndex(key);
+            }
+
+            /// <summary>
+            /// Gets the key for an index.
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <returns>The key for the <paramref name="index"/>.</returns>
+            static TKey GetKey(int index)
+            {
+                return KeyInfo<TKey>.RawTableGetKey(index);
             }
 
             /// <summary>
@@ -517,6 +563,38 @@ namespace NetGore.Collections
             }
 
             #endregion
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+            {
+                for (int i = 0; i < _buffer.Length; i++)
+                {
+                    if (_validIndices == null || _validIndices[i])
+                    {
+                        var key = GetKey(i);
+                        var value = _buffer[i];
+                        var v = new KeyValuePair<TKey, TValue>(key, value);
+                        yield return v;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         /// <summary>
@@ -555,6 +633,16 @@ namespace NetGore.Collections
             static int GetIndex(TKey key)
             {
                 return KeyInfo<TKey>.RawTableGetIndex(key);
+            }
+
+            /// <summary>
+            /// Gets the key for an index.
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <returns>The key for the <paramref name="index"/>.</returns>
+            static TKey GetKey(int index)
+            {
+                return KeyInfo<TKey>.RawTableGetKey(index);
             }
 
             /// <summary>
@@ -647,6 +735,39 @@ namespace NetGore.Collections
             }
 
             #endregion
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>1</filterpriority>
+            public IEnumerator<KeyValuePair<TKey, bool>> GetEnumerator()
+            {
+                for (int i = 0; i < _buffer.Length; i++)
+                {
+                    if (_validIndices == null || _validIndices[i])
+                    {
+                        var key = GetKey(i);
+                        var value = _buffer[i];
+                        var v = new KeyValuePair<TKey, bool>(key, value);
+                        yield return v;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         /// <summary>

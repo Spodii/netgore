@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NetGore.Collections
 {
@@ -7,7 +8,7 @@ namespace NetGore.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of key. Must be an enum.</typeparam>
     /// <typeparam name="TValue">The type of value.</typeparam>
-    public interface IEnumTable<in TKey, TValue> where TKey : struct, IComparable, IConvertible, IFormattable
+    public interface IEnumTable<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>> where TKey : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Gets or sets the value at the given key.
