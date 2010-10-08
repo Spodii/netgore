@@ -9,7 +9,6 @@ using NetGore;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
 using NetGore.Editor.NPCChat;
-using NetGore.Editor.UI;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 

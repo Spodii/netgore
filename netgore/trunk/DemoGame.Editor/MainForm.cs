@@ -6,7 +6,6 @@ using DemoGame.Editor.UITypeEditors;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
-using NetGore.World;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
@@ -190,6 +189,24 @@ namespace DemoGame.Editor
                 _frmGrhTreeView.Hide();
         }
 
+        void loadToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            using (var uiFrm = new ParticleEffectUITypeEditorForm(null))
+            {
+                var result = uiFrm.ShowDialog(this);
+                if (result != DialogResult.OK && result != DialogResult.Yes)
+                    return;
+
+                var effect = uiFrm.SelectedItem;
+                if (effect == null)
+                    return;
+
+                var editorFrm = new ParticleEditorForm();
+                editorFrm.ParticleEffect = effect;
+                editorFrm.Show(dockPanel, DockState.Float);
+            }
+        }
+
         /// <summary>
         /// Handles the Click event of the loadToolStripMenuItem control.
         /// </summary>
@@ -200,7 +217,7 @@ namespace DemoGame.Editor
             using (var uiFrm = new MapUITypeEditorForm(null))
             {
                 var result = uiFrm.ShowDialog(this);
-                if (result != System.Windows.Forms.DialogResult.OK && result != System.Windows.Forms.DialogResult.Yes)
+                if (result != DialogResult.OK && result != DialogResult.Yes)
                     return;
 
                 var map = uiFrm.SelectedItem;
@@ -251,24 +268,6 @@ namespace DemoGame.Editor
                 _frmSkeletonEditor.Show(dockPanel, DockState.Float);
             else
                 _frmSkeletonEditor.Hide();
-        }
-
-        private void loadToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            using (var uiFrm = new ParticleEffectUITypeEditorForm(null))
-            {
-                var result = uiFrm.ShowDialog(this);
-                if (result != System.Windows.Forms.DialogResult.OK && result != System.Windows.Forms.DialogResult.Yes)
-                    return;
-
-                var effect = uiFrm.SelectedItem;
-                if (effect == null)
-                    return;
-
-                ParticleEditorForm editorFrm = new ParticleEditorForm();
-                editorFrm.ParticleEffect = effect;
-                editorFrm.Show(dockPanel, DockState.Float);
-            }
         }
     }
 }

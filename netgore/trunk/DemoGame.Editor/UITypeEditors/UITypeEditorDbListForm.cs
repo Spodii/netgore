@@ -21,7 +21,7 @@ namespace DemoGame.Editor.UITypeEditors
                 if (ret != null)
                     return ret;
 
-                return DemoGame.Editor.CustomUITypeEditors.DbController;
+                return CustomUITypeEditors.DbController;
             }
         }
     }

@@ -375,49 +375,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Tries to move the <see cref="ISpatial"/>.
-        /// </summary>
-        /// <param name="newPos">The new position.</param>
-        /// <returns>True if the <see cref="ISpatial"/> was moved to the <paramref name="newPos"/>; otherwise false.</returns>
-        bool ISpatial.TryMove(Vector2 newPos)
-        {
-            Position = newPos;
-            return true;
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="ISpatial"/> can ever be moved with <see cref="ISpatial.TryMove"/>.
-        /// </summary>
-        [Browsable(false)]
-        bool ISpatial.SupportsMove
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="ISpatial"/> can ever be resized with <see cref="ISpatial.TryResize"/>.
-        /// </summary>
-        [Browsable(false)]
-        bool ISpatial.SupportsResize
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// Tries to resize the <see cref="ISpatial"/>.
-        /// </summary>
-        /// <param name="newSize">The new size.</param>
-        /// <returns>True if the <see cref="ISpatial"/> was resized to the <paramref name="newSize"/>; otherwise false.</returns>
-        bool ISpatial.TryResize(Vector2 newSize)
-        {
-            if (Grh == null)
-                return false;
-
-            Scale = newSize / Grh.Size;
-            return true;
-        }
-
-        /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
         /// </summary>
         [Browsable(false)]
@@ -469,6 +426,24 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets if this <see cref="ISpatial"/> can ever be moved with <see cref="ISpatial.TryMove"/>.
+        /// </summary>
+        [Browsable(false)]
+        bool ISpatial.SupportsMove
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="ISpatial"/> can ever be resized with <see cref="ISpatial.TryResize"/>.
+        /// </summary>
+        [Browsable(false)]
+        bool ISpatial.SupportsResize
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Gets a <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/> occupies.
         /// </summary>
         /// <returns>A <see cref="Rectangle"/> that represents the world area that this <see cref="ISpatial"/>
@@ -476,6 +451,31 @@ namespace NetGore.Graphics
         public Rectangle ToRectangle()
         {
             return SpatialHelper.ToRectangle(this);
+        }
+
+        /// <summary>
+        /// Tries to move the <see cref="ISpatial"/>.
+        /// </summary>
+        /// <param name="newPos">The new position.</param>
+        /// <returns>True if the <see cref="ISpatial"/> was moved to the <paramref name="newPos"/>; otherwise false.</returns>
+        bool ISpatial.TryMove(Vector2 newPos)
+        {
+            Position = newPos;
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to resize the <see cref="ISpatial"/>.
+        /// </summary>
+        /// <param name="newSize">The new size.</param>
+        /// <returns>True if the <see cref="ISpatial"/> was resized to the <paramref name="newSize"/>; otherwise false.</returns>
+        bool ISpatial.TryResize(Vector2 newSize)
+        {
+            if (Grh == null)
+                return false;
+
+            Scale = newSize / Grh.Size;
+            return true;
         }
 
         #endregion

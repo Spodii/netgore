@@ -36,12 +36,6 @@ namespace NetGore.Graphics.ParticleEngine
         TickCount _timeCreated = TickCount.Now;
 
         /// <summary>
-        /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/>.
-        /// </summary>
-        [Browsable(false)]
-        public IEnumerable<IParticleEmitter> Emitters { get { return _emitters.Values.Cast<IParticleEmitter>(); } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEffect"/> class.
         /// </summary>
         public ParticleEffect()
@@ -142,6 +136,15 @@ namespace NetGore.Graphics.ParticleEngine
         /// Notifies listeners when an <see cref="IParticleEmitter"/> has been removed from this <see cref="IParticleEffect"/>.
         /// </summary>
         public event IParticleEffectEmitterEventHandler EmitterRemoved;
+
+        /// <summary>
+        /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/>.
+        /// </summary>
+        [Browsable(false)]
+        public IEnumerable<IParticleEmitter> Emitters
+        {
+            get { return _emitters.Values.Cast<IParticleEmitter>(); }
+        }
 
         /// <summary>
         /// Gets if this <see cref="IParticleEffect"/> has been disposed.

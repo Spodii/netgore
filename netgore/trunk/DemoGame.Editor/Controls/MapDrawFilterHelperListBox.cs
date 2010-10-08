@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 using DemoGame.Client;
 using NetGore.Editor;
 using NetGore.Editor.WinForms;
@@ -16,18 +17,14 @@ namespace DemoGame.Editor.Forms
         /// </summary>
         public MapDrawFilterHelperListBox()
         {
-            DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            DrawMode = DrawMode.OwnerDrawFixed;
             Sorted = true;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="MapDrawFilterHelperCollection"/> to use to grab the name of the items.
         /// </summary>
-        public MapDrawFilterHelperCollection Collection
-        {
-            get;
-            set;
-        }
+        public MapDrawFilterHelperCollection Collection { get; set; }
 
         /// <summary>
         /// Gets the string to draw for a list item.

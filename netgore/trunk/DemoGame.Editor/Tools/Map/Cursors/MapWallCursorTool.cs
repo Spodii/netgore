@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
@@ -31,6 +30,16 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets if this cursor can select the given object.
+        /// </summary>
+        /// <param name="obj">The object to try to select.</param>
+        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
+        protected override bool CanSelect(object obj)
+        {
+            return obj is WallEntityBase;
+        }
+
+        /// <summary>
         /// Creates the <see cref="ToolSettings"/> to use for instantiating this class.
         /// </summary>
         /// <returns>The <see cref="ToolSettings"/>.</returns>
@@ -43,18 +52,6 @@ namespace DemoGame.Editor
                 DisabledImage = Resources.MapWallCursorTool_Disabled,
                 EnabledImage = Resources.MapWallCursorTool_Enabled,
             };
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
-        /// </summary>
-        /// <param name="oldValue">The old (previous) value.</param>
-        /// <param name="newValue">The new (current) value.</param>
-        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
-        {
-            base.OnIsEnabledChanged(oldValue, newValue);
-
-            HandleResetState();
         }
 
         /// <summary>
@@ -103,13 +100,15 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets if this cursor can select the given object.
+        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
         /// </summary>
-        /// <param name="obj">The object to try to select.</param>
-        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
-        protected override bool CanSelect(object obj)
+        /// <param name="oldValue">The old (previous) value.</param>
+        /// <param name="newValue">The new (current) value.</param>
+        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
         {
-            return obj is WallEntityBase;
+            base.OnIsEnabledChanged(oldValue, newValue);
+
+            HandleResetState();
         }
     }
 }

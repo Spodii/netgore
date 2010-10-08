@@ -2,21 +2,16 @@
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Collections;
-using NetGore.Content;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
-using NetGore.Editor.UI;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
-using NetGore.IO;
 
 namespace DemoGame.Editor
 {
     public partial class ParticleEditorForm : DockContent
     {
-        GrhData _defaultEmitterSprite;
-
         /// <summary>
         /// Delegate for handling events for properties changing on the <see cref="ParticleEditorForm"/>.
         /// </summary>
@@ -30,6 +25,8 @@ namespace DemoGame.Editor
         /// Notifies listeners when the <see cref="ParticleEditorForm.ParticleEffect"/> property has changed.
         /// </summary>
         public PropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
+
+        GrhData _defaultEmitterSprite;
 
         IParticleEffect _particleEffect;
 
@@ -138,6 +135,20 @@ namespace DemoGame.Editor
             lstEmitters.RemoveItemAndReselect(emitter);
         }
 
+        void btnClone_Click(object sender, EventArgs e)
+        {
+            var emitter = pgEmitter.SelectedObject as ParticleEmitter;
+            if (emitter == null)
+                return;
+
+            var newEmitter = emitter.DeepCopy(emitter.Owner);
+
+            if (!lstEmitters.Items.Contains(newEmitter))
+                lstEmitters.Items.Add(newEmitter);
+
+            lstEmitters.SelectedItem = newEmitter;
+        }
+
         /// <summary>
         /// Handles the Click event of the btnDeleteEmitter control.
         /// </summary>
@@ -188,6 +199,37 @@ namespace DemoGame.Editor
                 lstEmitters.Items.Add(emitter);
         }
 
+        void cmbEmitterType_SelectedEmitterChanged(ParticleEmitterComboBox sender, Type newType)
+        {
+            if (newType == null)
+                return;
+
+            var emitter = pgEmitter.SelectedObject as ParticleEmitter;
+            if (emitter == null)
+                return;
+
+            if (emitter.GetType() == newType)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to change the emitter type from {0} to {1}?";
+            if (
+                MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, newType.Name), "Change emitter type?",
+                                MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            var newEmitter = (IParticleEmitter)TypeFactory.GetTypeInstance(newType, emitter.Owner);
+
+            emitter.CopyValuesTo(newEmitter);
+
+            emitter.Dispose();
+            lstEmitters.Items.Remove(emitter);
+
+            if (!lstEmitters.Items.Contains(newEmitter))
+                lstEmitters.Items.Add(newEmitter);
+
+            lstEmitters.SelectedItem = newEmitter;
+        }
+
         void gameScreen_MouseMove(object sender, MouseEventArgs e)
         {
             if ((e.Button & MouseButtons.Left) == 0)
@@ -207,7 +249,7 @@ namespace DemoGame.Editor
                 lstEmitters.Items.Add(emitter);
         }
 
-        private void lstEmitters_SelectedValueChanged(object sender, EventArgs e)
+        void lstEmitters_SelectedValueChanged(object sender, EventArgs e)
         {
             pgEmitter.SelectedObject = null;
 
@@ -217,54 +259,12 @@ namespace DemoGame.Editor
                 cmbEmitterType.Enabled = true;
                 cmbEmitterType.SelectedItem = emitter.GetType();
             }
-            else{
+            else
+            {
                 cmbEmitterType.Enabled = false;
                 cmbEmitterType.SelectedIndex = -1;
             }
             pgEmitter.SelectedObject = lstEmitters.SelectedItem;
-        }
-
-        private void cmbEmitterType_SelectedEmitterChanged(ParticleEmitterComboBox sender, Type newType)
-        {
-            if (newType == null)
-                return;
-
-            var emitter = pgEmitter.SelectedObject as ParticleEmitter;
-            if (emitter == null)
-                return;
-
-            if (emitter.GetType() == newType)
-                return;
-
-            const string confirmMsg = "Are you sure you wish to change the emitter type from {0} to {1}?";
-            if (MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, newType.Name), "Change emitter type?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
-                return;
-
-            var newEmitter = (IParticleEmitter)TypeFactory.GetTypeInstance(newType, emitter.Owner);
-
-            emitter.CopyValuesTo(newEmitter);
-
-            emitter.Dispose();
-            lstEmitters.Items.Remove(emitter);
-
-            if (!lstEmitters.Items.Contains(newEmitter))
-                lstEmitters.Items.Add(newEmitter);
-
-            lstEmitters.SelectedItem = newEmitter;
-        }
-
-        private void btnClone_Click(object sender, EventArgs e)
-        {
-            var emitter = pgEmitter.SelectedObject as ParticleEmitter;
-            if (emitter == null)
-                return;
-
-            var newEmitter = emitter.DeepCopy(emitter.Owner);
-
-            if (!lstEmitters.Items.Contains(newEmitter))
-                lstEmitters.Items.Add(newEmitter);
-
-            lstEmitters.SelectedItem = newEmitter;
         }
     }
 }

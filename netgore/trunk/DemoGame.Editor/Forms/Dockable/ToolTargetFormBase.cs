@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
@@ -34,6 +33,13 @@ namespace DemoGame.Editor
         public ToolBarVisibility ToolBarVisibility { get; set; }
 
         /// <summary>
+        /// When overridden in the derived class, gets the object that represents the focus of this <see cref="ToolTargetFormBase"/>
+        /// and what the <see cref="ToolBar"/> is being displayed for.
+        /// </summary>
+        /// <returns>The object that represents what the <see cref="ToolBar"/> is being displayed for.</returns>
+        protected abstract object GetToolBarObject();
+
+        /// <summary>
         /// Raises the <see cref="System.Windows.Forms.Form.Activated"/> event.
         /// </summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -53,12 +59,5 @@ namespace DemoGame.Editor
                 tb.DisplayObject = toolBarObj;
             }
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the object that represents the focus of this <see cref="ToolTargetFormBase"/>
-        /// and what the <see cref="ToolBar"/> is being displayed for.
-        /// </summary>
-        /// <returns>The object that represents what the <see cref="ToolBar"/> is being displayed for.</returns>
-        protected abstract object GetToolBarObject();
     }
 }

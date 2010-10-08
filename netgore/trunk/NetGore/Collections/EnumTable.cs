@@ -79,15 +79,6 @@ namespace NetGore.Collections
             /// <summary>
             /// Initializes a new instance of the <see cref="DictionaryTable&lt;TKey, TValue&gt;"/> class.
             /// </summary>
-            /// <param name="other">The table to copy from.</param>
-            DictionaryTable(DictionaryTable<TKey, TValue> other)
-            {
-                _buffer = new Dictionary<int, TValue>(other._buffer);
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DictionaryTable&lt;TKey, TValue&gt;"/> class.
-            /// </summary>
             public DictionaryTable()
             {
                 _buffer = new Dictionary<int, TValue>();
@@ -98,6 +89,15 @@ namespace NetGore.Collections
                 {
                     _buffer.Add(i, value);
                 }
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DictionaryTable&lt;TKey, TValue&gt;"/> class.
+            /// </summary>
+            /// <param name="other">The table to copy from.</param>
+            DictionaryTable(DictionaryTable<TKey, TValue> other)
+            {
+                _buffer = new Dictionary<int, TValue>(other._buffer);
             }
 
             /// <summary>
@@ -151,6 +151,14 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Sets every index in the table to the default value.
+            /// </summary>
+            public void Clear()
+            {
+                SetAll(default(TValue));
+            }
+
+            /// <summary>
             /// Creates a deep copy of this enum table.
             /// </summary>
             /// <returns>A deep copy of this enum table.</returns>
@@ -160,11 +168,41 @@ namespace NetGore.Collections
             }
 
             /// <summary>
-            /// Sets every index in the table to the default value.
+            /// Returns an enumerator that iterates through the collection.
             /// </summary>
-            public void Clear()
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
             {
-                SetAll(default(TValue));
+                var values = _buffer.Select(x => new KeyValuePair<TKey, TValue>(KeyInfo<TKey>.FromInt(x.Key), x.Value));
+                foreach (var v in values)
+                {
+                    yield return v;
+                }
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            /// <summary>
+            /// Gets if the given key is a valid key.
+            /// </summary>
+            /// <param name="key">The key to check.</param>
+            /// <returns>True if a valid key; otherwise false. An invalid key is often the result of trying to use an enum value
+            /// that is not defined by the enum.</returns>
+            public bool IsValidKey(TKey key)
+            {
+                var i = GetIndex(key);
+                return IsValidIndex(i);
             }
 
             /// <summary>
@@ -178,18 +216,6 @@ namespace NetGore.Collections
                 {
                     _buffer[key] = value;
                 }
-            }
-
-            /// <summary>
-            /// Gets if the given key is a valid key.
-            /// </summary>
-            /// <param name="key">The key to check.</param>
-            /// <returns>True if a valid key; otherwise false. An invalid key is often the result of trying to use an enum value
-            /// that is not defined by the enum.</returns>
-            public bool IsValidKey(TKey key)
-            {
-                var i = GetIndex(key);
-                return IsValidIndex(i);
             }
 
             /// <summary>
@@ -223,30 +249,6 @@ namespace NetGore.Collections
             }
 
             #endregion
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-            {
-                var values =_buffer.Select(x => new KeyValuePair<TKey, TValue>(KeyInfo<TKey>.FromInt(x.Key), x.Value));
-                foreach (var v in values)
-                    yield return v;
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
 
         /// <summary>
@@ -479,6 +481,15 @@ namespace NetGore.Collections
             /// <summary>
             /// Initializes a new instance of the <see cref="RawTable&lt;TKey, TValue&gt;"/> class.
             /// </summary>
+            public RawTable()
+            {
+                var bufferSize = GetCollectionSize();
+                _buffer = new TValue[bufferSize];
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RawTable&lt;TKey, TValue&gt;"/> class.
+            /// </summary>
             /// <param name="other">The table to copy from.</param>
             RawTable(RawTable<TKey, TValue> other)
             {
@@ -486,15 +497,6 @@ namespace NetGore.Collections
                 _buffer = new TValue[bufferSize];
 
                 other._buffer.CopyTo(_buffer, 0);
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="RawTable&lt;TKey, TValue&gt;"/> class.
-            /// </summary>
-            public RawTable()
-            {
-                var bufferSize = GetCollectionSize();
-                _buffer = new TValue[bufferSize];
             }
 
             /// <summary>
@@ -567,6 +569,14 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Sets every index in the table to the default value.
+            /// </summary>
+            public void Clear()
+            {
+                SetAll(default(TValue));
+            }
+
+            /// <summary>
             /// Creates a deep copy of this enum table.
             /// </summary>
             /// <returns>A deep copy of this enum table.</returns>
@@ -576,24 +586,35 @@ namespace NetGore.Collections
             }
 
             /// <summary>
-            /// Sets every index in the table to the default value.
+            /// Returns an enumerator that iterates through the collection.
             /// </summary>
-            public void Clear()
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
             {
-                SetAll(default(TValue));
+                for (var i = 0; i < _buffer.Length; i++)
+                {
+                    if (_validIndices == null || _validIndices[i])
+                    {
+                        var key = GetKey(i);
+                        var value = _buffer[i];
+                        var v = new KeyValuePair<TKey, TValue>(key, value);
+                        yield return v;
+                    }
+                }
             }
 
             /// <summary>
-            /// Sets every index in the table to the given value.
+            /// Returns an enumerator that iterates through a collection.
             /// </summary>
-            /// <param name="value">The value to set all indices.</param>
-            public void SetAll(TValue value)
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                for (int i = 0; i < _buffer.Length; i++)
-                {
-                    if (_validIndices == null || _validIndices[i])
-                        _buffer[i] = value;
-                }
+                return GetEnumerator();
             }
 
             /// <summary>
@@ -606,6 +627,19 @@ namespace NetGore.Collections
             {
                 var i = GetIndex(key);
                 return IsValidIndex(i);
+            }
+
+            /// <summary>
+            /// Sets every index in the table to the given value.
+            /// </summary>
+            /// <param name="value">The value to set all indices.</param>
+            public void SetAll(TValue value)
+            {
+                for (var i = 0; i < _buffer.Length; i++)
+                {
+                    if (_validIndices == null || _validIndices[i])
+                        _buffer[i] = value;
+                }
             }
 
             /// <summary>
@@ -646,38 +680,6 @@ namespace NetGore.Collections
             }
 
             #endregion
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-            {
-                for (int i = 0; i < _buffer.Length; i++)
-                {
-                    if (_validIndices == null || _validIndices[i])
-                    {
-                        var key = GetKey(i);
-                        var value = _buffer[i];
-                        var v = new KeyValuePair<TKey, TValue>(key, value);
-                        yield return v;
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>2</filterpriority>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
 
         /// <summary>
@@ -693,19 +695,19 @@ namespace NetGore.Collections
             /// <summary>
             /// Initializes a new instance of the <see cref="RawTableBool{TKey}"/> class.
             /// </summary>
-            /// <param name="other">The table to copy from.</param>
-            RawTableBool(RawTableBool<TKey> other)
+            public RawTableBool()
             {
-                _buffer = new BitArray(other._buffer);
+                var bufferSize = GetCollectionSize();
+                _buffer = new BitArray(bufferSize, false);
             }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="RawTableBool{TKey}"/> class.
             /// </summary>
-            public RawTableBool()
+            /// <param name="other">The table to copy from.</param>
+            RawTableBool(RawTableBool<TKey> other)
             {
-                var bufferSize = GetCollectionSize();
-                _buffer = new BitArray(bufferSize, false);
+                _buffer = new BitArray(other._buffer);
             }
 
             /// <summary>
@@ -778,6 +780,14 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Sets every index in the table to the default value.
+            /// </summary>
+            public void Clear()
+            {
+                SetAll(default(bool));
+            }
+
+            /// <summary>
             /// Creates a deep copy of this enum table.
             /// </summary>
             /// <returns>A deep copy of this enum table.</returns>
@@ -787,20 +797,36 @@ namespace NetGore.Collections
             }
 
             /// <summary>
-            /// Sets every index in the table to the default value.
+            /// Returns an enumerator that iterates through the collection.
             /// </summary>
-            public void Clear()
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>1</filterpriority>
+            public IEnumerator<KeyValuePair<TKey, bool>> GetEnumerator()
             {
-                SetAll(default(bool));
+                for (var i = 0; i < _buffer.Length; i++)
+                {
+                    if (_validIndices == null || _validIndices[i])
+                    {
+                        var key = GetKey(i);
+                        var value = _buffer[i];
+                        var v = new KeyValuePair<TKey, bool>(key, value);
+                        yield return v;
+                    }
+                }
             }
 
             /// <summary>
-            /// Sets every index in the table to the given value.
+            /// Returns an enumerator that iterates through a collection.
             /// </summary>
-            /// <param name="value">The value to set all indices.</param>
-            public void SetAll(bool value)
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                _buffer.SetAll(value);
+                return GetEnumerator();
             }
 
             /// <summary>
@@ -813,6 +839,15 @@ namespace NetGore.Collections
             {
                 var i = GetIndex(key);
                 return IsValidIndex(i);
+            }
+
+            /// <summary>
+            /// Sets every index in the table to the given value.
+            /// </summary>
+            /// <param name="value">The value to set all indices.</param>
+            public void SetAll(bool value)
+            {
+                _buffer.SetAll(value);
             }
 
             /// <summary>
@@ -853,39 +888,6 @@ namespace NetGore.Collections
             }
 
             #endregion
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>1</filterpriority>
-            public IEnumerator<KeyValuePair<TKey, bool>> GetEnumerator()
-            {
-                for (int i = 0; i < _buffer.Length; i++)
-                {
-                    if (_validIndices == null || _validIndices[i])
-                    {
-                        var key = GetKey(i);
-                        var value = _buffer[i];
-                        var v = new KeyValuePair<TKey, bool>(key, value);
-                        yield return v;
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>2</filterpriority>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
 
         /// <summary>

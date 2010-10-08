@@ -90,6 +90,16 @@ namespace DemoGame.Client
         public bool DrawMapGrhs { get; set; }
 
         /// <summary>
+        /// Gets a Func describing this filter.
+        /// </summary>
+        /// <returns>A Func describing this filter.</returns>
+        [Browsable(false)]
+        public Func<IDrawable, bool> FilterFunc
+        {
+            get { return _filterFunc; }
+        }
+
+        /// <summary>
         /// The actual filtering method.
         /// </summary>
         /// <param name="drawable">The <see cref="IDrawable"/> to run the filter on.</param>
@@ -110,13 +120,6 @@ namespace DemoGame.Client
 
             return true;
         }
-
-        /// <summary>
-        /// Gets a Func describing this filter.
-        /// </summary>
-        /// <returns>A Func describing this filter.</returns>
-        [Browsable(false)]
-        public Func<IDrawable, bool> FilterFunc { get { return _filterFunc; } }
 
         #region IPersistable Members
 

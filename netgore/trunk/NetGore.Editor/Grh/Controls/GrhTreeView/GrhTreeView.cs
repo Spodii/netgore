@@ -9,9 +9,6 @@ using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
-using SFML.Graphics;
-using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace NetGore.Editor.Grhs
 {

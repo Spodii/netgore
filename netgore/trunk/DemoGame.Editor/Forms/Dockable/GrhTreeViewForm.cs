@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NetGore.Editor.Docking;
+using NetGore.Editor.Grhs;
 
 namespace DemoGame.Editor
 {
@@ -29,7 +30,7 @@ namespace DemoGame.Editor
                            GlobalState.Instance.MapGrhWalls);
         }
 
-        private void gtv_GrhAfterSelect(object sender, NetGore.Editor.Grhs.GrhTreeViewEventArgs e)
+        void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
             GlobalState.Instance.Map.GrhToPlace.SetGrh(e.GrhData);
         }

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using NetGore.World;
 
 namespace NetGore.Editor.UI
@@ -26,18 +21,6 @@ namespace NetGore.Editor.UI
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the item that will be selected by default.
-        /// </summary>
-        /// <param name="items">The items to choose from.</param>
-        /// <returns>
-        /// The item that will be selected by default.
-        /// </returns>
-        protected override Type SetDefaultSelectedItem(IEnumerable<Type> items)
-        {
-            return _defaultSelected;
-        }
-
-        /// <summary>
         /// Gets the string to display for an item.
         /// </summary>
         /// <param name="item">The item to get the display string for.</param>
@@ -54,6 +37,18 @@ namespace NetGore.Editor.UI
         protected override IEnumerable<Type> GetListItems()
         {
             return MapFileEntityAttribute.GetTypes().OrderBy(x => x.Name);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the item that will be selected by default.
+        /// </summary>
+        /// <param name="items">The items to choose from.</param>
+        /// <returns>
+        /// The item that will be selected by default.
+        /// </returns>
+        protected override Type SetDefaultSelectedItem(IEnumerable<Type> items)
+        {
+            return _defaultSelected;
         }
     }
 }

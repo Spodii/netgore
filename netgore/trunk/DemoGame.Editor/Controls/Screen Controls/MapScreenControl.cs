@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -22,13 +21,6 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
-        readonly TransBoxManager _transBoxManager = new TransBoxManager();
-
-        /// <summary>
-        /// Gets the <see cref="TransBoxManager"/> for this <see cref="MapScreenControl"/>.
-        /// </summary>
-        public TransBoxManager TransBoxManager { get { return _transBoxManager; } }
-
         /// <summary>
         /// Delegate for handling events from the <see cref="MapScreenControl"/>.
         /// </summary>
@@ -39,6 +31,7 @@ namespace DemoGame.Editor
 
         readonly ICamera2D _camera;
         readonly DrawingManager _drawingManager = new DrawingManager();
+        readonly TransBoxManager _transBoxManager = new TransBoxManager();
 
         Vector2 _cameraVelocity = Vector2.Zero;
         TickCount _lastUpdateTime = TickCount.MinValue;
@@ -62,12 +55,6 @@ namespace DemoGame.Editor
             {
                 _instances.Add(this);
             }
-        }
-
-        void SelectedObjsManager_SelectedChanged(SelectedObjectsManager<object> sender)
-        {
-            var items = sender.SelectedObjects.OfType<ISpatial>();
-            TransBoxManager.SetItems(items);
         }
 
         /// <summary>
@@ -113,6 +100,14 @@ namespace DemoGame.Editor
                 if (MapChanged != null)
                     MapChanged(this, oldValue, value);
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TransBoxManager"/> for this <see cref="MapScreenControl"/>.
+        /// </summary>
+        public TransBoxManager TransBoxManager
+        {
+            get { return _transBoxManager; }
         }
 
         /// <summary>
@@ -218,9 +213,7 @@ namespace DemoGame.Editor
             {
                 var worldSB = DrawingManager.BeginDrawWorld(Camera);
                 if (worldSB != null)
-                {
                     DrawMapWorld(worldSB);
-                }
             }
             finally
             {
@@ -233,9 +226,7 @@ namespace DemoGame.Editor
             {
                 var guiSB = DrawingManager.BeginDrawGUI();
                 if (guiSB != null)
-                {
                     DrawMapGUI(guiSB);
-                }
             }
             finally
             {
@@ -340,60 +331,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            if (DesignMode)
-            {
-                base.OnMouseDown(e);
-                return;
-            }
-
-            if (TransBoxManager.HandleMouseDown(e, Camera))
-                return;
-
-            base.OnMouseDown(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            if (DesignMode)
-            {
-                base.OnMouseUp(e);
-                return;
-            }
-
-            if (TransBoxManager.HandleMouseUp(e, Camera))
-                return;
-
-            base.OnMouseUp(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (DesignMode)
-            {
-                base.OnMouseMove(e);
-                return;
-            }
-
-            if (TransBoxManager.HandleMouseMove(e, Camera))
-                return;
-
-            base.OnMouseMove(e);
-        }
-
-        /// <summary>
         /// Handles the <see cref="MapScreenControl.MapChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old value.</param>
@@ -454,6 +391,60 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnMouseDown(e);
+                return;
+            }
+
+            if (TransBoxManager.HandleMouseDown(e, Camera))
+                return;
+
+            base.OnMouseDown(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnMouseMove(e);
+                return;
+            }
+
+            if (TransBoxManager.HandleMouseMove(e, Camera))
+                return;
+
+            base.OnMouseMove(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnMouseUp(e);
+                return;
+            }
+
+            if (TransBoxManager.HandleMouseUp(e, Camera))
+                return;
+
+            base.OnMouseUp(e);
+        }
+
+        /// <summary>
         /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
         /// </summary>
         /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
@@ -480,6 +471,12 @@ namespace DemoGame.Editor
                 return;
 
             Camera.Size = ClientSize.ToVector2() * Camera.Scale;
+        }
+
+        void SelectedObjsManager_SelectedChanged(SelectedObjectsManager<object> sender)
+        {
+            var items = sender.SelectedObjects.OfType<ISpatial>();
+            TransBoxManager.SetItems(items);
         }
 
         /// <summary>

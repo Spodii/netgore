@@ -60,6 +60,13 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
+        /// Gets or sets the object that is the reason why this <see cref="ToolBar"/> is currently visible. Can be null.
+        /// Can also be of any type, though it is highly recommended that a consistent type is used for each
+        /// <see cref="ToolBarVisibility"/>.
+        /// </summary>
+        public object DisplayObject { get; set; }
+
+        /// <summary>
         /// Gets or sets the visibility of this <see cref="ToolBar"/>. This value should NOT be changed after it is set!
         /// If set to <see cref="NetGore.Editor.EditorTool.ToolBarVisibility.None"/>, it won't automatically show any tools,
         /// making it quite useless.
@@ -116,13 +123,6 @@ namespace NetGore.Editor.EditorTool
                     Visible = false;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the object that is the reason why this <see cref="ToolBar"/> is currently visible. Can be null.
-        /// Can also be of any type, though it is highly recommended that a consistent type is used for each
-        /// <see cref="ToolBarVisibility"/>.
-        /// </summary>
-        public object DisplayObject { get; set; }
 
         /// <summary>
         /// Gets the <see cref="ToolBar"/> instances.

@@ -21,7 +21,6 @@ using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.IO;
-using CustomUITypeEditors = DemoGame.Editor.CustomUITypeEditors;
 
 namespace DemoGame.Editor
 {

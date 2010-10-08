@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Windows.Forms;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics.ParticleEngine;
 
@@ -10,6 +8,8 @@ namespace NetGore.Editor
 {
     public class ParticleEmitterListBox : TypedListBox<IParticleEmitter>
     {
+        const string _displayTextFormat = "[{0}] {1}";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterListBox"/> class.
         /// </summary>
@@ -18,16 +18,14 @@ namespace NetGore.Editor
             if (DesignMode)
                 return;
 
-            DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            DrawMode = DrawMode.OwnerDrawFixed;
         }
-
-        const string _displayTextFormat = "[{0}] {1}";
 
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
-        protected override void OnDrawItem(System.Windows.Forms.DrawItemEventArgs e)
+        protected override void OnDrawItem(DrawItemEventArgs e)
         {
             if (DesignMode)
             {

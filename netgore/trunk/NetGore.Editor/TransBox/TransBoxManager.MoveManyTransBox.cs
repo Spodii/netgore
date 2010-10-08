@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
@@ -67,14 +66,6 @@ namespace NetGore.Editor
             }
 
             /// <summary>
-            /// Updates the <see cref="ITransBox"/>.
-            /// </summary>
-            /// <param name="currentTime">The current time.</param>
-            public void Update(TickCount currentTime)
-            {
-            }
-
-            /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.
             /// </summary>
             /// <param name="worldPos">The world point.</param>
@@ -112,6 +103,14 @@ namespace NetGore.Editor
                 var s = Size.Round();
                 var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
                 SystemSprites.Move.Draw(spriteBatch, r, Color.White);
+            }
+
+            /// <summary>
+            /// Updates the <see cref="ITransBox"/>.
+            /// </summary>
+            /// <param name="currentTime">The current time.</param>
+            public void Update(TickCount currentTime)
+            {
             }
 
             #endregion
