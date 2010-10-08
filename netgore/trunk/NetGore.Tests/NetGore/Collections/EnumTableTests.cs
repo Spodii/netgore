@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using NetGore.Collections;
 using NUnit.Framework;
 
@@ -14,29 +13,52 @@ namespace NetGore.Tests.NetGore.Collections
         #region Unit tests
 
         [Test]
+        public void CreateSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            Assert.IsNotNull(t);
+            var typeName = t.GetType().FullName;
+            Assert.IsTrue(typeName.Contains("RawTableBool"), "Expected RawTableBool, but was " + typeName);
+        }
+
+        [Test]
         public void CreateSeqTest()
         {
-            const BindingFlags flags =
-                BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
             var t = EnumTable.Create<ESeq, object>();
             Assert.IsNotNull(t);
-            var internalCollection = t.GetType().GetField("_table", flags).GetValue(t);
-            var typeName = internalCollection.GetType().FullName;
+            var typeName = t.GetType().FullName;
             Assert.IsTrue(typeName.Contains("RawTable"), "Expected RawTable, but was " + typeName);
+        }
+
+        [Test]
+        public void CreateSparseBoolTest()
+        {
+            var t = EnumTable.Create<ESparse, bool>();
+            Assert.IsNotNull(t);
+            var typeName = t.GetType().FullName;
+            Assert.IsTrue(typeName.Contains("DictionaryTable"), "Expected DictionaryTable, but was " + typeName);
         }
 
         [Test]
         public void CreateSparseTest()
         {
-            const BindingFlags flags =
-                BindingFlags.GetField | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
             var t = EnumTable.Create<ESparse, object>();
             Assert.IsNotNull(t);
-            var internalCollection = t.GetType().GetField("_table", flags).GetValue(t);
-            var typeName = internalCollection.GetType().FullName;
+            var typeName = t.GetType().FullName;
             Assert.IsTrue(typeName.Contains("DictionaryTable"), "Expected DictionaryTable, but was " + typeName);
+        }
+
+        [Test]
+        public void GetSetInvalidSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            Assert.Throws<ArgumentOutOfRangeException>(() => t[(ESeq)(-999)] = true);
+
+#pragma warning disable 219
+            bool x;
+#pragma warning restore 219
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => x = t[(ESeq)(-999)]);
         }
 
         [Test]
@@ -63,6 +85,25 @@ namespace NetGore.Tests.NetGore.Collections
 #pragma warning restore 219
 
             Assert.Throws<ArgumentOutOfRangeException>(() => x = t[(ESparse)(-999)]);
+        }
+
+        [Test]
+        public void GetSetSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            Assert.AreEqual(false, t[ESeq.a]);
+
+            t[ESeq.a] = true;
+            Assert.AreEqual(true, t[ESeq.a]);
+
+            t[ESeq.d] = true;
+            Assert.AreEqual(true, t[ESeq.d]);
+
+            t[ESeq.h] = false;
+            Assert.AreEqual(false, t[ESeq.h]);
+
+            t[ESeq.d] = true;
+            Assert.AreEqual(true, t[ESeq.d]);
         }
 
         [Test]
@@ -104,6 +145,19 @@ namespace NetGore.Tests.NetGore.Collections
         }
 
         [Test]
+        public void IsValidKeySeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+
+            foreach (var v in EnumHelper<ESeq>.Values)
+            {
+                Assert.IsTrue(t.IsValidKey(v));
+            }
+
+            Assert.IsFalse(t.IsValidKey((ESeq)(-999)));
+        }
+
+        [Test]
         public void IsValidKeySeqTest()
         {
             var t = EnumTable.Create<ESeq, object>();
@@ -127,6 +181,30 @@ namespace NetGore.Tests.NetGore.Collections
             }
 
             Assert.IsFalse(t.IsValidKey((ESparse)(-999)));
+        }
+
+        [Test]
+        public void TryGetSetSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            bool o;
+
+            var r = t.TryGetValue(ESeq.a, out o);
+            Assert.IsTrue(r);
+            Assert.AreEqual(false, o);
+
+            r = t.TrySetValue(ESeq.a, true);
+            Assert.IsTrue(r);
+
+            r = t.TryGetValue(ESeq.a, out o);
+            Assert.IsTrue(r);
+            Assert.AreEqual(true, o);
+
+            r = t.TryGetValue((ESeq)(-999), out o);
+            Assert.IsFalse(r);
+
+            r = t.TrySetValue((ESeq)(-999), true);
+            Assert.IsFalse(r);
         }
 
         [Test]
