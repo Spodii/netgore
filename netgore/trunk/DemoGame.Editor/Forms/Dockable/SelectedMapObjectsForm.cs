@@ -23,6 +23,9 @@ namespace DemoGame.Editor
         {
             base.OnLoad(e);
 
+            if (DesignMode)
+                return;
+
             var som = GlobalState.Instance.Map.SelectedObjsManager;
             som.SelectedListBox = lstItems;
             som.PropertyGrid = pgSelected;

@@ -296,7 +296,7 @@ namespace NetGore.Graphics.ParticleEngine
                 newName = baseEmitterName + " (" + i + ")";
                 i++;
             }
-            while (_emitters.ContainsKey(baseEmitterName));
+            while (_emitters.ContainsKey(newName));
 
             Debug.Assert(!_emitters.ContainsKey(newName));
 

@@ -416,6 +416,10 @@ namespace DemoGame.Editor
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+
+            if (DesignMode)
+                return;
+
             ks = e;
 
             const float TranslateRate = 7f;
@@ -468,6 +472,10 @@ namespace DemoGame.Editor
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyUp(e);
+
+            if (DesignMode) 
+                return;
+
             ks = e;
         }
 
@@ -478,6 +486,9 @@ namespace DemoGame.Editor
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            if (DesignMode)
+                return;
 
             // Create the engine objects
             _drawingManager = new DrawingManager(GameScreen.RenderWindow);

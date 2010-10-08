@@ -90,6 +90,12 @@ namespace DemoGame.Editor
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (DesignMode)
+            {
+                base.OnClosing(e);
+                return;
+            }
+
             Collection = null;
 
             base.OnClosing(e);
