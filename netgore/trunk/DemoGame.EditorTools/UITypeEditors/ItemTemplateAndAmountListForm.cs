@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Editor;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     public partial class ItemTemplateAndAmountListForm : Form
     {

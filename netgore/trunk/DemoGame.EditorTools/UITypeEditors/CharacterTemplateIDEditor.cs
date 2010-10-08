@@ -9,7 +9,7 @@ using System.Windows.Forms.Design;
 using DemoGame.Server;
 using log4net;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="CharacterTemplateID"/>.

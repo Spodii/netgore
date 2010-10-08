@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using log4net;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="GameMessageCollection"/>.

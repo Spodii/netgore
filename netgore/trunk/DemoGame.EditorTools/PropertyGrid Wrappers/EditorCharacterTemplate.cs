@@ -10,7 +10,7 @@ using NetGore;
 using NetGore.Db;
 using NetGore.Features.Quests;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A <see cref="CharacterTemplate"/> that is to be used in editors in a <see cref="PropertyGrid"/>.

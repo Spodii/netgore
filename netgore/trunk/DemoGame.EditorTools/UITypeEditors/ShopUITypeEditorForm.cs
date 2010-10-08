@@ -7,7 +7,7 @@ using DemoGame.Server;
 using DemoGame.Server.Queries;
 using NetGore.Features.Shops;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="Form"/> for listing the <see cref="Shop"/> information from the database.

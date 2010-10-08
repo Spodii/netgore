@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="Form"/> for listing the character template information from the database.

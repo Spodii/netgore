@@ -4,8 +4,9 @@ using System.Windows.Forms;
 using DemoGame.Server;
 using NetGore;
 using NetGore.Editor;
+using CharacterTemplateInventoryItem = DemoGame.Editor.CharacterTemplateInventoryItem;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     public class CharacterTemplateInventoryItemListBox : ListBox
     {

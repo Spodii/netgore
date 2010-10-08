@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     public partial class ItemTemplateIDListForm : Form
     {

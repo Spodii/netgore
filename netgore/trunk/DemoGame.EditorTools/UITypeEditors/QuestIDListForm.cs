@@ -7,7 +7,7 @@ using NetGore;
 using NetGore.Features.Quests;
 using NetGore.IO;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     public partial class QuestIDListForm : Form
     {

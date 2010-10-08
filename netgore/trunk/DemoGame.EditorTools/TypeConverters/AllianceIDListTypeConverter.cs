@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using DemoGame.Server;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.TypeConverters
 {
     /// <summary>
     /// A <see cref="TypeConverter"/> for a collection of <see cref="AllianceID"/>s and values.

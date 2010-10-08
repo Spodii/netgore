@@ -1,4 +1,4 @@
-﻿namespace DemoGame.EditorTools
+﻿namespace DemoGame.Editor.UITypeEditors
 {
     partial class CharacterTemplateEquippedItemListForm
     {
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstItems = new DemoGame.EditorTools.CharacterTemplateEquippedItemListBox();
+            this.lstItems = new DemoGame.Editor.UITypeEditors.CharacterTemplateEquippedItemListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.txtItem = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();

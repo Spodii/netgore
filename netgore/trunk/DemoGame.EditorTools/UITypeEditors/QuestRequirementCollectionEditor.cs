@@ -10,7 +10,7 @@ using DemoGame.Server;
 using log4net;
 using NetGore.Features.Quests;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="QuestRequirementCollection{TCharacter}"/>.

@@ -1,4 +1,4 @@
-﻿namespace DemoGame.EditorTools
+﻿namespace DemoGame.Editor.UITypeEditors
 {
     partial class ItemTemplateAndAmountListForm
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstItems = new DemoGame.EditorTools.ItemTemplateAmountListBox();
+            this.lstItems = new DemoGame.Editor.UITypeEditors.ItemTemplateAmountListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.txtItem = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();

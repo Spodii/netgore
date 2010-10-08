@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms.Design;
 using NetGore.Editor;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="ItemTemplateAndAmountEditor"/>.

@@ -2,7 +2,7 @@ using System.Linq;
 using NetGore.Db;
 using NetGore.Editor.UI;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditorListForm{T}"/> for listing items from the database.
@@ -21,7 +21,7 @@ namespace DemoGame.EditorTools
                 if (ret != null)
                     return ret;
 
-                return CustomUITypeEditors.DbController;
+                return DemoGame.Editor.CustomUITypeEditors.DbController;
             }
         }
     }

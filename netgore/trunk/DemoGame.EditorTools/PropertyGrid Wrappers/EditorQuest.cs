@@ -14,7 +14,7 @@ using NetGore.Editor;
 using NetGore.Features.Quests;
 using NetGore.IO;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A <see cref="Quest"/> that is to be used in editors in a <see cref="PropertyGrid"/>.

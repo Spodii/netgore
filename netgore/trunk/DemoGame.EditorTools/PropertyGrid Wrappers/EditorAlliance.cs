@@ -11,7 +11,7 @@ using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor
 {
     /// <summary>
     /// An <see cref="Alliance"/> that is to be used in editors in a <see cref="PropertyGrid"/>.

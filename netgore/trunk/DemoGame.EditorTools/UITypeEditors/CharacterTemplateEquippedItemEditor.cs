@@ -5,7 +5,7 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms.Design;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.UITypeEditors
 {
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="CharacterTemplateEquippedItemEditor"/>.

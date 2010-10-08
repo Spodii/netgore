@@ -7,7 +7,7 @@ using System.Text;
 using DemoGame.Server;
 using NetGore.Editor;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor.TypeConverters
 {
     /// <summary>
     /// A <see cref="TypeConverter"/> for a collection of <see cref="ItemTemplateID"/>s and values.

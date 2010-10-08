@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
-using DemoGame.EditorTools;
+using DemoGame.Editor.UITypeEditors;
 using DemoGame.Server;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
@@ -21,7 +21,7 @@ using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.IO;
-using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
+using CustomUITypeEditors = DemoGame.Editor.CustomUITypeEditors;
 
 namespace DemoGame.Editor
 {

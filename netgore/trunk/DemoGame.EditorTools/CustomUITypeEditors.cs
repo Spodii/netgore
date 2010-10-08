@@ -5,6 +5,8 @@ using System.Drawing.Design;
 using System.Linq;
 using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
+using DemoGame.Editor.TypeConverters;
+using DemoGame.Editor.UITypeEditors;
 using DemoGame.Server;
 using DemoGame.Server.DbObjs;
 using NetGore;
@@ -17,8 +19,9 @@ using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.NPCChat;
 using NetGore.World;
+using CharacterTemplateInventoryItem = DemoGame.Editor.CharacterTemplateInventoryItem;
 
-namespace DemoGame.EditorTools
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Helper methods for the custom <see cref="UITypeEditor"/>s. Call <see cref="CustomUITypeEditors.AddEditors"/> once at the
