@@ -19,6 +19,17 @@ namespace NetGore.Collections
         TValue this[TKey key] { get; set; }
 
         /// <summary>
+        /// Sets every index in the table to the default value.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// Sets every index in the table to the given value.
+        /// </summary>
+        /// <param name="value">The value to set all indices.</param>
+        void SetAll(TValue value);
+
+        /// <summary>
         /// Gets if the given key is a valid key.
         /// </summary>
         /// <param name="key">The key to check.</param>

@@ -140,6 +140,27 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Sets every index in the table to the default value.
+            /// </summary>
+            public void Clear()
+            {
+                SetAll(default(TValue));
+            }
+
+            /// <summary>
+            /// Sets every index in the table to the given value.
+            /// </summary>
+            /// <param name="value">The value to set all indices.</param>
+            public void SetAll(TValue value)
+            {
+                var keys = EnumHelper<TKey>.Values.Select(GetIndex);
+                foreach (var key in keys)
+                {
+                    _buffer[key] = value;
+                }
+            }
+
+            /// <summary>
             /// Gets if the given key is a valid key.
             /// </summary>
             /// <param name="key">The key to check.</param>
@@ -514,6 +535,27 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Sets every index in the table to the default value.
+            /// </summary>
+            public void Clear()
+            {
+                SetAll(default(TValue));
+            }
+
+            /// <summary>
+            /// Sets every index in the table to the given value.
+            /// </summary>
+            /// <param name="value">The value to set all indices.</param>
+            public void SetAll(TValue value)
+            {
+                for (int i = 0; i < _buffer.Length; i++)
+                {
+                    if (_validIndices == null || _validIndices[i])
+                        _buffer[i] = value;
+                }
+            }
+
+            /// <summary>
             /// Gets if the given key is a valid key.
             /// </summary>
             /// <param name="key">The key to check.</param>
@@ -683,6 +725,23 @@ namespace NetGore.Collections
 
                     _buffer[i] = value;
                 }
+            }
+
+            /// <summary>
+            /// Sets every index in the table to the default value.
+            /// </summary>
+            public void Clear()
+            {
+                SetAll(default(bool));
+            }
+
+            /// <summary>
+            /// Sets every index in the table to the given value.
+            /// </summary>
+            /// <param name="value">The value to set all indices.</param>
+            public void SetAll(bool value)
+            {
+                _buffer.SetAll(value);
             }
 
             /// <summary>
