@@ -1,6 +1,6 @@
 ﻿namespace DemoGame.ParticleEffectEditor
 {
-    partial class Form1
+    partial class ParticleEditorForm
     {
         /// <summary>
         /// Required designer variable.
