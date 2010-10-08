@@ -140,7 +140,6 @@
             this.lstEmitters.Name = "lstEmitters";
             this.lstEmitters.Size = new System.Drawing.Size(242, 131);
             this.lstEmitters.TabIndex = 1;
-            this.lstEmitters.TypedSelectedItemChanged += new NetGore.Editor.WinForms.TypedListBoxChangeEventHandler<NetGore.Graphics.ParticleEngine.IParticleEmitter>(this.lstEmitters_TypedSelectedItemChanged);
             // 
             // pButtons
             // 

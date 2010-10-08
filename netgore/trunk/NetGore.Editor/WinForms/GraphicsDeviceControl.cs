@@ -19,29 +19,11 @@ namespace NetGore.Editor.WinForms
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// The maximum amount of time we must wait to repaint with PaintUsingSystemDrawing().
-        /// The reason for this is to avoid excessive overhead of constantly repainting and to avoid
-        /// making the message constantly flickering.
-        /// </summary>
-        const int _minSystemPaintDelay = 500;
-
-        /// <summary>
-        /// The <see cref="StringFormat"/> for drawing the error message on the control.
-        /// </summary>
-        static readonly StringFormat _errorMessageStringFormat = new StringFormat
-        { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-
         readonly Timer _redrawTimer;
 
         bool _isInitialized = false;
 
         string _lastDrawError = null;
-
-        /// <summary>
-        /// The last time a message was painted using PaintUsingSystemDrawing().
-        /// </summary>
-        TickCount _lastSystemPaintTime;
 
         RenderWindow _rw;
 
@@ -248,7 +230,7 @@ namespace NetGore.Editor.WinForms
         {
             // In design mode, use some custom, basic drawing
             if (DesignMode || _lastDrawError != null)
-                PaintUsingSystemDrawing(e.Graphics, _lastDrawError ?? Name);
+                base.OnPaint(e);
         }
 
         /// <summary>
@@ -267,39 +249,6 @@ namespace NetGore.Editor.WinForms
         /// <param name="newRenderWindow">The current <see cref="RenderWindow"/>.</param>
         protected virtual void OnRenderWindowCreated(RenderWindow newRenderWindow)
         {
-        }
-
-        /// <summary>
-        /// If we do not have a valid graphics device (for instance if the device
-        /// is lost, or if we are running inside the Form designer), we must use
-        /// regular System.Drawing method to display a status message.
-        /// </summary>
-        /// <param name="graphics">Graphic to paint to.</param>
-        /// <param name="text">Text to write.</param>
-        void PaintUsingSystemDrawing(System.Drawing.Graphics graphics, string text)
-        {
-            if (graphics == null)
-                return;
-
-            // Ensure enough time has elapsed since last painting
-            var currentTime = TickCount.Now;
-            if (_lastSystemPaintTime > currentTime - _minSystemPaintDelay)
-                return;
-
-            _lastSystemPaintTime = currentTime;
-
-            // Clear the screen
-            graphics.Clear(BackColor);
-
-            // Can only write a message if we have a valid string
-            if (string.IsNullOrEmpty(text))
-                return;
-
-            // Write the message
-            using (var brush = new SolidBrush(ForeColor))
-            {
-                graphics.DrawString(text, Font, brush, ClientRectangle, _errorMessageStringFormat);
-            }
         }
 
         void RecreateRenderWindow(IntPtr handle)
