@@ -11,6 +11,39 @@ namespace NetGore.Tests.NetGore.Collections
     public class EnumTableTests
     {
         [Test]
+        public void DeepCopySeqTest()
+        {
+            var t = EnumTable.Create<ESeq, string>();
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            var t2 = t.DeepCopy();
+            Assert.IsTrue(t2.All(x => x.Value == "hi"));
+        }
+
+        [Test]
+        public void DeepCopySeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            t.SetAll(true);
+            Assert.IsTrue(t.All(x => x.Value));
+
+            var t2 = t.DeepCopy();
+            Assert.IsTrue(t2.All(x => x.Value));
+        }
+
+        [Test]
+        public void DeepCopySparseTest()
+        {
+            var t = EnumTable.Create<ESparse, string>();
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            var t2 = t.DeepCopy();
+            Assert.IsTrue(t2.All(x => x.Value == "hi"));
+        }
+
+        [Test]
         public void EnumerateSeqTest()
         {
             var t = EnumTable.Create<ESeq, object>();
@@ -30,7 +63,6 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.AreEqual(keys.Length, expectedKeys.Length);
             Assert.IsTrue(keys.ContainSameElements(expectedKeys));
         }
-
 
         [Test]
         public void EnumerateSeqBoolTest()

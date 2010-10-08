@@ -74,13 +74,24 @@ namespace NetGore.Collections
         sealed class DictionaryTable<TKey, TValue> : IEnumTable<TKey, TValue>
             where TKey : struct, IComparable, IConvertible, IFormattable
         {
-            readonly IDictionary<int, TValue> _buffer = new Dictionary<int, TValue>();
+            readonly IDictionary<int, TValue> _buffer;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DictionaryTable&lt;TKey, TValue&gt;"/> class.
+            /// </summary>
+            /// <param name="other">The table to copy from.</param>
+            DictionaryTable(DictionaryTable<TKey, TValue> other)
+            {
+                _buffer = new Dictionary<int, TValue>(other._buffer);
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DictionaryTable&lt;TKey, TValue&gt;"/> class.
             /// </summary>
             public DictionaryTable()
             {
+                _buffer = new Dictionary<int, TValue>();
+
                 // Add the initial values to the buffer
                 var value = default(TValue);
                 foreach (var i in EnumHelper<TKey>.Values.Select(GetIndex).Distinct())
@@ -137,6 +148,15 @@ namespace NetGore.Collections
 
                     _buffer[i] = value;
                 }
+            }
+
+            /// <summary>
+            /// Creates a deep copy of this enum table.
+            /// </summary>
+            /// <returns>A deep copy of this enum table.</returns>
+            public IEnumTable<TKey, TValue> DeepCopy()
+            {
+                return new DictionaryTable<TKey, TValue>(this);
             }
 
             /// <summary>
@@ -459,6 +479,18 @@ namespace NetGore.Collections
             /// <summary>
             /// Initializes a new instance of the <see cref="RawTable&lt;TKey, TValue&gt;"/> class.
             /// </summary>
+            /// <param name="other">The table to copy from.</param>
+            RawTable(RawTable<TKey, TValue> other)
+            {
+                var bufferSize = GetCollectionSize();
+                _buffer = new TValue[bufferSize];
+
+                other._buffer.CopyTo(_buffer, 0);
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RawTable&lt;TKey, TValue&gt;"/> class.
+            /// </summary>
             public RawTable()
             {
                 var bufferSize = GetCollectionSize();
@@ -532,6 +564,15 @@ namespace NetGore.Collections
 
                     _buffer[i] = value;
                 }
+            }
+
+            /// <summary>
+            /// Creates a deep copy of this enum table.
+            /// </summary>
+            /// <returns>A deep copy of this enum table.</returns>
+            public IEnumTable<TKey, TValue> DeepCopy()
+            {
+                return new RawTable<TKey, TValue>(this);
             }
 
             /// <summary>
@@ -652,6 +693,15 @@ namespace NetGore.Collections
             /// <summary>
             /// Initializes a new instance of the <see cref="RawTableBool{TKey}"/> class.
             /// </summary>
+            /// <param name="other">The table to copy from.</param>
+            RawTableBool(RawTableBool<TKey> other)
+            {
+                _buffer = new BitArray(other._buffer);
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RawTableBool{TKey}"/> class.
+            /// </summary>
             public RawTableBool()
             {
                 var bufferSize = GetCollectionSize();
@@ -725,6 +775,15 @@ namespace NetGore.Collections
 
                     _buffer[i] = value;
                 }
+            }
+
+            /// <summary>
+            /// Creates a deep copy of this enum table.
+            /// </summary>
+            /// <returns>A deep copy of this enum table.</returns>
+            public IEnumTable<TKey, bool> DeepCopy()
+            {
+                return new RawTableBool<TKey>(this);
             }
 
             /// <summary>
