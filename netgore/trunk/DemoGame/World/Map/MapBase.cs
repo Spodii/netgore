@@ -1179,6 +1179,19 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            var ret = Name ?? "[Unnamed]";
+            ret += " [ID: " + ID + "]";
+            return ret;
+        }
+
+        /// <summary>
         /// Updates the <see cref="IDelayedMapEvent"/>s.
         /// </summary>
         void UpdateDelayedEvents()
