@@ -319,6 +319,9 @@
     <Compile Include="WinForms\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\ParticleEmitterListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WinForms\Persistable Controls\PersistableCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>

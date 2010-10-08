@@ -6,7 +6,7 @@ using System.Text;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics.ParticleEngine;
 
-namespace DemoGame.ParticleEffectEditor
+namespace NetGore.Editor
 {
     public class ParticleEmitterListBox : TypedListBox<IParticleEmitter>
     {
