@@ -75,6 +75,45 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.IsTrue(keys.ContainSameElements(expectedKeys));
         }
 
+        [Test]
+        public void SetAllAndClearSeqTest()
+        {
+            var t = EnumTable.Create<ESeq, string>();
+            Assert.IsTrue(t.All(x => x.Value == null));
+
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            t.Clear();
+            Assert.IsTrue(t.All(x => x.Value == null));
+        }
+
+        [Test]
+        public void SetAllAndClearSparseTest()
+        {
+            var t = EnumTable.Create<ESparse, string>();
+            Assert.IsTrue(t.All(x => x.Value == null));
+
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            t.Clear();
+            Assert.IsTrue(t.All(x => x.Value == null));
+        }
+
+        [Test]
+        public void SetAllAndClearSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            Assert.IsTrue(t.All(x => x.Value == default(bool)));
+
+            t.SetAll(true);
+            Assert.IsTrue(t.All(x => x.Value));
+
+            t.Clear();
+            Assert.IsTrue(t.All(x => x.Value == default(bool)));
+        }
+
         #region Unit tests
 
         [Test]
