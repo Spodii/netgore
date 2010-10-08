@@ -10,6 +10,71 @@ namespace NetGore.Tests.NetGore.Collections
     [TestFixture]
     public class EnumTableTests
     {
+        [Test]
+        public void EnumerateSeqTest()
+        {
+            var t = EnumTable.Create<ESeq, object>();
+            t[ESeq.c] = "hello";
+
+            foreach (var v in t)
+            {
+                if (v.Key == ESeq.c)
+                    Assert.AreEqual("hello", v.Value);
+                else
+                    Assert.AreEqual(null, v.Value);
+            }
+
+            var keys = t.Select(x => x.Key).ToArray();
+            var expectedKeys = EnumHelper<ESeq>.Values.ToArray();
+
+            Assert.AreEqual(keys.Length, expectedKeys.Length);
+            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
+        }
+
+
+        [Test]
+        public void EnumerateSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            t[ESeq.c] = true;
+
+            foreach (var v in t)
+            {
+                if (v.Key == ESeq.c)
+                    Assert.AreEqual(true, v.Value);
+                else
+                    Assert.AreEqual(false, v.Value);
+            }
+
+            var keys = t.Select(x => x.Key).ToArray();
+            var expectedKeys = EnumHelper<ESeq>.Values.ToArray();
+
+            Assert.AreEqual(keys.Length, expectedKeys.Length);
+            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
+        }
+
+
+        [Test]
+        public void EnumerateSparseTest()
+        {
+            var t = EnumTable.Create<ESparse, object>();
+            t[ESparse.c] = "hello";
+
+            foreach (var v in t)
+            {
+                if (v.Key == ESparse.c)
+                    Assert.AreEqual("hello", v.Value);
+                else
+                    Assert.AreEqual(null, v.Value);
+            }
+
+            var keys = t.Select(x => x.Key).ToArray();
+            var expectedKeys = EnumHelper<ESparse>.Values.ToArray();
+
+            Assert.AreEqual(keys.Length, expectedKeys.Length);
+            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
+        }
+
         #region Unit tests
 
         [Test]
