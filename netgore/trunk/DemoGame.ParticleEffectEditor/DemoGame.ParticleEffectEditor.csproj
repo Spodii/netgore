@@ -111,9 +111,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameScreenControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ParticleEffectScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -122,12 +119,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ScreenForm.Designer.cs">
-      <DependentUpon>ScreenForm.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
