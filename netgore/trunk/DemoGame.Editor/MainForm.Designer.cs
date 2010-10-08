@@ -53,6 +53,8 @@ namespace DemoGame.Editor
             this.mapToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.particleEffectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectedObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,8 +66,6 @@ namespace DemoGame.Editor
             this.dockPanel = new NetGore.Editor.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
-            this.particleEffectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,6 +105,19 @@ namespace DemoGame.Editor
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             resources.ApplyResources(this.newToolStripMenuItem, "newToolStripMenuItem");
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // particleEffectToolStripMenuItem
+            // 
+            this.particleEffectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadToolStripMenuItem1});
+            this.particleEffectToolStripMenuItem.Name = "particleEffectToolStripMenuItem";
+            resources.ApplyResources(this.particleEffectToolStripMenuItem, "particleEffectToolStripMenuItem");
+            // 
+            // loadToolStripMenuItem1
+            // 
+            this.loadToolStripMenuItem1.Name = "loadToolStripMenuItem1";
+            resources.ApplyResources(this.loadToolStripMenuItem1, "loadToolStripMenuItem1");
+            this.loadToolStripMenuItem1.Click += new System.EventHandler(this.loadToolStripMenuItem1_Click);
             // 
             // closeToolStripMenuItem
             // 
@@ -227,20 +240,6 @@ namespace DemoGame.Editor
             this.tbGlobal.AllowItemReorder = true;
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
-            // 
-            // particleEffectToolStripMenuItem
-            // 
-            this.particleEffectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadToolStripMenuItem1});
-            this.particleEffectToolStripMenuItem.Name = "particleEffectToolStripMenuItem";
-            resources.ApplyResources(this.particleEffectToolStripMenuItem, "particleEffectToolStripMenuItem");
-            // 
-            // loadToolStripMenuItem1
-            // 
-            this.loadToolStripMenuItem1.CheckOnClick = true;
-            this.loadToolStripMenuItem1.Name = "loadToolStripMenuItem1";
-            resources.ApplyResources(this.loadToolStripMenuItem1, "loadToolStripMenuItem1");
-            this.loadToolStripMenuItem1.Click += new System.EventHandler(this.loadToolStripMenuItem1_Click);
             // 
             // MainForm
             // 
