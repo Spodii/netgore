@@ -22,11 +22,11 @@ namespace DemoGame.ParticleEffectEditor
         public ParticleEffectScreenControl()
         {
             // Only create our objects when not in design mode
-            if (DesignMode)
-                return;
-            
-            _camera = new Camera2D(new Vector2(400, 300));
-            _drawingManager = new DrawingManager();
+            if (!DesignMode)
+            {
+                _camera = new Camera2D(new Vector2(400, 300));
+                _drawingManager = new DrawingManager();
+            }
         }
 
         /// <summary>
@@ -59,6 +59,8 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
         protected virtual void DrawGUI(ISpriteBatch sb)
         {
+            if (DesignMode)
+                return;
         }
 
         /// <summary>
@@ -67,6 +69,9 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
         protected virtual void DrawWorld(ISpriteBatch sb)
         {
+            if (DesignMode)
+                return;
+
             var pe = ParticleEffect;
             if (pe == null)
                 return;
@@ -80,6 +85,9 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="currentTime">The current time.</param>
         protected override void HandleDraw(TickCount currentTime)
         {
+            if (DesignMode)
+                return;
+
             var pe = ParticleEffect;
             if (pe == null)
                 return;
@@ -121,6 +129,9 @@ namespace DemoGame.ParticleEffectEditor
         {
             base.Initialize();
 
+            if (DesignMode)
+                return;
+
             Camera.Size = ClientSize.ToVector2();
             Camera.CenterOn(Vector2.Zero);
 
@@ -136,6 +147,9 @@ namespace DemoGame.ParticleEffectEditor
         protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
         {
             base.OnRenderWindowCreated(newRenderWindow);
+
+            if (DesignMode)
+                return;
 
             _drawingManager.RenderWindow = newRenderWindow;
 
