@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
+using NetGore.Editor.UI;
 using NetGore.World;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
@@ -248,6 +249,20 @@ namespace DemoGame.Editor
 
         private void loadToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            using (var uiFrm = new ParticleEffectUITypeEditorForm(null))
+            {
+                var result = uiFrm.ShowDialog(this);
+                if (result != System.Windows.Forms.DialogResult.OK && result != System.Windows.Forms.DialogResult.Yes)
+                    return;
+
+                var effect = uiFrm.SelectedItem;
+                if (effect == null)
+                    return;
+
+                ParticleEditorForm editorFrm = new ParticleEditorForm();
+                editorFrm.ParticleEffect = effect;
+                editorFrm.Show(dockPanel, DockState.Float);
+            }
         }
     }
 }
