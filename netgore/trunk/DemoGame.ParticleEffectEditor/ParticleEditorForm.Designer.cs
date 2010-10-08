@@ -33,27 +33,27 @@
             this.tpEffect = new System.Windows.Forms.TabPage();
             this.pgEffect = new System.Windows.Forms.PropertyGrid();
             this.tpEmitter = new System.Windows.Forms.TabPage();
+            this.pgEmitter = new System.Windows.Forms.PropertyGrid();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cmbEmitterType = new NetGore.Editor.WinForms.ParticleEmitterComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.gbEmitter = new System.Windows.Forms.GroupBox();
             this.pButtons = new System.Windows.Forms.Panel();
-            this.btnDeleteEmitter = new System.Windows.Forms.Button();
-            this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
-            this.btnClone = new System.Windows.Forms.Button();
             this.lstEmitters = new DemoGame.ParticleEffectEditor.ParticleEmitterListBox();
             this.gameScreen = new DemoGame.ParticleEffectEditor.ParticleEffectScreenControl();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cmbEmitterType = new NetGore.Editor.WinForms.ParticleEmitterComboBox();
-            this.pgEmitter = new System.Windows.Forms.PropertyGrid();
+            this.btnClone = new System.Windows.Forms.Button();
+            this.btnDeleteEmitter = new System.Windows.Forms.Button();
+            this.btnNewEmitter = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tc.SuspendLayout();
             this.tpEffect.SuspendLayout();
             this.tpEmitter.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.gbEmitter.SuspendLayout();
             this.pButtons.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -117,6 +117,47 @@
             this.tpEmitter.Text = "Emitters";
             this.tpEmitter.UseVisualStyleBackColor = true;
             // 
+            // pgEmitter
+            // 
+            this.pgEmitter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgEmitter.Location = new System.Drawing.Point(3, 209);
+            this.pgEmitter.Name = "pgEmitter";
+            this.pgEmitter.Size = new System.Drawing.Size(248, 278);
+            this.pgEmitter.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cmbEmitterType);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 184);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(248, 25);
+            this.panel1.TabIndex = 6;
+            // 
+            // cmbEmitterType
+            // 
+            this.cmbEmitterType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbEmitterType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbEmitterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEmitterType.FormattingEnabled = true;
+            this.cmbEmitterType.Location = new System.Drawing.Point(65, 0);
+            this.cmbEmitterType.Name = "cmbEmitterType";
+            this.cmbEmitterType.Size = new System.Drawing.Size(183, 21);
+            this.cmbEmitterType.TabIndex = 8;
+            this.cmbEmitterType.SelectedEmitterChanged += new NetGore.Editor.WinForms.ParticleEmitterComboBoxHandler(this.cmbEmitterType_SelectedEmitterChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label1.Size = new System.Drawing.Size(65, 17);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Emitter type:";
+            // 
             // gbEmitter
             // 
             this.gbEmitter.Controls.Add(this.lstEmitters);
@@ -141,28 +182,6 @@
             this.pButtons.Size = new System.Drawing.Size(242, 31);
             this.pButtons.TabIndex = 0;
             // 
-            // btnDeleteEmitter
-            // 
-            this.btnDeleteEmitter.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnDeleteEmitter.Location = new System.Drawing.Point(68, 3);
-            this.btnDeleteEmitter.Name = "btnDeleteEmitter";
-            this.btnDeleteEmitter.Size = new System.Drawing.Size(65, 25);
-            this.btnDeleteEmitter.TabIndex = 1;
-            this.btnDeleteEmitter.Text = "Delete";
-            this.btnDeleteEmitter.UseVisualStyleBackColor = true;
-            this.btnDeleteEmitter.Click += new System.EventHandler(this.btnDeleteEmitter_Click);
-            // 
-            // btnNewEmitter
-            // 
-            this.btnNewEmitter.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnNewEmitter.Location = new System.Drawing.Point(3, 3);
-            this.btnNewEmitter.Name = "btnNewEmitter";
-            this.btnNewEmitter.Size = new System.Drawing.Size(65, 25);
-            this.btnNewEmitter.TabIndex = 0;
-            this.btnNewEmitter.Text = "New";
-            this.btnNewEmitter.UseVisualStyleBackColor = true;
-            this.btnNewEmitter.Click += new System.EventHandler(this.btnNewEmitter_Click);
-            // 
             // tpSettings
             // 
             this.tpSettings.Location = new System.Drawing.Point(4, 22);
@@ -172,16 +191,6 @@
             this.tpSettings.TabIndex = 1;
             this.tpSettings.Text = "Settings";
             this.tpSettings.UseVisualStyleBackColor = true;
-            // 
-            // btnClone
-            // 
-            this.btnClone.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnClone.Location = new System.Drawing.Point(133, 3);
-            this.btnClone.Name = "btnClone";
-            this.btnClone.Size = new System.Drawing.Size(65, 25);
-            this.btnClone.TabIndex = 2;
-            this.btnClone.Text = "Clone";
-            this.btnClone.UseVisualStyleBackColor = true;
             // 
             // lstEmitters
             // 
@@ -205,46 +214,38 @@
             this.gameScreen.Text = "gameScreenControl1";
             this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
             // 
-            // panel1
+            // btnClone
             // 
-            this.panel1.Controls.Add(this.cmbEmitterType);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 184);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(248, 25);
-            this.panel1.TabIndex = 6;
+            this.btnClone.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnClone.Location = new System.Drawing.Point(113, 3);
+            this.btnClone.Name = "btnClone";
+            this.btnClone.Size = new System.Drawing.Size(55, 25);
+            this.btnClone.TabIndex = 7;
+            this.btnClone.Text = "Clone";
+            this.btnClone.UseVisualStyleBackColor = true;
+            this.btnClone.Click += new System.EventHandler(this.btnClone_Click);
             // 
-            // label1
+            // btnDeleteEmitter
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.label1.Size = new System.Drawing.Size(65, 17);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Emitter type:";
+            this.btnDeleteEmitter.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnDeleteEmitter.Location = new System.Drawing.Point(58, 3);
+            this.btnDeleteEmitter.Name = "btnDeleteEmitter";
+            this.btnDeleteEmitter.Size = new System.Drawing.Size(55, 25);
+            this.btnDeleteEmitter.TabIndex = 6;
+            this.btnDeleteEmitter.Text = "Delete";
+            this.btnDeleteEmitter.UseVisualStyleBackColor = true;
+            this.btnDeleteEmitter.Click += new System.EventHandler(this.btnDeleteEmitter_Click);
             // 
-            // cmbEmitterType
+            // btnNewEmitter
             // 
-            this.cmbEmitterType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbEmitterType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbEmitterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEmitterType.FormattingEnabled = true;
-            this.cmbEmitterType.Location = new System.Drawing.Point(65, 0);
-            this.cmbEmitterType.Name = "cmbEmitterType";
-            this.cmbEmitterType.Size = new System.Drawing.Size(183, 21);
-            this.cmbEmitterType.TabIndex = 8;
-            this.cmbEmitterType.SelectedEmitterChanged += new NetGore.Editor.WinForms.ParticleEmitterComboBoxHandler(this.cmbEmitterType_SelectedEmitterChanged);
-            // 
-            // pgEmitter
-            // 
-            this.pgEmitter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgEmitter.Location = new System.Drawing.Point(3, 209);
-            this.pgEmitter.Name = "pgEmitter";
-            this.pgEmitter.Size = new System.Drawing.Size(248, 278);
-            this.pgEmitter.TabIndex = 7;
+            this.btnNewEmitter.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnNewEmitter.Location = new System.Drawing.Point(3, 3);
+            this.btnNewEmitter.Name = "btnNewEmitter";
+            this.btnNewEmitter.Size = new System.Drawing.Size(55, 25);
+            this.btnNewEmitter.TabIndex = 5;
+            this.btnNewEmitter.Text = "New";
+            this.btnNewEmitter.UseVisualStyleBackColor = true;
+            this.btnNewEmitter.Click += new System.EventHandler(this.btnNewEmitter_Click);
             // 
             // ParticleEditorForm
             // 
@@ -261,10 +262,10 @@
             this.tc.ResumeLayout(false);
             this.tpEffect.ResumeLayout(false);
             this.tpEmitter.ResumeLayout(false);
-            this.gbEmitter.ResumeLayout(false);
-            this.pButtons.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.gbEmitter.ResumeLayout(false);
+            this.pButtons.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -279,15 +280,15 @@
         private System.Windows.Forms.GroupBox gbEmitter;
         private ParticleEmitterListBox lstEmitters;
         private System.Windows.Forms.Panel pButtons;
-        private System.Windows.Forms.Button btnDeleteEmitter;
-        private System.Windows.Forms.Button btnNewEmitter;
         private System.Windows.Forms.TabPage tpEffect;
         private System.Windows.Forms.PropertyGrid pgEffect;
-        private System.Windows.Forms.Button btnClone;
         private System.Windows.Forms.PropertyGrid pgEmitter;
         private System.Windows.Forms.Panel panel1;
         private NetGore.Editor.WinForms.ParticleEmitterComboBox cmbEmitterType;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnClone;
+        private System.Windows.Forms.Button btnDeleteEmitter;
+        private System.Windows.Forms.Button btnNewEmitter;
 
     }
 }
