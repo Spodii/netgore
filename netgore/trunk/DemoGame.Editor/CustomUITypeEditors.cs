@@ -19,7 +19,6 @@ using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.NPCChat;
 using NetGore.World;
-using CharacterTemplateInventoryItem = DemoGame.Editor.CharacterTemplateInventoryItem;
 
 namespace DemoGame.Editor
 {

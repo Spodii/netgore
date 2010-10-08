@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using DemoGame.Server;
-using CharacterTemplateInventoryItem = DemoGame.Editor.CharacterTemplateInventoryItem;
 
 namespace DemoGame.Editor.TypeConverters
 {

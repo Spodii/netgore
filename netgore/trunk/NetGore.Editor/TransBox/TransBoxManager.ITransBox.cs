@@ -33,12 +33,6 @@ namespace NetGore.Editor
             Vector2 Size { get; }
 
             /// <summary>
-            /// Updates the <see cref="ITransBox"/>.
-            /// </summary>
-            /// <param name="currentTime">The current time.</param>
-            void Update(TickCount currentTime);
-
-            /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.
             /// </summary>
             /// <param name="worldPos">The world point.</param>
@@ -57,6 +51,12 @@ namespace NetGore.Editor
             /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
             /// <param name="camera">The <see cref="ICamera2D"/>.</param>
             void Draw(ISpriteBatch spriteBatch, ICamera2D camera);
+
+            /// <summary>
+            /// Updates the <see cref="ITransBox"/>.
+            /// </summary>
+            /// <param name="currentTime">The current time.</param>
+            void Update(TickCount currentTime);
         }
     }
 }

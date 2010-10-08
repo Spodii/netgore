@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
@@ -34,6 +33,16 @@ namespace DemoGame.Editor
         static SelectedObjectsManager<object> SOM
         {
             get { return GlobalState.Instance.Map.SelectedObjsManager; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this cursor can select the given object.
+        /// </summary>
+        /// <param name="obj">The object to try to select.</param>
+        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
+        protected override bool CanSelect(object obj)
+        {
+            return obj is MapGrh;
         }
 
         /// <summary>
@@ -83,15 +92,26 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
+        /// Handles when a key is raised on a map.
         /// </summary>
-        /// <param name="oldValue">The old (previous) value.</param>
-        /// <param name="newValue">The new (current) value.</param>
-        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
+        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
+        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
+        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
         {
-            base.OnIsEnabledChanged(oldValue, newValue);
+            // Handle deletes
+            if (e.KeyCode == Keys.Delete)
+            {
+                // Only delete when it is an Entity that is on this map
+                foreach (var x in SOM.SelectedObjects.OfType<MapGrh>())
+                {
+                    if (map.Spatial.Contains(x))
+                        map.RemoveMapGrh(x);
+                }
+            }
 
-            HandleResetState();
+            base.MapContainer_KeyUp(sender, map, camera, e);
         }
 
         /// <summary>
@@ -132,29 +152,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles when a key is raised on a map.
-        /// </summary>
-        /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
-        {
-            // Handle deletes
-            if (e.KeyCode == Keys.Delete)
-            {
-                // Only delete when it is an Entity that is on this map
-                foreach (var x in SOM.SelectedObjects.OfType<MapGrh>())
-                {
-                    if (map.Spatial.Contains(x))
-                        map.RemoveMapGrh(x);
-                }
-            }
-
-            base.MapContainer_KeyUp(sender, map, camera, e);
-        }
-
-        /// <summary>
         /// Handles when the mouse moves over a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
@@ -178,7 +175,8 @@ namespace DemoGame.Editor
         /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseWheel(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected override void MapContainer_MouseWheel(IToolTargetMapContainer sender, Map map, ICamera2D camera,
+                                                        MouseEventArgs e)
         {
             if (e.Delta == 0)
                 return;
@@ -199,13 +197,15 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets if this cursor can select the given object.
+        /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
         /// </summary>
-        /// <param name="obj">The object to try to select.</param>
-        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
-        protected override bool CanSelect(object obj)
+        /// <param name="oldValue">The old (previous) value.</param>
+        /// <param name="newValue">The new (current) value.</param>
+        protected override void OnIsEnabledChanged(bool oldValue, bool newValue)
         {
-            return obj is MapGrh;
+            base.OnIsEnabledChanged(oldValue, newValue);
+
+            HandleResetState();
         }
     }
 }

@@ -181,8 +181,8 @@ namespace DemoGame.Editor
         /// </summary>
         public class MapState
         {
-            readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
             readonly Grh _grhToPlace = new Grh();
+            readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
 
             Vector2 _gridSize = new Vector2(32);
 
@@ -194,25 +194,6 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
-            /// Gets or sets the size of the map grid in pixels. Must be greater than or equal to 1.
-            /// </summary>
-            /// <exception cref="ArgumentOutOfRangeException">The <paramref name="value"/>'s X or Y field are less than one.</exception>
-            public Vector2 GridSize
-            {
-                get
-                {
-                    return _gridSize;
-                }
-                set
-                {
-                    if (_gridSize.X <= float.Epsilon || _gridSize.Y <= float.Epsilon)
-                        throw new ArgumentOutOfRangeException("value", "The X and Y fields of the value must be greater than or equal to 1.");
-
-                    _gridSize = value;
-                }
-            }
-
-            /// <summary>
             /// Gets the <see cref="Grh"/> that has been selected to be placed on the map. When placing the <see cref="Grh"/>,
             /// create a deep copy.
             /// This property will never be null, but the <see cref="GrhData"/> can be unset.
@@ -220,6 +201,23 @@ namespace DemoGame.Editor
             public Grh GrhToPlace
             {
                 get { return _grhToPlace; }
+            }
+
+            /// <summary>
+            /// Gets or sets the size of the map grid in pixels. Must be greater than or equal to 1.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">The <paramref name="value"/>'s X or Y field are less than one.</exception>
+            public Vector2 GridSize
+            {
+                get { return _gridSize; }
+                set
+                {
+                    if (_gridSize.X <= float.Epsilon || _gridSize.Y <= float.Epsilon)
+                        throw new ArgumentOutOfRangeException("value",
+                                                              "The X and Y fields of the value must be greater than or equal to 1.");
+
+                    _gridSize = value;
+                }
             }
 
             /// <summary>

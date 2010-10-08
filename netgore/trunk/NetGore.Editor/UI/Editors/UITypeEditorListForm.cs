@@ -24,9 +24,7 @@ namespace NetGore.Editor.UI
             InitializeComponent();
 
             if (!DesignMode)
-            {
                 _filter.FilterChanged += _filter_FilterChanged;
-            }
         }
 
         /// <summary>

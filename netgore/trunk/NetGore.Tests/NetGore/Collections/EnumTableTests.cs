@@ -10,142 +10,6 @@ namespace NetGore.Tests.NetGore.Collections
     [TestFixture]
     public class EnumTableTests
     {
-        [Test]
-        public void DeepCopySeqTest()
-        {
-            var t = EnumTable.Create<ESeq, string>();
-            t.SetAll("hi");
-            Assert.IsTrue(t.All(x => x.Value == "hi"));
-
-            var t2 = t.DeepCopy();
-            Assert.IsTrue(t2.All(x => x.Value == "hi"));
-        }
-
-        [Test]
-        public void DeepCopySeqBoolTest()
-        {
-            var t = EnumTable.Create<ESeq, bool>();
-            t.SetAll(true);
-            Assert.IsTrue(t.All(x => x.Value));
-
-            var t2 = t.DeepCopy();
-            Assert.IsTrue(t2.All(x => x.Value));
-        }
-
-        [Test]
-        public void DeepCopySparseTest()
-        {
-            var t = EnumTable.Create<ESparse, string>();
-            t.SetAll("hi");
-            Assert.IsTrue(t.All(x => x.Value == "hi"));
-
-            var t2 = t.DeepCopy();
-            Assert.IsTrue(t2.All(x => x.Value == "hi"));
-        }
-
-        [Test]
-        public void EnumerateSeqTest()
-        {
-            var t = EnumTable.Create<ESeq, object>();
-            t[ESeq.c] = "hello";
-
-            foreach (var v in t)
-            {
-                if (v.Key == ESeq.c)
-                    Assert.AreEqual("hello", v.Value);
-                else
-                    Assert.AreEqual(null, v.Value);
-            }
-
-            var keys = t.Select(x => x.Key).ToArray();
-            var expectedKeys = EnumHelper<ESeq>.Values.ToArray();
-
-            Assert.AreEqual(keys.Length, expectedKeys.Length);
-            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
-        }
-
-        [Test]
-        public void EnumerateSeqBoolTest()
-        {
-            var t = EnumTable.Create<ESeq, bool>();
-            t[ESeq.c] = true;
-
-            foreach (var v in t)
-            {
-                if (v.Key == ESeq.c)
-                    Assert.AreEqual(true, v.Value);
-                else
-                    Assert.AreEqual(false, v.Value);
-            }
-
-            var keys = t.Select(x => x.Key).ToArray();
-            var expectedKeys = EnumHelper<ESeq>.Values.ToArray();
-
-            Assert.AreEqual(keys.Length, expectedKeys.Length);
-            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
-        }
-
-
-        [Test]
-        public void EnumerateSparseTest()
-        {
-            var t = EnumTable.Create<ESparse, object>();
-            t[ESparse.c] = "hello";
-
-            foreach (var v in t)
-            {
-                if (v.Key == ESparse.c)
-                    Assert.AreEqual("hello", v.Value);
-                else
-                    Assert.AreEqual(null, v.Value);
-            }
-
-            var keys = t.Select(x => x.Key).ToArray();
-            var expectedKeys = EnumHelper<ESparse>.Values.ToArray();
-
-            Assert.AreEqual(keys.Length, expectedKeys.Length);
-            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
-        }
-
-        [Test]
-        public void SetAllAndClearSeqTest()
-        {
-            var t = EnumTable.Create<ESeq, string>();
-            Assert.IsTrue(t.All(x => x.Value == null));
-
-            t.SetAll("hi");
-            Assert.IsTrue(t.All(x => x.Value == "hi"));
-
-            t.Clear();
-            Assert.IsTrue(t.All(x => x.Value == null));
-        }
-
-        [Test]
-        public void SetAllAndClearSparseTest()
-        {
-            var t = EnumTable.Create<ESparse, string>();
-            Assert.IsTrue(t.All(x => x.Value == null));
-
-            t.SetAll("hi");
-            Assert.IsTrue(t.All(x => x.Value == "hi"));
-
-            t.Clear();
-            Assert.IsTrue(t.All(x => x.Value == null));
-        }
-
-        [Test]
-        public void SetAllAndClearSeqBoolTest()
-        {
-            var t = EnumTable.Create<ESeq, bool>();
-            Assert.IsTrue(t.All(x => x.Value == default(bool)));
-
-            t.SetAll(true);
-            Assert.IsTrue(t.All(x => x.Value));
-
-            t.Clear();
-            Assert.IsTrue(t.All(x => x.Value == default(bool)));
-        }
-
         #region Unit tests
 
         [Test]
@@ -182,6 +46,102 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.IsNotNull(t);
             var typeName = t.GetType().FullName;
             Assert.IsTrue(typeName.Contains("DictionaryTable"), "Expected DictionaryTable, but was " + typeName);
+        }
+
+        [Test]
+        public void DeepCopySeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            t.SetAll(true);
+            Assert.IsTrue(t.All(x => x.Value));
+
+            var t2 = t.DeepCopy();
+            Assert.IsTrue(t2.All(x => x.Value));
+        }
+
+        [Test]
+        public void DeepCopySeqTest()
+        {
+            var t = EnumTable.Create<ESeq, string>();
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            var t2 = t.DeepCopy();
+            Assert.IsTrue(t2.All(x => x.Value == "hi"));
+        }
+
+        [Test]
+        public void DeepCopySparseTest()
+        {
+            var t = EnumTable.Create<ESparse, string>();
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            var t2 = t.DeepCopy();
+            Assert.IsTrue(t2.All(x => x.Value == "hi"));
+        }
+
+        [Test]
+        public void EnumerateSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            t[ESeq.c] = true;
+
+            foreach (var v in t)
+            {
+                if (v.Key == ESeq.c)
+                    Assert.AreEqual(true, v.Value);
+                else
+                    Assert.AreEqual(false, v.Value);
+            }
+
+            var keys = t.Select(x => x.Key).ToArray();
+            var expectedKeys = EnumHelper<ESeq>.Values.ToArray();
+
+            Assert.AreEqual(keys.Length, expectedKeys.Length);
+            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
+        }
+
+        [Test]
+        public void EnumerateSeqTest()
+        {
+            var t = EnumTable.Create<ESeq, object>();
+            t[ESeq.c] = "hello";
+
+            foreach (var v in t)
+            {
+                if (v.Key == ESeq.c)
+                    Assert.AreEqual("hello", v.Value);
+                else
+                    Assert.AreEqual(null, v.Value);
+            }
+
+            var keys = t.Select(x => x.Key).ToArray();
+            var expectedKeys = EnumHelper<ESeq>.Values.ToArray();
+
+            Assert.AreEqual(keys.Length, expectedKeys.Length);
+            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
+        }
+
+        [Test]
+        public void EnumerateSparseTest()
+        {
+            var t = EnumTable.Create<ESparse, object>();
+            t[ESparse.c] = "hello";
+
+            foreach (var v in t)
+            {
+                if (v.Key == ESparse.c)
+                    Assert.AreEqual("hello", v.Value);
+                else
+                    Assert.AreEqual(null, v.Value);
+            }
+
+            var keys = t.Select(x => x.Key).ToArray();
+            var expectedKeys = EnumHelper<ESparse>.Values.ToArray();
+
+            Assert.AreEqual(keys.Length, expectedKeys.Length);
+            Assert.IsTrue(keys.ContainSameElements(expectedKeys));
         }
 
         [Test]
@@ -317,6 +277,45 @@ namespace NetGore.Tests.NetGore.Collections
             }
 
             Assert.IsFalse(t.IsValidKey((ESparse)(-999)));
+        }
+
+        [Test]
+        public void SetAllAndClearSeqBoolTest()
+        {
+            var t = EnumTable.Create<ESeq, bool>();
+            Assert.IsTrue(t.All(x => x.Value == default(bool)));
+
+            t.SetAll(true);
+            Assert.IsTrue(t.All(x => x.Value));
+
+            t.Clear();
+            Assert.IsTrue(t.All(x => x.Value == default(bool)));
+        }
+
+        [Test]
+        public void SetAllAndClearSeqTest()
+        {
+            var t = EnumTable.Create<ESeq, string>();
+            Assert.IsTrue(t.All(x => x.Value == null));
+
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            t.Clear();
+            Assert.IsTrue(t.All(x => x.Value == null));
+        }
+
+        [Test]
+        public void SetAllAndClearSparseTest()
+        {
+            var t = EnumTable.Create<ESparse, string>();
+            Assert.IsTrue(t.All(x => x.Value == null));
+
+            t.SetAll("hi");
+            Assert.IsTrue(t.All(x => x.Value == "hi"));
+
+            t.Clear();
+            Assert.IsTrue(t.All(x => x.Value == null));
         }
 
         [Test]

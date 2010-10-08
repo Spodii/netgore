@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -473,7 +472,7 @@ namespace DemoGame.Editor
         {
             base.OnKeyUp(e);
 
-            if (DesignMode) 
+            if (DesignMode)
                 return;
 
             ks = e;

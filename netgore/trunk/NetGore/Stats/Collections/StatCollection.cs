@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using NetGore.Collections;
 
@@ -126,7 +125,9 @@ namespace NetGore.Stats
         public IEnumerator<Stat<TStatType>> GetEnumerator()
         {
             foreach (var stat in _stats)
+            {
                 yield return stat;
+            }
         }
 
         /// <summary>

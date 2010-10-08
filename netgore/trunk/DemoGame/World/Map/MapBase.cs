@@ -1089,6 +1089,19 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            var ret = Name ?? "[Unnamed]";
+            ret += " [ID: " + ID + "]";
+            return ret;
+        }
+
+        /// <summary>
         /// Tries to get the DynamicEntity at the specified index.
         /// </summary>
         /// <param name="index">Unique index of the DynamicEntity to get.</param>
@@ -1176,19 +1189,6 @@ namespace DemoGame
 
             // Update the delayed events
             UpdateDelayedEvents();
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            var ret = Name ?? "[Unnamed]";
-            ret += " [ID: " + ID + "]";
-            return ret;
         }
 
         /// <summary>

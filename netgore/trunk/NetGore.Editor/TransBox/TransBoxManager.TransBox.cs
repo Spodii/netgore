@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -24,6 +23,20 @@ namespace NetGore.Editor
             Vector2 _position;
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="TransBox"/> class.
+            /// </summary>
+            /// <param name="type">The <see cref="TransBoxType"/>.</param>
+            /// <param name="spatial">The <see cref="ISpatial"/>.</param>
+            TransBox(TransBoxType type, ISpatial spatial)
+            {
+                _type = type;
+                _spatial = spatial;
+
+                _size = GetTransBoxSize(type);
+                _position = GetPosition();
+            }
+
+            /// <summary>
             /// Gets the position to use for the <see cref="TransBox"/>.
             /// </summary>
             /// <returns>The position for the <see cref="TransBox"/>.</returns>
@@ -44,7 +57,8 @@ namespace NetGore.Editor
                         return new Vector2(_spatial.Position.X - Size.X, _spatial.Center.Y - (Size.Y / 2f));
 
                     case TransBoxType.Move:
-                        return new Vector2(_spatial.Center.X - (Size.X / 2f), _spatial.Position.Y - Size.Y - GetTransBoxSize(TransBoxType.Top).Y);
+                        return new Vector2(_spatial.Center.X - (Size.X / 2f),
+                                           _spatial.Position.Y - Size.Y - GetTransBoxSize(TransBoxType.Top).Y);
 
                     case TransBoxType.Right:
                         return new Vector2(_spatial.Max.X, _spatial.Center.Y - (Size.Y / 2f));
@@ -65,20 +79,6 @@ namespace NetGore.Editor
                         Debug.Fail(string.Format(errmsg, _type));
                         return _spatial.Center;
                 }
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TransBox"/> class.
-            /// </summary>
-            /// <param name="type">The <see cref="TransBoxType"/>.</param>
-            /// <param name="spatial">The <see cref="ISpatial"/>.</param>
-            TransBox(TransBoxType type, ISpatial spatial)
-            {
-                _type = type;
-                _spatial = spatial;
-
-                _size = GetTransBoxSize(type);
-                _position = GetPosition();
             }
 
             /// <summary>
@@ -151,15 +151,6 @@ namespace NetGore.Editor
             public Vector2 Size
             {
                 get { return _size; }
-            }
-
-            /// <summary>
-            /// Updates the <see cref="ITransBox"/>.
-            /// </summary>
-            /// <param name="currentTime">The current time.</param>
-            public void Update(TickCount currentTime)
-            {
-                _position = GetPosition();
             }
 
             /// <summary>
@@ -251,6 +242,15 @@ namespace NetGore.Editor
                 var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
 
                 sprite.Draw(spriteBatch, r, Color.White);
+            }
+
+            /// <summary>
+            /// Updates the <see cref="ITransBox"/>.
+            /// </summary>
+            /// <param name="currentTime">The current time.</param>
+            public void Update(TickCount currentTime)
+            {
+                _position = GetPosition();
             }
 
             #endregion

@@ -8,7 +8,6 @@ using DemoGame.Editor.Properties;
 using log4net;
 using NetGore.Editor.EditorTool;
 using NetGore.IO;
-using SFML.Graphics;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor

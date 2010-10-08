@@ -704,7 +704,8 @@ namespace NetGore.Editor.Docking
             {
                 if (DockPanel != null)
                 {
-                    if (DockState == DockState.Hidden || DockState == DockState.Unknown || DockHelper.IsDockStateAutoHide(DockState))
+                    if (DockState == DockState.Hidden || DockState == DockState.Unknown ||
+                        DockHelper.IsDockStateAutoHide(DockState))
                         DockPanel.ContentFocusManager.RemoveFromList(Content);
                     else
                         DockPanel.ContentFocusManager.AddToList(Content);

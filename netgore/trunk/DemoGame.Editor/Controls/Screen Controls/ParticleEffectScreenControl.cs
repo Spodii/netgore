@@ -31,21 +31,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.BackColorChanged"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnBackColorChanged(EventArgs e)
-        {
-            base.OnBackColorChanged(e);
-
-            if (DesignMode)
-                return;
-
-            if (DrawingManager != null)
-                DrawingManager.BackgroundColor = BackColor.ToColor();
-        }
-
-        /// <summary>
         /// Gets the <see cref="ICamera2D"/>.
         /// </summary>
         [Browsable(false)]
@@ -154,6 +139,21 @@ namespace DemoGame.Editor
             var t = new Timer { Interval = 1000 / 60 };
             t.Tick += (EventHandler)((x, y) => InvokeDrawing(TickCount.Now));
             t.Start();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.BackColorChanged"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnBackColorChanged(EventArgs e)
+        {
+            base.OnBackColorChanged(e);
+
+            if (DesignMode)
+                return;
+
+            if (DrawingManager != null)
+                DrawingManager.BackgroundColor = BackColor.ToColor();
         }
 
         /// <summary>

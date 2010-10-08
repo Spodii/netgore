@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -38,9 +37,7 @@ namespace NetGore.Editor.WinForms
             ResizeRedraw = false;
 
             if (!DesignMode)
-            {
                 _redrawTimer = new Timer { Interval = 1000 / 100 };
-            }
         }
 
         /// <summary>

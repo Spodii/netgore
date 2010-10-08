@@ -23,14 +23,14 @@ namespace NetGore.Graphics.ParticleEngine
         event IParticleEffectEmitterEventHandler EmitterAdded;
 
         /// <summary>
-        /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/>.
-        /// </summary>
-        IEnumerable<IParticleEmitter> Emitters { get; }
-
-        /// <summary>
         /// Notifies listeners when an <see cref="IParticleEmitter"/> has been removed from this <see cref="IParticleEffect"/>.
         /// </summary>
         event IParticleEffectEmitterEventHandler EmitterRemoved;
+
+        /// <summary>
+        /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/>.
+        /// </summary>
+        IEnumerable<IParticleEmitter> Emitters { get; }
 
         /// <summary>
         /// Gets if this <see cref="IParticleEffect"/> has been disposed.

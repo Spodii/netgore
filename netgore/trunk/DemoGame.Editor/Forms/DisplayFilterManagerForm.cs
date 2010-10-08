@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using DemoGame.Client;
 using NetGore.Editor;
@@ -29,10 +26,7 @@ namespace DemoGame.Editor
         /// </summary>
         public MapDrawFilterHelperCollection Collection
         {
-            get
-            {
-                return _collection;
-            }
+            get { return _collection; }
             set
             {
                 if (_collection == value)
@@ -67,23 +61,6 @@ namespace DemoGame.Editor
             }
         }
 
-        void _collection_Renamed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter, string oldName)
-        {
-            var index = lstItems.Items.IndexOf(filter.Value);
-            if (index >= 0)
-                lstItems.RefreshItemAt(index);
-        }
-
-        void _collection_Removed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
-        {
-            lstItems.Items.Remove(filter.Value);
-        }
-
-        void _collection_Added(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
-        {
-            lstItems.Items.Add(filter.Value);
-        }
-
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
@@ -101,32 +78,50 @@ namespace DemoGame.Editor
             base.OnClosing(e);
         }
 
+        void _collection_Added(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
+        {
+            lstItems.Items.Add(filter.Value);
+        }
+
+        void _collection_Removed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
+        {
+            lstItems.Items.Remove(filter.Value);
+        }
+
+        void _collection_Renamed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter,
+                                 string oldName)
+        {
+            var index = lstItems.Items.IndexOf(filter.Value);
+            if (index >= 0)
+                lstItems.RefreshItemAt(index);
+        }
+
         /// <summary>
         /// Handles the Click event of the <see cref="btnAdd"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnAdd_Click(object sender, EventArgs e)
+        void btnAdd_Click(object sender, EventArgs e)
         {
             var c = Collection;
             if (c == null)
                 return;
 
-            string name = string.Empty;
+            var name = string.Empty;
 
             // Get the new filter's name
             do
             {
                 const string msgInitial = "Enter the name of the new filter.";
-                const string msgRetry ="A filter with that name already exists. Please try another name.";
+                const string msgRetry = "A filter with that name already exists. Please try another name.";
 
                 name = InputBox.Show("New filter name", string.IsNullOrEmpty(name) ? msgInitial : msgRetry, name);
 
                 // User aborted
                 if (string.IsNullOrEmpty(name))
                     return;
-
-            } while (!string.IsNullOrEmpty(name) && c.TryGetFilter(name) != null);
+            }
+            while (!string.IsNullOrEmpty(name) && c.TryGetFilter(name) != null);
 
             // Create and add the new filter
             var filter = new MapDrawFilterHelper();
@@ -143,7 +138,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstItems_SelectedValueChanged(object sender, EventArgs e)
+        void lstItems_SelectedValueChanged(object sender, EventArgs e)
         {
             pgItem.SelectedObject = lstItems.SelectedItem;
         }

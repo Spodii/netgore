@@ -13,18 +13,6 @@ namespace DemoGame.Client
     public class MapDrawFilterHelperCollection : IPersistable
     {
         /// <summary>
-        /// The <see cref="StringComparer"/> to use to compare the filter names.
-        /// </summary>
-        static readonly StringComparer _filterNameComparer = StringComparer.Ordinal;
-
-        const string _filterKeyValueName = "Name";
-        const string _filterValueValueName = "Value";
-        const string _filtersNodeName = "DisplayFilters";
-
-        readonly IDictionary<string, MapDrawFilterHelper> _filters =
-            new Dictionary<string, MapDrawFilterHelper>(_filterNameComparer);
-
-        /// <summary>
         /// Delegate for handling events from the <see cref="MapDrawFilterHelperCollection"/>.
         /// </summary>
         /// <param name="sender">The <see cref="MapDrawFilterHelperCollection"/> the event came from.</param>
@@ -37,7 +25,20 @@ namespace DemoGame.Client
         /// <param name="sender">The <see cref="MapDrawFilterHelperCollection"/> the event came from.</param>
         /// <param name="filter">The name of the filter and the filter that the event is related to.</param>
         /// <param name="oldName">The old name of the filter.</param>
-        public delegate void RenamedEventHandler(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter, string oldName);
+        public delegate void RenamedEventHandler(
+            MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter, string oldName);
+
+        const string _filterKeyValueName = "Name";
+        const string _filterValueValueName = "Value";
+        const string _filtersNodeName = "DisplayFilters";
+
+        /// <summary>
+        /// The <see cref="StringComparer"/> to use to compare the filter names.
+        /// </summary>
+        static readonly StringComparer _filterNameComparer = StringComparer.Ordinal;
+
+        readonly IDictionary<string, MapDrawFilterHelper> _filters =
+            new Dictionary<string, MapDrawFilterHelper>(_filterNameComparer);
 
         /// <summary>
         /// Notifies listeners when a filter has been added to this collection.
@@ -60,40 +61,6 @@ namespace DemoGame.Client
         public IEnumerable<KeyValuePair<string, MapDrawFilterHelper>> Filters
         {
             get { return _filters; }
-        }
-
-        /// <summary>
-        /// Renames a filter in this collection.
-        /// </summary>
-        /// <param name="oldName">The old (current) name of the filter.</param>
-        /// <param name="newName">The new name to give the filter.</param>
-        /// <returns>True if the renaming was successful; otherwise false.</returns>
-        public bool RenameFilter(string oldName, string newName)
-        {
-            // Make sure the filter exists
-            var filter = TryGetFilter(oldName);
-            if (filter == null)
-                return false;
-
-            // Check if we are even changing the name at all
-            if (_filterNameComparer.Equals(oldName, newName))
-                return false;
-
-            // Make sure the new name is not in use
-            if (TryGetFilter(newName) != null)
-                return false;
-
-            // Remove the filter
-            _filters.Remove(oldName);
-            
-            // Add back in with the ne wname
-            _filters.Add(newName, filter);
-
-            // Raise events
-            if (Renamed != null)
-                Renamed(this, new KeyValuePair<string, MapDrawFilterHelper>(newName, filter), oldName);
-
-            return true;
         }
 
         /// <summary>
@@ -125,7 +92,7 @@ namespace DemoGame.Client
 
             return true;
         }
-        
+
         /// <summary>
         /// Reads a filter from an <see cref="IValueReader"/>.
         /// </summary>
@@ -139,22 +106,6 @@ namespace DemoGame.Client
             var value = new MapDrawFilterHelper(valueReader);
 
             return new KeyValuePair<string, MapDrawFilterHelper>(key, value);
-        }
-
-        /// <summary>
-        /// Writes a filter to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        /// <param name="kvp">The filter name and object to write.</param>
-        static void WriteFilter(IValueWriter writer, KeyValuePair<string, MapDrawFilterHelper> kvp)
-        {
-            writer.Write(_filterKeyValueName, kvp.Key);
-
-            writer.WriteStartNode(_filterValueValueName);
-            {
-                kvp.Value.WriteState(writer);
-            }
-            writer.WriteEndNode(_filterValueValueName);
         }
 
         /// <summary>
@@ -174,7 +125,7 @@ namespace DemoGame.Client
                 return false;
 
             // Try to remove
-            bool removed = _filters.Remove(name);
+            var removed = _filters.Remove(name);
 
             if (removed)
             {
@@ -184,6 +135,40 @@ namespace DemoGame.Client
             }
 
             return removed;
+        }
+
+        /// <summary>
+        /// Renames a filter in this collection.
+        /// </summary>
+        /// <param name="oldName">The old (current) name of the filter.</param>
+        /// <param name="newName">The new name to give the filter.</param>
+        /// <returns>True if the renaming was successful; otherwise false.</returns>
+        public bool RenameFilter(string oldName, string newName)
+        {
+            // Make sure the filter exists
+            var filter = TryGetFilter(oldName);
+            if (filter == null)
+                return false;
+
+            // Check if we are even changing the name at all
+            if (_filterNameComparer.Equals(oldName, newName))
+                return false;
+
+            // Make sure the new name is not in use
+            if (TryGetFilter(newName) != null)
+                return false;
+
+            // Remove the filter
+            _filters.Remove(oldName);
+
+            // Add back in with the ne wname
+            _filters.Add(newName, filter);
+
+            // Raise events
+            if (Renamed != null)
+                Renamed(this, new KeyValuePair<string, MapDrawFilterHelper>(newName, filter), oldName);
+
+            return true;
         }
 
         /// <summary>
@@ -213,6 +198,22 @@ namespace DemoGame.Client
                 return null;
 
             return _filters.FirstOrDefault(x => x.Value == filter).Key;
+        }
+
+        /// <summary>
+        /// Writes a filter to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        /// <param name="kvp">The filter name and object to write.</param>
+        static void WriteFilter(IValueWriter writer, KeyValuePair<string, MapDrawFilterHelper> kvp)
+        {
+            writer.Write(_filterKeyValueName, kvp.Key);
+
+            writer.WriteStartNode(_filterValueValueName);
+            {
+                kvp.Value.WriteState(writer);
+            }
+            writer.WriteEndNode(_filterValueValueName);
         }
 
         #region IPersistable Members
