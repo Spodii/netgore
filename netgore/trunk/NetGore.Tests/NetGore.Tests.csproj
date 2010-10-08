@@ -125,6 +125,7 @@
     <Compile Include="Graphics\EntityInterpolatorTests.cs" />
     <Compile Include="NetGore\AlignmentHelperTests.cs" />
     <Compile Include="NetGore\ClassTypeTreeTests.cs" />
+    <Compile Include="NetGore\Collections\EnumTableTests.cs" />
     <Compile Include="NetGore\Collections\IFactoryTests.cs" />
     <Compile Include="NetGore\Collections\PriorityQueueTests.cs" />
     <Compile Include="NetGore\Collections\TaskListTests.cs" />
