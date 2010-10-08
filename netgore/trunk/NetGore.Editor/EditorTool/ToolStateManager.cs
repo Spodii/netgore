@@ -43,14 +43,6 @@ namespace NetGore.Editor.EditorTool
         string _currentSettingsFile;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ToolStateManager"/> class.
-        /// </summary>
-        public ToolStateManager()
-        {
-            CurrentSettingsFile = GetFilePath(ContentPaths.Build, null);
-        }
-
-        /// <summary>
         /// Gets or sets the file path to the current settings file. When this value is changed, the settings of the <see cref="Tool"/>s
         /// will be saved to the old path (if it is value) then loaded from the new path only if the file exists at the new path. If
         /// the new path does not exist, no settings will be loaded and the <see cref="Tool"/>s will be unaltered.
@@ -301,6 +293,13 @@ namespace NetGore.Editor.EditorTool
                         {
                             if (toolForKey.ToolBarControl != null)
                                 toolForKey.ToolBarControl.MoveToHead();
+                        }
+                        else
+                        {
+                            const string errmsg = "Could not find tool with key `{0}`.";
+                            if (log.IsWarnEnabled)
+                                log.WarnFormat(errmsg, key);
+                            Debug.Fail(string.Format(errmsg, key));
                         }
                     }
                 }

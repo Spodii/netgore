@@ -3,7 +3,7 @@
 namespace NetGore.Editor.EditorTool
 {
     /// <summary>
-    /// Interface for a <see cref="Editor.Tool"/>'s control used in a <see cref="ToolBar"/>.
+    /// Interface for a <see cref="Tool"/>'s control used in a <see cref="ToolBar"/>.
     /// </summary>
     public interface IToolBarControl
     {
@@ -28,7 +28,7 @@ namespace NetGore.Editor.EditorTool
         bool IsOnToolBar { get; }
 
         /// <summary>
-        /// Gets the <see cref="Editor.Tool"/> that this control is for.
+        /// Gets the <see cref="Tool"/> that this control is for.
         /// </summary>
         Tool Tool { get; }
 
