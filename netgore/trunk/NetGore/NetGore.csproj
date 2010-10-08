@@ -136,6 +136,7 @@
     <Compile Include="Audio\Sound\SoundInfo.cs" />
     <Compile Include="Audio\Sound\SoundManager.cs" />
     <Compile Include="Collections\EnumTable.cs" />
+    <Compile Include="Collections\IEnumTable.cs" />
     <Compile Include="Core\Asserts\ThreadAsserts.cs" />
     <Compile Include="Content\ContentAssetName.cs" />
     <Compile Include="Content\ContentAssetNameConverter.cs" />
