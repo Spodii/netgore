@@ -13,6 +13,8 @@ namespace DemoGame.ParticleEffectEditor
 {
     public partial class ParticleEditorForm : Form
     {
+        GrhData _defaultEmitterSprite;
+
         /// <summary>
         /// Delegate for handling events for properties changing on the <see cref="ParticleEditorForm"/>.
         /// </summary>
@@ -87,6 +89,11 @@ namespace DemoGame.ParticleEffectEditor
 
             if (DesignMode)
                 return;
+
+            // Load the default emitter sprite
+            _defaultEmitterSprite = GrhInfo.GetData("Particle", "ball");
+            if (_defaultEmitterSprite == null)
+                _defaultEmitterSprite = GrhInfo.GetDatas("Particle").Select(x => x.Value).FirstOrDefault();
 
             // NOTE: !! Temp
 
@@ -183,7 +190,12 @@ namespace DemoGame.ParticleEffectEditor
                 return;
 
             // Add new emitter. Default to PointEmitter. Type can be changed by the user later.
-            new PointEmitter(pe);
+            var emitter = new PointEmitter(pe);
+            if (emitter.Sprite.GrhData == null)
+                emitter.Sprite.SetGrh(_defaultEmitterSprite);
+
+            if (!lstEmitters.Items.Contains(emitter))
+                lstEmitters.Items.Add(emitter);
         }
 
         void gameScreen_MouseMove(object sender, MouseEventArgs e)
