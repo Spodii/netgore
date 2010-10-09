@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Lidgren.Network;
 using NetGore;
+using NetGore.Content;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;
@@ -119,18 +120,22 @@ namespace DemoGame.Client
 
             _statusLabel = GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(410, 80), string.Empty);
 
-            // Create the new account fields
+            // Create the new account fields. Use a different font since our default TextBox font doesn't support some characters
+            // needed for email, and it'd look funny to only change it for the email textbox.
+            var textBoxFont = ScreenManager.Content.LoadFont("Font/Arial", (int)GameScreenHelper.DefaultScreenFont.DefaultSize,
+                                                             ContentLevel.GameScreen);
+
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 180), "Name:");
             _cNameText = new TextBox(cScreen, new Vector2(220, 180), new Vector2(200, 40))
-            { IsMultiLine = false, Text = string.Empty };
+            { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Password:");
             _cPasswordText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
-            { IsMultiLine = false, Text = string.Empty };
+            { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Email:");
             _cEmailText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
-            { IsMultiLine = false, Text = string.Empty };
+            { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Create Account", "Back");
