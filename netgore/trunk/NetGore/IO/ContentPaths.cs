@@ -90,11 +90,6 @@ namespace NetGore.IO
         /// </summary>
         const string _tempFolder = "Temp";
 
-        /// <summary>
-        /// The relative path to the Particle Effects directory from the Contents directory.
-        /// </summary>
-        public static readonly PathString ParticleEffectsFolder = DataFolder + Path.DirectorySeparatorChar + "ParticleEffects";
-
         static readonly PathString _appRoot;
         static readonly ContentPaths _buildPaths;
         static readonly PathString _temp;
@@ -116,7 +111,6 @@ namespace NetGore.IO
         readonly PathString _languages;
         readonly PathString _maps;
         readonly PathString _music;
-        readonly PathString _particleEffects;
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
@@ -153,7 +147,6 @@ namespace NetGore.IO
             _root = Path.GetFullPath(rootPath);
 
             _data = GetChildPath(_root, DataFolder);
-            _particleEffects = GetChildPath(_root, ParticleEffectsFolder);
             _maps = GetChildPath(_root, MapsFolder);
             _music = GetChildPath(_root, MusicFolder);
             _sounds = GetChildPath(_root, SoundsFolder);
@@ -258,14 +251,6 @@ namespace NetGore.IO
         public PathString Music
         {
             get { return _music; }
-        }
-
-        /// <summary>
-        /// Gets the file path to the ParticleEffects directory.
-        /// </summary>
-        public PathString ParticleEffects
-        {
-            get { return _particleEffects; }
         }
 
         /// <summary>
