@@ -142,7 +142,8 @@ namespace NetGore.Graphics
             if (image == null)
                 throw new ArgumentNullException("image");
 
-            return ToBitmap(image, new Rectangle(source.X, source.Y, source.Width, source.Height), destWidth, destHeight);
+            var rect= new Rectangle(source.X, source.Y, source.Width, source.Height);
+            return ToBitmap(image, rect, destWidth, destHeight);
         }
 
         /// <summary>
