@@ -199,19 +199,18 @@ namespace NetGore.Graphics
             {
                 var srcStride = rect.Width * bytesPerColor;
                 var dataStride = data.Stride / bytesPerColor;
-                int srcX = source.X;
+                int srcXtimesBPP = source.X * bytesPerColor;
                 int srcY = source.Y;
 
                 // Grab the pointer to the pixels array
                 fixed (byte* p = pixels)
                 {
+                    int* row = (int*)data.Scan0;
+
                     // Copy the pixel values byte-by-byte, making sure to copy the RGBA source to the ARGB destination
                     for (var y = 0; y < data.Height; y++)
                     {
-                        var srcOffColumn = (y + srcY) * srcStride;
-                        var row = (int*)data.Scan0 + (y * dataStride);
-
-                        var srcOff = srcOffColumn + (srcX * bytesPerColor);
+                        var srcOff = ((y + srcY) * srcStride) + srcXtimesBPP;
 
                         for (var x = 0; x < data.Width; x++)
                         {
@@ -237,6 +236,8 @@ namespace NetGore.Graphics
                             // Move the source over 4 bytes
                             srcOff += bytesPerColor;
                         }
+
+                        row += dataStride;
                     }
                 }
             }
