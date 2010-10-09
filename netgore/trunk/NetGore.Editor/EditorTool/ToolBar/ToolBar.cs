@@ -40,9 +40,11 @@ namespace NetGore.Editor.EditorTool
             get { return _currentToolBarVisibility; }
             set
             {
+                // Ensure value actually changed
                 if (_currentToolBarVisibility == value)
                     return;
 
+                // Ignore when using ToolBarVisibility.None
                 if (value == ToolBarVisibility.None)
                     return;
 
@@ -133,27 +135,32 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
-        /// Adds a <see cref="Tool"/> go its <see cref="ToolBar"/>.
+        /// Adds a <see cref="Tool"/> to its <see cref="ToolBar"/>.
         /// </summary>
         /// <param name="tool">The <see cref="Tool"/> to add to its <see cref="ToolBar"/>.</param>
         public static void AddToToolBar(Tool tool)
         {
+            // Make sure the tool can be shown in a toolbar
             if (!tool.CanShowInToolbar)
                 return;
 
+            // Don't do anything if already on the toolbar
             if (tool.ToolBarControl.IsOnToolBar)
                 return;
 
+            // Get the tool's ToolStripItem
             var c = TryGetToolStripItem(tool);
             if (c == null)
                 return;
 
+            // Get the toolbar for the tool
             var tb = GetToolBar(tool.ToolBarVisibility);
             if (tb == null)
                 return;
 
             Debug.Assert(!tb.Items.Contains(c));
 
+            // Add the tool to the ToolBar
             tb.Items.Add(c);
 
             Debug.Assert(tb.Items.Contains(c));
