@@ -923,26 +923,21 @@ namespace NetGore.Editor.Grhs
             Enabled = false;
 
             AllowDrop = false;
-            Nodes.Clear();
+
+            // Set the sort method
+            TreeViewNodeSorter = this;
+
+            // Build the tree
+            RebuildTree();
+
+            // Listen for GrhDatas being added/removed
+            GrhInfo.Removed -= GrhInfo_Removed;
+            GrhInfo.Removed += GrhInfo_Removed;
 
             // Create the animate timer
             _animTimer.Interval = 150;
             _animTimer.Tick += UpdateAnimations;
             _animTimer.Start();
-
-            // Set the sort method
-            TreeViewNodeSorter = this;
-
-            // Iterate through all the GrhDatas
-            foreach (var grhData in GrhInfo.GrhDatas)
-            {
-                AddGrhToTree(grhData);
-            }
-
-            GrhInfo.Removed += GrhInfo_Removed;
-
-            // Perform the initial sort
-            Sort();
 
             Enabled = true;
         }
@@ -952,16 +947,30 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         public void RebuildTree()
         {
-            // Clear all nodes
-            Nodes.Clear();
+            // Suspend the layout and updating while we massively alter the collection
+            BeginUpdate();
+            SuspendLayout();
 
-            // Re-add every GrhData
-            foreach (var grh in GrhInfo.GrhDatas)
+            try
             {
-                AddGrhToTree(grh);
-            }
+                // Clear any existing nodes (probably isn't any, but just in case...)
+                Nodes.Clear();
 
-            Sort();
+                // Iterate through all the GrhDatas
+                foreach (var grhData in GrhInfo.GrhDatas)
+                {
+                    AddGrhToTree(grhData);
+                }
+
+                // Perform the initial sort
+                Sort();
+            }
+            finally
+            {
+                // Resume the layout and updating
+                ResumeLayout();
+                EndUpdate();
+            }
         }
 
         /// <summary>
