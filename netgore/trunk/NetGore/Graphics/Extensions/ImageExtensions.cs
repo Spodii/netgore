@@ -108,9 +108,18 @@ namespace NetGore.Graphics
             if (image == null)
                 throw new ArgumentNullException("image");
 
-            using (var original = ToBitmap(image, source))
+            if (destWidth == source.Width && destHeight == source.Height)
             {
-                return original.CreateScaled(destWidth, destHeight, true, null, null);
+                // The destination is the same size as the source
+                return ToBitmap(image, source);
+            }
+            else
+            {
+                // The destination is not the same size as the source, so we will have to scale it
+                using (var original = ToBitmap(image, source))
+                {
+                    return original.CreateScaled(destWidth, destHeight, true, null, null);
+                }
             }
         }
 
