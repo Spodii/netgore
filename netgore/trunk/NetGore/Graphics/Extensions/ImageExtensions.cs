@@ -209,8 +209,6 @@ namespace NetGore.Graphics
                 using (var original = ToBitmap(image, source))
                 {
                     var ret = original.CreateScaled(source, destWidth, destHeight, true, null, null);
-                    ret.Save(@"C:\t\" + (image.Height.GetHashCode() | image.Width.GetHashCode() | image.GetPixel(0,0).GetHashCode()).ToString() +
-                    (destWidth.GetHashCode() | destHeight.GetHashCode()).ToString() + "l.png", ImageFormat.Png);
                     return ret;
                 }
             }
