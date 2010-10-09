@@ -426,8 +426,7 @@ namespace DemoGame.Server
         /// <returns>The <see cref="NPCSpawner"/>s on the map.</returns>
         protected IEnumerable<NPCSpawner> LoadNPCSpawners()
         {
-            return Enumerable.Empty<NPCSpawner>();
-            //return NPCSpawner.LoadSpawners(this).ToCompact();
+            return NPCSpawner.LoadSpawners(this).ToCompact();
         }
 
         /// <summary>
