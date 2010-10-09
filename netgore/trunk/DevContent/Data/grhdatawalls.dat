@@ -9,7 +9,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item0>
@@ -20,7 +20,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item1>
@@ -31,7 +31,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item2>
@@ -42,7 +42,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item3>
@@ -53,7 +53,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item4>
@@ -64,7 +64,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item5>
@@ -75,7 +75,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,1</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item6>
@@ -86,7 +86,7 @@
         <Item0>
           <Position>6,4</Position>
           <Size>89,60</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item7>
@@ -97,7 +97,7 @@
         <Item0>
           <Position>1,0</Position>
           <Size>67,43</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item8>
@@ -108,7 +108,7 @@
         <Item0>
           <Position>0,2</Position>
           <Size>93,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item9>
@@ -119,7 +119,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item10>
@@ -130,7 +130,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item11>
@@ -141,7 +141,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item12>
@@ -333,7 +333,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>24,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item29>
@@ -377,7 +377,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>7,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item33>
@@ -509,7 +509,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item45>
@@ -520,7 +520,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item46>
@@ -531,7 +531,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item47>
@@ -542,7 +542,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item48>
@@ -553,7 +553,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item49>
@@ -564,7 +564,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item50>
@@ -575,7 +575,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item51>
@@ -586,7 +586,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item52>
@@ -597,7 +597,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item53>
@@ -608,7 +608,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item54>
@@ -619,7 +619,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item55>
@@ -630,7 +630,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>3,3</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item56>
@@ -641,7 +641,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item57>
@@ -652,7 +652,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item58>
@@ -663,7 +663,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item59>
@@ -674,12 +674,12 @@
         <Item0>
           <Position>8,0</Position>
           <Size>8,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
         <Item1>
           <Position>0,8</Position>
           <Size>8,8</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item1>
       </Walls>
     </Item60>
@@ -690,7 +690,7 @@
         <Item0>
           <Position>0,8</Position>
           <Size>16,8</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item61>
@@ -701,7 +701,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>16,16</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item62>
@@ -712,7 +712,7 @@
         <Item0>
           <Position>0,4</Position>
           <Size>32,14</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item63>
@@ -723,7 +723,7 @@
         <Item0>
           <Position>0,4</Position>
           <Size>32,14</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item64>
@@ -745,7 +745,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item66>
@@ -756,7 +756,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item67>
@@ -767,7 +767,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item68>
@@ -778,7 +778,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item69>
@@ -789,7 +789,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item70>
@@ -800,7 +800,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item71>
@@ -811,7 +811,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item72>
@@ -822,7 +822,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item73>
@@ -833,7 +833,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item74>
@@ -844,7 +844,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item75>
@@ -855,7 +855,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item76>
@@ -866,7 +866,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item77>
@@ -877,7 +877,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item78>
@@ -888,7 +888,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item79>
@@ -899,7 +899,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item80>
@@ -910,7 +910,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item81>
@@ -921,7 +921,7 @@
         <Item0>
           <Position>0,0</Position>
           <Size>32,32</Size>
-          <IsPlatform>True</IsPlatform>
+          <IsPlatform>False</IsPlatform>
         </Item0>
       </Walls>
     </Item82>
