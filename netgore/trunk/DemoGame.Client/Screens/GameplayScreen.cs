@@ -716,7 +716,7 @@ namespace DemoGame.Client
                                                    sock.AverageLatency < 1 ? "<1" : Math.Round(sock.AverageLatency).ToString());
 
             _userLight.IsEnabled = true;
-            _userLight.Teleport(UserChar.Position);
+            _userLight.SetCenter(UserChar.Center);
 
             // Periodically synchronize the game time
             if (Socket != null && _nextSyncGameTime < gameTime)

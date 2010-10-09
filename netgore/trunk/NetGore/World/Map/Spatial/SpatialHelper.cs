@@ -75,7 +75,7 @@ namespace NetGore.World
             if (mtd < 0.0f)
                 return Vector2.Zero;
 
-            return CreateMTDVector(side, mtd);
+            return CreateMTDVector(side, mtd + 1);
         }
 
         /// <summary>
