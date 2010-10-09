@@ -197,30 +197,46 @@ namespace NetGore.Graphics
 
             try
             {
-                var srcStride = rect.Width;
+                var srcStride = rect.Width * bytesPerColor;
+                var dataStride = data.Stride / bytesPerColor;
+                int srcX = source.X;
+                int srcY = source.Y;
 
-                // Copy the pixel values byte-by-byte, making sure to copy the RGBA source to the ARGB destination
-                for (var y = 0; y < data.Height; y++)
+                // Grab the pointer to the pixels array
+                fixed (byte* p = pixels)
                 {
-                    var srcOffRow = (y + source.Y) * srcStride * bytesPerColor;
-                    var row = (byte*)data.Scan0 + (y * data.Stride);
-
-                    for (var x = 0; x < data.Width; x++)
+                    // Copy the pixel values byte-by-byte, making sure to copy the RGBA source to the ARGB destination
+                    for (var y = 0; y < data.Height; y++)
                     {
-                        var srcOff = srcOffRow + ((x + source.X) * bytesPerColor);
-                        var dstOff = x * bytesPerColor;
+                        var srcOffColumn = (y + srcY) * srcStride;
+                        var row = (int*)data.Scan0 + (y * dataStride);
 
-                        // row[A]
-                        row[dstOff + 3] = pixels[srcOff + 3];
+                        var srcOff = srcOffColumn + (srcX * bytesPerColor);
 
-                        // row[R]
-                        row[dstOff + 2] = pixels[srcOff + 0];
+                        for (var x = 0; x < data.Width; x++)
+                        {
+                            // Masks for getting the 4 bytes in the int
+                            const int b0 = 255;
+                            const int b1 = b0 << 8;
+                            const int b2 = b0 << 16;
+                            const int b3 = b0 << 24;
 
-                        // row[G]
-                        row[dstOff + 1] = pixels[srcOff + 1];
+                            // Get the raw value at the source (pixels[]) as an int (instead of grabbing each byte at a time)
+                            int raw = *((int*)(p+srcOff));
 
-                        // row[B]
-                        row[dstOff + 0] = pixels[srcOff + 2];
+                            // Convert to the correct format by moving doing the following to the source bytes:
+                            //      src 0 -> dst 2 (move left 2 bytes)
+                            //      src 1 -> dst 1 (no moving)
+                            //      src 2 -> dst 0 (move right 2 bytes)
+                            //      src 3 -> dst 3 (no moving)
+                            int converted = (raw & (b3 | b1)) | ((raw & b0) << 16) | ((raw & b2) >> 16);
+
+                            // Store the converted result
+                            row[x] = converted;
+
+                            // Move the source over 4 bytes
+                            srcOff += bytesPerColor;
+                        }
                     }
                 }
             }
