@@ -58,12 +58,13 @@ namespace DemoGame.Client
             var responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
             var textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
             _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize)
-            { IsEnabled = false, CanFocus = false, IsMultiLine = true };
+            { IsEnabled = false, CanFocus = false, IsMultiLine = true, Font = GameScreenHelper.DefaultChatFont };
             _dialogTextControl.ClientSize -= _dialogTextControl.Border.Size;
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
-                var r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true };
+                var r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true, 
+                    Font = GameScreenHelper.DefaultChatFont };
                 r.Clicked += ResponseText_Clicked;
                 _responseTextControls[i] = r;
             }
