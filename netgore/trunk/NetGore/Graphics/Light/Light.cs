@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
@@ -150,6 +151,15 @@ namespace NetGore.Graphics
                     _position = _positionProvider.Center;
                 }
             }
+        }
+
+        /// <summary>
+        /// Sets the center position of the <see cref="ILight"/>.
+        /// </summary>
+        /// <param name="value">The new center.</param>
+        public void SetCenter(Vector2 value)
+        {
+            Center = value;
         }
 
         /// <summary>
