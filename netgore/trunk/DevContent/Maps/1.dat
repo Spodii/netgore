@@ -90,7 +90,7 @@
       <IsPlatform>False</IsPlatform>
     </Item15>
     <Item16>
-      <Position>256,578</Position>
+      <Position>159,578</Position>
       <Size>93,16</Size>
       <IsPlatform>False</IsPlatform>
     </Item16>
@@ -261,7 +261,7 @@
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>256,576</Position>
+          <Position>159,576</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -272,7 +272,7 @@
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>288,576</Position>
+          <Position>189,575</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -283,7 +283,7 @@
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>320,576</Position>
+          <Position>221,574</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -294,7 +294,7 @@
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>256,576</Position>
+          <Position>158,576</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
