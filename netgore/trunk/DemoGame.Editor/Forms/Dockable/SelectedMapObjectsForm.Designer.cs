@@ -28,43 +28,70 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.sc = new System.Windows.Forms.SplitContainer();
             this.pgSelected = new System.Windows.Forms.PropertyGrid();
             this.lstItems = new System.Windows.Forms.ListBox();
+            this.sc.Panel1.SuspendLayout();
+            this.sc.Panel2.SuspendLayout();
+            this.sc.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // sc
+            // 
+            this.sc.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sc.Location = new System.Drawing.Point(0, 0);
+            this.sc.Name = "sc";
+            // 
+            // sc.Panel1
+            // 
+            this.sc.Panel1.Controls.Add(this.pgSelected);
+            // 
+            // sc.Panel2
+            // 
+            this.sc.Panel2.Controls.Add(this.lstItems);
+            this.sc.Size = new System.Drawing.Size(470, 318);
+            this.sc.SplitterDistance = 297;
+            this.sc.TabIndex = 2;
             // 
             // pgSelected
             // 
-            this.pgSelected.Location = new System.Drawing.Point(12, 12);
+            this.pgSelected.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgSelected.Location = new System.Drawing.Point(0, 0);
             this.pgSelected.Name = "pgSelected";
-            this.pgSelected.Size = new System.Drawing.Size(205, 252);
-            this.pgSelected.TabIndex = 0;
+            this.pgSelected.Size = new System.Drawing.Size(297, 318);
+            this.pgSelected.TabIndex = 1;
             // 
             // lstItems
             // 
+            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstItems.FormattingEnabled = true;
-            this.lstItems.Location = new System.Drawing.Point(223, 12);
+            this.lstItems.Location = new System.Drawing.Point(0, 0);
             this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(205, 251);
-            this.lstItems.TabIndex = 1;
+            this.lstItems.Size = new System.Drawing.Size(169, 318);
+            this.lstItems.TabIndex = 2;
             // 
             // SelectedObjectsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 276);
-            this.Controls.Add(this.lstItems);
-            this.Controls.Add(this.pgSelected);
+            this.ClientSize = new System.Drawing.Size(470, 318);
+            this.Controls.Add(this.sc);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
             this.Name = "SelectedObjectsForm";
             this.Text = "Selected Objects";
+            this.sc.Panel1.ResumeLayout(false);
+            this.sc.Panel2.ResumeLayout(false);
+            this.sc.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.SplitContainer sc;
         private System.Windows.Forms.PropertyGrid pgSelected;
         private System.Windows.Forms.ListBox lstItems;
+
     }
 }
