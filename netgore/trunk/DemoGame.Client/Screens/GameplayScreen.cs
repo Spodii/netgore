@@ -521,7 +521,7 @@ namespace DemoGame.Client
                                                            questFinishReqs);
             _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
-            _latencyLabel = new Label(_cScreen, _cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
+            _latencyLabel = new Label(_cScreen, new Vector2(_cScreen.ClientSize.X - 75, 5)) { Text = string.Format(_latencyString, 0), ForeColor = Color.White };
 
             _skillCastProgressBar = new SkillCastProgressBar(_cScreen);
 
