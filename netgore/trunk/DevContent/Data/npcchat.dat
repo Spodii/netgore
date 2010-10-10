@@ -139,14 +139,14 @@
         <Item5>
           <ID>5</ID>
           <Title>Don't need it.</Title>
-          <Text>Well fine, screw you. Not like you needed it, anyways. Stop wasting my time!</Text>
+          <Text>Well fine, screw you! Not like you needed it anyways. Stop wasting my time!</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>1</Count>
             <Item0>
               <Value>0</Value>
               <Page>65535</Page>
-              <Text>&lt;New Response&gt;</Text>
+              <Text>[Leave]</Text>
               <Actions>
                 <Count>0</Count>
               </Actions>
@@ -159,7 +159,7 @@
         <Item6>
           <ID>6</ID>
           <Title />
-          <Text>Whatever. Your loss.</Text>
+          <Text>Whatever. Your loss, dude.</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>2</Count>
@@ -255,7 +255,7 @@
         <Item8>
           <ID>8</ID>
           <Title />
-          <Text>I said stand still, goddamnit!</Text>
+          <Text>I said stand still, damnit!</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>2</Count>
@@ -286,7 +286,7 @@
         <Item9>
           <ID>9</ID>
           <Title />
-          <Text>Hey, your MP is fine. Get the hell out of here!</Text>
+          <Text>Hey, your MP is fine. Get out of here!</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>0</Count>
