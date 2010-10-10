@@ -253,10 +253,6 @@ namespace NetGore.Db
         /// </summary>
         public void Dispose()
         {
-            // NOTE: I do not believe this is being disposed of... ever
-            Debug.Fail(
-                "If you see this message, that means this is being disposed of and you can delete this line and the NOTE above.");
-
             if (_selectIDQuery != null)
                 _selectIDQuery.Dispose();
         }

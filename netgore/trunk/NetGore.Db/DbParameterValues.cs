@@ -142,7 +142,14 @@ namespace NetGore.Db
         /// <returns>The name of the parameter at the given index.</returns>
         public string GetParameterName(int index)
         {
-            return _collection[index].ParameterName;
+            var ret = _collection[index].ParameterName;
+            if (ret.StartsWith(DbQueryBase.ParameterPrefix))
+                ret = ret.Substring(1);
+
+            Debug.Assert(!ret.StartsWith(DbQueryBase.ParameterPrefix));
+            Debug.Assert(ret.Length > 0);
+
+            return ret;
         }
 
         #region IDisposable Members
