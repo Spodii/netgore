@@ -52,10 +52,10 @@ namespace NetGore.Db.QueryBuilder
             if (settings == null)
                 throw new ArgumentNullException("settings");
 
-            settings.IsValidTableName(table, true);
-
             _table = table;
             _settings = settings;
+
+            Settings.IsValidTableName(table, true);
 
             _c = new ColumnValueCollectionBuilder<IUpdateQuery>(this, settings);
         }

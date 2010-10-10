@@ -110,7 +110,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <summary>
         /// Checks if a table alias is valid.
         /// </summary>
-        /// <param name="tableAlias">The table alias.</param>
+        /// <param name="tableAlias">The table alias. Can be null to signify an alias not being used.</param>
         /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
         /// <paramref name="tableAlias"/> is invalid.</param>
         /// <returns>True if the <paramref name="tableAlias"/> is valid; otherwise false. Cannot be false when
@@ -119,6 +119,9 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <paramref name="throwOnInvalid"/> is true.</exception>
         public bool IsValidTableAlias(string tableAlias, bool throwOnInvalid)
         {
+            if (tableAlias == null)
+                return true;
+
             if (string.IsNullOrEmpty(tableAlias))
             {
                 if (throwOnInvalid)
