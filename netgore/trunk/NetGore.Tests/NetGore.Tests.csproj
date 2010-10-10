@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db\DbQueryBaseTests.cs" />
+    <Compile Include="Db\DbQueryBuilderTests.cs" />
     <Compile Include="Graphics\AutomaticAnimatedGrhDataTests.cs" />
     <Compile Include="Graphics\EntityInterpolatorTests.cs" />
     <Compile Include="NetGore\AlignmentHelperTests.cs" />

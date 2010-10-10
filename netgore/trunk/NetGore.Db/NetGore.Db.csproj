@@ -135,12 +135,13 @@
     <Compile Include="QueryBuilder\Interfaces\IInsertODKUQuery.cs" />
     <Compile Include="QueryBuilder\Interfaces\IInsertQuery.cs" />
     <Compile Include="QueryBuilder\Interfaces\IJoinedSelectQuery.cs" />
-    <Compile Include="QueryBuilder\Interfaces\InsertODKUQuery.cs" />
-    <Compile Include="QueryBuilder\Interfaces\InsertQuery.cs" />
+    <Compile Include="QueryBuilder\InsertODKUQuery.cs" />
+    <Compile Include="QueryBuilder\InsertQuery.cs" />
     <Compile Include="QueryBuilder\Interfaces\IQueryBuilderSettings.cs" />
     <Compile Include="QueryBuilder\Interfaces\IQueryResultFilter.cs" />
     <Compile Include="QueryBuilder\Interfaces\ISelectQuery.cs" />
     <Compile Include="QueryBuilder\Interfaces\IUpdateQuery.cs" />
+    <Compile Include="QueryBuilder\InvalidQueryException.cs" />
     <Compile Include="QueryBuilder\OrderByType.cs" />
     <Compile Include="QueryBuilder\QueryBuilderSettings.cs" />
     <Compile Include="QueryBuilder\QueryResultFilter.cs" />

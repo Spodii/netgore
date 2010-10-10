@@ -27,19 +27,19 @@ namespace NetGore.Db.QueryBuilder
 
         public override string ToString()
         {
+            var values = _c.GetValues();
+
+            if (values == null || values.Length == 0)
+                throw InvalidQueryException.CreateEmptyColumnList();
+
             var sb = new StringBuilder();
 
             // Base function
             sb.Append("INSERT INTO ");
             sb.Append(Settings.EscapeTable(_tableName));
-            sb.Append(" ");
-
-            var values = _c.GetValues();
-
-            // TODO: Require values not empty
 
             // Columns
-            sb.Append("(");
+            sb.Append(" (");
 
             foreach (var kvp in values)
             {
@@ -49,10 +49,9 @@ namespace NetGore.Db.QueryBuilder
             }
 
             sb.Length--;
-            sb.Append(") ");
 
             // Values
-            sb.Append("VALUES (");
+            sb.Append(") VALUES (");
 
             foreach (var kvp in values)
             {

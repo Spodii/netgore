@@ -28,19 +28,19 @@ namespace NetGore.Db.QueryBuilder
 
         public override string ToString()
         {
+            var values = _c.GetValues();
+
+            if (values == null || values.Length == 0)
+                throw InvalidQueryException.CreateEmptyColumnList();
+
             var sb = new StringBuilder();
 
             sb.Append("UPDATE ");
             sb.Append(Settings.EscapeTable(_table));
-            sb.Append(" SET");
-
-            var values = _c.GetValues();
-
-            // TODO: Require values not empty
+            sb.Append(" SET ");
 
             foreach (var kvp in values)
             {
-                sb.Append(" ");
                 sb.Append(Settings.EscapeColumn(kvp.Key));
                 sb.Append("=");
                 sb.Append(kvp.Value);
