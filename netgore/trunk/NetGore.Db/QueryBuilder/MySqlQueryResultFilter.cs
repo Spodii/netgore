@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class QueryResultFilter : IQueryResultFilter
+    public class MySqlQueryResultFilter : IQueryResultFilter
     {
         readonly object _parent;
         string _limit;
@@ -13,7 +13,7 @@ namespace NetGore.Db.QueryBuilder
         OrderByType _orderByType;
         string _where;
 
-        public QueryResultFilter(object parent)
+        public MySqlQueryResultFilter(object parent)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -23,7 +23,7 @@ namespace NetGore.Db.QueryBuilder
 
         static IQueryBuilderSettings Settings
         {
-            get { return QueryBuilderSettings.Instance; }
+            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         public override string ToString()

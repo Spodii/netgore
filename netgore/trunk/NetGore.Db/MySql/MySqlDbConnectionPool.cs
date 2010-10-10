@@ -1,6 +1,8 @@
+using System;
 using System.Data.Common;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql
 {
@@ -36,6 +38,14 @@ namespace NetGore.Db.MySql
         public override DbParameter CreateParameter(string parameterName)
         {
             return new MySqlParameter(parameterName, null);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public override IQueryBuilder QueryBuilder
+        {
+            get { return Db.QueryBuilder.MySqlQueryBuilder.Instance; }
         }
     }
 }

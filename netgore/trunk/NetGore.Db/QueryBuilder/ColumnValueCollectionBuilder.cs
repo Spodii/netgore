@@ -14,12 +14,12 @@ namespace NetGore.Db.QueryBuilder
             // TODO: Owner not null
 
             _owner = owner;
-            _cvs = new SortedDictionary<string, string>(QueryBuilderSettings.Instance.ColumnNameComparer);
+            _cvs = new SortedDictionary<string, string>(MySqlQueryBuilderSettings.Instance.ColumnNameComparer);
         }
 
         static IQueryBuilderSettings Settings
         {
-            get { return QueryBuilderSettings.Instance; }
+            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         public KeyValuePair<string, string>[] GetValues()
@@ -31,6 +31,8 @@ namespace NetGore.Db.QueryBuilder
 
         public T Add(string column, string value)
         {
+            Settings.IsValidColumnName(column, true);
+
             _cvs.Remove(column);
             _cvs.Add(column, value);
 
@@ -90,6 +92,8 @@ namespace NetGore.Db.QueryBuilder
 
         public T AddParam(string column, string value)
         {
+            Settings.IsValidColumnName(column, true);
+
             _cvs.Remove(column);
             _cvs.Add(column, Settings.Parameterize(value));
 
@@ -134,6 +138,8 @@ namespace NetGore.Db.QueryBuilder
 
         public T Remove(string column)
         {
+            Settings.IsValidColumnName(column, true);
+
             _cvs.Remove(column);
 
             return _owner;

@@ -12,5 +12,9 @@ namespace NetGore.Db.QueryBuilder
         string EscapeTable(string tableName);
 
         string Parameterize(string s);
+
+        bool IsValidColumnName(string columnName, bool throwOnInvalid = false);
+
+        bool IsValidTableName(string tableName, bool throwOnInvalid = false);
     }
 }

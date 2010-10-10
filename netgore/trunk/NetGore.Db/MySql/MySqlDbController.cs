@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql
 {
@@ -53,6 +55,14 @@ namespace NetGore.Db.MySql
         protected override string GetTestQueryCommand()
         {
             return "SELECT 1+5";
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public override IQueryBuilder QueryBuilder
+        {
+            get { return MySqlQueryBuilder.Instance; }
         }
 
         /// <summary>

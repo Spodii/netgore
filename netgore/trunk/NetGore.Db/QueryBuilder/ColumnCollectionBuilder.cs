@@ -23,11 +23,13 @@ namespace NetGore.Db.QueryBuilder
 
         static IQueryBuilderSettings Settings
         {
-            get { return QueryBuilderSettings.Instance; }
+            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         public T Add(string column)
         {
+            Settings.IsValidColumnName(column, true);
+
             if (!_columns.Contains(column, Settings.ColumnNameComparer))
                 _columns.Add(column);
 
@@ -49,6 +51,8 @@ namespace NetGore.Db.QueryBuilder
 
         public T Remove(string column)
         {
+            Settings.IsValidColumnName(column, true);
+
             for (int i = 0; i < _columns.Count; i++)
             {
                 if (Settings.ColumnNameComparer.Equals(column, _columns[i]))

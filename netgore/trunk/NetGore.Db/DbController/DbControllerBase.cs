@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using log4net;
 using NetGore.Collections;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db
 {
@@ -217,6 +218,11 @@ namespace NetGore.Db
         {
             get { return _database; }
         }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public abstract IQueryBuilder QueryBuilder { get; }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

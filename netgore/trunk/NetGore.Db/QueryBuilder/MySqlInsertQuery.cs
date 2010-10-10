@@ -4,12 +4,12 @@ using System.Text;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class InsertQuery : IInsertQuery
+    public class MySqlInsertQuery : IInsertQuery
     {
         readonly ColumnValueCollectionBuilder<IInsertQuery> _c;
         readonly string _tableName;
 
-        public InsertQuery(string tableName)
+        public MySqlInsertQuery(string tableName)
         {
             _tableName = tableName;
             _c = new ColumnValueCollectionBuilder<IInsertQuery>(this);
@@ -22,7 +22,7 @@ namespace NetGore.Db.QueryBuilder
 
         static IQueryBuilderSettings Settings
         {
-            get { return QueryBuilderSettings.Instance; }
+            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         public override string ToString()
@@ -124,7 +124,7 @@ namespace NetGore.Db.QueryBuilder
 
         public IInsertODKUQuery OnDuplicateKeyUpdate()
         {
-            return new InsertODKUQuery(this);
+            return new MySqlInsertODKUQuery(this);
         }
 
         public IInsertQuery Remove(IEnumerable<string> columns)
