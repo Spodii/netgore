@@ -50,7 +50,7 @@ namespace NetGore.Db
         /// <returns>A new <see cref="PooledDbConnection"/> for the <see cref="_pool"/>.</returns>
         PooledDbConnection CreateNewObj(IObjectPool<PooledDbConnection> objectPool)
         {
-            var ret = new PooledDbConnection((IDbConnectionPool)objectPool);
+            var ret = new PooledDbConnection(this);
             var conn = CreateConnection(ConnectionString);
             ret.SetConnection(conn);
             return ret;
