@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db
 {
@@ -19,6 +20,11 @@ namespace NetGore.Db
         /// Gets the name of the database that this <see cref="IDbController"/> instance is connected to.
         /// </summary>
         string Database { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        IQueryBuilder QueryBuilder { get; }
 
         /// <summary>
         /// Gets the schema, table, and column tuples for columns containing a reference to the specified primary key.

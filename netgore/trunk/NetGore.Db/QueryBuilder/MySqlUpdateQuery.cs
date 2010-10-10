@@ -4,12 +4,12 @@ using System.Text;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class UpdateQuery : IUpdateQuery
+    public class MySqlUpdateQuery : IUpdateQuery
     {
         readonly ColumnValueCollectionBuilder<IUpdateQuery> _c;
         readonly string _table;
 
-        public UpdateQuery(string table)
+        public MySqlUpdateQuery(string table)
         {
             _table = table;
 
@@ -23,7 +23,7 @@ namespace NetGore.Db.QueryBuilder
 
         static IQueryBuilderSettings Settings
         {
-            get { return QueryBuilderSettings.Instance; }
+            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         public override string ToString()
@@ -111,17 +111,17 @@ namespace NetGore.Db.QueryBuilder
 
         public IQueryResultFilter Limit(int amount)
         {
-            return new QueryResultFilter(this).Limit(amount);
+            return new MySqlQueryResultFilter(this).Limit(amount);
         }
 
         public IQueryResultFilter OrderBy(string value, OrderByType order = OrderByType.Ascending)
         {
-            return new QueryResultFilter(this).OrderBy(value, order);
+            return new MySqlQueryResultFilter(this).OrderBy(value, order);
         }
 
         public IQueryResultFilter OrderByColumn(string columnName, OrderByType order = OrderByType.Ascending)
         {
-            return new QueryResultFilter(this).OrderByColumn(columnName, order);
+            return new MySqlQueryResultFilter(this).OrderByColumn(columnName, order);
         }
 
         public IUpdateQuery Remove(IEnumerable<string> columns)
@@ -141,7 +141,7 @@ namespace NetGore.Db.QueryBuilder
 
         public IQueryResultFilter Where(string condition)
         {
-            return new QueryResultFilter(this).Where(condition);
+            return new MySqlQueryResultFilter(this).Where(condition);
         }
 
         #endregion

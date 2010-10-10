@@ -2,28 +2,38 @@ using System;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Collections;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db
 {
     /// <summary>
-    /// Object that is used to wrap around a DbConnection that is used in an ObjectPool.
+    /// Object that is used to wrap around a <see cref="DbConnection"/> that is used in an <see cref="IDbConnectionPool"/>.
     /// </summary>
     public class PooledDbConnection : IPoolableDbConnection, IPoolable
     {
-        readonly IObjectPool<PooledDbConnection> _objectPool;
+        readonly IDbConnectionPool _pool;
 
         DbConnection _connection;
 
-        internal PooledDbConnection(IObjectPool<PooledDbConnection> objectPool)
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public IQueryBuilder QueryBuilder { get { return _pool.QueryBuilder; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PooledDbConnection"/> class.
+        /// </summary>
+        /// <param name="pool">The <see cref="IDbConnectionPool"/> that this instance belongs to.</param>
+        internal PooledDbConnection(IDbConnectionPool pool)
         {
-            _objectPool = objectPool;
+            _pool = pool;
         }
 
         /// <summary>
-        /// Sets the DbConnection to be used by this IPoolableDbConnection. This should only be called by the
-        /// DbConnectionPool, and can only be called once.
+        /// Sets the <see cref="DbConnection"/> to be used by this <see cref="IPoolableDbConnection"/>.
+        /// This should only be called by the <see cref="DbConnectionPool"/>, and can only be called once.
         /// </summary>
-        /// <param name="connection">Connection to be used by the IPoolableDbConnection.</param>
+        /// <param name="connection">Connection to be used by the <see cref="IPoolableDbConnection"/>.</param>
         internal void SetConnection(DbConnection connection)
         {
             if (_connection != null)
@@ -47,7 +57,7 @@ namespace NetGore.Db
         #region IPoolableDbConnection Members
 
         /// <summary>
-        /// Gets the IDbConnection for this IPoolableDbConnection.
+        /// Gets the <see cref="DbConnection"/> for this <see cref="IPoolableDbConnection"/>.
         /// </summary>
         public DbConnection Connection
         {
@@ -55,11 +65,12 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Disposes of the PooledDbConnection, closing the connection and sending it back to the ObjectPool.
+        /// Disposes of the <see cref="IPoolableDbConnection"/>, closing the connection and sending it back to the
+        /// <see cref="IDbConnectionPool"/>.
         /// </summary>
         public void Dispose()
         {
-            _objectPool.Free(this);
+            _pool.Free(this);
         }
 
         #endregion

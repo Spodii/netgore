@@ -4,15 +4,15 @@ using System.Text;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class InsertODKUQuery : IInsertODKUQuery
+    class MySqlInsertODKUQuery : IInsertODKUQuery
     {
-        readonly ColumnValueCollectionBuilder<InsertODKUQuery> _c;
-        readonly InsertQuery _owner;
+        readonly ColumnValueCollectionBuilder<MySqlInsertODKUQuery> _c;
+        readonly MySqlInsertQuery _owner;
 
-        public InsertODKUQuery(InsertQuery owner)
+        public MySqlInsertODKUQuery(MySqlInsertQuery owner)
         {
             _owner = owner;
-            _c = new ColumnValueCollectionBuilder<InsertODKUQuery>(this);
+            _c = new ColumnValueCollectionBuilder<MySqlInsertODKUQuery>(this);
         }
 
         public override string ToString()

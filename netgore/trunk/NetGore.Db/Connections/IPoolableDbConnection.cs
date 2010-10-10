@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 
@@ -10,7 +11,8 @@ namespace NetGore.Db
     public interface IPoolableDbConnection : IDisposable
     {
         /// <summary>
-        /// Gets the IDbConnection for this IPoolableDbConnection. Never dispose of this IDbConnection directly.
+        /// Gets the <see cref="DbConnection"/> for this <see cref="IPoolableDbConnection"/>.
+        /// Never dispose of this <see cref="DbConnection"/> directly.
         /// </summary>
         DbConnection Connection { get; }
     }

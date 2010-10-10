@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class SelectQuery : ISelectQuery
+    public class MySqlSelectQuery : ISelectQuery
     {
         readonly string _alias;
         readonly ColumnCollectionBuilder<ISelectQuery> _c;
@@ -15,7 +15,7 @@ namespace NetGore.Db.QueryBuilder
         bool _allColumns = false;
         bool _distinct = false;
 
-        public SelectQuery(string table, string alias = null)
+        public MySqlSelectQuery(string table, string alias = null)
         {
             _table = table;
             _alias = alias;
@@ -25,7 +25,7 @@ namespace NetGore.Db.QueryBuilder
 
         static IQueryBuilderSettings Settings
         {
-            get { return QueryBuilderSettings.Instance; }
+            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         public override string ToString()
@@ -113,17 +113,17 @@ namespace NetGore.Db.QueryBuilder
 
         public IQueryResultFilter Limit(int amount)
         {
-            return new QueryResultFilter(this).Limit(amount);
+            return new MySqlQueryResultFilter(this).Limit(amount);
         }
 
         public IQueryResultFilter OrderBy(string value, OrderByType order)
         {
-            return new QueryResultFilter(this).OrderBy(value, order);
+            return new MySqlQueryResultFilter(this).OrderBy(value, order);
         }
 
         public IQueryResultFilter OrderByColumn(string columnName, OrderByType order)
         {
-            return new QueryResultFilter(this).OrderByColumn(columnName, order);
+            return new MySqlQueryResultFilter(this).OrderByColumn(columnName, order);
         }
 
         public ISelectQuery Remove(string column)
@@ -143,7 +143,7 @@ namespace NetGore.Db.QueryBuilder
 
         public IQueryResultFilter Where(string condition)
         {
-            return new QueryResultFilter(this).Where(condition);
+            return new MySqlQueryResultFilter(this).Where(condition);
         }
 
         #endregion

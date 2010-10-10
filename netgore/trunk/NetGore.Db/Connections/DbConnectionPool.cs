@@ -3,13 +3,14 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Collections;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db
 {
     /// <summary>
     /// Base class for a pool of database connections.
     /// </summary>
-    public abstract class DbConnectionPool : IObjectPool<PooledDbConnection>, IDisposable
+    public abstract class DbConnectionPool : IDbConnectionPool
     {
         readonly string _connectionString;
         readonly ObjectPool<PooledDbConnection> _pool;
@@ -49,7 +50,7 @@ namespace NetGore.Db
         /// <returns>A new <see cref="PooledDbConnection"/> for the <see cref="_pool"/>.</returns>
         PooledDbConnection CreateNewObj(IObjectPool<PooledDbConnection> objectPool)
         {
-            var ret = new PooledDbConnection(objectPool);
+            var ret = new PooledDbConnection((IDbConnectionPool)objectPool);
             var conn = CreateConnection(ConnectionString);
             ret.SetConnection(conn);
             return ret;
@@ -172,5 +173,10 @@ namespace NetGore.Db
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public abstract IQueryBuilder QueryBuilder { get; }
     }
 }
