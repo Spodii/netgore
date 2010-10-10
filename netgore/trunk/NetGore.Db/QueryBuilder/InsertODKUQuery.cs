@@ -25,22 +25,22 @@ namespace NetGore.Db.QueryBuilder
             // Base operator
             sb.Append(" ON DUPLICATE KEY UPDATE ");
 
+            // Sets
             var values = _c.GetValues();
 
-            // Sets
-            if (values != null && values.Length > 0)
-            {
-                foreach (var kvp in values)
-                {
-                    sb.Append("`");
-                    sb.Append(kvp.Key);
-                    sb.Append("`=");
-                    sb.Append(kvp.Value);
-                    sb.Append(",");
-                }
+            if (values == null || values.Length == 0)
+                throw InvalidQueryException.CreateEmptyColumnList();
 
-                sb.Length--;
+            foreach (var kvp in values)
+            {
+                sb.Append("`");
+                sb.Append(kvp.Key);
+                sb.Append("`=");
+                sb.Append(kvp.Value);
+                sb.Append(",");
             }
+
+            sb.Length--;
 
             return sb.ToString().Trim();
         }

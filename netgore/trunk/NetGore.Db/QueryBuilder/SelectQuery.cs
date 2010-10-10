@@ -40,11 +40,16 @@ namespace NetGore.Db.QueryBuilder
 
             // Columns
             if (_allColumns)
+            {
+                // All columns
                 sb.Append("*");
+            }
             else
             {
+                // Specified columns only
                 var values = _c.GetValues();
-                // TODO: Values not null
+                if (values == null || values.Length == 0)
+                    throw InvalidQueryException.CreateEmptyColumnList();
 
                 foreach (var v in values)
                 {
@@ -171,7 +176,7 @@ namespace NetGore.Db.QueryBuilder
             sb.Append(alias);
             sb.Append(".");
             sb.Append(thisJoinColumn);
-            sb.Append(" = ");
+            sb.Append("=");
             sb.Append(otherTable);
             sb.Append(".");
             sb.Append(otherTableJoinColumn);

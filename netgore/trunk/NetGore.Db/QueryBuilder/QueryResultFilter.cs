@@ -45,16 +45,14 @@ namespace NetGore.Db.QueryBuilder
             {
                 sb.Append("ORDER BY ");
                 sb.Append(_orderBy);
-                sb.Append(" ");
 
                 switch (_orderByType)
                 {
                     case OrderByType.Ascending:
-                        sb.Append("ASC");
                         break;
 
                     case OrderByType.Descending:
-                        sb.Append("DESC");
+                        sb.Append( "DESC");
                         break;
 
                     default:
