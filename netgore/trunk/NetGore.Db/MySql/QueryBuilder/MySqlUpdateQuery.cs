@@ -5,12 +5,26 @@ using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
 {
-    public class MySqlUpdateQuery : UpdateQueryBase
+    /// <summary>
+    /// An <see cref="IUpdateQuery"/> for MySql.
+    /// </summary>
+    class MySqlUpdateQuery : UpdateQueryBase
     {
-        public MySqlUpdateQuery(string tableName) : base(tableName, MySqlQueryBuilderSettings.Instance)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MySqlUpdateQuery"/> class.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <exception cref="InvalidQueryException"><paramref name="table"/> is not a valid table name.</exception>
+        public MySqlUpdateQuery(string table) : base(table, MySqlQueryBuilderSettings.Instance)
         {
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override string ToString()
         {
             var values = ColumnValueCollection.GetValues();

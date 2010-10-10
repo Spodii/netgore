@@ -4,13 +4,25 @@ using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
 {
-    public class MySqlQueryResultFilter : QueryResultFilterBase
+    /// <summary>
+    /// An <see cref="IQueryResultFilter"/> for MySql.
+    /// </summary>
+    class MySqlQueryResultFilter : QueryResultFilterBase
     {
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MySqlQueryResultFilter"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
         public MySqlQueryResultFilter(object parent) : base(parent, MySqlQueryBuilderSettings.Instance)
         {
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
