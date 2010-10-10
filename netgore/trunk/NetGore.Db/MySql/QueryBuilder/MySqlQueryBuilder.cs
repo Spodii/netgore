@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore.Db.QueryBuilder;
 
-namespace NetGore.Db.QueryBuilder
+namespace NetGore.Db.MySql.QueryBuilder
 {
     public class MySqlQueryBuilder : IQueryBuilder
     {

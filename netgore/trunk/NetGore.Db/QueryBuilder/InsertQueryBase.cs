@@ -1,68 +1,34 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class MySqlInsertQuery : IInsertQuery
+    public abstract class InsertQueryBase : IInsertQuery
     {
-        readonly ColumnValueCollectionBuilder<IInsertQuery> _c;
         readonly string _tableName;
+        readonly IQueryBuilderSettings _settings;
+        readonly ColumnValueCollectionBuilder<IInsertQuery> _c;
 
-        public MySqlInsertQuery(string tableName)
-        {
-            _tableName = tableName;
-            _c = new ColumnValueCollectionBuilder<IInsertQuery>(this);
-        }
-
-        public ColumnValueCollectionBuilder<IInsertQuery> ColumnValueCollection
+        protected ColumnValueCollectionBuilder<IInsertQuery> ColumnValueCollection
         {
             get { return _c; }
         }
 
-        static IQueryBuilderSettings Settings
+        public IQueryBuilderSettings Settings { get { return _settings; } }
+
+        public string TableName { get { return _tableName; } }
+
+        public KeyValuePair<string, string>[] GetColumnValueCollectionValues()
         {
-            get { return MySqlQueryBuilderSettings.Instance; }
+            return ColumnValueCollection.GetValues();
         }
 
-        public override string ToString()
+        protected InsertQueryBase(string tableName, IQueryBuilderSettings settings)
         {
-            var values = _c.GetValues();
+            _tableName = tableName;
+            _settings = settings;
 
-            if (values == null || values.Length == 0)
-                throw InvalidQueryException.CreateEmptyColumnList();
-
-            var sb = new StringBuilder();
-
-            // Base function
-            sb.Append("INSERT INTO ");
-            sb.Append(Settings.EscapeTable(_tableName));
-
-            // Columns
-            sb.Append(" (");
-
-            foreach (var kvp in values)
-            {
-                sb.Append("`");
-                sb.Append(kvp.Key);
-                sb.Append("`,");
-            }
-
-            sb.Length--;
-
-            // Values
-            sb.Append(") VALUES (");
-
-            foreach (var kvp in values)
-            {
-                sb.Append(kvp.Value);
-                sb.Append(",");
-            }
-
-            sb.Length--;
-            sb.Append(") ");
-
-            return sb.ToString().Trim();
+            _c = new ColumnValueCollectionBuilder<IInsertQuery>(this, settings);
         }
 
         #region IInsertQuery Members
@@ -124,7 +90,7 @@ namespace NetGore.Db.QueryBuilder
 
         public IInsertODKUQuery OnDuplicateKeyUpdate()
         {
-            return new MySqlInsertODKUQuery(this);
+            return CreateInsertODKUQuery(this);
         }
 
         public IInsertQuery Remove(IEnumerable<string> columns)
@@ -143,5 +109,7 @@ namespace NetGore.Db.QueryBuilder
         }
 
         #endregion
+
+        protected abstract IInsertODKUQuery CreateInsertODKUQuery(IInsertQuery parent);
     }
 }

@@ -7,23 +7,22 @@ namespace NetGore.Db.QueryBuilder
     {
         readonly IList<string> _columns;
         readonly T _owner;
+        readonly IQueryBuilderSettings _settings;
 
-        public ColumnCollectionBuilder(T owner)
+        public ColumnCollectionBuilder(T owner, IQueryBuilderSettings settings)
         {
             // TODO: Owner not null
 
+            _settings = settings;
             _owner = owner;
             _columns = new List<string>();
         }
 
+        protected IQueryBuilderSettings Settings { get { return _settings; } }
+
         public string[] GetValues()
         {
             return _columns.ToArray();
-        }
-
-        static IQueryBuilderSettings Settings
-        {
-            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         public T Add(string column)

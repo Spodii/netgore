@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using NetGore.Db.QueryBuilder;
 
-namespace NetGore.Db.QueryBuilder
+namespace NetGore.Db.MySql.QueryBuilder
 {
     public class MySqlQueryBuilderSettings : IQueryBuilderSettings
     {
