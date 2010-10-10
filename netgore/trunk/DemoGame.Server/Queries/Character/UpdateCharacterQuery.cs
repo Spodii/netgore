@@ -38,7 +38,7 @@ namespace DemoGame.Server.Queries
         /// <param name="character">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, ICharacterTable character)
         {
-            character.TryCopyValues(p);
+            character.CopyValues(p);
         }
     }
 }
