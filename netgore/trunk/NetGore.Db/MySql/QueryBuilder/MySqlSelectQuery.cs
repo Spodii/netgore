@@ -5,8 +5,18 @@ using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
 {
-    public class MySqlSelectQuery : SelectQueryBase
+    /// <summary>
+    /// An <see cref="ISelectQuery"/> for MySql.
+    /// </summary>
+    class MySqlSelectQuery : SelectQueryBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectQueryBase"/> class.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="alias">The alias for the <paramref name="table"/>.</param>
+        /// <exception cref="InvalidQueryException"><paramref name="table"/> is not a valid table name.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="alias"/> is not a valid table alias.</exception>
         public MySqlSelectQuery(string table, string alias = null) : base(table, alias, MySqlQueryBuilderSettings.Instance)
         {
         }

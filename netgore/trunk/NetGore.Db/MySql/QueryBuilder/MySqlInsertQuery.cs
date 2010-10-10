@@ -4,17 +4,37 @@ using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
 {
-    public class MySqlInsertQuery : InsertQueryBase
+    /// <summary>
+    /// An <see cref="IInsertQuery"/> for MySql.
+    /// </summary>
+    class MySqlInsertQuery : InsertQueryBase
     {
-        public MySqlInsertQuery(string tableName) : base(tableName, MySqlQueryBuilderSettings.Instance)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MySqlInsertQuery"/> class.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name.</exception>
+        public MySqlInsertQuery(string table)
+            : base(table, MySqlQueryBuilderSettings.Instance)
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates an <see cref="IInsertODKUQuery"/> instance.
+        /// </summary>
+        /// <param name="parent">The <see cref="IInsertQuery"/> to use as the parent.</param>
+        /// <returns>The <see cref="IInsertODKUQuery"/> instance.</returns>
         protected override IInsertODKUQuery CreateInsertODKUQuery(IInsertQuery parent)
         {
             return new MySqlInsertODKUQuery(parent);
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override string ToString()
         {
             var values = ColumnValueCollection.GetValues();
@@ -26,7 +46,7 @@ namespace NetGore.Db.MySql.QueryBuilder
 
             // Base function
             sb.Append("INSERT INTO ");
-            sb.Append(Settings.EscapeTable(TableName));
+            sb.Append(Settings.EscapeTable(Table));
 
             // Columns
             sb.Append(" (");
