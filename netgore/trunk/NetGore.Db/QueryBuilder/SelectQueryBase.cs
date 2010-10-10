@@ -68,12 +68,12 @@ namespace NetGore.Db.QueryBuilder
             if (settings == null)
                 throw new ArgumentNullException("settings");
 
-            settings.IsValidTableName(table, true);
-            settings.IsValidTableAlias(alias, true);
-
             _table = table;
             _alias = alias;
             _settings = settings;
+
+            Settings.IsValidTableName(table, true);
+            Settings.IsValidTableAlias(alias, true);
 
             _c = new ColumnCollectionBuilder<ISelectQuery>(this, Settings);
         }
