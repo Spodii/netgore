@@ -1,83 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class MySqlSelectQuery : ISelectQuery
+    public abstract class SelectQueryBase : ISelectQuery
     {
         readonly string _alias;
         readonly ColumnCollectionBuilder<ISelectQuery> _c;
         readonly string _table;
         readonly List<string> _joins = new List<string>();
+        readonly IQueryBuilderSettings _settings;
 
         bool _allColumns = false;
         bool _distinct = false;
 
-        public MySqlSelectQuery(string table, string alias = null)
+        protected ColumnCollectionBuilder<ISelectQuery> ColumnCollection { get { return _c; } }
+
+        public string Table { get { return _table; } }
+
+        public string Alias { get { return _alias; } }
+
+        public bool AllColumnsValue { get { return _allColumns; } }
+
+        public bool DistinctValue { get { return _distinct; } }
+
+        public IQueryBuilderSettings Settings { get { return _settings; } }
+
+        protected IEnumerable<string> Joins { get { return _joins.ToArray(); } }
+
+        protected SelectQueryBase(string table, string alias, IQueryBuilderSettings settings)
         {
             _table = table;
             _alias = alias;
+            _settings = settings;
 
-            _c = new ColumnCollectionBuilder<ISelectQuery>(this);
-        }
-
-        static IQueryBuilderSettings Settings
-        {
-            get { return MySqlQueryBuilderSettings.Instance; }
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            // Base operator
-            sb.Append("SELECT ");
-
-            if (_distinct)
-                sb.Append("DISTINCT ");
-
-            // Columns
-            if (_allColumns)
-            {
-                // All columns
-                sb.Append("*");
-            }
-            else
-            {
-                // Specified columns only
-                var values = _c.GetValues();
-                if (values == null || values.Length == 0)
-                    throw InvalidQueryException.CreateEmptyColumnList();
-
-                foreach (var v in values)
-                {
-                    sb.Append(Settings.EscapeColumn(v));
-                    sb.Append(",");
-                }
-
-                sb.Length--;
-            }
-
-            // From table
-            sb.Append(" FROM ");
-            sb.Append(Settings.EscapeTable(_table));
-
-            if (_alias != null)
-            {
-                sb.Append(" ");
-                sb.Append(_alias);
-            }
-
-            // Joins
-            foreach (var j in _joins)
-            {
-                sb.Append(" ");
-                sb.Append(j);
-            }
-
-            return sb.ToString();
+            _c = new ColumnCollectionBuilder<ISelectQuery>(this, Settings);
         }
 
         #region ISelectQuery Members
@@ -111,19 +69,21 @@ namespace NetGore.Db.QueryBuilder
             return this;
         }
 
+        protected abstract IQueryResultFilter CreateQueryResultFilter(object parent);
+
         public IQueryResultFilter Limit(int amount)
         {
-            return new MySqlQueryResultFilter(this).Limit(amount);
+            return CreateQueryResultFilter(this).Limit(amount);
         }
 
         public IQueryResultFilter OrderBy(string value, OrderByType order)
         {
-            return new MySqlQueryResultFilter(this).OrderBy(value, order);
+            return CreateQueryResultFilter(this).OrderBy(value, order);
         }
 
         public IQueryResultFilter OrderByColumn(string columnName, OrderByType order)
         {
-            return new MySqlQueryResultFilter(this).OrderByColumn(columnName, order);
+            return CreateQueryResultFilter(this).OrderByColumn(columnName, order);
         }
 
         public ISelectQuery Remove(string column)
@@ -143,12 +103,12 @@ namespace NetGore.Db.QueryBuilder
 
         public IQueryResultFilter Where(string condition)
         {
-            return new MySqlQueryResultFilter(this).Where(condition);
+            return CreateQueryResultFilter(this).Where(condition);
         }
 
         #endregion
 
-        public IJoinedSelectQuery InnerJoin(string table, string alias, string joinCondition)
+        protected virtual string CreateInnerJoin(string table, string alias, string joinCondition)
         {
             var sb = new StringBuilder();
 
@@ -159,12 +119,19 @@ namespace NetGore.Db.QueryBuilder
             sb.Append(" ON ");
             sb.Append(joinCondition);
 
-            _joins.Add(sb.ToString());
+            return sb.ToString();
+        }
+
+        public IJoinedSelectQuery InnerJoin(string table, string alias, string joinCondition)
+        {
+            var s = CreateInnerJoin(table, alias, joinCondition);
+
+            _joins.Add(s);
 
             return this;
         }
 
-        public IJoinedSelectQuery InnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable, string otherTableJoinColumn)
+        protected virtual string CreateInnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable, string otherTableJoinColumn)
         {
             var sb = new StringBuilder();
 
@@ -181,7 +148,14 @@ namespace NetGore.Db.QueryBuilder
             sb.Append(".");
             sb.Append(otherTableJoinColumn);
 
-            _joins.Add(sb.ToString());
+            return sb.ToString();
+        }
+
+        public IJoinedSelectQuery InnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable, string otherTableJoinColumn)
+        {
+            var s = CreateInnerJoinOnColumn(table, alias, thisJoinColumn, otherTable, otherTableJoinColumn);
+
+            _joins.Add(s);
 
             return this;
         }

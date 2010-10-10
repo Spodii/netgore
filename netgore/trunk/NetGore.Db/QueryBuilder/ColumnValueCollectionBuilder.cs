@@ -8,19 +8,18 @@ namespace NetGore.Db.QueryBuilder
     {
         readonly IDictionary<string, string> _cvs;
         readonly T _owner;
+        readonly IQueryBuilderSettings _settings;
 
-        public ColumnValueCollectionBuilder(T owner)
+        public ColumnValueCollectionBuilder(T owner, IQueryBuilderSettings settings)
         {
             // TODO: Owner not null
 
+            _settings = settings;
             _owner = owner;
-            _cvs = new SortedDictionary<string, string>(MySqlQueryBuilderSettings.Instance.ColumnNameComparer);
+            _cvs = new SortedDictionary<string, string>(Settings.ColumnNameComparer);
         }
 
-        static IQueryBuilderSettings Settings
-        {
-            get { return MySqlQueryBuilderSettings.Instance; }
-        }
+        protected IQueryBuilderSettings Settings { get { return _settings; } }
 
         public KeyValuePair<string, string>[] GetValues()
         {

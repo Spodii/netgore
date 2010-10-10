@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NetGore.Db.MySql.QueryBuilder;
 using NetGore.Db.QueryBuilder;
 using NUnit.Framework;
 

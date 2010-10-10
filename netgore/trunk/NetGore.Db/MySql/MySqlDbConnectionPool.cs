@@ -2,6 +2,7 @@ using System;
 using System.Data.Common;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using NetGore.Db.MySql.QueryBuilder;
 using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql
@@ -45,7 +46,7 @@ namespace NetGore.Db.MySql
         /// </summary>
         public override IQueryBuilder QueryBuilder
         {
-            get { return Db.QueryBuilder.MySqlQueryBuilder.Instance; }
+            get { return MySqlQueryBuilder.Instance; }
         }
     }
 }

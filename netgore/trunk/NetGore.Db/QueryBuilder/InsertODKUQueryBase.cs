@@ -1,48 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.QueryBuilder
 {
-    class MySqlInsertODKUQuery : IInsertODKUQuery
+    public abstract class InsertODKUQueryBase : IInsertODKUQuery
     {
-        readonly ColumnValueCollectionBuilder<MySqlInsertODKUQuery> _c;
-        readonly MySqlInsertQuery _owner;
+        readonly IInsertQuery _parent;
+        readonly IQueryBuilderSettings _settings;
+        readonly ColumnValueCollectionBuilder<IInsertODKUQuery> _c;
 
-        public MySqlInsertODKUQuery(MySqlInsertQuery owner)
+        public IInsertQuery Parent { get { return _parent; } }
+
+        public IQueryBuilderSettings Settings { get { return _settings; } }
+
+        protected ColumnValueCollectionBuilder<IInsertODKUQuery> ColumnValueCollectionBuilder { get { return _c; } }
+
+        protected InsertODKUQueryBase(IInsertQuery parent, IQueryBuilderSettings settings)
         {
-            _owner = owner;
-            _c = new ColumnValueCollectionBuilder<MySqlInsertODKUQuery>(this);
-        }
+            _parent = parent;
+            _settings = settings;
 
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            // Owner
-            sb.Append(_owner);
-
-            // Base operator
-            sb.Append(" ON DUPLICATE KEY UPDATE ");
-
-            // Sets
-            var values = _c.GetValues();
-
-            if (values == null || values.Length == 0)
-                throw InvalidQueryException.CreateEmptyColumnList();
-
-            foreach (var kvp in values)
-            {
-                sb.Append("`");
-                sb.Append(kvp.Key);
-                sb.Append("`=");
-                sb.Append(kvp.Value);
-                sb.Append(",");
-            }
-
-            sb.Length--;
-
-            return sb.ToString().Trim();
+            _c = new ColumnValueCollectionBuilder<IInsertODKUQuery>(this, settings);
         }
 
         #region IInsertODKUQuery Members
@@ -87,9 +65,11 @@ namespace NetGore.Db.QueryBuilder
             return AddFromInsert((string[])null);
         }
 
+        protected abstract KeyValuePair<string, string>[] GetColumnCollectionValuesFromInsert();
+
         public IInsertODKUQuery AddFromInsert(string except)
         {
-            Add(_owner.ColumnValueCollection.GetValues());
+            Add(GetColumnCollectionValuesFromInsert());
 
             if (except != null)
                 Remove(except);
@@ -99,7 +79,7 @@ namespace NetGore.Db.QueryBuilder
 
         public IInsertODKUQuery AddFromInsert(IEnumerable<string> except)
         {
-            Add(_owner.ColumnValueCollection.GetValues());
+            Add(GetColumnCollectionValuesFromInsert());
 
             if (except != null)
                 Remove(except);
@@ -109,7 +89,7 @@ namespace NetGore.Db.QueryBuilder
 
         public IInsertODKUQuery AddFromInsert(params string[] except)
         {
-            Add(_owner.ColumnValueCollection.GetValues());
+            Add(GetColumnCollectionValuesFromInsert());
 
             if (except != null)
                 Remove(except);

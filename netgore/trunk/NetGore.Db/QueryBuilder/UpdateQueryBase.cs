@@ -1,55 +1,34 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.QueryBuilder
 {
-    public class MySqlUpdateQuery : IUpdateQuery
+    public abstract class UpdateQueryBase : IUpdateQuery
     {
-        readonly ColumnValueCollectionBuilder<IUpdateQuery> _c;
         readonly string _table;
+        readonly IQueryBuilderSettings _settings;
+        readonly ColumnValueCollectionBuilder<IUpdateQuery> _c;
 
-        public MySqlUpdateQuery(string table)
-        {
-            _table = table;
-
-            _c = new ColumnValueCollectionBuilder<IUpdateQuery>(this);
-        }
-
-        public ColumnValueCollectionBuilder<IUpdateQuery> ColumnValueCollection
+        protected ColumnValueCollectionBuilder<IUpdateQuery> ColumnValueCollection
         {
             get { return _c; }
         }
 
-        static IQueryBuilderSettings Settings
+        public IQueryBuilderSettings Settings { get { return _settings; } }
+
+        public string Table { get { return _table; } }
+
+        public KeyValuePair<string, string>[] GetColumnValueCollectionValues()
         {
-            get { return MySqlQueryBuilderSettings.Instance; }
+            return ColumnValueCollection.GetValues();
         }
 
-        public override string ToString()
+        protected UpdateQueryBase(string table, IQueryBuilderSettings settings)
         {
-            var values = _c.GetValues();
+            _table = table;
+            _settings = settings;
 
-            if (values == null || values.Length == 0)
-                throw InvalidQueryException.CreateEmptyColumnList();
-
-            var sb = new StringBuilder();
-
-            sb.Append("UPDATE ");
-            sb.Append(Settings.EscapeTable(_table));
-            sb.Append(" SET ");
-
-            foreach (var kvp in values)
-            {
-                sb.Append(Settings.EscapeColumn(kvp.Key));
-                sb.Append("=");
-                sb.Append(kvp.Value);
-                sb.Append(",");
-            }
-
-            sb.Length--;
-
-            return sb.ToString();
+            _c = new ColumnValueCollectionBuilder<IUpdateQuery>(this, settings);
         }
 
         #region IUpdateQuery Members
@@ -111,17 +90,17 @@ namespace NetGore.Db.QueryBuilder
 
         public IQueryResultFilter Limit(int amount)
         {
-            return new MySqlQueryResultFilter(this).Limit(amount);
+            return CreateQueryResultFilter(this).Limit(amount);
         }
 
         public IQueryResultFilter OrderBy(string value, OrderByType order = OrderByType.Ascending)
         {
-            return new MySqlQueryResultFilter(this).OrderBy(value, order);
+            return CreateQueryResultFilter(this).OrderBy(value, order);
         }
 
         public IQueryResultFilter OrderByColumn(string columnName, OrderByType order = OrderByType.Ascending)
         {
-            return new MySqlQueryResultFilter(this).OrderByColumn(columnName, order);
+            return CreateQueryResultFilter(this).OrderByColumn(columnName, order);
         }
 
         public IUpdateQuery Remove(IEnumerable<string> columns)
@@ -141,9 +120,11 @@ namespace NetGore.Db.QueryBuilder
 
         public IQueryResultFilter Where(string condition)
         {
-            return new MySqlQueryResultFilter(this).Where(condition);
+            return CreateQueryResultFilter(this).Where(condition);
         }
 
         #endregion
+
+        protected abstract IQueryResultFilter CreateQueryResultFilter(object parent);
     }
 }
