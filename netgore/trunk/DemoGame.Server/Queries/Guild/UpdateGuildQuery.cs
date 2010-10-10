@@ -42,7 +42,7 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, IGuildTable item)
         {
-            item.CopyValues(p);
+            item.TryCopyValues(p);
         }
     }
 }
