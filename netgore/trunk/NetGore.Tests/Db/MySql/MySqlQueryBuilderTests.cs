@@ -477,6 +477,14 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void SelectQueryTest05()
+        {
+            const string expected = "SELECT `a`,`b`,`c` FROM `myTable` ORDER BY `a`, `b` DESC";
+            var q = MySqlQueryBuilder.Instance.Select("myTable").Add("a", "b","c").OrderByColumn("a").OrderByColumn("b", OrderByType.Descending);
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void UpdateQueryTest01()
         {
             const string expected = "UPDATE `myTable` SET `a`=@a,`b`=@b";
