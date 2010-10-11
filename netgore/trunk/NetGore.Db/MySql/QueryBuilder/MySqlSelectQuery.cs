@@ -50,7 +50,7 @@ namespace NetGore.Db.MySql.QueryBuilder
 
                 foreach (var v in values)
                 {
-                    sb.Append(Settings.EscapeColumn(v));
+                    sb.Append(v);
                     sb.Append(",");
                 }
 
@@ -59,12 +59,14 @@ namespace NetGore.Db.MySql.QueryBuilder
 
             // From table
             sb.Append(" FROM ");
-            sb.Append(Settings.EscapeTable(Table));
 
             if (Alias != null)
             {
-                sb.Append(" ");
-                sb.Append(Alias);
+                sb.Append(Settings.ApplyTableAlias(Settings.EscapeTable(Table), Alias));
+            }
+            else
+            {
+                sb.Append(Settings.EscapeTable(Table));
             }
 
             // Joins

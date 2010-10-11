@@ -45,11 +45,11 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
-        /// Gets the <see cref="IQueryBuilderKeywords"/> for this <see cref="IQueryBuilder"/>.
+        /// Gets the <see cref="IQueryBuilderFunctions"/> for this <see cref="IQueryBuilder"/>.
         /// </summary>
-        public IQueryBuilderKeywords Keywords
+        public IQueryBuilderFunctions Functions
         {
-            get { return MySqlQueryBuilderKeywords.Instance; }
+            get { return MySqlQueryBuilderFunctions.Instance; }
         }
 
         /// <summary>

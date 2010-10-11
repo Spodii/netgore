@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
@@ -12,6 +13,20 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `account_id`=@accountID;",
                                                              CharacterTable.TableName);
+
+        /*
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            //var k = qb.Keywords;
+            //var s = qb.Settings;
+            //return qb.Select(CharacterTable.TableName).Add(k.Count).Where(s.EscapeColumn("account_id")
+        }
+        */
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountAccountCharactersByIDQuery"/> class.
