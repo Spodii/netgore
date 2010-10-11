@@ -243,7 +243,7 @@ namespace NetGore.Db.QueryBuilder
         /// existing row.
         /// </summary>
         /// <returns>The <see cref="IInsertODKUQuery"/>.</returns>
-        public IInsertODKUQuery OnDuplicateKeyUpdate()
+        public IInsertODKUQuery ODKU()
         {
             return CreateInsertODKUQuery(this);
         }
