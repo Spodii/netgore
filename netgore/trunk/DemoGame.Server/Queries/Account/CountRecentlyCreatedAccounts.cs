@@ -3,22 +3,38 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class CountRecentlyCreatedAccounts : DbQueryReader<uint>
     {
-        static readonly string _queryStr =
-            string.Format(
-                "SELECT COUNT(*) FROM `{0}` WHERE `creator_ip`=@ip AND `time_created` > DATE_SUB(NOW(), INTERVAL 30 MINUTE)",
-                AccountTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT COUNT(*) FROM `account` WHERE `creator_ip`=@ip AND `time_created` > DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(AccountTable.TableName).AddFunc(f.Count())
+                .Where(f.And(
+                    f.Equals(s.EscapeColumn("creater_ip"), s.Parameterize("ip")),
+                    f.GreaterThan(s.EscapeColumn("time_created"), f.DateSubtractInterval(f.Now(), QueryIntervalType.Minute, 30)))
+                );
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountRecentlyCreatedAccounts"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public CountRecentlyCreatedAccounts(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public CountRecentlyCreatedAccounts(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(AccountTable.DbColumns, "creator_ip", "time_created");
         }
