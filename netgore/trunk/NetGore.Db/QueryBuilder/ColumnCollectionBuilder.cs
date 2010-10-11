@@ -65,8 +65,44 @@ namespace NetGore.Db.QueryBuilder
         {
             Settings.IsValidColumnName(column, true);
 
-            if (!_columns.Contains(column, Settings.ColumnNameComparer))
-                _columns.Add(column);
+            var c = Settings.EscapeColumn(column);
+
+            if (!_columns.Contains(c, Settings.ColumnNameComparer))
+                _columns.Add(c);
+
+            return _owner;
+        }
+
+        /// <summary>
+        /// Adds a function call to the collection.
+        /// </summary>
+        /// <param name="sql">The function's SQL.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        public T AddFunc(string sql)
+        {
+            if (string.IsNullOrEmpty("sql"))
+                throw new ArgumentNullException("sql");
+
+            _columns.Add(sql);
+
+            return _owner;
+        }
+
+        /// <summary>
+        /// Adds a function call to the collection.
+        /// </summary>
+        /// <param name="sql">The function's SQL.</param>
+        /// <param name="alias">The alias to give the function call.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="alias"/> is not a valid column alias.</exception>
+        public T AddFunc(string sql, string alias)
+        {
+            if (string.IsNullOrEmpty("sql"))
+                throw new ArgumentNullException("sql");
+
+            _columns.Add(Settings.ApplyColumnAlias(sql, alias));
 
             return _owner;
         }
@@ -110,9 +146,11 @@ namespace NetGore.Db.QueryBuilder
         {
             Settings.IsValidColumnName(column, true);
 
+            var c = Settings.EscapeColumn(column);
+
             for (var i = 0; i < _columns.Count; i++)
             {
-                if (Settings.ColumnNameComparer.Equals(column, _columns[i]))
+                if (Settings.ColumnNameComparer.Equals(c, _columns[i]))
                 {
                     _columns.RemoveAt(i);
                     break;

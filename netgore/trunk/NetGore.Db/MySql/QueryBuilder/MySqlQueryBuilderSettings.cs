@@ -34,14 +34,6 @@ namespace NetGore.Db.MySql.QueryBuilder
             get { return _instance; }
         }
 
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilderKeywords"/> for this <see cref="IQueryBuilderSettings"/>.
-        /// </summary>
-        public IQueryBuilderKeywords Keywords
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         #region IQueryBuilderSettings Members
 
         /// <summary>
@@ -84,6 +76,42 @@ namespace NetGore.Db.MySql.QueryBuilder
                 return "`" + tableName + "`";
             else
                 return tableName;
+        }
+
+        /// <summary>
+        /// Applies a column alias to a string.
+        /// </summary>
+        /// <param name="sql">The string containing the SQL that the <see cref="alias"/> will be added to.</param>
+        /// <param name="alias">The alias.</param>
+        /// <returns>The aliased sql.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid column alias.</exception>
+        public string ApplyColumnAlias(string sql, string alias)
+        {
+            if (string.IsNullOrEmpty("sql"))
+                throw new ArgumentNullException("sql");
+
+            IsValidColumnAlias(alias, true);
+
+            return sql + " AS " + alias;
+        }
+
+        /// <summary>
+        /// Applies a table alias to a string.
+        /// </summary>
+        /// <param name="sql">The string containing the SQL that the <see cref="alias"/> will be added to.</param>
+        /// <param name="alias">The alias.</param>
+        /// <returns>The aliased sql.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid table alias.</exception>
+        public string ApplyTableAlias(string sql, string alias)
+        {
+            if (string.IsNullOrEmpty("sql"))
+                throw new ArgumentNullException("sql");
+
+            IsValidTableAlias(alias, true);
+
+            return sql + " AS " + alias;
         }
 
         /// <summary>
@@ -155,6 +183,40 @@ namespace NetGore.Db.MySql.QueryBuilder
             {
                 if (throwOnInvalid)
                     throw new InvalidQueryException("The table alias may not contain a space.");
+                else
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if a column alias is valid.
+        /// </summary>
+        /// <param name="columnAlias">The column alias. Can be null to signify an alias not being used.</param>
+        /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
+        /// <paramref name="columnAlias"/> is invalid.</param>
+        /// <returns>True if the <paramref name="columnAlias"/> is valid; otherwise false. Cannot be false when
+        /// <paramref name="throwOnInvalid"/> is true since an <see cref="InvalidQueryException"/> needs to be thrown instead.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="columnAlias"/> is an invalid column alias and
+        /// <paramref name="throwOnInvalid"/> is true.</exception>
+        public bool IsValidColumnAlias(string columnAlias, bool throwOnInvalid)
+        {
+            if (columnAlias == null)
+                return true;
+
+            if (string.IsNullOrEmpty(columnAlias))
+            {
+                if (throwOnInvalid)
+                    throw new InvalidQueryException("The column alias cannot be empty.");
+                else
+                    return false;
+            }
+
+            if (columnAlias.Contains(' '))
+            {
+                if (throwOnInvalid)
+                    throw new InvalidQueryException("The column alias may not contain a space.");
                 else
                     return false;
             }

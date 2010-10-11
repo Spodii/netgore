@@ -13,9 +13,9 @@ namespace NetGore.Db.QueryBuilder
         IQueryBuilderSettings Settings { get; }
 
         /// <summary>
-        /// Gets the <see cref="IQueryBuilderKeywords"/> for this <see cref="IQueryBuilder"/>.
+        /// Gets the <see cref="IQueryBuilderFunctions"/> for this <see cref="IQueryBuilder"/>.
         /// </summary>
-        IQueryBuilderKeywords Keywords { get; }
+        IQueryBuilderFunctions Functions { get; }
 
         /// <summary>
         /// Creates an <see cref="IDeleteQuery"/>.

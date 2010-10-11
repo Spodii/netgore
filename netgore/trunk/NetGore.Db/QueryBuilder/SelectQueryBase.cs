@@ -172,6 +172,30 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
+        /// Adds a function call to the collection.
+        /// </summary>
+        /// <param name="sql">The function's SQL.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        public ISelectQuery AddFunc(string sql)
+        {
+            return _c.AddFunc(sql);
+        }
+
+        /// <summary>
+        /// Adds a function call to the collection.
+        /// </summary>
+        /// <param name="sql">The function's SQL.</param>
+        /// <param name="alias">The alias to give the function call.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="alias"/> is not a valid column alias.</exception>
+        public ISelectQuery AddFunc(string sql, string alias)
+        {
+            return _c.AddFunc(sql, alias);
+        }
+
+        /// <summary>
         /// Adds multiple columns to the collection.
         /// </summary>
         /// <param name="columns">The names of the columns to add.</param>
