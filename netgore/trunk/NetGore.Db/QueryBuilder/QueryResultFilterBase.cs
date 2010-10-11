@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
@@ -10,10 +11,9 @@ namespace NetGore.Db.QueryBuilder
     {
         readonly object _parent;
         readonly IQueryBuilderSettings _settings;
+        readonly List<KeyValuePair<string, OrderByType>> _orderBys = new List<KeyValuePair<string, OrderByType>>();
 
         string _limit;
-        string _orderBy;
-        OrderByType _orderByType = OrderByType.Ascending;
         string _where;
 
         /// <summary>
@@ -43,19 +43,11 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
-        /// Gets the ORDER BY type.
-        /// </summary>
-        protected OrderByType OrderByTypeValue
-        {
-            get { return _orderByType; }
-        }
-
-        /// <summary>
         /// Gets the ORDER BY value, or null if none was entered.
         /// </summary>
-        protected string OrderByValue
+        protected IEnumerable<KeyValuePair<string, OrderByType>> OrderByValues
         {
-            get { return _orderBy; }
+            get { return _orderBys.ToImmutable(); }
         }
 
         /// <summary>
@@ -115,8 +107,7 @@ namespace NetGore.Db.QueryBuilder
             if (!EnumHelper<OrderByType>.IsDefined(order))
                 throw new ArgumentException(string.Format("{0} is not a valid OrderByType value.", order), "order");
 
-            _orderBy = value;
-            _orderByType = order;
+            _orderBys.Add(new KeyValuePair<string, OrderByType>(value, order));
 
             return this;
         }
@@ -136,8 +127,7 @@ namespace NetGore.Db.QueryBuilder
 
             Settings.IsValidColumnName(columnName, true);
 
-            _orderBy = Settings.EscapeColumn(columnName);
-            _orderByType = order;
+            _orderBys.Add(new KeyValuePair<string, OrderByType>(Settings.EscapeColumn(columnName), order));
 
             return this;
         }

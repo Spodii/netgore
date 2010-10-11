@@ -38,24 +38,33 @@ namespace NetGore.Db.MySql.QueryBuilder
                 sb.Append(" ");
             }
 
-            if (!string.IsNullOrEmpty(OrderByValue))
+            var orderBys = OrderByValues;
+            if (orderBys != null && orderBys.Count() > 0)
             {
                 sb.Append("ORDER BY ");
-                sb.Append(OrderByValue);
 
-                switch (OrderByTypeValue)
+                foreach (var ob in orderBys)
                 {
-                    case OrderByType.Ascending:
-                        break;
+                    sb.Append(ob.Key);
 
-                    case OrderByType.Descending:
-                        sb.Append("DESC");
-                        break;
+                    switch (ob.Value)
+                    {
+                        case OrderByType.Ascending:
+                            break;
 
-                    default:
-                        // TODO: errmsg
-                        break;
+                        case OrderByType.Descending:
+                            sb.Append(" DESC");
+                            break;
+
+                        default:
+                            // TODO: !! errmsg
+                            break;
+                    }
+
+                    sb.Append(", ");
                 }
+
+                sb.Length -= 2;
 
                 sb.Append(" ");
             }
