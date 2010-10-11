@@ -171,6 +171,20 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Tests if an expression is not null.
+        /// </summary>
+        /// <param name="expr">The SQL expression.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="expr"/> is null or empty.</exception>
+        public string IsNotNull(string expr)
+        {
+            if (string.IsNullOrEmpty(expr))
+                throw new ArgumentNullException("expr");
+
+            return expr + " IS NOT NULL";
+        }
+
+        /// <summary>
         /// Returns the first non-null value in a list.
         /// </summary>
         /// <param name="exprs">The SQL expressions, where each array element is an individual argument for the function.</param>
@@ -272,6 +286,20 @@ namespace NetGore.Db.MySql.QueryBuilder
                 throw new ArgumentNullException("expr");
 
             return "FLOOR(" + expr + ")";
+        }
+
+        /// <summary>
+        /// Tests if an expression is null.
+        /// </summary>
+        /// <param name="expr">The SQL expression.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="expr"/> is null or empty.</exception>
+        public string IsNull(string expr)
+        {
+            if (string.IsNullOrEmpty(expr))
+                throw new ArgumentNullException("expr");
+
+            return expr + " IS NULL";
         }
 
         /// <summary>
