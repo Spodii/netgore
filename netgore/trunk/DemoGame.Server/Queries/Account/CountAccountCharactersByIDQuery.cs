@@ -11,10 +11,6 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CountAccountCharactersByIDQuery : DbQueryReader<AccountID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `account_id`=@accountID;",
-                                                             CharacterTable.TableName);
-
-        /*
         /// <summary>
         /// Creates the query for this class.
         /// </summary>
@@ -22,17 +18,18 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            //var k = qb.Keywords;
-            //var s = qb.Settings;
-            //return qb.Select(CharacterTable.TableName).Add(k.Count).Where(s.EscapeColumn("account_id")
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(CharacterTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("account_id"), "@accountID"));
+            return q.ToString();
         }
-        */
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountAccountCharactersByIDQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public CountAccountCharactersByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public CountAccountCharactersByIDQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "account_id");
         }
