@@ -3,20 +3,34 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries.Account
 {
     [DbControllerQuery]
     public class UpdateTimeLastLoginQuery : DbQueryNonReader<AccountID>
     {
-        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `time_last_login` = NOW() WHERE `id`=@id",
-                                                             AccountTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // UPDATE `{0}` SET `time_last_login` = NOW() WHERE `id`=@id
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Update(AccountTable.TableName).Add("time_last_login", f.Now())
+                .Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateTimeLastLoginQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public UpdateTimeLastLoginQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public UpdateTimeLastLoginQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login");
         }
