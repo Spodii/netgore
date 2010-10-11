@@ -54,9 +54,11 @@ namespace DemoGame.Server
             if (!GameData.AccountName.IsValid(accountName))
                 return "Invalid account name";
 
-            var result = DbController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
+            var accountID = DbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(accountName);
+            if (!accountID.HasValue)
+                return string.Format("No account with the name `{0}` exists.", accountName);
 
-            return string.Format("There are {0} characters in account {1}.", result, accountName);
+            return CountAccountCharacters((int)accountID.Value);
         }
 
         /// <summary>
