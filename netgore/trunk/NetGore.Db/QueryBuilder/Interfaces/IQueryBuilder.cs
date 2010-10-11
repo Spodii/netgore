@@ -8,6 +8,16 @@ namespace NetGore.Db.QueryBuilder
     public interface IQueryBuilder
     {
         /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> for this <see cref="IQueryBuilder"/>.
+        /// </summary>
+        IQueryBuilderSettings Settings { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderKeywords"/> for this <see cref="IQueryBuilder"/>.
+        /// </summary>
+        IQueryBuilderKeywords Keywords { get; }
+
+        /// <summary>
         /// Creates an <see cref="IDeleteQuery"/>.
         /// </summary>
         /// <param name="tableName">The name of the table to delete from.</param>

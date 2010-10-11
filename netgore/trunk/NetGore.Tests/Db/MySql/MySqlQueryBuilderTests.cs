@@ -7,6 +7,15 @@ namespace NetGore.Tests.Db.MySql
     [TestFixture(Description = "Tests the MySql queries for things specific to the MySql SQL syntax.")]
     public class MySqlQueryBuilderTests
     {
+        [Test]
+        public void CountTest()
+        {
+            const string expected = "SELECT COUNT(*) FROM `myTable` WHERE `a`=5";
+            var qb = MySqlQueryBuilder.Instance;
+            var q = qb.Select("myTable").Add(qb.Keywords.Count).Where("`a`=5");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
         #region Unit tests
 
         [Test]

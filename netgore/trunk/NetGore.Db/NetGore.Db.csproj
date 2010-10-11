@@ -125,6 +125,8 @@
     <Compile Include="MySql\DbConnectionSettingsExtensions.cs" />
     <Compile Include="MySql\MySqlDbConnectionPool.cs" />
     <Compile Include="MySql\MySqlDbController.cs" />
+    <Compile Include="MySql\QueryBuilder\MySqlQueryBuilderKeywords.cs" />
+    <Compile Include="QueryBuilder\Interfaces\IQueryBuilderKeywords.cs" />
     <Compile Include="QueryBuilder\UpdateQueryBase.cs" />
     <Compile Include="QueryBuilder\SelectQueryBase.cs" />
     <Compile Include="QueryBuilder\QueryResultFilterBase.cs" />

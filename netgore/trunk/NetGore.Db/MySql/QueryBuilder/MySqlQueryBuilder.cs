@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
@@ -34,6 +35,22 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         #region IQueryBuilder Members
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> for this <see cref="IQueryBuilder"/>.
+        /// </summary>
+        public IQueryBuilderSettings Settings
+        {
+            get { return MySqlQueryBuilderSettings.Instance; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderKeywords"/> for this <see cref="IQueryBuilder"/>.
+        /// </summary>
+        public IQueryBuilderKeywords Keywords
+        {
+            get { return MySqlQueryBuilderKeywords.Instance; }
+        }
 
         /// <summary>
         /// Creates an <see cref="IDeleteQuery"/>.
