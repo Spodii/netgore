@@ -31,6 +31,26 @@ namespace NetGore.Db.QueryBuilder
         string Abs(string expr);
 
         /// <summary>
+        /// Equality operator.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        string Equals(string left, string right);
+
+        /// <summary>
+        /// Inequality operator.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        string NotEqual(string left, string right);
+
+        /// <summary>
         /// Performs a logical AND.
         /// </summary>
         /// <param name="left">The left argument.</param>

@@ -53,6 +53,42 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Equality operator.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        public string Equals(string left, string right)
+        {
+            if (string.IsNullOrEmpty(left))
+                throw new ArgumentNullException("left");
+            if (string.IsNullOrEmpty(right))
+                throw new ArgumentNullException("right");
+
+            return left + " = " + right;
+        }
+
+        /// <summary>
+        /// Inequality operator.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        public string NotEqual(string left, string right)
+        {
+            if (string.IsNullOrEmpty(left))
+                throw new ArgumentNullException("left");
+            if (string.IsNullOrEmpty(right))
+                throw new ArgumentNullException("right");
+
+            return left + " != " + right;
+        }
+
+        /// <summary>
         /// Adds two values.
         /// </summary>
         /// <param name="left">The left argument.</param>
