@@ -231,6 +231,20 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
+        /// Forces all columns to be selected.
+        /// </summary>
+        /// <param name="table">The table or table alias from which all columns will be selected.</param>
+        /// <returns>The <see cref="ISelectQuery"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name and table alias.</exception>
+        public ISelectQuery AllColumns(string table)
+        {
+            if (!Settings.IsValidTableName(table, false))
+                Settings.IsValidTableAlias(table, true);
+
+            return _c.Add(table + ".*");
+        }
+
+        /// <summary>
         /// Makes it so that only rows with distinct values are selected.
         /// </summary>
         /// <returns></returns>
