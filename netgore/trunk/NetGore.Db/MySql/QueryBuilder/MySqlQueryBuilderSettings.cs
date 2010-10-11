@@ -34,6 +34,46 @@ namespace NetGore.Db.MySql.QueryBuilder
             get { return _instance; }
         }
 
+        #region IQueryBuilderSettings Members
+
+        /// <summary>
+        /// Gets the <see cref="StringComparer"/> to use for comparing the column names for equality.
+        /// Generally, this should be <see cref="StringComparer.Ordinal"/> for a DBMS with case-sensitive column names
+        /// and <see cref="StringComparer.OrdinalIgnoreCase"/> for a DBMS with case-insensitive column names.
+        /// </summary>
+        public StringComparer ColumnNameComparer
+        {
+            get { return StringComparer.OrdinalIgnoreCase; }
+        }
+
+        /// <summary>
+        /// Escapes a column's name.
+        /// </summary>
+        /// <param name="columnName">The name of the column to escape.</param>
+        /// <returns>The escaped <paramref name="columnName"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="columnName"/> is an invalid column name.</exception>
+        public string EscapeColumn(string columnName)
+        {
+            if (!columnName.Contains("."))
+                return "`" + columnName + "`";
+            else
+                return columnName;
+        }
+
+        /// <summary>
+        /// Escapes a table's name.
+        /// </summary>
+        /// <param name="tableName">The name of the table to escape.</param>
+        /// <returns>The escaped <paramref name="tableName"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
+        public string EscapeTable(string tableName)
+        {
+            if (!tableName.Contains("."))
+                return "`" + tableName + "`";
+            else
+                return tableName;
+        }
+
         /// <summary>
         /// Checks if a column name is valid.
         /// </summary>
@@ -77,37 +117,6 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
-        /// Checks if a table name is valid.
-        /// </summary>
-        /// <param name="tableName">The name of the table.</param>
-        /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
-        /// <paramref name="tableName"/> is invalid.</param>
-        /// <returns>True if the <paramref name="tableName"/> is valid; otherwise false. Cannot be false when
-        /// <paramref name="throwOnInvalid"/> is true since an <see cref="InvalidQueryException"/> needs to be thrown instead.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name and
-        /// <paramref name="throwOnInvalid"/> is true.</exception>
-        public bool IsValidTableName(string tableName, bool throwOnInvalid = false)
-        {
-            if (string.IsNullOrEmpty(tableName))
-            {
-                if (throwOnInvalid)
-                    throw new InvalidQueryException("The table name cannot be empty.");
-                else
-                    return false;
-            }
-
-            if (tableName.Contains(' '))
-            {
-                if (throwOnInvalid)
-                    throw new InvalidQueryException("The table name may not contain a space.");
-                else
-                    return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Checks if a table alias is valid.
         /// </summary>
         /// <param name="tableAlias">The table alias. Can be null to signify an alias not being used.</param>
@@ -141,44 +150,35 @@ namespace NetGore.Db.MySql.QueryBuilder
             return true;
         }
 
-        #region IQueryBuilderSettings Members
-
         /// <summary>
-        /// Gets the <see cref="StringComparer"/> to use for comparing the column names for equality.
-        /// Generally, this should be <see cref="StringComparer.Ordinal"/> for a DBMS with case-sensitive column names
-        /// and <see cref="StringComparer.OrdinalIgnoreCase"/> for a DBMS with case-insensitive column names.
+        /// Checks if a table name is valid.
         /// </summary>
-        public StringComparer ColumnNameComparer
+        /// <param name="tableName">The name of the table.</param>
+        /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
+        /// <paramref name="tableName"/> is invalid.</param>
+        /// <returns>True if the <paramref name="tableName"/> is valid; otherwise false. Cannot be false when
+        /// <paramref name="throwOnInvalid"/> is true since an <see cref="InvalidQueryException"/> needs to be thrown instead.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name and
+        /// <paramref name="throwOnInvalid"/> is true.</exception>
+        public bool IsValidTableName(string tableName, bool throwOnInvalid = false)
         {
-            get { return StringComparer.OrdinalIgnoreCase; }
-        }
+            if (string.IsNullOrEmpty(tableName))
+            {
+                if (throwOnInvalid)
+                    throw new InvalidQueryException("The table name cannot be empty.");
+                else
+                    return false;
+            }
 
-        /// <summary>
-        /// Escapes a column's name.
-        /// </summary>
-        /// <param name="columnName">The name of the column to escape.</param>
-        /// <returns>The escaped <paramref name="columnName"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="columnName"/> is an invalid column name.</exception>
-        public string EscapeColumn(string columnName)
-        {
-            if (!columnName.Contains("."))
-                return "`" + columnName + "`";
-            else
-                return columnName;
-        }
+            if (tableName.Contains(' '))
+            {
+                if (throwOnInvalid)
+                    throw new InvalidQueryException("The table name may not contain a space.");
+                else
+                    return false;
+            }
 
-        /// <summary>
-        /// Escapes a table's name.
-        /// </summary>
-        /// <param name="tableName">The name of the table to escape.</param>
-        /// <returns>The escaped <paramref name="tableName"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
-        public string EscapeTable(string tableName)
-        {
-            if (!tableName.Contains("."))
-                return "`" + tableName + "`";
-            else
-                return tableName;
+            return true;
         }
 
         /// <summary>

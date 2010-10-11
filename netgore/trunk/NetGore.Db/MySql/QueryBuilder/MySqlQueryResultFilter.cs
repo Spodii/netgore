@@ -49,7 +49,7 @@ namespace NetGore.Db.MySql.QueryBuilder
                         break;
 
                     case OrderByType.Descending:
-                        sb.Append( "DESC");
+                        sb.Append("DESC");
                         break;
 
                     default:

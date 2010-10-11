@@ -14,8 +14,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// </summary>
         /// <param name="table">The table.</param>
         /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name.</exception>
-        public MySqlInsertQuery(string table)
-            : base(table, MySqlQueryBuilderSettings.Instance)
+        public MySqlInsertQuery(string table) : base(table, MySqlQueryBuilderSettings.Instance)
         {
         }
 

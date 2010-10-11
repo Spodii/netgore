@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using NetGore.Db.QueryBuilder;
 
@@ -19,6 +18,11 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <exception cref="InvalidQueryException"><paramref name="alias"/> is not a valid table alias.</exception>
         public MySqlSelectQuery(string table, string alias = null) : base(table, alias, MySqlQueryBuilderSettings.Instance)
         {
+        }
+
+        protected override IQueryResultFilter CreateQueryResultFilter(object parent)
+        {
+            return new MySqlQueryResultFilter(parent);
         }
 
         public override string ToString()
@@ -71,11 +75,6 @@ namespace NetGore.Db.MySql.QueryBuilder
             }
 
             return sb.ToString();
-        }
-
-        protected override IQueryResultFilter CreateQueryResultFilter(object parent)
-        {
-            return new MySqlQueryResultFilter(parent);
         }
     }
 }

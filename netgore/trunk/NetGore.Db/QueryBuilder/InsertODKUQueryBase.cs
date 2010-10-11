@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetGore.Db.QueryBuilder;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -9,24 +9,9 @@ namespace NetGore.Db.QueryBuilder
     /// </summary>
     public abstract class InsertODKUQueryBase : IInsertODKUQuery
     {
+        readonly ColumnValueCollectionBuilder<IInsertODKUQuery> _c;
         readonly IInsertQuery _parent;
         readonly IQueryBuilderSettings _settings;
-        readonly ColumnValueCollectionBuilder<IInsertODKUQuery> _c;
-
-        /// <summary>
-        /// Gets the parent <see cref="IInsertQuery"/> that this query was created for.
-        /// </summary>
-        public IInsertQuery Parent { get { return _parent; } }
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
-        /// </summary>
-        public IQueryBuilderSettings Settings { get { return _settings; } }
-
-        /// <summary>
-        /// Gets the <see cref="ColumnValueCollectionBuilder{T}"/> used by this query.
-        /// </summary>
-        protected ColumnValueCollectionBuilder<IInsertODKUQuery> ColumnValueCollectionBuilder { get { return _c; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertODKUQueryBase"/> class.
@@ -47,6 +32,37 @@ namespace NetGore.Db.QueryBuilder
 
             _c = new ColumnValueCollectionBuilder<IInsertODKUQuery>(this, settings);
         }
+
+        /// <summary>
+        /// Gets the <see cref="ColumnValueCollectionBuilder{T}"/> used by this query.
+        /// </summary>
+        protected ColumnValueCollectionBuilder<IInsertODKUQuery> ColumnValueCollectionBuilder
+        {
+            get { return _c; }
+        }
+
+        /// <summary>
+        /// Gets the parent <see cref="IInsertQuery"/> that this query was created for.
+        /// </summary>
+        public IInsertQuery Parent
+        {
+            get { return _parent; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
+        /// </summary>
+        public IQueryBuilderSettings Settings
+        {
+            get { return _settings; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the column name and value pairs from the
+        /// <see cref="InsertODKUQueryBase.Parent"/>.
+        /// </summary>
+        /// <returns>The column name and value pairs from the <see cref="InsertODKUQueryBase.Parent"/>.</returns>
+        protected abstract KeyValuePair<string, string>[] GetColumnCollectionValuesFromInsert();
 
         #region IInsertODKUQuery Members
 
@@ -154,13 +170,6 @@ namespace NetGore.Db.QueryBuilder
         {
             return AddFromInsert((string[])null);
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the column name and value pairs from the
-        /// <see cref="InsertODKUQueryBase.Parent"/>.
-        /// </summary>
-        /// <returns>The column name and value pairs from the <see cref="InsertODKUQueryBase.Parent"/>.</returns>
-        protected abstract KeyValuePair<string, string>[] GetColumnCollectionValuesFromInsert();
 
         /// <summary>
         /// Copies the column names and values from the insert statement into the update statement.

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
@@ -12,11 +9,6 @@ namespace NetGore.Db.MySql.QueryBuilder
     public class MySqlQueryBuilder : IQueryBuilder
     {
         static readonly MySqlQueryBuilder _instance;
-
-        /// <summary>
-        /// Gets the <see cref="MySqlQueryBuilder"/> instance.
-        /// </summary>
-        public static MySqlQueryBuilder Instance { get { return _instance; } }
 
         /// <summary>
         /// Initializes the <see cref="MySqlQueryBuilder"/> class.
@@ -34,6 +26,27 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Gets the <see cref="MySqlQueryBuilder"/> instance.
+        /// </summary>
+        public static MySqlQueryBuilder Instance
+        {
+            get { return _instance; }
+        }
+
+        #region IQueryBuilder Members
+
+        /// <summary>
+        /// Creates an <see cref="IDeleteQuery"/>.
+        /// </summary>
+        /// <param name="tableName">The name of the table to delete from.</param>
+        /// <returns>The <see cref="IDeleteQuery"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
+        public IDeleteQuery Delete(string tableName)
+        {
+            return new MySqlDeleteQuery(tableName);
+        }
+
+        /// <summary>
         /// Creates an <see cref="IInsertQuery"/>.
         /// </summary>
         /// <param name="tableName">The name of the table to insert on.</param>
@@ -42,17 +55,6 @@ namespace NetGore.Db.MySql.QueryBuilder
         public IInsertQuery Insert(string tableName)
         {
             return new MySqlInsertQuery(tableName);
-        }
-
-        /// <summary>
-        /// Creates an <see cref="IUpdateQuery"/>.
-        /// </summary>
-        /// <param name="tableName">The name of the table to update.</param>
-        /// <returns>The <see cref="IUpdateQuery"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
-        public IUpdateQuery Update(string tableName)
-        {
-            return new MySqlUpdateQuery(tableName);
         }
 
         /// <summary>
@@ -69,14 +71,16 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
-        /// Creates an <see cref="IDeleteQuery"/>.
+        /// Creates an <see cref="IUpdateQuery"/>.
         /// </summary>
-        /// <param name="tableName">The name of the table to delete from.</param>
-        /// <returns>The <see cref="IDeleteQuery"/>.</returns>
+        /// <param name="tableName">The name of the table to update.</param>
+        /// <returns>The <see cref="IUpdateQuery"/>.</returns>
         /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
-        public IDeleteQuery Delete(string tableName)
+        public IUpdateQuery Update(string tableName)
         {
-            return new MySqlDeleteQuery(tableName);
+            return new MySqlUpdateQuery(tableName);
         }
+
+        #endregion
     }
 }

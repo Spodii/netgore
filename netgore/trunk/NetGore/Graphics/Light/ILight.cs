@@ -28,12 +28,6 @@ namespace NetGore.Graphics
         ISpatial PositionProvider { get; set; }
 
         /// <summary>
-        /// Sets the center position of the <see cref="ILight"/>.
-        /// </summary>
-        /// <param name="value">The new center.</param>
-        void SetCenter(Vector2 value);
-
-        /// <summary>
         /// Gets or sets the amount to rotate the <see cref="ILight"/> in radians.
         /// </summary>
         float Rotation { get; set; }
@@ -66,6 +60,12 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="newSize">The new size.</param>
         void Resize(Vector2 newSize);
+
+        /// <summary>
+        /// Sets the center position of the <see cref="ILight"/>.
+        /// </summary>
+        /// <param name="value">The new center.</param>
+        void SetCenter(Vector2 value);
 
         /// <summary>
         /// Moves this <see cref="ILight"/> to a new position.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -34,6 +35,7 @@ namespace NetGore.Db.QueryBuilder
         /// <exception cref="InvalidQueryException"><paramref name="thisJoinColumn"/> is an invalid column name.</exception>
         /// <exception cref="InvalidQueryException"><paramref name="otherTable"/> is an invalid table name or alias.</exception>
         /// <exception cref="InvalidQueryException"><paramref name="otherTableJoinColumn"/> is an invalid column name.</exception>
-        IJoinedSelectQuery InnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable, string otherTableJoinColumn);
+        IJoinedSelectQuery InnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable,
+                                             string otherTableJoinColumn);
     }
 }

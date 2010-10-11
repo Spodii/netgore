@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using NetGore.Db.QueryBuilder;
 
@@ -17,6 +16,11 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <exception cref="InvalidQueryException"><paramref name="table"/> is not a valid table name.</exception>
         public MySqlUpdateQuery(string table) : base(table, MySqlQueryBuilderSettings.Instance)
         {
+        }
+
+        protected override IQueryResultFilter CreateQueryResultFilter(object parent)
+        {
+            return new MySqlQueryResultFilter(parent);
         }
 
         /// <summary>
@@ -49,11 +53,6 @@ namespace NetGore.Db.MySql.QueryBuilder
             sb.Length--;
 
             return sb.ToString();
-        }
-
-        protected override IQueryResultFilter CreateQueryResultFilter(object parent)
-        {
-            return new MySqlQueryResultFilter(parent);
         }
     }
 }

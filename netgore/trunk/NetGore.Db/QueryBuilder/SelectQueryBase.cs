@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -12,47 +12,12 @@ namespace NetGore.Db.QueryBuilder
     {
         readonly string _alias;
         readonly ColumnCollectionBuilder<ISelectQuery> _c;
-        readonly string _table;
         readonly List<string> _joins = new List<string>();
         readonly IQueryBuilderSettings _settings;
+        readonly string _table;
 
         bool _allColumns = false;
         bool _distinct = false;
-
-        /// <summary>
-        /// Gets the <see cref="ColumnCollectionBuilder{T}"/> used by this object.
-        /// </summary>
-        protected ColumnCollectionBuilder<ISelectQuery> ColumnCollection { get { return _c; } }
-
-        /// <summary>
-        /// Gets the table name.
-        /// </summary>
-        public string Table { get { return _table; } }
-
-        /// <summary>
-        /// Gets the alias for the table name. When null, no alias is to be used.
-        /// </summary>
-        public string Alias { get { return _alias; } }
-
-        /// <summary>
-        /// Gets if all the column values should be selected.
-        /// </summary>
-        public bool AllColumnsValue { get { return _allColumns; } }
-
-        /// <summary>
-        /// Gets if only distinct rows should be selected.
-        /// </summary>
-        public bool DistinctValue { get { return _distinct; } }
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
-        /// </summary>
-        public IQueryBuilderSettings Settings { get { return _settings; } }
-
-        /// <summary>
-        /// Gets the list of joins to make.
-        /// </summary>
-        protected IEnumerable<string> Joins { get { return _joins.ToArray(); } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQueryBase"/> class.
@@ -77,6 +42,121 @@ namespace NetGore.Db.QueryBuilder
 
             _c = new ColumnCollectionBuilder<ISelectQuery>(this, Settings);
         }
+
+        /// <summary>
+        /// Gets the alias for the table name. When null, no alias is to be used.
+        /// </summary>
+        public string Alias
+        {
+            get { return _alias; }
+        }
+
+        /// <summary>
+        /// Gets if all the column values should be selected.
+        /// </summary>
+        public bool AllColumnsValue
+        {
+            get { return _allColumns; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ColumnCollectionBuilder{T}"/> used by this object.
+        /// </summary>
+        protected ColumnCollectionBuilder<ISelectQuery> ColumnCollection
+        {
+            get { return _c; }
+        }
+
+        /// <summary>
+        /// Gets if only distinct rows should be selected.
+        /// </summary>
+        public bool DistinctValue
+        {
+            get { return _distinct; }
+        }
+
+        /// <summary>
+        /// Gets the list of joins to make.
+        /// </summary>
+        protected IEnumerable<string> Joins
+        {
+            get { return _joins.ToArray(); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
+        /// </summary>
+        public IQueryBuilderSettings Settings
+        {
+            get { return _settings; }
+        }
+
+        /// <summary>
+        /// Gets the table name.
+        /// </summary>
+        public string Table
+        {
+            get { return _table; }
+        }
+
+        /// <summary>
+        /// Creates the INNER JOIN query string.
+        /// </summary>
+        /// <param name="table">The name of the table to join.</param>
+        /// <param name="alias">The alias of the joined table.</param>
+        /// <param name="joinCondition">The raw SQL join condition.</param>
+        /// <returns>The query string.</returns>
+        protected virtual string CreateInnerJoin(string table, string alias, string joinCondition)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("INNER JOIN ");
+            sb.Append(Settings.EscapeTable(table));
+            sb.Append(" ");
+            sb.Append(alias);
+            sb.Append(" ON ");
+            sb.Append(joinCondition);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Creates the INNER JOIN query string.
+        /// </summary>
+        /// <param name="table">The name of the table to join.</param>
+        /// <param name="alias">The alias of the joined table.</param>
+        /// <param name="thisJoinColumn">The name of the column on the <paramref name="table"/> that is being joined on.</param>
+        /// <param name="otherTable">The name or alias of the other table to join.</param>
+        /// <param name="otherTableJoinColumn">The name of the column on the <paramref name="otherTable"/> that is to be
+        /// joined.</param>
+        /// <returns>The query string.</returns>
+        protected virtual string CreateInnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable,
+                                                         string otherTableJoinColumn)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("INNER JOIN ");
+            sb.Append(Settings.EscapeTable(table));
+            sb.Append(" ");
+            sb.Append(alias);
+            sb.Append(" ON ");
+            sb.Append(alias);
+            sb.Append(".");
+            sb.Append(thisJoinColumn);
+            sb.Append("=");
+            sb.Append(otherTable);
+            sb.Append(".");
+            sb.Append(otherTableJoinColumn);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates an <see cref="IQueryResultFilter"/> instance.
+        /// </summary>
+        /// <param name="parent">The parent for the <see cref="IQueryResultFilter"/>.</param>
+        /// <returns>The <see cref="IQueryResultFilter"/> instance.</returns>
+        protected abstract IQueryResultFilter CreateQueryResultFilter(object parent);
 
         #region ISelectQuery Members
 
@@ -139,11 +219,61 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates an <see cref="IQueryResultFilter"/> instance.
+        /// Performs an INNER JOIN with another table.
         /// </summary>
-        /// <param name="parent">The parent for the <see cref="IQueryResultFilter"/>.</param>
-        /// <returns>The <see cref="IQueryResultFilter"/> instance.</returns>
-        protected abstract IQueryResultFilter CreateQueryResultFilter(object parent);
+        /// <param name="table">The name of the table to join.</param>
+        /// <param name="alias">The alias of the joined table.</param>
+        /// <param name="joinCondition">The raw SQL join condition.</param>
+        /// <returns>The <see cref="IJoinedSelectQuery"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid table alias.</exception>
+        public IJoinedSelectQuery InnerJoin(string table, string alias, string joinCondition)
+        {
+            if (string.IsNullOrEmpty(joinCondition))
+                throw new ArgumentNullException("joinCondition");
+
+            Settings.IsValidTableName(table, true);
+            Settings.IsValidTableAlias(alias, true);
+
+            var s = CreateInnerJoin(table, alias, joinCondition);
+
+            _joins.Add(s);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Performs an INNER JOIN with another table.
+        /// </summary>
+        /// <param name="table">The name of the table to join.</param>
+        /// <param name="alias">The alias of the joined table.</param>
+        /// <param name="thisJoinColumn">The name of the column on the <paramref name="table"/> that is being joined on.</param>
+        /// <param name="otherTable">The name or alias of the other table to join.</param>
+        /// <param name="otherTableJoinColumn">The name of the column on the <paramref name="otherTable"/> that is to be
+        /// joined.</param>
+        /// <returns>The <see cref="IJoinedSelectQuery"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid table alias.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="thisJoinColumn"/> is an invalid column name.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="otherTable"/> is an invalid table name.</exception>
+        /// <exception cref="InvalidQueryException"><paramref name="otherTableJoinColumn"/> is an invalid column name.</exception>
+        public IJoinedSelectQuery InnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable,
+                                                    string otherTableJoinColumn)
+        {
+            Settings.IsValidTableName(table, true);
+            Settings.IsValidTableAlias(alias, true);
+            Settings.IsValidColumnName(thisJoinColumn, true);
+            Settings.IsValidColumnName(otherTableJoinColumn, true);
+
+            if (!Settings.IsValidTableName(otherTable, false))
+                Settings.IsValidTableAlias(otherTable, true);
+
+            var s = CreateInnerJoinOnColumn(table, alias, thisJoinColumn, otherTable, otherTableJoinColumn);
+
+            _joins.Add(s);
+
+            return this;
+        }
 
         /// <summary>
         /// Limits the number of rows being returned or operated on.
@@ -229,114 +359,5 @@ namespace NetGore.Db.QueryBuilder
         }
 
         #endregion
-
-        /// <summary>
-        /// Creates the INNER JOIN query string.
-        /// </summary>
-        /// <param name="table">The name of the table to join.</param>
-        /// <param name="alias">The alias of the joined table.</param>
-        /// <param name="joinCondition">The raw SQL join condition.</param>
-        /// <returns>The query string.</returns>
-        protected virtual string CreateInnerJoin(string table, string alias, string joinCondition)
-        {
-            var sb = new StringBuilder();
-
-            sb.Append("INNER JOIN ");
-            sb.Append(Settings.EscapeTable(table));
-            sb.Append(" ");
-            sb.Append(alias);
-            sb.Append(" ON ");
-            sb.Append(joinCondition);
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Performs an INNER JOIN with another table.
-        /// </summary>
-        /// <param name="table">The name of the table to join.</param>
-        /// <param name="alias">The alias of the joined table.</param>
-        /// <param name="joinCondition">The raw SQL join condition.</param>
-        /// <returns>The <see cref="IJoinedSelectQuery"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name.</exception>
-        /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid table alias.</exception>
-        public IJoinedSelectQuery InnerJoin(string table, string alias, string joinCondition)
-        {
-            if (string.IsNullOrEmpty(joinCondition))
-                throw new ArgumentNullException("joinCondition");
-
-            Settings.IsValidTableName(table, true);
-            Settings.IsValidTableAlias(alias, true);
-
-            var s = CreateInnerJoin(table, alias, joinCondition);
-
-            _joins.Add(s);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Creates the INNER JOIN query string.
-        /// </summary>
-        /// <param name="table">The name of the table to join.</param>
-        /// <param name="alias">The alias of the joined table.</param>
-        /// <param name="thisJoinColumn">The name of the column on the <paramref name="table"/> that is being joined on.</param>
-        /// <param name="otherTable">The name or alias of the other table to join.</param>
-        /// <param name="otherTableJoinColumn">The name of the column on the <paramref name="otherTable"/> that is to be
-        /// joined.</param>
-        /// <returns>The query string.</returns>
-        protected virtual string CreateInnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable, string otherTableJoinColumn)
-        {
-            var sb = new StringBuilder();
-
-            sb.Append("INNER JOIN ");
-            sb.Append(Settings.EscapeTable(table));
-            sb.Append(" ");
-            sb.Append(alias);
-            sb.Append(" ON ");
-            sb.Append(alias);
-            sb.Append(".");
-            sb.Append(thisJoinColumn);
-            sb.Append("=");
-            sb.Append(otherTable);
-            sb.Append(".");
-            sb.Append(otherTableJoinColumn);
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Performs an INNER JOIN with another table.
-        /// </summary>
-        /// <param name="table">The name of the table to join.</param>
-        /// <param name="alias">The alias of the joined table.</param>
-        /// <param name="thisJoinColumn">The name of the column on the <paramref name="table"/> that is being joined on.</param>
-        /// <param name="otherTable">The name or alias of the other table to join.</param>
-        /// <param name="otherTableJoinColumn">The name of the column on the <paramref name="otherTable"/> that is to be
-        /// joined.</param>
-        /// <returns>The <see cref="IJoinedSelectQuery"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name.</exception>
-        /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid table alias.</exception>
-        /// <exception cref="InvalidQueryException"><paramref name="thisJoinColumn"/> is an invalid column name.</exception>
-        /// <exception cref="InvalidQueryException"><paramref name="otherTable"/> is an invalid table name.</exception>
-        /// <exception cref="InvalidQueryException"><paramref name="otherTableJoinColumn"/> is an invalid column name.</exception>
-        public IJoinedSelectQuery InnerJoinOnColumn(string table, string alias, string thisJoinColumn, string otherTable, string otherTableJoinColumn)
-        {
-            Settings.IsValidTableName(table, true);
-            Settings.IsValidTableAlias(alias, true);
-            Settings.IsValidColumnName(thisJoinColumn, true);
-            Settings.IsValidColumnName(otherTableJoinColumn, true);
-
-            if (!Settings.IsValidTableName(otherTable, false))
-            {
-                Settings.IsValidTableAlias(otherTable, true);
-            }
-
-            var s = CreateInnerJoinOnColumn(table, alias, thisJoinColumn, otherTable, otherTableJoinColumn);
-
-            _joins.Add(s);
-
-            return this;
-        }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
@@ -154,15 +153,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the center position of the <see cref="ILight"/>.
-        /// </summary>
-        /// <param name="value">The new center.</param>
-        public void SetCenter(Vector2 value)
-        {
-            Center = value;
-        }
-
-        /// <summary>
         /// Gets or sets the amount to rotate the <see cref="ILight"/> in radians.
         /// </summary>
         [DisplayName("Rotation")]
@@ -284,6 +274,15 @@ namespace NetGore.Graphics
         public void Resize(Vector2 newSize)
         {
             Size = newSize;
+        }
+
+        /// <summary>
+        /// Sets the center position of the <see cref="ILight"/>.
+        /// </summary>
+        /// <param name="value">The new center.</param>
+        public void SetCenter(Vector2 value)
+        {
+            Center = value;
         }
 
         /// <summary>

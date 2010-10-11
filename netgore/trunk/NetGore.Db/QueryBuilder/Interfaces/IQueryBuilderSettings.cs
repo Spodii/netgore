@@ -32,14 +32,6 @@ namespace NetGore.Db.QueryBuilder
         string EscapeTable(string tableName);
 
         /// <summary>
-        /// Creates a query parameter identifier.
-        /// </summary>
-        /// <param name="parameterName">The name of the query parameter.</param>
-        /// <returns>The query parameter identifier.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="parameterName"/> is an invalid parameter name.</exception>
-        string Parameterize(string parameterName);
-
-        /// <summary>
         /// Checks if a column name is valid.
         /// </summary>
         /// <param name="columnName">The name of the column.</param>
@@ -64,6 +56,18 @@ namespace NetGore.Db.QueryBuilder
         bool IsValidParameterName(string parameterName, bool throwOnInvalid = false);
 
         /// <summary>
+        /// Checks if a table alias is valid.
+        /// </summary>
+        /// <param name="tableAlias">The table alias. Can be null to signify an alias not being used.</param>
+        /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
+        /// <paramref name="tableAlias"/> is invalid.</param>
+        /// <returns>True if the <paramref name="tableAlias"/> is valid; otherwise false. Cannot be false when
+        /// <paramref name="throwOnInvalid"/> is true since an <see cref="InvalidQueryException"/> needs to be thrown instead.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="tableAlias"/> is an invalid table alias and
+        /// <paramref name="throwOnInvalid"/> is true.</exception>
+        bool IsValidTableAlias(string tableAlias, bool throwOnInvalid = false);
+
+        /// <summary>
         /// Checks if a table name is valid.
         /// </summary>
         /// <param name="tableName">The name of the table.</param>
@@ -76,15 +80,11 @@ namespace NetGore.Db.QueryBuilder
         bool IsValidTableName(string tableName, bool throwOnInvalid = false);
 
         /// <summary>
-        /// Checks if a table alias is valid.
+        /// Creates a query parameter identifier.
         /// </summary>
-        /// <param name="tableAlias">The table alias. Can be null to signify an alias not being used.</param>
-        /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
-        /// <paramref name="tableAlias"/> is invalid.</param>
-        /// <returns>True if the <paramref name="tableAlias"/> is valid; otherwise false. Cannot be false when
-        /// <paramref name="throwOnInvalid"/> is true since an <see cref="InvalidQueryException"/> needs to be thrown instead.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="tableAlias"/> is an invalid table alias and
-        /// <paramref name="throwOnInvalid"/> is true.</exception>
-        bool IsValidTableAlias(string tableAlias, bool throwOnInvalid = false);
+        /// <param name="parameterName">The name of the query parameter.</param>
+        /// <returns>The query parameter identifier.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="parameterName"/> is an invalid parameter name.</exception>
+        string Parameterize(string parameterName);
     }
 }

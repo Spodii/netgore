@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -14,8 +12,7 @@ namespace NetGore.Db.QueryBuilder
         /// Initializes a new instance of the <see cref="InvalidQueryException"/> class.
         /// </summary>
         /// <param name="message">The message describing the exception.</param>
-        public InvalidQueryException(string message)
-            : base(message)
+        public InvalidQueryException(string message) : base(message)
         {
         }
 

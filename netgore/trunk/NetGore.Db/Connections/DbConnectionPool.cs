@@ -83,22 +83,7 @@ namespace NetGore.Db
                 conn.Connection.Open();
         }
 
-        #region IDisposable Members
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-        }
-
-        #endregion
-
-        #region IObjectPool<PooledDbConnection> Members
+        #region IDbConnectionPool Members
 
         /// <summary>
         /// Gets the number of live objects in the pool.
@@ -107,6 +92,11 @@ namespace NetGore.Db
         {
             get { return _pool.LiveObjects; }
         }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public abstract IQueryBuilder QueryBuilder { get; }
 
         /// <summary>
         /// Gets a free object instance from the pool.
@@ -123,6 +113,17 @@ namespace NetGore.Db
         public void Clear()
         {
             _pool.Clear();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
         }
 
         /// <summary>
@@ -173,10 +174,5 @@ namespace NetGore.Db
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
-        /// </summary>
-        public abstract IQueryBuilder QueryBuilder { get; }
     }
 }

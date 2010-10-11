@@ -8,7 +8,10 @@ using NUnit.Framework;
 
 namespace NetGore.Tests.Db
 {
-    [TestFixture(Description="Tests the aspects of the QueryBuilder that are not specific to a certain provider (e.g. checking the generated SQL).")]
+    [TestFixture(
+        Description =
+            "Tests the aspects of the QueryBuilder that are not specific to a certain provider (e.g. checking the generated SQL)."
+        )]
     public class DbQueryBuilderTests
     {
         static readonly IEnumerable<IQueryBuilder> _qbs;
@@ -88,7 +91,6 @@ namespace NetGore.Tests.Db
                 Assert.Throws<InvalidQueryException>(() => qb.Insert("myTable").Add("", "a"), "QueryBuilder: " + qb);
             }
         }
-
 
         [Test]
         public void SelectQueryEmptyTest()
