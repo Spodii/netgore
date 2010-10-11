@@ -445,6 +445,17 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void SelectQueryInnerJoinTest04()
+        {
+            const string expected = "SELECT DISTINCT t.*,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
+            var q =
+                MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().AllColumns("t").Add("u.a").InnerJoinOnColumn("t2", "u", "a",
+                                                                                                                 "t", "a").OrderBy
+                    ("t.a").Limit(1);
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void SelectQueryTest01()
         {
             const string expected = "SELECT * FROM `myTable`";
