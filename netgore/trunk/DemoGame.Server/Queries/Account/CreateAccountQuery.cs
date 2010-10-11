@@ -7,6 +7,7 @@ using DemoGame.Server.DbObjs;
 using log4net;
 using MySql.Data.MySqlClient;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
@@ -15,19 +16,31 @@ namespace DemoGame.Server.Queries
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static readonly string _queryStr =
-            string.Format(
-                "INSERT IGNORE INTO `{0}` (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`,`creator_ip`)" +
-                " VALUES (@id,@name,@password,@email,NOW(),NOW(),@ip)", AccountTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT IGNORE INTO `{0}`
+            //      (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`,`creator_ip`)
+            //      VALUES (@id,@name,@password,@email,NOW(),NOW(),@creator_ip)
+
+            var f = qb.Functions;
+            var q = qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam("id", "name", "password", "email", "creator_ip")
+                .Add("time_created", f.Now()).Add("time_last_login", f.Now());
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public CreateAccountQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public CreateAccountQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "name", "password", "email", "time_created",
-                                         "time_last_login");
+                                         "time_last_login","creator_ip");
         }
 
         /// <summary>
@@ -37,7 +50,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("id", "name", "password", "email", "ip");
+            return CreateParameters("id", "name", "password", "email", "creator_ip");
         }
 
         /// <summary>
@@ -52,7 +65,7 @@ namespace DemoGame.Server.Queries
             p["name"] = item.Name;
             p["password"] = item.Password;
             p["email"] = item.Email;
-            p["ip"] = item.IP;
+            p["creator_ip"] = item.IP;
         }
 
         /// <summary>
