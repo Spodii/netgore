@@ -44,7 +44,12 @@ namespace NetGore.Db.MySql.QueryBuilder
             var sb = new StringBuilder();
 
             // Base function
-            sb.Append("INSERT INTO ");
+            sb.Append("INSERT ");
+            
+            if (IgnoreExistsValue)
+                sb.Append("IGNORE ");
+
+            sb.Append("INTO ");
             sb.Append(Settings.EscapeTable(Table));
 
             // Columns

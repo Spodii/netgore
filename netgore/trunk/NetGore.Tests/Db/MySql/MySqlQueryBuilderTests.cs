@@ -377,6 +377,14 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void InsertQueryTest04()
+        {
+            const string expected = "INSERT IGNORE INTO `myTable` (`a`) VALUES ('asdf')";
+            var q = MySqlQueryBuilder.Instance.Insert("myTable").IgnoreExists().Add("a", "'asdf'").Add("b", "1").Remove("b");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void SelectQueryInnerJoinTest01()
         {
             const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` AS t INNER JOIN `t2` u ON t.a=u.a";

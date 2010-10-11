@@ -12,6 +12,7 @@ namespace NetGore.Db.QueryBuilder
         readonly ColumnValueCollectionBuilder<IInsertQuery> _c;
         readonly IQueryBuilderSettings _settings;
         readonly string _table;
+        bool _ignoreExists;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertQueryBase"/> class.
@@ -39,6 +40,14 @@ namespace NetGore.Db.QueryBuilder
         protected ColumnValueCollectionBuilder<IInsertQuery> ColumnValueCollection
         {
             get { return _c; }
+        }
+
+        /// <summary>
+        /// Gets if to ignore errors when the key already exists.
+        /// </summary>
+        public bool IgnoreExistsValue
+        {
+            get { return _ignoreExists; }
         }
 
         /// <summary>
@@ -215,6 +224,17 @@ namespace NetGore.Db.QueryBuilder
         public IInsertQuery AddParam(params KeyValuePair<string, string>[] columnsAndValues)
         {
             return _c.AddParam(columnsAndValues);
+        }
+
+        /// <summary>
+        /// Makes it so the INSERT query does not throw an error when the key already exists.
+        /// </summary>
+        /// <returns>The <see cref="IInsertODKUQuery"/>.</returns>
+        public IInsertQuery IgnoreExists()
+        {
+            _ignoreExists = true;
+
+            return this;
         }
 
         /// <summary>
