@@ -4,20 +4,34 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class SelectAccountCharacterNamesQuery : DbQueryReader<AccountID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT `name` FROM `{0}` WHERE `account_id`=@accountID",
-                                                             CharacterTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `name` FROM `{0}` WHERE `account_id`=@accountID
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(CharacterTable.TableName).Add("name").Where(f.Equals(s.EscapeColumn("account_id"), s.Parameterize("accountID")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectAccountCharacterNamesQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectAccountCharacterNamesQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectAccountCharacterNamesQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name", "account_id");
         }
