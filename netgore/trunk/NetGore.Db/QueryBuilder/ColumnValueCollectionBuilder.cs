@@ -10,7 +10,7 @@ namespace NetGore.Db.QueryBuilder
     /// <typeparam name="T">The type to return.</typeparam>
     public class ColumnValueCollectionBuilder<T> : IColumnValueCollectionBuilder<T>
     {
-        readonly IDictionary<string, string> _cvs;
+        readonly List<KeyValuePair<string,string>> _cvs;
         readonly T _owner;
         readonly IQueryBuilderSettings _settings;
 
@@ -33,7 +33,7 @@ namespace NetGore.Db.QueryBuilder
 
             _settings = settings;
             _owner = owner;
-            _cvs = new SortedDictionary<string, string>(Settings.ColumnNameComparer);
+            _cvs = new List<KeyValuePair<string, string>>();
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace NetGore.Db.QueryBuilder
         {
             Settings.IsValidColumnName(column, true);
 
-            _cvs.Remove(column);
-            _cvs.Add(column, value);
+            _cvs.RemoveAll(x => Settings.ColumnNameComparer.Equals(x.Key, column));
+            _cvs.Add(new KeyValuePair<string, string>(column, value));
 
             return _owner;
         }
@@ -192,8 +192,8 @@ namespace NetGore.Db.QueryBuilder
             Settings.IsValidColumnName(column, true);
             Settings.IsValidParameterName(value, true);
 
-            _cvs.Remove(column);
-            _cvs.Add(column, Settings.Parameterize(value));
+            _cvs.RemoveAll(x => Settings.ColumnNameComparer.Equals(x.Key, column));
+            _cvs.Add(new KeyValuePair<string, string>(column, Settings.Parameterize(value)));
 
             return _owner;
         }
@@ -274,7 +274,7 @@ namespace NetGore.Db.QueryBuilder
         {
             Settings.IsValidColumnName(column, true);
 
-            _cvs.Remove(column);
+            _cvs.RemoveAll(x => Settings.ColumnNameComparer.Equals(x.Key, column));
 
             return _owner;
         }

@@ -369,7 +369,7 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void InsertOnDuplicateKeyQueryTest04()
         {
-            const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `a`=55,`b`=@b";
+            const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b,`a`=55";
             var q =
                 MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Add(
                     "a", "55");
@@ -405,6 +405,14 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT IGNORE INTO `myTable` (`a`) VALUES ('asdf')";
             var q = MySqlQueryBuilder.Instance.Insert("myTable").IgnoreExists().Add("a", "'asdf'").Add("b", "1").Remove("b");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void InsertQueryTest05()
+        {
+            const string expected = "INSERT IGNORE INTO `myTable` (`a`,`x`,`b`,`fa`,`zzz`,`aaa`) VALUES (@a,@x,@b,@fa,@zzz,@aaa)";
+            var q = MySqlQueryBuilder.Instance.Insert("myTable").IgnoreExists().AddAutoParam("a", "x", "b", "fa", "zzz", "aaa");
             Assert.AreEqual(expected, q.ToString());
         }
 
