@@ -28,6 +28,26 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void FunctionEqualsTest()
+        {
+            const string expected = "SELECT 1 = 2 FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.Equals("1", "2"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionNotEqualsTest()
+        {
+            const string expected = "SELECT 1 != 2 FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.NotEqual("1", "2"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void FunctionIsNotNullTest()
         {
             const string expected = "SELECT 'a' IS NOT NULL FROM `myTable`";
