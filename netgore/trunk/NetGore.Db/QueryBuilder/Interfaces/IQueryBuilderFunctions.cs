@@ -115,6 +115,22 @@ namespace NetGore.Db.QueryBuilder
         string Floor(string expr);
 
         /// <summary>
+        /// Tests if an expression is null.
+        /// </summary>
+        /// <param name="expr">The SQL expression.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="expr"/> is null or empty.</exception>
+        string IsNull(string expr);
+
+        /// <summary>
+        /// Tests if an expression is not null.
+        /// </summary>
+        /// <param name="expr">The SQL expression.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="expr"/> is null or empty.</exception>
+        string IsNotNull(string expr);
+
+        /// <summary>
         /// Returns the first non-null value in a list.
         /// </summary>
         /// <param name="exprs">The SQL expressions, where each array element is an individual argument for the function.</param>

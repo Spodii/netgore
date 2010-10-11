@@ -18,6 +18,26 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void FunctionIsNullTest()
+        {
+            const string expected = "SELECT 'a' IS NULL FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.IsNull("'a'"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionIsNotNullTest()
+        {
+            const string expected = "SELECT 'a' IS NOT NULL FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.IsNotNull("'a'"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void FunctionAddTest()
         {
             const string expected = "SELECT 5 + 3 FROM `myTable`";
