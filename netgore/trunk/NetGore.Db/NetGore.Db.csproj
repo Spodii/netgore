@@ -126,8 +126,13 @@
     <Compile Include="MySql\MySqlDbConnectionPool.cs" />
     <Compile Include="MySql\MySqlDbController.cs" />
     <Compile Include="MySql\QueryBuilder\MySqlQueryBuilderFunctions.cs" />
+    <Compile Include="MySql\QueryBuilder\MySqlSelectFunctionQuery.cs" />
     <Compile Include="QueryBuilder\Interfaces\IQueryBuilderFunctions.cs" />
+    <Compile Include="QueryBuilder\Interfaces\ISelectFunctionQuery.cs" />
+    <Compile Include="QueryBuilder\Interfaces\IValueCollectionBuilder.cs" />
+    <Compile Include="QueryBuilder\ValueCollectionBuilder.cs" />
     <Compile Include="QueryBuilder\QueryIntervalType.cs" />
+    <Compile Include="QueryBuilder\SelectFunctionQueryBase.cs" />
     <Compile Include="QueryBuilder\UpdateQueryBase.cs" />
     <Compile Include="QueryBuilder\SelectQueryBase.cs" />
     <Compile Include="QueryBuilder\QueryResultFilterBase.cs" />

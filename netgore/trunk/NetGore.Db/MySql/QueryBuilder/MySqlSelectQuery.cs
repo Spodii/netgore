@@ -20,11 +20,22 @@ namespace NetGore.Db.MySql.QueryBuilder
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates an <see cref="IQueryResultFilter"/> instance.
+        /// </summary>
+        /// <param name="parent">The parent for the <see cref="IQueryResultFilter"/>.</param>
+        /// <returns>The <see cref="IQueryResultFilter"/> instance.</returns>
         protected override IQueryResultFilter CreateQueryResultFilter(object parent)
         {
             return new MySqlQueryResultFilter(parent);
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             var sb = new StringBuilder();

@@ -291,6 +291,30 @@ namespace NetGore.Tests.Db.MySql
         #region Unit tests
 
         [Test]
+        public void SelectFunctionQueryTest01()
+        {
+            const string expected = "SELECT MyFunc()";
+            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectFunctionQueryTest02()
+        {
+            const string expected = "SELECT MyFunc(5)";
+            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectFunctionQueryTest03()
+        {
+            const string expected = "SELECT MyFunc(5,a,x,b,assd)";
+            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5", "a", "x", "b").Add("assd");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void DeleteQueryTest01()
         {
             const string expected = "DELETE FROM `myTable`";

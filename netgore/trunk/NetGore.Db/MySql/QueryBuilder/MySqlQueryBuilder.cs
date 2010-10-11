@@ -88,6 +88,17 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ISelectFunctionQuery"/>.
+        /// </summary>
+        /// <param name="functionName">The name of the function.</param>
+        /// <returns>The <see cref="ISelectQuery"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="functionName"/> is null or empty.</exception>
+        public ISelectFunctionQuery SelectFunction(string functionName)
+        {
+            return new MySqlSelectFunctionQuery(functionName);
+        }
+
+        /// <summary>
         /// Creates an <see cref="IUpdateQuery"/>.
         /// </summary>
         /// <param name="tableName">The name of the table to update.</param>
