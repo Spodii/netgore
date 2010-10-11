@@ -270,7 +270,7 @@
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Alliance\DeleteAllianceQuery.cs" />
     <Compile Include="Queries\Quest\DeleteQuestQuery.cs" />
-    <Compile Include="Queries\Alliance\ReplaceAllianceAttackableQuery.cs" />
+    <Compile Include="Queries\Alliance\InsertAllianceAttackableQuery.cs" />
     <Compile Include="Queries\Alliance\ReplaceAllianceHostileQuery.cs" />
     <Compile Include="Queries\Alliance\InsertAllianceQuery.cs" />
     <Compile Include="Queries\Quest\InsertQuestQuery.cs" />

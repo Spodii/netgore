@@ -4,20 +4,34 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class SelectAccountBansQuery : DbQueryReader<AccountID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `account_id`=@accountID",
-                                                             AccountBanTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT * FROM `{0}` WHERE `account_id`=@accountID
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(AccountBanTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("account_id"), s.Parameterize("accountID")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectAccountBansQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectAccountBansQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectAccountBansQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(AccountBanTable.DbColumns, "account_id");
         }

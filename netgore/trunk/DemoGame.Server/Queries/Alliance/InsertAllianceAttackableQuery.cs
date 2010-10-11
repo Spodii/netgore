@@ -9,7 +9,7 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceAllianceAttackableQuery : DbQueryNonReader<IAllianceAttackableTable>
+    public class InsertAllianceAttackableQuery : DbQueryNonReader<IAllianceAttackableTable>
     {
         /// <summary>
         /// Creates the query for this class.
@@ -25,11 +25,11 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceAllianceAttackableQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertAllianceAttackableQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceAllianceAttackableQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        public InsertAllianceAttackableQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

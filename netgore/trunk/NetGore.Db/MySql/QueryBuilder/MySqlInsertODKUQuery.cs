@@ -39,7 +39,8 @@ namespace NetGore.Db.MySql.QueryBuilder
             var sb = new StringBuilder();
 
             // Parent
-            sb.Append(Parent);
+            if (Parent != null)
+                sb.Append(Parent);
 
             // Base operator
             sb.Append(" ON DUPLICATE KEY UPDATE ");

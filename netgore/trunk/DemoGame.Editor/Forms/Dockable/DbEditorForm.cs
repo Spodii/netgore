@@ -356,7 +356,7 @@ namespace DemoGame.Editor
             _dbController.GetQuery<ReplaceAllianceQuery>().Execute(v);
 
             // Attackable/hostile lists
-            _dbController.GetQuery<ReplaceAllianceAttackableQuery>().Execute(v.ID, v.Attackable);
+            _dbController.GetQuery<InsertAllianceAttackableQuery>().Execute(v.ID, v.Attackable);
             _dbController.GetQuery<ReplaceAllianceHostileQuery>().Execute(v.ID, v.Hostile);
 
             // Reload from the database
