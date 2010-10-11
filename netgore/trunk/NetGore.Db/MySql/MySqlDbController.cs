@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
@@ -24,6 +23,14 @@ namespace NetGore.Db.MySql
         /// <param name="connectionString">The connection string.</param>
         public MySqlDbController(string connectionString) : base(connectionString)
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public override IQueryBuilder QueryBuilder
+        {
+            get { return MySqlQueryBuilder.Instance; }
         }
 
         /// <summary>
@@ -56,14 +63,6 @@ namespace NetGore.Db.MySql
         protected override string GetTestQueryCommand()
         {
             return "SELECT 1+5";
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
-        /// </summary>
-        public override IQueryBuilder QueryBuilder
-        {
-            get { return MySqlQueryBuilder.Instance; }
         }
 
         /// <summary>

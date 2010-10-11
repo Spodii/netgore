@@ -1,5 +1,5 @@
 ﻿using System;
-using NetGore.Db.QueryBuilder;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -15,16 +15,6 @@ namespace NetGore.Db.QueryBuilder
         string _orderBy;
         OrderByType _orderByType = OrderByType.Ascending;
         string _where;
-
-        /// <summary>
-        /// Gets the parent object that this <see cref="QueryResultFilterBase"/> was created from.
-        /// </summary>
-        public object Parent { get { return _parent; } }
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
-        /// </summary>
-        public IQueryBuilderSettings Settings { get { return _settings; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryResultFilterBase"/> class.
@@ -47,22 +37,50 @@ namespace NetGore.Db.QueryBuilder
         /// <summary>
         /// Gets the LIMIT value, or null if none was entered.
         /// </summary>
-        protected string LimitValue { get { return _limit; } }
-
-        /// <summary>
-        /// Gets the WHERE value, or null if none was entered.
-        /// </summary>
-        protected string WhereValue { get { return _where; } }
-
-        /// <summary>
-        /// Gets the ORDER BY value, or null if none was entered.
-        /// </summary>
-        protected string OrderByValue { get { return _orderBy; } }
+        protected string LimitValue
+        {
+            get { return _limit; }
+        }
 
         /// <summary>
         /// Gets the ORDER BY type.
         /// </summary>
-        protected OrderByType OrderByTypeValue { get { return _orderByType; } }
+        protected OrderByType OrderByTypeValue
+        {
+            get { return _orderByType; }
+        }
+
+        /// <summary>
+        /// Gets the ORDER BY value, or null if none was entered.
+        /// </summary>
+        protected string OrderByValue
+        {
+            get { return _orderBy; }
+        }
+
+        /// <summary>
+        /// Gets the parent object that this <see cref="QueryResultFilterBase"/> was created from.
+        /// </summary>
+        public object Parent
+        {
+            get { return _parent; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
+        /// </summary>
+        public IQueryBuilderSettings Settings
+        {
+            get { return _settings; }
+        }
+
+        /// <summary>
+        /// Gets the WHERE value, or null if none was entered.
+        /// </summary>
+        protected string WhereValue
+        {
+            get { return _where; }
+        }
 
         #region IQueryResultFilter Members
 

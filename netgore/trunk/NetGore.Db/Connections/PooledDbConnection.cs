@@ -16,17 +16,20 @@ namespace NetGore.Db
         DbConnection _connection;
 
         /// <summary>
-        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
-        /// </summary>
-        public IQueryBuilder QueryBuilder { get { return _pool.QueryBuilder; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PooledDbConnection"/> class.
         /// </summary>
         /// <param name="pool">The <see cref="IDbConnectionPool"/> that this instance belongs to.</param>
         internal PooledDbConnection(IDbConnectionPool pool)
         {
             _pool = pool;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public IQueryBuilder QueryBuilder
+        {
+            get { return _pool.QueryBuilder; }
         }
 
         /// <summary>

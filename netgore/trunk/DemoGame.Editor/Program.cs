@@ -59,8 +59,8 @@ namespace DemoGame.Editor
             // Check for a valid path to the development content
             if (ContentPaths.Dev == null)
             {
-                const string errmsg = 
-@"Could not find the path to the development content (ContentPaths.Dev). The file containing this path should be located at:
+                const string errmsg =
+                    @"Could not find the path to the development content (ContentPaths.Dev). The file containing this path should be located at:
     \Content\Data\devpath.txt
 
 The path to the development content is required by the editor. See the file mentioned above for details.";

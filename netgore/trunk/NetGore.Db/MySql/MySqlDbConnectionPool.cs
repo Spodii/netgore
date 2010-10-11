@@ -1,4 +1,3 @@
-using System;
 using System.Data.Common;
 using System.Linq;
 using MySql.Data.MySqlClient;
@@ -21,6 +20,14 @@ namespace NetGore.Db.MySql
         }
 
         /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public override IQueryBuilder QueryBuilder
+        {
+            get { return MySqlQueryBuilder.Instance; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, creates the DbConnection to be used with this ObjectPool.
         /// </summary>
         /// <param name="connectionString">ConnectionString to create the DbConnection with.</param>
@@ -39,14 +46,6 @@ namespace NetGore.Db.MySql
         public override DbParameter CreateParameter(string parameterName)
         {
             return new MySqlParameter(parameterName, null);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
-        /// </summary>
-        public override IQueryBuilder QueryBuilder
-        {
-            get { return MySqlQueryBuilder.Instance; }
         }
     }
 }

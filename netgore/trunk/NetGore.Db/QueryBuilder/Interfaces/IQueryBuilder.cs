@@ -1,4 +1,6 @@
-﻿namespace NetGore.Db.QueryBuilder
+﻿using System.Linq;
+
+namespace NetGore.Db.QueryBuilder
 {
     /// <summary>
     /// Interface for a root query builder object.
@@ -6,20 +8,20 @@
     public interface IQueryBuilder
     {
         /// <summary>
+        /// Creates an <see cref="IDeleteQuery"/>.
+        /// </summary>
+        /// <param name="tableName">The name of the table to delete from.</param>
+        /// <returns>The <see cref="IDeleteQuery"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
+        IDeleteQuery Delete(string tableName);
+
+        /// <summary>
         /// Creates an <see cref="IInsertQuery"/>.
         /// </summary>
         /// <param name="tableName">The name of the table to insert on.</param>
         /// <returns>The <see cref="IInsertQuery"/>.</returns>
         /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
         IInsertQuery Insert(string tableName);
-
-        /// <summary>
-        /// Creates an <see cref="IUpdateQuery"/>.
-        /// </summary>
-        /// <param name="tableName">The name of the table to update.</param>
-        /// <returns>The <see cref="IUpdateQuery"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
-        IUpdateQuery Update(string tableName);
 
         /// <summary>
         /// Creates an <see cref="ISelectQuery"/>.
@@ -32,11 +34,11 @@
         ISelectQuery Select(string tableName, string alias = null);
 
         /// <summary>
-        /// Creates an <see cref="IDeleteQuery"/>.
+        /// Creates an <see cref="IUpdateQuery"/>.
         /// </summary>
-        /// <param name="tableName">The name of the table to delete from.</param>
-        /// <returns>The <see cref="IDeleteQuery"/>.</returns>
+        /// <param name="tableName">The name of the table to update.</param>
+        /// <returns>The <see cref="IUpdateQuery"/>.</returns>
         /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
-        IDeleteQuery Delete(string tableName);
+        IUpdateQuery Update(string tableName);
     }
 }

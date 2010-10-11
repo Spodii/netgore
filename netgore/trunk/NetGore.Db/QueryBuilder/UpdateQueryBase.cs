@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetGore.Db.QueryBuilder;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -9,36 +9,9 @@ namespace NetGore.Db.QueryBuilder
     /// </summary>
     public abstract class UpdateQueryBase : IUpdateQuery
     {
-        readonly string _table;
-        readonly IQueryBuilderSettings _settings;
         readonly ColumnValueCollectionBuilder<IUpdateQuery> _c;
-
-        /// <summary>
-        /// Gets the <see cref="ColumnValueCollectionBuilder{T}"/> used by this object.
-        /// </summary>
-        protected ColumnValueCollectionBuilder<IUpdateQuery> ColumnValueCollection
-        {
-            get { return _c; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
-        /// </summary>
-        public IQueryBuilderSettings Settings { get { return _settings; } }
-
-        /// <summary>
-        /// Gets the table name.
-        /// </summary>
-        public string Table { get { return _table; } }
-
-        /// <summary>
-        /// Gets the column name and value pairs in this query.
-        /// </summary>
-        /// <returns>The column name and value pairs in this query.</returns>
-        public KeyValuePair<string, string>[] GetColumnValueCollectionValues()
-        {
-            return ColumnValueCollection.GetValues();
-        }
+        readonly IQueryBuilderSettings _settings;
+        readonly string _table;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateQueryBase"/> class.
@@ -58,6 +31,46 @@ namespace NetGore.Db.QueryBuilder
             Settings.IsValidTableName(table, true);
 
             _c = new ColumnValueCollectionBuilder<IUpdateQuery>(this, settings);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ColumnValueCollectionBuilder{T}"/> used by this object.
+        /// </summary>
+        protected ColumnValueCollectionBuilder<IUpdateQuery> ColumnValueCollection
+        {
+            get { return _c; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
+        /// </summary>
+        public IQueryBuilderSettings Settings
+        {
+            get { return _settings; }
+        }
+
+        /// <summary>
+        /// Gets the table name.
+        /// </summary>
+        public string Table
+        {
+            get { return _table; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates an <see cref="IQueryResultFilter"/> instance.
+        /// </summary>
+        /// <param name="parent">The parent object for the <see cref="IQueryResultFilter"/>.</param>
+        /// <returns>The <see cref="IQueryResultFilter"/> instance.</returns>
+        protected abstract IQueryResultFilter CreateQueryResultFilter(object parent);
+
+        /// <summary>
+        /// Gets the column name and value pairs in this query.
+        /// </summary>
+        /// <returns>The column name and value pairs in this query.</returns>
+        public KeyValuePair<string, string>[] GetColumnValueCollectionValues()
+        {
+            return ColumnValueCollection.GetValues();
         }
 
         #region IUpdateQuery Members
@@ -288,12 +301,5 @@ namespace NetGore.Db.QueryBuilder
         }
 
         #endregion
-
-        /// <summary>
-        /// When overridden in the derived class, creates an <see cref="IQueryResultFilter"/> instance.
-        /// </summary>
-        /// <param name="parent">The parent object for the <see cref="IQueryResultFilter"/>.</param>
-        /// <returns>The <see cref="IQueryResultFilter"/> instance.</returns>
-        protected abstract IQueryResultFilter CreateQueryResultFilter(object parent);
     }
 }

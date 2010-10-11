@@ -1,42 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Db.MySql.QueryBuilder;
-using NetGore.Db.QueryBuilder;
 using NUnit.Framework;
 
 namespace NetGore.Tests.Db.MySql
 {
-    [TestFixture(Description="Tests the MySql queries for things specific to the MySql SQL syntax.")]
+    [TestFixture(Description = "Tests the MySql queries for things specific to the MySql SQL syntax.")]
     public class MySqlQueryBuilderTests
     {
+        #region Unit tests
 
-        [Test]
-        public void SelectQueryInnerJoinTest01()
-        {
-            const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` t INNER JOIN `t2` u ON t.a=u.a";
-            var q = MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoin("t2", "u", "t.a=u.a");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void SelectQueryInnerJoinTest02()
-        {
-            const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` t INNER JOIN `t2` u ON u.a=t.a";
-            var q = MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoinOnColumn("t2", "u", "a", "t", "a");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void SelectQueryInnerJoinTest03()
-        {
-            const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
-            var q =
-                MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoinOnColumn("t2", "u", "a", "t", "a").OrderBy(
-                    "t.a").Limit(1);
-            Assert.AreEqual(expected, q.ToString());
-        }
         [Test]
         public void DeleteQueryTest01()
         {
@@ -73,7 +45,9 @@ namespace NetGore.Tests.Db.MySql
         public void InsertOnDuplicateKeyQueryTest02()
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b";
-            var q = MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Remove("a");
+            var q =
+                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Remove(
+                    "a");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -82,7 +56,8 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b";
             var q =
-                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Remove("a").Remove("a");
+                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Remove(
+                    "a").Remove("a");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -90,7 +65,9 @@ namespace NetGore.Tests.Db.MySql
         public void InsertOnDuplicateKeyQueryTest04()
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `a`=55,`b`=@b";
-            var q = MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Add("a", "55");
+            var q =
+                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Add(
+                    "a", "55");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -115,6 +92,66 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT INTO `myTable` (`a`) VALUES ('asdf')";
             var q = MySqlQueryBuilder.Instance.Insert("myTable").Add("a", "'asdf'").Add("b", "1").Remove("b");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectQueryInnerJoinTest01()
+        {
+            const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` t INNER JOIN `t2` u ON t.a=u.a";
+            var q = MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoin("t2", "u", "t.a=u.a");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectQueryInnerJoinTest02()
+        {
+            const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` t INNER JOIN `t2` u ON u.a=t.a";
+            var q = MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoinOnColumn("t2", "u",
+                                                                                                                     "a", "t", "a");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectQueryInnerJoinTest03()
+        {
+            const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
+            var q =
+                MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoinOnColumn("t2", "u", "a",
+                                                                                                                 "t", "a").OrderBy
+                    ("t.a").Limit(1);
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectQueryTest01()
+        {
+            const string expected = "SELECT * FROM `myTable`";
+            var q = MySqlQueryBuilder.Instance.Select("myTable").AllColumns();
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectQueryTest02()
+        {
+            const string expected = "SELECT `a`,`b` FROM `myTable`";
+            var q = MySqlQueryBuilder.Instance.Select("myTable").Add("a", "b");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectQueryTest03()
+        {
+            const string expected = "SELECT DISTINCT `a`,`b` FROM `myTable`";
+            var q = MySqlQueryBuilder.Instance.Select("myTable").Distinct().Add("a", "b");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectQueryTest04()
+        {
+            const string expected = "SELECT DISTINCT t.a,t.b FROM `myTable` t";
+            var q = MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "t.b");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -158,36 +195,6 @@ namespace NetGore.Tests.Db.MySql
             Assert.AreEqual(expected, q.ToString());
         }
 
-        [Test]
-        public void SelectQueryTest01()
-        {
-            const string expected = "SELECT * FROM `myTable`";
-            var q = MySqlQueryBuilder.Instance.Select("myTable").AllColumns();
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void SelectQueryTest02()
-        {
-            const string expected = "SELECT `a`,`b` FROM `myTable`";
-            var q = MySqlQueryBuilder.Instance.Select("myTable").Add("a", "b");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void SelectQueryTest03()
-        {
-            const string expected = "SELECT DISTINCT `a`,`b` FROM `myTable`";
-            var q = MySqlQueryBuilder.Instance.Select("myTable").Distinct().Add("a", "b");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void SelectQueryTest04()
-        {
-            const string expected = "SELECT DISTINCT t.a,t.b FROM `myTable` t";
-            var q = MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "t.b");
-            Assert.AreEqual(expected, q.ToString());
-        }
+        #endregion
     }
 }

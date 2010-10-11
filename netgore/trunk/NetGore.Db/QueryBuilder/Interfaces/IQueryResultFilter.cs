@@ -15,7 +15,7 @@ namespace NetGore.Db.QueryBuilder
         /// <returns>The <see cref="IQueryResultFilter"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="amount"/> is not greater than 0.</exception>
         IQueryResultFilter Limit(int amount);
-        
+
         /// <summary>
         /// Orders the rows in the query.
         /// </summary>

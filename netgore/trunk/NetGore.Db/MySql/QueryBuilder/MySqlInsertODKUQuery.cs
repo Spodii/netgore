@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NetGore.Db.QueryBuilder;
@@ -17,6 +16,16 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <param name="parent">The parent.</param>
         public MySqlInsertODKUQuery(IInsertQuery parent) : base(parent, MySqlQueryBuilderSettings.Instance)
         {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the column name and value pairs from the
+        /// <see cref="InsertODKUQueryBase.Parent"/>.
+        /// </summary>
+        /// <returns>The column name and value pairs from the <see cref="InsertODKUQueryBase.Parent"/>.</returns>
+        protected override KeyValuePair<string, string>[] GetColumnCollectionValuesFromInsert()
+        {
+            return ((InsertQueryBase)Parent).GetColumnValueCollectionValues();
         }
 
         /// <summary>
@@ -53,16 +62,6 @@ namespace NetGore.Db.MySql.QueryBuilder
             sb.Length--;
 
             return sb.ToString().Trim();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the column name and value pairs from the
-        /// <see cref="InsertODKUQueryBase.Parent"/>.
-        /// </summary>
-        /// <returns>The column name and value pairs from the <see cref="InsertODKUQueryBase.Parent"/>.</returns>
-        protected override KeyValuePair<string, string>[] GetColumnCollectionValuesFromInsert()
-        {
-            return ((InsertQueryBase)Parent).GetColumnValueCollectionValues();
         }
     }
 }

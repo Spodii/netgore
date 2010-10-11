@@ -1,5 +1,5 @@
 ﻿using System;
-using NetGore.Db.QueryBuilder;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -8,18 +8,8 @@ namespace NetGore.Db.QueryBuilder
     /// </summary>
     public abstract class DeleteQueryBase : IDeleteQuery
     {
-        readonly string _table;
         readonly IQueryBuilderSettings _settings;
-
-        /// <summary>
-        /// Gets the name of the table being operated on.
-        /// </summary>
-        public string Table { get { return _table; } }
-
-        /// <summary>
-        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
-        /// </summary>
-        public IQueryBuilderSettings Settings { get { return _settings; } }
+        readonly string _table;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteQueryBase"/> class.
@@ -32,11 +22,27 @@ namespace NetGore.Db.QueryBuilder
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
-            
+
             _table = table;
             _settings = settings;
 
             Settings.IsValidTableName(table, true);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> to use.
+        /// </summary>
+        public IQueryBuilderSettings Settings
+        {
+            get { return _settings; }
+        }
+
+        /// <summary>
+        /// Gets the name of the table being operated on.
+        /// </summary>
+        public string Table
+        {
+            get { return _table; }
         }
 
         /// <summary>

@@ -39,7 +39,10 @@ namespace NetGore.Db.QueryBuilder
         /// <summary>
         /// Gets the <see cref="IQueryBuilderSettings"/> being used.
         /// </summary>
-        public IQueryBuilderSettings Settings { get { return _settings; } }
+        public IQueryBuilderSettings Settings
+        {
+            get { return _settings; }
+        }
 
         /// <summary>
         /// Gets the column names in this collection.
@@ -49,6 +52,8 @@ namespace NetGore.Db.QueryBuilder
         {
             return _columns.ToArray();
         }
+
+        #region IColumnCollectionBuilder<T> Members
 
         /// <summary>
         /// Adds a column to the collection if it does not already exist.
@@ -76,7 +81,9 @@ namespace NetGore.Db.QueryBuilder
         public T Add(IEnumerable<string> columns)
         {
             foreach (var c in columns)
+            {
                 Add(c);
+            }
 
             return _owner;
         }
@@ -103,7 +110,7 @@ namespace NetGore.Db.QueryBuilder
         {
             Settings.IsValidColumnName(column, true);
 
-            for (int i = 0; i < _columns.Count; i++)
+            for (var i = 0; i < _columns.Count; i++)
             {
                 if (Settings.ColumnNameComparer.Equals(column, _columns[i]))
                 {
@@ -125,7 +132,9 @@ namespace NetGore.Db.QueryBuilder
         public T Remove(IEnumerable<string> columns)
         {
             foreach (var c in columns)
+            {
                 Remove(c);
+            }
 
             return _owner;
         }
@@ -141,5 +150,7 @@ namespace NetGore.Db.QueryBuilder
         {
             return Remove((IEnumerable<string>)columns);
         }
+
+        #endregion
     }
 }
