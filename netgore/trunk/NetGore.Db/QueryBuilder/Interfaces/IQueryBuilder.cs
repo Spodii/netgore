@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -42,6 +43,14 @@ namespace NetGore.Db.QueryBuilder
         /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
         /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid table alias.</exception>
         ISelectQuery Select(string tableName, string alias = null);
+
+        /// <summary>
+        /// Creates an <see cref="ISelectFunctionQuery"/>.
+        /// </summary>
+        /// <param name="functionName">The name of the function.</param>
+        /// <returns>The <see cref="ISelectQuery"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="functionName"/> is null or empty.</exception>
+        ISelectFunctionQuery SelectFunction(string functionName);
 
         /// <summary>
         /// Creates an <see cref="IUpdateQuery"/>.
