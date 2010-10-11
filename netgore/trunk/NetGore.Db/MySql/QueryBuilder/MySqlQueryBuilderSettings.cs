@@ -34,6 +34,14 @@ namespace NetGore.Db.MySql.QueryBuilder
             get { return _instance; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderKeywords"/> for this <see cref="IQueryBuilderSettings"/>.
+        /// </summary>
+        public IQueryBuilderKeywords Keywords
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         #region IQueryBuilderSettings Members
 
         /// <summary>
@@ -54,7 +62,9 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <exception cref="InvalidQueryException"><paramref name="columnName"/> is an invalid column name.</exception>
         public string EscapeColumn(string columnName)
         {
-            if (!columnName.Contains("."))
+            var skipChars = new char[] { '.', '(', ')', ' ' };
+
+            if (!skipChars.Any(x => columnName.Contains(x)))
                 return "`" + columnName + "`";
             else
                 return columnName;
@@ -68,7 +78,9 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
         public string EscapeTable(string tableName)
         {
-            if (!tableName.Contains("."))
+            var skipChars = new char[] { '.', '(', ')', ' ' };
+
+            if (!skipChars.Any(x => tableName.Contains(x)))
                 return "`" + tableName + "`";
             else
                 return tableName;
