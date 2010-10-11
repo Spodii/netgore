@@ -340,6 +340,30 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Adds two dates together.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to add to.</param>
+        /// <param name="interval">The type of time unit.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
+        public string DateAddInterval(string date, QueryIntervalType interval, string value)
+        {
+            if (string.IsNullOrEmpty(date))
+                throw new ArgumentNullException("date");
+            if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
+                throw new ArgumentOutOfRangeException("interval",
+                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentNullException("value");
+
+            return DateAddInterval(date, Interval(interval, value));
+        }
+
+        /// <summary>
         /// Subtracts two dates.
         /// </summary>
         /// <param name="date">The SQL string containing the date to subtract from.</param>
@@ -374,6 +398,30 @@ namespace NetGore.Db.MySql.QueryBuilder
             if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
                 throw new ArgumentOutOfRangeException("interval",
                                                       string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+
+            return DateSubtractInterval(date, Interval(interval, value));
+        }
+
+        /// <summary>
+        /// Subtracts two dates.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to subtract from.</param>
+        /// <param name="interval">The type of time unit.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
+        public string DateSubtractInterval(string date, QueryIntervalType interval, string value)
+        {
+            if (string.IsNullOrEmpty(date))
+                throw new ArgumentNullException("date");
+            if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
+                throw new ArgumentOutOfRangeException("interval",
+                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentNullException("value");
 
             return DateSubtractInterval(date, Interval(interval, value));
         }
@@ -454,6 +502,25 @@ namespace NetGore.Db.MySql.QueryBuilder
         {
             if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
                 throw new ArgumentOutOfRangeException("interval");
+
+            return "INTERVAL " + value + " " + interval.ToString().ToUpper();
+        }
+
+        /// <summary>
+        /// Gets an interval of time.
+        /// </summary>
+        /// <param name="interval">The unit of time.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
+        public string Interval(QueryIntervalType interval, string value)
+        {
+            if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
+                throw new ArgumentOutOfRangeException("interval");
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentNullException("value");
 
             return "INTERVAL " + value + " " + interval.ToString().ToUpper();
         }

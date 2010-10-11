@@ -176,6 +176,19 @@ namespace NetGore.Db.QueryBuilder
         string DateAddInterval(string date, QueryIntervalType interval, int value);
 
         /// <summary>
+        /// Adds two dates together.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to add to.</param>
+        /// <param name="interval">The type of time unit.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
+        string DateAddInterval(string date, QueryIntervalType interval, string value);
+
+        /// <summary>
         /// Subtracts two dates.
         /// </summary>
         /// <param name="date">The SQL string containing the date to subtract from.</param>
@@ -196,6 +209,19 @@ namespace NetGore.Db.QueryBuilder
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
         /// value.</exception>
         string DateSubtractInterval(string date, QueryIntervalType interval, int value);
+
+        /// <summary>
+        /// Subtracts two dates.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to subtract from.</param>
+        /// <param name="interval">The type of time unit.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
+        string DateSubtractInterval(string date, QueryIntervalType interval, string value);
 
         /// <summary>
         /// Gets the default value for a column.
@@ -242,6 +268,17 @@ namespace NetGore.Db.QueryBuilder
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
         /// value.</exception>
         string Interval(QueryIntervalType interval, int value);
+
+        /// <summary>
+        /// Gets an interval of time.
+        /// </summary>
+        /// <param name="interval">The unit of time.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null or empty.</exception>
+        string Interval(QueryIntervalType interval, string value);
 
         /// <summary>
         /// Tests if an expression is not null.
