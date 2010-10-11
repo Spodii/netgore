@@ -2,19 +2,32 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class CreateUserOnAccountQuery : DbQueryReader<CreateUserOnAccountQuery.QueryArgs>
     {
-        const string _queryStr = "SELECT CreateUserOnAccount(@accountName, @userName, @characterID)";
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT CreateUserOnAccount(@accountName, @userName, @characterID)
 
+            var s = qb.Settings;
+            var q = qb.SelectFunction("CreateUserOnAccount").Add(s.Parameterize("accountName"), s.Parameterize("userName"), s.Parameterize("characterID"));
+            return q.ToString();
+        }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateUserOnAccountQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public CreateUserOnAccountQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public CreateUserOnAccountQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
