@@ -4,6 +4,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
@@ -14,11 +15,24 @@ namespace DemoGame.Server.Queries
                                                              FormatParametersIntoValuesString(AllianceTable.DbColumns));
 
         /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // REPLACE INTO `{0}` {1}
+
+            var q = qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns).ODKU().AddFromInsert(AllianceTable.DbKeyColumns);
+            return q.ToString();
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceAllianceQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceAllianceQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public ReplaceAllianceQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

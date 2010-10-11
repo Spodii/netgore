@@ -342,7 +342,7 @@ namespace NetGore.Tests.Db.MySql
         public void InsertOnDuplicateKeyQueryTest01()
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `a`=@a,`b`=@b";
-            var q = MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert();
+            var q = MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert();
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -351,7 +351,7 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b";
             var q =
-                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Remove(
+                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Remove(
                     "a");
             Assert.AreEqual(expected, q.ToString());
         }
@@ -361,7 +361,7 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b";
             var q =
-                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Remove(
+                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Remove(
                     "a").Remove("a");
             Assert.AreEqual(expected, q.ToString());
         }
@@ -371,7 +371,7 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b,`a`=55";
             var q =
-                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Add(
+                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Add(
                     "a", "55");
             Assert.AreEqual(expected, q.ToString());
         }

@@ -13,7 +13,7 @@ namespace NetGore.Db.QueryBuilder
         /// existing row.
         /// </summary>
         /// <returns>The <see cref="IInsertODKUQuery"/>.</returns>
-        IInsertODKUQuery OnDuplicateKeyUpdate();
+        IInsertODKUQuery ODKU();
 
         /// <summary>
         /// Makes it so the INSERT query does not throw an error when the key already exists.

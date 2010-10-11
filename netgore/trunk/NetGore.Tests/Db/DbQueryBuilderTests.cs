@@ -41,7 +41,7 @@ namespace NetGore.Tests.Db
             foreach (var qb in QBs)
             {
                 Assert.Throws<InvalidQueryException>(
-                    () => qb.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().ToString(), "QueryBuilder: " + qb);
+                    () => qb.Insert("myTable").AddAutoParam("a", "b").ODKU().ToString(), "QueryBuilder: " + qb);
             }
         }
 
@@ -51,7 +51,7 @@ namespace NetGore.Tests.Db
             foreach (var qb in QBs)
             {
                 Assert.Throws<InvalidQueryException>(
-                    () => qb.Insert("myTable").AddAutoParam("a", "b").OnDuplicateKeyUpdate().AddFromInsert().Add("a a", "55"),
+                    () => qb.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Add("a a", "55"),
                     "QueryBuilder: " + qb);
             }
         }
