@@ -4,22 +4,39 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class TrySetAccountIPIfNullQuery : DbQueryReader<TrySetAccountIPIfNullQuery.QueryArgs>
     {
-        static readonly string _queryStr =
-            string.Format(
-                "UPDATE `{0}` SET `current_ip`=@ip,`time_last_login`=NOW()" + " WHERE `id`=@id AND `current_ip` IS NULL",
-                AccountTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // UPDATE `{0}` SET `current_ip`=@ip,`time_last_login`=NOW() WHERE `id`=@id AND `current_ip` IS NULL
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Update(AccountTable.TableName).AddParam("current_ip", "ip").Add("time_last_login", f.Now())
+                .Where(
+                f.And(
+                    f.Equals(s.EscapeColumn("id"), s.Parameterize("id")),
+                    f.IsNull(s.EscapeColumn("current_ip"))
+                    
+                ));
+            return q.ToString();
+        }
 
         /// <summary>
         /// DbQueryReader constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public TrySetAccountIPIfNullQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public TrySetAccountIPIfNullQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login", "current_ip");
         }
