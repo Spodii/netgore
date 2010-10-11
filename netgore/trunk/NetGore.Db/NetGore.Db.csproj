@@ -127,6 +127,7 @@
     <Compile Include="MySql\MySqlDbController.cs" />
     <Compile Include="MySql\QueryBuilder\MySqlQueryBuilderFunctions.cs" />
     <Compile Include="QueryBuilder\Interfaces\IQueryBuilderFunctions.cs" />
+    <Compile Include="QueryBuilder\QueryIntervalType.cs" />
     <Compile Include="QueryBuilder\UpdateQueryBase.cs" />
     <Compile Include="QueryBuilder\SelectQueryBase.cs" />
     <Compile Include="QueryBuilder\QueryResultFilterBase.cs" />

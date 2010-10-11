@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NetGore.Db.MySql.QueryBuilder;
+using NetGore.Db.QueryBuilder;
 using NUnit.Framework;
 
 namespace NetGore.Tests.Db.MySql
@@ -7,6 +8,46 @@ namespace NetGore.Tests.Db.MySql
     [TestFixture(Description = "Tests the MySql queries for things specific to the MySql SQL syntax.")]
     public class MySqlQueryBuilderTests
     {
+        [Test]
+        public void FunctionDateAddTest1()
+        {
+            const string expected = "SELECT DATE_ADD(NOW(),INTERVAL 5 MINUTE) FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.DateAddInterval(f.Now(), f.Interval(QueryIntervalType.Minute, 5)));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionDateAddTest2()
+        {
+            const string expected = "SELECT DATE_ADD(NOW(),INTERVAL 5 MINUTE) FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.DateAddInterval(f.Now(), QueryIntervalType.Minute, 5));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionDateSubtractTest1()
+        {
+            const string expected = "SELECT DATE_SUB(NOW(),INTERVAL 5 HOUR) FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.DateSubtractInterval(f.Now(), f.Interval(QueryIntervalType.Hour, 5)));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionDateSubtractTest2()
+        {
+            const string expected = "SELECT DATE_SUB(NOW(),INTERVAL 5 HOUR) FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.DateSubtractInterval(f.Now(), QueryIntervalType.Hour, 5));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
         [Test]
         public void FunctionAbsTest()
         {

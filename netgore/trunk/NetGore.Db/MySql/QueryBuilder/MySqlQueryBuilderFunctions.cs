@@ -53,42 +53,6 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
-        /// Equality operator.
-        /// </summary>
-        /// <param name="left">The left argument.</param>
-        /// <param name="right">The right argument.</param>
-        /// <returns>The SQL string for the function.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
-        public string Equals(string left, string right)
-        {
-            if (string.IsNullOrEmpty(left))
-                throw new ArgumentNullException("left");
-            if (string.IsNullOrEmpty(right))
-                throw new ArgumentNullException("right");
-
-            return left + " = " + right;
-        }
-
-        /// <summary>
-        /// Inequality operator.
-        /// </summary>
-        /// <param name="left">The left argument.</param>
-        /// <param name="right">The right argument.</param>
-        /// <returns>The SQL string for the function.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
-        public string NotEqual(string left, string right)
-        {
-            if (string.IsNullOrEmpty(left))
-                throw new ArgumentNullException("left");
-            if (string.IsNullOrEmpty(right))
-                throw new ArgumentNullException("right");
-
-            return left + " != " + right;
-        }
-
-        /// <summary>
         /// Adds two values.
         /// </summary>
         /// <param name="left">The left argument.</param>
@@ -207,20 +171,6 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
-        /// Tests if an expression is not null.
-        /// </summary>
-        /// <param name="expr">The SQL expression.</param>
-        /// <returns>The SQL string for the function.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="expr"/> is null or empty.</exception>
-        public string IsNotNull(string expr)
-        {
-            if (string.IsNullOrEmpty(expr))
-                throw new ArgumentNullException("expr");
-
-            return expr + " IS NOT NULL";
-        }
-
-        /// <summary>
         /// Returns the first non-null value in a list.
         /// </summary>
         /// <param name="exprs">The SQL expressions, where each array element is an individual argument for the function.</param>
@@ -279,6 +229,84 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Adds two dates together.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to add to.</param>
+        /// <param name="interval">The SQL string containing the date interval to subtract.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="interval"/> is null or empty.</exception>
+        public string DateAddInterval(string date, string interval)
+        {
+            if (string.IsNullOrEmpty(date))
+                throw new ArgumentNullException("date");
+            if (string.IsNullOrEmpty(interval))
+                throw new ArgumentNullException("interval");
+
+            return "DATE_ADD(" + date + "," + interval + ")";
+        }
+
+        /// <summary>
+        /// Adds two dates together.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to add to.</param>
+        /// <param name="interval">The type of time unit.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        public string DateAddInterval(string date, QueryIntervalType interval, int value)
+        {
+            if (string.IsNullOrEmpty(date))
+                throw new ArgumentNullException("date");
+            if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
+                throw new ArgumentOutOfRangeException("interval",
+                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+
+            return DateAddInterval(date, Interval(interval, value));
+        }
+
+        /// <summary>
+        /// Subtracts two dates.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to subtract from.</param>
+        /// <param name="interval">The SQL string containing the date interval to add.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="interval"/> is null or empty.</exception>
+        public string DateSubtractInterval(string date, string interval)
+        {
+            if (string.IsNullOrEmpty(date))
+                throw new ArgumentNullException("date");
+            if (string.IsNullOrEmpty(interval))
+                throw new ArgumentNullException("interval");
+
+            return "DATE_SUB(" + date + "," + interval + ")";
+        }
+
+        /// <summary>
+        /// Subtracts two dates.
+        /// </summary>
+        /// <param name="date">The SQL string containing the date to subtract from.</param>
+        /// <param name="interval">The type of time unit.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="date"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        public string DateSubtractInterval(string date, QueryIntervalType interval, int value)
+        {
+            if (string.IsNullOrEmpty(date))
+                throw new ArgumentNullException("date");
+            if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
+                throw new ArgumentOutOfRangeException("interval",
+                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+
+            return DateSubtractInterval(date, Interval(interval, value));
+        }
+
+        /// <summary>
         /// Gets the default value for a column.
         /// </summary>
         /// <param name="expr">The SQL expression, typically the column name to get the default value for.</param>
@@ -311,6 +339,24 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Equality operator.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        public string Equals(string left, string right)
+        {
+            if (string.IsNullOrEmpty(left))
+                throw new ArgumentNullException("left");
+            if (string.IsNullOrEmpty(right))
+                throw new ArgumentNullException("right");
+
+            return left + " = " + right;
+        }
+
+        /// <summary>
         /// Rounds a value down to the nearest integer.
         /// </summary>
         /// <param name="expr">The SQL expression.</param>
@@ -322,6 +368,36 @@ namespace NetGore.Db.MySql.QueryBuilder
                 throw new ArgumentNullException("expr");
 
             return "FLOOR(" + expr + ")";
+        }
+
+        /// <summary>
+        /// Gets an interval of time.
+        /// </summary>
+        /// <param name="interval">The unit of time.</param>
+        /// <param name="value">The amount of time.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="interval"/> is not a defined <see cref="QueryIntervalType"/>
+        /// value.</exception>
+        public string Interval(QueryIntervalType interval, int value)
+        {
+            if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
+                throw new ArgumentOutOfRangeException("interval");
+
+            return "INTERVAL " + value + " " + interval.ToString().ToUpper();
+        }
+
+        /// <summary>
+        /// Tests if an expression is not null.
+        /// </summary>
+        /// <param name="expr">The SQL expression.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="expr"/> is null or empty.</exception>
+        public string IsNotNull(string expr)
+        {
+            if (string.IsNullOrEmpty(expr))
+                throw new ArgumentNullException("expr");
+
+            return expr + " IS NOT NULL";
         }
 
         /// <summary>
@@ -372,6 +448,24 @@ namespace NetGore.Db.MySql.QueryBuilder
                 throw new ArgumentNullException("right");
 
             return left + " * " + right;
+        }
+
+        /// <summary>
+        /// Inequality operator.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        public string NotEqual(string left, string right)
+        {
+            if (string.IsNullOrEmpty(left))
+                throw new ArgumentNullException("left");
+            if (string.IsNullOrEmpty(right))
+                throw new ArgumentNullException("right");
+
+            return left + " != " + right;
         }
 
         /// <summary>
