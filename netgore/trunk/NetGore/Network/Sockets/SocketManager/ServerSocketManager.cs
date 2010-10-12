@@ -29,8 +29,13 @@ namespace NetGore.Network
         /// <param name="port">The port to listen on.</param>
         public ServerSocketManager(string appIdentifier, int port)
         {
-            var config = new NetPeerConfiguration(appIdentifier)
-            { AcceptIncomingConnections = true, Port = port, MaximumConnections = 50 };
+            var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port, MaximumConnections = 50 };
+
+#if DEBUG
+            // When in debug mode, set the connection timeout to an insanely high value so we can halt the code and debug without
+            // the connection dropping
+            config.ConnectionTimeout = 60 * 60; // 1 hour
+#endif
 
             // Disable some message types that will not be used by the server
             config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);
