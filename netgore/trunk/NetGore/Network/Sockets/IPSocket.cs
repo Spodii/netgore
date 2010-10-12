@@ -11,6 +11,7 @@ namespace NetGore.Network
     public class IPSocket : IIPSocket
     {
         readonly uint _address;
+        readonly string _addressStr;
         readonly NetConnection _conn;
         readonly TickCount _timeCreated;
 
@@ -26,6 +27,8 @@ namespace NetGore.Network
 
             var addressBytes = _conn.RemoteEndpoint.Address.GetAddressBytes();
             _address = IPAddressHelper.IPv4AddressToUInt(addressBytes, 0);
+
+            _addressStr = IPAddressHelper.ToIPv4Address(_address) + ":" + _conn.RemoteEndpoint.Port;
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace NetGore.Network
         /// <example>27.0.1.160:12345</example>
         public string Address
         {
-            get { return IPAddressHelper.ToIPv4Address(_address) + ":" + _conn.RemoteEndpoint.Port; }
+            get { return _addressStr; }
         }
 
         /// <summary>
