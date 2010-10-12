@@ -263,13 +263,18 @@ namespace NetGore.Graphics
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.
         /// </summary>
-        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the GUI, or null if an unexpected
+        /// <param name="clearBuffer">When true, the buffer will be cleared before drawing. When false, the contents of the previous
+        /// frame will remain in the buffer, only if the last draw was also to the GUI. When the last draw call was to the
+        /// world, then this will have no affect. Useful for when you want to draw multiple GUI screens on top of one another.</param>
+        /// <returns>
+        /// The <see cref="ISpriteBatch"/> to use to draw the GUI, or null if an unexpected
         /// error was encountered when preparing the <see cref="ISpriteBatch"/>. When null, all drawing
         /// should be aborted completely instead of trying to draw with a different <see cref="ISpriteBatch"/>
-        /// or manually recovering the error.</returns>
+        /// or manually recovering the error.
+        /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
-        public ISpriteBatch BeginDrawGUI()
+        public ISpriteBatch BeginDrawGUI(bool clearBuffer = true)
         {
             if (State != DrawingManagerState.Idle)
                 throw new InvalidOperationException("This method cannot be called while already busy drawing.");
@@ -285,9 +290,12 @@ namespace NetGore.Graphics
                     return null;
                 }
 
-                // If the last draw was also to the GUI, clear the screen
-                if (!_lastDrawWasToWorld)
-                    _rw.Clear(BackgroundColor);
+                if (clearBuffer)
+                {
+                    // If the last draw was also to the GUI, clear the screen
+                    if (!_lastDrawWasToWorld)
+                        _rw.Clear(BackgroundColor);
+                }
 
                 _lastDrawWasToWorld = false;
 
