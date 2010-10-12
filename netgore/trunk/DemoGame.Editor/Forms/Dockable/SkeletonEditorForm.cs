@@ -92,6 +92,8 @@ namespace DemoGame.Editor
             }
         }
 
+        public DrawingManager DrawingManager { get { return _drawingManager; } }
+
         /// <summary>
         /// Gets the selected drawable skeleton item in the list
         /// </summary>
