@@ -247,6 +247,7 @@ namespace DemoGame.Editor
             this.gameScreen.Size = new System.Drawing.Size(549, 516);
             this.gameScreen.TabIndex = 0;
             this.gameScreen.Text = "gameScreenControl1";
+            this.gameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseDown);
             this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
             // 
             // ParticleEditorForm
