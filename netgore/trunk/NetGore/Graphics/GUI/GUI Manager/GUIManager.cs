@@ -620,15 +620,15 @@ namespace NetGore.Graphics.GUI
 
             var c = UnderCursor;
 
+            if (c != null)
+                _lastPressedControl = c;
+
             // Handle a left mouse button press
             if (e.Button == MouseButton.Left)
             {
                 // Update the focus control
                 var lastFocused = FocusedControl;
                 FocusedControl = c;
-
-                if (c != null)
-                    _lastPressedControl = c;
 
                 // If the focused control changed, send the corresponding events
                 if (lastFocused != FocusedControl)

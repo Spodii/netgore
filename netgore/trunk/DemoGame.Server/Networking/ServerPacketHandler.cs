@@ -736,6 +736,8 @@ namespace DemoGame.Server
                 const string errmsg = "Failed to read SkillType from stream.";
                 if (log.IsWarnEnabled)
                     log.Warn(errmsg);
+                Debug.Fail(errmsg);
+                r.ReadBool();
                 return;
             }
 
