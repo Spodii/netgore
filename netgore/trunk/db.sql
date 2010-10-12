@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-10-11 18:26:54',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-10-12 10:56:55',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +121,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=125;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `account_ips`
@@ -129,7 +129,6 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (124,1,16777343,'2010-10-11 18:26:54');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +303,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,0,NULL,'Test',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',255,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,201385,30,880,143,100,100,100,100,1,1,1,1,3,1),(2,NULL,1,'Test A',0,NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,2,NULL,'testchar',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
+INSERT INTO `character` VALUES (0,0,NULL,'Test',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',255,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,201395,30,890,143,68,100,100,100,1,1,1,1,3,1),(2,NULL,1,'Test A',0,NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,2,NULL,'testchar',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,6 +328,7 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
+INSERT INTO `character_equipped` VALUES (1,1167,2),(1,1168,0),(1,1169,1);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,6 +354,7 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
+INSERT INTO `character_inventory` VALUES (1,1158,0),(1,1159,1),(1,1162,2),(1,1164,3),(1,1165,4),(1,1166,5),(1,1492,6);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +500,7 @@ CREATE TABLE `character_template_equipped` (
 
 LOCK TABLES `character_template_equipped` WRITE;
 /*!40000 ALTER TABLE `character_template_equipped` DISABLE KEYS */;
-INSERT INTO `character_template_equipped` VALUES (0,1,5,40000),(1,1,3,60000);
+INSERT INTO `character_template_equipped` VALUES (0,1,3,60000),(1,1,5,30000);
 /*!40000 ALTER TABLE `character_template_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -528,7 +529,7 @@ CREATE TABLE `character_template_inventory` (
 
 LOCK TABLES `character_template_inventory` WRITE;
 /*!40000 ALTER TABLE `character_template_inventory` DISABLE KEYS */;
-INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(1,1,7,1,10,65535),(2,1,3,1,1,5000),(3,1,5,0,2,10000),(4,1,7,1,10,65535),(5,1,3,1,1,5000);
+INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(1,1,7,1,10,65535),(2,1,3,1,1,5000),(3,1,5,0,2,10000),(4,1,7,1,10,65535),(5,1,3,1,1,5000),(6,1,7,1,10,65535),(7,1,3,1,1,5000),(8,1,3,1,1,5000),(9,1,7,1,10,65535),(10,1,3,1,1,5000),(11,1,7,1,10,65535),(12,1,3,1,1,5000),(13,1,5,0,2,10000);
 /*!40000 ALTER TABLE `character_template_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -575,7 +576,6 @@ CREATE TABLE `guild` (
 
 LOCK TABLES `guild` WRITE;
 /*!40000 ALTER TABLE `guild` DISABLE KEYS */;
-INSERT INTO `guild` VALUES (0,'asdfasdf','tg','2010-05-16 19:58:00');
 /*!40000 ALTER TABLE `guild` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -634,7 +634,6 @@ CREATE TABLE `guild_member` (
 
 LOCK TABLES `guild_member` WRITE;
 /*!40000 ALTER TABLE `guild_member` DISABLE KEYS */;
-INSERT INTO `guild_member` VALUES (1,0,3,'2010-01-26 21:34:14');
 /*!40000 ALTER TABLE `guild_member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -682,6 +681,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (1158,1,1,0,0,9,16,'Healing Potion','A healing potion',12,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(1159,2,1,0,0,9,16,'Mana Potion','A mana potion',4,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(1162,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',2,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(1164,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body',NULL),(1165,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',2,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL,NULL),(1166,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',2,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(1167,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(1168,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(1169,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body',NULL),(1492,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1006,7 +1006,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-10-11 18:27:17');
+INSERT INTO `server_time` VALUES ('2010-10-12 10:57:49');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1161,7 +1161,6 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
-INSERT INTO `world_stats_count_item_create` VALUES (0,1,'0000-00-00 00:00:00'),(3,12,'0000-00-00 00:00:00'),(5,4,'0000-00-00 00:00:00'),(7,66,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1209,7 +1208,6 @@ CREATE TABLE `world_stats_count_npc_kill_user` (
 
 LOCK TABLES `world_stats_count_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` DISABLE KEYS */;
-INSERT INTO `world_stats_count_npc_kill_user` VALUES (1,1,1,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1348,7 +1346,7 @@ CREATE TABLE `world_stats_network` (
   `connections` mediumint(8) unsigned NOT NULL COMMENT 'Connections made with the server (accepted connections).',
   `connections_rejected` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=1437;
+) TYPE=MyISAM;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1356,7 +1354,6 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
-INSERT INTO `world_stats_network` VALUES (1436,'2010-10-12 01:26:53',0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1383,7 +1380,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=9;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_npc_kill_user`
@@ -1391,7 +1388,6 @@ CREATE TABLE `world_stats_npc_kill_user` (
 
 LOCK TABLES `world_stats_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
-INSERT INTO `world_stats_npc_kill_user` VALUES (8,1,1,30,1024,593,1135,687,3,'2010-10-12 01:27:07');
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1542,7 +1538,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=18;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_kill_npc`
@@ -1567,7 +1563,7 @@ CREATE TABLE `world_stats_user_level` (
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   PRIMARY KEY (`id`)
-) TYPE=InnoDB AUTO_INCREMENT=2;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_level`
@@ -1724,7 +1720,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `find_foreign_keys`(tableSchema VARCHAR(100), tableName VARCHAR(100), columnName VARCHAR(100))
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `find_foreign_keys`(tableSchema VARCHAR(100), tableName VARCHAR(100), columnName VARCHAR(100))
 BEGIN
 
 		/*
@@ -1929,4 +1925,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-10-11 19:15:12
+-- Dump completed on 2010-10-12 11:43:21
