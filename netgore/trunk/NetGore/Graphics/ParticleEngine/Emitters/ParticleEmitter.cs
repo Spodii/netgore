@@ -689,6 +689,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.
         /// </summary>
+        [Browsable(false)]
         public IParticleEffect Owner
         {
             get { return _owner; }
