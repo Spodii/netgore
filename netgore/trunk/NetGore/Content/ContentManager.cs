@@ -20,6 +20,17 @@ namespace NetGore.Content
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// When the length of a file name for a lazy asset exceeds this length, trim it down to only show the
+        /// last characters, length of which is defined by <see cref="_lazyAssetTrimmedFileNameLength"/>.
+        /// </summary>
+        const int _lazyAssetTrimFileNameLength = 30;
+
+        /// <summary>
+        /// The length of a trimmed file name for lazy asset.
+        /// </summary>
+        const int _lazyAssetTrimmedFileNameLength = 25;
+
+        /// <summary>
         /// Gets the minimum amount of time that an asset must go unused before being unloaded.
         /// </summary>
         const int _minElapsedTimeToUnload = 1000 * 60; // 1 minute
@@ -196,6 +207,26 @@ namespace NetGore.Content
             asset = null;
             level = 0;
             return false;
+        }
+
+        /// <summary>
+        /// Gets the ToString() for a lazy asset.
+        /// </summary>
+        /// <param name="type">The name of the lazy asset type.</param>
+        /// <param name="fileName">The file path.</param>
+        /// <returns>The string to display.</returns>
+        static string LazyAssetToString(string type, string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                return "Lazy" + type + " []";
+            else if (fileName.Length > _lazyAssetTrimFileNameLength)
+            {
+                return "Lazy" + type + " [" +
+                       fileName.Substring(fileName.Length - _lazyAssetTrimmedFileNameLength, _lazyAssetTrimmedFileNameLength) +
+                       "]";
+            }
+            else
+                return "Lazy" + type + " [" + fileName + "]";
         }
 
         /// <summary>
@@ -600,10 +631,7 @@ namespace NetGore.Content
             /// </returns>
             public override string ToString()
             {
-                if (FileName.Length > 15)
-                    return "Image [..." + FileName.Substring(FileName.Length - 10, 10) + "]";
-                else
-                    return "Image [" + FileName + "]";
+                return LazyAssetToString("Font", FileName);
             }
 
             #region IMyLazyAsset Members
@@ -665,10 +693,7 @@ namespace NetGore.Content
             /// </returns>
             public override string ToString()
             {
-                if (FileName.Length > 15)
-                    return "Image [..." + FileName.Substring(FileName.Length - 10, 10) + "]";
-                else
-                    return "Image [" + FileName + "]";
+                return LazyAssetToString("Image", FileName);
             }
 
             #region IMyLazyAsset Members
@@ -721,10 +746,7 @@ namespace NetGore.Content
             /// </returns>
             public override string ToString()
             {
-                if (FileName.Length > 15)
-                    return "SoundBuffer [..." + FileName.Substring(FileName.Length - 10, 10) + "]";
-                else
-                    return "SoundBuffer [" + FileName + "]";
+                return LazyAssetToString("SoundBuffer", FileName);
             }
 
             #region IMyLazyAsset Members
