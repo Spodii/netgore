@@ -30,7 +30,7 @@ namespace DemoGame.Server.Queries
         {
             // INSERT IGNORE INTO `{0}` {1}
 
-            var q = qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam(AllianceAttackableTable.DbColumns);
+            var q = qb.Insert(AllianceAttackableTable.TableName).IgnoreExists().AddAutoParam(AllianceAttackableTable.DbColumns);
             return q.ToString();
         }
 
