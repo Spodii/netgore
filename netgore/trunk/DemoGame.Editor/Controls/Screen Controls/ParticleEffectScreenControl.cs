@@ -87,7 +87,10 @@ namespace DemoGame.Editor
         protected override void HandleDraw(TickCount currentTime)
         {
             if (DesignMode)
+            {
+                base.HandleDraw(currentTime);
                 return;
+            }
 
             var pe = ParticleEffect;
             if (pe == null)
