@@ -59,7 +59,7 @@ namespace DemoGame.Editor.TypeConverters
                     {
                         var sb = new StringBuilder();
                         sb.Append("{");
-                        foreach (var v in ev.OrderByDescending(x=>x.Value).ThenBy(x=>x.Key))
+                        foreach (var v in ev.OrderByDescending(x => x.Value).ThenBy(x => x.Key))
                         {
                             sb.Append("[");
                             sb.Append(v.Value.ToString());

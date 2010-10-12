@@ -11,19 +11,6 @@ namespace NetGore.Features.Banning
     sealed class StoredProcGetReasons : DbQueryReader<int>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // CALL ft_banning_get_reasons(@accountID)
-			
-            var q = qb.CallProcedure("ft_banning_get_reasons").AddParam("accountID");
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="StoredProcGetReasons"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
@@ -31,6 +18,19 @@ namespace NetGore.Features.Banning
         public StoredProcGetReasons(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // CALL ft_banning_get_reasons(@accountID)
+
+            var q = qb.CallProcedure("ft_banning_get_reasons").AddParam("accountID");
+            return q.ToString();
         }
 
         /// <summary>

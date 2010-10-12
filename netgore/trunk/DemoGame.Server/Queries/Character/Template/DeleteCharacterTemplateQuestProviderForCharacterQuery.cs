@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
@@ -29,7 +30,9 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Delete(CharacterTemplateQuestProviderTable.TableName).Where(f.Equals(s.EscapeColumn("character_template_id"), s.Parameterize("id")));
+            var q =
+                qb.Delete(CharacterTemplateQuestProviderTable.TableName).Where(f.Equals(s.EscapeColumn("character_template_id"),
+                                                                                        s.Parameterize("id")));
             return q.ToString();
         }
 

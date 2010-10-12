@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;
@@ -89,7 +88,8 @@ namespace DemoGame.Client
 
             var textBoxPos = new Vector2(60, _txtName.Position.Y + _txtName.Size.Y + 20);
             var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
-            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
+            { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
         }
 
         void PacketHandler_ReceivedCreateAccountCharacter(IIPSocket sender, bool successful, string errorMessage)

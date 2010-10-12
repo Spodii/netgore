@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using NetGore.Db.QueryBuilder;
 
@@ -14,8 +15,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// </summary>
         /// <param name="procedure">The name of the stored procedure.</param>
         /// <exception cref="ArgumentNullException"><paramref name="procedure"/> is null or empty.</exception>
-        public MySqlCallProcedureQuery(string procedure)
-            : base(procedure, MySqlQueryBuilderSettings.Instance)
+        public MySqlCallProcedureQuery(string procedure) : base(procedure, MySqlQueryBuilderSettings.Instance)
         {
         }
 

@@ -19,6 +19,14 @@ namespace NetGore.Db.QueryBuilder
         IQueryBuilderSettings Settings { get; }
 
         /// <summary>
+        /// Creates an <see cref="ICallProcedureQuery"/>.
+        /// </summary>
+        /// <param name="procedureName">The name of the stored procedure.</param>
+        /// <returns>The <see cref="ISelectQuery"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="procedureName"/> is null or empty.</exception>
+        ICallProcedureQuery CallProcedure(string procedureName);
+
+        /// <summary>
         /// Creates an <see cref="IDeleteQuery"/>.
         /// </summary>
         /// <param name="tableName">The name of the table to delete from.</param>
@@ -51,14 +59,6 @@ namespace NetGore.Db.QueryBuilder
         /// <returns>The <see cref="ISelectQuery"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="functionName"/> is null or empty.</exception>
         ISelectFunctionQuery SelectFunction(string functionName);
-        
-        /// <summary>
-        /// Creates an <see cref="ICallProcedureQuery"/>.
-        /// </summary>
-        /// <param name="procedureName">The name of the stored procedure.</param>
-        /// <returns>The <see cref="ISelectQuery"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="procedureName"/> is null or empty.</exception>
-        ICallProcedureQuery CallProcedure(string procedureName);
 
         /// <summary>
         /// Creates an <see cref="IUpdateQuery"/>.

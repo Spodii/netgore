@@ -209,6 +209,56 @@ namespace DemoGame.Client
                 }
             }
         }
+
+        /// <summary>
+        /// A basic <see cref="ActionDisplay"/> script for projectiles.
+        /// </summary>
+        /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
+        /// <param name="map">The map that the entities are on.</param>
+        /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
+        /// <param name="target">The <see cref="Entity"/> that this action is targeting. It is possible that this will be
+        /// equal to the <paramref name="source"/> or be null.</param>
+        [ActionDisplayScript("Projectile")]
+        public static void AD_Projectile(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
+        {
+            var drawableMap = map as IDrawableMap;
+            var sourceAsCharacter = source as Character;
+
+            // Play the sound
+            PlaySoundSimple(actionDisplay, source);
+
+            // Show the attack animation on the attacker
+            if (sourceAsCharacter != null)
+                sourceAsCharacter.Attack();
+
+            // Check if we can properly display the effect
+            if (drawableMap != null && target != null && source != target)
+            {
+                // Show the graphic going from the attacker to attacked
+                if (actionDisplay.GrhIndex != GrhIndex.Invalid)
+                {
+                    var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
+                    if (gd != null)
+                    {
+                        var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
+                        var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 750f);
+                        drawableMap.AddTemporaryMapEffect(effect);
+                    }
+                }
+
+                // Show the particle effect
+                var pe = ParticleEffectManager.Instance.TryCreateEffect(actionDisplay.ParticleEffect);
+                if (pe != null)
+                {
+                    // Effect that just takes place on the target and dies very quickly
+                    pe.Position = target.Center;
+                    pe.Life = 100;
+                    var effect = new TemporaryMapParticleEffect(pe, true);
+                    drawableMap.AddTemporaryMapEffect(effect);
+                }
+            }
+        }
+
         /// <summary>
         /// A basic <see cref="ActionDisplay"/> script for when a skill has been used.
         /// </summary>
@@ -276,55 +326,6 @@ namespace DemoGame.Client
                     // Add the effec to the map
                     if (effect != null)
                         drawableMap.AddTemporaryMapEffect(effect);
-                }
-            }
-        }
-
-        /// <summary>
-        /// A basic <see cref="ActionDisplay"/> script for projectiles.
-        /// </summary>
-        /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
-        /// <param name="map">The map that the entities are on.</param>
-        /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
-        /// <param name="target">The <see cref="Entity"/> that this action is targeting. It is possible that this will be
-        /// equal to the <paramref name="source"/> or be null.</param>
-        [ActionDisplayScript("Projectile")]
-        public static void AD_Projectile(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
-        {
-            var drawableMap = map as IDrawableMap;
-            var sourceAsCharacter = source as Character;
-
-            // Play the sound
-            PlaySoundSimple(actionDisplay, source);
-
-            // Show the attack animation on the attacker
-            if (sourceAsCharacter != null)
-                sourceAsCharacter.Attack();
-
-            // Check if we can properly display the effect
-            if (drawableMap != null && target != null && source != target)
-            {
-                // Show the graphic going from the attacker to attacked
-                if (actionDisplay.GrhIndex != GrhIndex.Invalid)
-                {
-                    var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
-                    if (gd != null)
-                    {
-                        var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                        var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 750f);
-                        drawableMap.AddTemporaryMapEffect(effect);
-                    }
-                }
-
-                // Show the particle effect
-                var pe = ParticleEffectManager.Instance.TryCreateEffect(actionDisplay.ParticleEffect);
-                if (pe != null)
-                {
-                    // Effect that just takes place on the target and dies very quickly
-                    pe.Position = target.Center;
-                    pe.Life = 100;
-                    var effect = new TemporaryMapParticleEffect(pe, true);
-                    drawableMap.AddTemporaryMapEffect(effect);
                 }
             }
         }

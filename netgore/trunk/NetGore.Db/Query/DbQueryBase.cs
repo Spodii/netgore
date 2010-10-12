@@ -5,7 +5,6 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 
 namespace NetGore.Db

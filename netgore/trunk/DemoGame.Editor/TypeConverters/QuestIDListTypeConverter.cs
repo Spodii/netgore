@@ -55,7 +55,7 @@ namespace DemoGame.Editor.TypeConverters
                 {
                     var sb = new StringBuilder();
                     sb.Append("{");
-                    foreach (var v in ev.OrderBy(x=>x))
+                    foreach (var v in ev.OrderBy(x => x))
                     {
                         sb.Append(v);
                         sb.Append(",");

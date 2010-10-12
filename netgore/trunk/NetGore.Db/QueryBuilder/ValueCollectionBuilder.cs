@@ -38,7 +38,10 @@ namespace NetGore.Db.QueryBuilder
         /// <summary>
         /// Gets the <see cref="IQueryBuilderSettings"/> to use.
         /// </summary>
-        public IQueryBuilderSettings Settings { get { return _settings; } }
+        public IQueryBuilderSettings Settings
+        {
+            get { return _settings; }
+        }
 
         /// <summary>
         /// Gets the values in this collection.

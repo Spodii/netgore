@@ -11,6 +11,15 @@ namespace NetGore.Db.MySql
     public class MySqlFindForeignKeysQuery : FindForeignKeysQuery
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="FindForeignKeysQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public MySqlFindForeignKeysQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,15 +30,6 @@ namespace NetGore.Db.MySql
 
             var q = qb.CallProcedure("find_foreign_keys").AddParam(SchemaParameterName, TableParameterName, ColumnParameterName);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FindForeignKeysQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public MySqlFindForeignKeysQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

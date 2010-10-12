@@ -60,7 +60,7 @@ namespace DemoGame.Editor.TypeConverters
 
                         sb.Append("{");
 
-                        foreach (var v in ev.OrderBy(x=>x))
+                        foreach (var v in ev.OrderBy(x => x))
                         {
                             var t = m[v];
                             if (t == null)

@@ -53,6 +53,11 @@ namespace DemoGame.Editor
             GameScreen.SkeletonEditorForm = this;
         }
 
+        public DrawingManager DrawingManager
+        {
+            get { return _drawingManager; }
+        }
+
         /// <summary>
         /// Gets or sets the file for the current skeleton animation
         /// </summary>
@@ -91,8 +96,6 @@ namespace DemoGame.Editor
                 lblSkeleton.Text = "Loaded: " + Path.GetFileName(_fileFrame);
             }
         }
-
-        public DrawingManager DrawingManager { get { return _drawingManager; } }
 
         /// <summary>
         /// Gets the selected drawable skeleton item in the list

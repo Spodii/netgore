@@ -876,11 +876,11 @@ namespace DemoGame.Editor
 
             // Required items to start/finish
             _dbController.GetQuery<InsertQuestRequireStartItemQuery>().Execute(v.ID,
-                                                                                v.StartItems.Select(
-                                                                                    x => (KeyValuePair<ItemTemplateID, byte>)x));
+                                                                               v.StartItems.Select(
+                                                                                   x => (KeyValuePair<ItemTemplateID, byte>)x));
             _dbController.GetQuery<InsertQuestRequireFinishItemQuery>().Execute(v.ID,
-                                                                                 v.FinishItems.Select(
-                                                                                     x => (KeyValuePair<ItemTemplateID, byte>)x));
+                                                                                v.FinishItems.Select(
+                                                                                    x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             // Required quests to start/finish
             _dbController.GetQuery<InsertQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
@@ -888,13 +888,13 @@ namespace DemoGame.Editor
 
             // Other requirements
             _dbController.GetQuery<InsertQuestRequireKillQuery>().Execute(v.ID,
-                                                                           v.Kills.Select(
-                                                                               x => (KeyValuePair<CharacterTemplateID, ushort>)x));
+                                                                          v.Kills.Select(
+                                                                              x => (KeyValuePair<CharacterTemplateID, ushort>)x));
 
             // Rewards
             _dbController.GetQuery<InsertQuestRewardItemQuery>().Execute(v.ID,
-                                                                          v.RewardItems.Select(
-                                                                              x => (KeyValuePair<ItemTemplateID, byte>)x));
+                                                                         v.RewardItems.Select(
+                                                                             x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             SetQuest(v.ID, false);
 

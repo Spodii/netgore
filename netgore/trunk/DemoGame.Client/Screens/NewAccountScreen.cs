@@ -17,9 +17,9 @@ namespace DemoGame.Client
         TextBox _cEmailText;
         TextBox _cNameText;
         TextBox _cPasswordText;
+        TextBox _cStatus;
         Control _createAccountButton;
         ClientSockets _sockets = null;
-        TextBox _cStatus;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NewAccountScreen"/> class.
@@ -137,7 +137,8 @@ namespace DemoGame.Client
 
             var textBoxPos = new Vector2(60, _cEmailText.Position.Y + _cEmailText.Size.Y + 20);
             var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
-            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
+            { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Create Account", "Back");
