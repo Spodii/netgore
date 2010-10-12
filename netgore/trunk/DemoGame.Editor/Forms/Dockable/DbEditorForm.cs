@@ -474,6 +474,9 @@ namespace DemoGame.Editor
             // Save
             _dbController.GetQuery<InsertCharacterTemplateQuery>().Execute(v);
 
+            // Equipped items (delete old, then add new)
+            _dbController.GetQuery<DeleteCharacterTemplateEquippedForCharacterQuery>().Execute(v.ID);
+
             var equippedQuery = _dbController.GetQuery<InsertCharacterTemplateEquippedQuery>();
             foreach (var item in v.Equipped)
             {
@@ -483,6 +486,9 @@ namespace DemoGame.Editor
                 equippedQuery.Execute(queryArg);
             }
 
+            // Inventory items (delete old, then add new)
+            _dbController.GetQuery<DeleteCharacterTemplateInventoryForCharacterQuery>().Execute(v.ID);
+
             var inventoryQuery = _dbController.GetQuery<InsertCharacterTemplateInventoryQuery>();
             foreach (var item in v.Inventory)
             {
@@ -491,6 +497,9 @@ namespace DemoGame.Editor
                 var queryArg = item.ToTableRow(v.ID, freeRow);
                 inventoryQuery.Execute(queryArg);
             }
+
+            // Quests (delete old, then add new)
+            _dbController.GetQuery<DeleteCharacterTemplateQuestProviderForCharacterQuery>().Execute(v.ID);
 
             var questQuery = _dbController.GetQuery<InsertCharacterTemplateQuestProviderQuery>();
             foreach (var item in v.GiveQuests)

@@ -249,6 +249,9 @@
     <Compile Include="Queries\Account\SelectAccountCharacterNamesQuery.cs" />
     <Compile Include="Queries\Banning\InsertAccountBanQuery.cs" />
     <Compile Include="Queries\Banning\SelectAccountBansQuery.cs" />
+    <Compile Include="Queries\Character\Template\DeleteCharacterTemplateEquippedForCharacterQuery.cs" />
+    <Compile Include="Queries\Character\Template\DeleteCharacterTemplateInventoryForCharacterQuery.cs" />
+    <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuestProviderForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuestsQuery.cs" />
     <Compile Include="Queries\Map\SelectMapQuery.cs" />
     <Compile Include="Queries\User\SelectUserByNameQuery.cs" />
