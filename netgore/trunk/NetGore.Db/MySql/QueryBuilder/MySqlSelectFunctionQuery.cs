@@ -13,7 +13,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <summary>
         /// Initializes a new instance of the <see cref="MySqlSelectFunctionQuery"/> class.
         /// </summary>
-        /// <param name="function">The table.</param>
+        /// <param name="function">The name of the function.</param>
         /// <exception cref="ArgumentNullException"><paramref name="function"/> is null or empty.</exception>
         public MySqlSelectFunctionQuery(string function) : base(function, MySqlQueryBuilderSettings.Instance)
         {

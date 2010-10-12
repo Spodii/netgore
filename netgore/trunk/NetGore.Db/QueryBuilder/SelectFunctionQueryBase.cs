@@ -16,7 +16,7 @@ namespace NetGore.Db.QueryBuilder
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQueryBase"/> class.
         /// </summary>
-        /// <param name="function">The table.</param>
+        /// <param name="function">The name of the function.</param>
         /// <param name="settings">The <see cref="IQueryBuilderSettings"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="settings"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="function"/> is null or empty.</exception>
@@ -30,7 +30,7 @@ namespace NetGore.Db.QueryBuilder
             _function = function;
             _settings = settings;
 
-            _c = new ValueCollectionBuilder<ISelectFunctionQuery>(this);
+            _c = new ValueCollectionBuilder<ISelectFunctionQuery>(this, settings);
         }
 
         /// <summary>
@@ -90,6 +90,39 @@ namespace NetGore.Db.QueryBuilder
         public ISelectFunctionQuery Add(params string[] values)
         {
             return _c.Add(values);
+        }
+
+        /// <summary>
+        /// Adds a parameterized value to the collection.
+        /// </summary>
+        /// <param name="value">The name of the parameter.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        public ISelectFunctionQuery AddParam(string value)
+        {
+            return _c.AddParam(value);
+        }
+
+        /// <summary>
+        /// Adds parameterized values to the collection.
+        /// </summary>
+        /// <param name="values">The names of the parameters.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
+        public ISelectFunctionQuery AddParam(IEnumerable<string> values)
+        {
+            return _c.AddParam(values);
+        }
+
+        /// <summary>
+        /// Adds parameterized values to the collection.
+        /// </summary>
+        /// <param name="values">The names of the parameters.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
+        public ISelectFunctionQuery AddParam(params string[] values)
+        {
+            return _c.AddParam(values);
         }
 
         #endregion
