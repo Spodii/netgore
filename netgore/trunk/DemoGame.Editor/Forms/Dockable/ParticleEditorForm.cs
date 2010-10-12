@@ -278,6 +278,7 @@ namespace DemoGame.Editor
                 cmbEmitterType.Enabled = false;
                 cmbEmitterType.SelectedIndex = -1;
             }
+
             pgEmitter.SelectedObject = lstEmitters.SelectedItem;
         }
 

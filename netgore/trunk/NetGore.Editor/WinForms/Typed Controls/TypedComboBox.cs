@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,6 +19,21 @@ namespace NetGore.Editor.WinForms
         {
             DropDownStyle = ComboBoxStyle.DropDownList;
             DrawMode = DrawMode.OwnerDrawFixed;
+
+            // Populate the list
+            if (LicenseManager.UsageMode == LicenseUsageMode.Runtime)
+            {
+                var items = GetInitialItems();
+
+                if (items != null && !items.IsEmpty())
+                {
+                    Items.Clear();
+                    AddItems(items);
+                }
+
+                if (Items.Count > 0)
+                    SelectedIndex = 0;
+            }
         }
 
         /// <summary>
@@ -84,18 +100,6 @@ namespace NetGore.Editor.WinForms
         protected override void OnCreateControl()
         {
             base.OnCreateControl();
-
-            // Populate the list
-            var items = GetInitialItems();
-
-            if (items != null && !items.IsEmpty())
-            {
-                Items.Clear();
-                AddItems(items);
-            }
-
-            if (Items.Count > 0)
-                SelectedIndex = 0;
         }
 
         /// <summary>
