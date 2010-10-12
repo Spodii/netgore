@@ -88,7 +88,7 @@
       <ParticleEffect>
         <Name>Cast Strengthen</Name>
         <Position>0,0</Position>
-        <Life>-1</Life>
+        <Life>1000</Life>
         <Emitters>
           <Count>1</Count>
           <Item0>
@@ -278,10 +278,11 @@
       <ParticleEffect>
         <Name>Cast Heal</Name>
         <Position>0,0</Position>
-        <Life>-1</Life>
+        <Life>1000</Life>
         <Emitters>
           <Count>1</Count>
-          <Item0>  <EmitterType>PolygonEmitter</EmitterType>
+          <Item0>  
+		  <EmitterType>PolygonEmitter</EmitterType>
   <Emitter>
     <Name>cast heal</Name>
     <BlendMode>Add</BlendMode>

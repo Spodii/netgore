@@ -209,6 +209,76 @@ namespace DemoGame.Client
                 }
             }
         }
+        /// <summary>
+        /// A basic <see cref="ActionDisplay"/> script for when a skill has been used.
+        /// </summary>
+        /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
+        /// <param name="map">The map that the entities are on.</param>
+        /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
+        /// <param name="target">The <see cref="Entity"/> that this action is targeting. It is possible that this will be
+        /// equal to the <paramref name="source"/> or be null.</param>
+        [ActionDisplayScript("SkillCasted")]
+        public static void AD_SkillCasted(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
+        {
+            var drawableMap = map as IDrawableMap;
+
+            // Play the sound
+            PlaySoundSimple(actionDisplay, source);
+
+            // Check if we can properly display the effect
+            if (drawableMap != null && source != null)
+            {
+                if (actionDisplay.GrhIndex != GrhIndex.Invalid)
+                {
+                    if (target != null && target != source)
+                    {
+                        // Show the graphic going from the source to target
+                        var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
+                        if (gd != null)
+                        {
+                            var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
+                            var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 750f);
+                            drawableMap.AddTemporaryMapEffect(effect);
+                        }
+                    }
+                    else
+                    {
+                        // Show the graphic at the source
+                        var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
+                        if (gd != null)
+                        {
+                            var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
+                            var effect = new MapGrhEffectLoopOnce(grh, source.Center, true);
+                            drawableMap.AddTemporaryMapEffect(effect);
+                        }
+                    }
+                }
+
+                // Show the particle effect
+                var pe = ParticleEffectManager.Instance.TryCreateEffect(actionDisplay.ParticleEffect);
+                if (pe != null)
+                {
+                    pe.Position = source.Center;
+                    ITemporaryMapEffect effect;
+
+                    if (target != null && target != source)
+                    {
+                        // Effect that seeks out the position of the target
+                        effect = new TemporaryMapParticleEffectSeekPosition(pe, true, target.Center, 250f);
+                        drawableMap.AddTemporaryMapEffect(effect);
+                    }
+                    else
+                    {
+                        // Effect that takes place at the source
+                        effect = new TemporaryMapParticleEffect(pe, true);
+                    }
+
+                    // Add the effec to the map
+                    if (effect != null)
+                        drawableMap.AddTemporaryMapEffect(effect);
+                }
+            }
+        }
 
         /// <summary>
         /// A basic <see cref="ActionDisplay"/> script for projectiles.

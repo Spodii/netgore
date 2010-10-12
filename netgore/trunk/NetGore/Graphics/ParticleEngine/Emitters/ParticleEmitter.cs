@@ -187,8 +187,10 @@ namespace NetGore.Graphics.ParticleEngine
 
             d.BlendMode = BlendMode;
             d.Budget = Budget;
+            d.EmitterLife = EmitterLife;
             d.ParticleLife = ParticleLife;
             d.Origin = Origin;
+            d.Name = Name;
             d.ReleaseAmount = ReleaseAmount;
             d.ReleaseColor = ReleaseColor;
             d.ReleaseRate = ReleaseRate;

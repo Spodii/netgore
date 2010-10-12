@@ -13,8 +13,8 @@
 				<Value>2</Value>
 			</StartCastingActionDisplay>
 			<CastActionDisplay>
-				<HasValue>false</HasValue>
-				<Value>0</Value>
+				<HasValue>true</HasValue>
+				<Value>4</Value>
 			</CastActionDisplay>
 		</Item0>
 		<Item1>
@@ -28,8 +28,8 @@
 				<Value>2</Value>
 			</StartCastingActionDisplay>
 			<CastActionDisplay>
-				<HasValue>false</HasValue>
-				<Value>0</Value>
+				<HasValue>true</HasValue>
+				<Value>3</Value>
 			</CastActionDisplay>
 		</Item1>
 	</SkillInfos>

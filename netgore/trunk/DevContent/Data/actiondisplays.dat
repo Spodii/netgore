@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ActionDisplayCollection>
   <ActionDisplays>
-    <Count>3</Count>
+    <Count>5</Count>
 	<Item0>
       <ID>0</ID>
 	  <Sound>
@@ -32,5 +32,25 @@
       <GrhIndex>0</GrhIndex>
       <ParticleEffect>casting skill</ParticleEffect>
     </Item2>
+	<Item3>
+      <ID>3</ID>
+	  <Sound>
+		  <HasValue>False</HasValue>
+		  <Value>0</Value>
+	  </Sound>
+      <Script>SkillCasted</Script>
+      <GrhIndex>0</GrhIndex>
+      <ParticleEffect>Cast Strengthen</ParticleEffect>
+    </Item3>
+	<Item4>
+      <ID>4</ID>
+	  <Sound>
+		  <HasValue>False</HasValue>
+		  <Value>0</Value>
+	  </Sound>
+      <Script>SkillCasted</Script>
+      <GrhIndex>0</GrhIndex>
+      <ParticleEffect>Cast Heal</ParticleEffect>
+    </Item4>
   </ActionDisplays>
 </ActionDisplayCollection>
