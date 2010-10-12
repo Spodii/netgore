@@ -30,6 +30,81 @@ namespace CodeReleasePreparer
         static RegexCollection _folderRegexes;
 
         /// <summary>
+        /// Performs the database cleaning.
+        /// </summary>
+        static void CleanDatabase()
+        {
+            var sb = new MySqlConnectionStringBuilder
+            { UserID = "root", Database = "demogame", Server = "localhost", Password = "", Logging = false, Pooling = false };
+
+            using (var conn = new MySqlConnection(sb.ToString()))
+            {
+                conn.Open();
+
+                // Truncate tables
+                var truncateTables = CleanDatabaseStr(conn,
+                                                      "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE" +
+                                                      " `TABLE_SCHEMA`=\"demogame\" AND `TABLE_NAME` LIKE \"world_stats_%\"");
+
+                truncateTables =
+                    truncateTables.Concat(new string[]
+                    {
+                        "account_ban", "account_ips", "active_trade_cash", "active_trade_item", "character_quest_status",
+                        "character_quest_status_kills", "character_status_effect", "guild", "guild_event", "guild_member"
+                    });
+
+                foreach (var table in truncateTables)
+                {
+                    CleanDatabaseNQ(conn, string.Format("TRUNCATE TABLE `{0}`", table));
+                }
+
+                // Clean out items table
+                CleanDatabaseNQ(conn,
+                                "DELETE FROM `item` WHERE `id` NOT IN (SELECT `item_id` FROM `character_inventory`) " +
+                                "AND `id` NOT IN (SELECT `item_id` FROM `character_equipped`)");
+            }
+        }
+
+        /// <summary>
+        /// Sub-routine for the <see cref="CleanDatabase"/> that provides a short-hand for running a non-reader query.
+        /// </summary>
+        /// <param name="conn">The <see cref="MySqlConnection"/>.</param>
+        /// <param name="query">The query to run.</param>
+        static void CleanDatabaseNQ(MySqlConnection conn, string query)
+        {
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = query;
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Sub-routine for the <see cref="CleanDatabase"/> that provides a short-hand for running a query.
+        /// </summary>
+        /// <param name="conn">The <see cref="MySqlConnection"/>.</param>
+        /// <param name="query">The query to run.</param>
+        static IEnumerable<string> CleanDatabaseStr(MySqlConnection conn, string query)
+        {
+            var ret = new List<string>();
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = query;
+                using (var r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        var s = r.GetString(0);
+                        ret.Add(s);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Checks if the one who is running this program is Spodi.
         /// </summary>
         /// <returns>True if the one who is running this program is probably Spodi; false if it is AN IMPOSTER!!!</returns>
@@ -177,7 +252,8 @@ namespace CodeReleasePreparer
             if (File.Exists(dbfile))
                 File.Delete(dbfile);
 
-            RunBatchFile(false, "mysqldump demogame --user=root --all-tables --routines --create-options > db.sql");
+            RunBatchFile(false,
+                         "mysqldump demogame --user=root --password= --host=localhost --all-tables --routines --create-options --compatible=mysql40 > db.sql");
 
             if (!File.Exists(dbfile) || new FileInfo(dbfile).Length < 1000)
             {
@@ -208,75 +284,6 @@ namespace CodeReleasePreparer
                          "RMDIR /S /Q \"" + programPath + "obj\"", "DEL %0");
 
             Console.WriteLine("Done");
-        }
-
-        /// <summary>
-        /// Performs the database cleaning.
-        /// </summary>
-        static void CleanDatabase()
-        {
-            var sb = new MySqlConnectionStringBuilder { UserID = "root", Database =  "demogame", Server = "localhost", Password = "",
-                 Logging = false, Pooling = false};
-
-            using (var conn = new MySqlConnection(sb.ToString()))
-            {
-                // Truncate tables
-                var truncateTables = CleanDatabaseStr(conn, 
-                    "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE" + 
-                    " `TABLE_SCHEMA`=\"demogame\" AND `TABLE_NAME` LIKE \"world_stats_%\"");
-
-                truncateTables.Concat(new string[] { "account_ban", "account_ips", "active_trade_cash", "active_trade_item",
-                    "character_quest_status","character_quest_status_kills","character_status_effect","guild","guild_event",
-                    "guild_member"});
-
-                foreach (var table in truncateTables)
-                {
-                    CleanDatabaseNQ(conn, string.Format("TRUNCATE `{0}`", table));
-                }
-
-                // Clean out items table
-                CleanDatabaseNQ(conn, "SELECT id FROM item WHERE id NOT IN (SELECT item_id FROM character_inventory) " + 
-                    "AND id NOT IN (SELECT item_id FROM character_equipped)");
-            } 
-        }
-
-        /// <summary>
-        /// Sub-routine for the <see cref="CleanDatabase"/> that provides a short-hand for running a query.
-        /// </summary>
-        /// <param name="conn">The <see cref="MySqlConnection"/>.</param>
-        /// <param name="query">The query to run.</param>
-        static IEnumerable<string> CleanDatabaseStr(MySqlConnection conn, string query)
-        {
-            List<string> ret = new List<string>();
-
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = query;
-                using (var r = cmd.ExecuteReader())
-                {
-                    while (r.Read())
-                    {
-                        var s = r.GetString(0);
-                        ret.Add(s);
-                    }
-                }
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Sub-routine for the <see cref="CleanDatabase"/> that provides a short-hand for running a non-reader query.
-        /// </summary>
-        /// <param name="conn">The <see cref="MySqlConnection"/>.</param>
-        /// <param name="query">The query to run.</param>
-        static void CleanDatabaseNQ(MySqlConnection conn, string query)
-        {
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = query;
-                cmd.ExecuteNonQuery();
-            }
         }
 
         /// <summary>
