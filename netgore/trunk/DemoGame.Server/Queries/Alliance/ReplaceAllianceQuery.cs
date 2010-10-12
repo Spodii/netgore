@@ -11,17 +11,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceAllianceQuery : DbQueryNonReader<IAllianceTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", AllianceTable.TableName,
-                                                             FormatParametersIntoValuesString(AllianceTable.DbColumns));
-
         /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
+        /// <returns>The query for this class.</returns> 
         static string CreateQuery(IQueryBuilder qb)
         {
-            // REPLACE INTO `{0}` {1}
+            // INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE <{1} - primary keys>
 
             var q = qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns).ODKU().AddFromInsert(AllianceTable.DbKeyColumns);
             return q.ToString();

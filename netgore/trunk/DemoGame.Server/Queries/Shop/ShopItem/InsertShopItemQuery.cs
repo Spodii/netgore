@@ -4,21 +4,33 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Shops;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceShopItemQuery : DbQueryNonReader<IShopItemTable>
+    public class InsertShopItemQuery : DbQueryNonReader<IShopItemTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", ShopItemTable.TableName,
-                                                             FormatParametersIntoValuesString(ShopItemTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT IGNORE INTO {0} {1}
+
+            var q = qb.Insert(ShopItemTable.TableName).IgnoreExists().AddAutoParam(ShopItemTable.DbColumns);
+            return q.ToString();
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceShopItemQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertShopItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceShopItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public InsertShopItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

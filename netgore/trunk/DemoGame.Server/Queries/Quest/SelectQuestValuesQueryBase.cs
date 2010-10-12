@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
@@ -13,7 +14,21 @@ namespace DemoGame.Server.Queries
     /// <typeparam name="T">The type of return value.</typeparam>
     public abstract class SelectQuestValuesQueryBase<T> : DbQueryReader<QuestID>
     {
-        const string _queryStr = "SELECT * FROM `{0}` WHERE `quest_id`=@id";
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <param name="tableName">Name of the table to select from.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb, string tableName)
+        {
+            // SELECT * FROM `{0}` WHERE `quest_id`=@id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(tableName).AllColumns().Where(f.Equals(s.EscapeColumn("quest_id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQuestValuesQueryBase{T}"/> class.
@@ -21,7 +36,7 @@ namespace DemoGame.Server.Queries
         /// <param name="connectionPool">The connection pool.</param>
         /// <param name="tableName">Name of the table.</param>
         protected SelectQuestValuesQueryBase(DbConnectionPool connectionPool, string tableName)
-            : base(connectionPool, string.Format(_queryStr, tableName))
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder, tableName))
         {
         }
 

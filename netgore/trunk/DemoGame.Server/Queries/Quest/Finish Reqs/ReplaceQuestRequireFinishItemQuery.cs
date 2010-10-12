@@ -4,6 +4,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
@@ -11,16 +12,29 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceQuestRequireFinishItemQuery : DbQueryNonReader<IQuestRequireFinishItemTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRequireFinishItemTable.TableName,
-                                                             FormatParametersIntoValuesString(
-                                                                 QuestRequireFinishItemTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO {0} {1}
+            //      ON DUPLICATE KEY UPDATE <{1} - keys>
+
+            var q = qb.Insert(QuestRequireFinishItemTable.TableName).AddAutoParam(QuestRequireFinishItemTable.DbColumns)
+                .ODKU()
+                .AddFromInsert(QuestRequireFinishItemTable.DbKeyColumns);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceQuestRequireFinishItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceQuestRequireFinishItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public ReplaceQuestRequireFinishItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

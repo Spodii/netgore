@@ -4,19 +4,34 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class SelectCharacterByIDQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", CharacterTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT * FROM `{0}` WHERE `id`=@id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(CharacterTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterByIDQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectCharacterByIDQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
         }

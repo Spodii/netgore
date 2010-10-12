@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
@@ -10,15 +11,29 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectQuestStatusKillsQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr =
-            string.Format("SELECT `quest_id`,`character_template_id`,`count` FROM `{0}` WHERE `character_id`=@charID",
-                          CharacterQuestStatusKillsTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `quest_id`,`character_template_id`,`count` FROM `{0}` WHERE `character_id`=@charID
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(CharacterQuestStatusKillsTable.TableName)
+                .Add("quest_id","character_template_id","count")
+                .Where(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("charID")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQuestStatusKillsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectQuestStatusKillsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectQuestStatusKillsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_template_id", "count",
                                          "character_id", "quest_id");

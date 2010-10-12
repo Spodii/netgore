@@ -4,6 +4,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
@@ -11,17 +12,29 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateCharacterQuestStatusKillsQuery : DbQueryNonReader<ICharacterQuestStatusKillsTable>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE `count`=@count",
-                                                             CharacterQuestStatusKillsTable.TableName,
-                                                             FormatParametersIntoValuesString(
-                                                                 CharacterQuestStatusKillsTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO {0} {1}
+            //      ON DUPLICATE KEY UPDATE `count`=@count
+
+            var q = qb.Insert(CharacterQuestStatusKillsTable.TableName).AddAutoParam(CharacterQuestStatusKillsTable.DbColumns)
+                .ODKU()
+                .AddAutoParam("count");
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateCharacterQuestStatusKillsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public UpdateCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public UpdateCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "count");
         }

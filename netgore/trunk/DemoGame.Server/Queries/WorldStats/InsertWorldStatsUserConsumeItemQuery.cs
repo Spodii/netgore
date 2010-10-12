@@ -5,22 +5,33 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class InsertWorldStatsUserConsumeItemQuery : DbQueryNonReader<IWorldStatsUserConsumeItemTable>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", WorldStatsUserConsumeItemTable.TableName,
-                                                             FormatParametersIntoValuesString(
-                                                                 WorldStatsUserConsumeItemTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` {1}
+			
+            var q = qb.Insert(WorldStatsUserConsumeItemTable.TableName).AddAutoParam(WorldStatsUserConsumeItemTable.DbColumns);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsUserConsumeItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsUserConsumeItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public InsertWorldStatsUserConsumeItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

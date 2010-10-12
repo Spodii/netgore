@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.Queries
@@ -10,14 +11,28 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteGuildQuery : DbQueryNonReader<GuildID>
     {
-        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id", GuildTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `id`=@id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Delete(GuildTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryNonReader&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public DeleteGuildQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public DeleteGuildQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(GuildTable.DbKeyColumns, "id");
         }

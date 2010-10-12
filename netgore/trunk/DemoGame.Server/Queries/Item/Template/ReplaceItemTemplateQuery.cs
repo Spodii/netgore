@@ -4,21 +4,36 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class ReplaceItemTemplateQuery : DbQueryNonReader<IItemTemplateTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", ItemTemplateTable.TableName,
-                                                             FormatParametersIntoValuesString(ItemTemplateTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO {0} {1}
+            //      ON DUPLICATE KEY UPDATE <{1} - keys>
+
+            var q = qb.Insert(ItemTemplateTable.TableName).AddAutoParam(ItemTemplateTable.DbColumns)
+                .ODKU()
+                .AddFromInsert(ItemTemplateTable.DbKeyColumns);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceItemTemplateQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceItemTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public ReplaceItemTemplateQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

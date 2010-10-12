@@ -1000,7 +1000,7 @@ namespace DemoGame.Editor
             _dbController.GetQuery<InsertShopQuery>().Execute(v);
 
             // Items
-            _dbController.GetQuery<ReplaceShopItemQuery>().Execute(v.ID, v.Items);
+            _dbController.GetQuery<InsertShopItemQuery>().Execute(v.ID, v.Items);
 
             // Reload from the database
             ShopManager.Instance.Reload(v.ID);

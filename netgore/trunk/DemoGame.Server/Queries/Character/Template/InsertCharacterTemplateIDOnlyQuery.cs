@@ -3,20 +3,33 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class InsertCharacterTemplateIDOnlyQuery : DbQueryNonReader<CharacterTemplateID>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` SET `id`=@id", CharacterTemplateTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` SET `id`=@id
+			
+            var q = qb.Insert(CharacterTemplateTable.TableName).AddAutoParam("id");
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertCharacterTemplateIDOnlyQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public InsertCharacterTemplateIDOnlyQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public InsertCharacterTemplateIDOnlyQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(CharacterTemplateTable.DbKeyColumns, "id");
         }

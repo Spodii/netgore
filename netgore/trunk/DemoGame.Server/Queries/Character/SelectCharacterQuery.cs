@@ -4,19 +4,34 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class SelectCharacterQuery : DbQueryReader<string>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `name`=@name", CharacterTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT * FROM `{0}` WHERE `name`=@name
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(CharacterTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("name"), s.Parameterize("name")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectCharacterQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name");
         }

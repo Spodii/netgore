@@ -4,20 +4,35 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class UpdateMapSpawnQuery : DbQueryNonReader<IMapSpawnTable>
     {
-        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET {1} WHERE `id`=@id", MapSpawnTable.TableName,
-                                                             FormatParametersIntoString(MapSpawnTable.DbNonKeyColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // UPDATE `{0}` SET {1} WHERE `id`=@id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Update(MapSpawnTable.TableName).AddAutoParam(MapSpawnTable.DbNonKeyColumns)
+                .Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateMapSpawnQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public UpdateMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public UpdateMapSpawnQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }

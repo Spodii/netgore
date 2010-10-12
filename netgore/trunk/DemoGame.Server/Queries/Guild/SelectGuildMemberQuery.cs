@@ -4,20 +4,34 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class SelectGuildMemberQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `character_id`=@character_id",
-                                                             GuildMemberTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT * FROM `{0}` WHERE `character_id`=@character_id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(GuildMemberTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("character_id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildMemberQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildMemberQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectGuildMemberQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "character_id");
         }

@@ -4,20 +4,35 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class PeerTradingReplaceCashQuery : DbQueryNonReader<IActiveTradeCashTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", ActiveTradeCashTable.TableName,
-                                                             FormatParametersIntoValuesString(ActiveTradeCashTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO {0} {1}
+            //      ON DUPLICATE KEY UPDATE <{1} - keys>
+
+            var q = qb.Insert(ActiveTradeCashTable.TableName).AddAutoParam(ActiveTradeCashTable.DbColumns)
+                .ODKU()
+                .AddFromInsert(ActiveTradeCashTable.DbKeyColumns);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingReplaceCashQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        public PeerTradingReplaceCashQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public PeerTradingReplaceCashQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.AreColumns(ActiveTradeCashTable.DbColumns, "character_id", "cash");
         }

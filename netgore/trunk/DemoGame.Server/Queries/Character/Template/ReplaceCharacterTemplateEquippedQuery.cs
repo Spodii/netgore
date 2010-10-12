@@ -4,21 +4,34 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class ReplaceCharacterTemplateEquippedQuery : DbQueryNonReader<ICharacterTemplateEquippedTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", CharacterTemplateEquippedTable.TableName,
-                                                             FormatParametersIntoValuesString(
-                                                                 CharacterTemplateEquippedTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` {1}`
+            //      ON DUPLICATE KEY UPDATE <{1} - keys>
+			
+            var q = qb.Insert(CharacterTemplateEquippedTable.TableName).AddAutoParam(CharacterTemplateEquippedTable.DbColumns)
+                .ODKU().AddFromInsert(CharacterTemplateEquippedTable.DbKeyColumns);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateEquippedQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public ReplaceCharacterTemplateEquippedQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

@@ -3,20 +3,35 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class DeleteItemTemplateQuery : DbQueryNonReader<ItemTemplateID>
     {
-        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id", ItemTemplateTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `id`=@id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Delete(ItemTemplateTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteItemTemplateQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public DeleteItemTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public DeleteItemTemplateQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

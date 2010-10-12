@@ -4,20 +4,35 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class InsertShopQuery : DbQueryNonReader<IShopTable>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", ShopTable.TableName,
-                                                             FormatParametersIntoValuesString(ShopTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` {1}
+            //      ON DUPLICATE KEY UPDATE <{1} - keys>
+			
+            var q = qb.Insert(ShopTable.TableName)
+                .AddAutoParam(ShopTable.DbColumns)
+                .ODKU().AddFromInsert(ShopTable.DbKeyColumns);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertShopQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertShopQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public InsertShopQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

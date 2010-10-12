@@ -4,20 +4,34 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class SelectUserByNameQuery : DbQueryReader<string>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `name`=@name",
-                                                             UserCharacterTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT * FROM `{0}` WHERE `name`=@name
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(UserCharacterTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("name"), s.Parameterize("name")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectUserByNameQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectUserByNameQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectUserByNameQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(UserCharacterTable.DbColumns, "name");
         }
