@@ -11,6 +11,14 @@ namespace DemoGame.Server.Queries
     public class SelectMapIDsQuery : DbQueryReader
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectMapIDsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public SelectMapIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,15 +29,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Select(MapTable.TableName).Add("id");
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectMapIDsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectMapIDsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public IEnumerable<MapID> Execute()

@@ -446,13 +446,13 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("level", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "load_map_id":
-                    return new ColumnMetadata("load_map_id", "", "smallint(5) unsigned", "1", typeof(UInt16), false, false, true);
+                    return new ColumnMetadata("load_map_id", "", "smallint(5) unsigned", "3", typeof(UInt16), false, false, true);
 
                 case "load_x":
-                    return new ColumnMetadata("load_x", "", "smallint(5) unsigned", "50", typeof(UInt16), false, false, false);
+                    return new ColumnMetadata("load_x", "", "smallint(5) unsigned", "1024", typeof(UInt16), false, false, false);
 
                 case "load_y":
-                    return new ColumnMetadata("load_y", "", "smallint(5) unsigned", "50", typeof(UInt16), false, false, false);
+                    return new ColumnMetadata("load_y", "", "smallint(5) unsigned", "600", typeof(UInt16), false, false, false);
 
                 case "move_speed":
                     return new ColumnMetadata("move_speed", "", "smallint(5) unsigned", "1800", typeof(UInt16), false, false,
@@ -468,14 +468,14 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("permissions", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
 
                 case "respawn_map_id":
-                    return new ColumnMetadata("respawn_map_id", "", "smallint(5) unsigned", "1", typeof(ushort?), true, false,
+                    return new ColumnMetadata("respawn_map_id", "", "smallint(5) unsigned", "3", typeof(ushort?), true, false,
                                               true);
 
                 case "respawn_x":
-                    return new ColumnMetadata("respawn_x", "", "float", "50", typeof(Single), false, false, false);
+                    return new ColumnMetadata("respawn_x", "", "float", "1024", typeof(Single), false, false, false);
 
                 case "respawn_y":
-                    return new ColumnMetadata("respawn_y", "", "float", "50", typeof(Single), false, false, false);
+                    return new ColumnMetadata("respawn_y", "", "float", "600", typeof(Single), false, false, false);
 
                 case "shop_id":
                     return new ColumnMetadata("shop_id", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
@@ -876,7 +876,7 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `load_map_id`.
-        /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `3`.
         /// </summary>
         [SyncValue]
         public MapID LoadMapID
@@ -887,7 +887,7 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `load_x`.
-        /// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `1024`.
         /// </summary>
         [SyncValue]
         public UInt16 LoadX
@@ -898,7 +898,7 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `load_y`.
-        /// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `600`.
         /// </summary>
         [SyncValue]
         public UInt16 LoadY
@@ -953,7 +953,7 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `respawn_map_id`.
-        /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `3`.
         /// </summary>
         [SyncValue]
         public MapID? RespawnMapID
@@ -964,7 +964,7 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `respawn_x`.
-        /// The underlying database type is `float` with the default value of `50`.
+        /// The underlying database type is `float` with the default value of `1024`.
         /// </summary>
         [SyncValue]
         public Single RespawnX
@@ -975,7 +975,7 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `respawn_y`.
-        /// The underlying database type is `float` with the default value of `50`.
+        /// The underlying database type is `float` with the default value of `600`.
         /// </summary>
         [SyncValue]
         public Single RespawnY

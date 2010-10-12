@@ -15,9 +15,9 @@ namespace DemoGame.Client
         const string _title = "Account Login";
 
         Control _btnLogin;
-        TextBox _cStatus;
         TextBox _cNameText;
         MaskedTextBox _cPasswordText;
+        TextBox _cStatus;
         ClientSockets _sockets;
 
         /// <summary>

@@ -100,8 +100,7 @@ namespace DemoGame.Server.DbObjs
         {
             for (var i = 0; i < paramValues.Count; i++)
             {
-                var name = paramValues.GetParameterName(i);
-                switch (name)
+                switch (paramValues.GetParameterName(i))
                 {
                     case "chance":
                         paramValues[i] = (UInt16)source.Chance;

@@ -11,6 +11,30 @@ namespace NetGore.Tests.Db.MySql
         #region Unit tests
 
         [Test]
+        public void CallProcedureQueryTest01()
+        {
+            const string expected = "CALL MyProc()";
+            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void CallProcedureQueryTest02()
+        {
+            const string expected = "CALL MyProc(5)";
+            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc").Add("5");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void CallProcedureQueryTest03()
+        {
+            const string expected = "CALL MyProc(5,a,x,b,@assd)";
+            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc").Add("5", "a", "x", "b").AddParam("assd");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void DeleteQueryTest01()
         {
             const string expected = "DELETE FROM `myTable`";
@@ -384,30 +408,6 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT IGNORE INTO `myTable` (`a`,`x`,`b`,`fa`,`zzz`,`aaa`) VALUES (@a,@x,@b,@fa,@zzz,@aaa)";
             var q = MySqlQueryBuilder.Instance.Insert("myTable").IgnoreExists().AddAutoParam("a", "x", "b", "fa", "zzz", "aaa");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void CallProcedureQueryTest01()
-        {
-            const string expected = "CALL MyProc()";
-            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void CallProcedureQueryTest02()
-        {
-            const string expected = "CALL MyProc(5)";
-            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc").Add("5");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void CallProcedureQueryTest03()
-        {
-            const string expected = "CALL MyProc(5,a,x,b,@assd)";
-            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc").Add("5", "a", "x", "b").AddParam("assd");
             Assert.AreEqual(expected, q.ToString());
         }
 

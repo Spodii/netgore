@@ -235,6 +235,16 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Handles the MouseDown event of the gameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void gameScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            gameScreen_MouseMove(sender, e);
+        }
+
+        /// <summary>
         /// Handles the MouseMove event of the gameScreen control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -280,16 +290,6 @@ namespace DemoGame.Editor
             }
 
             pgEmitter.SelectedObject = lstEmitters.SelectedItem;
-        }
-
-        /// <summary>
-        /// Handles the MouseDown event of the gameScreen control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        private void gameScreen_MouseDown(object sender, MouseEventArgs e)
-        {
-            gameScreen_MouseMove(sender, e);
         }
     }
 }

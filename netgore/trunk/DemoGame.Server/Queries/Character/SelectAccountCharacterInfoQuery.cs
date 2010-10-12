@@ -11,6 +11,17 @@ namespace DemoGame.Server.Queries
     public class SelectAccountCharacterInfoQuery : DbQueryReader<CharacterID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectAccountCharacterInfoQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public SelectAccountCharacterInfoQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
+            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name", "body_id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,18 +32,10 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(CharacterTable.TableName).Add("name","body_id").Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            var q =
+                qb.Select(CharacterTable.TableName).Add("name", "body_id").Where(f.Equals(s.EscapeColumn("id"),
+                                                                                          s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectAccountCharacterInfoQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public SelectAccountCharacterInfoQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
-            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name", "body_id");
         }
 
         public AccountCharacterInfo Execute(CharacterID id, byte accountCharacterIndex)
