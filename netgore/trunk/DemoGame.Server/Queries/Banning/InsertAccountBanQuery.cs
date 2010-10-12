@@ -13,28 +13,6 @@ namespace DemoGame.Server.Queries
     public class InsertAccountBanQuery : DbQueryNonReader<InsertAccountBanQuery.QueryArgs>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // INSERT INTO `{0}` (`account_id`,`start_time`,`end_time`,`reason`,`issued_by`,`expired`)
-            //      VALUES(@accountID,NOW(),DATE_ADD(NOW(), INTERVAL @secs SECOND),@reason,@issuedBy,0)
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Insert(AccountBanTable.TableName)
-                .AddParam("account_id", "accountID")
-                .Add("start_time", f.Now())
-                .Add("end_time", f.DateAddInterval(f.Now(), f.Interval(QueryIntervalType.Second, s.Parameterize("secs"))))
-                .AddParam("reason", "reason")
-                .AddParam("issued_by", "issuedBy")
-                .Add("expired", "0");
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InsertAccountBanQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
@@ -43,6 +21,25 @@ namespace DemoGame.Server.Queries
         {
             QueryAsserts.ContainsColumns(AccountBanTable.DbColumns, "account_id", "start_time", "end_time", "issued_by", "reason",
                                          "expired");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` (`account_id`,`start_time`,`end_time`,`reason`,`issued_by`,`expired`)
+            //      VALUES(@accountID,NOW(),DATE_ADD(NOW(), INTERVAL @secs SECOND),@reason,@issuedBy,0)
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Insert(AccountBanTable.TableName).AddParam("account_id", "accountID").Add("start_time", f.Now()).Add(
+                    "end_time", f.DateAddInterval(f.Now(), f.Interval(QueryIntervalType.Second, s.Parameterize("secs")))).AddParam
+                    ("reason", "reason").AddParam("issued_by", "issuedBy").Add("expired", "0");
+            return q.ToString();
         }
 
         /// <summary>

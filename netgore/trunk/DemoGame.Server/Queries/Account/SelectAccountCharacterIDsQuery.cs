@@ -12,6 +12,16 @@ namespace DemoGame.Server.Queries
     public class SelectAccountCharacterIDsQuery : DbQueryReader<AccountID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectAccountCharacterIDsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public SelectAccountCharacterIDsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "account_id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,18 +32,10 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(CharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("account_id"), s.Parameterize("accountID")));
+            var q =
+                qb.Select(CharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("account_id"),
+                                                                             s.Parameterize("accountID")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectAccountCharacterIDsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public SelectAccountCharacterIDsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "account_id");
         }
 
         public IEnumerable<CharacterID> Execute(AccountID accountID)

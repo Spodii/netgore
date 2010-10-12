@@ -11,6 +11,16 @@ namespace DemoGame.Server.Queries
     public class DeleteAllianceQuery : DbQueryNonReader<AllianceID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteAllianceQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public DeleteAllianceQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -23,16 +33,6 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q = qb.Delete(AllianceTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteAllianceQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public DeleteAllianceQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

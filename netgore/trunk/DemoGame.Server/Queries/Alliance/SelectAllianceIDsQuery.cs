@@ -10,6 +10,16 @@ namespace DemoGame.Server.Queries
     public class SelectAllianceIDsQuery : DbQueryReader
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectAllianceIDsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public SelectAllianceIDsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ArePrimaryKeys(AllianceTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,15 +30,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Select(AllianceTable.TableName).Add("id");
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectAllianceIDsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public SelectAllianceIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ArePrimaryKeys(AllianceTable.DbKeyColumns, "id");
         }
 
         public IEnumerable<AllianceID> Execute()

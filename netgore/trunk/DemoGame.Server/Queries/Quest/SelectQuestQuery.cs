@@ -13,6 +13,15 @@ namespace DemoGame.Server.Queries
     public class SelectQuestQuery : DbQueryReader<QuestID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectQuestQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public SelectQuestQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ArePrimaryKeys(QuestTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,21 +29,11 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // SELECT * FROM `{0}` WHERE `id`=@id
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
             var q = qb.Select(QuestTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectQuestQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectQuestQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ArePrimaryKeys(QuestTable.DbKeyColumns, "id");
         }
 
         public IQuestTable Execute(QuestID id)

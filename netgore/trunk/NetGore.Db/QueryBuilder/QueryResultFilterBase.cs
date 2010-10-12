@@ -9,9 +9,9 @@ namespace NetGore.Db.QueryBuilder
     /// </summary>
     public abstract class QueryResultFilterBase : IQueryResultFilter
     {
+        readonly List<KeyValuePair<string, OrderByType>> _orderBys = new List<KeyValuePair<string, OrderByType>>();
         readonly object _parent;
         readonly IQueryBuilderSettings _settings;
-        readonly List<KeyValuePair<string, OrderByType>> _orderBys = new List<KeyValuePair<string, OrderByType>>();
 
         string _limit;
         string _where;

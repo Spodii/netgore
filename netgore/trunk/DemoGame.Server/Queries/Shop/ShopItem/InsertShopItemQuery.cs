@@ -13,6 +13,15 @@ namespace DemoGame.Server.Queries
     public class InsertShopItemQuery : DbQueryNonReader<IShopItemTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertShopItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public InsertShopItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -23,15 +32,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Insert(ShopItemTable.TableName).IgnoreExists().AddAutoParam(ShopItemTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertShopItemQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public InsertShopItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public int Execute(ShopID shopID, ItemTemplateID itemID)

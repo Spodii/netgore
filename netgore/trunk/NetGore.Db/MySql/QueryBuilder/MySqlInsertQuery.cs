@@ -45,7 +45,7 @@ namespace NetGore.Db.MySql.QueryBuilder
 
             // Base function
             sb.Append("INSERT ");
-            
+
             if (IgnoreExistsValue)
                 sb.Append("IGNORE ");
 

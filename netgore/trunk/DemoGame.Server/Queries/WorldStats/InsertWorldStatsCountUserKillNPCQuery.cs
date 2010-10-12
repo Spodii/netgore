@@ -12,6 +12,17 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsCountUserKillNPCQuery : DbQueryNonReader<KeyValuePair<int, int>>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertWorldStatsCountUserKillNPCQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        public InsertWorldStatsCountUserKillNPCQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(WorldStatsCountUserKillNpcTable.DbColumns, "user_id", "npc_template_id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -23,23 +34,12 @@ namespace DemoGame.Server.Queries
 
             var s = qb.Settings;
             var f = qb.Functions;
-            var q = qb.Insert(WorldStatsCountUserKillNpcTable.TableName)
-                .AddParam("user_id", "userID")
-                .AddParam("npc_template_id", "npcTID")
-                .Add("count", "1")
-                .ODKU().Add("count", f.Add(s.EscapeColumn("count"), "1"));
+            var q =
+                qb.Insert(WorldStatsCountUserKillNpcTable.TableName).AddParam("user_id", "userID").AddParam("npc_template_id",
+                                                                                                            "npcTID").Add(
+                                                                                                                "count", "1").ODKU
+                    ().Add("count", f.Add(s.EscapeColumn("count"), "1"));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertWorldStatsCountUserKillNPCQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsCountUserKillNPCQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(WorldStatsCountUserKillNpcTable.DbColumns, "user_id", "npc_template_id");
         }
 
         /// <summary>

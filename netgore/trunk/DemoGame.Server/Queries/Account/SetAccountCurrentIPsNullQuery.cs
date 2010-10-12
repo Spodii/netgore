@@ -9,6 +9,15 @@ namespace DemoGame.Server.Queries
     public class SetAccountCurrentIPsNullQuery : DbQueryNonReader
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SetAccountCurrentIPsNullQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public SetAccountCurrentIPsNullQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,15 +28,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Update(AccountTable.TableName).Add("current_ip", "NULL");
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SetAccountCurrentIPsNullQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public SetAccountCurrentIPsNullQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
     }
 }

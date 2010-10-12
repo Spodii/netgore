@@ -12,6 +12,17 @@ namespace DemoGame.Server.Queries
     public class PeerTradingInsertItemQuery : DbQueryNonReader<PeerTradingInsertItemQuery.QueryArgs>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PeerTradingInsertItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public PeerTradingInsertItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(ActiveTradeItemTable.DbColumns, "item_id", "character_id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,17 +33,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Insert(ActiveTradeItemTable.TableName).IgnoreExists().AddAutoParam(ActiveTradeItemTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PeerTradingInsertItemQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public PeerTradingInsertItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(ActiveTradeItemTable.DbColumns, "item_id", "character_id");
         }
 
         /// <summary>

@@ -12,6 +12,15 @@ namespace DemoGame.Server.Queries
     public class CountGuildFoundersQuery : DbQueryReader<GuildID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CountGuildFoundersQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public CountGuildFoundersQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,20 +28,13 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // SELECT COUNT(*) FROM `{0}` WHERE `guild_id` = @guildID
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(GuildMemberTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("guild_id"), s.Parameterize("guild_id")));
+            var q =
+                qb.Select(GuildMemberTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("guild_id"),
+                                                                                        s.Parameterize("guild_id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CountGuildFoundersQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public CountGuildFoundersQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public int Execute(GuildID guildID)

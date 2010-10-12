@@ -12,6 +12,14 @@ namespace DemoGame.Server.Queries
     public class ReplaceMapQuery : DbQueryNonReader<IMapTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceMapQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public ReplaceMapQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,20 +28,9 @@ namespace DemoGame.Server.Queries
         {
             // INSERT INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
-			
-            var q = qb.Insert(MapTable.TableName).AddAutoParam(MapTable.DbColumns)
-                .ODKU()
-                .AddFromInsert(MapTable.DbKeyColumns);
-            return q.ToString();
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceMapQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
+            var q = qb.Insert(MapTable.TableName).AddAutoParam(MapTable.DbColumns).ODKU().AddFromInsert(MapTable.DbKeyColumns);
+            return q.ToString();
         }
 
         /// <summary>

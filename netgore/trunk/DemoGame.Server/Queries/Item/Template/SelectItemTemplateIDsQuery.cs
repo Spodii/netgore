@@ -10,19 +10,6 @@ namespace DemoGame.Server.Queries
     public class SelectItemTemplateIDsQuery : DbQueryReader
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT `id` FROM `{0}`
-			
-            var q = qb.Select(ItemTemplateTable.TableName).Add("id");
-            return q.ToString();
-        }
-
-        /// <summary>
         /// DbQueryReader constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
@@ -30,6 +17,19 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(ItemTemplateTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `id` FROM `{0}`
+
+            var q = qb.Select(ItemTemplateTable.TableName).Add("id");
+            return q.ToString();
         }
 
         public IEnumerable<ItemTemplateID> Execute()

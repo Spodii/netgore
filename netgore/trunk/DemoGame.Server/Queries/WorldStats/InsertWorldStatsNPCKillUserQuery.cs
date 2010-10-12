@@ -13,6 +13,16 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsNPCKillUserQuery : DbQueryNonReader<IWorldStatsNpcKillUserTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertWorldStatsNPCKillUserQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        public InsertWorldStatsNPCKillUserQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -23,16 +33,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Insert(WorldStatsNpcKillUserTable.TableName).AddAutoParam(WorldStatsNpcKillUserTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertWorldStatsNPCKillUserQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsNPCKillUserQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

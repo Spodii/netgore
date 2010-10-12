@@ -11,6 +11,15 @@ namespace DemoGame.Server.Queries
     public class DeleteItemQuery : DbQueryNonReader<ItemID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/>.</param>
+        public DeleteItemQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -18,21 +27,11 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // DELETE FROM `{0}` WHERE `id`=@id
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
             var q = qb.Delete(ItemTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteItemQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The <see cref="DbConnectionPool"/>.</param>
-        public DeleteItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
 
         /// <summary>

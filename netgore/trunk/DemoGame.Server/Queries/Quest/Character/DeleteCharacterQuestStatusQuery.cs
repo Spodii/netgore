@@ -12,26 +12,6 @@ namespace DemoGame.Server.Queries
     public class DeleteCharacterQuestStatusQuery : DbQueryNonReader<DeleteCharacterQuestStatusQuery.QueryArgs>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Delete(CharacterQuestStatusTable.TableName)
-                .Where(
-                f.And(
-                    f.Equals(s.EscapeColumn("character_id"), s.Parameterize("charID")),
-                    f.Equals(s.EscapeColumn("quest_id"), s.Parameterize("questID"))
-                    ));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterQuestStatusQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
@@ -40,6 +20,24 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "character_id", "quest_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Delete(CharacterQuestStatusTable.TableName).Where(
+                    f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("charID")),
+                          f.Equals(s.EscapeColumn("quest_id"), s.Parameterize("questID"))));
+            return q.ToString();
         }
 
         /// <summary>

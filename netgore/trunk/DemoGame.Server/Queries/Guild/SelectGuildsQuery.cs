@@ -11,6 +11,14 @@ namespace DemoGame.Server.Queries
     public class SelectGuildsQuery : DbQueryReader
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DbQueryReader"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public SelectGuildsQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -18,18 +26,9 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // SELECT * FROM `{0}`
-			
+
             var q = qb.Select(GuildTable.TableName).AllColumns();
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DbQueryReader"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public IEnumerable<IGuildTable> Execute()

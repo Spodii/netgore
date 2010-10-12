@@ -12,21 +12,6 @@ namespace DemoGame.Server.Queries
     public class SelectPersistentMapNPCsQuery : DbQueryReader<MapID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT `id` FROM `{0}` WHERE `load_map_id`=@mapID
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Select(NpcCharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("load_map_id"), s.Parameterize("mapID")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SelectPersistentMapNPCsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
@@ -34,6 +19,23 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(NpcCharacterTable.DbColumns, "id", "load_map_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `id` FROM `{0}` WHERE `load_map_id`=@mapID
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Select(NpcCharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("load_map_id"),
+                                                                                s.Parameterize("mapID")));
+            return q.ToString();
         }
 
         public IEnumerable<CharacterID> Execute(MapID map)

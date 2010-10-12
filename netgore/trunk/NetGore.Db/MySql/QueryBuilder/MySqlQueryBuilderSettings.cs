@@ -47,38 +47,6 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
-        /// Escapes a column's name.
-        /// </summary>
-        /// <param name="columnName">The name of the column to escape.</param>
-        /// <returns>The escaped <paramref name="columnName"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="columnName"/> is an invalid column name.</exception>
-        public string EscapeColumn(string columnName)
-        {
-            var skipChars = new char[] { '.', '(', ')', ' ' };
-
-            if (!skipChars.Any(x => columnName.Contains(x)))
-                return "`" + columnName + "`";
-            else
-                return columnName;
-        }
-
-        /// <summary>
-        /// Escapes a table's name.
-        /// </summary>
-        /// <param name="tableName">The name of the table to escape.</param>
-        /// <returns>The escaped <paramref name="tableName"/>.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
-        public string EscapeTable(string tableName)
-        {
-            var skipChars = new char[] { '.', '(', ')', ' ' };
-
-            if (!skipChars.Any(x => tableName.Contains(x)))
-                return "`" + tableName + "`";
-            else
-                return tableName;
-        }
-
-        /// <summary>
         /// Applies a column alias to a string.
         /// </summary>
         /// <param name="sql">The string containing the SQL that the <see cref="alias"/> will be added to.</param>
@@ -112,6 +80,72 @@ namespace NetGore.Db.MySql.QueryBuilder
             IsValidTableAlias(alias, true);
 
             return sql + " AS " + alias;
+        }
+
+        /// <summary>
+        /// Escapes a column's name.
+        /// </summary>
+        /// <param name="columnName">The name of the column to escape.</param>
+        /// <returns>The escaped <paramref name="columnName"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="columnName"/> is an invalid column name.</exception>
+        public string EscapeColumn(string columnName)
+        {
+            var skipChars = new char[] { '.', '(', ')', ' ' };
+
+            if (!skipChars.Any(x => columnName.Contains(x)))
+                return "`" + columnName + "`";
+            else
+                return columnName;
+        }
+
+        /// <summary>
+        /// Escapes a table's name.
+        /// </summary>
+        /// <param name="tableName">The name of the table to escape.</param>
+        /// <returns>The escaped <paramref name="tableName"/>.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="tableName"/> is an invalid table name.</exception>
+        public string EscapeTable(string tableName)
+        {
+            var skipChars = new char[] { '.', '(', ')', ' ' };
+
+            if (!skipChars.Any(x => tableName.Contains(x)))
+                return "`" + tableName + "`";
+            else
+                return tableName;
+        }
+
+        /// <summary>
+        /// Checks if a column alias is valid.
+        /// </summary>
+        /// <param name="columnAlias">The column alias. Can be null to signify an alias not being used.</param>
+        /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
+        /// <paramref name="columnAlias"/> is invalid.</param>
+        /// <returns>True if the <paramref name="columnAlias"/> is valid; otherwise false. Cannot be false when
+        /// <paramref name="throwOnInvalid"/> is true since an <see cref="InvalidQueryException"/> needs to be thrown instead.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="columnAlias"/> is an invalid column alias and
+        /// <paramref name="throwOnInvalid"/> is true.</exception>
+        public bool IsValidColumnAlias(string columnAlias, bool throwOnInvalid)
+        {
+            if (columnAlias == null)
+                return true;
+
+            if (string.IsNullOrEmpty(columnAlias))
+            {
+                if (throwOnInvalid)
+                    throw new InvalidQueryException("The column alias cannot be empty.");
+                else
+                    return false;
+            }
+
+            if (columnAlias.Contains(' '))
+            {
+                if (throwOnInvalid)
+                    throw new InvalidQueryException("The column alias may not contain a space.");
+                else
+                    return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -183,40 +217,6 @@ namespace NetGore.Db.MySql.QueryBuilder
             {
                 if (throwOnInvalid)
                     throw new InvalidQueryException("The table alias may not contain a space.");
-                else
-                    return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Checks if a column alias is valid.
-        /// </summary>
-        /// <param name="columnAlias">The column alias. Can be null to signify an alias not being used.</param>
-        /// <param name="throwOnInvalid">When true, an <see cref="InvalidQueryException"/> will be thrown when the
-        /// <paramref name="columnAlias"/> is invalid.</param>
-        /// <returns>True if the <paramref name="columnAlias"/> is valid; otherwise false. Cannot be false when
-        /// <paramref name="throwOnInvalid"/> is true since an <see cref="InvalidQueryException"/> needs to be thrown instead.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="columnAlias"/> is an invalid column alias and
-        /// <paramref name="throwOnInvalid"/> is true.</exception>
-        public bool IsValidColumnAlias(string columnAlias, bool throwOnInvalid)
-        {
-            if (columnAlias == null)
-                return true;
-
-            if (string.IsNullOrEmpty(columnAlias))
-            {
-                if (throwOnInvalid)
-                    throw new InvalidQueryException("The column alias cannot be empty.");
-                else
-                    return false;
-            }
-
-            if (columnAlias.Contains(' '))
-            {
-                if (throwOnInvalid)
-                    throw new InvalidQueryException("The column alias may not contain a space.");
                 else
                     return false;
             }

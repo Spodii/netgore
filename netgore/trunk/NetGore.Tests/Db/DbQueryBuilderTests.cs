@@ -40,8 +40,8 @@ namespace NetGore.Tests.Db
         {
             foreach (var qb in QBs)
             {
-                Assert.Throws<InvalidQueryException>(
-                    () => qb.Insert("myTable").AddAutoParam("a", "b").ODKU().ToString(), "QueryBuilder: " + qb);
+                Assert.Throws<InvalidQueryException>(() => qb.Insert("myTable").AddAutoParam("a", "b").ODKU().ToString(),
+                                                     "QueryBuilder: " + qb);
             }
         }
 

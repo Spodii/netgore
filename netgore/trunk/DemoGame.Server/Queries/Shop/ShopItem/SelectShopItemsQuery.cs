@@ -13,21 +13,6 @@ namespace DemoGame.Server.Queries
     public class SelectShopItemsQuery : DbQueryReader<ShopID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT * FROM `{0}` WHERE `shop_id`=@shopID
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Select(ShopItemTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("shop_id"), s.Parameterize("shopID")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SelectShopItemsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
@@ -35,6 +20,22 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(ShopItemTable.DbColumns, "shop_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT * FROM `{0}` WHERE `shop_id`=@shopID
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Select(ShopItemTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("shop_id"), s.Parameterize("shopID")));
+            return q.ToString();
         }
 
         public IEnumerable<IShopItemTable> Execute(ShopID shopID)

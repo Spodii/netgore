@@ -12,21 +12,6 @@ namespace DemoGame.Server.Queries
     public class UpdateGuildTagQuery : DbQueryNonReader<UpdateGuildTagQuery.QueryArgs>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // UPDATE `{0}` SET `tag`=@tag WHERE `id`=@id
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Update(GuildTable.TableName).AddAutoParam("tag").Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="UpdateGuildTagQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
@@ -35,6 +20,21 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(GuildTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // UPDATE `{0}` SET `tag`=@tag WHERE `id`=@id
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Update(GuildTable.TableName).AddAutoParam("tag").Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
         }
 
         /// <summary>

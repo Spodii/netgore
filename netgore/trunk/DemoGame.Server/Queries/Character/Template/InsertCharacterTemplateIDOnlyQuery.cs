@@ -11,19 +11,6 @@ namespace DemoGame.Server.Queries
     public class InsertCharacterTemplateIDOnlyQuery : DbQueryNonReader<CharacterTemplateID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // INSERT INTO `{0}` SET `id`=@id
-			
-            var q = qb.Insert(CharacterTemplateTable.TableName).AddAutoParam("id");
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InsertCharacterTemplateIDOnlyQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
@@ -32,6 +19,19 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(CharacterTemplateTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` SET `id`=@id
+
+            var q = qb.Insert(CharacterTemplateTable.TableName).AddAutoParam("id");
+            return q.ToString();
         }
 
         /// <summary>

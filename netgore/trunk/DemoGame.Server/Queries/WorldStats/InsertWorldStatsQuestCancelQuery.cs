@@ -13,6 +13,16 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsQuestCancelQuery : DbQueryNonReader<IWorldStatsQuestCancelTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertWorldStatsQuestCancelQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        public InsertWorldStatsQuestCancelQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -23,16 +33,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Insert(WorldStatsQuestCancelTable.TableName).AddAutoParam(WorldStatsQuestCancelTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertWorldStatsQuestCancelQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsQuestCancelQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

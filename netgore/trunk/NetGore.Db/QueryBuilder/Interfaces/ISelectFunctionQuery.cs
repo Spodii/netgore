@@ -1,4 +1,6 @@
-﻿namespace NetGore.Db.QueryBuilder
+﻿using System.Linq;
+
+namespace NetGore.Db.QueryBuilder
 {
     /// <summary>
     /// Interface for an SQL SELECT query that selects from a function.

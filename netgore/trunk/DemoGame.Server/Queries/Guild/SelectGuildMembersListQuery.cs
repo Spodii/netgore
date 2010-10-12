@@ -12,6 +12,18 @@ namespace DemoGame.Server.Queries
     public class SelectGuildMembersListQuery : DbQueryReader<GuildID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectGuildMembersListQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public SelectGuildMembersListQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
+            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name");
+            QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "rank", "character_id", "guild_id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,26 +34,16 @@ namespace DemoGame.Server.Queries
             //      INNER JOIN `{1}` AS t2 ON t1.character_id = t2.id
             //      WHERE t1.guild_id = @guildID
             //      ORDER BY t1.rank DESC, t2.name ASC
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(GuildMemberTable.TableName, "t1").AddFunc("t2.name", "name").AddFunc("t1.rank", "rank")
-                .InnerJoinOnColumn(CharacterTable.TableName, "t2", "id", "t1", "character_id")
-                .Where(f.Equals("t1.guild_id", s.Parameterize("guildID")))
-                .OrderBy("t1.rank", OrderByType.Descending).OrderBy("t2.name", OrderByType.Ascending);
+            var q =
+                qb.Select(GuildMemberTable.TableName, "t1").AddFunc("t2.name", "name").AddFunc("t1.rank", "rank").
+                    InnerJoinOnColumn(CharacterTable.TableName, "t2", "id", "t1", "character_id").Where(f.Equals("t1.guild_id",
+                                                                                                                 s.Parameterize(
+                                                                                                                     "guildID"))).
+                    OrderBy("t1.rank", OrderByType.Descending).OrderBy("t2.name", OrderByType.Ascending);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectGuildMembersListQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectGuildMembersListQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
-            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name");
-            QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "rank", "character_id", "guild_id");
         }
 
         public IEnumerable<GuildMemberNameRank> Execute(GuildID guildID)

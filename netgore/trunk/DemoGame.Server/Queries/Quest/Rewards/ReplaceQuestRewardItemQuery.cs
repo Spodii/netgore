@@ -13,6 +13,16 @@ namespace DemoGame.Server.Queries
     public class ReplaceQuestRewardItemQuery : DbQueryNonReader<IQuestRewardItemTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceQuestRewardItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public ReplaceQuestRewardItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,20 +32,10 @@ namespace DemoGame.Server.Queries
             // INSERT INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
-            var q = qb.Insert(QuestRewardItemTable.TableName).AddAutoParam(QuestRewardItemTable.DbColumns)
-                .ODKU()
-                .AddFromInsert(QuestRewardItemTable.DbKeyColumns);
+            var q =
+                qb.Insert(QuestRewardItemTable.TableName).AddAutoParam(QuestRewardItemTable.DbColumns).ODKU().AddFromInsert(
+                    QuestRewardItemTable.DbKeyColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceQuestRewardItemQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public ReplaceQuestRewardItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public int Execute(QuestID questID, ItemTemplateID itemID, byte amount)

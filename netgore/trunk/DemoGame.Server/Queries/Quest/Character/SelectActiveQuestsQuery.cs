@@ -12,6 +12,17 @@ namespace DemoGame.Server.Queries
     public class SelectActiveQuestsQuery : DbQueryReader<CharacterID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectActiveQuestsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public SelectActiveQuestsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "quest_id", "completed_on", "character_id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,24 +33,10 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id")
-                .Where(
-                f.And(
-                    f.Equals(s.EscapeColumn("character_id"), s.Parameterize("id")),
-                    f.IsNull(s.EscapeColumn("completed_on"))
-                    ));
+            var q =
+                qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id").Where(
+                    f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("id")), f.IsNull(s.EscapeColumn("completed_on"))));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectActiveQuestsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public SelectActiveQuestsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "quest_id", "completed_on", "character_id");
         }
 
         public IEnumerable<QuestID> Execute(CharacterID id)

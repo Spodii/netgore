@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using NetGore.Db.QueryBuilder;
 
@@ -14,8 +15,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// </summary>
         /// <param name="function">The table.</param>
         /// <exception cref="ArgumentNullException"><paramref name="function"/> is null or empty.</exception>
-        public MySqlSelectFunctionQuery(string function)
-            : base(function, MySqlQueryBuilderSettings.Instance)
+        public MySqlSelectFunctionQuery(string function) : base(function, MySqlQueryBuilderSettings.Instance)
         {
         }
 

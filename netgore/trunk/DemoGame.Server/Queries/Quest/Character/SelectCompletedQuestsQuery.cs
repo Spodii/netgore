@@ -12,26 +12,6 @@ namespace DemoGame.Server.Queries
     public class SelectCompletedQuestsQuery : DbQueryReader<CharacterID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NOT NULL
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id")
-                .Where(
-                f.And(
-                    f.Equals(s.EscapeColumn("character_id"), s.Parameterize("id")),
-                    f.IsNotNull(s.EscapeColumn("completed_on"))
-                    ));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SelectCompletedQuestsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
@@ -40,6 +20,24 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "quest_id", "completed_on", "character_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NOT NULL
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id").Where(
+                    f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("id")),
+                          f.IsNotNull(s.EscapeColumn("completed_on"))));
+            return q.ToString();
         }
 
         public IEnumerable<QuestID> Execute(CharacterID id)

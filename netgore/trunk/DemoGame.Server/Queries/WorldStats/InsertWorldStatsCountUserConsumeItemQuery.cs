@@ -12,26 +12,6 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsCountUserConsumeItemQuery : DbQueryNonReader<KeyValuePair<int, int>>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // INSERT INTO `{0}` (`user_id`,`item_template_id`,`count`) VALUES (@userID,@itemTID,1)
-            //      ON DUPLICATE KEY UPDATE `count`=`count`+1
-            
-            var s = qb.Settings;
-            var f = qb.Functions;
-            var q = qb.Insert(WorldStatsCountUserConsumeItemTable.TableName)
-                .AddParam("user_id", "userID")
-                .AddParam("item_template_id", "itemTID")
-                .Add("count", "1")
-                .ODKU().Add("count", f.Add(s.EscapeColumn("count"), "1"));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsCountUserConsumeItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
@@ -40,6 +20,24 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(WorldStatsCountUserConsumeItemTable.DbColumns, "user_id", "item_template_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` (`user_id`,`item_template_id`,`count`) VALUES (@userID,@itemTID,1)
+            //      ON DUPLICATE KEY UPDATE `count`=`count`+1
+
+            var s = qb.Settings;
+            var f = qb.Functions;
+            var q =
+                qb.Insert(WorldStatsCountUserConsumeItemTable.TableName).AddParam("user_id", "userID").AddParam(
+                    "item_template_id", "itemTID").Add("count", "1").ODKU().Add("count", f.Add(s.EscapeColumn("count"), "1"));
+            return q.ToString();
         }
 
         /// <summary>

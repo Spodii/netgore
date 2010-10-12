@@ -10,6 +10,15 @@ namespace DemoGame.Server.Queries
     public class CreateUserOnAccountQuery : DbQueryReader<CreateUserOnAccountQuery.QueryArgs>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CreateUserOnAccountQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public CreateUserOnAccountQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,16 +28,9 @@ namespace DemoGame.Server.Queries
             // SELECT CreateUserOnAccount(@accountName, @userName, @characterID)
 
             var s = qb.Settings;
-            var q = qb.SelectFunction("CreateUserOnAccount").Add(s.Parameterize("accountName"), s.Parameterize("userName"), s.Parameterize("characterID"));
+            var q = qb.SelectFunction("CreateUserOnAccount").Add(s.Parameterize("accountName"), s.Parameterize("userName"),
+                                                                 s.Parameterize("characterID"));
             return q.ToString();
-        }
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateUserOnAccountQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public CreateUserOnAccountQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

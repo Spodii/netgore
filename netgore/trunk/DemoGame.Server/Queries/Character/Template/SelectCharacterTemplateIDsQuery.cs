@@ -10,19 +10,6 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterTemplateIDsQuery : DbQueryReader
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT `id` FROM `{0}`
-			
-            var q = qb.Select(CharacterTemplateTable.TableName).Add("id");
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateIDsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
@@ -30,6 +17,19 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(CharacterTemplateTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `id` FROM `{0}`
+
+            var q = qb.Select(CharacterTemplateTable.TableName).Add("id");
+            return q.ToString();
         }
 
         public IEnumerable<CharacterTemplateID> Execute()

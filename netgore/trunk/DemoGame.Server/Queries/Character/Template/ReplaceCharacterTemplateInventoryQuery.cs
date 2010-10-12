@@ -12,6 +12,15 @@ namespace DemoGame.Server.Queries
     public class ReplaceCharacterTemplateInventoryQuery : DbQueryNonReader<ICharacterTemplateInventoryTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateInventoryQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public ReplaceCharacterTemplateInventoryQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,19 +29,11 @@ namespace DemoGame.Server.Queries
         {
             // INSERT INTO `{0}` {1}`
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
-			
-            var q = qb.Insert(CharacterTemplateInventoryTable.TableName).AddAutoParam(CharacterTemplateInventoryTable.DbColumns)
-                .ODKU().AddFromInsert(CharacterTemplateInventoryTable.DbKeyColumns);
-            return q.ToString();
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateInventoryQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterTemplateInventoryQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
+            var q =
+                qb.Insert(CharacterTemplateInventoryTable.TableName).AddAutoParam(CharacterTemplateInventoryTable.DbColumns).ODKU()
+                    .AddFromInsert(CharacterTemplateInventoryTable.DbKeyColumns);
+            return q.ToString();
         }
 
         /// <summary>

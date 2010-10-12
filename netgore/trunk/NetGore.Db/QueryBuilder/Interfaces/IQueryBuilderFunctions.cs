@@ -38,46 +38,6 @@ namespace NetGore.Db.QueryBuilder
         string And(string left, string right);
 
         /// <summary>
-        /// Checks if the left side is greater than the right.
-        /// </summary>
-        /// <param name="left">The left argument.</param>
-        /// <param name="right">The right argument.</param>
-        /// <returns>The SQL string for the function.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
-        string GreaterThan(string left, string right);
-
-        /// <summary>
-        /// Checks if the left side is greater than or equal to the right.
-        /// </summary>
-        /// <param name="left">The left argument.</param>
-        /// <param name="right">The right argument.</param>
-        /// <returns>The SQL string for the function.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
-        string GreaterOrEqual(string left, string right);
-
-        /// <summary>
-        /// Checks if the left side is less than or equal to the right.
-        /// </summary>
-        /// <param name="left">The left argument.</param>
-        /// <param name="right">The right argument.</param>
-        /// <returns>The SQL string for the function.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
-        string LessOrEqual(string left, string right);
-
-        /// <summary>
-        /// Checks if the left side is less than the right.
-        /// </summary>
-        /// <param name="left">The left argument.</param>
-        /// <param name="right">The right argument.</param>
-        /// <returns>The SQL string for the function.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
-        string LessThan(string left, string right);
-
-        /// <summary>
         /// Performs a bitwise AND.
         /// </summary>
         /// <param name="left">The left argument.</param>
@@ -260,6 +220,26 @@ namespace NetGore.Db.QueryBuilder
         string Floor(string expr);
 
         /// <summary>
+        /// Checks if the left side is greater than or equal to the right.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        string GreaterOrEqual(string left, string right);
+
+        /// <summary>
+        /// Checks if the left side is greater than the right.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        string GreaterThan(string left, string right);
+
+        /// <summary>
         /// Gets an interval of time.
         /// </summary>
         /// <param name="interval">The unit of time.</param>
@@ -295,6 +275,26 @@ namespace NetGore.Db.QueryBuilder
         /// <returns>The SQL string for the function.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="expr"/> is null or empty.</exception>
         string IsNull(string expr);
+
+        /// <summary>
+        /// Checks if the left side is less than or equal to the right.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        string LessOrEqual(string left, string right);
+
+        /// <summary>
+        /// Checks if the left side is less than the right.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The SQL string for the function.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="left"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="right"/> is null or empty.</exception>
+        string LessThan(string left, string right);
 
         /// <summary>
         /// Gets the remainder of a division.

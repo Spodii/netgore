@@ -14,6 +14,14 @@ namespace DemoGame.Server.Queries
     public class UserExistsQuery : DbQueryReader<string>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UserExistsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public UserExistsQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,20 +29,13 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // SELECT COUNT(*) FROM `{0}` WHERE `name`=@name
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(UserCharacterTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("name"), s.Parameterize("name")));
+            var q =
+                qb.Select(UserCharacterTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("name"),
+                                                                                          s.Parameterize("name")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserExistsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public UserExistsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

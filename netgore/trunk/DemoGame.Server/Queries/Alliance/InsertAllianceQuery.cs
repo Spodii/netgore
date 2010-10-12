@@ -12,6 +12,16 @@ namespace DemoGame.Server.Queries
     public class InsertAllianceQuery : DbQueryNonReader<IAllianceTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertAllianceQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public InsertAllianceQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,16 +32,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertAllianceQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public InsertAllianceQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

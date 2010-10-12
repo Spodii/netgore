@@ -13,6 +13,15 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterInventoryItemsQuery : DbQueryReader<CharacterID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterInventoryItemsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public SelectCharacterInventoryItemsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,23 +31,15 @@ namespace DemoGame.Server.Queries
             // SELECT {1}.slot AS character_inventory_slot, {0}.* FROM {0}
             //      INNER JOIN {1} ON {0}.id = {1}.item_id
             //      WHERE {1}.character_id = @characterID;
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(ItemTable.TableName, "i").AllColumns("i")
-                .AddFunc(s.ApplyColumnAlias("c.slot", "character_inventory_slot"))
-                .InnerJoinOnColumn(CharacterInventoryTable.TableName, "c", "item_id", "i", "id")
-                .Where(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("characterID")));
+            var q =
+                qb.Select(ItemTable.TableName, "i").AllColumns("i").AddFunc(s.ApplyColumnAlias("c.slot",
+                                                                                               "character_inventory_slot")).
+                    InnerJoinOnColumn(CharacterInventoryTable.TableName, "c", "item_id", "i", "id").Where(
+                        f.Equals(s.EscapeColumn("character_id"), s.Parameterize("characterID")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectCharacterInventoryItemsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterInventoryItemsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public IEnumerable<KeyValuePair<InventorySlot, IItemTable>> Execute(CharacterID characterID)

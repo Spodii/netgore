@@ -12,6 +12,16 @@ namespace DemoGame.Server.Queries
     public class ReplaceAllianceQuery : DbQueryNonReader<IAllianceTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceAllianceQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public ReplaceAllianceQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,17 +30,10 @@ namespace DemoGame.Server.Queries
         {
             // INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE <{1} - primary keys>
 
-            var q = qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns).ODKU().AddFromInsert(AllianceTable.DbKeyColumns);
+            var q =
+                qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns).ODKU().AddFromInsert(
+                    AllianceTable.DbKeyColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceAllianceQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public ReplaceAllianceQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

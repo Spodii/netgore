@@ -12,6 +12,15 @@ namespace DemoGame.Server.Queries
     public class UpdateMapQuery : DbQueryNonReader<IMapTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateMapQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public UpdateMapQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ArePrimaryKeys(MapTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,23 +28,13 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // UPDATE `{0}` SET {1} WHERE `id`=@id
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Update(MapTable.TableName).AddAutoParam(MapTable.DbNonKeyColumns)
-                .Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id"))
-                    );
+            var q =
+                qb.Update(MapTable.TableName).AddAutoParam(MapTable.DbNonKeyColumns).Where(f.Equals(s.EscapeColumn("id"),
+                                                                                                    s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateMapQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public UpdateMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ArePrimaryKeys(MapTable.DbKeyColumns, "id");
         }
 
         /// <summary>

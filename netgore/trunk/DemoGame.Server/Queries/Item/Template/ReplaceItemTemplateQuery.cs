@@ -12,6 +12,16 @@ namespace DemoGame.Server.Queries
     public class ReplaceItemTemplateQuery : DbQueryNonReader<IItemTemplateTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceItemTemplateQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public ReplaceItemTemplateQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,20 +31,10 @@ namespace DemoGame.Server.Queries
             // INSERT INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
-            var q = qb.Insert(ItemTemplateTable.TableName).AddAutoParam(ItemTemplateTable.DbColumns)
-                .ODKU()
-                .AddFromInsert(ItemTemplateTable.DbKeyColumns);
+            var q =
+                qb.Insert(ItemTemplateTable.TableName).AddAutoParam(ItemTemplateTable.DbColumns).ODKU().AddFromInsert(
+                    ItemTemplateTable.DbKeyColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceItemTemplateQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public ReplaceItemTemplateQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

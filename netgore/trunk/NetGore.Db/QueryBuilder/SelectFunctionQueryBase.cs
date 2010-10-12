@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -9,8 +10,8 @@ namespace NetGore.Db.QueryBuilder
     public abstract class SelectFunctionQueryBase : ISelectFunctionQuery
     {
         readonly ValueCollectionBuilder<ISelectFunctionQuery> _c;
-        readonly IQueryBuilderSettings _settings;
         readonly string _function;
+        readonly IQueryBuilderSettings _settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQueryBase"/> class.
@@ -33,11 +34,11 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
-        /// Gets the <see cref="ValueCollectionBuilder{T}"/> used by this object.
+        /// Gets the function name.
         /// </summary>
-        protected ValueCollectionBuilder<ISelectFunctionQuery> ValueCollection
+        public string Function
         {
-            get { return _c; }
+            get { return _function; }
         }
 
         /// <summary>
@@ -49,12 +50,14 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
-        /// Gets the function name.
+        /// Gets the <see cref="ValueCollectionBuilder{T}"/> used by this object.
         /// </summary>
-        public string Function
+        protected ValueCollectionBuilder<ISelectFunctionQuery> ValueCollection
         {
-            get { return _function; }
+            get { return _c; }
         }
+
+        #region ISelectFunctionQuery Members
 
         /// <summary>
         /// Adds a raw value to the collection.
@@ -88,5 +91,7 @@ namespace NetGore.Db.QueryBuilder
         {
             return _c.Add(values);
         }
+
+        #endregion
     }
 }

@@ -12,6 +12,17 @@ namespace DemoGame.Server.Queries
     public class DeleteCharacterQuestStatusKillsQuery : DbQueryNonReader<DeleteCharacterQuestStatusKillsQuery.QueryArgs>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteCharacterQuestStatusKillsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public DeleteCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_id", "quest_id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,24 +33,11 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Delete(CharacterQuestStatusKillsTable.TableName)
-                .Where(
-                f.And(
-                    f.Equals(s.EscapeColumn("character_id"), s.Parameterize("charID")),
-                    f.Equals(s.EscapeColumn("quest_id"), s.Parameterize("questID"))
-                    ));
+            var q =
+                qb.Delete(CharacterQuestStatusKillsTable.TableName).Where(
+                    f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("charID")),
+                          f.Equals(s.EscapeColumn("quest_id"), s.Parameterize("questID"))));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteCharacterQuestStatusKillsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public DeleteCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_id", "quest_id");
         }
 
         /// <summary>

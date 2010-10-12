@@ -11,6 +11,17 @@ namespace DemoGame.Server.Queries
     public class InsertItemTemplateIDOnlyQuery : DbQueryNonReader<ItemTemplateID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertItemTemplateIDOnlyQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public InsertItemTemplateIDOnlyQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ArePrimaryKeys(ItemTemplateTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,17 +32,6 @@ namespace DemoGame.Server.Queries
 
             var q = qb.Insert(ItemTemplateTable.TableName).AddAutoParam("id");
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertItemTemplateIDOnlyQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public InsertItemTemplateIDOnlyQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ArePrimaryKeys(ItemTemplateTable.DbKeyColumns, "id");
         }
 
         /// <summary>
