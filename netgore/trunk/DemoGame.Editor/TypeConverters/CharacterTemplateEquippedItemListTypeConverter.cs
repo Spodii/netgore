@@ -57,9 +57,12 @@ namespace DemoGame.Editor.TypeConverters
                     if (m != null)
                     {
                         var sb = new StringBuilder();
-                        foreach (var v in ev)
+                        sb.Append("{");
+                        foreach (var v in ev.OrderByDescending(x => x.Chance).ThenBy(x => x.ID))
                         {
-                            sb.Append("{");
+                            sb.Append("[");
+                            sb.Append(Math.Round(v.Chance.Percentage * 100f, 0));
+                            sb.Append("%] ");
 
                             var t = m[v.ID];
                             if (t == null)
@@ -67,13 +70,13 @@ namespace DemoGame.Editor.TypeConverters
                             else
                                 sb.Append(t.Name);
 
-                            sb.Append(" - ");
-                            sb.Append(Math.Round(v.Chance.Percentage * 100f, 0));
-                            sb.Append("%}, ");
+                            sb.Append(", ");
                         }
 
                         if (sb.Length > 2)
                             sb.Length -= 2;
+
+                        sb.Append("}");
 
                         return sb.ToString();
                     }

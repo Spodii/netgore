@@ -58,9 +58,12 @@ namespace DemoGame.Editor.TypeConverters
                     if (m != null)
                     {
                         var sb = new StringBuilder();
-                        foreach (var v in ev)
+                        sb.Append("{");
+                        foreach (var v in ev.OrderByDescending(x=>x.Value).ThenBy(x=>x.Key))
                         {
-                            sb.Append("{");
+                            sb.Append("[");
+                            sb.Append(v.Value.ToString());
+                            sb.Append("] ");
 
                             var t = m[v.Key];
                             if (t == null)
@@ -68,14 +71,13 @@ namespace DemoGame.Editor.TypeConverters
                             else
                                 sb.Append(t.Name);
 
-                            sb.Append(",");
-                            sb.Append(v.Value.ToString());
-
-                            sb.Append("}, ");
+                            sb.Append(", ");
                         }
 
                         if (sb.Length > 2)
                             sb.Length -= 2;
+
+                        sb.Append("}");
 
                         return sb.ToString();
                     }
