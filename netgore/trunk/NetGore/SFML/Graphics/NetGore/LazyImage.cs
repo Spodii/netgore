@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SFML.Graphics
@@ -8,7 +9,7 @@ namespace SFML.Graphics
     /// </summary>
     public class LazyImage : Image
     {
-        readonly string _filename;
+        string _filename;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LazyImage"/> class.
@@ -46,11 +47,23 @@ namespace SFML.Graphics
         {
             get
             {
-                if (!EnsureLoaded(FileName))
+                if (FileName != null && !EnsureLoaded(FileName))
                     OnReload();
 
                 return base.This;
             }
+        }
+
+        /// <summary>
+        /// Handle the destruction of the object
+        /// </summary>
+        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+        protected override void Destroy(bool disposing)
+        {
+            if (!disposing)
+                _filename = null;
+
+            base.Destroy(disposing);
         }
 
         /// <summary>
