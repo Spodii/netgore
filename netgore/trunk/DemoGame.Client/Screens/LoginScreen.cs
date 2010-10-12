@@ -15,7 +15,7 @@ namespace DemoGame.Client
         const string _title = "Account Login";
 
         Control _btnLogin;
-        TextBox _cError;
+        TextBox _cStatus;
         TextBox _cNameText;
         MaskedTextBox _cPasswordText;
         ClientSockets _sockets;
@@ -79,7 +79,7 @@ namespace DemoGame.Client
 
             var textBoxPos = new Vector2(60, _cPasswordText.Position.Y + _cPasswordText.Size.Y + 20);
             var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
-            _cError = new TextBox(cScreen, textBoxPos, textBoxSize)
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
             { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
             // Create the menu buttons
@@ -118,16 +118,16 @@ namespace DemoGame.Client
         /// <param name="message">The error message. Use null to clear.</param>
         public void SetError(string message)
         {
-            if (_cError == null)
+            if (_cStatus == null)
             {
                 Debug.Fail("_cError is null.");
                 return;
             }
 
             if (message == null)
-                _cError.Text = string.Empty;
+                _cStatus.Text = string.Empty;
             else
-                _cError.Text = "Error: " + message;
+                _cStatus.Text = "Error: " + message;
         }
 
         /// <summary>
