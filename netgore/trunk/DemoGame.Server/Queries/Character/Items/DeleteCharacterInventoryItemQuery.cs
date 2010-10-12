@@ -14,25 +14,6 @@ namespace DemoGame.Server.Queries
     public class DeleteCharacterInventoryItemQuery : DbQueryNonReader<DeleteCharacterInventoryItemQuery.QueryArgs>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Delete(CharacterInventoryTable.TableName)
-                .Where(
-                f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("character_id")),
-                f.Equals(s.EscapeColumn("slot"), s.Parameterize("slot")
-                )));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterInventoryItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
@@ -40,6 +21,24 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(CharacterInventoryTable.DbKeyColumns, "character_id", "slot");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Delete(CharacterInventoryTable.TableName).Where(
+                    f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("character_id")),
+                          f.Equals(s.EscapeColumn("slot"), s.Parameterize("slot"))));
+            return q.ToString();
         }
 
         public void Execute(CharacterID characterID, InventorySlot slot)

@@ -12,6 +12,15 @@ namespace DemoGame.Server.Queries
     public class InsertMapSpawnQuery : DbQueryNonReader<IMapSpawnTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertMapSpawnQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public InsertMapSpawnQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,18 +28,9 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // INSERT INTO `{0}` {1}
-			
+
             var q = qb.Insert(MapSpawnTable.TableName).AddAutoParam(MapSpawnTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertMapSpawnQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public InsertMapSpawnQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

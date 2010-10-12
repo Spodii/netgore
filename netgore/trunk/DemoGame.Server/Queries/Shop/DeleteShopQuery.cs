@@ -12,6 +12,14 @@ namespace DemoGame.Server.Queries
     public class DeleteShopQuery : DbQueryNonReader<ShopID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteShopQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public DeleteShopQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,20 +27,11 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // DELETE FROM `{0}` WHERE `id`=@id
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
             var q = qb.Delete(ShopTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteShopQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public DeleteShopQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

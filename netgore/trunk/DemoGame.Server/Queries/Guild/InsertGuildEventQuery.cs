@@ -12,23 +12,6 @@ namespace DemoGame.Server.Queries
     public class InsertGuildEventQuery : DbQueryNonReader<InsertGuildEventQuery.QueryArgs>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // INSERT INTO `{0}` {1}
-			
-            var f = qb.Functions;
-            var q = qb.Insert(GuildEventTable.TableName)
-                .AddAutoParam(GuildEventTable.DbColumns)
-                .Remove("id")
-                .Add("created", f.Now());
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InsertGuildEventQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
@@ -36,6 +19,21 @@ namespace DemoGame.Server.Queries
         public InsertGuildEventQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` {1}
+
+            var f = qb.Functions;
+            var q = qb.Insert(GuildEventTable.TableName).AddAutoParam(GuildEventTable.DbColumns).Remove("id").Add("created",
+                                                                                                                  f.Now());
+            return q.ToString();
         }
 
         /// <summary>

@@ -37,19 +37,19 @@ namespace NetGore.Db.MySql.QueryBuilder
         #region IQueryBuilder Members
 
         /// <summary>
-        /// Gets the <see cref="IQueryBuilderSettings"/> for this <see cref="IQueryBuilder"/>.
-        /// </summary>
-        public IQueryBuilderSettings Settings
-        {
-            get { return MySqlQueryBuilderSettings.Instance; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="IQueryBuilderFunctions"/> for this <see cref="IQueryBuilder"/>.
         /// </summary>
         public IQueryBuilderFunctions Functions
         {
             get { return MySqlQueryBuilderFunctions.Instance; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> for this <see cref="IQueryBuilder"/>.
+        /// </summary>
+        public IQueryBuilderSettings Settings
+        {
+            get { return MySqlQueryBuilderSettings.Instance; }
         }
 
         /// <summary>

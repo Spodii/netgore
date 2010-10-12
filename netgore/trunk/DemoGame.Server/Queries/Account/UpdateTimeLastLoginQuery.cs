@@ -11,6 +11,16 @@ namespace DemoGame.Server.Queries.Account
     public class UpdateTimeLastLoginQuery : DbQueryNonReader<AccountID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateTimeLastLoginQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public UpdateTimeLastLoginQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,18 +31,10 @@ namespace DemoGame.Server.Queries.Account
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Update(AccountTable.TableName).Add("time_last_login", f.Now())
-                .Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            var q =
+                qb.Update(AccountTable.TableName).Add("time_last_login", f.Now()).Where(f.Equals(s.EscapeColumn("id"),
+                                                                                                 s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateTimeLastLoginQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public UpdateTimeLastLoginQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login");
         }
 
         /// <summary>

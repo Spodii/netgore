@@ -19,24 +19,6 @@ namespace NetGore.Db.QueryBuilder
         T Add(string column);
 
         /// <summary>
-        /// Adds a function call to the collection.
-        /// </summary>
-        /// <param name="sql">The function's SQL.</param>
-        /// <returns>The return object.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
-        T AddFunc(string sql);
-
-        /// <summary>
-        /// Adds a function call to the collection.
-        /// </summary>
-        /// <param name="sql">The function's SQL.</param>
-        /// <param name="alias">The alias to give the function call.</param>
-        /// <returns>The return object.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="alias"/> is not a valid column alias.</exception>
-        T AddFunc(string sql, string alias);
-
-        /// <summary>
         /// Adds multiple columns to the collection.
         /// </summary>
         /// <param name="columns">The names of the columns to add.</param>
@@ -53,6 +35,24 @@ namespace NetGore.Db.QueryBuilder
         /// <exception cref="InvalidQueryException"><paramref name="columns"/> contains one or more columns with
         /// invalid column name.</exception>
         T Add(params string[] columns);
+
+        /// <summary>
+        /// Adds a function call to the collection.
+        /// </summary>
+        /// <param name="sql">The function's SQL.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        T AddFunc(string sql);
+
+        /// <summary>
+        /// Adds a function call to the collection.
+        /// </summary>
+        /// <param name="sql">The function's SQL.</param>
+        /// <param name="alias">The alias to give the function call.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="sql"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="alias"/> is not a valid column alias.</exception>
+        T AddFunc(string sql, string alias);
 
         /// <summary>
         /// Removes a column from the collection.

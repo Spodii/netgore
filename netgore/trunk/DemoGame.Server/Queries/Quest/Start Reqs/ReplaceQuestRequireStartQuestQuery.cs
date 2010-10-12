@@ -13,6 +13,16 @@ namespace DemoGame.Server.Queries
     public class ReplaceQuestRequireStartQuestQuery : DbQueryNonReader<IQuestRequireStartQuestTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceQuestRequireStartQuestQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public ReplaceQuestRequireStartQuestQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,18 +32,9 @@ namespace DemoGame.Server.Queries
             // INSERT IGNORE INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
-            var q = qb.Insert(QuestRequireStartQuestTable.TableName).IgnoreExists().AddAutoParam(QuestRequireStartQuestTable.DbColumns);
+            var q =
+                qb.Insert(QuestRequireStartQuestTable.TableName).IgnoreExists().AddAutoParam(QuestRequireStartQuestTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceQuestRequireStartQuestQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public ReplaceQuestRequireStartQuestQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public int Execute(QuestID questID, QuestID reqQuestID)

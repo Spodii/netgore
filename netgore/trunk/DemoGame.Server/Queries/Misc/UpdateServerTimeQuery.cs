@@ -9,6 +9,15 @@ namespace DemoGame.Server.Queries
     public class UpdateServerTimeQuery : DbQueryNonReader
     {
         /// <summary>
+        /// DbQueryNonReader constructor.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public UpdateServerTimeQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -16,19 +25,10 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // UPDATE `{0}` SET `server_time`=NOW()
-			
+
             var f = qb.Functions;
             var q = qb.Update(ServerTimeTable.TableName).Add("server_time", f.Now());
             return q.ToString();
-        }
-
-        /// <summary>
-        /// DbQueryNonReader constructor.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public UpdateServerTimeQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
     }
 }

@@ -12,6 +12,15 @@ namespace DemoGame.Server.Queries
     public class DeleteQuestQuery : DbQueryNonReader<QuestID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteQuestQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public DeleteQuestQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,21 +28,11 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // DELETE FROM `{0}` WHERE `id`=@id
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
             var q = qb.Delete(QuestTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteQuestQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public DeleteQuestQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

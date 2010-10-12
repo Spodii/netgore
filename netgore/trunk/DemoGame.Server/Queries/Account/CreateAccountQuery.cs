@@ -17,6 +17,17 @@ namespace DemoGame.Server.Queries
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CreateAccountQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public CreateAccountQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "name", "password", "email", "time_created",
+                                         "time_last_login", "creator_ip");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -28,19 +39,10 @@ namespace DemoGame.Server.Queries
             //      VALUES (@id,@name,@password,@email,NOW(),NOW(),@creator_ip)
 
             var f = qb.Functions;
-            var q = qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam("id", "name", "password", "email", "creator_ip")
-                .Add("time_created", f.Now()).Add("time_last_login", f.Now());
+            var q =
+                qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam("id", "name", "password", "email", "creator_ip").Add
+                    ("time_created", f.Now()).Add("time_last_login", f.Now());
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateAccountQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public CreateAccountQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "name", "password", "email", "time_created",
-                                         "time_last_login","creator_ip");
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace NetGore.Db.QueryBuilder
+﻿using System.Linq;
+
+namespace NetGore.Db.QueryBuilder
 {
     /// <summary>
     /// The different interval types available in a query.
@@ -24,7 +26,7 @@
         /// Hours.
         /// </summary>
         Hour,
-        
+
         /// <summary>
         /// Days.
         /// </summary>

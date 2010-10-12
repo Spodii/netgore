@@ -12,6 +12,17 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsCountShopBuyQuery : DbQueryNonReader<KeyValuePair<int, int>>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertWorldStatsCountShopBuyQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        public InsertWorldStatsCountShopBuyQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(WorldStatsCountShopBuyTable.DbColumns, "shop_id", "count");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -23,21 +34,10 @@ namespace DemoGame.Server.Queries
 
             var s = qb.Settings;
             var f = qb.Functions;
-            var q = qb.Insert(WorldStatsCountShopBuyTable.TableName)
-                .AddParam("shop_id", "id")
-                .AddParam("count", "count")
-                .ODKU().Add("count", f.Add(s.EscapeColumn("count"), s.Parameterize("count")));
+            var q =
+                qb.Insert(WorldStatsCountShopBuyTable.TableName).AddParam("shop_id", "id").AddParam("count", "count").ODKU().Add(
+                    "count", f.Add(s.EscapeColumn("count"), s.Parameterize("count")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertWorldStatsCountShopBuyQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsCountShopBuyQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(WorldStatsCountShopBuyTable.DbColumns, "shop_id", "count");
         }
 
         /// <summary>

@@ -12,6 +12,16 @@ namespace DemoGame.Server.Queries
     public class PeerTradingReplaceCashQuery : DbQueryNonReader<IActiveTradeCashTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PeerTradingReplaceCashQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
+        public PeerTradingReplaceCashQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.AreColumns(ActiveTradeCashTable.DbColumns, "character_id", "cash");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,20 +31,10 @@ namespace DemoGame.Server.Queries
             // INSERT INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
-            var q = qb.Insert(ActiveTradeCashTable.TableName).AddAutoParam(ActiveTradeCashTable.DbColumns)
-                .ODKU()
-                .AddFromInsert(ActiveTradeCashTable.DbKeyColumns);
+            var q =
+                qb.Insert(ActiveTradeCashTable.TableName).AddAutoParam(ActiveTradeCashTable.DbColumns).ODKU().AddFromInsert(
+                    ActiveTradeCashTable.DbKeyColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PeerTradingReplaceCashQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        public PeerTradingReplaceCashQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.AreColumns(ActiveTradeCashTable.DbColumns, "character_id", "cash");
         }
 
         /// <summary>

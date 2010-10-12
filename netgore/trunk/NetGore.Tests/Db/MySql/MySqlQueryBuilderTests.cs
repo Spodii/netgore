@@ -8,43 +8,29 @@ namespace NetGore.Tests.Db.MySql
     [TestFixture(Description = "Tests the MySql queries for things specific to the MySql SQL syntax.")]
     public class MySqlQueryBuilderTests
     {
+        #region Unit tests
+
         [Test]
-        public void FunctionDateAddTest1()
+        public void DeleteQueryTest01()
         {
-            const string expected = "SELECT DATE_ADD(NOW(),INTERVAL 5 MINUTE) FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.DateAddInterval(f.Now(), f.Interval(QueryIntervalType.Minute, 5)));
+            const string expected = "DELETE FROM `myTable`";
+            var q = MySqlQueryBuilder.Instance.Delete("myTable");
             Assert.AreEqual(expected, q.ToString());
         }
 
         [Test]
-        public void FunctionDateAddTest2()
+        public void DeleteQueryTest02()
         {
-            const string expected = "SELECT DATE_ADD(NOW(),INTERVAL 5 MINUTE) FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.DateAddInterval(f.Now(), QueryIntervalType.Minute, 5));
+            const string expected = "DELETE FROM `myTable` WHERE 0 = 1";
+            var q = MySqlQueryBuilder.Instance.Delete("myTable").Where("0 = 1");
             Assert.AreEqual(expected, q.ToString());
         }
 
         [Test]
-        public void FunctionDateSubtractTest1()
+        public void DeleteQueryTest03()
         {
-            const string expected = "SELECT DATE_SUB(NOW(),INTERVAL 5 HOUR) FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.DateSubtractInterval(f.Now(), f.Interval(QueryIntervalType.Hour, 5)));
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void FunctionDateSubtractTest2()
-        {
-            const string expected = "SELECT DATE_SUB(NOW(),INTERVAL 5 HOUR) FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.DateSubtractInterval(f.Now(), QueryIntervalType.Hour, 5));
+            const string expected = "DELETE FROM `myTable` WHERE `a`=5 LIMIT 1";
+            var q = MySqlQueryBuilder.Instance.Delete("myTable").Where("`a`=5").Limit(1);
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -55,46 +41,6 @@ namespace NetGore.Tests.Db.MySql
             var qb = MySqlQueryBuilder.Instance;
             var f = qb.Functions;
             var q = qb.Select("myTable").AddFunc(f.Abs("-5"), "a");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void FunctionIsNullTest()
-        {
-            const string expected = "SELECT 'a' IS NULL FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.IsNull("'a'"));
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void FunctionEqualsTest()
-        {
-            const string expected = "SELECT 1 = 2 FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.Equals("1", "2"));
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void FunctionNotEqualsTest()
-        {
-            const string expected = "SELECT 1 != 2 FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.NotEqual("1", "2"));
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void FunctionIsNotNullTest()
-        {
-            const string expected = "SELECT 'a' IS NOT NULL FROM `myTable`";
-            var qb = MySqlQueryBuilder.Instance;
-            var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.IsNotNull("'a'"));
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -179,6 +125,16 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void FunctionCountTest()
+        {
+            const string expected = "SELECT COUNT(*) AS c FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.Count(), "c");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void FunctionCountXTest()
         {
             const string expected = "SELECT COUNT(a) AS cnt FROM `myTable`";
@@ -189,12 +145,42 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
-        public void FunctionCountTest()
+        public void FunctionDateAddTest1()
         {
-            const string expected = "SELECT COUNT(*) AS c FROM `myTable`";
+            const string expected = "SELECT DATE_ADD(NOW(),INTERVAL 5 MINUTE) FROM `myTable`";
             var qb = MySqlQueryBuilder.Instance;
             var f = qb.Functions;
-            var q = qb.Select("myTable").AddFunc(f.Count(), "c");
+            var q = qb.Select("myTable").AddFunc(f.DateAddInterval(f.Now(), f.Interval(QueryIntervalType.Minute, 5)));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionDateAddTest2()
+        {
+            const string expected = "SELECT DATE_ADD(NOW(),INTERVAL 5 MINUTE) FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.DateAddInterval(f.Now(), QueryIntervalType.Minute, 5));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionDateSubtractTest1()
+        {
+            const string expected = "SELECT DATE_SUB(NOW(),INTERVAL 5 HOUR) FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.DateSubtractInterval(f.Now(), f.Interval(QueryIntervalType.Hour, 5)));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionDateSubtractTest2()
+        {
+            const string expected = "SELECT DATE_SUB(NOW(),INTERVAL 5 HOUR) FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.DateSubtractInterval(f.Now(), QueryIntervalType.Hour, 5));
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -219,12 +205,42 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void FunctionEqualsTest()
+        {
+            const string expected = "SELECT 1 = 2 FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.Equals("1", "2"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void FunctionFloorTest()
         {
             const string expected = "SELECT FLOOR(5) FROM `myTable`";
             var qb = MySqlQueryBuilder.Instance;
             var f = qb.Functions;
             var q = qb.Select("myTable").AddFunc(f.Floor("5"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionIsNotNullTest()
+        {
+            const string expected = "SELECT 'a' IS NOT NULL FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.IsNotNull("'a'"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionIsNullTest()
+        {
+            const string expected = "SELECT 'a' IS NULL FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.IsNull("'a'"));
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -245,6 +261,16 @@ namespace NetGore.Tests.Db.MySql
             var qb = MySqlQueryBuilder.Instance;
             var f = qb.Functions;
             var q = qb.Select("myTable").AddFunc(f.Multiply("5", "3"));
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void FunctionNotEqualsTest()
+        {
+            const string expected = "SELECT 1 != 2 FROM `myTable`";
+            var qb = MySqlQueryBuilder.Instance;
+            var f = qb.Functions;
+            var q = qb.Select("myTable").AddFunc(f.NotEqual("1", "2"));
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -288,56 +314,6 @@ namespace NetGore.Tests.Db.MySql
             Assert.AreEqual(expected, q.ToString());
         }
 
-        #region Unit tests
-
-        [Test]
-        public void SelectFunctionQueryTest01()
-        {
-            const string expected = "SELECT MyFunc()";
-            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void SelectFunctionQueryTest02()
-        {
-            const string expected = "SELECT MyFunc(5)";
-            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void SelectFunctionQueryTest03()
-        {
-            const string expected = "SELECT MyFunc(5,a,x,b,assd)";
-            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5", "a", "x", "b").Add("assd");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void DeleteQueryTest01()
-        {
-            const string expected = "DELETE FROM `myTable`";
-            var q = MySqlQueryBuilder.Instance.Delete("myTable");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void DeleteQueryTest02()
-        {
-            const string expected = "DELETE FROM `myTable` WHERE 0 = 1";
-            var q = MySqlQueryBuilder.Instance.Delete("myTable").Where("0 = 1");
-            Assert.AreEqual(expected, q.ToString());
-        }
-
-        [Test]
-        public void DeleteQueryTest03()
-        {
-            const string expected = "DELETE FROM `myTable` WHERE `a`=5 LIMIT 1";
-            var q = MySqlQueryBuilder.Instance.Delete("myTable").Where("`a`=5").Limit(1);
-            Assert.AreEqual(expected, q.ToString());
-        }
-
         [Test]
         public void InsertOnDuplicateKeyQueryTest01()
         {
@@ -350,9 +326,7 @@ namespace NetGore.Tests.Db.MySql
         public void InsertOnDuplicateKeyQueryTest02()
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b";
-            var q =
-                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Remove(
-                    "a");
+            var q = MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Remove("a");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -361,8 +335,7 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b";
             var q =
-                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Remove(
-                    "a").Remove("a");
+                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Remove("a").Remove("a");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -370,9 +343,7 @@ namespace NetGore.Tests.Db.MySql
         public void InsertOnDuplicateKeyQueryTest04()
         {
             const string expected = "INSERT INTO `myTable` (`a`,`b`) VALUES (@a,@b) ON DUPLICATE KEY UPDATE `b`=@b,`a`=55";
-            var q =
-                MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Add(
-                    "a", "55");
+            var q = MySqlQueryBuilder.Instance.Insert("myTable").AddAutoParam("a", "b").ODKU().AddFromInsert().Add("a", "55");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -417,6 +388,30 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void SelectFunctionQueryTest01()
+        {
+            const string expected = "SELECT MyFunc()";
+            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectFunctionQueryTest02()
+        {
+            const string expected = "SELECT MyFunc(5)";
+            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void SelectFunctionQueryTest03()
+        {
+            const string expected = "SELECT MyFunc(5,a,x,b,assd)";
+            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5", "a", "x", "b").Add("assd");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void SelectQueryInnerJoinTest01()
         {
             const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` AS t INNER JOIN `t2` u ON t.a=u.a";
@@ -436,7 +431,8 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void SelectQueryInnerJoinTest03()
         {
-            const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
+            const string expected =
+                "SELECT DISTINCT t.a,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
             var q =
                 MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoinOnColumn("t2", "u", "a",
                                                                                                                  "t", "a").OrderBy
@@ -447,11 +443,13 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void SelectQueryInnerJoinTest04()
         {
-            const string expected = "SELECT DISTINCT t.*,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
+            const string expected =
+                "SELECT DISTINCT t.*,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
             var q =
-                MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().AllColumns("t").Add("u.a").InnerJoinOnColumn("t2", "u", "a",
-                                                                                                                 "t", "a").OrderBy
-                    ("t.a").Limit(1);
+                MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().AllColumns("t").Add("u.a").InnerJoinOnColumn("t2",
+                                                                                                                          "u", "a",
+                                                                                                                          "t", "a")
+                    .OrderBy("t.a").Limit(1);
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -491,7 +489,9 @@ namespace NetGore.Tests.Db.MySql
         public void SelectQueryTest05()
         {
             const string expected = "SELECT `a`,`b`,`c` FROM `myTable` ORDER BY `a`, `b` DESC";
-            var q = MySqlQueryBuilder.Instance.Select("myTable").Add("a", "b","c").OrderByColumn("a").OrderByColumn("b", OrderByType.Descending);
+            var q = MySqlQueryBuilder.Instance.Select("myTable").Add("a", "b", "c").OrderByColumn("a").OrderByColumn("b",
+                                                                                                                     OrderByType.
+                                                                                                                         Descending);
             Assert.AreEqual(expected, q.ToString());
         }
 

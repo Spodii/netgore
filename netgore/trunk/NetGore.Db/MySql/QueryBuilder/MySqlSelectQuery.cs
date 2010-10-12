@@ -72,13 +72,9 @@ namespace NetGore.Db.MySql.QueryBuilder
             sb.Append(" FROM ");
 
             if (Alias != null)
-            {
                 sb.Append(Settings.ApplyTableAlias(Settings.EscapeTable(Table), Alias));
-            }
             else
-            {
                 sb.Append(Settings.EscapeTable(Table));
-            }
 
             // Joins
             foreach (var j in Joins)

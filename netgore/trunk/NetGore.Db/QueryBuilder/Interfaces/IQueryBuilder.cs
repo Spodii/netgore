@@ -9,14 +9,14 @@ namespace NetGore.Db.QueryBuilder
     public interface IQueryBuilder
     {
         /// <summary>
-        /// Gets the <see cref="IQueryBuilderSettings"/> for this <see cref="IQueryBuilder"/>.
-        /// </summary>
-        IQueryBuilderSettings Settings { get; }
-
-        /// <summary>
         /// Gets the <see cref="IQueryBuilderFunctions"/> for this <see cref="IQueryBuilder"/>.
         /// </summary>
         IQueryBuilderFunctions Functions { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilderSettings"/> for this <see cref="IQueryBuilder"/>.
+        /// </summary>
+        IQueryBuilderSettings Settings { get; }
 
         /// <summary>
         /// Creates an <see cref="IDeleteQuery"/>.

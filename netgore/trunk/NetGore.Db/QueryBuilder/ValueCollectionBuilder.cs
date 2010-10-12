@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -36,6 +37,8 @@ namespace NetGore.Db.QueryBuilder
             return _c.ToArray();
         }
 
+        #region IValueCollectionBuilder<T> Members
+
         /// <summary>
         /// Adds a raw value to the collection.
         /// </summary>
@@ -64,7 +67,9 @@ namespace NetGore.Db.QueryBuilder
                 throw new ArgumentNullException("values");
 
             foreach (var v in values)
+            {
                 Add(v);
+            }
 
             return _owner;
         }
@@ -79,5 +84,7 @@ namespace NetGore.Db.QueryBuilder
         {
             return Add((IEnumerable<string>)values);
         }
+
+        #endregion
     }
 }

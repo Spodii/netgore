@@ -11,21 +11,6 @@ namespace DemoGame.Server.Queries
     public class PeerTradingRemoveItemQuery : DbQueryNonReader<ItemID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // DELETE FROM `{0}` WHERE `item_id` = @itemID
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Delete(ActiveTradeItemTable.TableName).Where(f.Equals(s.EscapeColumn("item_id"), s.Parameterize("itemID")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingRemoveItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
@@ -34,6 +19,21 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(ActiveTradeItemTable.DbKeyColumns, "item_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `item_id` = @itemID
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Delete(ActiveTradeItemTable.TableName).Where(f.Equals(s.EscapeColumn("item_id"), s.Parameterize("itemID")));
+            return q.ToString();
         }
 
         /// <summary>

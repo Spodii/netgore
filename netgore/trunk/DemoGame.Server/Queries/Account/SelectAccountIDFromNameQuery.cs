@@ -11,6 +11,15 @@ namespace DemoGame.Server.Queries
     public class SelectAccountIDFromNameQuery : DbQueryReader<string>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectAccountIDFromNameQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public SelectAccountIDFromNameQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -23,15 +32,6 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q = qb.Select(AccountTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("name"), s.Parameterize("name")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectAccountIDFromNameQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectAccountIDFromNameQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

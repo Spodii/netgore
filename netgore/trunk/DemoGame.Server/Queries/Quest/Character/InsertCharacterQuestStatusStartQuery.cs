@@ -12,6 +12,17 @@ namespace DemoGame.Server.Queries
     public class InsertCharacterQuestStatusStartQuery : DbQueryNonReader<InsertCharacterQuestStatusStartQuery.QueryArgs>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DbQueryNonReader{T}"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public InsertCharacterQuestStatusStartQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "character_id", "quest_id", "started_on");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,25 +33,10 @@ namespace DemoGame.Server.Queries
             //      ON DUPLICATE KEY UPDATE `started_on`=NOW(), `completed_on`=NULL
 
             var f = qb.Functions;
-            var q = qb.Insert(CharacterQuestStatusTable.TableName)
-                .AddParam("character_id", "charID")
-                .AddParam("quest_id", "questID")
-                .Add("started_on", f.Now())
-                .ODKU()
-                .Add("started_on", f.Now())
-                .Add("completed_on", "NULL");
+            var q =
+                qb.Insert(CharacterQuestStatusTable.TableName).AddParam("character_id", "charID").AddParam("quest_id", "questID").
+                    Add("started_on", f.Now()).ODKU().Add("started_on", f.Now()).Add("completed_on", "NULL");
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DbQueryNonReader{T}"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public InsertCharacterQuestStatusStartQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "character_id", "quest_id", "started_on");
         }
 
         /// <summary>

@@ -11,21 +11,6 @@ namespace DemoGame.Server.Queries
     public class DeleteMapSpawnQuery : DbQueryNonReader<MapSpawnValuesID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // DELETE FROM `{0}` WHERE `id`=@id
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Delete(MapSpawnTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DeleteMapSpawnQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
@@ -33,6 +18,21 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `id`=@id
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Delete(MapSpawnTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
         }
 
         /// <summary>

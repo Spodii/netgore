@@ -12,6 +12,16 @@ namespace DemoGame.Server.Queries
     public class ReplaceCharacterTemplateQuery : DbQueryNonReader<ICharacterTemplateTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public ReplaceCharacterTemplateQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,20 +30,11 @@ namespace DemoGame.Server.Queries
         {
             // INSERT INTO `{0}` {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
-			
-            var q = qb.Insert(CharacterTemplateTable.TableName).AddAutoParam(CharacterTemplateTable.DbColumns)
-                .ODKU().AddFromInsert(CharacterTemplateTable.DbKeyColumns);
-            return q.ToString();
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public ReplaceCharacterTemplateQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
+            var q =
+                qb.Insert(CharacterTemplateTable.TableName).AddAutoParam(CharacterTemplateTable.DbColumns).ODKU().AddFromInsert(
+                    CharacterTemplateTable.DbKeyColumns);
+            return q.ToString();
         }
 
         /// <summary>

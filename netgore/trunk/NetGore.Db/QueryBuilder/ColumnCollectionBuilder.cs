@@ -74,6 +74,35 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
+        /// Adds multiple columns to the collection.
+        /// </summary>
+        /// <param name="columns">The names of the columns to add.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="columns"/> contains one or more columns with
+        /// invalid column name.</exception>
+        public T Add(IEnumerable<string> columns)
+        {
+            foreach (var c in columns)
+            {
+                Add(c);
+            }
+
+            return _owner;
+        }
+
+        /// <summary>
+        /// Adds multiple columns to the collection.
+        /// </summary>
+        /// <param name="columns">The names of the columns to add.</param>
+        /// <returns>The return object.</returns>
+        /// <exception cref="InvalidQueryException"><paramref name="columns"/> contains one or more columns with
+        /// invalid column name.</exception>
+        public T Add(params string[] columns)
+        {
+            return Add((IEnumerable<string>)columns);
+        }
+
+        /// <summary>
         /// Adds a function call to the collection.
         /// </summary>
         /// <param name="sql">The function's SQL.</param>
@@ -105,35 +134,6 @@ namespace NetGore.Db.QueryBuilder
             _columns.Add(Settings.ApplyColumnAlias(sql, alias));
 
             return _owner;
-        }
-
-        /// <summary>
-        /// Adds multiple columns to the collection.
-        /// </summary>
-        /// <param name="columns">The names of the columns to add.</param>
-        /// <returns>The return object.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="columns"/> contains one or more columns with
-        /// invalid column name.</exception>
-        public T Add(IEnumerable<string> columns)
-        {
-            foreach (var c in columns)
-            {
-                Add(c);
-            }
-
-            return _owner;
-        }
-
-        /// <summary>
-        /// Adds multiple columns to the collection.
-        /// </summary>
-        /// <param name="columns">The names of the columns to add.</param>
-        /// <returns>The return object.</returns>
-        /// <exception cref="InvalidQueryException"><paramref name="columns"/> contains one or more columns with
-        /// invalid column name.</exception>
-        public T Add(params string[] columns)
-        {
-            return Add((IEnumerable<string>)columns);
         }
 
         /// <summary>

@@ -12,6 +12,15 @@ namespace DemoGame.Server.Queries
     public class UpdateCharacterQuery : DbQueryNonReader<ICharacterTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateCharacterQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public UpdateCharacterQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,21 +28,13 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // UPDATE `{0}` SET {1} WHERE `id`=@id
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Update(CharacterTable.TableName).AddAutoParam(CharacterTable.DbNonKeyColumns)
-                .Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            var q =
+                qb.Update(CharacterTable.TableName).AddAutoParam(CharacterTable.DbNonKeyColumns).Where(
+                    f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateCharacterQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public UpdateCharacterQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         /// <summary>

@@ -13,24 +13,6 @@ namespace DemoGame.Server.Queries
     public class SelectGuildEventsQuery : DbQueryReader<GuildID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT * FROM `{0}` WHERE `guild_id` = @guildID ORDER BY `id` DESC LIMIT 50
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Select(GuildEventTable.TableName).AllColumns()
-                .Where(f.Equals(s.EscapeColumn("guild_id"), s.Parameterize("guildID")))
-                .OrderBy(s.EscapeColumn("id"), OrderByType.Descending)
-                .Limit(50);
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildEventsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
@@ -38,6 +20,25 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(GuildEventTable.DbColumns, "guild_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT * FROM `{0}` WHERE `guild_id` = @guildID ORDER BY `id` DESC LIMIT 50
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Select(GuildEventTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("guild_id"),
+                                                                                 s.Parameterize("guildID"))).OrderBy(
+                                                                                     s.EscapeColumn("id"), OrderByType.Descending)
+                    .Limit(50);
+            return q.ToString();
         }
 
         public IEnumerable<IGuildEventTable> Execute(GuildID guildID)

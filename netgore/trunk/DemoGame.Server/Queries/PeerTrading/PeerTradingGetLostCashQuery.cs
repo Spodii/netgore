@@ -11,21 +11,6 @@ namespace DemoGame.Server.Queries
     public class PeerTradingGetLostCashQuery : DbQueryReader<CharacterID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT `cash` FROM `{0}` WHERE `character_id` = @characterID
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Select(ActiveTradeCashTable.TableName).Add("cash").Where(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("characterID")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingGetLostCashQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
@@ -34,6 +19,23 @@ namespace DemoGame.Server.Queries
         {
             QueryAsserts.ContainsColumns(ActiveTradeCashTable.DbColumns, "cash");
             QueryAsserts.ArePrimaryKeys(ActiveTradeCashTable.DbKeyColumns, "character_id");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `cash` FROM `{0}` WHERE `character_id` = @characterID
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Select(ActiveTradeCashTable.TableName).Add("cash").Where(f.Equals(s.EscapeColumn("character_id"),
+                                                                                     s.Parameterize("characterID")));
+            return q.ToString();
         }
 
         /// <summary>

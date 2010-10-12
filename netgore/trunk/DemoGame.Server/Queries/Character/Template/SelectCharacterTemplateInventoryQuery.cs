@@ -11,6 +11,15 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterTemplateInventoryQuery : DbQueryReader<CharacterTemplateID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterTemplateInventoryQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public SelectCharacterTemplateInventoryQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -21,19 +30,10 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(CharacterTemplateInventoryTable.TableName)
-                .AllColumns()
-                .Where(f.Equals(s.EscapeColumn("character_template_id"), s.Parameterize("characterTemplateID")));
+            var q =
+                qb.Select(CharacterTemplateInventoryTable.TableName).AllColumns().Where(
+                    f.Equals(s.EscapeColumn("character_template_id"), s.Parameterize("characterTemplateID")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectCharacterTemplateInventoryQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterTemplateInventoryQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public IEnumerable<CharacterTemplateInventoryTable> Execute(CharacterTemplateID templateID)

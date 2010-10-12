@@ -11,21 +11,6 @@ namespace DemoGame.Server.Queries
     public class DeletePersistentNPCQuery : DbQueryNonReader<CharacterID>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // DELETE FROM `{0}` WHERE `id`=@id
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Delete(NpcCharacterTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DeletePersistentNPCQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
@@ -33,6 +18,21 @@ namespace DemoGame.Server.Queries
         public DeletePersistentNPCQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `id`=@id
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Delete(NpcCharacterTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
         }
 
         /// <summary>

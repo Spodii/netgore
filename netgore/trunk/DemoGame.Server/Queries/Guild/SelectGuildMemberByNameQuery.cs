@@ -12,23 +12,6 @@ namespace DemoGame.Server.Queries
     public class SelectGuildMemberByNameQuery : DbQueryReader<string>
     {
         /// <summary>
-        /// Creates the query for this class.
-        /// </summary>
-        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
-        /// <returns>The query for this class.</returns>
-        static string CreateQuery(IQueryBuilder qb)
-        {
-            // SELECT t1.* FROM `{0}` AS t1 INNER JOIN `{1}` AS t2 ON t1.character_id = t2.id WHERE t2.name = @name
-			
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Select(GuildMemberTable.TableName, "t1").AllColumns("t1")
-                .InnerJoinOnColumn(CharacterTable.TableName, "t2", "id", "t1", "character_id")
-                .Where(f.Equals(s.EscapeColumn("t2.name"), s.Parameterize("name")));
-            return q.ToString();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildMemberByNameQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
@@ -37,6 +20,26 @@ namespace DemoGame.Server.Queries
         {
             QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "character_id");
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "name");
+        }
+
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT t1.* FROM `{0}` AS t1 INNER JOIN `{1}` AS t2 ON t1.character_id = t2.id WHERE t2.name = @name
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q =
+                qb.Select(GuildMemberTable.TableName, "t1").AllColumns("t1").InnerJoinOnColumn(CharacterTable.TableName, "t2",
+                                                                                               "id", "t1", "character_id").Where(
+                                                                                                   f.Equals(
+                                                                                                       s.EscapeColumn("t2.name"),
+                                                                                                       s.Parameterize("name")));
+            return q.ToString();
         }
 
         public IGuildMemberTable Execute(string name)

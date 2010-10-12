@@ -11,7 +11,17 @@ namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class ReplaceQuestRequireFinishQuestQuery : DbQueryNonReader<IQuestRequireFinishQuestTable>
-    {        
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceQuestRequireFinishQuestQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public ReplaceQuestRequireFinishQuestQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
         /// <summary>
         /// Creates the query for this class.
         /// </summary>
@@ -21,18 +31,10 @@ namespace DemoGame.Server.Queries
         {
             // INSERT IGNORE INTO {0} {1}
 
-            var q = qb.Insert(QuestRequireFinishQuestTable.TableName).IgnoreExists().AddAutoParam(QuestRequireFinishQuestTable.DbColumns);
+            var q =
+                qb.Insert(QuestRequireFinishQuestTable.TableName).IgnoreExists().AddAutoParam(
+                    QuestRequireFinishQuestTable.DbColumns);
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceQuestRequireFinishQuestQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public ReplaceQuestRequireFinishQuestQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public int Execute(QuestID questID, QuestID reqQuestID)

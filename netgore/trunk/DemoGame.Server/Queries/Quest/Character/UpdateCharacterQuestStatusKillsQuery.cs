@@ -13,6 +13,17 @@ namespace DemoGame.Server.Queries
     public class UpdateCharacterQuestStatusKillsQuery : DbQueryNonReader<ICharacterQuestStatusKillsTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateCharacterQuestStatusKillsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public UpdateCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "count");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,21 +33,10 @@ namespace DemoGame.Server.Queries
             // INSERT INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE `count`=@count
 
-            var q = qb.Insert(CharacterQuestStatusKillsTable.TableName).AddAutoParam(CharacterQuestStatusKillsTable.DbColumns)
-                .ODKU()
-                .AddAutoParam("count");
+            var q =
+                qb.Insert(CharacterQuestStatusKillsTable.TableName).AddAutoParam(CharacterQuestStatusKillsTable.DbColumns).ODKU().
+                    AddAutoParam("count");
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateCharacterQuestStatusKillsQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public UpdateCharacterQuestStatusKillsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "count");
         }
 
         /// <summary>

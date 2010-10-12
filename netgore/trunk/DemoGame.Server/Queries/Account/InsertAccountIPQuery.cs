@@ -11,6 +11,15 @@ namespace DemoGame.Server.Queries
     public class InsertAccountIPQuery : DbQueryNonReader<InsertAccountIPQuery.QueryArgs>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="InsertAccountIPQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public InsertAccountIPQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,17 +29,9 @@ namespace DemoGame.Server.Queries
             // INSERT INTO `{0}` SET `account_id`=@accountID, `ip`=@ip, `time`=NOW()
 
             var f = qb.Functions;
-            var q = qb.Insert(AccountIpsTable.TableName).AddParam("account_id", "accountID").AddParam("ip", "ip").Add("time", f.Now());
+            var q = qb.Insert(AccountIpsTable.TableName).AddParam("account_id", "accountID").AddParam("ip", "ip").Add("time",
+                                                                                                                      f.Now());
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InsertAccountIPQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public InsertAccountIPQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public int Execute(AccountID accountID, uint ip)

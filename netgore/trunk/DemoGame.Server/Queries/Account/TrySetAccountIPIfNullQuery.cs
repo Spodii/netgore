@@ -12,6 +12,16 @@ namespace DemoGame.Server.Queries
     public class TrySetAccountIPIfNullQuery : DbQueryReader<TrySetAccountIPIfNullQuery.QueryArgs>
     {
         /// <summary>
+        /// DbQueryReader constructor.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public TrySetAccountIPIfNullQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login", "current_ip");
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -22,23 +32,10 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Update(AccountTable.TableName).AddParam("current_ip", "ip").Add("time_last_login", f.Now())
-                .Where(
-                f.And(
-                    f.Equals(s.EscapeColumn("id"), s.Parameterize("id")),
-                    f.IsNull(s.EscapeColumn("current_ip"))
-                    
-                ));
+            var q =
+                qb.Update(AccountTable.TableName).AddParam("current_ip", "ip").Add("time_last_login", f.Now()).Where(
+                    f.And(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")), f.IsNull(s.EscapeColumn("current_ip"))));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// DbQueryReader constructor.
-        /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public TrySetAccountIPIfNullQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
-            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login", "current_ip");
         }
 
         /// <summary>

@@ -12,6 +12,15 @@ namespace DemoGame.Server.Queries
     public class ReplaceCharacterTemplateQuestProviderQuery : DbQueryNonReader<ICharacterTemplateQuestProviderTable>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateQuestProviderQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public ReplaceCharacterTemplateQuestProviderQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -19,18 +28,11 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // INSERT IGNORE INTO `{0}` {1}
-			
-            var q = qb.Insert(CharacterTemplateQuestProviderTable.TableName).AddAutoParam(CharacterTemplateQuestProviderTable.DbColumns);
-            return q.ToString();
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateQuestProviderQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterTemplateQuestProviderQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
+            var q =
+                qb.Insert(CharacterTemplateQuestProviderTable.TableName).AddAutoParam(
+                    CharacterTemplateQuestProviderTable.DbColumns);
+            return q.ToString();
         }
 
         /// <summary>

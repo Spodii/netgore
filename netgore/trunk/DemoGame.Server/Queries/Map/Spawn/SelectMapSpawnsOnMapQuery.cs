@@ -13,6 +13,15 @@ namespace DemoGame.Server.Queries
     public class SelectMapSpawnsOnMapQuery : DbQueryReader<MapID>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SelectMapSpawnsOnMapQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public SelectMapSpawnsOnMapQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        {
+        }
+
+        /// <summary>
         /// Creates the query for this class.
         /// </summary>
         /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
@@ -20,20 +29,12 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // SELECT * FROM `{0}` WHERE `map_id`=@mapID
-			
+
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Select(MapSpawnTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("map_id"), s.Parameterize("mapID")));
+            var q =
+                qb.Select(MapSpawnTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("map_id"), s.Parameterize("mapID")));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelectMapSpawnsOnMapQuery"/> class.
-        /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public SelectMapSpawnsOnMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
-        {
         }
 
         public IEnumerable<IMapSpawnTable> Execute(MapID id)

@@ -10,7 +10,7 @@ namespace NetGore.Db.QueryBuilder
     /// <typeparam name="T">The type to return.</typeparam>
     public class ColumnValueCollectionBuilder<T> : IColumnValueCollectionBuilder<T>
     {
-        readonly List<KeyValuePair<string,string>> _cvs;
+        readonly List<KeyValuePair<string, string>> _cvs;
         readonly T _owner;
         readonly IQueryBuilderSettings _settings;
 
