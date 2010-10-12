@@ -3,20 +3,33 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Features.Banning
 {
     [DbControllerQuery]
     sealed class StoredProcGetReasons : DbQueryReader<int>
     {
-        static readonly string _queryStr = FormatQueryString("CALL ft_banning_get_reasons(@accountID)");
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // CALL ft_banning_get_reasons(@accountID)
+			
+            var q = qb.CallProcedure("ft_banning_get_reasons").AddParam("accountID");
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StoredProcGetReasons"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public StoredProcGetReasons(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public StoredProcGetReasons(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
