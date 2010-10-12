@@ -3,20 +3,32 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Features.Banning
 {
     [DbControllerQuery]
     sealed class StoredProcIsBanned : DbQueryReader<int>
     {
-        static readonly string _queryStr = FormatQueryString("CALL ft_banning_isbanned(@accountID)");
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // CALL ft_banning_isbanned(@accountID)
+
+            var q = qb.CallProcedure("ft_banning_isbanned").AddParam("accountID");
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StoredProcIsBanned"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public StoredProcIsBanned(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public StoredProcIsBanned(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
