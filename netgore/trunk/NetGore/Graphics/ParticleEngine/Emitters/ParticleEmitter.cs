@@ -882,11 +882,12 @@ namespace NetGore.Graphics.ParticleEngine
                 return;
             }
 
-            HandleReset();
-
             _timeCreated = TickCount.Now;
             _lastUpdateTime = TickCount.MinValue;
             _nextReleaseTime = TickCount.MinValue;
+            _wasKilled = false;
+
+            HandleReset();
         }
 
         /// <summary>

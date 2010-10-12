@@ -96,6 +96,11 @@ namespace DemoGame.Editor
             if (pe == null)
                 return;
 
+            if (pe.IsExpired)
+            {
+                pe.Reset();
+            }
+
             // Update
             pe.Update(currentTime);
 

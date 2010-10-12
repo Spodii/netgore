@@ -369,6 +369,7 @@ namespace NetGore.Graphics.ParticleEngine
 
             // Reset the effect's life
             _timeCreated = TickCount.Now;
+            _isExpired = false;
 
             // Reset all emitters
             foreach (var e in _emitters.Values)
