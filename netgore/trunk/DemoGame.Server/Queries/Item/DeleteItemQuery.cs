@@ -3,19 +3,34 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class DeleteItemQuery : DbQueryNonReader<ItemID>
     {
-        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id LIMIT 1", ItemTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `id`=@id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Delete(ItemTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteItemQuery"/> class.
         /// </summary>
-        /// <param name="conn">The conn.</param>
-        public DeleteItemQuery(DbConnectionPool conn) : base(conn, _queryStr)
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/>.</param>
+        public DeleteItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }

@@ -4,21 +4,35 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class UpdateGuildQuery : DbQueryNonReader<IGuildTable>
     {
-        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `name`=@name, `tag`=@tag WHERE `id`=@id",
-                                                             GuildTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // UPDATE `{0}` SET `name`=@name, `tag`=@tag WHERE `id`=@id
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Update(GuildTable.TableName).AddAutoParam("name", "tag").Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryNonReader"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public UpdateGuildQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public UpdateGuildQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(GuildTable.DbKeyColumns, "id");
             QueryAsserts.ContainsColumns(GuildTable.DbColumns, "name", "tag", "id");

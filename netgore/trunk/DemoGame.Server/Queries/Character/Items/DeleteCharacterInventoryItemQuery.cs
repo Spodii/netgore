@@ -6,21 +6,38 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class DeleteCharacterInventoryItemQuery : DbQueryNonReader<DeleteCharacterInventoryItemQuery.QueryArgs>
     {
-        static readonly string _queryStr =
-            FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
-                              CharacterInventoryTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Delete(CharacterInventoryTable.TableName)
+                .Where(
+                f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("character_id")),
+                f.Equals(s.EscapeColumn("slot"), s.Parameterize("slot")
+                )));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterInventoryItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public DeleteCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public DeleteCharacterInventoryItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(CharacterInventoryTable.DbKeyColumns, "character_id", "slot");
         }

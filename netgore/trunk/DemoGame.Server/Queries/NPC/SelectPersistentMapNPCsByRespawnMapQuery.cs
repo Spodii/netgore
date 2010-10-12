@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.World;
 
 namespace DemoGame.Server.Queries
@@ -10,14 +11,27 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectPersistentMapNPCsByRespawnMapQuery : DbQueryReader<MapID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT `id` FROM `{0}` WHERE `load_map_id`=@mapID",
-                                                             NpcCharacterTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `id` FROM `{0}` WHERE `load_map_id`=@mapID
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(NpcCharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("load_map_id"), s.Parameterize("mapID")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectPersistentMapNPCsByRespawnMapQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectPersistentMapNPCsByRespawnMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectPersistentMapNPCsByRespawnMapQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(NpcCharacterTable.DbColumns, "id", "load_map_id");
         }

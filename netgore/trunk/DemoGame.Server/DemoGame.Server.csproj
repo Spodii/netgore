@@ -249,6 +249,7 @@
     <Compile Include="Queries\Account\SelectAccountCharacterNamesQuery.cs" />
     <Compile Include="Queries\Banning\InsertAccountBanQuery.cs" />
     <Compile Include="Queries\Banning\SelectAccountBansQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuestsQuery.cs" />
     <Compile Include="Queries\User\SelectUserByNameQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateEquippedQuery.cs" />
@@ -298,7 +299,7 @@
     <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
     <Compile Include="Queries\Shop\InsertShopQuery.cs" />
-    <Compile Include="Queries\Shop\ShopItem\ReplaceShopItemQuery.cs" />
+    <Compile Include="Queries\Shop\ShopItem\InsertShopItemQuery.cs" />
     <Compile Include="Queries\PeerTrading\PeerTradingInsertItemQuery.cs" />
     <Compile Include="Queries\PeerTrading\PeerTradingRemoveItemQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsCountConsumeItemQuery.cs" />
@@ -404,7 +405,6 @@
     <Compile Include="Queries\Item\DeleteItemQuery.cs" />
     <Compile Include="Queries\Item\ReplaceItemQuery.cs" />
     <Compile Include="Queries\Item\SelectItemQuery.cs" />
-    <Compile Include="Queries\Item\SelectItemsQuery.cs" />
     <Compile Include="Queries\Item\Template\SelectItemTemplateIDsQuery.cs" />
     <Compile Include="Queries\Item\Template\SelectItemTemplateQuery.cs" />
     <Compile Include="Queries\Item\UpdateItemFieldQuery.cs" />

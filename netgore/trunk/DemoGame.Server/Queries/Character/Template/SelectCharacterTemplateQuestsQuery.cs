@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
+using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class InsertWorldStatsUserConsumeItemQuery : DbQueryNonReader<IWorldStatsUserConsumeItemTable>
+    public class SelectCharacterTemplateQuestsQuery : DbQueryReader<CharacterTemplateID>
     {
         /// <summary>
         /// Creates the query for this class.
@@ -19,20 +17,37 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // INSERT INTO `{0}` {1}
+            // SELECT `quest_id` FROM `{0}` WHERE `character_template_id`=@id
 			
-            var q = qb.Insert(WorldStatsUserConsumeItemTable.TableName).AddAutoParam(WorldStatsUserConsumeItemTable.DbColumns);
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(CharacterTemplateQuestProviderTable.TableName)
+                .Add("quest_id").Where(f.Equals(s.EscapeColumn("character_template_id"), s.Parameterize("id")));
             return q.ToString();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertWorldStatsUserConsumeItemQuery"/> class.
+        /// Initializes a new instance of the <see cref="SelectCharacterTemplateQuestsQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsUserConsumeItemQuery(DbConnectionPool connectionPool)
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        public SelectCharacterTemplateQuestsQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
+        }
+
+        public IEnumerable<QuestID> Execute(CharacterTemplateID id)
+        {
+            var ret = new List<QuestID>();
+
+            using (var r = ExecuteReader(id))
+            {
+                while (r.Read())
+                {
+                    ret.Add(r.GetQuestID(0));
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -42,7 +57,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(WorldStatsUserConsumeItemTable.DbColumns);
+            return CreateParameters("id");
         }
 
         /// <summary>
@@ -51,12 +66,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, IWorldStatsUserConsumeItemTable item)
+        protected override void SetParameters(DbParameterValues p, CharacterTemplateID item)
         {
-            item.CopyValues(p);
-
-            // Set the `when` field to null to ensure that the time is assigned by MySQL
-            p["when"] = null;
+            p["id"] = (int)item;
         }
     }
 }

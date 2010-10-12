@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
@@ -10,16 +11,33 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectActiveQuestsQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr =
-            string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NULL",
-                          CharacterQuestStatusTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `quest_id` FROM `{0}` WHERE `character_id`=@id AND `completed_on` IS NULL
+
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id")
+                .Where(
+                f.And(
+                    f.Equals(s.EscapeColumn("character_id"), s.Parameterize("id")),
+                    f.IsNull(s.EscapeColumn("completed_on"))
+                    ));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectActiveQuestsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public SelectActiveQuestsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectActiveQuestsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(CharacterQuestStatusTable.DbColumns, "quest_id", "completed_on", "character_id");
         }

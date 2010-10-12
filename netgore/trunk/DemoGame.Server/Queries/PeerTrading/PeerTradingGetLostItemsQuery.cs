@@ -5,6 +5,7 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
@@ -13,14 +14,27 @@ namespace DemoGame.Server.Queries
     {
         static readonly IEnumerable<ItemID> _emptyCollection = Enumerable.Empty<ItemID>();
 
-        static readonly string _queryStr = FormatQueryString("SELECT `item_id` FROM `{0}` WHERE `character_id` = @characterID",
-                                                             ActiveTradeItemTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `item_id` FROM `{0}` WHERE `character_id` = @characterID
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(ActiveTradeItemTable.TableName).Add("item_id").Where(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("characterID")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingGetLostItemsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        public PeerTradingGetLostItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public PeerTradingGetLostItemsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(ActiveTradeItemTable.DbColumns, "character_id", "item_id");
         }

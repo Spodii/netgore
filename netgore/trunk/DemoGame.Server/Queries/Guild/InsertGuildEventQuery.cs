@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.Queries
@@ -10,17 +11,30 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertGuildEventQuery : DbQueryNonReader<InsertGuildEventQuery.QueryArgs>
     {
-        static readonly string _queryStr =
-            string.Format(
-                "INSERT INTO `{0}` (`guild_id`, `character_id`, `target_character_id`, `event_id`, `created`, `arg0`, `arg1`, `arg2`)" +
-                " VALUES (@guildID, @charID, @targetID, @eventID, NOW(), @arg0, @arg1, @arg2)", GuildTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT INTO `{0}` {1}
+			
+            var f = qb.Functions;
+            var q = qb.Insert(GuildEventTable.TableName)
+                .AddAutoParam(GuildEventTable.DbColumns)
+                .Remove("id")
+                .Add("created", f.Now());
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertGuildEventQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public InsertGuildEventQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public InsertGuildEventQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
@@ -31,7 +45,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("guildID", "charID", "targetID", "eventID", "arg0", "arg1", "arg2");
+            return CreateParameters("guild_id", "character_id", "target_character_id", "event_id", "arg0", "arg1", "arg2");
         }
 
         /// <summary>
@@ -42,10 +56,10 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["guildID"] = (int)item.GuildID;
-            p["charID"] = (int)item.CharacterID;
-            p["targetID"] = (int?)item.TargetID;
-            p["eventID"] = item.EventID;
+            p["guild_id"] = (int)item.GuildID;
+            p["character_id"] = (int)item.CharacterID;
+            p["target_character_id"] = (int?)item.TargetID;
+            p["event_id"] = item.EventID;
             p["arg0"] = item.Arg0;
             p["arg1"] = item.Arg1;
             p["arg2"] = item.Arg2;

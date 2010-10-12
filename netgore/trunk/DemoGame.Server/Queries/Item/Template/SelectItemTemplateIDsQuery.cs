@@ -2,19 +2,32 @@ using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class SelectItemTemplateIDsQuery : DbQueryReader
     {
-        static readonly string _queryStr = FormatQueryString("SELECT `id` FROM `{0}`", ItemTemplateTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT `id` FROM `{0}`
+			
+            var q = qb.Select(ItemTemplateTable.TableName).Add("id");
+            return q.ToString();
+        }
 
         /// <summary>
         /// DbQueryReader constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectItemTemplateIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectItemTemplateIDsQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(ItemTemplateTable.DbKeyColumns, "id");
         }

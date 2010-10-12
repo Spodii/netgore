@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.Queries
@@ -10,14 +11,27 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CountGuildFoundersQuery : DbQueryReader<GuildID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `guild_id` = @guildID",
-                                                             GuildMemberTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // SELECT COUNT(*) FROM `{0}` WHERE `guild_id` = @guildID
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Select(GuildMemberTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("guild_id"), s.Parameterize("guild_id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountGuildFoundersQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public CountGuildFoundersQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public CountGuildFoundersQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
@@ -39,7 +53,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("guildID");
+            return CreateParameters("guild_id");
         }
 
         /// <summary>
@@ -50,7 +64,7 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, GuildID item)
         {
-            p["guildID"] = (int)item;
+            p["guild_id"] = (int)item;
         }
     }
 }

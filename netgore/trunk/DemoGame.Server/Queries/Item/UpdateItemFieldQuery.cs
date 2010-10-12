@@ -5,6 +5,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore.Collections;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
@@ -29,7 +30,7 @@ namespace DemoGame.Server.Queries
 
             _fieldQueryCache =
                 new HashCache<string, InternalUpdateItemFieldQuery>(
-                    x => new InternalUpdateItemFieldQuery(_connectionPool, GetFieldQueryString(x)));
+                    x => new InternalUpdateItemFieldQuery(_connectionPool, GetFieldQueryString(x, connectionPool.QueryBuilder)));
 
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
@@ -45,12 +46,18 @@ namespace DemoGame.Server.Queries
         /// Gets the query string to use for a field.
         /// </summary>
         /// <param name="fieldName">The name of the field.</param>
-        /// <returns>The query string to use for the <paramref name="fieldName"/>.</returns>
-        static string GetFieldQueryString(string fieldName)
+        /// <param name="qb">The <see cref="IQueryBuilder"/>.</param>
+        /// <returns>
+        /// The query string to use for the <paramref name="fieldName"/>.
+        /// </returns>
+        static string GetFieldQueryString(string fieldName, IQueryBuilder qb)
         {
-            const string baseQueryStr = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Update(ItemTable.TableName).AddParam(fieldName, "value")
+                .Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("itemID")));
 
-            return string.Format(baseQueryStr, fieldName);
+            return q.ToString();
         }
 
         #region IDisposable Members

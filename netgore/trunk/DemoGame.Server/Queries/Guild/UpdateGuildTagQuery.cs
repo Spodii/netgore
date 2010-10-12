@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.Queries
@@ -10,14 +11,28 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateGuildTagQuery : DbQueryNonReader<UpdateGuildTagQuery.QueryArgs>
     {
-        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `tag`=@value WHERE `id`=@id", GuildTable.TableName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // UPDATE `{0}` SET `tag`=@tag WHERE `id`=@id
+			
+            var f = qb.Functions;
+            var s = qb.Settings;
+            var q = qb.Update(GuildTable.TableName).AddAutoParam("tag").Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateGuildTagQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public UpdateGuildTagQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public UpdateGuildTagQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ArePrimaryKeys(GuildTable.DbKeyColumns, "id");
         }
@@ -29,7 +44,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("id", "value");
+            return CreateParameters("id", "tag");
         }
 
         /// <summary>
@@ -41,7 +56,7 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
             p["id"] = (int)item.ID;
-            p["value"] = item.Value;
+            p["tag"] = item.Value;
         }
 
         /// <summary>

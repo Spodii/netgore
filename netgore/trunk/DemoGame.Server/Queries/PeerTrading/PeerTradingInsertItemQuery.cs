@@ -4,21 +4,33 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class PeerTradingInsertItemQuery : DbQueryNonReader<PeerTradingInsertItemQuery.QueryArgs>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT IGNORE INTO `{0}` {1}", ActiveTradeItemTable.TableName,
-                                                             FormatParametersIntoValuesString(ActiveTradeItemTable.DbColumns));
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // INSERT IGNORE INTO {0} {1}
+
+            var q = qb.Insert(ActiveTradeItemTable.TableName).IgnoreExists().AddAutoParam(ActiveTradeItemTable.DbColumns);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingInsertItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public PeerTradingInsertItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public PeerTradingInsertItemQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(ActiveTradeItemTable.DbColumns, "item_id", "character_id");
         }
