@@ -121,7 +121,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Db\DbQueryBaseTests.cs" />
     <Compile Include="Db\DbQueryBuilderTests.cs" />
     <Compile Include="Db\MySql\MySqlQueryBuilderTests.cs" />
     <Compile Include="Graphics\AutomaticAnimatedGrhDataTests.cs" />

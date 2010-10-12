@@ -250,6 +250,7 @@
     <Compile Include="Queries\Banning\InsertAccountBanQuery.cs" />
     <Compile Include="Queries\Banning\SelectAccountBansQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuestsQuery.cs" />
+    <Compile Include="Queries\Map\SelectMapQuery.cs" />
     <Compile Include="Queries\User\SelectUserByNameQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Character\Template\InsertCharacterTemplateEquippedQuery.cs" />
