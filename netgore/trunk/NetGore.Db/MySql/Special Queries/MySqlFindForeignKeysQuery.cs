@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Linq;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql
 {
@@ -9,17 +10,25 @@ namespace NetGore.Db.MySql
     [DbControllerQuery]
     public class MySqlFindForeignKeysQuery : FindForeignKeysQuery
     {
-        static readonly string _queryStr =
-            FormatQueryString(
-                "SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME` FROM information_schema.KEY_COLUMN_USAGE" +
-                " WHERE `REFERENCED_TABLE_SCHEMA` = {0} AND `REFERENCED_TABLE_NAME` = {1} AND `REFERENCED_COLUMN_NAME` = {2};",
-                "@" + SchemaParameterName, "@" + TableParameterName, "@" + ColumnParameterName);
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns>
+        static string CreateQuery(IQueryBuilder qb)
+        {
+            // CALL find_foreign_keys(@schema,@table,@column)
+
+            var q = qb.CallProcedure("find_foreign_keys").AddParam(SchemaParameterName, TableParameterName, ColumnParameterName);
+            return q.ToString();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FindForeignKeysQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public MySqlFindForeignKeysQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public MySqlFindForeignKeysQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

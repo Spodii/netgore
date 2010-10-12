@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-09-24 12:54:32',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-10-11 18:26:54',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,12 +74,12 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW BEGIN
-	IF new.end_time <= NOW() THEN
-		SET new.expired = 1;
-	ELSE
-		SET new.expired = 0;
-	END IF;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW BEGIN
+	IF new.end_time <= NOW() THEN
+		SET new.expired = 1;
+	ELSE
+		SET new.expired = 0;
+	END IF;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -95,12 +95,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW BEGIN
-	IF new.end_time <= NOW() THEN
-		SET new.expired = 1;
-	ELSE
-		SET new.expired = 0;
-	END IF;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW BEGIN
+	IF new.end_time <= NOW() THEN
+		SET new.expired = 1;
+	ELSE
+		SET new.expired = 0;
+	END IF;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -121,7 +121,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=124;
+) TYPE=InnoDB AUTO_INCREMENT=125;
 
 --
 -- Dumping data for table `account_ips`
@@ -129,6 +129,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (124,1,16777343,'2010-10-11 18:26:54');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -498,7 +499,7 @@ CREATE TABLE `character_template_equipped` (
 
 LOCK TABLES `character_template_equipped` WRITE;
 /*!40000 ALTER TABLE `character_template_equipped` DISABLE KEYS */;
-INSERT INTO `character_template_equipped` VALUES (0,1,5,3000),(2,1,3,60000);
+INSERT INTO `character_template_equipped` VALUES (0,1,5,40000),(1,1,3,60000);
 /*!40000 ALTER TABLE `character_template_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -527,7 +528,7 @@ CREATE TABLE `character_template_inventory` (
 
 LOCK TABLES `character_template_inventory` WRITE;
 /*!40000 ALTER TABLE `character_template_inventory` DISABLE KEYS */;
-INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(1,1,7,1,10,65535),(2,1,3,1,1,5000);
+INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(1,1,7,1,10,65535),(2,1,3,1,1,5000),(3,1,5,0,2,10000),(4,1,7,1,10,65535),(5,1,3,1,1,5000);
 /*!40000 ALTER TABLE `character_template_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1005,7 +1006,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-09-25 01:48:14');
+INSERT INTO `server_time` VALUES ('2010-10-11 18:27:17');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1160,6 +1161,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
+INSERT INTO `world_stats_count_item_create` VALUES (0,1,'0000-00-00 00:00:00'),(3,12,'0000-00-00 00:00:00'),(5,4,'0000-00-00 00:00:00'),(7,66,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1207,6 +1209,7 @@ CREATE TABLE `world_stats_count_npc_kill_user` (
 
 LOCK TABLES `world_stats_count_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` DISABLE KEYS */;
+INSERT INTO `world_stats_count_npc_kill_user` VALUES (1,1,1,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1345,7 +1348,7 @@ CREATE TABLE `world_stats_network` (
   `connections` mediumint(8) unsigned NOT NULL COMMENT 'Connections made with the server (accepted connections).',
   `connections_rejected` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=1436;
+) TYPE=MyISAM AUTO_INCREMENT=1437;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1353,6 +1356,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
+INSERT INTO `world_stats_network` VALUES (1436,'2010-10-12 01:26:53',0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1379,7 +1383,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=8;
+) TYPE=InnoDB AUTO_INCREMENT=9;
 
 --
 -- Dumping data for table `world_stats_npc_kill_user`
@@ -1387,6 +1391,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
 
 LOCK TABLES `world_stats_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
+INSERT INTO `world_stats_npc_kill_user` VALUES (8,1,1,30,1024,593,1135,687,3,'2010-10-12 01:27:07');
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1624,43 +1629,43 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `CreateUserOnAccount`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
-BEGIN
-		
-		DECLARE character_count INT DEFAULT 0;
-		DECLARE max_character_count INT DEFAULT 9;
-		DECLARE is_id_free INT DEFAULT 0;
-		DECLARE is_name_free INT DEFAULT 0;
-		DECLARE errorMsg VARCHAR(100) DEFAULT "";
-		DECLARE accountID INT DEFAULT NULL;
-
-		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
-
-		IF ISNULL(accountID) THEN
-			SET errorMsg = "Account with the specified name does not exist.";
-		ELSE
-			SELECT COUNT(*) INTO character_count FROM `character` WHERE `account_id` = accountID;
-
-			IF character_count > max_character_count THEN
-				SET errorMsg = "No free character slots available in the account.";
-			ELSE
-				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
-				
-				IF is_id_free > 0 THEN
-					SET errorMsg = "The specified CharacterID is not available for use.";
-				ELSE
-					SELECT COUNT(*) INTO is_name_free FROM `user_character` WHERE `name` = characterName;
-						
-					IF is_name_free > 0 THEN
-						SET errorMsg = "The specified character name is not available for use.";
-					ELSE
-						INSERT INTO `character` SET `id` = characterID, `name`	= characterName, `account_id`= 	accountID;
-					END IF;
-				END IF;
-			END IF;
-		END IF;
-				
-		RETURN errorMsg;
-  
+BEGIN
+		
+		DECLARE character_count INT DEFAULT 0;
+		DECLARE max_character_count INT DEFAULT 9;
+		DECLARE is_id_free INT DEFAULT 0;
+		DECLARE is_name_free INT DEFAULT 0;
+		DECLARE errorMsg VARCHAR(100) DEFAULT "";
+		DECLARE accountID INT DEFAULT NULL;
+
+		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
+
+		IF ISNULL(accountID) THEN
+			SET errorMsg = "Account with the specified name does not exist.";
+		ELSE
+			SELECT COUNT(*) INTO character_count FROM `character` WHERE `account_id` = accountID;
+
+			IF character_count > max_character_count THEN
+				SET errorMsg = "No free character slots available in the account.";
+			ELSE
+				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
+				
+				IF is_id_free > 0 THEN
+					SET errorMsg = "The specified CharacterID is not available for use.";
+				ELSE
+					SELECT COUNT(*) INTO is_name_free FROM `user_character` WHERE `name` = characterName;
+						
+					IF is_name_free > 0 THEN
+						SET errorMsg = "The specified character name is not available for use.";
+					ELSE
+						INSERT INTO `character` SET `id` = characterID, `name`	= characterName, `account_id`= 	accountID;
+					END IF;
+				END IF;
+			END IF;
+		END IF;
+				
+		RETURN errorMsg;
+  
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1678,37 +1683,67 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `ft_banning_isbanned`(accountID INT) RETURNS int(11)
+BEGIN
+		
+
+		DECLARE cnt INT DEFAULT 0;
+		DECLARE tnow TIMESTAMP;
+
+		SET tnow = NOW();
+
+		
+
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `account_id` = accountID
+				AND `end_time` <= tnow;
+		
+		
+		   
+		SELECT COUNT(*)
+			INTO cnt
+			FROM `account_ban`
+			WHERE `expired` = 0
+				AND `account_id` = accountID;
+				
+		RETURN cnt;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `find_foreign_keys` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `find_foreign_keys`(tableSchema VARCHAR(100), tableName VARCHAR(100), columnName VARCHAR(100))
 BEGIN
+
 		/*
-		@SUMMARY: Checks if the given account is currently banned.
+		@SUMMARY: Gets all of the the foreign keys for the given primary key. That is, all of the columns and
+			the tables/schemas they are on that reference the given column.
 		@PARAMS:
-			* @accountID: The ID of the account to check.
-		@RETURNS: The number of active bans on the account, or 0 if they are not banned.
+			tableSchema: The name of the table's schema.
+			tableName: The name of the table.
+			columnname: The name of the column.
+		@RETURNS: The TABLE_SCHEMA, TABLE_NAME, and COLUMN_NAME pairs for all columns that reference the given
+			column, or empty if nothing references it or it is not a primary key.
 		*/
 
-		DECLARE cnt INT DEFAULT 0;
-		DECLARE tnow TIMESTAMP;
+		SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME`
+			FROM information_schema.KEY_COLUMN_USAGE
+			WHERE `REFERENCED_TABLE_SCHEMA` = tableSchema
+				AND `REFERENCED_TABLE_NAME` = tableName
+				AND `REFERENCED_COLUMN_NAME` = columnName;
 
-		SET tnow = NOW();
-
-		/* Start by ensuring the expired bans are marked as expired. This is a bit overkill to have execute on each select, but
-		   its the easiest way to accomplish it and shouldn't be expensive at all unless someone has thousands of active bans on them. */
-
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `account_id` = accountID
-				AND `end_time` <= tnow;
-		
-		/* Count and return the non-expired bans for the accountID. */
-		   
-		SELECT COUNT(*)
-			INTO cnt
-			FROM `account_ban`
-			WHERE `expired` = 0
-				AND `account_id` = accountID;
-				
-		RETURN cnt;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1726,38 +1761,29 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `ft_banning_get_reasons`(accountID INT)
-BEGIN
-		/*
-		@SUMMARY: Gets the reasons why an account is banned all concatenated together, along with
-			the time that the bans will be expired.
-		@PARAMS: N/A
-		@RETURNS: A single row containing two columns (`reasons`, `mins_left`), or an empty set if
-			the account is not marked for ban. The `reasons` column is the concatenation of all
-			the distinct reasons as to why the account is banned, delimited by a line break.
-			The `mins_left` is how many minutes remaining until the last ban expires.
-		*/
-		
-		DECLARE tnow TIMESTAMP;
-
-		SET tnow = NOW();
-
-		/* Start by ensuring the expired bans are marked as expired. This is a bit overkill to have execute on each select, but
-		   its the easiest way to accomplish it and shouldn't be expensive at all unless someone has thousands of active bans on them. */
-		   
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `account_id` = accountID
-				AND `end_time` <= tnow;
-		
-		/* Grab the results to return */
-		
-		SELECT GROUP_CONCAT(DISTINCT `reason` SEPARATOR '\n\r') AS 'reasons',
-				ROUND(TIME_TO_SEC(TIMEDIFF(MAX(`end_time`), NOW())) / 60) AS 'mins_left'
-			FROM `account_ban`
-			WHERE `account_id` = accountID
-				AND	`expired` = 0;
-		
+BEGIN
+		
+		
+		DECLARE tnow TIMESTAMP;
+
+		SET tnow = NOW();
+
+		
+		   
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `account_id` = accountID
+				AND `end_time` <= tnow;
+		
+		
+		
+		SELECT GROUP_CONCAT(DISTINCT `reason` SEPARATOR '\n\r') AS 'reasons',
+				ROUND(TIME_TO_SEC(TIMEDIFF(MAX(`end_time`), NOW())) / 60) AS 'mins_left'
+			FROM `account_ban`
+			WHERE `account_id` = accountID
+				AND	`expired` = 0;
+		
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1775,23 +1801,17 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `ft_banning_update_expired`()
-BEGIN
-		/*
-		@SUMMARY: Updates the `expired` flag of the rows in the account_ban table.
-			This only sets the expiration from 0 to 1, not vise versa. You do not need to
-			call this procedure if you use ft_banning_isbanned() like you should.
-		@PARAMS: N/A
-		@RETURNS: N/A
-		*/
-		
-		DECLARE tnow TIMESTAMP;
-		
-		SET tnow = NOW();
-		
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `end_time` <= tnow;
+BEGIN
+		
+		
+		DECLARE tnow TIMESTAMP;
+		
+		SET tnow = NOW();
+		
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `end_time` <= tnow;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1809,11 +1829,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_Views`()
-BEGIN
-	
-	CALL Rebuild_View_NPC_Character();
-	CALL Rebuild_View_User_Character();
-    
+BEGIN
+	
+	CALL Rebuild_View_NPC_Character();
+	CALL Rebuild_View_User_Character();
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1853,11 +1873,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_View_User_Character`()
-BEGIN
-	
-	DROP VIEW IF EXISTS `user_character`;
-	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS SELECT * FROM `character` WHERE `account_id` IS NOT NULL;
-    
+BEGIN
+	
+	DROP VIEW IF EXISTS `user_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS SELECT * FROM `character` WHERE `account_id` IS NOT NULL;
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1909,4 +1929,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-09-25 13:10:27
+-- Dump completed on 2010-10-11 19:15:12
