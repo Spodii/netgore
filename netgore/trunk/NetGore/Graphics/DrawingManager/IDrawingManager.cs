@@ -37,13 +37,16 @@ namespace NetGore.Graphics
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.
         /// </summary>
+        /// <param name="clearBuffer">When true, the buffer will be cleared before drawing. When false, the contents of the previous
+        /// frame will remain in the buffer, only if the last draw was also to the GUI. When the last draw call was to the
+        /// world, then this will have no affect. Useful for when you want to draw multiple GUI screens on top of one another.</param>
         /// <returns>The <see cref="ISpriteBatch"/> to use to draw the GUI, or null if an unexpected
         /// error was encountered when preparing the <see cref="ISpriteBatch"/>. When null, all drawing
         /// should be aborted completely instead of trying to draw with a different <see cref="ISpriteBatch"/>
         /// or manually recovering the error.</returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
-        ISpriteBatch BeginDrawGUI();
+        ISpriteBatch BeginDrawGUI(bool clearBuffer = true);
 
         /// <summary>
         /// Begins drawing of the world.

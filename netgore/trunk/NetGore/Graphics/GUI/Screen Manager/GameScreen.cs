@@ -61,7 +61,7 @@ namespace NetGore.Graphics.GUI
         void UpdateMusic()
         {
             // Make sure we have the screen enabled
-            if (ScreenManager == null || ScreenManager.ActiveScreen != this)
+            if (ScreenManager == null || ScreenManager.ActiveNonConsoleScreen != this)
                 return;
 
             // Turn off music

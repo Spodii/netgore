@@ -94,9 +94,15 @@ namespace NetGore.Graphics.GUI
             // Clear the screen
             _game.Clear(DrawingManager.BackgroundColor);
 
-            // Draw the active screen
-            if (_activeScreen != null)
-                _activeScreen.Draw(gameTime);
+            // Draw the active non-console screen
+            var ancs = ActiveNonConsoleScreen;
+            if (ancs != null)
+                ancs.Draw(gameTime);
+
+            // Draw the console
+            var cs = ConsoleScreen;
+            if (ShowConsole && cs != null)
+                cs.Draw(gameTime);
 
             // Draw the console
             if (ShowConsole && ConsoleScreen != null)
@@ -134,12 +140,14 @@ namespace NetGore.Graphics.GUI
             DrawingManager.Update(currentTime);
 
             // Update the active screen
-            if (ActiveScreen != null)
-                ActiveScreen.Update(currentTime);
+            var ancs = ActiveNonConsoleScreen;
+            if (ancs != null)
+                ancs.Update(currentTime);
 
             // Update the console screen
-            if (ShowConsole && ConsoleScreen != null)
-                ConsoleScreen.Update(currentTime);
+            var cs = ConsoleScreen;
+            if (ShowConsole && cs != null)
+                cs.Update(currentTime);
 
             // Raise update event
             if (Updated != null)
@@ -259,7 +267,13 @@ namespace NetGore.Graphics.GUI
                     throw new ArgumentException(string.Format(errmsg, value), "value");
                 }
 
-                if (value == _activeScreen)
+                if (value == ConsoleScreen && ConsoleScreen != null)
+                {
+                    ShowConsole = true;
+                    return;
+                }
+
+                if (value == ActiveNonConsoleScreen)
                     return;
 
                 var lastScreen = _activeScreen;

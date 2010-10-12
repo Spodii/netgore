@@ -63,7 +63,7 @@ namespace DemoGame.Client
         /// <param name="gameTime">The current game time.</param>
         public override void Draw(TickCount gameTime)
         {
-            var spriteBatch = DrawingManager.BeginDrawGUI();
+            var spriteBatch = DrawingManager.BeginDrawGUI(false);
             if (spriteBatch == null)
                 return;
 
@@ -88,7 +88,7 @@ namespace DemoGame.Client
 
             _consoleFont = ScreenManager.Content.LoadFont("Font/Courier New", 14, ContentLevel.GameScreen);
 
-            _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
+            _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { Border = ControlBorder.Empty };
 
             // The main console output textbox
             _txtOutput = new TextBox(_cScreen, Vector2.Zero, _cScreen.Size)
