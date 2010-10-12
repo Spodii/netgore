@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
@@ -18,6 +21,7 @@ namespace NetGore.Features.WorldStats
                                                                                                          where TNPC : class
                                                                                                          where TItem : class
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly TickCount _logNetStatsRate;
 
         NetStats _lastNetStatsValues = new NetStats();
@@ -241,6 +245,18 @@ namespace NetGore.Features.WorldStats
             return DateTime.Now;
         }
 
+        /// <summary>
+        /// Handles when an <see cref="Exception"/> is thrown while executing a query in the <see cref="WorldStatsTracker{T,U,V}"/>.
+        /// </summary>
+        /// <param name="ex">The <see cref="Exception"/>.</param>
+        protected virtual void OnQueryException(Exception ex)
+        {
+            const string errmsg = "Error executing WorldStatsTracker query on `{0}`. Exception: {1}";
+            if (log.IsErrorEnabled)
+                log.ErrorFormat(errmsg, this, ex);
+            Debug.Fail(string.Format(errmsg, this, ex));
+        }
+
         #region IWorldStatsTracker<TUser,TNPC,TItem> Members
 
         /// <summary>
@@ -250,7 +266,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="amount">The number of items purchased.</param>
         public void AddCountBuyItem(int itemTID, int amount)
         {
-            InternalAddCountBuyItem(itemTID, amount);
+            try
+            {
+                InternalAddCountBuyItem(itemTID, amount);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -259,7 +282,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="itemTID">The template ID of the item that was consumed.</param>
         public void AddCountConsumeItem(int itemTID)
         {
-            InternalAddCountConsumeItem(itemTID);
+            try
+            {
+                InternalAddCountConsumeItem(itemTID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -269,7 +299,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="amount">The number of items created.</param>
         public void AddCountCreateItem(int itemTID, int amount)
         {
-            InternalAddCountCreateItem(itemTID, amount);
+            try
+            {
+                InternalAddCountCreateItem(itemTID, amount);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -279,7 +316,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="userID">The template ID of the user that was killed.</param>
         public void AddCountNPCKillUser(int npcTID, int userID)
         {
-            InternalAddCountNPCKillUser(npcTID, userID);
+            try
+            {
+                InternalAddCountNPCKillUser(npcTID, userID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -289,7 +333,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="amount">The number of items sold.</param>
         public void AddCountSellItem(int itemTID, int amount)
         {
-            InternalAddCountSellItem(itemTID, amount);
+            try
+            {
+                InternalAddCountSellItem(itemTID, amount);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -299,7 +350,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="amount">The number of items the shop sold.</param>
         public void AddCountShopBuy(int shopID, int amount)
         {
-            InternalAddCountShopBuy(shopID, amount);
+            try
+            {
+                InternalAddCountShopBuy(shopID, amount);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -309,7 +367,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="amount">The number of items sold to the shop.</param>
         public void AddCountShopSell(int shopID, int amount)
         {
-            InternalAddCountShopSell(shopID, amount);
+            try
+            {
+                InternalAddCountShopSell(shopID, amount);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -319,7 +384,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="itemTID">The item template ID of the item consumed.</param>
         public void AddCountUserConsumeItem(int userID, int itemTID)
         {
-            InternalAddCountUserConsumeItem(userID, itemTID);
+            try
+            {
+                InternalAddCountUserConsumeItem(userID, itemTID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -329,7 +401,14 @@ namespace NetGore.Features.WorldStats
         /// <param name="npcTID">The template ID of the NPC that was killed.</param>
         public void AddCountUserKillNPC(int userID, int npcTID)
         {
-            InternalAddCountUserKillNPC(userID, npcTID);
+            try
+            {
+                InternalAddCountUserKillNPC(userID, npcTID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -339,12 +418,19 @@ namespace NetGore.Features.WorldStats
         /// <param name="user">The User that was killed by the <paramref name="npc"/>.</param>
         public void AddNPCKillUser(TNPC npc, TUser user)
         {
-            if (npc == null)
-                return;
-            if (user == null)
-                return;
+            try
+            {
+                if (npc == null)
+                    return;
+                if (user == null)
+                    return;
 
-            InternalAddNPCKillUser(npc, user);
+                InternalAddNPCKillUser(npc, user);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -354,10 +440,17 @@ namespace NetGore.Features.WorldStats
         /// <param name="questID">The ID of the quest that the user accepted.</param>
         public void AddQuestAccept(TUser user, QuestID questID)
         {
-            if (user == null)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
 
-            InternalAddQuestAccept(user, questID);
+                InternalAddQuestAccept(user, questID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -367,10 +460,17 @@ namespace NetGore.Features.WorldStats
         /// <param name="questID">The ID of the quest that the user canceled.</param>
         public void AddQuestCancel(TUser user, QuestID questID)
         {
-            if (user == null)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
 
-            InternalAddQuestCancel(user, questID);
+                InternalAddQuestCancel(user, questID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -380,10 +480,17 @@ namespace NetGore.Features.WorldStats
         /// <param name="questID">The ID of the quest that the user completed.</param>
         public void AddQuestComplete(TUser user, QuestID questID)
         {
-            if (user == null)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
 
-            InternalAddQuestComplete(user, questID);
+                InternalAddQuestComplete(user, questID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -393,12 +500,19 @@ namespace NetGore.Features.WorldStats
         /// <param name="item">The item that was consumed.</param>
         public void AddUserConsumeItem(TUser user, TItem item)
         {
-            if (user == null)
-                return;
-            if (item == null)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
+                if (item == null)
+                    return;
 
-            InternalAddUserConsumeItem(user, item);
+                InternalAddUserConsumeItem(user, item);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -409,10 +523,17 @@ namespace NetGore.Features.WorldStats
         /// this value will be null.</param>
         public void AddUserGuildChange(TUser user, GuildID? guildID)
         {
-            if (user == null)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
 
-            InternalAddUserGuildChange(user, guildID);
+                InternalAddUserGuildChange(user, guildID);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -422,12 +543,19 @@ namespace NetGore.Features.WorldStats
         /// <param name="npc">The NPC that was killed by the <paramref name="user"/>.</param>
         public void AddUserKillNPC(TUser user, TNPC npc)
         {
-            if (user == null)
-                return;
-            if (npc == null)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
+                if (npc == null)
+                    return;
 
-            InternalAddUserKillNPC(user, npc);
+                InternalAddUserKillNPC(user, npc);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -436,10 +564,17 @@ namespace NetGore.Features.WorldStats
         /// <param name="user">The user that leveled up.</param>
         public void AddUserLevel(TUser user)
         {
-            if (user == null)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
 
-            InternalAddUserLevel(user);
+                InternalAddUserLevel(user);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -453,12 +588,19 @@ namespace NetGore.Features.WorldStats
         /// <param name="shopID">The ID of the shop the transaction took place at.</param>
         public void AddUserShopBuyItem(TUser user, int? itemTemplateID, byte amount, int cost, ShopID shopID)
         {
-            if (user == null)
-                return;
-            if (amount <= 0)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
+                if (amount <= 0)
+                    return;
 
-            InternalAddUserLevel(user);
+                InternalAddUserLevel(user);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -472,12 +614,19 @@ namespace NetGore.Features.WorldStats
         /// <param name="shopID">The ID of the shop the transaction took place at.</param>
         public void AddUserShopSellItem(TUser user, int? itemTemplateID, byte amount, int cost, ShopID shopID)
         {
-            if (user == null)
-                return;
-            if (amount <= 0)
-                return;
+            try
+            {
+                if (user == null)
+                    return;
+                if (amount <= 0)
+                    return;
 
-            InternalAddUserLevel(user);
+                InternalAddUserLevel(user);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         /// <summary>
@@ -485,7 +634,14 @@ namespace NetGore.Features.WorldStats
         /// </summary>
         public void Update()
         {
-            InternalUpdate(TickCount.Now);
+            try
+            {
+                InternalUpdate(TickCount.Now);
+            }
+            catch (Exception ex)
+            {
+                OnQueryException(ex);
+            }
         }
 
         #endregion
