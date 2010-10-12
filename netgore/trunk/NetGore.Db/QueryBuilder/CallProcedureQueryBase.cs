@@ -1,44 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NetGore.Db.QueryBuilder
 {
     /// <summary>
-    /// Base class for an implementation of the <see cref="ISelectFunctionQuery"/>.
+    /// Base class for an implementation of the <see cref="ICallProcedureQuery"/>.
     /// </summary>
-    public abstract class SelectFunctionQueryBase : ISelectFunctionQuery
+    public abstract class CallProcedureQueryBase : ICallProcedureQuery
     {
-        readonly ValueCollectionBuilder<ISelectFunctionQuery> _c;
-        readonly string _function;
+        readonly ValueCollectionBuilder<ICallProcedureQuery> _c;
+        readonly string _procedure;
         readonly IQueryBuilderSettings _settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQueryBase"/> class.
         /// </summary>
-        /// <param name="function">The name of the function.</param>
+        /// <param name="procedure">The name of the stored procedure.</param>
         /// <param name="settings">The <see cref="IQueryBuilderSettings"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="settings"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="function"/> is null or empty.</exception>
-        protected SelectFunctionQueryBase(string function, IQueryBuilderSettings settings)
+        /// <exception cref="ArgumentNullException"><paramref name="procedure"/> is null or empty.</exception>
+        protected CallProcedureQueryBase(string procedure, IQueryBuilderSettings settings)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
-            if (string.IsNullOrEmpty(function))
-                throw new ArgumentNullException("function");
+            if (string.IsNullOrEmpty(procedure))
+                throw new ArgumentNullException("procedure");
 
-            _function = function;
+            _procedure = procedure;
             _settings = settings;
 
-            _c = new ValueCollectionBuilder<ISelectFunctionQuery>(this, settings);
+            _c = new ValueCollectionBuilder<ICallProcedureQuery>(this, settings);
         }
 
         /// <summary>
-        /// Gets the function name.
+        /// Gets the procedure name.
         /// </summary>
-        public string Function
+        public string Procedure
         {
-            get { return _function; }
+            get { return _procedure; }
         }
 
         /// <summary>
@@ -52,12 +51,12 @@ namespace NetGore.Db.QueryBuilder
         /// <summary>
         /// Gets the <see cref="ValueCollectionBuilder{T}"/> used by this object.
         /// </summary>
-        protected ValueCollectionBuilder<ISelectFunctionQuery> ValueCollection
+        protected ValueCollectionBuilder<ICallProcedureQuery> ValueCollection
         {
             get { return _c; }
         }
 
-        #region ISelectFunctionQuery Members
+        #region ICallProcedureQuery Members
 
         /// <summary>
         /// Adds a raw value to the collection.
@@ -65,7 +64,7 @@ namespace NetGore.Db.QueryBuilder
         /// <param name="value">The raw value string.</param>
         /// <returns>The return object.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public ISelectFunctionQuery Add(string value)
+        public ICallProcedureQuery Add(string value)
         {
             return _c.Add(value);
         }
@@ -76,7 +75,7 @@ namespace NetGore.Db.QueryBuilder
         /// <param name="values">The raw value strings.</param>
         /// <returns>The return object.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
-        public ISelectFunctionQuery Add(IEnumerable<string> values)
+        public ICallProcedureQuery Add(IEnumerable<string> values)
         {
             return _c.Add(values);
         }
@@ -87,7 +86,7 @@ namespace NetGore.Db.QueryBuilder
         /// <param name="values">The raw value strings.</param>
         /// <returns>The return object.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
-        public ISelectFunctionQuery Add(params string[] values)
+        public ICallProcedureQuery Add(params string[] values)
         {
             return _c.Add(values);
         }
@@ -98,7 +97,7 @@ namespace NetGore.Db.QueryBuilder
         /// <param name="value">The name of the parameter.</param>
         /// <returns>The return object.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public ISelectFunctionQuery AddParam(string value)
+        public ICallProcedureQuery AddParam(string value)
         {
             return _c.AddParam(value);
         }
@@ -109,7 +108,7 @@ namespace NetGore.Db.QueryBuilder
         /// <param name="values">The names of the parameters.</param>
         /// <returns>The return object.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
-        public ISelectFunctionQuery AddParam(IEnumerable<string> values)
+        public ICallProcedureQuery AddParam(IEnumerable<string> values)
         {
             return _c.AddParam(values);
         }
@@ -120,7 +119,7 @@ namespace NetGore.Db.QueryBuilder
         /// <param name="values">The names of the parameters.</param>
         /// <returns>The return object.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="values"/> is null.</exception>
-        public ISelectFunctionQuery AddParam(params string[] values)
+        public ICallProcedureQuery AddParam(params string[] values)
         {
             return _c.AddParam(values);
         }

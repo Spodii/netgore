@@ -388,6 +388,30 @@ namespace NetGore.Tests.Db.MySql
         }
 
         [Test]
+        public void CallProcedureQueryTest01()
+        {
+            const string expected = "CALL MyProc()";
+            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void CallProcedureQueryTest02()
+        {
+            const string expected = "CALL MyProc(5)";
+            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc").Add("5");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
+        public void CallProcedureQueryTest03()
+        {
+            const string expected = "CALL MyProc(5,a,x,b,@assd)";
+            var q = MySqlQueryBuilder.Instance.CallProcedure("MyProc").Add("5", "a", "x", "b").AddParam("assd");
+            Assert.AreEqual(expected, q.ToString());
+        }
+
+        [Test]
         public void SelectFunctionQueryTest01()
         {
             const string expected = "SELECT MyFunc()";
@@ -406,8 +430,8 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void SelectFunctionQueryTest03()
         {
-            const string expected = "SELECT MyFunc(5,a,x,b,assd)";
-            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5", "a", "x", "b").Add("assd");
+            const string expected = "SELECT MyFunc(5,a,x,b,@assd)";
+            var q = MySqlQueryBuilder.Instance.SelectFunction("MyFunc").Add("5", "a", "x", "b").AddParam("assd");
             Assert.AreEqual(expected, q.ToString());
         }
 

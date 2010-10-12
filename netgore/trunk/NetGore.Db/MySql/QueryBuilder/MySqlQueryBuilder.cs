@@ -99,6 +99,17 @@ namespace NetGore.Db.MySql.QueryBuilder
         }
 
         /// <summary>
+        /// Creates an <see cref="ICallProcedureQuery"/>.
+        /// </summary>
+        /// <param name="procedureName">The name of the stored procedure.</param>
+        /// <returns>The <see cref="ISelectQuery"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="procedureName"/> is null or empty.</exception>
+        public ICallProcedureQuery CallProcedure(string procedureName)
+        {
+            return new MySqlCallProcedureQuery(procedureName);
+        }
+
+        /// <summary>
         /// Creates an <see cref="IUpdateQuery"/>.
         /// </summary>
         /// <param name="tableName">The name of the table to update.</param>

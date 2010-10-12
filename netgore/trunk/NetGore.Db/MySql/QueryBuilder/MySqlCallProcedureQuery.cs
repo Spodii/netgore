@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
 {
     /// <summary>
-    /// An <see cref="ISelectFunctionQuery"/> for MySql.
+    /// An <see cref="ICallProcedureQuery"/> for MySql.
     /// </summary>
-    class MySqlSelectFunctionQuery : SelectFunctionQueryBase
+    class MySqlCallProcedureQuery : CallProcedureQueryBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MySqlSelectFunctionQuery"/> class.
+        /// Initializes a new instance of the <see cref="MySqlCallProcedureQuery"/> class.
         /// </summary>
-        /// <param name="function">The name of the function.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="function"/> is null or empty.</exception>
-        public MySqlSelectFunctionQuery(string function) : base(function, MySqlQueryBuilderSettings.Instance)
+        /// <param name="procedure">The name of the stored procedure.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="procedure"/> is null or empty.</exception>
+        public MySqlCallProcedureQuery(string procedure)
+            : base(procedure, MySqlQueryBuilderSettings.Instance)
         {
         }
 
@@ -30,8 +30,8 @@ namespace NetGore.Db.MySql.QueryBuilder
             var sb = new StringBuilder();
 
             // Base operator
-            sb.Append("SELECT ");
-            sb.Append(Function);
+            sb.Append("CALL ");
+            sb.Append(Procedure);
             sb.Append("(");
 
             // Columns
