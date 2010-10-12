@@ -56,17 +56,17 @@ namespace DemoGame.Editor.TypeConverters
                     var am = AllianceManager.Instance;
 
                     var sb = new StringBuilder();
+
                     sb.Append("{");
-                    foreach (var v in ev)
+                    foreach (var v in ev.OrderBy(x=>x))
                     {
                         sb.Append(am[v].Name);
                         sb.Append(", ");
                     }
+                    sb.Append("}");
 
                     if (sb.Length > 2)
                         sb.Length -= 2;
-
-                    sb.Append("}");
 
                     return sb.ToString();
                 }

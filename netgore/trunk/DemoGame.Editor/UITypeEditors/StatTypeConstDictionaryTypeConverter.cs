@@ -53,7 +53,7 @@ namespace DemoGame.Editor.UITypeEditors
             {
                 var v = value as IEnumerable<KeyValuePair<StatType, int>>;
                 if (v != null)
-                    return v.Where(x => x.Value != 0).Implode();
+                    return v.Where(x => x.Value != 0).OrderBy(x=>x.Value).ThenBy(x=>x.Key).Implode();
             }
 
             return base.ConvertTo(context, culture, value, destinationType);
