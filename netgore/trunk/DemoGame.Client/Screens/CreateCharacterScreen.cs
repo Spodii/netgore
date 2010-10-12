@@ -13,7 +13,7 @@ namespace DemoGame.Client
         const string _title = "Create Character";
 
         Control _btnCreateCharacter;
-        Label _cError;
+        TextBox _cStatus;
         ClientSockets _sockets = null;
         TextBox _txtName;
 
@@ -37,7 +37,7 @@ namespace DemoGame.Client
                 _sockets = ClientSockets.Instance;
 
             _btnCreateCharacter.IsEnabled = true;
-            _cError.IsVisible = false;
+            _cStatus.IsVisible = false;
 
             _sockets.PacketHandler.ReceivedCreateAccountCharacter += PacketHandler_ReceivedCreateAccountCharacter;
         }
@@ -82,13 +82,14 @@ namespace DemoGame.Client
             _btnCreateCharacter.Clicked += ClickButton_CreateCharacter;
             menuButtons["Back"].Clicked += ClickButton_Back;
 
-            _cError = GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 500), string.Empty);
-            _cError.ForeColor = Color.Red;
-
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Name:");
 
             _txtName = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
             { IsMultiLine = false, Text = "", IsEnabled = true };
+
+            var textBoxPos = new Vector2(60, _txtName.Position.Y + _txtName.Size.Y + 20);
+            var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
         }
 
         void PacketHandler_ReceivedCreateAccountCharacter(IIPSocket sender, bool successful, string errorMessage)
@@ -110,12 +111,16 @@ namespace DemoGame.Client
         /// <param name="message">Error message</param>
         void SetError(string message)
         {
-            Debug.Assert(_cError != null, "_cError is null.");
-            if (_cError == null)
-                return;
-
-            _cError.Text = string.Format("Error: {0}", message);
-            _cError.IsVisible = true;
+            if (string.IsNullOrEmpty(message))
+            {
+                _cStatus.Text = string.Empty;
+                _cStatus.IsVisible = false;
+            }
+            else
+            {
+                _cStatus.Text = "Error: " + message;
+                _cStatus.IsVisible = true;
+            }
         }
     }
 }

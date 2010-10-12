@@ -19,7 +19,7 @@ namespace DemoGame.Client
         TextBox _cPasswordText;
         Control _createAccountButton;
         ClientSockets _sockets = null;
-        Label _statusLabel;
+        TextBox _cStatus;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NewAccountScreen"/> class.
@@ -118,8 +118,6 @@ namespace DemoGame.Client
 
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
-            _statusLabel = GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(410, 80), string.Empty);
-
             // Create the new account fields. Use a different font since our default TextBox font doesn't support some characters
             // needed for email, and it'd look funny to only change it for the email textbox.
             var textBoxFont = ScreenManager.Content.LoadFont("Font/Arial", (int)GameScreenHelper.DefaultScreenFont.DefaultSize,
@@ -136,6 +134,10 @@ namespace DemoGame.Client
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Email:");
             _cEmailText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
+
+            var textBoxPos = new Vector2(60, _cEmailText.Position.Y + _cEmailText.Size.Y + 20);
+            var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Create Account", "Back");
@@ -183,12 +185,12 @@ namespace DemoGame.Client
         {
             if (errorMsg == null)
             {
-                _statusLabel.Text = string.Empty;
+                _cStatus.Text = string.Empty;
                 return;
             }
 
-            _statusLabel.Text = errorMsg;
-            _statusLabel.ForeColor = Color.Red;
+            _cStatus.Text = errorMsg;
+            _cStatus.ForeColor = Color.Red;
         }
 
         /// <summary>
@@ -199,12 +201,12 @@ namespace DemoGame.Client
         {
             if (message == null)
             {
-                _statusLabel.Text = string.Empty;
+                _cStatus.Text = string.Empty;
                 return;
             }
 
-            _statusLabel.Text = message;
-            _statusLabel.ForeColor = Color.Green;
+            _cStatus.Text = message;
+            _cStatus.ForeColor = Color.Green;
         }
 
         /// <summary>
