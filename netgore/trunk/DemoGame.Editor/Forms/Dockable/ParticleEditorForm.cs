@@ -27,7 +27,6 @@ namespace DemoGame.Editor
         public PropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
 
         GrhData _defaultEmitterSprite;
-
         IParticleEffect _particleEffect;
 
         /// <summary>
@@ -135,6 +134,11 @@ namespace DemoGame.Editor
             lstEmitters.RemoveItemAndReselect(emitter);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnClone control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnClone_Click(object sender, EventArgs e)
         {
             var emitter = pgEmitter.SelectedObject as ParticleEmitter;
@@ -230,6 +234,11 @@ namespace DemoGame.Editor
             lstEmitters.SelectedItem = newEmitter;
         }
 
+        /// <summary>
+        /// Handles the MouseMove event of the gameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void gameScreen_MouseMove(object sender, MouseEventArgs e)
         {
             if ((e.Button & MouseButtons.Left) == 0)
@@ -249,6 +258,11 @@ namespace DemoGame.Editor
                 lstEmitters.Items.Add(emitter);
         }
 
+        /// <summary>
+        /// Handles the SelectedValueChanged event of the lstEmitters control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstEmitters_SelectedValueChanged(object sender, EventArgs e)
         {
             pgEmitter.SelectedObject = null;
@@ -265,6 +279,16 @@ namespace DemoGame.Editor
                 cmbEmitterType.SelectedIndex = -1;
             }
             pgEmitter.SelectedObject = lstEmitters.SelectedItem;
+        }
+
+        /// <summary>
+        /// Handles the MouseDown event of the gameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        private void gameScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            gameScreen_MouseMove(sender, e);
         }
     }
 }
