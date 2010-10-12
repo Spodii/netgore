@@ -29,7 +29,7 @@ namespace DemoGame.Server
 
         static readonly DeleteCharacterStatusEffectQuery _deleteQuery;
         static readonly ActiveStatusEffectIDCreator _idCreator;
-        static readonly ReplaceCharacterStatusEffectQuery _replaceQuery;
+        static readonly InsertCharacterStatusEffectQuery _insertQuery;
         static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
         static readonly IEqualityComparer<StatusEffectType> _statusEffectTypeComparer = EnumComparer<StatusEffectType>.Instance;
 
@@ -42,7 +42,7 @@ namespace DemoGame.Server
         {
             IDbController dbController = DbControllerBase.GetInstance();
             _idCreator = dbController.GetQuery<ActiveStatusEffectIDCreator>();
-            _replaceQuery = dbController.GetQuery<ReplaceCharacterStatusEffectQuery>();
+            _insertQuery = dbController.GetQuery<InsertCharacterStatusEffectQuery>();
             _deleteQuery = dbController.GetQuery<DeleteCharacterStatusEffectQuery>();
         }
 
@@ -258,7 +258,7 @@ namespace DemoGame.Server
                 StatusEffect = item.Value.StatusEffect.StatusEffectType
             };
 
-            _replaceQuery.Execute(values);
+            _insertQuery.Execute(values);
         }
 
         /// <summary>

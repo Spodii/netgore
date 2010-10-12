@@ -10,14 +10,14 @@ using NetGore.Features.Quests;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceQuestRequireStartItemQuery : DbQueryNonReader<IQuestRequireStartItemTable>
+    public class InsertQuestRequireKillQuery : DbQueryNonReader<IQuestRequireKillTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceQuestRequireStartItemQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertQuestRequireKillQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceQuestRequireStartItemQuery(DbConnectionPool connectionPool)
+        public InsertQuestRequireKillQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
@@ -33,20 +33,20 @@ namespace DemoGame.Server.Queries
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
             var q =
-                qb.Insert(QuestRequireStartItemTable.TableName).AddAutoParam(QuestRequireStartItemTable.DbColumns).ODKU().
-                    AddFromInsert(QuestRequireStartItemTable.DbKeyColumns);
+                qb.Insert(QuestRequireKillTable.TableName).AddAutoParam(QuestRequireKillTable.DbColumns).ODKU().AddFromInsert(
+                    QuestRequireKillTable.DbKeyColumns);
             return q.ToString();
         }
 
-        public int Execute(QuestID questID, ItemTemplateID itemID, byte amount)
+        public int Execute(QuestID questID, CharacterTemplateID reqCharID, ushort amount)
         {
-            return Execute(new QuestRequireStartItemTable(amount, itemID, questID));
+            return Execute(new QuestRequireKillTable(amount, reqCharID, questID));
         }
 
-        public int Execute(QuestID questID, IEnumerable<KeyValuePair<ItemTemplateID, byte>> items)
+        public int Execute(QuestID questID, IEnumerable<KeyValuePair<CharacterTemplateID, ushort>> reqChars)
         {
             var sum = 0;
-            foreach (var item in items)
+            foreach (var item in reqChars)
             {
                 sum += Execute(questID, item.Key, item.Value);
             }
@@ -62,7 +62,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(QuestRequireStartItemTable.DbColumns);
+            return CreateParameters(QuestRequireKillTable.DbColumns);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, IQuestRequireStartItemTable item)
+        protected override void SetParameters(DbParameterValues p, IQuestRequireKillTable item)
         {
             item.CopyValues(p);
         }

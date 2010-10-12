@@ -38,7 +38,7 @@ namespace DemoGame.Server.Guilds
         /// <returns></returns>
         static Action<IGuildMember> GetSaveHandler(IDbController dbController)
         {
-            var replaceQuery = dbController.GetQuery<ReplaceGuildMemberQuery>();
+            var replaceQuery = dbController.GetQuery<InsertGuildMemberQuery>();
             var deleteQuery = dbController.GetQuery<DeleteGuildMemberQuery>();
 
             return delegate(IGuildMember target)
@@ -53,7 +53,7 @@ namespace DemoGame.Server.Guilds
                     var id = new CharacterID(target.ID);
                     var guildID = target.Guild.ID;
                     var rank = target.GuildRank;
-                    var args = new ReplaceGuildMemberQuery.QueryArgs(id, guildID, rank);
+                    var args = new InsertGuildMemberQuery.QueryArgs(id, guildID, rank);
                     replaceQuery.Execute(args);
                 }
             };

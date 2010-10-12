@@ -42,9 +42,9 @@ namespace DemoGame.Server
         static readonly ItemIDCreator _queryIDCreator;
 
         /// <summary>
-        /// The <see cref="ReplaceItemQuery"/> instance to use.
+        /// The <see cref="InsertItemQuery"/> instance to use.
         /// </summary>
-        static readonly ReplaceItemQuery _queryReplaceItem;
+        static readonly InsertItemQuery _queryInsertItem;
 
         /// <summary>
         /// The <see cref="SelectItemQuery"/> instance to use.
@@ -81,7 +81,7 @@ namespace DemoGame.Server
         {
             var dbController = DbControllerBase.GetInstance();
             _queryUpdateItemField = dbController.GetQuery<UpdateItemFieldQuery>();
-            _queryReplaceItem = dbController.GetQuery<ReplaceItemQuery>();
+            _queryInsertItem = dbController.GetQuery<InsertItemQuery>();
             _queryIDCreator = dbController.GetQuery<ItemIDCreator>();
             _queryDeleteItem = dbController.GetQuery<DeleteItemQuery>();
             _querySelectItem = dbController.GetQuery<SelectItemQuery>();
@@ -206,7 +206,7 @@ namespace DemoGame.Server
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
             var itemValues = DeepCopyValues();
-            _queryReplaceItem.Execute(itemValues);
+            _queryInsertItem.Execute(itemValues);
 
             Resized += ItemEntity_Resized;
         }

@@ -4,37 +4,36 @@ using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
+using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceAllianceHostileQuery : DbQueryNonReader<IAllianceHostileTable>
+    public class InsertUpdateAllianceQuery : DbQueryNonReader<IAllianceTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", AllianceHostileTable.TableName,
-                                                             FormatParametersIntoValuesString(AllianceHostileTable.DbColumns));
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceAllianceHostileQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertUpdateAllianceQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceAllianceHostileQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public InsertUpdateAllianceQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
-        public int Execute(AllianceID allianceID, AllianceID hostileID)
+        /// <summary>
+        /// Creates the query for this class.
+        /// </summary>
+        /// <param name="qb">The <see cref="IQueryBuilder"/> instance.</param>
+        /// <returns>The query for this class.</returns> 
+        static string CreateQuery(IQueryBuilder qb)
         {
-            return Execute(new AllianceHostileTable(allianceID, hostileID));
-        }
+            // INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE <{1} - primary keys>
 
-        public int Execute(AllianceID allianceID, IEnumerable<AllianceID> hostileIDs)
-        {
-            var sum = 0;
-            foreach (var hostileID in hostileIDs)
-            {
-                sum += Execute(allianceID, hostileID);
-            }
-            return sum;
+            var q =
+                qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns).ODKU().AddFromInsert(
+                    AllianceTable.DbKeyColumns);
+            return q.ToString();
         }
 
         /// <summary>
@@ -46,7 +45,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(AllianceHostileTable.DbColumns);
+            return CreateParameters(AllianceTable.DbColumns);
         }
 
         /// <summary>
@@ -55,7 +54,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, IAllianceHostileTable item)
+        protected override void SetParameters(DbParameterValues p, IAllianceTable item)
         {
             item.CopyValues(p);
         }

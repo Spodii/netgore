@@ -9,13 +9,13 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceCharacterStatusEffectQuery : DbQueryNonReader<ICharacterStatusEffectTable>
+    public class InsertCharacterStatusEffectQuery : DbQueryNonReader<ICharacterStatusEffectTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceCharacterStatusEffectQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertCharacterStatusEffectQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterStatusEffectQuery(DbConnectionPool connectionPool)
+        public InsertCharacterStatusEffectQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }

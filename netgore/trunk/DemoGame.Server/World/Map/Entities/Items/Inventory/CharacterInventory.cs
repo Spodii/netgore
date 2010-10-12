@@ -197,7 +197,7 @@ namespace DemoGame.Server
             else
             {
                 if (!_isLoading)
-                    DbController.GetQuery<ReplaceCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
+                    DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
             }
 
             // Prepare the slot for updating
