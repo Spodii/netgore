@@ -231,7 +231,6 @@ namespace CodeReleasePreparer
                 return;
             }
 
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
 #pragma warning disable 162
             if (_buildSchemaOnly)
             {
@@ -239,8 +238,7 @@ namespace CodeReleasePreparer
                 Console.WriteLine("Done!");
                 return;
             }
-#pragma warning enable 162
-            // ReSharper enable ConditionIsAlwaysTrueOrFalse
+#pragma warning restore 162
 
             // Clean out the items table in the database
             Console.WriteLine("Cleaning out database...");
