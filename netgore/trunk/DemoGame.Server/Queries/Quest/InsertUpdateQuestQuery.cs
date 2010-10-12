@@ -5,20 +5,18 @@ using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
-using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceQuestRequireStartQuestQuery : DbQueryNonReader<IQuestRequireStartQuestTable>
+    public class InsertUpdateQuestQuery : DbQueryNonReader<IQuestTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceQuestRequireStartQuestQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertUpdateQuestQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceQuestRequireStartQuestQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        public InsertUpdateQuestQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
@@ -29,27 +27,12 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // INSERT IGNORE INTO {0} {1}
+            // INSERT INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
             var q =
-                qb.Insert(QuestRequireStartQuestTable.TableName).IgnoreExists().AddAutoParam(QuestRequireStartQuestTable.DbColumns);
+                qb.Insert(QuestTable.TableName).AddAutoParam(QuestTable.DbColumns).ODKU().AddFromInsert(QuestTable.DbKeyColumns);
             return q.ToString();
-        }
-
-        public int Execute(QuestID questID, QuestID reqQuestID)
-        {
-            return Execute(new QuestRequireStartQuestTable(questID, reqQuestID));
-        }
-
-        public int Execute(QuestID questID, IEnumerable<QuestID> reqQuests)
-        {
-            var sum = 0;
-            foreach (var item in reqQuests)
-            {
-                sum += Execute(questID, item);
-            }
-            return sum;
         }
 
         /// <summary>
@@ -61,7 +44,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(QuestRequireStartQuestTable.DbColumns);
+            return CreateParameters(QuestTable.DbColumns);
         }
 
         /// <summary>
@@ -70,7 +53,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, IQuestRequireStartQuestTable item)
+        protected override void SetParameters(DbParameterValues p, IQuestTable item)
         {
             item.CopyValues(p);
         }

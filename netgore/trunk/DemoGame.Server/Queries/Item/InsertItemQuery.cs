@@ -3,21 +3,19 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
+    public class InsertItemQuery : DbQueryNonReader<IItemTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceCharacterInventoryItemQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterInventoryItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        public InsertItemQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
@@ -28,18 +26,11 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // INSERT INTO `{0}` {1}
+            // INSERT INTO {0} {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
-            var q =
-                qb.Insert(CharacterInventoryTable.TableName).AddAutoParam(CharacterInventoryTable.DbColumns).ODKU().AddFromInsert(
-                    CharacterInventoryTable.DbKeyColumns);
+            var q = qb.Insert(ItemTable.TableName).AddAutoParam(ItemTable.DbColumns).ODKU().AddFromInsert(ItemTable.DbKeyColumns);
             return q.ToString();
-        }
-
-        public void Execute(CharacterID characterID, ItemID itemID, InventorySlot slot)
-        {
-            Execute(new CharacterInventoryTable(characterID, itemID, slot));
         }
 
         /// <summary>
@@ -49,15 +40,15 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(CharacterInventoryTable.DbColumns);
+            return CreateParameters(ItemTable.DbColumns);
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+        /// When overridden in the derived class, sets the database parameters based on the specified item.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
+        protected override void SetParameters(DbParameterValues p, IItemTable item)
         {
             item.CopyValues(p);
         }

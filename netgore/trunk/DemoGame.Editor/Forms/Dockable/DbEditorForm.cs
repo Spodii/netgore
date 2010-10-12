@@ -353,11 +353,11 @@ namespace DemoGame.Editor
 
             // Main values
             _dbController.GetQuery<DeleteAllianceQuery>().Execute(v.ID);
-            _dbController.GetQuery<ReplaceAllianceQuery>().Execute(v);
+            _dbController.GetQuery<InsertUpdateAllianceQuery>().Execute(v);
 
             // Attackable/hostile lists
             _dbController.GetQuery<InsertAllianceAttackableQuery>().Execute(v.ID, v.Attackable);
-            _dbController.GetQuery<ReplaceAllianceHostileQuery>().Execute(v.ID, v.Hostile);
+            _dbController.GetQuery<InsertAllianceHostileQuery>().Execute(v.ID, v.Hostile);
 
             // Reload from the database
             AllianceManager.Instance.Reload(v.ID);
@@ -447,7 +447,7 @@ namespace DemoGame.Editor
                     throw;
                 }
 
-                _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(newItem);
+                _dbController.GetQuery<InsertCharacterTemplateQuery>().Execute(newItem);
             }
             else
             {
@@ -472,9 +472,9 @@ namespace DemoGame.Editor
                 return;
 
             // Save
-            _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(v);
+            _dbController.GetQuery<InsertCharacterTemplateQuery>().Execute(v);
 
-            var equippedQuery = _dbController.GetQuery<ReplaceCharacterTemplateEquippedQuery>();
+            var equippedQuery = _dbController.GetQuery<InsertCharacterTemplateEquippedQuery>();
             foreach (var item in v.Equipped)
             {
                 var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool, CharacterTemplateEquippedTable.TableName,
@@ -483,7 +483,7 @@ namespace DemoGame.Editor
                 equippedQuery.Execute(queryArg);
             }
 
-            var inventoryQuery = _dbController.GetQuery<ReplaceCharacterTemplateInventoryQuery>();
+            var inventoryQuery = _dbController.GetQuery<InsertCharacterTemplateInventoryQuery>();
             foreach (var item in v.Inventory)
             {
                 var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool,
@@ -492,7 +492,7 @@ namespace DemoGame.Editor
                 inventoryQuery.Execute(queryArg);
             }
 
-            var questQuery = _dbController.GetQuery<ReplaceCharacterTemplateQuestProviderQuery>();
+            var questQuery = _dbController.GetQuery<InsertCharacterTemplateQuestProviderQuery>();
             foreach (var item in v.GiveQuests)
             {
                 var queryArg = new CharacterTemplateQuestProviderTable(characterTemplateID: v.ID, questID: item);
@@ -587,7 +587,7 @@ namespace DemoGame.Editor
                     throw;
                 }
 
-                _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(newItem);
+                _dbController.GetQuery<InsertItemTemplateQuery>().Execute(newItem);
             }
             else
             {
@@ -612,7 +612,7 @@ namespace DemoGame.Editor
                 return;
 
             // Save
-            _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
+            _dbController.GetQuery<InsertItemTemplateQuery>().Execute(v);
 
             // Reload from the database
             ItemTemplateManager.Instance.Reload(v.ID);
@@ -863,27 +863,27 @@ namespace DemoGame.Editor
 
             // Main quest table values
             _dbController.GetQuery<DeleteQuestQuery>().Execute(v.ID);
-            _dbController.GetQuery<ReplaceQuestQuery>().Execute(v);
+            _dbController.GetQuery<InsertUpdateQuestQuery>().Execute(v);
 
             // Required items to start/finish
-            _dbController.GetQuery<ReplaceQuestRequireStartItemQuery>().Execute(v.ID,
+            _dbController.GetQuery<InsertQuestRequireStartItemQuery>().Execute(v.ID,
                                                                                 v.StartItems.Select(
                                                                                     x => (KeyValuePair<ItemTemplateID, byte>)x));
-            _dbController.GetQuery<ReplaceQuestRequireFinishItemQuery>().Execute(v.ID,
+            _dbController.GetQuery<InsertQuestRequireFinishItemQuery>().Execute(v.ID,
                                                                                  v.FinishItems.Select(
                                                                                      x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             // Required quests to start/finish
-            _dbController.GetQuery<ReplaceQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
-            _dbController.GetQuery<ReplaceQuestRequireFinishQuestQuery>().Execute(v.ID, v.FinishQuests);
+            _dbController.GetQuery<InsertQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
+            _dbController.GetQuery<InsertQuestRequireFinishQuestQuery>().Execute(v.ID, v.FinishQuests);
 
             // Other requirements
-            _dbController.GetQuery<ReplaceQuestRequireKillQuery>().Execute(v.ID,
+            _dbController.GetQuery<InsertQuestRequireKillQuery>().Execute(v.ID,
                                                                            v.Kills.Select(
                                                                                x => (KeyValuePair<CharacterTemplateID, ushort>)x));
 
             // Rewards
-            _dbController.GetQuery<ReplaceQuestRewardItemQuery>().Execute(v.ID,
+            _dbController.GetQuery<InsertQuestRewardItemQuery>().Execute(v.ID,
                                                                           v.RewardItems.Select(
                                                                               x => (KeyValuePair<ItemTemplateID, byte>)x));
 

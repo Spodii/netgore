@@ -3,20 +3,20 @@ using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceCharacterTemplateQuery : DbQueryNonReader<ICharacterTemplateTable>
+    public class InsertCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertCharacterInventoryItemQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public ReplaceCharacterTemplateQuery(DbConnectionPool connectionPool)
+        /// <param name="connectionPool">The connection pool.</param>
+        public InsertCharacterInventoryItemQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
@@ -32,30 +32,32 @@ namespace DemoGame.Server.Queries
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
             var q =
-                qb.Insert(CharacterTemplateTable.TableName).AddAutoParam(CharacterTemplateTable.DbColumns).ODKU().AddFromInsert(
-                    CharacterTemplateTable.DbKeyColumns);
+                qb.Insert(CharacterInventoryTable.TableName).AddAutoParam(CharacterInventoryTable.DbColumns).ODKU().AddFromInsert(
+                    CharacterInventoryTable.DbKeyColumns);
             return q.ToString();
+        }
+
+        public void Execute(CharacterID characterID, ItemID itemID, InventorySlot slot)
+        {
+            Execute(new CharacterInventoryTable(characterID, itemID, slot));
         }
 
         /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
-        /// <returns>
-        /// IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
-        /// If null, no parameters will be used.
-        /// </returns>
+        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
+        /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(CharacterTemplateTable.DbColumns);
+            return CreateParameters(CharacterInventoryTable.DbColumns);
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
-        /// based on the values specified in the given <paramref name="item"/> parameter.
+        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, ICharacterTemplateTable item)
+        /// <param name="item">Item used to execute the query.</param>
+        protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
             item.CopyValues(p);
         }

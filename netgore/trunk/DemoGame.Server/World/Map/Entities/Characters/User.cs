@@ -39,7 +39,7 @@ namespace DemoGame.Server
         static readonly DeleteGuildMemberQuery _deleteGuildMemberQuery;
         static readonly GuildManager _guildManager = GuildManager.Instance;
         static readonly InsertCharacterQuestStatusStartQuery _insertCharacterQuestStatusStartQuery;
-        static readonly ReplaceGuildMemberQuery _replaceGuildMemberQuery;
+        static readonly InsertGuildMemberQuery _insertGuildMemberQuery;
         static readonly SelectGuildMemberQuery _selectGuildMemberQuery;
         static readonly UpdateCharacterQuestStatusFinishedQuery _updateCharacterQuestStatusFinishedQuery;
 
@@ -61,7 +61,7 @@ namespace DemoGame.Server
         {
             var dbController = DbControllerBase.GetInstance();
             _deleteGuildMemberQuery = dbController.GetQuery<DeleteGuildMemberQuery>();
-            _replaceGuildMemberQuery = dbController.GetQuery<ReplaceGuildMemberQuery>();
+            _insertGuildMemberQuery = dbController.GetQuery<InsertGuildMemberQuery>();
             _selectGuildMemberQuery = dbController.GetQuery<SelectGuildMemberQuery>();
 
             _insertCharacterQuestStatusStartQuery = dbController.GetQuery<InsertCharacterQuestStatusStartQuery>();
@@ -1286,8 +1286,8 @@ namespace DemoGame.Server
                 _deleteGuildMemberQuery.Execute(ID);
             else
             {
-                var values = new ReplaceGuildMemberQuery.QueryArgs(ID, Guild.ID, ((IGuildMember)this).GuildRank);
-                _replaceGuildMemberQuery.Execute(values);
+                var values = new InsertGuildMemberQuery.QueryArgs(ID, Guild.ID, ((IGuildMember)this).GuildRank);
+                _insertGuildMemberQuery.Execute(values);
             }
         }
 

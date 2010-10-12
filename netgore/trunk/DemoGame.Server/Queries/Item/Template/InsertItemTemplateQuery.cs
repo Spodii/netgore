@@ -5,19 +5,18 @@ using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
-using NetGore.Features.Quests;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceQuestRewardItemQuery : DbQueryNonReader<IQuestRewardItemTable>
+    public class InsertItemTemplateQuery : DbQueryNonReader<IItemTemplateTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceQuestRewardItemQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertItemTemplateQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceQuestRewardItemQuery(DbConnectionPool connectionPool)
+        public InsertItemTemplateQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
@@ -33,24 +32,9 @@ namespace DemoGame.Server.Queries
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
             var q =
-                qb.Insert(QuestRewardItemTable.TableName).AddAutoParam(QuestRewardItemTable.DbColumns).ODKU().AddFromInsert(
-                    QuestRewardItemTable.DbKeyColumns);
+                qb.Insert(ItemTemplateTable.TableName).AddAutoParam(ItemTemplateTable.DbColumns).ODKU().AddFromInsert(
+                    ItemTemplateTable.DbKeyColumns);
             return q.ToString();
-        }
-
-        public int Execute(QuestID questID, ItemTemplateID itemID, byte amount)
-        {
-            return Execute(new QuestRewardItemTable(amount, itemID, questID));
-        }
-
-        public int Execute(QuestID questID, IEnumerable<KeyValuePair<ItemTemplateID, byte>> items)
-        {
-            var sum = 0;
-            foreach (var item in items)
-            {
-                sum += Execute(questID, item.Key, item.Value);
-            }
-            return sum;
         }
 
         /// <summary>
@@ -62,7 +46,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(QuestRewardItemTable.DbColumns);
+            return CreateParameters(ItemTemplateTable.DbColumns);
         }
 
         /// <summary>
@@ -71,7 +55,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, IQuestRewardItemTable item)
+        protected override void SetParameters(DbParameterValues p, IItemTemplateTable item)
         {
             item.CopyValues(p);
         }

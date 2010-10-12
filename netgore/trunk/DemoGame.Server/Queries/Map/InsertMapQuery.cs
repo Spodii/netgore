@@ -9,13 +9,13 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceMapQuery : DbQueryNonReader<IMapTable>
+    public class InsertMapQuery : DbQueryNonReader<IMapTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceMapQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertMapQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceMapQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        public InsertMapQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

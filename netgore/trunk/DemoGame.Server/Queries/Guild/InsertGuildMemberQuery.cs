@@ -9,14 +9,14 @@ using NetGore.Features.Guilds;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class ReplaceGuildMemberQuery : DbQueryNonReader<ReplaceGuildMemberQuery.QueryArgs>
+    public class InsertGuildMemberQuery : DbQueryNonReader<InsertGuildMemberQuery.QueryArgs>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceGuildMemberQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertGuildMemberQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceGuildMemberQuery(DbConnectionPool connectionPool)
+        public InsertGuildMemberQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(GuildMemberTable.DbColumns, "character_id", "guild_id", "rank", "joined");
@@ -63,7 +63,7 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// Arguments for the <see cref="ReplaceGuildMemberQuery"/> query.
+        /// Arguments for the <see cref="InsertGuildMemberQuery"/> query.
         /// </summary>
         public struct QueryArgs
         {
