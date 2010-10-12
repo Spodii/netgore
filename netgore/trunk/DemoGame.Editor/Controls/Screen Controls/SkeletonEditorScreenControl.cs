@@ -24,6 +24,18 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
+        /// </summary>
+        /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
+        protected override void OnRenderWindowCreated(SFML.Graphics.RenderWindow newRenderWindow)
+        {
+            base.OnRenderWindowCreated(newRenderWindow);
+
+            if (SkeletonEditorForm != null && SkeletonEditorForm.DrawingManager != null)
+                SkeletonEditorForm.DrawingManager.RenderWindow = newRenderWindow;
+        }
+
+        /// <summary>
         /// Derived classes override this to initialize their drawing code.
         /// </summary>
         protected override void Initialize()
