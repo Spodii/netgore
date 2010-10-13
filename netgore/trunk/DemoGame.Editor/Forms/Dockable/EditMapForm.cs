@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Forms;
 using DemoGame.Client;
-using NetGore.Editor.EditorTool;
+using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
 {
@@ -28,14 +29,32 @@ namespace DemoGame.Editor
 
         /// <summary>
         /// When overridden in the derived class, gets the object that represents the focus of this <see cref="ToolTargetFormBase"/>
-        /// and what the <see cref="ToolBar"/> is being displayed for.
+        /// and what the <see cref="NetGore.Editor.EditorTool.ToolBar"/> is being displayed for.
         /// </summary>
         /// <returns>
-        /// The object that represents what the <see cref="ToolBar"/> is being displayed for.
+        /// The object that represents what the <see cref="NetGore.Editor.EditorTool.ToolBar"/> is being displayed for.
         /// </returns>
         protected override object GetToolBarObject()
         {
             return MapScreenControl.Map;
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            const string confirmMsg = @"Do you wish to save the map ({0}) before closing?
+If you do not save, all chances will be lost.";
+
+            // Save?
+            var map = mapScreen.Map;
+            if (map != null)
+            {
+                if (MessageBox.Show(string.Format(confirmMsg, map), "Save before closing?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    MapHelper.SaveMap(map);
+                }
+            }
+
+            base.OnClosing(e);
         }
 
         void MapScreenControl_MapChanged(MapScreenControl sender, Map oldValue, Map newValue)

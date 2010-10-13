@@ -5,7 +5,9 @@ using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
+using DemoGame.Server.Queries;
 using log4net;
+using NetGore.Db;
 using NetGore.Editor.EditorTool;
 using NetGore.IO;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
@@ -44,21 +46,7 @@ namespace DemoGame.Editor
                 if (MessageBox.Show(string.Format(confirmMsg, map), "Save map?", MessageBoxButtons.YesNo) == DialogResult.No)
                     return;
 
-                // Add the MapGrh-bound walls
-                var extraWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(map.MapGrhs);
-                foreach (var wall in extraWalls)
-                {
-                    map.AddEntity(wall);
-                }
-
-                // Save the map
-                map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
-
-                // Pull the MapGrh-bound walls back out
-                foreach (var wall in extraWalls)
-                {
-                    map.RemoveEntity(wall);
-                }
+                MapHelper.SaveMap(map);
 
                 const string savedMsg = "Successfully saved the changes to map `{0}`!";
                 MessageBox.Show(string.Format(savedMsg, map), "Map saved", MessageBoxButtons.OK);
