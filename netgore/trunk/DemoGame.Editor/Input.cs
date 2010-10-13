@@ -14,6 +14,16 @@ namespace DemoGame.Editor
         static readonly KeyMessageFilter _keyMessageFilter = new KeyMessageFilter();
 
         /// <summary>
+        /// Ensures the <see cref="Input"/> is initialized. Doesn't require being called, and can be called multiple times, but
+        /// is helpful to call early on.
+        /// </summary>
+        public static void Initialize()
+        {
+            // Calling this method will force the static constructor to run, which will generate the KeyMessageFilter
+            // and start listening for input
+        }
+
+        /// <summary>
         /// Initializes the <see cref="Input"/> class.
         /// </summary>
         static Input()
@@ -63,17 +73,55 @@ namespace DemoGame.Editor
         {
             const int WM_KEYDOWN = 0x0100;
             const int WM_KEYUP = 0x0101;
+            const int WM_SYSKEYDOWN = 0x0104;
+            const int WM_SYSKEYUP = 0x0105;
 
+            /// <summary>
+            /// The regular keys.
+            /// </summary>
             readonly IDictionary<Keys, bool> _keyStates = new TSDictionary<Keys, bool>(EnumComparer<Keys>.Instance);
+
+            bool _altKeyDown = false;
+            bool _f10KeyDown = false;
 
             public bool InternalIsKeyDown(Keys k)
             {
-                bool pressed;
+                var realKey = ConvertKey(k);
 
-                if (_keyStates.TryGetValue(k, out pressed))
-                    return pressed;
+                switch (k)
+                {
+                    case Keys.Alt:
+                        return _altKeyDown;
 
-                return false;
+                    case Keys.F10:
+                        return _f10KeyDown;
+
+                    default:
+                        bool pressed;
+                        if (_keyStates.TryGetValue(realKey, out pressed))
+                            return pressed;
+                        else
+                            return false;
+                }
+            }
+
+            static Keys ConvertKey(Keys key)
+            {
+                switch (key)
+                {
+                    case Keys.Shift:
+                    case Keys.LShiftKey:
+                    case Keys.RShiftKey:
+                        return Keys.Shift;
+
+                    case Keys.Control:
+                    case Keys.LControlKey:
+                    case Keys.RControlKey:
+                        return Keys.ControlKey;
+
+                    default:
+                        return key;
+                }
             }
 
             #region IMessageFilter Members
@@ -87,16 +135,46 @@ namespace DemoGame.Editor
             /// </returns>
             bool IMessageFilter.PreFilterMessage(ref Message m)
             {
-                if (m.Msg == WM_KEYDOWN)
-                    _keyStates[(Keys)m.WParam] = true;
+                switch (m.Msg)
+                {
+                    case WM_KEYDOWN:
+                        _keyStates[(Keys)m.WParam] = true;
+                        break;
 
-                if (m.Msg == WM_KEYUP)
-                    _keyStates[(Keys)m.WParam] = false;
+                    case WM_KEYUP:
+                        _keyStates[(Keys)m.WParam] = false;
+                        break;
+
+                    case WM_SYSKEYDOWN:
+                        SetSysKey(m.WParam.ToInt32(), true);
+                        break;
+
+                    case WM_SYSKEYUP:
+                        SetSysKey(m.WParam.ToInt32(), false);
+                        break;
+                }
 
                 return false;
             }
 
             #endregion
+
+            const int VK_MENU = 0x12;
+            const int VK_F10 = 0x79;
+
+            void SetSysKey(int wParam, bool isDown)
+            {
+                switch (wParam)
+                {
+                    case VK_MENU:
+                        _altKeyDown = isDown;
+                        break;
+
+                    case VK_F10:
+                        _f10KeyDown = isDown;
+                        break;
+                }
+            }
         }
     }
 }
