@@ -5,7 +5,7 @@ using DemoGame.Client;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 
-namespace DemoGame.Editor
+namespace DemoGame.Editor.Tools
 {
     /// <summary>
     /// Base class for a <see cref="Tool"/> specifically for a map. Provides some helper methods to assist with working

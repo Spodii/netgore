@@ -13,7 +13,7 @@ using NetGore.Graphics;
 using NetGore.World;
 using SFML.Graphics;
 
-namespace DemoGame.Editor
+namespace DemoGame.Editor.Tools
 {
     public class MapEntityCursorTool : MapCursorToolBase
     {

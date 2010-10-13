@@ -11,7 +11,7 @@ using NetGore.Editor.EditorTool;
 using NetGore.IO;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
-namespace DemoGame.Editor
+namespace DemoGame.Editor.Tools
 {
     public class MapSaveAsTool : Tool
     {
