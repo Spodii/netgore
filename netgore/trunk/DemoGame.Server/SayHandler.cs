@@ -20,14 +20,66 @@ namespace DemoGame.Server
     /// <summary>
     /// Handles processing what Users say.
     /// </summary>
-    public class SayHandler : SayHandlerBase<User>
+    public class SayHandler : SayHandlerBase<User, SayHandler.SayHandlerCommandAttribute>
     {
+        /// <summary>
+        /// A specialized <see cref="SayCommandAttribute"/> for the <see cref="SayHandler"/>.
+        /// </summary>
+        public class SayHandlerCommandAttribute : SayCommandAttribute
+        {
+            readonly UserPermissions _permissions;
+
+            /// <summary>
+            /// Gets the permission levels required to invoke this command.
+            /// </summary>
+            public UserPermissions Permissions { get { return _permissions; } }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SayHandlerCommandAttribute"/> class.
+            /// </summary>
+            /// <param name="command">The name of the command.</param>
+            /// <param name="permissions">The permission level required to invoke this command.</param>
+            public SayHandlerCommandAttribute(string command, UserPermissions permissions)
+                : base(command)
+            {
+                _permissions = permissions; 
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SayHandler"/> class.
         /// </summary>
         /// <param name="server">Server that the commands are coming from.</param>
         public SayHandler(Server server) : base(new SayCommands(server))
         {
+        }
+
+        /// <summary>
+        /// Gets the message to display when the user is not allowed to invoke a command.
+        /// </summary>
+        /// <param name="user">The user invoking the command.</param>
+        /// <param name="commandData">The information about the command to be invoked.</param>
+        /// <returns>The message to display to the <paramref name="user"/>, or null or empty to display nothing.</returns>
+        protected override string GetCommandNotAllowedMessage(User user, StringCommandParser<SayHandlerCommandAttribute>.CommandData commandData)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets if the given <paramref name="user"/> is allowed to invoke the given command.
+        /// </summary>
+        /// <param name="user">The user invoking the command.</param>
+        /// <param name="commandData">The information about the command to be invoked.</param>
+        /// <returns>True if the command can be invoked; otherwise false.</returns>
+        protected override bool AllowInvokeCommand(User user, StringCommandParser<SayHandlerCommandAttribute>.CommandData commandData)
+        {
+            if (user == null)
+                return false;
+
+            if (!user.Permissions.IsSet(commandData.Attribute.Permissions))
+                return false;
+
+            return base.AllowInvokeCommand(user, commandData);
         }
 
         /// <summary>
@@ -947,7 +999,7 @@ namespace DemoGame.Server
             /// </summary>
             /// <param name="userName">The player to kick.</param>
             /// <param name="reason">The reason the player is being kicked.</param>
-            [SayCommand("Kick")]
+            [SayHandlerCommand("Kick", UserPermissions.Moderator)]
             public void Kick(string userName, string reason)
             {
                 if (!RequirePermissionLevel(UserPermissions.Moderator))
@@ -974,7 +1026,7 @@ namespace DemoGame.Server
             /// <summary>
             /// Toggles the AI.
             /// </summary>
-            [SayCommand("ToggleAI")]
+            [SayHandlerCommand("ToggleAI", UserPermissions.Admin)]
             public void ToggleAI()
             {
                 if (!RequirePermissionLevel(UserPermissions.Admin))

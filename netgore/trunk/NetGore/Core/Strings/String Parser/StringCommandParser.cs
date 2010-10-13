@@ -13,26 +13,56 @@ namespace NetGore
     /// invoked by a string. The parameters for the method are respected, and a method will only be invoked if all
     /// of the arguments are valid for the method's parameters.
     /// </summary>
-    /// <typeparam name="T">The Type of Attribute to search for on the methods to handle. Only methods that
-    /// contain an Attribute of this Type will be handled.</typeparam>
+    /// <typeparam name="T">The type of Attribute to search for on the methods to handle. Only methods that
+    /// contain an Attribute of this type will be handled.</typeparam>
     public class StringCommandParser<T> where T : StringCommandBaseAttribute
     {
+        /// <summary>
+        /// Describes a command in the <see cref="StringCommandParser{T}"/>.
+        /// </summary>
+        public class CommandData
+        {
+            readonly T _attribute;
+            readonly MethodInfo _method;
+            
+            /// <summary>
+            /// Gets the <see cref="MethodInfo"/> for the method to be invoked.
+            /// </summary>
+            public MethodInfo Method { get { return _method; } }
+
+            /// <summary>
+            /// Gets the attribute that resulted in this method being binded to the command.
+            /// </summary>
+            public T Attribute {get { return _attribute; }}
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;.CommandData"/> class.
+            /// </summary>
+            /// <param name="method">The <see cref="MethodInfo"/>.</param>
+            /// <param name="attribute">The attribute.</param>
+            public CommandData(MethodInfo method, T attribute)
+            {
+                _attribute = attribute;
+                _method = method;
+            }
+        }
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Sorter used for the MethodInfos.
+        /// Sorter used for the <see cref="CommandData"/>s.
         /// </summary>
-        static readonly MethodInfoSorter _methodInfoSorter = new MethodInfoSorter();
+        static readonly CommandDataSorter _commandDataSorter = new CommandDataSorter();
 
         /// <summary>
         /// Dictionary containing the command name as the key, and a list of the MethodInfos for the methods
         /// that handle that command as the value.
         /// </summary>
-        readonly Dictionary<string, IEnumerable<MethodInfo>> _commands =
-            new Dictionary<string, IEnumerable<MethodInfo>>(StringComparer.OrdinalIgnoreCase);
+        readonly IDictionary<string, IEnumerable<CommandData>> _commands =
+            new Dictionary<string, IEnumerable<CommandData>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// StringCommandParser constructor.
+        /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="types">Array of Types to check for methods containing an Attribute of
         /// Type <typeparamref name="T"/>.</param>
@@ -41,7 +71,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// StringCommandParser constructor.
+        /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="types">IEnumerable of Types to check for methods containing an Attribute of
         /// Type <typeparamref name="T"/>.</param>
@@ -53,11 +83,13 @@ namespace NetGore
             var methods = MethodInfoHelper.FindMethodsWithAttribute<T>(types);
 
             // Create the dictionary for building the commands
-            var dict = new Dictionary<string, List<MethodInfo>>(StringComparer.OrdinalIgnoreCase);
+            var tmpDict = new Dictionary<string, List<CommandData>>(StringComparer.OrdinalIgnoreCase);
 
             // Set up the methods
             foreach (var method in methods)
             {
+                bool isValidMethod = true;
+
                 // Get the StringCommandBaseAttributes
                 var attributes = method.GetCustomAttributes(typeof(T), true).Cast<T>();
                 if (attributes.IsEmpty())
@@ -81,19 +113,22 @@ namespace NetGore
                         if (log.IsErrorEnabled)
                             log.Error(err);
                         Debug.Fail(err);
-                        throw new ArgumentException(err, "types");
+                        isValidMethod = false;
                     }
                 }
 
-                // Add the commands
-                foreach (var attrib in attributes)
+                if (isValidMethod)
                 {
-                    Add(dict, attrib.Command, method);
+                    // Add the commands
+                    foreach (var attrib in attributes)
+                    {
+                        Add(tmpDict, attrib.Command, method, attrib);
+                    }
                 }
             }
 
-            // Add the commands to the main dictionary, converting them to an array to reduce the memory footprint
-            foreach (var item in dict)
+            // Add the commands to the main dictionary
+            foreach (var item in tmpDict)
             {
                 _commands.Add(item.Key, item.Value.ToArray());
             }
@@ -105,7 +140,8 @@ namespace NetGore
         /// <param name="dict">Dictionary to add to.</param>
         /// <param name="commandName">Name of the command.</param>
         /// <param name="methodInfo">Method for handling hte command.</param>
-        static void Add(IDictionary<string, List<MethodInfo>> dict, string commandName, MethodInfo methodInfo)
+        /// <param name="attrib">The attribute bound to the method.</param>
+        static void Add(IDictionary<string, List<CommandData>> dict, string commandName, MethodInfo methodInfo, T attrib)
         {
             if (string.IsNullOrEmpty(commandName))
                 throw new ArgumentNullException("commandName");
@@ -115,22 +151,22 @@ namespace NetGore
                 throw new ArgumentNullException("dict");
 
             // Grab the List for this commandName
-            List<MethodInfo> methods;
-            if (!dict.TryGetValue(commandName, out methods))
+            List<CommandData> cmdDatas;
+            if (!dict.TryGetValue(commandName, out cmdDatas))
             {
-                methods = new List<MethodInfo>(2);
-                dict.Add(commandName, methods);
+                cmdDatas = new List<CommandData>(2);
+                dict.Add(commandName, cmdDatas);
             }
             else
             {
                 // Check for duplicate parameters for this command
                 var p = methodInfo.GetParameters();
-                foreach (var m in methods)
+                foreach (var cd in cmdDatas)
                 {
-                    if (AreParameterTypesSame(p, m.GetParameters()))
+                    if (AreParameterTypesSame(p, cd.Method.GetParameters()))
                     {
                         const string errmsg = "Methods `{0}` and `{1}` both handle command `{2}` and contain the same parameters.";
-                        var err = string.Format(errmsg, methodInfo, m, commandName);
+                        var err = string.Format(errmsg, methodInfo, cd, commandName);
                         if (log.IsFatalEnabled)
                             log.Error(err);
                         Debug.Fail(err);
@@ -140,10 +176,10 @@ namespace NetGore
             }
 
             // Add the method
-            methods.Add(methodInfo);
+            cmdDatas.Add(new CommandData(methodInfo, attrib));
 
             // Sort the methods so the ones with the most non-string parameters are first
-            methods.Sort(_methodInfoSorter);
+            cmdDatas.Sort(_commandDataSorter);
         }
 
         /// <summary>
@@ -194,7 +230,7 @@ namespace NetGore
         /// Gets a dictionary of each command and the method or methods that handle the command.
         /// </summary>
         /// <returns>A dictionary of each command and the method or methods that handle the command.</returns>
-        public IEnumerable<KeyValuePair<string, IEnumerable<MethodInfo>>> GetCommands()
+        public IEnumerable<KeyValuePair<string, IEnumerable<CommandData>>> GetCommands()
         {
             return _commands;
         }
@@ -225,29 +261,44 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Handles when an invalid command is called.
+        /// Handles when a command with the valid parameters was found, but <see cref="StringCommandParser{T}.AllowInvokeMethod"/>
+        /// returned false for the given <see cref="binder"/>.
         /// </summary>
-        /// <param name="commandName">The name of the command called. Not guarenteed to be an existant command.</param>
+        /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
+        /// this is ignored and can be null.</param>
+        /// <param name="cd">The <see cref="CommandData"/> for the command that the <paramref name="binder"/> was rejected from
+        /// invoking.</param>
         /// <param name="args">Arguments used to invoke the command. Can be null.</param>
         /// <returns>A string containing a message about why the command failed to be handled.</returns>
-        // ReSharper disable UnusedParameter.Global
-        protected virtual string HandleInvalidCommand(string commandName, string[] args)
-            // ReSharper restore UnusedParameter.Global
+        protected virtual string HandleCommandInvokeDenied(object binder, CommandData cd, string[] args)
+        {
+            return string.Format("Object `{0}` was not allowed to invoke command `{1}`.", binder != null ? binder.ToString() : "NULL", cd.Attribute.Command);
+        }
+
+        /// <summary>
+        /// Handles when an invalid command is called.
+        /// </summary>
+        /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
+        /// this is ignored and can be null.</param>
+        /// <param name="commandName">The name of the command called. Not guarenteed to be an existent command.</param>
+        /// <param name="args">Arguments used to invoke the command. Can be null.</param>
+        /// <returns>A string containing a message about why the command failed to be handled.</returns>
+        protected virtual string HandleInvalidCommand(object binder, string commandName, string[] args)
         {
             if (string.IsNullOrEmpty(commandName))
                 return "No command specified.";
 
-            IEnumerable<MethodInfo> methods;
-            if (!_commands.TryGetValue(commandName, out methods))
+            IEnumerable<CommandData> cmdDatas;
+            if (!_commands.TryGetValue(commandName, out cmdDatas))
                 return "Unknown command specified.";
 
-            if (methods.Count() == 0)
+            if (cmdDatas.Count() == 0)
             {
                 Debug.Fail("Shouldn't ever have 0 methods in the list.");
                 return "Unknown command specified.";
             }
 
-            return "Expected usage: " + commandName + " (" + GetParameterInfo(methods.First()) + ")";
+            return "Expected usage: " + commandName + " (" + GetParameterInfo(cmdDatas.Select(x => x.Method).First()) + ")";
         }
 
         /// <summary>
@@ -330,25 +381,15 @@ namespace NetGore
             args = splits.ToArray();
         }
 
-        /// <summary>
-        /// Tries to invoke a method.
-        /// </summary>
-        /// <param name="binder">The object to invoke the <paramref name="method"/> on. If <paramref name="method"/>
-        /// is static, this is ignored and can be null.</param>
-        /// <param name="method">MethodInfo to invoke.</param>
-        /// <param name="args">Arguments to send to the method.</param>
-        /// <param name="result">If successfully invoked, this will contain the string returned from
-        /// the <paramref name="method"/>. If unsuccessfully invoked, or the <paramref name="method"/> has
-        /// a void return type, this will be an empty string.</param>
-        /// <returns>True if the <paramref name="method"/> was invoked successfully; otherwise false.</returns>
-        static bool TryInvokeMethod(object binder, MethodInfo method, IList<string> args, out string result)
+        static bool MethodCanBeInvokedWithArgs(MethodInfo method, IList<string> args, out object[] convertedArgs)
         {
+            convertedArgs = null;
+
             var parameters = method.GetParameters();
 
             // Args always has to be >= the number of parameters
             if (parameters.Length > args.Count)
             {
-                result = string.Empty;
                 return false;
             }
 
@@ -356,11 +397,10 @@ namespace NetGore
             var lastParameter = parameters.LastOrDefault();
             if (parameters.Length < args.Count && (lastParameter == null || lastParameter.ParameterType != typeof(string)))
             {
-                result = string.Empty;
                 return false;
             }
 
-            var convertedArgs = new object[parameters.Length];
+            convertedArgs = new object[parameters.Length];
 
             // If args.Length > parameters.Length, then the last parameter is a string, so just join them all together
             // as one big string. Otherwise, we have to parse the last argument.
@@ -378,13 +418,28 @@ namespace NetGore
                 object parsed;
                 if (!StringParser.TryParse(args[i], parameters[i].ParameterType, out parsed) || parsed == null)
                 {
-                    result = string.Empty;
                     return false;
                 }
 
                 convertedArgs[i] = parsed;
             }
 
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to invoke a method.
+        /// </summary>
+        /// <param name="binder">The object to invoke the <paramref name="method"/> on. If <paramref name="method"/>
+        /// is static, this is ignored and can be null.</param>
+        /// <param name="method">MethodInfo to invoke.</param>
+        /// <param name="convertedArgs">Arguments to send to the method.</param>
+        /// <param name="result">If successfully invoked, this will contain the string returned from
+        /// the <paramref name="method"/>. If unsuccessfully invoked, or the <paramref name="method"/> has
+        /// a void return type, this will be an empty string.</param>
+        /// <returns>True if the <paramref name="method"/> was invoked successfully; otherwise false.</returns>
+        static bool TryInvokeMethod(object binder, MethodInfo method, object[] convertedArgs, out string result)
+        {
             // Try to invoke the method
             object methodOutput;
             try
@@ -411,6 +466,21 @@ namespace NetGore
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets if the <paramref name="binder"/> is allowed to invoke the method
+        /// defined by the given <see cref="CommandData"/> using the given set of <paramref name="args"/>.
+        /// </summary>
+        /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
+        /// this is ignored and can be null.</param>
+        /// <param name="cmdData">The <see cref="CommandData"/> containing the method to invoke and the corresponding attribute
+        /// that is attached to it.</param>
+        /// <param name="args">The casted arguments to use to invoke the method.</param>
+        /// <returns></returns>
+        protected virtual bool AllowInvokeMethod(object binder, CommandData cmdData, object[] args)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Tries to parse a command from the given <paramref name="commandString"/>.
         /// </summary>
         /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
@@ -430,56 +500,98 @@ namespace NetGore
             ParseCommandString(commandString, out command, out args);
 
             // Check for a valid command
-            IEnumerable<MethodInfo> methods;
-            if (string.IsNullOrEmpty(command) || !_commands.TryGetValue(command, out methods))
+            IEnumerable<CommandData> cmdDatas;
+            if (string.IsNullOrEmpty(command) || !_commands.TryGetValue(command, out cmdDatas))
             {
-                result = HandleInvalidCommand(command, args);
+                result = HandleInvalidCommand(binder, command, args);
                 return false;
             }
 
             // Try invoking all of the methods handling this command in order, stopping on the first
             // one that was invoked successfully
-            foreach (var method in methods)
+            CommandData commandExistsCD = null;
+
+            foreach (var cd in cmdDatas)
             {
-                if (TryInvokeMethod(binder, method, args, out result))
-                    return true;
+                object[] convertedArgs;
+
+                // Check if the method can be invoked with the arguments given
+                if (MethodCanBeInvokedWithArgs(cd.Method, args, out convertedArgs))
+                {
+                    // If we got this far, we know a valid method exists
+                    commandExistsCD = cd;
+
+                    // See if we are allowed to invoke it
+                    if (!AllowInvokeMethod(binder, cd, convertedArgs))
+                        continue;
+
+                    // We are allowed to invoke it, so try and invoke
+                    if (TryInvokeMethod(binder, cd.Method, args, out result))
+                        return true;
+                }
             }
 
-            // None of the methods were able to handle the command
-            result = HandleInvalidCommand(command, args);
+            if (commandExistsCD != null)
+            {
+                // The method existed, but we were not allowed to invoke it
+                result = HandleCommandInvokeDenied(binder, commandExistsCD, args);
+            }
+            else
+            {
+                // None of the methods were able to handle the command
+                result = HandleInvalidCommand(binder, command, args);
+            }
+
             return false;
         }
 
         /// <summary>
-        /// Provides sorting for the MethodInfo based on which one has the least number of parameters
-        /// of type string or object.
+        /// Provides sorting for the <see cref="CommandData"/>s based on which <see cref="MethodInfo"/> has the least number
+        /// of parameters of type string or object.
         /// </summary>
-        class MethodInfoSorter : IComparer<MethodInfo>
+        class CommandDataSorter : IComparer<CommandData>
         {
+            static readonly Func<ParameterInfo, bool> _countFuncDelegate;
+
+            /// <summary>
+            /// Initializes the <see cref="StringCommandParser&lt;T&gt;.CommandDataSorter"/> class.
+            /// </summary>
+            static CommandDataSorter()
+            {
+                _countFuncDelegate = CountFunc;
+            }
+
+            static bool CountFunc(ParameterInfo p)
+            {
+                return p.ParameterType != typeof(string) && p.ParameterType != typeof(object);
+            }
+
             #region IComparer<MethodInfo> Members
 
             /// <summary>
             /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
             /// </summary>
+            /// <param name="x">The first object to compare.</param>
+            /// <param name="y">The second object to compare.</param>
             /// <returns>
-            /// Value 
-            ///                     Condition 
-            ///                     Less than zero
-            ///                 <paramref name="x"/> is less than <paramref name="y"/>.
-            ///                     Zero
-            ///                 <paramref name="x"/> equals <paramref name="y"/>.
-            ///                     Greater than zero
-            ///                 <paramref name="x"/> is greater than <paramref name="y"/>.
+            /// Value
+            /// Condition
+            /// Less than zero
+            /// <paramref name="x"/> is less than <paramref name="y"/>.
+            /// Zero
+            /// <paramref name="x"/> equals <paramref name="y"/>.
+            /// Greater than zero
+            /// <paramref name="x"/> is greater than <paramref name="y"/>.
             /// </returns>
-            /// <param name="x">The first object to compare.
-            ///                 </param><param name="y">The second object to compare.
-            ///                 </param>
-            public int Compare(MethodInfo x, MethodInfo y)
+            public int Compare(CommandData x, CommandData y)
             {
+                var a = x.Method;
+                var b = y.Method;
+
                 var nonStringX =
-                    x.GetParameters().Count(p => p.ParameterType != typeof(string) && p.ParameterType != typeof(object));
+                    a.GetParameters().Count(_countFuncDelegate);
                 var nonStringY =
-                    x.GetParameters().Count(p => p.ParameterType != typeof(string) && p.ParameterType != typeof(object));
+                    b.GetParameters().Count(_countFuncDelegate);
 
                 return nonStringX.CompareTo(nonStringY);
             }
