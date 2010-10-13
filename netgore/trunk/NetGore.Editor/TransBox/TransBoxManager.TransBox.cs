@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,19 +17,25 @@ namespace NetGore.Editor
         /// </summary>
         sealed class TransBox : ITransBox
         {
+            readonly TransBoxManager _owner;
             readonly Vector2 _size;
             readonly ISpatial _spatial;
             readonly TransBoxType _type;
 
             Vector2 _position;
+            Vector2 _spatialInitPos;
+            Vector2 _spatialInitSize;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="TransBox"/> class.
             /// </summary>
+            /// <param name="owner">The <see cref="TransBoxManager"/>.</param>
             /// <param name="type">The <see cref="TransBoxType"/>.</param>
             /// <param name="spatial">The <see cref="ISpatial"/>.</param>
-            TransBox(TransBoxType type, ISpatial spatial)
+            TransBox(TransBoxManager owner, TransBoxType type, ISpatial spatial)
             {
+                _owner = owner;
+
                 _type = type;
                 _spatial = spatial;
 
@@ -84,42 +91,65 @@ namespace NetGore.Editor
             /// <summary>
             /// Creates a series of transformation boxes around an entity.
             /// </summary>
+            /// <param name="transBoxManager">The <see cref="TransBoxManager"/>.</param>
             /// <param name="entity">Entity to create the transformation boxes for.</param>
-            public static IEnumerable<ITransBox> SurroundEntity(ISpatial entity)
+            /// <returns></returns>
+            public static IEnumerable<ITransBox> SurroundEntity(TransBoxManager transBoxManager, ISpatial entity)
             {
                 var ret = new List<ITransBox>(entity.SupportsResize ? 9 : 1);
                 var scaleSize = GetTransBoxSize(TransBoxType.BottomLeft);
 
                 // Move box
-                ret.Add(new TransBox(TransBoxType.Move, entity));
+                ret.Add(new TransBox(transBoxManager, TransBoxType.Move, entity));
 
                 if (entity.SupportsResize)
                 {
                     // Four corners
-                    ret.Add(new TransBox(TransBoxType.TopLeft, entity));
-                    ret.Add(new TransBox(TransBoxType.TopRight, entity));
-                    ret.Add(new TransBox(TransBoxType.BottomLeft, entity));
-                    ret.Add(new TransBox(TransBoxType.BottomRight, entity));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.TopLeft, entity));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.TopRight, entity));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.BottomLeft, entity));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.BottomRight, entity));
 
                     // Horizontal sides
                     if (entity.Size.X > scaleSize.X + 4)
                     {
-                        ret.Add(new TransBox(TransBoxType.Top, entity));
-                        ret.Add(new TransBox(TransBoxType.Bottom, entity));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Top, entity));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Bottom, entity));
                     }
 
                     // Vertical sides
                     if (entity.Size.Y > scaleSize.Y + 4)
                     {
-                        ret.Add(new TransBox(TransBoxType.Left, entity));
-                        ret.Add(new TransBox(TransBoxType.Right, entity));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Left, entity));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Right, entity));
                     }
                 }
 
                 return ret;
             }
 
+            Vector2 _selectPos;
+
             #region ITransBox Members
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Deselect(Vector2 cursorWorldPos)
+            {
+            }
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Select(Vector2 cursorWorldPos)
+            {
+                _selectPos = cursorWorldPos;
+                _spatialInitPos = _spatial.Position;
+                _spatialInitSize = _spatial.Size;
+            }
 
             /// <summary>
             /// Gets the max (bottom-right) point of the <see cref="ITransBox"/>.
@@ -166,64 +196,110 @@ namespace NetGore.Editor
                 return (lo.X <= w.X) && (lo.Y <= w.Y) && (hi.X >= w.X) && (hi.Y >= w.Y);
             }
 
-            /// <summary>
-            /// Handles when the mouse cursor moves while this <see cref="ITransBox"/> is selected.
-            /// </summary>
-            /// <param name="offset">The amount the cursor has moved.</param>
-            public void CursorMoved(Vector2 offset)
+            Vector2 Align(Vector2 v)
             {
-                switch (_type)
+                if (_owner == null || _owner.GridAligner == null)
+                    return v;
+
+                return _owner.GridAligner.Align(v);
+            }
+
+            static Vector2 GetResizeVector(TransBoxType t)
+            {
+                switch (t)
                 {
                     case TransBoxType.Bottom:
-                        _spatial.TryResize(_spatial.Size + new Vector2(0, offset.Y));
-                        break;
+                        return new Vector2(0, 1);
 
                     case TransBoxType.BottomLeft:
-                        if (_spatial.TryResize(_spatial.Size + new Vector2(-offset.X, offset.Y)))
-                            _spatial.TryMove(_spatial.Position + new Vector2(offset.X, 0));
-                        break;
+                        return new Vector2(-1, 1);
 
                     case TransBoxType.BottomRight:
-                        _spatial.TryResize(_spatial.Size + offset);
-                        break;
+                        return new Vector2(1, 1);
 
                     case TransBoxType.Left:
-                        if (_spatial.TryResize(_spatial.Size + new Vector2(-offset.X, 0)))
-                            _spatial.TryMove(_spatial.Position + new Vector2(offset.X, 0));
-                        break;
-
-                    case TransBoxType.Move:
-                        _spatial.TryMove(_spatial.Position + offset);
-                        break;
+                        return new Vector2(-1, 0);
 
                     case TransBoxType.Right:
-                        _spatial.TryResize(_spatial.Size + new Vector2(offset.X, 0));
-                        break;
+                        return new Vector2(1, 0);
 
                     case TransBoxType.Top:
-                        if (_spatial.TryResize(_spatial.Size + new Vector2(0, -offset.Y)))
-                            _spatial.TryMove(_spatial.Position + new Vector2(0, offset.Y));
-                        break;
+                        return new Vector2(0, -1);
 
                     case TransBoxType.TopLeft:
-                        if (_spatial.TryResize(_spatial.Size + -offset))
-                            _spatial.TryMove(_spatial.Position + offset);
-                        break;
+                        return new Vector2(-1, -1);
 
                     case TransBoxType.TopRight:
-                        if (_spatial.TryResize(_spatial.Size + new Vector2(offset.X, -offset.Y)))
-                            _spatial.TryMove(_spatial.Position + new Vector2(0, offset.Y));
-                        break;
+                        return new Vector2(1, -1);
 
                     default:
                         const string errmsg = "Unsupported TransBoxType `{0}`.";
                         if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, _type);
-                        Debug.Fail(string.Format(errmsg, _type));
-                        break;
+                            log.ErrorFormat(errmsg, t);
+                        Debug.Fail(string.Format(errmsg, t));
+                        return Vector2.Zero;
+                }
+            }
+
+
+            /// <summary>
+            /// Handles when the mouse cursor moves while this <see cref="ITransBox"/> is selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The amount the cursor has moved.</param>
+            public void CursorMoved(Vector2 cursorWorldPos)
+            {
+                _position = cursorWorldPos - (Size / 2f);
+
+                var delta = cursorWorldPos - _selectPos;
+
+                // Handle move, which is easy enough
+                if (_type == TransBoxType.Move)
+                {
+                    _spatial.TryMove(Align(_spatialInitPos + delta));
+                    return;
                 }
 
-                _position = GetPosition();
+                // Handle resizing, which is the harder part
+                var resizeVector = GetResizeVector(_type);
+                
+                Vector2 newSize = _spatialInitSize + (delta * resizeVector);
+                newSize = Align(_spatialInitPos + newSize) - _spatialInitPos;
+
+                newSize = Vector2.Max(Vector2.One, newSize);
+
+                var sizeDelta = newSize - _spatialInitSize;
+
+                var moveVector = sizeDelta * Vector2.Min(resizeVector, Vector2.Zero);
+                var newPos = _spatialInitPos + moveVector;
+
+                // When resizing with a negative vector (so resizing to the left or up), offset the position so that the
+                // right/bottom side remains in the same place. If the resize vector is 0, ensure it does not resize.
+                var alignPos = Align(newPos);
+                if (resizeVector.X < 0)
+                {
+                    newSize.X += newPos.X - alignPos.X;
+                    newPos.X = alignPos.X;
+                }
+                else if (resizeVector.X == 0)
+                {
+                    newSize.X = _spatialInitSize.X;
+                }
+
+                if (resizeVector.Y < 0)
+                {
+                    newSize.Y += newPos.Y - alignPos.Y;
+                    newPos.Y = alignPos.Y;
+                }
+                else if (resizeVector.Y == 0)
+                {
+                    newSize.Y = _spatialInitSize.Y;
+                }
+
+                // Apply the new size and position
+                if (!_spatial.TryResize(newSize))
+                    return;
+
+                _spatial.TryMove(newPos);
             }
 
             /// <summary>

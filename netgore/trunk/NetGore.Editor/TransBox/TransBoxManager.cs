@@ -23,6 +23,7 @@ namespace NetGore.Editor
 
         readonly List<ISpatial> _items = new List<ISpatial>();
         readonly List<ITransBox> _transBoxes = new List<ITransBox>();
+
         Vector2 _lastWorldPos;
         ITransBox _selectedTransBox;
         MouseButtons _selectedTransBoxButton = MouseButtons.None;
@@ -43,10 +44,10 @@ namespace NetGore.Editor
         {
             get
             {
-                if (_underCursor == null)
+                if (UnderCursor == null)
                     return Cursors.Default;
 
-                return _underCursor.MouseCursor;
+                return UnderCursor.MouseCursor;
             }
         }
 
@@ -58,12 +59,38 @@ namespace NetGore.Editor
         public MouseButtons DragButton { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="GridAlignerBase"/> to use. When null, objects will never be aligned to the grid.
+        /// </summary>
+        public GridAlignerBase GridAligner { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="ISpatial"/>s that are currently in this <see cref="TransBoxManager"/> and are part of the
         /// on-screen transformation boxes.
         /// </summary>
         public IEnumerable<ISpatial> Items
         {
             get { return _items; }
+        }
+
+        /// <summary>
+        /// Gets or sets the currently selected <see cref="ITransBox"/>.
+        /// </summary>
+        ITransBox SelectedTransBox
+        {
+            get { return _selectedTransBox; }
+            set
+            {
+                if (_selectedTransBox == value)
+                    return;
+
+                if (_selectedTransBox != null)
+                    _selectedTransBox.Deselect(_lastWorldPos);
+
+                _selectedTransBox = value;
+
+                if (_selectedTransBox != null)
+                    _selectedTransBox.Select(_lastWorldPos);
+            }
         }
 
         /// <summary>
@@ -74,6 +101,21 @@ namespace NetGore.Editor
         public static IEnumerable<Type> TypesToIgnore
         {
             get { return _typesToIgnore; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="ITransBox"/> currently under the cursor.
+        /// </summary>
+        ITransBox UnderCursor
+        {
+            get { return _underCursor; }
+            set
+            {
+                if (_underCursor == value)
+                    return;
+
+                _underCursor = value;
+            }
         }
 
         /// <summary>
@@ -189,17 +231,17 @@ namespace NetGore.Editor
             {
                 var worldPos = camera.ToWorld(e.Position());
 
-                _underCursor = FindBoxAt(worldPos);
-                _selectedTransBox = _underCursor;
+                UnderCursor = FindBoxAt(worldPos);
+                SelectedTransBox = UnderCursor;
                 _lastWorldPos = worldPos;
 
-                if (_selectedTransBox != null)
+                if (SelectedTransBox != null)
                     _selectedTransBoxButton = e.Button;
                 else
                     _selectedTransBoxButton = MouseButtons.None;
             }
 
-            return _selectedTransBox != null;
+            return SelectedTransBox != null;
         }
 
         /// <summary>
@@ -214,25 +256,21 @@ namespace NetGore.Editor
                 return false;
 
             var worldPos = camera.ToWorld(e.Position());
+            _lastWorldPos = worldPos;
 
             // Update what transbox is under the cursor
-            if (_selectedTransBox != null)
-                _underCursor = _selectedTransBox;
+            if (SelectedTransBox != null)
+                UnderCursor = SelectedTransBox;
             else
-                _underCursor = FindBoxAt(worldPos);
+                UnderCursor = FindBoxAt(worldPos);
 
             // Update position
-            if (_selectedTransBox != null)
+            if (SelectedTransBox != null)
             {
-                var delta = worldPos - _lastWorldPos;
-                if (delta != Vector2.Zero)
-                {
-                    _lastWorldPos = worldPos;
-                    _selectedTransBox.CursorMoved(delta);
-                }
+                SelectedTransBox.CursorMoved(_lastWorldPos);
             }
 
-            return _selectedTransBox != null;
+            return SelectedTransBox != null;
         }
 
         /// <summary>
@@ -245,11 +283,11 @@ namespace NetGore.Editor
         {
             if (e.Button == _selectedTransBoxButton)
             {
-                _selectedTransBox = null;
+                SelectedTransBox = null;
                 _selectedTransBoxButton = MouseButtons.None;
             }
 
-            return _selectedTransBox != null;
+            return SelectedTransBox != null;
         }
 
         /// <summary>
@@ -352,8 +390,8 @@ namespace NetGore.Editor
         /// </summary>
         void UpdateTransBoxes()
         {
-            _selectedTransBox = null;
-            _underCursor = null;
+            SelectedTransBox = null;
+            UnderCursor = null;
 
             // Clear the old boxes
             _transBoxes.Clear();
@@ -374,7 +412,7 @@ namespace NetGore.Editor
                     return;
                 }
 
-                var transBoxes = TransBox.SurroundEntity(item);
+                var transBoxes = TransBox.SurroundEntity(this, item);
                 _transBoxes.AddRange(transBoxes);
             }
             else
@@ -384,7 +422,7 @@ namespace NetGore.Editor
                 var max = new Vector2(Items.Max(x => x.Max.X), Items.Max(x => x.Max.Y));
                 var center = min + ((max - min) / 2f).Round();
 
-                var tb = new MoveManyTransBox(_items, center);
+                var tb = new MoveManyTransBox(this, _items, center);
                 _transBoxes.Add(tb);
             }
         }

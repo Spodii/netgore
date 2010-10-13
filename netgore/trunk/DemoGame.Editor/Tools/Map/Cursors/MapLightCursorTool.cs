@@ -106,7 +106,9 @@ namespace DemoGame.Editor.Tools
                 if (imap == _mouseOverMap)
                 {
                     var lightSprite = SystemSprites.Lightblub;
-                    lightSprite.Draw(spriteBatch, _mousePos - (lightSprite.Size / 2f));
+                    var pos = _mousePos - (lightSprite.Size / 2f);
+                    pos = GridAligner.Instance.Align(pos);
+                    lightSprite.Draw(spriteBatch, pos);
                 }
             }
         }
@@ -148,14 +150,12 @@ namespace DemoGame.Editor.Tools
             if (IsSelecting)
                 return;
 
+            // Left-click
             if (e.Button == MouseButtons.Left)
             {
-                // Left-click
-
-                if ((Control.ModifierKeys & _placeLightKey) != 0)
+                // Place light
+                if (Input.IsKeyDown(_placeLightKey))
                 {
-                    // Place light
-
                     var msc = MapScreenControl.TryFindInstance(map);
                     if (msc != null)
                     {
@@ -163,6 +163,8 @@ namespace DemoGame.Editor.Tools
                         if (dm != null)
                         {
                             var pos = camera.ToWorld(e.Position());
+                            pos = GridAligner.Instance.Align(pos);
+
                             var light = new Light { Center = pos, IsEnabled = true, Tag = map };
 
                             map.AddLight(light);

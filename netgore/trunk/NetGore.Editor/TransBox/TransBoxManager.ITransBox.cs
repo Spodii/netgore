@@ -13,6 +13,18 @@ namespace NetGore.Editor
         interface ITransBox
         {
             /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void Deselect(Vector2 cursorWorldPos);
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void Select(Vector2 cursorWorldPos);
+
+            /// <summary>
             /// Gets the max (bottom-right) point of the <see cref="ITransBox"/>.
             /// </summary>
             Vector2 Max { get; }
@@ -42,8 +54,8 @@ namespace NetGore.Editor
             /// <summary>
             /// Handles when the mouse cursor moves while this <see cref="ITransBox"/> is selected.
             /// </summary>
-            /// <param name="offset">The amount the cursor has moved.</param>
-            void CursorMoved(Vector2 offset);
+            /// <param name="cursorWorldPos">The current world position of the cursor.</param>
+            void CursorMoved(Vector2 cursorWorldPos);
 
             /// <summary>
             /// Draws the <see cref="ITransBox"/>.

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Collections;
 
-namespace DemoGame.Editor
+namespace NetGore.Editor
 {
     /// <summary>
     /// Helper method for polling the input state.

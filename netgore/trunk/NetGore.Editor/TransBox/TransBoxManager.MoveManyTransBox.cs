@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
@@ -16,22 +18,48 @@ namespace NetGore.Editor
         {
             static readonly Vector2 _size = GetTransBoxSize(TransBoxType.Move);
 
+            readonly TransBoxManager _owner;
             readonly IEnumerable<ISpatial> _spatials;
+            readonly Dictionary<ISpatial, Vector2> _initialPos = new Dictionary<ISpatial, Vector2>();
 
             Vector2 _position;
+            Vector2 _selectPos;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MoveManyTransBox"/> class.
             /// </summary>
+            /// <param name="owner">The <see cref="TransBoxManager"/>.</param>
             /// <param name="spatials">The <see cref="ISpatial"/>s.</param>
             /// <param name="position">The position.</param>
-            public MoveManyTransBox(IEnumerable<ISpatial> spatials, Vector2 position)
+            public MoveManyTransBox(TransBoxManager owner, IEnumerable<ISpatial> spatials, Vector2 position)
             {
+                _owner = owner;
                 _position = position;
                 _spatials = spatials.ToImmutable();
             }
 
             #region ITransBox Members
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Deselect(Vector2 cursorWorldPos)
+            {
+                _initialPos.Clear();
+            }
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Select(Vector2 cursorWorldPos)
+            {
+                _selectPos = cursorWorldPos;
+
+                foreach (var s in _spatials)
+                    _initialPos.Add(s, s.Position);
+            }
 
             /// <summary>
             /// Gets the max (bottom-right) point of the <see cref="ITransBox"/>.
@@ -81,15 +109,31 @@ namespace NetGore.Editor
             /// <summary>
             /// Handles when the mouse cursor moves while this <see cref="ITransBox"/> is selected.
             /// </summary>
-            /// <param name="offset">The amount the cursor has moved.</param>
-            public void CursorMoved(Vector2 offset)
+            /// <param name="cursorWorldPos">The current world position of the cursor.</param>
+            public void CursorMoved(Vector2 cursorWorldPos)
             {
+                _position = cursorWorldPos - (Size / 2f);
+
+                var delta = cursorWorldPos - _selectPos;
+
                 foreach (var s in _spatials)
                 {
-                    s.TryMove(s.Position + offset);
-                }
+                    Vector2 initPos;
+                    if (!_initialPos.TryGetValue(s, out initPos))
+                    {
+                        const string errmsg = "Couldn't find initial position for spatial `{0}`.";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, s);
+                        Debug.Fail(string.Format(errmsg, s));
+                        continue;
+                    }
 
-                _position += offset;
+                    var newPos = initPos + delta;
+                    if (_owner != null && _owner.GridAligner != null)
+                        newPos = _owner.GridAligner.Align(newPos);
+
+                    s.TryMove(newPos);
+                }
             }
 
             /// <summary>
