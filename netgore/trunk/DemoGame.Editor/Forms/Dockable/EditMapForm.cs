@@ -52,7 +52,7 @@ If you do not save, all chances will be lost.";
             var map = mapScreen.Map;
             if (map != null)
             {
-                if (MessageBox.Show(string.Format(confirmMsg, map), "Save before closing?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                if (MessageBox.Show(string.Format(confirmMsg, map), "Save before closing?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     MapHelper.SaveMap(map);
                 }
