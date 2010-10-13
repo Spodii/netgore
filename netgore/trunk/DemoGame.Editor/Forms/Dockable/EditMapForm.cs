@@ -39,6 +39,10 @@ namespace DemoGame.Editor
             return MapScreenControl.Map;
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             const string confirmMsg = @"Do you wish to save the map ({0}) before closing?
