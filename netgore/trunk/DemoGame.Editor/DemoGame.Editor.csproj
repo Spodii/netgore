@@ -189,6 +189,7 @@
       <DependentUpon>LanguageNameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalState.cs" />
+    <Compile Include="GridAligner.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

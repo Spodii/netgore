@@ -104,7 +104,7 @@ namespace DemoGame.Editor.Tools
                 Type createType = null;
 
                 // Create using same type as the last entity, if possible
-                if ((Control.ModifierKeys & Keys.Control) != 0)
+                if (Input.IsCtrlDown)
                     createType = _lastCreatedType;
 
                 // Display selection dialog
