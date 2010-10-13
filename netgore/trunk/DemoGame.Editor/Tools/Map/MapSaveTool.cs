@@ -78,7 +78,7 @@ namespace DemoGame.Editor
         /// <returns>The <see cref="ToolSettings"/>.</returns>
         static ToolSettings CreateSettings()
         {
-            return new ToolSettings("Map Grid Drawer")
+            return new ToolSettings("Map Save")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
                 OnToolBarByDefault = true,
