@@ -16,8 +16,6 @@ namespace DemoGame.Editor
 {
     public class MapSaveTool : Tool
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MapSaveTool"/> class.
         /// </summary>
@@ -30,34 +28,11 @@ namespace DemoGame.Editor
 
         static void ControlSettings_Click(object sender, EventArgs e)
         {
-            Map map = null;
+            var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
+            if (tb == null)
+                return;
 
-            try
-            {
-                var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
-                if (tb == null)
-                    return;
-
-                map = tb.DisplayObject as Map;
-                if (map == null)
-                    return;
-
-                const string confirmMsg = "Are you sure you wish to save the changes to map `{0}`?";
-                if (MessageBox.Show(string.Format(confirmMsg, map), "Save map?", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
-
-                MapHelper.SaveMap(map);
-
-                const string savedMsg = "Successfully saved the changes to map `{0}`!";
-                MessageBox.Show(string.Format(savedMsg, map), "Map saved", MessageBoxButtons.OK);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to save map `{0}`. Exception: {1}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, map, ex);
-                Debug.Fail(string.Format(errmsg, map, ex));
-            }
+            MapHelper.SaveMap(tb.DisplayObject as Map);
         }
 
         /// <summary>

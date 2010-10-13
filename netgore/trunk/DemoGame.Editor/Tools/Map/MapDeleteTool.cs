@@ -4,27 +4,22 @@ using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
-using DemoGame.Server.Queries;
 using log4net;
-using NetGore.Db;
 using NetGore.Editor.EditorTool;
-using NetGore.IO;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
 {
-    public class MapSaveAsTool : Tool
+    public class MapDeleteTool : Tool
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapSaveAsTool"/> class.
+        /// Initializes a new instance of the <see cref="MapDeleteTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapSaveAsTool(ToolManager toolManager)
+        protected MapDeleteTool(ToolManager toolManager)
             : base(toolManager, CreateSettings())
         {
-            ToolBarControl.ControlSettings.ToolTipText = "Saves the currently selected map as a new map";
+            ToolBarControl.ControlSettings.ToolTipText = "Delete the currently selected map";
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
         }
 
@@ -34,7 +29,7 @@ namespace DemoGame.Editor
             if (tb == null)
                 return;
 
-            MapHelper.SaveMapAs(tb.DisplayObject as Map);
+            MapHelper.DeleteMap(tb.DisplayObject as Map);
         }
 
         /// <summary>
@@ -43,12 +38,12 @@ namespace DemoGame.Editor
         /// <returns>The <see cref="ToolSettings"/>.</returns>
         static ToolSettings CreateSettings()
         {
-            return new ToolSettings("Map Save As")
+            return new ToolSettings("Map Delete")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.Button,
-                EnabledImage = Resources.MapSaveAsTool,
+                EnabledImage = Resources.MapDeleteTool,
             };
         }
     }
