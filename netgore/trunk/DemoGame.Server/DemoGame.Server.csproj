@@ -253,6 +253,7 @@
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateInventoryForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuestProviderForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuestsQuery.cs" />
+    <Compile Include="Queries\Map\DeleteMapQuery.cs" />
     <Compile Include="Queries\Map\SelectMapQuery.cs" />
     <Compile Include="Queries\User\SelectUserByNameQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuery.cs" />

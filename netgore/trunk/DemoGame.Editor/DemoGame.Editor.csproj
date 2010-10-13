@@ -245,6 +245,7 @@
     </Compile>
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapLightCursorTool.cs" />
+    <Compile Include="Tools\Map\MapDeleteTool.cs" />
     <Compile Include="Tools\Map\MapSaveAsTool.cs" />
     <Compile Include="Tools\Map\MapSaveTool.cs" />
     <Compile Include="Tools\Map\MapToolBase.cs" />
@@ -565,6 +566,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MapSaveAsTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDeleteTool.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

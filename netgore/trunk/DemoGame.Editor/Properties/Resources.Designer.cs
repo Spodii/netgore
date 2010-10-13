@@ -60,6 +60,13 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapDeleteTool {
+            get {
+                object obj = ResourceManager.GetObject("MapDeleteTool", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapDisplayFilterTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapDisplayFilterTool_Disabled", resourceCulture);

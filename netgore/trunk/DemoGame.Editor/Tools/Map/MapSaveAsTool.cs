@@ -30,38 +30,11 @@ namespace DemoGame.Editor
 
         static void ControlSettings_Click(object sender, EventArgs e)
         {
-            Map map = null;
+            var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
+            if (tb == null)
+                return;
 
-            try
-            {
-                var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
-                if (tb == null)
-                    return;
-
-                map = tb.DisplayObject as Map;
-                if (map == null)
-                    return;
-
-                var newID = MapBase.GetNextFreeIndex(ContentPaths.Dev);
-
-                const string confirmMsg = "Are you sure you wish to save map `{0}` as a new map (with ID `{1}`)?";
-                if (MessageBox.Show(string.Format(confirmMsg, map, newID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
-
-                map.ChangeID(newID);
-
-                MapHelper.SaveMap(map);
-
-                const string savedMsg = "Successfully saved the map `{0}` as a new map!";
-                MessageBox.Show(string.Format(savedMsg, map), "Map successfully saved as a new map", MessageBoxButtons.OK);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to save map `{0}` as a new map. Exception: {1}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, map, ex);
-                Debug.Fail(string.Format(errmsg, map, ex));
-            }
+            MapHelper.SaveMapAs(tb.DisplayObject as Map);
         }
 
         /// <summary>
