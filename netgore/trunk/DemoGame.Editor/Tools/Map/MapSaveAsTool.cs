@@ -50,23 +50,7 @@ namespace DemoGame.Editor
 
                 map.ChangeID(newID);
 
-                // Add the MapGrh-bound walls
-                var extraWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(map.MapGrhs);
-                foreach (var wall in extraWalls)
-                {
-                    map.AddEntity(wall);
-                }
-
-                // Save the map
-                map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
-
-                DbControllerBase.GetInstance().GetQuery<InsertMapQuery>().Execute(map);
-
-                // Pull the MapGrh-bound walls back out
-                foreach (var wall in extraWalls)
-                {
-                    map.RemoveEntity(wall);
-                }
+                MapHelper.SaveMap(map);
 
                 const string savedMsg = "Successfully saved the map `{0}` as a new map!";
                 MessageBox.Show(string.Format(savedMsg, map), "Map successfully saved as a new map", MessageBoxButtons.OK);

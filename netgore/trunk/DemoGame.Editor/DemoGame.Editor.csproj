@@ -204,6 +204,7 @@
     </Compile>
     <Compile Include="MapEditorCharacter.cs" />
     <Compile Include="MapEditorDynamicEntityFactory.cs" />
+    <Compile Include="MapHelper.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
