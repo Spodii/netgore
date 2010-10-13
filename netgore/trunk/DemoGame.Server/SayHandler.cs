@@ -1078,10 +1078,51 @@ namespace DemoGame.Server
                 if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
                     return;
 
+                Rectangle thrallArea = new Rectangle();
+                bool useThrallArea = false;
+
+                // When standing on top of something, also spawn the NPCs on the thing the User is standing on,
+                // and spread them out a bit on it without exceeding the size of it
+                var userStandingOn = User.StandingOn;
+                if (userStandingOn != null)
+                {
+                    useThrallArea = true;
+
+                    var minX = userStandingOn.Position.X;
+                    var maxX = userStandingOn.Max.X;
+                    var y = userStandingOn.Position.Y;
+
+                    minX = Math.Max(minX, User.Position.X - 96);
+                    maxX = Math.Min(maxX, User.Position.X + 96);
+
+                    thrallArea = new Rectangle((int)minX, (int)y, (int)(maxX - minX + 1), 1);
+                }
+
                 for (var i = 0; i < amount; i++)
                 {
                     // Create a ThralledNPC and add it to the world
-                    new ThralledNPC(World, CharacterTemplateManager.Instance[id], User.Map, User.Position);
+                    var npc = new ThralledNPC(World, CharacterTemplateManager.Instance[id], User.Map, User.Position);
+                    
+                    // When using the thrallArea, move the NPC to the correct area
+                    if (useThrallArea)
+                    {
+                        var npcSize = npc.Size;
+                        int minX = thrallArea.Left;
+                        int maxX = thrallArea.Right - (int)npcSize.X;
+                        int x;
+
+                        if (maxX <= minX)
+                        {
+                            x = minX;
+                        }
+                        else
+                        {
+                            x = RandomHelper.NextInt(minX, maxX);
+                        }
+                        
+                        int y = thrallArea.Y - (int)npc.Size.Y;
+                        npc.Teleport(new Vector2(x, y));
+                    }
                 }
             }
 
