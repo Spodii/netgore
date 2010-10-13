@@ -76,7 +76,7 @@ namespace DemoGame.Editor.Tools
                 return;
 
             var grh = GlobalState.Instance.Map.GrhToPlace;
-            grh.Draw(spriteBatch, _mousePos);
+            grh.Draw(spriteBatch, GridAligner.Instance.Align(_mousePos));
         }
 
         /// <summary>
@@ -136,6 +136,7 @@ namespace DemoGame.Editor.Tools
                         return;
 
                     var drawPos = camera.ToWorld(e.Position());
+                    drawPos = GridAligner.Instance.Align(drawPos);
                     var selGrhGrhIndex = gd.GrhIndex;
 
                     // Make sure the same GrhData doesn't already exist at that position

@@ -130,6 +130,8 @@ namespace DemoGame.Editor.Tools
                         entity.Size = new Vector2(64);
                         entity.Position = worldPos - (entity.Size / 2f);
 
+                        GridAligner.Instance.Fit(entity);
+
                         _lastCreatedType = createType;
                     }
                     catch (Exception ex)

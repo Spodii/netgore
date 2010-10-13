@@ -259,6 +259,8 @@
       <DependentUpon>GrhDataUpdaterProgressForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
+    <Compile Include="GridAlignerBase.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="MutablePair.cs" />
     <Compile Include="EditorTool\Tool.cs" />
     <Compile Include="EditorTool\ToolBar\IToolBarButtonSettings.cs" />

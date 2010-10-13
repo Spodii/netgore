@@ -92,7 +92,10 @@ namespace DemoGame.Editor.Tools
             // Create entity
             if (e.Button == MouseButtons.Right)
             {
-                var entity = new WallEntity(worldPos, new Vector2(32));
+                var entity = new WallEntity(worldPos, new Vector2(4));
+
+                GridAligner.Instance.Fit(entity);
+
                 map.AddEntity(entity);
             }
 

@@ -47,7 +47,8 @@ namespace DemoGame.Editor
 
             _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
 
-            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+            if (DrawingManager.LightManager.DefaultSprite == null)
+                DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
             GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
 
@@ -245,6 +246,8 @@ namespace DemoGame.Editor
             // We don't want to initialize any of this stuff in the design mode
             if (DesignMode)
                 return;
+
+            TransBoxManager.GridAligner = GridAligner.Instance;
 
             ToolManager.Instance.ToolTargetContainers.Add(this);
 

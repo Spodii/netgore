@@ -44,6 +44,8 @@ namespace DemoGame.Editor
         /// </summary>
         static GlobalState()
         {
+            Input.Initialize();
+
             _instance = new GlobalState();
         }
 
