@@ -14,16 +14,6 @@ namespace DemoGame.Editor
         static readonly KeyMessageFilter _keyMessageFilter = new KeyMessageFilter();
 
         /// <summary>
-        /// Ensures the <see cref="Input"/> is initialized. Doesn't require being called, and can be called multiple times, but
-        /// is helpful to call early on.
-        /// </summary>
-        public static void Initialize()
-        {
-            // Calling this method will force the static constructor to run, which will generate the KeyMessageFilter
-            // and start listening for input
-        }
-
-        /// <summary>
         /// Initializes the <see cref="Input"/> class.
         /// </summary>
         static Input()
@@ -59,6 +49,16 @@ namespace DemoGame.Editor
             return !AreKeysDown(keys);
         }
 
+        /// <summary>
+        /// Ensures the <see cref="Input"/> is initialized. Doesn't require being called, and can be called multiple times, but
+        /// is helpful to call early on.
+        /// </summary>
+        public static void Initialize()
+        {
+            // Calling this method will force the static constructor to run, which will generate the KeyMessageFilter
+            // and start listening for input
+        }
+
         public static bool IsKeyDown(Keys key)
         {
             return _keyMessageFilter.InternalIsKeyDown(key);
@@ -71,6 +71,8 @@ namespace DemoGame.Editor
 
         class KeyMessageFilter : IMessageFilter
         {
+            const int VK_F10 = 0x79;
+            const int VK_MENU = 0x12;
             const int WM_KEYDOWN = 0x0100;
             const int WM_KEYUP = 0x0101;
             const int WM_SYSKEYDOWN = 0x0104;
@@ -84,27 +86,11 @@ namespace DemoGame.Editor
             bool _altKeyDown = false;
             bool _f10KeyDown = false;
 
-            public bool InternalIsKeyDown(Keys k)
-            {
-                var realKey = ConvertKey(k);
-
-                switch (k)
-                {
-                    case Keys.Alt:
-                        return _altKeyDown;
-
-                    case Keys.F10:
-                        return _f10KeyDown;
-
-                    default:
-                        bool pressed;
-                        if (_keyStates.TryGetValue(realKey, out pressed))
-                            return pressed;
-                        else
-                            return false;
-                }
-            }
-
+            /// <summary>
+            /// Converts the <see cref="Keys"/> to the proper keyboard key.
+            /// </summary>
+            /// <param name="key">The <see cref="Keys"/>.</param>
+            /// <returns>The <see cref="Keys"/> to use to look up the key state.</returns>
             static Keys ConvertKey(Keys key)
             {
                 switch (key)
@@ -121,6 +107,51 @@ namespace DemoGame.Editor
 
                     default:
                         return key;
+                }
+            }
+
+            /// <summary>
+            /// Checks if a key is down.
+            /// </summary>
+            /// <param name="key">The key.</param>
+            /// <returns>True if the <paramref name="key"/> is down; otherwise false.</returns>
+            public bool InternalIsKeyDown(Keys key)
+            {
+                var realKey = ConvertKey(key);
+
+                switch (key)
+                {
+                    case Keys.Alt:
+                        return _altKeyDown;
+
+                    case Keys.F10:
+                        return _f10KeyDown;
+
+                    default:
+                        bool pressed;
+                        if (_keyStates.TryGetValue(realKey, out pressed))
+                            return pressed;
+                        else
+                            return false;
+                }
+            }
+
+            /// <summary>
+            /// Sets the state of a system key.
+            /// </summary>
+            /// <param name="wParam">The raw key code.</param>
+            /// <param name="isDown">True if the key is down; false if it is up.</param>
+            void SetSysKey(int wParam, bool isDown)
+            {
+                switch (wParam)
+                {
+                    case VK_MENU:
+                        _altKeyDown = isDown;
+                        break;
+
+                    case VK_F10:
+                        _f10KeyDown = isDown;
+                        break;
                 }
             }
 
@@ -158,23 +189,6 @@ namespace DemoGame.Editor
             }
 
             #endregion
-
-            const int VK_MENU = 0x12;
-            const int VK_F10 = 0x79;
-
-            void SetSysKey(int wParam, bool isDown)
-            {
-                switch (wParam)
-                {
-                    case VK_MENU:
-                        _altKeyDown = isDown;
-                        break;
-
-                    case VK_F10:
-                        _f10KeyDown = isDown;
-                        break;
-                }
-            }
         }
     }
 }
