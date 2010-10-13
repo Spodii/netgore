@@ -15,19 +15,19 @@
       <ToolBarVisibility>Map</ToolBarVisibility>
       <Order>
         <Count>13</Count>
-        <Item0>DemoGame.Editor.MapSaveTool</Item0>
-        <Item1>DemoGame.Editor.MapSaveAsTool</Item1>
-        <Item2>DemoGame.Editor.MapDeleteTool</Item2>
+        <Item0>DemoGame.Editor.Tools.MapSaveTool</Item0>
+        <Item1>DemoGame.Editor.Tools.MapSaveAsTool</Item1>
+        <Item2>DemoGame.Editor.Tools.MapDeleteTool</Item2>
         <Item3>|</Item3>
-        <Item4>DemoGame.Editor.MapLightSourceDrawerTool</Item4>
-        <Item5>DemoGame.Editor.MapWallsDrawerTool</Item5>
-        <Item6>DemoGame.Editor.MapGridDrawerTool</Item6>
-        <Item7>DemoGame.Editor.MapDisplayFilterTool</Item7>
+        <Item4>DemoGame.Editor.Tools.MapLightSourceDrawerTool</Item4>
+        <Item5>DemoGame.Editor.Tools.MapWallsDrawerTool</Item5>
+        <Item6>DemoGame.Editor.Tools.MapGridDrawerTool</Item6>
+        <Item7>DemoGame.Editor.Tools.MapDisplayFilterTool</Item7>
         <Item8>|</Item8>
-        <Item9>DemoGame.Editor.MapEntityCursorTool</Item9>
-        <Item10>DemoGame.Editor.MapWallCursorTool</Item10>
-        <Item11>DemoGame.Editor.MapGrhCursorTool</Item11>
-        <Item12>DemoGame.Editor.MapLightCursorTool</Item12>
+        <Item9>DemoGame.Editor.Tools.MapEntityCursorTool</Item9>
+        <Item10>DemoGame.Editor.Tools.MapWallCursorTool</Item10>
+        <Item11>DemoGame.Editor.Tools.MapGrhCursorTool</Item11>
+        <Item12>DemoGame.Editor.Tools.MapLightCursorTool</Item12>
       </Order>
     </Item1>
   </ToolBarItems>
