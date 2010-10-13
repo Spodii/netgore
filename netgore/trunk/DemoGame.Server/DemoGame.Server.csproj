@@ -336,6 +336,15 @@
     <Compile Include="Quests\QuestManager.cs" />
     <Compile Include="Quests\ItemTemplateAndAmount.cs" />
     <Compile Include="Quests\Rewards\MoneyQuestReward.cs" />
+    <Compile Include="Say\SayHandlerCommandAttribute.cs" />
+    <Compile Include="Say\SayHandlerCommands.Admin.cs" />
+    <Compile Include="Say\SayHandlerCommands.cs" />
+    <Compile Include="Say\SayHandlerCommands.General.cs" />
+    <Compile Include="Say\SayHandlerCommands.Groups.cs" />
+    <Compile Include="Say\SayHandlerCommands.Guilds.cs" />
+    <Compile Include="Say\SayHandlerCommands.HelperMethods.cs" />
+    <Compile Include="Say\SayHandlerCommands.LesserAdmin.cs" />
+    <Compile Include="Say\SayHandlerCommands.Moderator.cs" />
     <Compile Include="ServerGameData.cs" />
     <Compile Include="ServerConfig.cs" />
     <Compile Include="UI\Compact\CompactUI.cs" />
@@ -495,7 +504,7 @@
     <Compile Include="Queries\Account\SelectAccountQuery.cs" />
     <Compile Include="Queries\Account\TrySetAccountIPIfNullQuery.cs" />
     <Compile Include="Queries\Character\UpdateCharacterQuery.cs" />
-    <Compile Include="SayHandler.cs" />
+    <Compile Include="Say\SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
     <Compile Include="ServerRuntimeCleaner.cs" />
