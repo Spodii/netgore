@@ -811,7 +811,7 @@ namespace DemoGame.Server
 
             #endregion
 
-            #region Lesser Admin commands
+            #region Moderator commands
 
             /// <summary>
             /// Sends a message globally to the entire world.
@@ -850,22 +850,6 @@ namespace DemoGame.Server
                 User.Teleport(target.Map, target.Position);
             }
 
-
-
-            /// <summary>
-            /// Toggles the AI.
-            /// </summary>
-            [SayCommand("ToggleAI")]
-            public void ToggleAI()
-            {
-                if (!RequirePermissionLevel(UserPermissions.Admin))
-                    return;
-
-                AISettings.AIDisabled = !AISettings.AIDisabled;
-
-                UserChat("AI has been {0}.", AISettings.AIDisabled ? "disabled" : "enabled");
-            }
-
             /// <summary>
             /// Displays all ban information for a user.
             /// </summary>
@@ -873,7 +857,7 @@ namespace DemoGame.Server
             [SayCommand("BanHistory")]
             public void BanHistory(string username)
             {
-                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
                 var banInfos = BanningManager.Instance.GetAccountBanInfo(username);
@@ -895,7 +879,7 @@ namespace DemoGame.Server
             [SayCommand("BanInfo")]
             public void BanInfo(string username)
             {
-                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
                 var banInfos = BanningManager.Instance.GetAccountBanInfo(username).Where(x => !x.Expired);
@@ -919,7 +903,7 @@ namespace DemoGame.Server
             [SayCommand("BanUser")]
             public void BanUser(string username, string duration, string reason)
             {
-                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
                 // Check for valid parameters
@@ -957,6 +941,53 @@ namespace DemoGame.Server
                     User.Send(GameMessage.BanUserSuccessful, ServerMessageType.GUI, username);
                 }
             }
+
+            /// <summary>
+            /// Kicks the specified user from the world.
+            /// </summary>
+            /// <param name="userName">The player to kick.</param>
+            /// <param name="reason">The reason the player is being kicked.</param>
+            [SayCommand("Kick")]
+            public void Kick(string userName, string reason)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                // Get the user we want
+                var target = World.FindUser(userName);
+
+                // Check that the user could be found
+                if (target == null)
+                {
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    return;
+                }
+
+                // User was found, so disconnect them and give the reason for the disconnect
+                target.Conn.Disconnect(GameMessage.DisconnectUserKicked, reason);
+            }
+
+            #endregion
+
+            #region Admin commands
+
+            /// <summary>
+            /// Toggles the AI.
+            /// </summary>
+            [SayCommand("ToggleAI")]
+            public void ToggleAI()
+            {
+                if (!RequirePermissionLevel(UserPermissions.Admin))
+                    return;
+
+                AISettings.AIDisabled = !AISettings.AIDisabled;
+
+                UserChat("AI has been {0}.", AISettings.AIDisabled ? "disabled" : "enabled");
+            }
+
+            #endregion
+
+            #region Lesser Admin commands
 
             /// <summary>
             /// Creates an instance of an item from a template and adds it to your inventory. Any items that cannot
@@ -998,6 +1029,9 @@ namespace DemoGame.Server
             [SayCommand("Dethrall")]
             public void Dethrall()
             {
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                    return;
+
                 var userMap = User.Map;
                 if (userMap == null)
                     return;
@@ -1013,38 +1047,13 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// Kicks the specified user from the world.
-            /// </summary>
-            /// <param name="userName">The player to kick.</param>
-            /// <param name="reason">The reason the player is being kicked.</param>
-            [SayCommand("Kick")]
-            public void Kick(string userName, string reason)
-            {
-                if (!RequirePermissionLevel(UserPermissions.Moderator))
-                    return;
-
-                // Get the user we want
-                var target = World.FindUser(userName);
-
-                // Check that the user could be found
-                if (target == null)
-                {
-                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
-                    return;
-                }
-
-                // User was found, so disconnect them and give the reason for the disconnect
-                target.Conn.Disconnect(GameMessage.DisconnectUserKicked, reason);
-            }
-
-            /// <summary>
             /// Kills the specified user.
             /// </summary>
             /// <param name="userName">The player to kill.</param>
-            [SayCommand("Kill")]
-            public void Kill(string userName)
+            [SayCommand("KillUser")]
+            public void KillUser(string userName)
             {
-                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
                     return;
 
                 // Get the user we want
@@ -1067,7 +1076,7 @@ namespace DemoGame.Server
             [SayCommand(("Summon"))]
             public void Summon(string userName)
             {
-                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
                     return;
 
                 // Get the user we want
@@ -1095,8 +1104,8 @@ namespace DemoGame.Server
                 if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
                     return;
 
-                Rectangle thrallArea = new Rectangle();
-                bool useThrallArea = false;
+                var thrallArea = new Rectangle();
+                var useThrallArea = false;
 
                 // When standing on top of something, also spawn the NPCs on the thing the User is standing on,
                 // and spread them out a bit on it without exceeding the size of it
@@ -1119,25 +1128,21 @@ namespace DemoGame.Server
                 {
                     // Create a ThralledNPC and add it to the world
                     var npc = new ThralledNPC(World, CharacterTemplateManager.Instance[id], User.Map, User.Position);
-                    
+
                     // When using the thrallArea, move the NPC to the correct area
                     if (useThrallArea)
                     {
                         var npcSize = npc.Size;
-                        int minX = thrallArea.Left;
-                        int maxX = thrallArea.Right - (int)npcSize.X;
+                        var minX = thrallArea.Left;
+                        var maxX = thrallArea.Right - (int)npcSize.X;
                         int x;
 
                         if (maxX <= minX)
-                        {
                             x = minX;
-                        }
                         else
-                        {
                             x = RandomHelper.NextInt(minX, maxX);
-                        }
-                        
-                        int y = thrallArea.Y - (int)npc.Size.Y;
+
+                        var y = thrallArea.Y - (int)npc.Size.Y;
                         npc.Teleport(new Vector2(x, y));
                     }
                 }
@@ -1146,24 +1151,24 @@ namespace DemoGame.Server
             /// <summary>
             /// Warps the user to the specified map and position.
             /// </summary>
-            /// <param name="mapId">The mapID to be warped to.</param>
+            /// <param name="mapID">The mapID to be warped to.</param>
             /// <param name="x">The position along the x-axis to be warped to.</param>
             /// <param name="y">The position along the y-axis to be warped to.</param>
             [SayCommand(("Warp"))]
-            public void Warp(MapID mapId, int x, int y)
+            public void Warp(MapID mapID, int x, int y)
             {
-                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
                     return;
 
                 // Check for a valid map
-                if (!MapBase.IsMapIDValid(mapId))
+                if (!MapBase.IsMapIDValid(mapID))
                 {
-                    UserChat("Invalid map ID: " + mapId);
+                    UserChat("Invalid map ID: " + mapID);
                     return;
                 }
 
                 // Move the user
-                User.Teleport(World.GetMap(mapId), new Vector2(x, y));
+                User.Teleport(World.GetMap(mapID), new Vector2(x, y));
             }
 
             #endregion
