@@ -112,7 +112,7 @@ namespace DemoGame.Editor
                     case Keys.Shift:
                     case Keys.LShiftKey:
                     case Keys.RShiftKey:
-                        return Keys.Shift;
+                        return Keys.ShiftKey;
 
                     case Keys.Control:
                     case Keys.LControlKey:
