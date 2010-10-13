@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text;
 using DemoGame.DbObjs;
+using DemoGame.Server.AI;
 using DemoGame.Server.Guilds;
 using NetGore;
 using NetGore.Features.Banning;
@@ -847,6 +848,22 @@ namespace DemoGame.Server
 
                 // Target user was found, so teleport the user that issued the command to the target user
                 User.Teleport(target.Map, target.Position);
+            }
+
+
+
+            /// <summary>
+            /// Toggles the AI.
+            /// </summary>
+            [SayCommand("ToggleAI")]
+            public void ToggleAI()
+            {
+                if (!RequirePermissionLevel(UserPermissions.Admin))
+                    return;
+
+                AISettings.AIDisabled = !AISettings.AIDisabled;
+
+                UserChat("AI has been {0}.", AISettings.AIDisabled ? "disabled" : "enabled");
             }
 
             /// <summary>

@@ -39,9 +39,6 @@ namespace DemoGame.Server
         /// </summary>
         protected override void DoUpdate()
         {
-            if (AISettings.AIDisabled)
-                return;
-
             var time = GetTime();
 
             // Ensure the target is still valid, or enough time has elapsed to check for a better target
