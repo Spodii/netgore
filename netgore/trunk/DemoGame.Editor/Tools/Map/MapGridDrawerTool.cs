@@ -3,7 +3,7 @@ using DemoGame.Editor.Properties;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 
-namespace DemoGame.Editor
+namespace DemoGame.Editor.Tools
 {
     /// <summary>
     /// A <see cref="Tool"/> that displays the <see cref="ScreenGrid"/> for an <see cref="IDrawableMap"/>.

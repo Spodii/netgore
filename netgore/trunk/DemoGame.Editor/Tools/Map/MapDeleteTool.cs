@@ -8,7 +8,7 @@ using log4net;
 using NetGore.Editor.EditorTool;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
-namespace DemoGame.Editor
+namespace DemoGame.Editor.Tools
 {
     public class MapDeleteTool : Tool
     {

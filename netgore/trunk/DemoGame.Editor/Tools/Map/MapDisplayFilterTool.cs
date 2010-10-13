@@ -12,7 +12,7 @@ using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace DemoGame.Editor
+namespace DemoGame.Editor.Tools
 {
     public class MapDisplayFilterTool : Tool
     {

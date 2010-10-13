@@ -7,7 +7,7 @@ using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 using NetGore.World;
 
-namespace DemoGame.Editor
+namespace DemoGame.Editor.Tools
 {
     /// <summary>
     /// A <see cref="Tool"/> that displays the walls on the map.
