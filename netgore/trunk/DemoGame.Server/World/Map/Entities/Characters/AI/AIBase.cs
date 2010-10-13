@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.AI;
 using log4net;
 using NetGore;
 using NetGore.AI;
@@ -27,7 +28,6 @@ namespace DemoGame.Server
         const int _expireExplicitHostilesRate = 2000;
 
         static readonly Vector2 _halfScreenSize = GameData.ScreenSize / 2;
-        static readonly SafeRandom _rand = new SafeRandom();
 
         readonly Character _actor;
 
@@ -184,7 +184,7 @@ namespace DemoGame.Server
         /// <returns>Random number in the given range.</returns>
         protected static int Rand(int min, int max)
         {
-            return _rand.Next(min, max);
+            return RandomHelper.NextInt(min, max);
         }
 
         /// <summary>
@@ -307,6 +307,15 @@ namespace DemoGame.Server
             // Ensure a valid actor
             if (!Actor.IsAlive || Actor.Map == null)
                 return;
+
+            // Check if AI is enabled
+            if (AISettings.AIDisabled)
+            {
+                if (Actor.IsMoving)
+                    Actor.StopMoving();
+                _explicitHostiles.Clear();
+                return;
+            }
 
             // Check to update the explicit hostiles
             if (_explicitHostiles.Count > 0)

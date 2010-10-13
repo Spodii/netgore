@@ -715,14 +715,14 @@ namespace DemoGame.Server
         /// <summary>
         /// Updates the Actor depending on its current state. Should only be called from DoUpdate().
         /// </summary>
-        /// <param name="CurrentState">The CurrentState of the actor.</param>
-        void UpdateState(State CurrentState)
+        /// <param name="currentState">The currrent <see cref="State"/> of the actor.</param>
+        void UpdateState(State currentState)
         {
             // If the AI has been disabled just set to Idle and ignore anything else
             if (AISettings.AIDisabled)
-                CurrentState = State.Idle;
+                currentState = State.Idle;
 
-            switch (CurrentState)
+            switch (currentState)
             {
                 case State.Idle:
                     if (Actor.IsMoving)
