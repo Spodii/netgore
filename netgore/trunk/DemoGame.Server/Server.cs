@@ -70,7 +70,8 @@ namespace DemoGame.Server
             ValidateDbControllerQueryAttributes();
 
             // Clean-up
-            new ServerRuntimeCleaner(this);
+            var cleaner = new ServerRuntimeCleaner(this);
+            cleaner.Run();
 
             // Load the game data and such
             InitializeScripts();

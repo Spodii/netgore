@@ -120,7 +120,10 @@ namespace DemoGame
 
                     // If we stacked all of the item, we're done
                     if (item.Amount == 0)
+                    {
+                        item.Dispose();
                         return null;
+                    }
                 }
             }
 
@@ -133,6 +136,7 @@ namespace DemoGame
 
                 // Reduce the amount of the item by the amount we took
                 var amountTaken = Math.Min(ItemEntityBase.MaxStackSize, item.Amount);
+                Debug.Assert(amountTaken > 0);
                 copy.Amount = amountTaken;
                 item.Amount -= amountTaken;
 

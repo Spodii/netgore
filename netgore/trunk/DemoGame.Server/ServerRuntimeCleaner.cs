@@ -15,6 +15,7 @@ namespace DemoGame.Server
     class ServerRuntimeCleaner
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly Server _server;
 
         /// <summary>
@@ -27,8 +28,27 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("server");
 
             _server = server;
+        }
 
-            RunAll();
+        /// <summary>
+        /// Runs the clean-up routines.
+        /// </summary>
+        /// <param name="extensive">If true, the extensive clean-up routines will also be run.
+        /// This can take a long time, especially in larger databases.</param>
+        public void Run(bool extensive = false)
+        {
+            if (log.IsInfoEnabled)
+                log.Info("Starting cleanup");
+
+            SetAccountCurrentIPsNull();
+
+            if (extensive)
+            {
+                RemoveUnreferencedItems();
+            }
+
+            if (log.IsInfoEnabled)
+                log.Info("Cleanup complete");
         }
 
         /// <summary>
@@ -66,21 +86,6 @@ namespace DemoGame.Server
             }
 
             DbController.RemoveUnreferencedPrimaryKeys(DbController.Database, ItemTable.TableName, ItemTable.DbKeyColumns.First());
-        }
-
-        /// <summary>
-        /// Runs all of the clean-up operations.
-        /// </summary>
-        void RunAll()
-        {
-            if (log.IsInfoEnabled)
-                log.Info("Starting cleanup");
-
-            SetAccountCurrentIPsNull();
-            RemoveUnreferencedItems();
-
-            if (log.IsInfoEnabled)
-                log.Info("Cleanup complete");
         }
 
         /// <summary>
