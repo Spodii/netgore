@@ -28,6 +28,12 @@ namespace DemoGame.Server
                 return;
             }
 
+            if (amount <= 0)
+            {
+                UserChat("Invalid amount specified. The amount must be 1 or more.");
+                return;
+            }
+
             // Create the item
             var item = new ItemEntity(template, amount);
 
@@ -89,6 +95,10 @@ namespace DemoGame.Server
         [SayHandlerCommand("Summon", UserPermissions.LesserAdmin)]
         public void Summon(string userName)
         {
+            var userMap = User.Map;
+            if (userMap == null)
+                return;
+
             // Get the user we want
             var target = World.FindUser(userName);
 
@@ -100,7 +110,7 @@ namespace DemoGame.Server
             }
 
             // Target user was found, so teleport them to the user that issued the command 
-            target.Teleport(User.Map, User.Position);
+            target.Teleport(userMap, User.Position);
         }
 
         /// <summary>
@@ -180,12 +190,27 @@ namespace DemoGame.Server
             // Check for a valid map
             if (!MapBase.IsMapIDValid(mapID))
             {
-                UserChat("Invalid map ID: " + mapID);
+                UserChat("Invalid map ID `{0}`.", mapID);
+                return;
+            }
+
+            var map = World.GetMap(mapID);
+            if (map == null)
+            {
+                UserChat("No map with ID `{0}` exists.", mapID);
+                return;
+            }
+
+            var pos = new Vector2(x, y);
+
+            if (pos.X < 0 || pos.Y < 0 || pos.X > map.Width || pos.Y > map.Height)
+            {
+                UserChat("The specified coordinates are out of the map's range. Map size: {0}", map.Size);
                 return;
             }
 
             // Move the user
-            User.Teleport(World.GetMap(mapID), new Vector2(x, y));
+            User.Teleport(map, pos);
         }
     }
 }
