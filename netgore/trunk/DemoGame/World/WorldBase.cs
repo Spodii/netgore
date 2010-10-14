@@ -12,7 +12,7 @@ namespace DemoGame
         /// is paused for an extended period or gets really far behind, it doesn't get stuck updating over and over for a huge
         /// amount of time. The information is probably stale at this point anyways.
         /// </summary>
-        const int _maxUpdateDeltaTime = 3000;
+        const int _maxUpdateDeltaTime = 5000;
 
         bool _isFirstUpdate = true;
         TickCount _lastUpdateTime;
