@@ -218,6 +218,18 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Gets or sets the object at a key. If setting and the <paramref name="value"/> is null, the <paramref name="key"/>
+            /// will be cleared.
+            /// </summary>
+            /// <param name="key">The key.</param>
+            /// <returns>The value at the <paramref name="key"/>, or null if empty.</returns>
+            TValue ICyclingObjectArray<TKey, TValue>.this[int key]
+            {
+                get { return this[FromInt(key)]; }
+                set { this[FromInt(key)] = value; }
+            }
+
+            /// <summary>
             /// Gets the keys that are currently in use.
             /// </summary>
             public IEnumerable<TKey> Keys
@@ -267,6 +279,16 @@ namespace NetGore.Collections
             public bool IsSet(TKey key)
             {
                 return _d.ContainsKey(key);
+            }
+
+            /// <summary>
+            /// Gets if an object exists at the given key.
+            /// </summary>
+            /// <param name="key">The key.</param>
+            /// <returns>True if an object exists at the given <paramref name="key"/>; otherwise false.</returns>
+            public bool IsSet(int key)
+            {
+                return IsSet(FromInt(key));
             }
 
             /// <summary>

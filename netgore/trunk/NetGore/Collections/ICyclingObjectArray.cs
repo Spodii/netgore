@@ -22,6 +22,14 @@ namespace NetGore.Collections
         TValue this[TKey key] { get; set; }
 
         /// <summary>
+        /// Gets or sets the object at a key. If setting and the <paramref name="value"/> is null, the <paramref name="key"/>
+        /// will be cleared.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The value at the <paramref name="key"/>, or null if empty.</returns>
+        TValue this[int key] { get; set; }
+
+        /// <summary>
         /// Gets the keys that are currently in use.
         /// </summary>
         IEnumerable<TKey> Keys { get; }
@@ -56,12 +64,19 @@ namespace NetGore.Collections
         /// <returns>The key at which the <paramref name="value"/> was added.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         TKey Add(TValue value);
-        
+
         /// <summary>
         /// Gets if an object exists at the given key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>True if an object exists at the given <paramref name="key"/>; otherwise false.</returns>
         bool IsSet(TKey key);
+
+        /// <summary>
+        /// Gets if an object exists at the given key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>True if an object exists at the given <paramref name="key"/>; otherwise false.</returns>
+        bool IsSet(int key);
     }
 }
