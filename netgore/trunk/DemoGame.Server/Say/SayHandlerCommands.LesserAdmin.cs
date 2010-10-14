@@ -111,6 +111,19 @@ namespace DemoGame.Server
         [SayHandlerCommand("Thrall", UserPermissions.LesserAdmin)]
         public void Thrall(CharacterTemplateID id, int amount)
         {
+            var charTemplate = CharacterTemplateManager.Instance[id];
+            if (charTemplate == null)
+            {
+                UserChat("Invalid character template `{0}`.", id);
+                return;
+            }
+
+            if (amount < 1)
+            {
+                UserChat("Must thrall 1 or more characters.");
+                return;
+            }
+
             var thrallArea = new Rectangle();
             var useThrallArea = false;
 
@@ -134,7 +147,7 @@ namespace DemoGame.Server
             for (var i = 0; i < amount; i++)
             {
                 // Create a ThralledNPC and add it to the world
-                var npc = new ThralledNPC(World, CharacterTemplateManager.Instance[id], User.Map, User.Position);
+                var npc = new ThralledNPC(World, charTemplate, User.Map, User.Position);
 
                 // When using the thrallArea, move the NPC to the correct area
                 if (useThrallArea)
