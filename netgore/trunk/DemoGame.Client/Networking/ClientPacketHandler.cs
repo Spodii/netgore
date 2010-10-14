@@ -312,8 +312,8 @@ namespace DemoGame.Client
             var chatText = CreateChatText(name, text);
             GameplayScreen.AppendToChatOutput(chatText);
 
-            DynamicEntity entity;
-            if (!Map.TryGetDynamicEntity(mapEntityIndex, out entity))
+            DynamicEntity entity = Map.GetDynamicEntity(mapEntityIndex);
+            if (entity == null)
             {
                 const string errmsg = "Failed to get DynamicEntity `{0}` for creating a chat bubble with text `{1}`.";
                 if (log.IsErrorEnabled)
