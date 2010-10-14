@@ -526,7 +526,7 @@ namespace NetGore
                         continue;
 
                     // We are allowed to invoke it, so try and invoke
-                    if (TryInvokeMethod(binder, cd.Method, args, out result))
+                    if (TryInvokeMethod(binder, cd.Method, convertedArgs, out result))
                         return true;
                 }
             }
