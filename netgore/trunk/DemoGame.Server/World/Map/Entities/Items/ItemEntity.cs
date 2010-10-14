@@ -362,6 +362,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Performs assertions on the <see cref="ItemEntity"/> during the <see cref="HandleDispose"/> method.
+        /// </summary>
+        /// <param name="disposeManaged">The disposedManaged value.</param>
+        [Conditional("DEBUG")]
+        void AssertHandleDisposeState(bool disposeManaged)
+        {
+            if (Amount == 0)
+            {
+                if (!disposeManaged)
+                {
+                    const string errmsg = "ItemEntity `{0}` had Amount = 0, but it was garbage collected. This is often indication " +
+                        " that you are alter item amounts somewhere, but are not calling Destroy() when the amount get set to 0." +
+                        " This is not an issue since the GC cleans it up for you, but its best to avoid this if you can.";
+
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, this);
+                }
+            }
+        }
+
+        /// <summary>
         /// Disposes of the ItemEntity, freeing its ID and existance in the database. Once disposed, an ItemEntity
         /// should never be used again.
         /// </summary>
@@ -369,6 +390,8 @@ namespace DemoGame.Server
         /// disposed. When false, managed resources do not need to be disposed since this object was garbage-collected.</param>
         protected override void HandleDispose(bool disposeManaged)
         {
+            AssertHandleDisposeState(disposeManaged);
+
             if (Amount == 0)
             {
                 // Delete the ItemEntity from the database
