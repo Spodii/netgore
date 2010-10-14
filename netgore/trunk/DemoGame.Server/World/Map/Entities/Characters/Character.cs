@@ -735,7 +735,7 @@ namespace DemoGame.Server
                     if (invAmmo.Value != null)
                         Inventory.DecreaseItemAmount(invAmmo.Key);
                     else
-                        weapon.Dispose();
+                        weapon.Destroy();
 
                     ammoUsed = true;
                     break;

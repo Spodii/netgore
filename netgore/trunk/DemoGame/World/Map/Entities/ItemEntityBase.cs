@@ -24,6 +24,23 @@ namespace DemoGame
         protected ItemEntityBase(Vector2 position, Vector2 size) : base(position, size)
         {
         }
+        
+        /// <summary>
+        /// Removes all records of the <see cref="ItemEntityBase"/> and disposes it. Use this when you want to completely remove an
+        /// <see cref="ItemEntityBase"/>, not just unload it from memory.
+        /// </summary>
+        public void Destroy()
+        {
+            if (IsDisposed)
+                return;
+
+            HandleDestroy();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles destroying the <see cref="ItemEntityBase"/>.
+        /// </summary>
+        protected abstract void HandleDestroy();
 
         /// <summary>
         /// Gets or sets the size of this item cluster (1 for a single item).

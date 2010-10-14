@@ -353,6 +353,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles destroying the <see cref="ItemEntityBase"/>.
+        /// </summary>
+        protected override void HandleDestroy()
+        {
+            Amount = 0;
+            Dispose();
+        }
+
+        /// <summary>
         /// Disposes of the ItemEntity, freeing its ID and existance in the database. Once disposed, an ItemEntity
         /// should never be used again.
         /// </summary>
@@ -472,9 +481,9 @@ namespace DemoGame.Server
             // Give the ItemEntity to the character
             if (character.GiveItem(this) == null)
             {
-                // The ItemEntity was all added to the inventory, so dispose of it
-                // The map automatically removes disposed Entities
-                Dispose();
+                // The ItemEntity was all added to the inventory, so dispose of it.
+                // The map automatically removes disposed Entities.
+                Destroy();
             }
 
             // Notify listeners
@@ -543,9 +552,15 @@ namespace DemoGame.Server
             _queryUpdateItemField.Execute(_id, field, value);
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} [{1}]", Name, ID);
+            return string.Format("{0} [ID: {1}]", Name, ID);
         }
 
         /// <summary>
