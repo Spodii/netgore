@@ -484,8 +484,8 @@ namespace DemoGame.Server
                 return;
 
             // Get the item
-            ItemEntityBase item;
-            if (!map.TryGetDynamicEntity(mapEntityIndex, out item))
+            ItemEntityBase item = map.GetDynamicEntity<ItemEntityBase>(mapEntityIndex);
+            if (item == null)
                 return;
 
             // Ensure the distance is valid
