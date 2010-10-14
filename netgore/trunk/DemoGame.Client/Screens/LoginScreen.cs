@@ -85,8 +85,8 @@ namespace DemoGame.Client
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Login", "Back");
             _btnLogin = menuButtons["Login"];
-            _btnLogin.Clicked += delegate { _sockets.Connect(); };
-            menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
+            _btnLogin.Clicked += _btnLogin_Clicked;
+            menuButtons["Back"].Clicked += LoginScreen_Clicked;
 
             cScreen.SetFocus();
 
@@ -95,6 +95,26 @@ namespace DemoGame.Client
             _sockets.StatusChanged += _sockets_StatusChanged;
             _sockets.PacketHandler.ReceivedLoginSuccessful += PacketHandler_ReceivedLoginSuccessful;
             _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the back button.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        void LoginScreen_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            ScreenManager.SetScreen(MainMenuScreen.ScreenName);
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the login button.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        void _btnLogin_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            _sockets.Connect();
         }
 
         void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
