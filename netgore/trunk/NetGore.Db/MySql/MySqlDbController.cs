@@ -159,8 +159,6 @@ namespace NetGore.Db.MySql
                         p.ParameterName = "@value";
                         cmd.Parameters.Add(p);
 
-                        cmd.Prepare();
-
                         fkCmds.Add(cmd);
                     }
 
