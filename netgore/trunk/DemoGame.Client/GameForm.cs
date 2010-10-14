@@ -35,6 +35,9 @@ namespace DemoGame.Client
             _game = new DemoGame(Handle);
         }
 
+        /// <summary>
+        /// Handles a frame of the main game loop.
+        /// </summary>
         void HandleFrame()
         {
             try
