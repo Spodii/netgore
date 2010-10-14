@@ -44,7 +44,7 @@ namespace DemoGame.Server
             if (remainder != null)
             {
                 UserChat(remainder.Amount + " units could not be added to your inventory.");
-                remainder.Dispose();
+                remainder.Destroy();
             }
         }
 

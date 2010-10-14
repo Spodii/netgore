@@ -44,9 +44,9 @@ namespace DemoGame
         /// Completely removes the item in a given slot, including optionally disposing it.
         /// </summary>
         /// <param name="slot">Slot of the item to remove.</param>
-        /// <param name="dispose">If true, the item in the slot will also be disposed. If false, the item
+        /// <param name="destroy">If true, the item in the slot will also be destroyed. If false, the item
         /// will be removed from the Inventory, but not disposed.</param>
-        protected void ClearSlot(InventorySlot slot, bool dispose)
+        protected void ClearSlot(InventorySlot slot, bool destroy)
         {
             // Get the item at the slot
             var item = this[slot];
@@ -64,9 +64,9 @@ namespace DemoGame
             // Remove the item reference
             this[slot] = null;
 
-            // Dispose of the item
-            if (dispose)
-                item.Dispose();
+            // Destroy the item
+            if (destroy)
+                item.Destroy();
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace DemoGame
                     // If we stacked all of the item, we're done
                     if (item.Amount == 0)
                     {
-                        item.Dispose();
+                        item.Destroy();
                         return null;
                     }
                 }
@@ -146,7 +146,7 @@ namespace DemoGame
                 // If we took all of the item, we are done
                 if (item.Amount == 0)
                 {
-                    item.Dispose();
+                    item.Destroy();
                     return null;
                 }
             }
@@ -291,8 +291,8 @@ namespace DemoGame
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, value, slot, oldItem);
 
-                    // Try to resolve the problem by removing and disposing of the old item
-                    ClearSlot(slot, true);
+                    // Try to resolve the problem by removing the old item
+                    ClearSlot(slot, false);
                 }
 
                 // Attach (if item added) or remove (if item removed) hook to the Dispose event
@@ -493,28 +493,28 @@ namespace DemoGame
         /// <summary>
         /// Removes all items from the inventory.
         /// </summary>
-        /// <param name="dispose">If true, then all of the items in the InventoryBase will be disposed of. If false,
-        /// they will only be removed from the InventoryBase, but could still referenced by other objects.</param>
-        public void RemoveAll(bool dispose)
+        /// <param name="destroy">If true, then all of the items in the inventory will be destroyed. If false,
+        /// they will only be removed from the inventory, but could still referenced by other objects.</param>
+        public void RemoveAll(bool destroy)
         {
             for (var i = 0; i < _buffer.Length; i++)
             {
                 if (this[i] != null)
-                    ClearSlot(new InventorySlot(i), dispose);
+                    ClearSlot(new InventorySlot(i), destroy);
             }
         }
 
         /// <summary>
         /// Removes the item in the given <paramref name="slot"/> from the inventory. The removed item is
-        /// not disposed, so if the ItemEntity must be disposed (that is, it won't be used anywhere else), be
+        /// not disposed, so if the item must be disposed (that is, it won't be used anywhere else), be
         /// sure to dispose of it!
         /// </summary>
         /// <param name="slot">Slot of the item to remove.</param>
-        /// <param name="dispose">If true, the item at the given <paramref name="slot"/> will be disposed. If false,
+        /// <param name="destroy">If true, the item at the given <paramref name="slot"/> will be destroyed. If false,
         /// the item will not be disposed and will still be referenceable.</param>
-        public void RemoveAt(InventorySlot slot, bool dispose)
+        public void RemoveAt(InventorySlot slot, bool destroy)
         {
-            ClearSlot(slot, dispose);
+            ClearSlot(slot, destroy);
         }
 
         /// <summary>

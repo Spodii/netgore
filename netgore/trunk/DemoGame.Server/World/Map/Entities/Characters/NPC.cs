@@ -454,7 +454,7 @@ namespace DemoGame.Server
 
                     var extraItems = Inventory.Add(item);
                     if (extraItems != null)
-                        extraItems.Dispose();
+                        extraItems.Destroy();
                 }
             }
 
@@ -467,7 +467,7 @@ namespace DemoGame.Server
                         continue;
 
                     if (!Equipped.Equip(item))
-                        item.Dispose();
+                        item.Destroy();
                 }
             }
         }

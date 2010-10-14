@@ -924,7 +924,7 @@ namespace DemoGame.Server
             // Check for room in the inventory
             if (!Inventory.CanAdd(itemEntity))
             {
-                itemEntity.Dispose();
+                itemEntity.Destroy();
                 return false;
             }
 
@@ -936,7 +936,7 @@ namespace DemoGame.Server
             if (remainderItem != null)
             {
                 remainderAmount = remainderItem.Amount;
-                remainderItem.Dispose();
+                remainderItem.Destroy();
             }
 
             // Find the difference in the requested amount and remaining amount to get the amount added, and
@@ -989,8 +989,8 @@ namespace DemoGame.Server
                 }
             }
 
-            // Dispose of the item entity since when we gave it to the user, we gave them a deep copy
-            itemEntity.Dispose();
+            // Destroy the item entity since when we gave it to the user, we gave them a deep copy
+            itemEntity.Destroy();
 
             return true;
         }

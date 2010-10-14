@@ -246,7 +246,7 @@ namespace DemoGame.Server
 
             // Make sure we dispose of items where the amount hit 0
             if (item.Amount == 0)
-                item.Dispose();
+                item.Destroy();
         }
 
         /// <summary>
@@ -280,13 +280,13 @@ namespace DemoGame.Server
 
             _disposed = true;
 
-            // If the Character is not persistent, we want to dispose of every ItemEntity so it doesn't sit in the
+            // If the Character is not persistent, we want to destroy every ItemEntity so it doesn't sit in the
             // database as garbage
             if (!_isPersistent)
             {
                 foreach (var item in this.Select(x => x.Value))
                 {
-                    item.Dispose();
+                    item.Destroy();
                 }
             }
         }

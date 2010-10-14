@@ -563,7 +563,7 @@ namespace DemoGame.Server
             ProcessDisposeStack();
 
             // Dispose the unarmed weapon item
-            _unarmedWeapon.Dispose();
+            _unarmedWeapon.Destroy();
 
             // Dispose of the maps
             foreach (var map in Maps)

@@ -94,9 +94,9 @@ namespace NetGore.World
         /// <summary>
         /// Removes all items from the inventory.
         /// </summary>
-        /// <param name="dispose">If true, then all of the items in the inventory will be disposed of. If false,
+        /// <param name="destroy">If true, then all of the items in the inventory will be destroyed. If false,
         /// they will only be removed from the inventory, but could still referenced by other objects.</param>
-        void RemoveAll(bool dispose);
+        void RemoveAll(bool destroy);
 
         /// <summary>
         /// Removes the item in the given <paramref name="slot"/> from the inventory. The removed item is
@@ -104,9 +104,9 @@ namespace NetGore.World
         /// sure to dispose of it!
         /// </summary>
         /// <param name="slot">Slot of the item to remove.</param>
-        /// <param name="dispose">If true, the item at the given <paramref name="slot"/> will be disposed. If false,
+        /// <param name="destroy">If true, the item at the given <paramref name="slot"/> will be destroyed. If false,
         /// the item will not be disposed and will still be referenceable.</param>
-        void RemoveAt(InventorySlot slot, bool dispose);
+        void RemoveAt(InventorySlot slot, bool destroy);
 
         /// <summary>
         /// Swaps the items in two inventory slots.
