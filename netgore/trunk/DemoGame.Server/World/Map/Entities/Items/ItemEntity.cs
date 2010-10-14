@@ -360,11 +360,14 @@ namespace DemoGame.Server
         /// disposed. When false, managed resources do not need to be disposed since this object was garbage-collected.</param>
         protected override void HandleDispose(bool disposeManaged)
         {
-            // Delete the ItemEntity from the database
-            _queryDeleteItem.Execute(ID);
+            if (Amount == 0)
+            {
+                // Delete the ItemEntity from the database
+                _queryDeleteItem.Execute(ID);
 
-            // Free the ItemEntity's ID
-            _queryIDCreator.FreeID(ID);
+                // Free the ItemEntity's ID
+                _queryIDCreator.FreeID(ID);
+            }
 
             base.HandleDispose(disposeManaged);
         }
