@@ -77,7 +77,7 @@ namespace NetGore.Db.MySql
         public override int RemoveUnreferencedPrimaryKeys(string schema, string table, string column)
         {
             // How many keys to grab at a time. Larger value = greater memory usage, but fewer queries.
-            const int batchSize = 5000;
+            const int batchSize = 4192;
 
             var ret = 0;
 
@@ -134,12 +134,10 @@ namespace NetGore.Db.MySql
 
                     var grabPKsParamLow = grabPKsCmd.CreateParameter();
                     grabPKsParamLow.ParameterName = "@low";
-                    grabPKsParamLow.DbType = DbType.Int32;
                     grabPKsCmd.Parameters.Add(grabPKsParamLow);
 
                     var grabPKsParamHigh = grabPKsCmd.CreateParameter();
                     grabPKsParamHigh.ParameterName = "@high";
-                    grabPKsParamHigh.DbType = DbType.Int32;
                     grabPKsCmd.Parameters.Add(grabPKsParamHigh);
 
                     // Create the command for deleting the row
@@ -149,8 +147,6 @@ namespace NetGore.Db.MySql
                     var deleteParam = deleteCmd.CreateParameter();
                     deleteParam.ParameterName = "@value";
                     deleteCmd.Parameters.Add(deleteParam);
-
-                    deleteCmd.Prepare();
 
                     // Create a command for each of the individual foreign key references
                     foreach (var fk in foreignKeys)
@@ -238,6 +234,7 @@ namespace NetGore.Db.MySql
 
                                 // Adjust the row count since we did just delete a row
                                 numRows -= rowsDeleted;
+                                rowsLow -= rowsDeleted;
                             }
                         }
 
