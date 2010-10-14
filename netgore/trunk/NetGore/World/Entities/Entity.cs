@@ -101,6 +101,23 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="Entity"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~Entity()
+        {
+            if (IsDisposed)
+                return;
+
+            _isDisposed = true;
+
+            if (Disposed != null)
+                Disposed(this);
+
+            HandleDispose(false);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Entity"/> class.
         /// </summary>
         /// <param name="position">The initial world position.</param>
