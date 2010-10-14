@@ -1,12 +1,23 @@
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore;
 
 namespace DemoGame
 {
     public abstract class WorldBase : IGetTime
     {
+        /// <summary>
+        /// The maximum number of times the world can be updated per tick. This is provided to ensure that when the program
+        /// is paused for an extended period or gets really far behind, it doesn't get stuck updating over and over for a huge
+        /// amount of time. The information is probably stale at this point anyways.
+        /// </summary>
+        const int _maxUpdateDeltaTime = 3000;
+
         bool _isFirstUpdate = true;
         TickCount _lastUpdateTime;
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Updates the World.
@@ -25,6 +36,17 @@ namespace DemoGame
 
             // Grab the update rate
             var updateRate = GameData.WorldPhysicsUpdateRate;
+
+            // Check if we fell too far behind
+            if (currentTime - _lastUpdateTime > _maxUpdateDeltaTime)
+            {
+                const string errmsg = "Fell too far behind in updates to catch up. Jumping ahead to current time.";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+
+                // Push the time ahead to a bit before the current time
+                _lastUpdateTime = (TickCount)(currentTime - updateRate - 1);
+            }
 
             // Keep updating until there is not enough delta time to fit into the updateRate
             while (currentTime > _lastUpdateTime + updateRate)
