@@ -65,21 +65,21 @@ namespace DemoGame.Server
             if (_dbController == null)
                 return;
 
-            // Load the game data and such
-            InitializeScripts();
-
             // Validate the database
             DbTableValidator.ValidateTables(_dbController);
             ValidateDbControllerQueryAttributes();
+
+            // Clean-up
+            new ServerRuntimeCleaner(this);
+
+            // Load the game data and such
+            InitializeScripts();
 
             // Create some objects
             _consoleCommands = new ConsoleCommands(this);
             _groupManager = new GroupManager((gm, x) => new Group(x));
             _world = new World(this);
             _sockets = new ServerSockets(this);
-
-            // Clean-up
-            new ServerRuntimeCleaner(this);
 
             if (log.IsInfoEnabled)
                 log.Info("Server loaded.");
