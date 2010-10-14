@@ -37,6 +37,36 @@ namespace DemoGame.Client
             Focus();
         }
 
+        void HandleFrame()
+        {
+            try
+            {
+                // Check if the game is running
+                bool isOpened;
+                try
+                {
+                    isOpened = _game.IsOpened();
+                }
+                catch (AccessViolationException)
+                {
+                    // SFML likes to throw an AccessViolationException when the game is disposed
+                    isOpened = false;
+                }
+
+                // If the game is running, handle the next frame. Otherwise, close the form.
+                if (isOpened)
+                    _game.HandleFrame();
+                else
+                    Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionSwallower.Instance.Swallow(ex);
+                if (ExceptionSwallower.Instance.Rethrow)
+                    throw;
+            }
+        }
+
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
@@ -79,48 +109,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Paints the screen.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            try
-            {
-                // Check if the game is running
-                bool isOpened;
-                try
-                {
-                    isOpened = _game.IsOpened();
-                }
-                catch (AccessViolationException)
-                {
-                    // SFML likes to throw an AccessViolationException when the game is disposed
-                    isOpened = false;
-                }
-
-                try
-                {
-                    // If the game is running, handle the next frame. Otherwise, close the form.
-                    if (isOpened)
-                        _game.HandleFrame();
-                    else
-                        Close();
-                }
-                finally
-                {
-                    // Invalidate the whole screen so that it will be fully redrawn as soon as possible
-                    Invalidate();
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionSwallower.Instance.Swallow(ex);
-                if (ExceptionSwallower.Instance.Rethrow)
-                    throw;
-            }
-        }
-
-        /// <summary>
         /// Processes a command key.
         /// </summary>
         /// <param name="msg">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the
@@ -148,6 +136,14 @@ namespace DemoGame.Client
             }
 
             return false;
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x000F)
+                HandleFrame();
+            else
+                base.WndProc(ref m);
         }
     }
 }
