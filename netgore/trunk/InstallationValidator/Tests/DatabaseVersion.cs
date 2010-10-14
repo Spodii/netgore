@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -11,9 +12,9 @@ namespace InstallationValidator.Tests
             " or later, you will encounter errors when trying to import the database dump file (db.sql).";
 
         const string _failMessage =
-            "Your MySQL database version ({0}) is not supported. Please download the latest version of MySQL" +
+            "Your MySQL database version {0}. Please download the latest version of MySQL" +
             " from the MySQL website at:\n\nhttp://dev.mysql.com/downloads/mysql/" +
-            "\n\nADDITIONAL INFO: If you know you have already installed" + _minVersionName +
+            "\n\nADDITIONAL INFO: If you know you have already installed " + _minVersionName +
             " or later, the issue is likely that you have more than one instance of MySQL installed." +
             " A common case of this is if you are using WAMP or any similar web server package that includes MySQL." +
             " If you do not use the web server package anymore, uninstalling it can fix this issue since it will" +
@@ -22,25 +23,7 @@ namespace InstallationValidator.Tests
 
         const string _minVersionName = "MySQL 5.1.38";
 
-        /// <summary>
-        /// The prefix to give to every <see cref="_supportedVersionStrs"/> regex.
-        /// </summary>
-        const string _regexPrefix = @"version\(\)[\r\n]*";
-
         const string _testName = "Database version";
-
-        /// <summary>
-        /// A collection of Regex strings for the supported versions.
-        /// </summary>
-        static readonly string[] _supportedVersionStrs = new string[]
-        {
-            @"5\.1\.3[8-9]", // 5.1.38 to 5.1.39
-            @"5\.1\.4[0-9]", // 5.1.40 and later
-            @"5\.1\.[0-9][0-9][0-9]", // 5.1.100 and later
-            @"5\.[2-9]", // 5.2 and later
-            @"6\.", // 6.x and later
-            @"[7-9]\." // Anything beyond 6 (we'll properly test this when those versions actually come out...)
-        };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseVersion"/> class.
@@ -71,16 +54,61 @@ namespace InstallationValidator.Tests
                 return false;
             }
 
-            var regexes = _supportedVersionStrs.Select(x => new Regex(_regexPrefix + x, RegexOptions.IgnoreCase));
-            var success = regexes.Any(x => x.IsMatch(output));
+            var reg = new Regex(@"(?<Major>\d+)\.(?<Minor>\d+)\.(?<Revision>\d+)-(?<Version>[a-zA-Z]+)", RegexOptions.CultureInvariant);
 
-            if (!success)
+            int success = -1;
+
+            var m = reg.Match(output);
+            if (m.Success)
             {
-                var foundVersion = output.Replace("\r", "").Replace("\n", "").Replace("version()", "");
-                errorMessage = string.Format(_failMessage, foundVersion);
+                int major;
+                int minor;
+                int revision;
+                if (int.TryParse(m.Groups["Major"].Value, out major) && int.TryParse(m.Groups["Minor"].Value, out minor)
+                    && int.TryParse(m.Groups["Revision"].Value, out revision))
+                {
+                    success = IsValidVersion(major, minor, revision, m.Groups["Version"].Value);
+                }
             }
 
-            return success;
+            var foundVersion = string.IsNullOrEmpty(output) ? "[UNKNOWN]" : output.Replace("\r", "").Replace("\n", "").Replace("version()", "");
+            switch (success)
+            {
+                case 0:
+                    return true;
+
+                case 1:
+                    errorMessage = string.Format("({0}) is not supported and should be updated.", foundVersion);
+                    return false;
+
+                case 2:
+                    errorMessage = string.Format("({0}) was unrecognized.", foundVersion);
+                    return false;
+
+                default:
+                    errorMessage = string.Format(_failMessage, foundVersion);
+                    return false;
+            }
+        }
+
+        static int IsValidVersion(int major, int minor, int revision, string version)
+        {
+            if (!StringComparer.OrdinalIgnoreCase.Equals(version, "community"))
+            {
+                // Unknown version
+                return 2;
+            }
+
+            if (major > 5)
+                return 0;
+
+            if (minor > 1)
+                return 0;
+
+            if (revision >= 38)
+                return 0;
+
+            return 1;
         }
     }
 }
