@@ -33,6 +33,7 @@ namespace DemoGame
         PeerTradeEvent,
         PickupItem,
         RaiseStat,
+        RequestDynamicEntity,
         Say,
         SelectAccountCharacter,
         SelectNPCChatDialogResponse,
