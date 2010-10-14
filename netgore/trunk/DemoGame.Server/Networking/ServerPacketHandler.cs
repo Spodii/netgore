@@ -501,6 +501,41 @@ namespace DemoGame.Server
             item.Pickup(user);
         }
 
+        [MessageHandler((uint)ClientPacketID.RequestDynamicEntity)]
+        void RecvRequestMapEntityIndex(IIPSocket conn, BitStream r)
+        {
+            var index = r.ReadMapEntityIndex();
+
+            // Get the user and their map
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            Map map;
+            if (!TryGetMap(user, out map))
+                return;
+
+            // Get the DynamicEntity
+            var de = map.GetDynamicEntity(index);
+
+            if (de == null)
+            {
+                // The DynamicEntity for the index was null, so tell the client to delete whatever is at that index
+                using (var pw = ServerPacket.RemoveDynamicEntity(de))
+                {
+                    conn.Send(pw, ServerMessageType.Map);
+                }
+            }
+            else
+            {
+                // A DynamicEntity does exist at that index, so tell the client to create it
+                using (var pw = ServerPacket.CreateDynamicEntity(de))
+                {
+                    conn.Send(pw, ServerMessageType.Map);
+                }
+            }
+        }
+
         [MessageHandler((uint)ClientPacketID.RaiseStat)]
         void RecvRaiseStat(IIPSocket conn, BitStream r)
         {

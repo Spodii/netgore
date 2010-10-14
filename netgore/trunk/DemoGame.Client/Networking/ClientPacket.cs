@@ -200,6 +200,13 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter RequestDynamicEntity(MapEntityIndex index)
+        {
+            var pw = GetWriter(ClientPacketID.RequestDynamicEntity);
+            pw.Write(index);
+            return pw;
+        }
+
         public static PacketWriter Say(string text)
         {
             var pw = GetWriter(ClientPacketID.Say);

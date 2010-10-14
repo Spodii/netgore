@@ -32,7 +32,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Holds all the methods used to process received packets.
     /// </summary>
-    public class ClientPacketHandler : IGetTime
+    public partial class ClientPacketHandler : IGetTime
     {
         /// <summary>
         /// Handles when a CreateAccount message is received.
@@ -48,6 +48,8 @@ namespace DemoGame.Client
 
         readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
         readonly IDynamicEntityFactory _dynamicEntityFactory;
+        readonly INetworkSender _networkSender;
+        readonly ObjGrabber _objGrabber;
         readonly ClientPeerTradeInfoHandler _peerTradeInfoHandler;
         readonly IScreenManager _screenManager;
 
@@ -70,11 +72,14 @@ namespace DemoGame.Client
             if (networkSender == null)
                 throw new ArgumentNullException("networkSender");
 
+            _networkSender = networkSender;
             _dynamicEntityFactory = dynamicEntityFactory;
             _screenManager = screenManager;
 
             _peerTradeInfoHandler = new ClientPeerTradeInfoHandler(networkSender);
             _peerTradeInfoHandler.GameMessageCallback += PeerTradeInfoHandler_GameMessageCallback;
+
+            _objGrabber = new ObjGrabber(this);
         }
 
         /// <summary>
@@ -134,6 +139,11 @@ namespace DemoGame.Client
             get { return GameplayScreen.World.Map; }
         }
 
+        public INetworkSender NetworkSender
+        {
+            get { return _networkSender; }
+        }
+
         /// <summary>
         /// Gets the <see cref="ClientPeerTradeInfoHandler"/> instance.
         /// </summary>
@@ -155,7 +165,7 @@ namespace DemoGame.Client
             get { return _screenManager; }
         }
 
-        ISoundManager SoundManager
+        public ISoundManager SoundManager
         {
             get { return GameplayScreen.SoundManager; }
         }
@@ -259,7 +269,7 @@ namespace DemoGame.Client
                 actionDisplayIDNullable = null;
 
             // Get the object references using the IDs provided
-            var attacker = Map.GetDynamicEntity<Character>(attackerID);
+            var attacker = _objGrabber.GetDynamicEntity<Character>(attackerID);
             if (attacker == null)
                 return;
 
@@ -288,7 +298,7 @@ namespace DemoGame.Client
             var mapCharIndex = r.ReadMapEntityIndex();
             var damage = r.ReadInt();
 
-            var chr = Map.GetDynamicEntity<Character>(mapCharIndex);
+            var chr = _objGrabber.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -312,15 +322,11 @@ namespace DemoGame.Client
             var chatText = CreateChatText(name, text);
             GameplayScreen.AppendToChatOutput(chatText);
 
-            DynamicEntity entity = Map.GetDynamicEntity(mapEntityIndex);
+            var entity = Map.GetDynamicEntity(mapEntityIndex);
             if (entity == null)
-            {
-                const string errmsg = "Failed to get DynamicEntity `{0}` for creating a chat bubble with text `{1}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, mapEntityIndex, text);
-            }
-            else
-                GameplayScreen.AddChatBubble(entity, text);
+                return;
+
+            GameplayScreen.AddChatBubble(entity, text);
         }
 
         [MessageHandler((uint)ServerPacketID.CreateAccount)]
@@ -439,13 +445,6 @@ namespace DemoGame.Client
             var exp = r.ReadInt();
             var cash = r.ReadInt();
 
-            var userChar = World.UserChar;
-            if (userChar == null)
-            {
-                Debug.Fail("UserChar is null.");
-                return;
-            }
-
             var msg = string.Format("Got {0} exp and {1} cash", exp, cash);
             GameplayScreen.InfoBox.Add(msg);
         }
@@ -470,7 +469,7 @@ namespace DemoGame.Client
         {
             var mapCharIndex = r.ReadMapEntityIndex();
 
-            var chr = Map.GetDynamicEntity<Character>(mapCharIndex);
+            var chr = _objGrabber.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -511,13 +510,7 @@ namespace DemoGame.Client
 
             var entity = Map.GetDynamicEntity(index);
             if (entity == null)
-            {
-                const string errmsg = "Failed to find DynamicEntity with MapEntityIndex `{0}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, index);
-                Debug.Fail(string.Format(errmsg, index));
                 return;
-            }
 
             if (!SoundManager.Play(soundID, entity))
                 LogFailPlaySound(soundID);
@@ -535,20 +528,15 @@ namespace DemoGame.Client
             var mapEntityIndex = r.ReadMapEntityIndex();
             var dynamicEntity = Map.GetDynamicEntity(mapEntityIndex);
 
-            if (dynamicEntity != null)
-            {
-                Map.RemoveEntity(dynamicEntity);
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Removed DynamicEntity with index `{0}`", mapEntityIndex);
-                dynamicEntity.Dispose();
-            }
-            else
-            {
-                const string errmsg = "Could not remove DynamicEntity with index `{0}` - no DynamicEntity found.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, mapEntityIndex);
-                Debug.Fail(string.Format(errmsg, mapEntityIndex));
-            }
+            if (dynamicEntity == null)
+                return;
+
+            Map.RemoveEntity(dynamicEntity);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Removed DynamicEntity with index `{0}`", mapEntityIndex);
+
+            dynamicEntity.Dispose();
         }
 
         [MessageHandler((uint)ServerPacketID.RemoveStatusEffect)]
@@ -617,7 +605,7 @@ namespace DemoGame.Client
             var mapEntityIndex = r.ReadMapEntityIndex();
             var percent = r.ReadByte();
 
-            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            var character = _objGrabber.GetDynamicEntity<Character>(mapEntityIndex);
             if (character == null)
                 return;
 
@@ -630,7 +618,7 @@ namespace DemoGame.Client
             var mapEntityIndex = r.ReadMapEntityIndex();
             var percent = r.ReadByte();
 
-            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            var character = _objGrabber.GetDynamicEntity<Character>(mapEntityIndex);
             if (character == null)
                 return;
 
@@ -649,7 +637,7 @@ namespace DemoGame.Client
                 layers[i] = r.ReadString();
             }
 
-            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            var character = _objGrabber.GetDynamicEntity<Character>(mapEntityIndex);
             if (character == null)
                 return;
 
@@ -762,7 +750,7 @@ namespace DemoGame.Client
                 questIDs[i] = r.ReadQuestID();
             }
 
-            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            var character = _objGrabber.GetDynamicEntity<Character>(mapEntityIndex);
             if (character != null)
                 character.ProvidedQuests = questIDs;
         }
@@ -797,18 +785,12 @@ namespace DemoGame.Client
             var skillType = r.ReadEnum<SkillType>();
 
             // Get the SkillInfo for the skill being used
-            var skillInfo = SkillInfoManager.Instance[skillType];
+            var skillInfo = _objGrabber.GetSkillInfo(skillType);
             if (skillInfo == null)
-            {
-                const string errmsg = "EntityIndex `{0}` started casting unknown SkillType `{1}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, casterEntityIndex, skillType);
-                Debug.Fail(string.Format(errmsg, casterEntityIndex, skillType));
                 return;
-            }
 
             // Get the entity
-            var casterEntity = Map.GetDynamicEntity<Character>(casterEntityIndex);
+            var casterEntity = _objGrabber.GetDynamicEntity<Character>(casterEntityIndex);
             if (casterEntity == null)
                 return;
 
@@ -833,15 +815,13 @@ namespace DemoGame.Client
             GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
         }
 
-        // TODO: !! Create a local method to use for every call to get a DynamicEntity. In it, handle the error checking and logging crap.
-
         [MessageHandler((uint)ServerPacketID.SkillStopCasting_ToMap)]
         void RecvSkillStopCasting_ToMap(IIPSocket conn, BitStream r)
         {
             var casterEntityIndex = r.ReadMapEntityIndex();
 
             // Get the entity
-            var casterEntity = Map.GetDynamicEntity<Character>(casterEntityIndex);
+            var casterEntity = _objGrabber.GetDynamicEntity<Character>(casterEntityIndex);
             if (casterEntity == null)
                 return;
 
@@ -865,44 +845,25 @@ namespace DemoGame.Client
                 targetEntityIndex = r.ReadMapEntityIndex();
             var skillType = r.ReadEnum<SkillType>();
 
-            var casterEntity = Map.GetDynamicEntity<CharacterEntity>(casterEntityIndex);
+            var casterEntity = _objGrabber.GetDynamicEntity<CharacterEntity>(casterEntityIndex);
             CharacterEntity targetEntity = null;
             if (targetEntityIndex.HasValue)
-                targetEntity = Map.GetDynamicEntity<CharacterEntity>(targetEntityIndex.Value);
+                targetEntity = _objGrabber.GetDynamicEntity<CharacterEntity>(targetEntityIndex.Value);
 
             if (casterEntity == null)
-            {
-                const string errmsg = "Read an invalid MapEntityIndex `{0}` in UseSkill for the skill user.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, casterEntityIndex);
                 return;
-            }
-
-            // TODO: !! Replace this message here with the display of the skills
-            if (targetEntity != null)
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", casterEntity.Name, skillType,
-                                                                targetEntity.Name));
-            else
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", casterEntity.Name, skillType));
 
             // Get the SkillInfo for the skill being used
-            var skillInfo = SkillInfoManager.Instance[skillType];
+            var skillInfo = _objGrabber.GetSkillInfo(skillType);
             if (skillInfo == null)
+                return;
+
+            // If an ActionDisplay is available for this skill, display it
+            if (skillInfo.CastActionDisplay.HasValue)
             {
-                const string errmsg = "Entity `{0}` started casting unknown SkillType `{1}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, casterEntity, skillType);
-                Debug.Fail(string.Format(errmsg, casterEntity, skillType));
-            }
-            else
-            {
-                // If an ActionDisplay is available for this skill, display it
-                if (skillInfo.CastActionDisplay.HasValue)
-                {
-                    var ad = ActionDisplayScripts.ActionDisplays[skillInfo.CastActionDisplay.Value];
-                    if (ad != null)
-                        ad.Execute(Map, casterEntity, targetEntity);
-                }
+                var ad = ActionDisplayScripts.ActionDisplays[skillInfo.CastActionDisplay.Value];
+                if (ad != null)
+                    ad.Execute(Map, casterEntity, targetEntity);
             }
         }
 
@@ -1018,7 +979,7 @@ namespace DemoGame.Client
             // Grab the DynamicEntity
             // The map can be null if the spatial updates come very early (which isn't uncommon)
             if (Map != null)
-                dynamicEntity = Map.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
+                dynamicEntity = _objGrabber.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
 
             // Deserialize
             if (dynamicEntity != null)
@@ -1040,41 +1001,17 @@ namespace DemoGame.Client
             var usedByIndex = r.ReadMapEntityIndex();
 
             // Grab the used DynamicEntity
-            var usedEntity = Map.GetDynamicEntity(usedEntityIndex);
+            var usedEntity = _objGrabber.GetDynamicEntity<IUsableEntity>(usedEntityIndex);
             if (usedEntity == null)
-            {
-                const string errmsg = "UseEntity received but usedEntityIndex `{0}` is not a valid DynamicEntity.";
-                Debug.Fail(string.Format(errmsg, usedEntityIndex));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, usedEntityIndex);
                 return;
-            }
 
             // Grab the one who used this DynamicEntity (we can still use it, we'll just pass null)
             var usedBy = Map.GetDynamicEntity(usedEntityIndex);
             if (usedBy == null)
-            {
-                const string errmsg = "UseEntity received but usedByIndex `{0}` is not a valid DynamicEntity.";
-                Debug.Fail(string.Format(errmsg, usedEntityIndex));
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, usedEntityIndex);
-            }
-
-            // Ensure the used DynamicEntity is even usable
-            var asUsable = usedEntity as IUsableEntity;
-            if (asUsable == null)
-            {
-                const string errmsg =
-                    "UseEntity received but usedByIndex `{0}` refers to DynamicEntity `{1}` which does " +
-                    "not implement IUsableEntity.";
-                Debug.Fail(string.Format(errmsg, usedEntityIndex, usedEntity));
-                if (log.IsErrorEnabled)
-                    log.WarnFormat(errmsg, usedEntityIndex, usedEntity);
                 return;
-            }
 
             // Use it
-            asUsable.Use(usedBy);
+            usedEntity.Use(usedBy);
         }
 
         #region IGetTime Members
