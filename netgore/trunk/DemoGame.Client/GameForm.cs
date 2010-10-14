@@ -33,8 +33,6 @@ namespace DemoGame.Client
 
             // Create the game
             _game = new DemoGame(Handle);
-
-            Focus();
         }
 
         void HandleFrame()
