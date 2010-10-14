@@ -95,22 +95,27 @@ namespace DemoGame.Client
                 // If the game was not closed, close it and abort so the main loop can take care of it
                 if (isOpened)
                 {
+                    e.Cancel = true;
+
                     try
                     {
-                        _game.Dispose();
+                        _game.Close();
                     }
                     catch (Exception ex)
                     {
-                        const string errmsg = "Exception thrown when trying to dispose the game: {0}";
+                        const string errmsg = "Exception thrown when trying to close the game: {0}";
                         if (log.IsWarnEnabled)
                             log.WarnFormat(errmsg, ex);
                         Debug.Fail(string.Format(errmsg, ex));
                     }
                 }
             }
-            finally
+            catch (Exception ex)
             {
-                base.OnClosing(e);
+                const string errmsg = "Exception thrown while trying to close the form. Exception: {0}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
             }
         }
 
