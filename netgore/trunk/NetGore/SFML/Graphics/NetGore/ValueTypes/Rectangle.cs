@@ -103,6 +103,14 @@ namespace SFML.Graphics
         }
 
         /// <summary>Changes the position of the Rectangle.</summary>
+        /// <param name="amount">The values to adjust the position of the Rectangle by.</param>
+        public void Offset(Vector2 amount)
+        {
+            X += (int)amount.X;
+            Y += (int)amount.Y;
+        }
+
+        /// <summary>Changes the position of the Rectangle.</summary>
         /// <param name="offsetX">Change in the x-position.</param>
         /// <param name="offsetY">Change in the y-position.</param>
         public void Offset(int offsetX, int offsetY)
