@@ -76,7 +76,7 @@ namespace DemoGame
         /// </summary>
         string _name = string.Empty;
 
-        Vector2 _size = new Vector2(float.MinValue);
+        Vector2 _size = new Vector2(0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -768,6 +768,8 @@ namespace DemoGame
 
             _size = nodeReader.ReadVector2(_headerNodeSizeKey);
             Indoors = nodeReader.ReadBool(_headerNodeIndoorsKey);
+
+            Debug.Assert(Size.X > 0 && Size.Y > 0);
 
             // Set the size for the spatial
             Spatial.SetAreaSize(Size);
