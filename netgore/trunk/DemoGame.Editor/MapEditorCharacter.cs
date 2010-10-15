@@ -6,6 +6,7 @@ using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.World;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
@@ -64,8 +65,9 @@ namespace DemoGame.Editor
         /// <summary>
         /// Perform pre-collision velocity and position updating.
         /// </summary>
+        /// <param name="map">The map.</param>
         /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
-        public override void UpdateVelocity(int deltaTime)
+        public override void UpdateVelocity(IMap map, int deltaTime)
         {
             SetVelocityRaw(Vector2.Zero);
         }

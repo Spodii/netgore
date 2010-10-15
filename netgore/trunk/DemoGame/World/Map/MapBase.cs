@@ -44,6 +44,8 @@ namespace DemoGame
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeSizeKey = "Size";
+        const string _headerNodeCustomGravityKey = "CustomGravity";
+        const string _headerNodeGravityKey = "Gravity";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
         const string _wallsNodeName = "Walls";
@@ -77,6 +79,7 @@ namespace DemoGame
         string _name = string.Empty;
 
         Vector2 _size = new Vector2(0);
+        Vector2? _gravity = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -235,6 +238,15 @@ namespace DemoGame
         public void ChangeID(MapID newID)
         {
             _mapID = newID;
+        }
+
+        /// <summary>
+        /// Changes the gravity of the map.
+        /// </summary>
+        /// <param name="value">The new gravity for the map, or null to use the default gravity.</param>
+        public void ChangeGravity(Vector2? value)
+        {
+            _gravity = value;
         }
 
         void CheckCollisionAgainstEntities(Entity entity)
@@ -769,6 +781,11 @@ namespace DemoGame
             _size = nodeReader.ReadVector2(_headerNodeSizeKey);
             Indoors = nodeReader.ReadBool(_headerNodeIndoorsKey);
 
+            var customGravity = nodeReader.ReadBool(_headerNodeCustomGravityKey);
+            _gravity = nodeReader.ReadVector2(_headerNodeGravityKey);
+            if (!customGravity)
+                _gravity = null;
+
             Debug.Assert(Size.X > 0 && Size.Y > 0);
 
             // Set the size for the spatial
@@ -973,6 +990,8 @@ namespace DemoGame
                 w.Write(_headerNodeMusicKey, MusicID.HasValue ? MusicID.Value : new MusicID(0));
                 w.Write(_headerNodeSizeKey, Size);
                 w.Write(_headerNodeIndoorsKey, Indoors);
+                w.Write(_headerNodeCustomGravityKey, _gravity.HasValue);
+                w.Write(_headerNodeGravityKey, _gravity.HasValue ? _gravity.Value : Vector2.Zero);
             }
             w.WriteEndNode(_headerNodeName);
         }
@@ -1219,6 +1238,20 @@ namespace DemoGame
         public ISpatialCollection Spatial
         {
             get { return _spatialCollection; }
+        }
+
+        /// <summary>
+        /// Gets the gravity to use on the map.
+        /// </summary>
+        public Vector2 Gravity
+        {
+            get
+            {
+                if (_gravity.HasValue)
+                    return _gravity.Value;
+                else
+                    return EngineSettings.Instance.Gravity;
+            }
         }
 
         /// <summary>

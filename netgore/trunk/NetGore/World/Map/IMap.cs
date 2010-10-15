@@ -35,6 +35,11 @@ namespace NetGore.World
         Vector2 Size { get; }
 
         /// <summary>
+        /// Gets the gravity to use on the map.
+        /// </summary>
+        Vector2 Gravity { get; }
+
+        /// <summary>
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
         ISpatialCollection Spatial { get; }
