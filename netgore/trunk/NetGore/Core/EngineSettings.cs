@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore.World;
 using SFML.Graphics;
 
 namespace NetGore
@@ -11,13 +12,35 @@ namespace NetGore
     public class EngineSettings
     {
         static EngineSettings _instance;
-        static readonly string _dataFileSuffix = ".dat";
+        const string _dataFileSuffix = ".dat";
 
 #if !TOPDOWN
         readonly Vector2 _gravity;
 #endif
 
         readonly Vector2 _maxVelocity;
+
+#if !TOPDOWN
+        readonly int _maxWallStepUpHeight;
+#endif
+
+        /// <summary>
+        /// Gets the maximum number of pixels an <see cref="Entity"/> can "step up" when walking into a wall. If the top of the
+        /// wall that they walk into the side of minus the bottom of the entity is less than or equal to this value, the
+        /// <see cref="Entity"/> will be moved on top of the wall instead of being blocked off by it.
+        /// Only applicable in sidescroller. When used in TopDown builds, this will always return 0.
+        /// </summary>
+        public int MaxWallStepUpHeight
+        {
+            get
+            {
+#if TOPDOWN
+                return 0;
+#else
+                return _maxWallStepUpHeight;
+#endif
+            }
+        }
 
         /// <summary>
         /// Gets the suffix given to general data files. Includes the prefixed period, if one is used. Can be empty, but cannot
@@ -33,10 +56,12 @@ namespace NetGore
         /// </summary>
         /// <param name="gravity">The world gravity. Only valid if not using a top-down perspective.</param>
         /// <param name="maxVelocity">The max velocity for an <see cref="Entity"/>.</param>
-        public EngineSettings(Vector2 gravity, Vector2 maxVelocity)
+        /// <param name="maxWallStepUpHeight">The <see cref="MaxWallStepUpHeight"/>. Default is 5.</param>
+        public EngineSettings(Vector2 gravity, Vector2 maxVelocity, int maxWallStepUpHeight = 5)
         {
 #if !TOPDOWN
             _gravity = gravity;
+            _maxWallStepUpHeight = maxWallStepUpHeight;
 #endif
 
             _maxVelocity = maxVelocity.Abs();

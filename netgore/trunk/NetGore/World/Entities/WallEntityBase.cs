@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
@@ -117,15 +118,19 @@ namespace NetGore.World
         /// <summary>
         /// Performs the collision handling for an <see cref="Entity"/> colliding into this <see cref="WallEntityBase"/>.
         /// </summary>
+        /// <param name="map">The map that the <see cref="WallEntityBase"/> is on.</param>
         /// <param name="other">The <see cref="Entity"/> that collided into this <see cref="WallEntityBase"/>.</param>
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
-        public void HandleCollideInto(Entity other, Vector2 displacement)
+        public void HandleCollideInto(IMap map, Entity other, Vector2 displacement)
         {
-            if (!IsPlatform)
-                HandleCollideIntoWall(other, displacement);
-            else
+            Debug.Assert(map != null);
+            Debug.Assert(other != null);
+
+            if (IsPlatform)
                 HandleCollideIntoPlatform(other, displacement);
+            else
+                HandleCollideIntoWall(map, other, displacement);
         }
 
         /// <summary>
@@ -150,15 +155,52 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Local cache of the <see cref="EngineSettings.MaxWallStepUpHeight"/> value.
+        /// </summary>
+        static readonly int _maxWallStepUpHeight = EngineSettings.Instance.MaxWallStepUpHeight;
+
+        /// <summary>
         /// Handles collision for when this wall is a wall.
         /// </summary>
+        /// <param name="map">The map that the <see cref="WallEntityBase"/> is on.</param>
         /// <param name="other">The <see cref="Entity"/> that collided into this <see cref="WallEntityBase"/>.</param>
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
-        void HandleCollideIntoWall(Entity other, Vector2 displacement)
+        void HandleCollideIntoWall(IMap map, Entity other, Vector2 displacement)
         {
-            // Move the other entity away from the wall
-            other.Move(displacement);
+            bool displaced = false;
+
+#if !TOPDOWN
+            // Allow entities to walk up very small inclines. Makes no sense in top-down, so its used in sidescroller only.
+
+            // Check if we have a displacement just on the X axis
+            if (displacement.Y == 0)
+            {
+                // Check how far the "other" is from being on top of "this"
+                var distFromThis = other.Max.Y - Position.Y;
+                
+                // If they are not that far away from being on top of "this", then instead of displacing them horizontally away
+                // from us, pop them up on top of us, effectively "stepping" up
+                if (distFromThis > 0 && distFromThis < _maxWallStepUpHeight)
+                {
+                    var horizontalOffset = (int)distFromThis + 1;
+                    var otherRect = other.ToRectangle();
+                    otherRect.Y -= horizontalOffset;
+
+                    // Make sure that if we move them up on top of us, that they will not be colliding with any walls. If they will
+                    // be colliding with any walls, do NOT let them up here
+                    if (!map.Spatial.Contains<WallEntityBase>(otherRect, x => !x.IsPlatform))
+                    {
+                        other.Move(new Vector2(0, -horizontalOffset));
+                        displaced = true;
+                    }
+                }
+            }
+#endif
+
+            // Move the other entity away from the wall using the MTD
+            if (!displaced)
+                other.Move(displacement);
 
             // Check for vertical collision
             if (displacement.Y != 0)

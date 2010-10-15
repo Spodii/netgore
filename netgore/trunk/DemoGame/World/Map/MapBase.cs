@@ -302,7 +302,7 @@ namespace DemoGame
 
                 // If there is a displacement value, forward it to the collision notifiers
                 if (displacement != Vector2.Zero)
-                    wall.HandleCollideInto(entity, displacement);
+                    wall.HandleCollideInto(this, entity, displacement);
             }
         }
 
