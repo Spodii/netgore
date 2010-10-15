@@ -15,7 +15,7 @@ namespace NetGore.World
         const string _entityCategoryString = "Entity";
 
 #if !TOPDOWN
-        static readonly Vector2 _gravity;
+        static readonly Vector2 _defaultGravity;
 #endif
 
         static readonly Vector2 _maxVelocity;
@@ -88,7 +88,7 @@ namespace NetGore.World
 
             // Cache the settings we care about
 #if !TOPDOWN
-            _gravity = settings.Gravity;
+            _defaultGravity = settings.Gravity;
 #endif
             _maxVelocity = settings.MaxVelocity;
         }
@@ -477,8 +477,9 @@ namespace NetGore.World
         /// <summary>
         /// Perform pre-collision velocity and position updating.
         /// </summary>
+        /// <param name="map">The map.</param>
         /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
-        public virtual void UpdateVelocity(int deltaTime)
+        public virtual void UpdateVelocity(IMap map, int deltaTime)
         {
             _lastPosition = Position;
 
@@ -487,6 +488,12 @@ namespace NetGore.World
                 return;
 
 #if !TOPDOWN
+            Vector2 gravity;
+            if (map == null)
+                gravity = _defaultGravity;
+            else
+                gravity = map.Gravity;
+
             if (StandingOn != null)
             {
                 if (!StandingOn.IsEntityStandingOn(this))
@@ -496,7 +503,7 @@ namespace NetGore.World
             if (StandingOn == null)
             {
                 // Increase the velocity by the gravity
-                var displacement = _gravity * (Weight * deltaTime);
+                var displacement = gravity * (Weight * deltaTime);
                 Vector2.Add(ref _velocity, ref displacement, out _velocity);
             }
 #endif

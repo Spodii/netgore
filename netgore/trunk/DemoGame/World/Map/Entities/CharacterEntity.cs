@@ -289,7 +289,7 @@ namespace DemoGame
         protected virtual void UpdatePreCollision(IMap map, int deltaTime)
         {
             // Update velocity
-            UpdateVelocity(deltaTime);
+            UpdateVelocity(map, deltaTime);
         }
 
         /// <summary>

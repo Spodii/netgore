@@ -103,7 +103,7 @@ namespace DemoGame
                 return;
 
             // Perform typical collision detection/etc
-            UpdateVelocity(deltaTime);
+            UpdateVelocity(imap, deltaTime);
             base.HandleUpdate(imap, deltaTime);
         }
 

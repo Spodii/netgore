@@ -6,6 +6,8 @@
     <MusicID>1</MusicID>
     <Size>1440,1440</Size>
     <Indoors>False</Indoors>
+	<CustomGravity>False</CustomGravity>
+	<Gravity>0,0</Gravity>
   </Header>
   <Walls>
     <Count>124</Count>
