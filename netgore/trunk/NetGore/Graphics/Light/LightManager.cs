@@ -134,18 +134,6 @@ namespace NetGore.Graphics
             get { return _isEnabled; }
             set
             {
-                if (_isEnabled == value)
-                    return;
-
-                // When going from disabled to enabled, make sure that shaders are supported
-                if (value && !Shader.IsAvailable)
-                {
-                    const string errmsg = "Cannot enable ILightManager since Shader.IsAvailable returned false.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg);
-                    return;
-                }
-
                 _isEnabled = value;
             }
         }

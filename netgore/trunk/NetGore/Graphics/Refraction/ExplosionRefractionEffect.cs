@@ -51,7 +51,12 @@ namespace NetGore.Graphics
 
             // Check if shaders are supported
             if (!Shader.IsAvailable)
+            {
+                const string msg = "Unable to construct shader for `ExplosionRefractionEffect` - shaders are not supported on this system.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(msg);
                 return;
+            }
 
             // Try to create the default shader
             try
@@ -124,10 +129,9 @@ namespace NetGore.Graphics
             // Ensure we are able to use the effect
             if (_shader == null)
             {
-                const string errmsg = "Shaders not supported or unable to acquire a valid default shader. Expiring effect...";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
+                const string errmsg = "Shaders not supported or unable to acquire a valid default shader. Expiring effect `{0}`...";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this);
                 Dispose();
             }
         }

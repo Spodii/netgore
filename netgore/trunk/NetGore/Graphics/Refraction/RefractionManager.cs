@@ -38,7 +38,12 @@ namespace NetGore.Graphics
         {
             // Check if shaders are supported
             if (!Shader.IsAvailable)
+            {
+                const string msg = "Unable to construct shader for `RefractionManager` - shaders are not supported on this system.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(msg);
                 return;
+            }
 
             const string defaultShaderCode =
                 @"
