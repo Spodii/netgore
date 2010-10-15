@@ -67,11 +67,6 @@ namespace DemoGame
 
         readonly ISpatialCollection _spatialCollection;
 
-        /// <summary>
-        /// StopWatch used to update the map
-        /// </summary>
-        readonly Stopwatch _updateStopWatch = new Stopwatch();
-
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
 
         /// <summary>
@@ -103,11 +98,7 @@ namespace DemoGame
             _getTime = getTime;
             _mapID = mapID;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _spatialCollection = CreateSpatialManager();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
-            _updateStopWatch.Start();
         }
 
         /// <summary>
@@ -132,26 +123,6 @@ namespace DemoGame
         [Description("If this map represents an area that is indoors.")]
         [DefaultValue(false)]
         public bool Indoors { get; set; }
-
-        /// <summary>
-        /// Gets or sets if the map is updating every frame
-        /// </summary>
-        [Browsable(false)]
-        public bool IsUpdating
-        {
-            get { return _isUpdating; }
-            set
-            {
-                if (_isUpdating != value)
-                {
-                    _isUpdating = value;
-                    if (_isUpdating)
-                        _updateStopWatch.Start();
-                    else
-                        _updateStopWatch.Stop();
-                }
-            }
-        }
 
         /// <summary>
         /// Gets or sets the ID of the music to play for the map, or empty or null if there is no music.
