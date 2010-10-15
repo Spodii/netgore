@@ -7,13 +7,73 @@ using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Server.Queries;
 using log4net;
+using NetGore;
+using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
     public static class MapHelper
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// A little dummy <see cref="IGetTime"/> implementation.
+        /// </summary>
+        class GetTimeProvider : IGetTime
+        {
+            /// <summary>
+            /// Gets the current time in milliseconds.
+            /// </summary>
+            /// <returns>The current time in milliseconds.</returns>
+            public TickCount GetTime()
+            {
+                return TickCount.Now;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new map.
+        /// </summary>
+        /// <param name="showConfirmation">If true, a confirmation will be shown to make sure the user wants to
+        /// perform this operation.</param>
+        /// <returns>The <see cref="MapID"/> of the newly created map, or null if no map was created.</returns>
+        public static MapID? CreateNewMap(bool showConfirmation = true)
+        {
+            try
+            {
+                // Show the confirmation message
+                if (showConfirmation)
+                {
+                    const string confirmMsg = "Are you sure you wish to create a new map?";
+                    if (MessageBox.Show(confirmMsg, "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return null;
+                }
+
+                // Get the map ID to use
+                var id = MapBase.GetNextFreeIndex(ContentPaths.Dev);
+
+                // Create the map and save it
+                using (var map = new Map(id, new Camera2D(new Vector2(800, 600)), new GetTimeProvider()) { Name = "New map" })
+                {
+                    map.SetDimensions(new Vector2(960, 960));
+                    SaveMap(map, false);
+                }
+
+                return id;
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to create a new map. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Deletes a map.
