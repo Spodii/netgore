@@ -511,6 +511,8 @@ namespace DemoGame.Client
             _quickBarForm = new QuickBarForm(this, _cScreen, _cScreen.Position);
 
             _guildForm = new GuildForm(_cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo, IsVisible = false };
+            _guildForm.JoinRequested += new GuildForm.EventHandler(_guildForm_JoinRequested);
+            _guildForm.LeaveRequested += new GuildForm.EventHandler(_guildForm_LeaveRequested);
             new GroupForm(_cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
@@ -550,6 +552,41 @@ namespace DemoGame.Client
 
             // Set the focus to the screen container
             _cScreen.SetFocus();
+        }
+
+        void _guildForm_LeaveRequested(GuildForm sender)
+        {
+            using (var pw = ClientPacket.Say("/leaveguild"))
+            {
+                Socket.Send(pw, ClientMessageType.Chat);
+            }
+        }
+
+        void _guildForm_JoinRequested(GuildForm sender)
+        {
+            var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.",
+                 MessageBoxButton.OkCancel);
+
+            ib.OptionSelected += delegate(Control s, MessageBoxButton args)
+            {
+                var c = s as InputBox;
+                if (c == null || args != MessageBoxButton.Ok || Socket == null)
+                    return;
+
+                var input = c.InputText;
+                if (string.IsNullOrEmpty(input))
+                    return;
+
+                using (var pw = ClientPacket.Say(string.Format("/joinguild \"{0}\"", input)))
+                {
+                    Socket.Send(pw, ClientMessageType.Chat);
+                }
+            };
+        }
+
+        void ib_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
