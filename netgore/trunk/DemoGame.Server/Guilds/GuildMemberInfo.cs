@@ -56,7 +56,7 @@ namespace DemoGame.Server.Guilds
         /// <param name="guild">The guild that was left.</param>
         protected override void HandleLeaveGuild(IGuild guild)
         {
-            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteGuildInfo(x, guild)))
+            using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteGuildInfo(x, null)))
             {
                 Owner.Send(pw, ServerMessageType.GUI);
             }

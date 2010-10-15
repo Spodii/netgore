@@ -49,9 +49,9 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <param name="newValue">The new value.</param>
         /// <param name="oldValue">The old value.</param>
-        protected override void HandleChangeGuild(UserGuildInformation newValue, UserGuildInformation oldValue)
+        protected override void OnGuildInfoChanged(UserGuildInformation newValue, UserGuildInformation oldValue)
         {
-            base.HandleChangeGuild(newValue, oldValue);
+            base.OnGuildInfoChanged(newValue, oldValue);
 
             if (oldValue != null)
             {

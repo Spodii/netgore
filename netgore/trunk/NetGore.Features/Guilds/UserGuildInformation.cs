@@ -101,6 +101,9 @@ namespace NetGore.Features.Guilds
                     _members.Clear();
                     _onlineMembers.Clear();
                 }
+
+                if (GuildChanged != null)
+                    GuildChanged(this);
             }
         }
 
