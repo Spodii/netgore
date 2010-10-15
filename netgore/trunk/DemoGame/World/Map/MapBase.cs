@@ -69,11 +69,6 @@ namespace DemoGame
 
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
 
-        /// <summary>
-        /// If the map is actively updating (set to false to "pause" the physics)
-        /// </summary>
-        bool _isUpdating = true;
-
         MapID _mapID;
 
         /// <summary>
