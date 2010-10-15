@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using SFML.Graphics;
 using SFML.Window;
@@ -112,7 +113,9 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Gets or sets the <see cref="MessageBoxButton"/>s that are included in this <see cref="MessageBox"/>.
+        /// The default value is <see cref="MessageBoxButton.OkCancel"/>.
         /// </summary>
+        [DefaultValue(MessageBoxButton.OkCancel)]
         public MessageBoxButton ButtonTypes
         {
             get { return _buttonTypes; }
@@ -130,6 +133,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the default maximum width of a <see cref="MessageBox"/>. Default value is 500.
         /// </summary>
+        [DefaultValue(500)]
         public static int DefaultMaxWidth { get; set; }
 
         /// <summary>
@@ -137,7 +141,9 @@ namespace NetGore.Graphics.GUI
         /// have been selected. Disposing will happen after the <see cref="MessageBox.OptionSelected"/> event is
         /// raised, so it is possible to effectively change this value through the <see cref="MessageBox.OptionSelected"/>
         /// event handlers.
+        /// The default value is true.
         /// </summary>
+        [DefaultValue(true)]
         public bool DisposeOnSelection { get; set; }
 
         /// <summary>

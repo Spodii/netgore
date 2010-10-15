@@ -2,6 +2,7 @@
 using System.Linq;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.Network;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -12,6 +13,8 @@ namespace NetGore.Features.Guilds
     /// </summary>
     public class GuildForm : GuildInfoFormBase
     {
+        public delegate void EventHandler(GuildForm sender);
+
         Button _btnJoinLeave;
         Button _btnMembers;
         Button _btnOnline;
@@ -30,6 +33,16 @@ namespace NetGore.Features.Guilds
             IsVisible = false;
             CreateControls();
         }
+
+        /// <summary>
+        /// Notifies listeners when a request to join a guild has been created from this <see cref="GuildForm"/>.
+        /// </summary>
+        public event EventHandler JoinRequested;
+
+        /// <summary>
+        /// Notifies listeners when a request to leave a guild has been created from this <see cref="GuildForm"/>.
+        /// </summary>
+        public event EventHandler LeaveRequested;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildForm"/> class.
@@ -53,6 +66,7 @@ namespace NetGore.Features.Guilds
             _btnMembers = new Button(this, Vector2.Zero, buttonSize) { Text = "Members" };
             _btnOnline = new Button(this, Vector2.Zero, buttonSize) { Text = "Online" };
 
+            _btnJoinLeave.Clicked += _btnJoinLeave_Clicked;
             _btnMembers.Clicked += btnMembers_Clicked;
             _btnOnline.Clicked += btnOnline_Clicked;
 
@@ -67,12 +81,38 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
+        /// Gets if the user is currently in a guild.
+        /// </summary>
+        public bool IsInGuild { get { return GuildInfo != null && GuildInfo.InGuild; } }
+
+        /// <summary>
+        /// Handles the Clicked event of the _btnJoinLeave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        void _btnJoinLeave_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            if (IsInGuild)
+            {
+                // Leave guild
+                if (LeaveRequested != null)
+                    LeaveRequested(this);
+            }
+            else
+            {
+                // Join guild
+                if (JoinRequested != null)
+                    JoinRequested(this);
+            }
+        }
+
+        /// <summary>
         /// Draws the Control.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
         protected override void DrawControl(ISpriteBatch spriteBatch)
         {
-            if (GuildInfo != null && GuildInfo.InGuild)
+            if (IsInGuild)
             {
                 _lblName.Text = GuildInfo.Name + " [" + GuildInfo.Tag + "]";
                 _btnJoinLeave.Text = "Leave guild";
