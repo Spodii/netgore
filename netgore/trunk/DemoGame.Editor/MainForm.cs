@@ -238,10 +238,13 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (newToolStripMenuItem.Checked)
-                _frmNPCChatEditor.Show(dockPanel, DockState.Float);
-            else
-                _frmNPCChatEditor.Hide();
+            var id = MapHelper.CreateNewMap(true);
+            if (!id.HasValue) return;
+
+            var editorFrm = new EditMapForm();
+            editorFrm.MapScreenControl.ChangeMap(id.Value);
+
+            editorFrm.Show(dockPanel);
         }
 
         /// <summary>

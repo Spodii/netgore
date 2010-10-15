@@ -13,6 +13,7 @@ using NetGore.Editor.EditorTool;
 using NetGore.Editor.Grhs;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.World;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
@@ -116,6 +117,11 @@ namespace DemoGame.Editor
         {
             get { return _defaultRenderFont; }
         }
+
+        /// <summary>
+        /// Gets the <see cref="IDynamicEntityFactory"/> instance to use.
+        /// </summary>
+        public IDynamicEntityFactory DynamicEntityFactory { get { return MapEditorDynamicEntityFactory.Instance; } }
 
         /// <summary>
         /// Gets the <see cref="GlobalState"/> instance.
