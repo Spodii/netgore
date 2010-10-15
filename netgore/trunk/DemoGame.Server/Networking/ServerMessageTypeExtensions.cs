@@ -53,7 +53,8 @@ namespace DemoGame.Server
              *      ClientMessageTypeExtensions.GetDeliveryMethod().
              */
 
-            // NOTE: For now, just use two channels like we had before (one reliable and one unreliable), since splitting data requires guards that we do not have
+#if true
+            // NOTE: For now, we use a very simple and straight-forward approach. In the future, we will use more complex deliveries.
 
             if (msgType == ServerMessageType.MapDynamicEntitySpatialUpdate)
             {
@@ -65,9 +66,7 @@ namespace DemoGame.Server
                 method = NetDeliveryMethod.ReliableOrdered;
                 seqChannel = 0;
             }
-
-            return; // NOTE: Temporary hack until we are ready to deal with multiple channels
-
+#else
             // Listing of the used sequence numbers, grouped by delivery method
             const int chRO_General = 0;
             const int chRO_GUI = 1;
@@ -165,6 +164,7 @@ namespace DemoGame.Server
                     GetDeliveryMethod(ServerMessageType.General, out method, out seqChannel);
                     break;
             }
+#endif
         }
     }
 }
