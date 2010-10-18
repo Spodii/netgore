@@ -119,14 +119,13 @@ namespace NetGore.Graphics
         /// and a global transform matrix.
         /// </summary>
         /// <param name="blendMode">Blending options to use when rendering.</param>
-        /// <param name="size">The half-size of the view area.</param>
-        /// <param name="center">The position of the center of the view.</param>
+        /// <param name="position">The top-left corner of the view area.</param>
+        /// <param name="size">The size of the view area.</param>
         /// <param name="rotation">The amount to rotation the view in degrees.</param>
-        public void Begin(BlendMode blendMode, Vector2 size, Vector2 center, float rotation)
+        public void Begin(BlendMode blendMode, Vector2 position, Vector2 size, float rotation)
         {
-            _rt.CurrentView.Size = size;
-            _rt.CurrentView.Center = center;
-            _rt.CurrentView.Rotation = rotation;
+            _rt.CurrentView.Reset(new FloatRect(position.X, position.Y, size.X, size.Y));
+            _rt.CurrentView.Rotate(rotation);
 
             // We have to set the CurrentView property again, even though it didn't change, to make the changes
             // to the CurrentView take affect
@@ -145,7 +144,7 @@ namespace NetGore.Graphics
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
         public virtual void Begin(BlendMode blendMode, ICamera2D camera)
         {
-            Begin(blendMode, camera.Size, camera.Min + (camera.Size / 2f), camera.Rotation);
+            Begin(blendMode, camera.Min, camera.Size, camera.Rotation);
 
             _isStarted = true;
         }
@@ -158,6 +157,7 @@ namespace NetGore.Graphics
         public virtual void Begin(BlendMode blendMode)
         {
             var v = new Vector2(_rt.Width, _rt.Height);
+            
             _rt.CurrentView.Size = v;
             _rt.CurrentView.Center = v / 2f;
 

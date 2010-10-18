@@ -27,11 +27,6 @@ namespace NetGore.Graphics
         IMap Map { get; set; }
 
         /// <summary>
-        /// Gets a transformation matrix used to transform coordinates to respect the camera's settings.
-        /// </summary>
-        Matrix Matrix { get; }
-
-        /// <summary>
         /// Gets the coordinates of the bottom-right corner of the camera's visible area.
         /// </summary>
         Vector2 Max { get; }
