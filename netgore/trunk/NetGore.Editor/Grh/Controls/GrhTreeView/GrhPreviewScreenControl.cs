@@ -11,8 +11,6 @@ namespace NetGore.Editor.Grhs
 {
     public class GrhPreviewScreenControl : GraphicsDeviceControl
     {
-        const int _defaultViewPadding = 8;
-
         static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
 
         readonly Camera2D _camera = new Camera2D(new Vector2(400, 300));
@@ -94,8 +92,7 @@ namespace NetGore.Editor.Grhs
             {
                 try
                 {
-                    Grh.Draw(sb, new Vector2(_defaultViewPadding), Color.White, SpriteEffects.None, 0f, Vector2.Zero,
-                        Camera.GetFillScreenZoomLevel(Grh.Size + (new Vector2(_defaultViewPadding) * 2)));
+                    Grh.Draw(sb, Vector2.Zero, Color.White);
                 }
                 catch (LoadingFailedException)
                 {
@@ -158,14 +155,28 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseWheel(System.Windows.Forms.MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            var newValue = Camera.Scale + (e.Delta / 1200f);
+            if (newValue < 0.1f)
+                newValue = 0.1f;
+
+            Camera.Scale = newValue;
+        }
+
+        /// <summary>
         /// Resets the camera back to the default view.
         /// </summary>
         public void ResetCamera()
         {
-            Camera.Scale = 1.0f;
             Camera.Rotation = 0.0f;
             Camera.Min = Vector2.Zero;
-            Camera.Size = ScreenSize * Camera.Scale;
+            Camera.Size = ScreenSize;
         }
     }
 }
