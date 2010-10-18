@@ -31,7 +31,15 @@ namespace DemoGame.GUITester
 
             Closed += Game1_Closed;
 
+            KeyPressed += Game1_KeyPressed;
+
             GameLoop();
+        }
+
+        void Game1_KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Code == KeyCode.Return && e.Alt)
+                IsFullscreen = !IsFullscreen;
         }
 
         void Game1_Closed(object sender, EventArgs e)
