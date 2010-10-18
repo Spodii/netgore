@@ -26,8 +26,17 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            gtv.Initialize(GlobalState.Instance.ContentManager, (pos, size) => new WallEntity(pos, size),
-                           GlobalState.Instance.MapGrhWalls);
+            gtv.Initialize(GlobalState.Instance.ContentManager);
+            gtv.EditGrhDataRequested += gtv_EditGrhDataRequested;
+        }
+
+        void gtv_EditGrhDataRequested(GrhTreeView sender, System.Windows.Forms.TreeNode node, NetGore.Graphics.GrhData gd, bool deleteOnCancel)
+        {
+            if (gd == null)
+                return;
+
+            var frm = new EditGrhForm(gd, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size), deleteOnCancel);
+            frm.Show();
         }
 
         void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)

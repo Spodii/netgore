@@ -1,40 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Content;
+using NetGore.Editor.Docking;
 using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
-using SFML;
 using SFML.Graphics;
-using Point = System.Drawing.Point;
 
 namespace NetGore.Editor.Grhs
 {
-    public partial class EditGrhForm : Form
+    public partial class EditGrhForm : DockContent
     {
-        /// <summary>
-        /// The percent of the screen to use as padding around the item veing viewed. This way the item doesn't
-        /// actually stretch all the way out to the sides.
-        /// </summary>
-        const float _defaultViewPaddingPercent = 0.05f;
-
         /// <summary>
         /// Character used to separate directories
         /// </summary>
         static readonly char DirSep = Path.DirectorySeparatorChar;
 
-        static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
-
-        readonly ICamera2D _camera;
         readonly CreateWallEntityHandler _createWall;
         readonly Grh _grh;
         readonly MapGrhWalls _mapGrhWalls;
-        readonly Stopwatch _stopwatch;
 
         GrhData _gd;
 
@@ -44,8 +32,8 @@ namespace NetGore.Editor.Grhs
         /// <param name="gd">The <see cref="GrhData"/> to edit.</param>
         /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance.</param>
         /// <param name="createWall">Delegate describing how to create wall instances.</param>
-        /// <param name="screenSize">Size of the screen used to display the preview.</param>
-        public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall, Vector2 screenSize)
+        /// <param name="deleteOnCancel">If the <see cref="GrhData"/> will be deleted if the editing is canceled.</param>
+        public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall, bool deleteOnCancel)
         {
             if (gd == null)
                 throw new ArgumentNullException("gd");
@@ -56,39 +44,18 @@ namespace NetGore.Editor.Grhs
             if (gd is AutomaticAnimatedGrhData)
                 throw new ArgumentException("Cannot edit an AutomaticAnimatedGrhData.", "gd");
 
+            DeleteOnCancel = deleteOnCancel;
             WasCanceled = false;
-
-            _stopwatch = new Stopwatch();
-            _stopwatch.Start();
 
             // Set the local members
             _createWall = createWall;
             _gd = gd;
             _mapGrhWalls = mapGrhWalls;
 
-            _grh = new Grh(gd, AnimType.Loop, (TickCount)_stopwatch.ElapsedMilliseconds);
+            _grh = new Grh(gd, AnimType.Loop, TickCount.Now);
 
-            // Set up the camera
-            Vector2 pos;
-            try
-            {
-                pos = gd.Size / 2f;
-            }
-            catch (LoadingFailedException)
-            {
-                Close();
-                return;
-            }
-
-            _camera = new Camera2D(screenSize);
-            Camera.Zoom(pos, screenSize, Camera.GetFillScreenZoomLevel(_grh.Size));
-
-            // Add a padding around the screen around each side of the item
-            Camera.Scale -= Camera.Scale * _defaultViewPaddingPercent;
-            Camera.Translate(_grh.Size * (1f / Camera.Scale) * -(_defaultViewPaddingPercent / 2f));
-
-            Location = new Point(0, 0);
             InitializeComponent();
+
             ShowGrhInfo();
         }
 
@@ -100,10 +67,10 @@ namespace NetGore.Editor.Grhs
             get { return lstWalls.Items.OfType<WallEntityBase>(); }
         }
 
-        public ICamera2D Camera
-        {
-            get { return _camera; }
-        }
+        /// <summary>
+        /// Gets if the <see cref="GrhData"/> being edited will be deleted when the editing is canceled.
+        /// </summary>
+        public bool DeleteOnCancel { get; set; }
 
         public Grh Grh
         {
@@ -137,60 +104,43 @@ namespace NetGore.Editor.Grhs
             lstWalls.RefreshItemAt(index);
         }
 
-        public void Draw(ISpriteBatch sb)
-        {
-            // Update the Grh first
-            _grh.Update((TickCount)_stopwatch.ElapsedMilliseconds);
-
-            // Begin rendering
-            sb.Begin(BlendMode.Alpha, Camera);
-
-            try
-            {
-                try
-                {
-                    _grh.Draw(sb, Vector2.Zero);
-                }
-                catch (LoadingFailedException)
-                {
-                    // A LoadingFailedException is generally fine here since it probably means the graphic file was invalid
-                    // or does not exist
-                }
-
-                // Draw the walls
-                foreach (var wall in BoundWalls)
-                {
-                    var rect = wall.ToRectangle();
-                    RenderRectangle.Draw(sb, rect, _autoWallColor);
-                }
-            }
-            finally
-            {
-                // End rendering
-                sb.End();
-            }
-        }
-
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (!e.Cancel)
+            base.OnClosing(e);
+
+            if (e.Cancel)
+                return;
+
+            // Remove the event hooks from the walls
+            var walls = _mapGrhWalls[_gd];
+            if (walls != null)
             {
-                var walls = _mapGrhWalls[_gd];
-                if (walls != null)
+                foreach (var wall in walls)
                 {
-                    foreach (var wall in walls)
-                    {
-                        wall.Moved -= BoundWallChanged;
-                        wall.Resized -= BoundWallChanged;
-                    }
+                    wall.Moved -= BoundWallChanged;
+                    wall.Resized -= BoundWallChanged;
                 }
             }
 
-            base.OnClosing(e);
+            // Delete the GrhData if the form was canceled
+            if (DeleteOnCancel && DialogResult != DialogResult.OK)
+                GrhInfo.Delete(GrhData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            screen.Grh = Grh;
+            screen.Walls = BoundWalls;
         }
 
         void ShowGrhInfo()
@@ -266,6 +216,11 @@ namespace NetGore.Editor.Grhs
             return true;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnAccept control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAccept_Click(object sender, EventArgs e)
         {
             // TODO: Clean this up a lot by adding more specialized textboxes, and using .IsValid()
@@ -390,9 +345,15 @@ namespace NetGore.Editor.Grhs
             Enabled = true;
 
             WasCanceled = false;
-            Close();
+
+            DialogResult = DialogResult.OK;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnAdd control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAdd_Click(object sender, EventArgs e)
         {
             var wall = _createWall(Vector2.Zero, new Vector2(16));
@@ -403,12 +364,24 @@ namespace NetGore.Editor.Grhs
             wall.Resized += BoundWallChanged;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnCancel control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnCancel_Click(object sender, EventArgs e)
         {
             WasCanceled = true;
             Close();
+
+            DialogResult = DialogResult.Cancel;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnRemove control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnRemove_Click(object sender, EventArgs e)
         {
             var wall = lstWalls.SelectedItem as WallEntityBase;
@@ -420,6 +393,11 @@ namespace NetGore.Editor.Grhs
             wall.Resized -= BoundWallChanged;
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkAutoSize control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void chkAutoSize_CheckedChanged(object sender, EventArgs e)
         {
             var enabled = !chkAutoSize.Checked;
@@ -430,6 +408,11 @@ namespace NetGore.Editor.Grhs
             txtH.Enabled = enabled;
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkPlatform control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void chkPlatform_CheckedChanged(object sender, EventArgs e)
         {
             var wall = lstWalls.SelectedItem as WallEntityBase;
@@ -439,6 +422,11 @@ namespace NetGore.Editor.Grhs
             wall.IsPlatform = chkPlatform.Checked;
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstWalls control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstWalls_SelectedIndexChanged(object sender, EventArgs e)
         {
             var wall = lstWalls.SelectedItem as WallEntityBase;
@@ -461,6 +449,11 @@ namespace NetGore.Editor.Grhs
             }
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the radioAnimated control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void radioAnimated_CheckedChanged(object sender, EventArgs e)
         {
             if (!radioAnimated.Checked)
@@ -488,6 +481,11 @@ namespace NetGore.Editor.Grhs
             gbAnimated.Visible = true;
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the radioStationary control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void radioStationary_CheckedChanged(object sender, EventArgs e)
         {
             if (!radioStationary.Checked)
@@ -516,6 +514,21 @@ namespace NetGore.Editor.Grhs
             gbAnimated.Visible = false;
         }
 
+        /// <summary>
+        /// Handles the Tick event of the tmrUpdate control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void tmrUpdate_Tick(object sender, EventArgs e)
+        {
+            screen.InvokeDrawing(TickCount.Now);
+        }
+
+        /// <summary>
+        /// Handles the TextChanged event of the txtH control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtH_TextChanged(object sender, EventArgs e)
         {
             var asStationary = _gd as StationaryGrhData;
@@ -534,6 +547,11 @@ namespace NetGore.Editor.Grhs
                 txtH.BackColor = EditorColors.Error;
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtIndex control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtIndex_TextChanged(object sender, EventArgs e)
         {
             ushort o;
@@ -548,6 +566,11 @@ namespace NetGore.Editor.Grhs
                 txtIndex.BackColor = EditorColors.Error;
         }
 
+        /// <summary>
+        /// Handles the KeyDown event of the txtTitle control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         void txtTitle_KeyDown(object sender, KeyEventArgs e)
         {
             // Forward to "Accept"
@@ -555,6 +578,11 @@ namespace NetGore.Editor.Grhs
                 btnAccept_Click(this, new EventArgs());
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtTitle control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtTitle_TextChanged(object sender, EventArgs e)
         {
             if (txtTitle.Text == _gd.Categorization.Title.ToString())
@@ -563,6 +591,11 @@ namespace NetGore.Editor.Grhs
                 txtTitle.BackColor = EditorColors.Changed;
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtW control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtW_TextChanged(object sender, EventArgs e)
         {
             var asStationary = _gd as StationaryGrhData;
@@ -581,6 +614,11 @@ namespace NetGore.Editor.Grhs
                 txtW.BackColor = EditorColors.Error;
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtWallH control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtWallH_TextChanged(object sender, EventArgs e)
         {
             var wall = lstWalls.SelectedItem as WallEntityBase;
@@ -598,6 +636,11 @@ namespace NetGore.Editor.Grhs
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtWallW control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtWallW_TextChanged(object sender, EventArgs e)
         {
             var wall = lstWalls.SelectedItem as WallEntityBase;
@@ -615,6 +658,11 @@ namespace NetGore.Editor.Grhs
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtWallX control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtWallX_TextChanged(object sender, EventArgs e)
         {
             var wall = lstWalls.SelectedItem as WallEntityBase;
@@ -632,6 +680,11 @@ namespace NetGore.Editor.Grhs
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtWallY control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtWallY_TextChanged(object sender, EventArgs e)
         {
             var wall = lstWalls.SelectedItem as WallEntityBase;
@@ -649,6 +702,11 @@ namespace NetGore.Editor.Grhs
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtX control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtX_TextChanged(object sender, EventArgs e)
         {
             var asStationary = _gd as StationaryGrhData;
@@ -667,6 +725,11 @@ namespace NetGore.Editor.Grhs
                 txtX.BackColor = EditorColors.Error;
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtY control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtY_TextChanged(object sender, EventArgs e)
         {
             var asStationary = _gd as StationaryGrhData;
