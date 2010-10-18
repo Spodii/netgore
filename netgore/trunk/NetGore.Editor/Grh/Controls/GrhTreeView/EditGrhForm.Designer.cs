@@ -33,6 +33,17 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.gbAnimated = new System.Windows.Forms.GroupBox();
+            this.txtFrames = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtSpeed = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.radioAnimated = new System.Windows.Forms.RadioButton();
+            this.radioStationary = new System.Windows.Forms.RadioButton();
             this.gbCategorization = new System.Windows.Forms.GroupBox();
             this.txtIndex = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -40,27 +51,6 @@ namespace NetGore.Editor.Grhs
             this.label2 = new System.Windows.Forms.Label();
             this.txtCategory = new NetGore.Editor.Grhs.GrhDataCategoryTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.radioStationary = new System.Windows.Forms.RadioButton();
-            this.radioAnimated = new System.Windows.Forms.RadioButton();
-            this.gbAnimated = new System.Windows.Forms.GroupBox();
-            this.txtFrames = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtSpeed = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.btnAccept = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtWallH = new System.Windows.Forms.TextBox();
-            this.txtWallW = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.txtWallY = new System.Windows.Forms.TextBox();
-            this.txtWallX = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.lstWalls = new WallsListBox();
             this.gbStationary = new System.Windows.Forms.GroupBox();
             this.chkAutoSize = new System.Windows.Forms.CheckBox();
             this.txtH = new System.Windows.Forms.TextBox();
@@ -73,12 +63,154 @@ namespace NetGore.Editor.Grhs
             this.label4 = new System.Windows.Forms.Label();
             this.txtTexture = new NetGore.Editor.Grhs.GrhDataTextureTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.tpBoundWalls = new System.Windows.Forms.TabPage();
+            this.lstWalls = new NetGore.Editor.Grhs.WallsListBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.chkPlatform = new System.Windows.Forms.CheckBox();
-            this.gbCategorization.SuspendLayout();
+            this.txtWallH = new System.Windows.Forms.TextBox();
+            this.txtWallW = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.txtWallY = new System.Windows.Forms.TextBox();
+            this.txtWallX = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.btnRemove = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnAccept = new System.Windows.Forms.Button();
+            this.screen = new NetGore.Editor.Grhs.GrhPreviewScreenControl();
+            this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tpGeneral.SuspendLayout();
             this.gbAnimated.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gbCategorization.SuspendLayout();
             this.gbStationary.SuspendLayout();
+            this.tpBoundWalls.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel1.Controls.Add(this.panel2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.screen);
+            this.splitContainer1.Size = new System.Drawing.Size(618, 363);
+            this.splitContainer1.SplitterDistance = 225;
+            this.splitContainer1.TabIndex = 13;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tpGeneral);
+            this.tabControl1.Controls.Add(this.tpBoundWalls);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(225, 330);
+            this.tabControl1.TabIndex = 21;
+            // 
+            // tpGeneral
+            // 
+            this.tpGeneral.Controls.Add(this.gbAnimated);
+            this.tpGeneral.Controls.Add(this.radioAnimated);
+            this.tpGeneral.Controls.Add(this.radioStationary);
+            this.tpGeneral.Controls.Add(this.gbCategorization);
+            this.tpGeneral.Controls.Add(this.gbStationary);
+            this.tpGeneral.Location = new System.Drawing.Point(4, 22);
+            this.tpGeneral.Name = "tpGeneral";
+            this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
+            this.tpGeneral.Size = new System.Drawing.Size(217, 304);
+            this.tpGeneral.TabIndex = 0;
+            this.tpGeneral.Text = "General";
+            this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // gbAnimated
+            // 
+            this.gbAnimated.Controls.Add(this.txtFrames);
+            this.gbAnimated.Controls.Add(this.label9);
+            this.gbAnimated.Controls.Add(this.txtSpeed);
+            this.gbAnimated.Controls.Add(this.label8);
+            this.gbAnimated.Location = new System.Drawing.Point(2, 137);
+            this.gbAnimated.Name = "gbAnimated";
+            this.gbAnimated.Size = new System.Drawing.Size(212, 161);
+            this.gbAnimated.TabIndex = 19;
+            this.gbAnimated.TabStop = false;
+            this.gbAnimated.Text = "Animated Grh";
+            // 
+            // txtFrames
+            // 
+            this.txtFrames.Location = new System.Drawing.Point(10, 33);
+            this.txtFrames.Multiline = true;
+            this.txtFrames.Name = "txtFrames";
+            this.txtFrames.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtFrames.Size = new System.Drawing.Size(196, 95);
+            this.txtFrames.TabIndex = 9;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 17);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 13);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Frames:";
+            // 
+            // txtSpeed
+            // 
+            this.txtSpeed.Location = new System.Drawing.Point(94, 134);
+            this.txtSpeed.Name = "txtSpeed";
+            this.txtSpeed.Size = new System.Drawing.Size(112, 20);
+            this.txtSpeed.TabIndex = 7;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(47, 137);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Speed:";
+            // 
+            // radioAnimated
+            // 
+            this.radioAnimated.AutoSize = true;
+            this.radioAnimated.Location = new System.Drawing.Point(103, 114);
+            this.radioAnimated.Name = "radioAnimated";
+            this.radioAnimated.Size = new System.Drawing.Size(69, 17);
+            this.radioAnimated.TabIndex = 18;
+            this.radioAnimated.TabStop = true;
+            this.radioAnimated.Text = "Animated";
+            this.radioAnimated.UseVisualStyleBackColor = true;
+            this.radioAnimated.CheckedChanged += new System.EventHandler(this.radioAnimated_CheckedChanged);
+            // 
+            // radioStationary
+            // 
+            this.radioStationary.AutoSize = true;
+            this.radioStationary.Location = new System.Drawing.Point(25, 114);
+            this.radioStationary.Name = "radioStationary";
+            this.radioStationary.Size = new System.Drawing.Size(72, 17);
+            this.radioStationary.TabIndex = 17;
+            this.radioStationary.TabStop = true;
+            this.radioStationary.Text = "Stationary";
+            this.radioStationary.UseVisualStyleBackColor = true;
+            this.radioStationary.CheckedChanged += new System.EventHandler(this.radioStationary_CheckedChanged);
             // 
             // gbCategorization
             // 
@@ -88,10 +220,10 @@ namespace NetGore.Editor.Grhs
             this.gbCategorization.Controls.Add(this.label2);
             this.gbCategorization.Controls.Add(this.txtCategory);
             this.gbCategorization.Controls.Add(this.label1);
-            this.gbCategorization.Location = new System.Drawing.Point(12, 12);
+            this.gbCategorization.Location = new System.Drawing.Point(3, 6);
             this.gbCategorization.Name = "gbCategorization";
             this.gbCategorization.Size = new System.Drawing.Size(212, 102);
-            this.gbCategorization.TabIndex = 4;
+            this.gbCategorization.TabIndex = 15;
             this.gbCategorization.TabStop = false;
             this.gbCategorization.Text = "Categorization";
             // 
@@ -150,220 +282,6 @@ namespace NetGore.Editor.Grhs
             this.label1.TabIndex = 4;
             this.label1.Text = "Category:";
             // 
-            // radioStationary
-            // 
-            this.radioStationary.AutoSize = true;
-            this.radioStationary.Location = new System.Drawing.Point(46, 120);
-            this.radioStationary.Name = "radioStationary";
-            this.radioStationary.Size = new System.Drawing.Size(72, 17);
-            this.radioStationary.TabIndex = 6;
-            this.radioStationary.TabStop = true;
-            this.radioStationary.Text = "Stationary";
-            this.radioStationary.UseVisualStyleBackColor = true;
-            this.radioStationary.CheckedChanged += new System.EventHandler(this.radioStationary_CheckedChanged);
-            // 
-            // radioAnimated
-            // 
-            this.radioAnimated.AutoSize = true;
-            this.radioAnimated.Location = new System.Drawing.Point(124, 120);
-            this.radioAnimated.Name = "radioAnimated";
-            this.radioAnimated.Size = new System.Drawing.Size(69, 17);
-            this.radioAnimated.TabIndex = 7;
-            this.radioAnimated.TabStop = true;
-            this.radioAnimated.Text = "Animated";
-            this.radioAnimated.UseVisualStyleBackColor = true;
-            this.radioAnimated.CheckedChanged += new System.EventHandler(this.radioAnimated_CheckedChanged);
-            // 
-            // gbAnimated
-            // 
-            this.gbAnimated.Controls.Add(this.txtFrames);
-            this.gbAnimated.Controls.Add(this.label9);
-            this.gbAnimated.Controls.Add(this.txtSpeed);
-            this.gbAnimated.Controls.Add(this.label8);
-            this.gbAnimated.Location = new System.Drawing.Point(12, 143);
-            this.gbAnimated.Name = "gbAnimated";
-            this.gbAnimated.Size = new System.Drawing.Size(212, 161);
-            this.gbAnimated.TabIndex = 8;
-            this.gbAnimated.TabStop = false;
-            this.gbAnimated.Text = "Animated Grh";
-            // 
-            // txtFrames
-            // 
-            this.txtFrames.Location = new System.Drawing.Point(10, 33);
-            this.txtFrames.Multiline = true;
-            this.txtFrames.Name = "txtFrames";
-            this.txtFrames.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtFrames.Size = new System.Drawing.Size(196, 95);
-            this.txtFrames.TabIndex = 9;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 17);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(44, 13);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "Frames:";
-            // 
-            // txtSpeed
-            // 
-            this.txtSpeed.Location = new System.Drawing.Point(94, 134);
-            this.txtSpeed.Name = "txtSpeed";
-            this.txtSpeed.Size = new System.Drawing.Size(112, 20);
-            this.txtSpeed.TabIndex = 7;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(47, 137);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 13);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "Speed:";
-            // 
-            // btnAccept
-            // 
-            this.btnAccept.Location = new System.Drawing.Point(34, 310);
-            this.btnAccept.Name = "btnAccept";
-            this.btnAccept.Size = new System.Drawing.Size(67, 23);
-            this.btnAccept.TabIndex = 9;
-            this.btnAccept.Text = "Accept";
-            this.btnAccept.UseVisualStyleBackColor = true;
-            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(107, 310);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(67, 23);
-            this.btnCancel.TabIndex = 10;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.chkPlatform);
-            this.groupBox1.Controls.Add(this.txtWallH);
-            this.groupBox1.Controls.Add(this.txtWallW);
-            this.groupBox1.Controls.Add(this.label18);
-            this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.txtWallY);
-            this.groupBox1.Controls.Add(this.txtWallX);
-            this.groupBox1.Controls.Add(this.label16);
-            this.groupBox1.Controls.Add(this.label15);
-            this.groupBox1.Controls.Add(this.btnRemove);
-            this.groupBox1.Controls.Add(this.btnAdd);
-            this.groupBox1.Controls.Add(this.lstWalls);
-            this.groupBox1.Location = new System.Drawing.Point(230, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(177, 321);
-            this.groupBox1.TabIndex = 11;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Binded Walls";
-            // 
-            // txtWallH
-            // 
-            this.txtWallH.Enabled = false;
-            this.txtWallH.Location = new System.Drawing.Point(111, 247);
-            this.txtWallH.Name = "txtWallH";
-            this.txtWallH.Size = new System.Drawing.Size(55, 20);
-            this.txtWallH.TabIndex = 20;
-            this.txtWallH.TextChanged += new System.EventHandler(this.txtWallH_TextChanged);
-            // 
-            // txtWallW
-            // 
-            this.txtWallW.Enabled = false;
-            this.txtWallW.Location = new System.Drawing.Point(26, 247);
-            this.txtWallW.Name = "txtWallW";
-            this.txtWallW.Size = new System.Drawing.Size(55, 20);
-            this.txtWallW.TabIndex = 19;
-            this.txtWallW.TextChanged += new System.EventHandler(this.txtWallW_TextChanged);
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(91, 250);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(18, 13);
-            this.label18.TabIndex = 18;
-            this.label18.Text = "H:";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 250);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(21, 13);
-            this.label17.TabIndex = 17;
-            this.label17.Text = "W:";
-            // 
-            // txtWallY
-            // 
-            this.txtWallY.Enabled = false;
-            this.txtWallY.Location = new System.Drawing.Point(111, 221);
-            this.txtWallY.Name = "txtWallY";
-            this.txtWallY.Size = new System.Drawing.Size(55, 20);
-            this.txtWallY.TabIndex = 16;
-            this.txtWallY.TextChanged += new System.EventHandler(this.txtWallY_TextChanged);
-            // 
-            // txtWallX
-            // 
-            this.txtWallX.Enabled = false;
-            this.txtWallX.Location = new System.Drawing.Point(26, 221);
-            this.txtWallX.Name = "txtWallX";
-            this.txtWallX.Size = new System.Drawing.Size(55, 20);
-            this.txtWallX.TabIndex = 15;
-            this.txtWallX.TextChanged += new System.EventHandler(this.txtWallX_TextChanged);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(92, 224);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(17, 13);
-            this.label16.TabIndex = 14;
-            this.label16.Text = "Y:";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 224);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(17, 13);
-            this.label15.TabIndex = 13;
-            this.label15.Text = "X:";
-            // 
-            // btnRemove
-            // 
-            this.btnRemove.Enabled = false;
-            this.btnRemove.Location = new System.Drawing.Point(94, 292);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(75, 23);
-            this.btnRemove.TabIndex = 3;
-            this.btnRemove.Text = "Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Location = new System.Drawing.Point(6, 292);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 2;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // lstWalls
-            // 
-            this.lstWalls.FormattingEnabled = true;
-            this.lstWalls.Location = new System.Drawing.Point(6, 19);
-            this.lstWalls.Name = "lstWalls";
-            this.lstWalls.Size = new System.Drawing.Size(163, 173);
-            this.lstWalls.TabIndex = 1;
-            this.lstWalls.SelectedIndexChanged += new System.EventHandler(this.lstWalls_SelectedIndexChanged);
-            // 
             // gbStationary
             // 
             this.gbStationary.Controls.Add(this.chkAutoSize);
@@ -377,10 +295,10 @@ namespace NetGore.Editor.Grhs
             this.gbStationary.Controls.Add(this.label4);
             this.gbStationary.Controls.Add(this.txtTexture);
             this.gbStationary.Controls.Add(this.label3);
-            this.gbStationary.Location = new System.Drawing.Point(12, 143);
+            this.gbStationary.Location = new System.Drawing.Point(3, 137);
             this.gbStationary.Name = "gbStationary";
             this.gbStationary.Size = new System.Drawing.Size(212, 161);
-            this.gbStationary.TabIndex = 12;
+            this.gbStationary.TabIndex = 16;
             this.gbStationary.TabStop = false;
             this.gbStationary.Text = "Stationary Grh";
             // 
@@ -393,7 +311,7 @@ namespace NetGore.Editor.Grhs
             this.chkAutoSize.TabIndex = 15;
             this.chkAutoSize.Text = "Automatic Size";
             this.chkAutoSize.UseVisualStyleBackColor = true;
-            this.chkAutoSize.CheckedChanged += new System.EventHandler(this.chkAutoSize_CheckedChanged);
+            this.chkAutoSize.CheckStateChanged += new System.EventHandler(this.chkAutoSize_CheckedChanged);
             // 
             // txtH
             // 
@@ -482,78 +400,248 @@ namespace NetGore.Editor.Grhs
             this.label3.TabIndex = 5;
             this.label3.Text = "Texture:";
             // 
+            // tpBoundWalls
+            // 
+            this.tpBoundWalls.Controls.Add(this.lstWalls);
+            this.tpBoundWalls.Controls.Add(this.panel1);
+            this.tpBoundWalls.Location = new System.Drawing.Point(4, 22);
+            this.tpBoundWalls.Name = "tpBoundWalls";
+            this.tpBoundWalls.Padding = new System.Windows.Forms.Padding(3);
+            this.tpBoundWalls.Size = new System.Drawing.Size(217, 304);
+            this.tpBoundWalls.TabIndex = 1;
+            this.tpBoundWalls.Text = "Bound Walls";
+            this.tpBoundWalls.UseVisualStyleBackColor = true;
+            // 
+            // lstWalls
+            // 
+            this.lstWalls.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstWalls.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstWalls.FormattingEnabled = true;
+            this.lstWalls.Location = new System.Drawing.Point(3, 3);
+            this.lstWalls.Name = "lstWalls";
+            this.lstWalls.Size = new System.Drawing.Size(211, 192);
+            this.lstWalls.TabIndex = 24;
+            this.lstWalls.SelectedIndexChanged += new System.EventHandler(this.lstWalls_SelectedIndexChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.chkPlatform);
+            this.panel1.Controls.Add(this.txtWallH);
+            this.panel1.Controls.Add(this.txtWallW);
+            this.panel1.Controls.Add(this.label18);
+            this.panel1.Controls.Add(this.label17);
+            this.panel1.Controls.Add(this.txtWallY);
+            this.panel1.Controls.Add(this.txtWallX);
+            this.panel1.Controls.Add(this.label16);
+            this.panel1.Controls.Add(this.label15);
+            this.panel1.Controls.Add(this.btnRemove);
+            this.panel1.Controls.Add(this.btnAdd);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(3, 195);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(211, 106);
+            this.panel1.TabIndex = 23;
+            // 
             // chkPlatform
             // 
             this.chkPlatform.AutoSize = true;
-            this.chkPlatform.Location = new System.Drawing.Point(6, 198);
+            this.chkPlatform.Location = new System.Drawing.Point(3, 3);
             this.chkPlatform.Name = "chkPlatform";
             this.chkPlatform.Size = new System.Drawing.Size(64, 17);
-            this.chkPlatform.TabIndex = 21;
+            this.chkPlatform.TabIndex = 44;
             this.chkPlatform.Text = "Platform";
             this.chkPlatform.UseVisualStyleBackColor = true;
             this.chkPlatform.CheckedChanged += new System.EventHandler(this.chkPlatform_CheckedChanged);
             // 
+            // txtWallH
+            // 
+            this.txtWallH.Enabled = false;
+            this.txtWallH.Location = new System.Drawing.Point(111, 52);
+            this.txtWallH.Name = "txtWallH";
+            this.txtWallH.Size = new System.Drawing.Size(55, 20);
+            this.txtWallH.TabIndex = 43;
+            this.txtWallH.TextChanged += new System.EventHandler(this.txtWallH_TextChanged);
+            // 
+            // txtWallW
+            // 
+            this.txtWallW.Enabled = false;
+            this.txtWallW.Location = new System.Drawing.Point(26, 52);
+            this.txtWallW.Name = "txtWallW";
+            this.txtWallW.Size = new System.Drawing.Size(55, 20);
+            this.txtWallW.TabIndex = 42;
+            this.txtWallW.TextChanged += new System.EventHandler(this.txtWallW_TextChanged);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(91, 55);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(18, 13);
+            this.label18.TabIndex = 41;
+            this.label18.Text = "H:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(3, 55);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(21, 13);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "W:";
+            // 
+            // txtWallY
+            // 
+            this.txtWallY.Enabled = false;
+            this.txtWallY.Location = new System.Drawing.Point(111, 26);
+            this.txtWallY.Name = "txtWallY";
+            this.txtWallY.Size = new System.Drawing.Size(55, 20);
+            this.txtWallY.TabIndex = 39;
+            this.txtWallY.TextChanged += new System.EventHandler(this.txtWallY_TextChanged);
+            // 
+            // txtWallX
+            // 
+            this.txtWallX.Enabled = false;
+            this.txtWallX.Location = new System.Drawing.Point(26, 26);
+            this.txtWallX.Name = "txtWallX";
+            this.txtWallX.Size = new System.Drawing.Size(55, 20);
+            this.txtWallX.TabIndex = 38;
+            this.txtWallX.TextChanged += new System.EventHandler(this.txtWallX_TextChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(92, 29);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(17, 13);
+            this.label16.TabIndex = 37;
+            this.label16.Text = "Y:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 29);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(17, 13);
+            this.label15.TabIndex = 36;
+            this.label15.Text = "X:";
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.Enabled = false;
+            this.btnRemove.Location = new System.Drawing.Point(106, 78);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(75, 23);
+            this.btnRemove.TabIndex = 35;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(24, 78);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 34;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.btnCancel);
+            this.panel2.Controls.Add(this.btnAccept);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 330);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(4);
+            this.panel2.Size = new System.Drawing.Size(225, 33);
+            this.panel2.TabIndex = 20;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnCancel.Location = new System.Drawing.Point(71, 4);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(67, 25);
+            this.btnCancel.TabIndex = 19;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnAccept
+            // 
+            this.btnAccept.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnAccept.Location = new System.Drawing.Point(4, 4);
+            this.btnAccept.Name = "btnAccept";
+            this.btnAccept.Size = new System.Drawing.Size(67, 25);
+            this.btnAccept.TabIndex = 18;
+            this.btnAccept.Text = "Accept";
+            this.btnAccept.UseVisualStyleBackColor = true;
+            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
+            // 
+            // screen
+            // 
+            this.screen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.screen.Grh = null;
+            this.screen.Location = new System.Drawing.Point(0, 0);
+            this.screen.Name = "screen";
+            this.screen.Size = new System.Drawing.Size(389, 363);
+            this.screen.TabIndex = 13;
+            this.screen.Text = "grhPreviewScreenControl1";
+            this.screen.Walls = null;
+            // 
+            // tmrUpdate
+            // 
+            this.tmrUpdate.Enabled = true;
+            this.tmrUpdate.Interval = 30;
+            this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
+            // 
             // EditGrhForm
             // 
-            this.ClientSize = new System.Drawing.Size(414, 339);
-            this.Controls.Add(this.gbStationary);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnAccept);
-            this.Controls.Add(this.radioAnimated);
-            this.Controls.Add(this.radioStationary);
-            this.Controls.Add(this.gbCategorization);
-            this.Controls.Add(this.gbAnimated);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.ClientSize = new System.Drawing.Size(618, 363);
+            this.Controls.Add(this.splitContainer1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "EditGrhForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Grh Data Editor";
-            this.TopMost = true;
-            this.gbCategorization.ResumeLayout(false);
-            this.gbCategorization.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tpGeneral.ResumeLayout(false);
+            this.tpGeneral.PerformLayout();
             this.gbAnimated.ResumeLayout(false);
             this.gbAnimated.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbCategorization.ResumeLayout(false);
+            this.gbCategorization.PerformLayout();
             this.gbStationary.ResumeLayout(false);
             this.gbStationary.PerformLayout();
+            this.tpBoundWalls.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
-
-
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private GrhPreviewScreenControl screen;
+        private System.Windows.Forms.Timer tmrUpdate;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tpGeneral;
+        private System.Windows.Forms.GroupBox gbAnimated;
+        private System.Windows.Forms.TextBox txtFrames;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtSpeed;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.RadioButton radioAnimated;
+        private System.Windows.Forms.RadioButton radioStationary;
         private System.Windows.Forms.GroupBox gbCategorization;
+        private System.Windows.Forms.TextBox txtIndex;
+        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.Label label2;
         private GrhDataCategoryTextBox txtCategory;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton radioStationary;
-        private System.Windows.Forms.RadioButton radioAnimated;
-        private System.Windows.Forms.GroupBox gbAnimated;
-        private System.Windows.Forms.TextBox txtSpeed;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtFrames;
-        private System.Windows.Forms.Button btnAccept;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.TextBox txtIndex;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.TextBox txtWallH;
-        private System.Windows.Forms.TextBox txtWallW;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox txtWallY;
-        private System.Windows.Forms.TextBox txtWallX;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label15;
-        private WallsListBox lstWalls;
         private System.Windows.Forms.GroupBox gbStationary;
         private System.Windows.Forms.CheckBox chkAutoSize;
         private System.Windows.Forms.TextBox txtH;
@@ -566,7 +654,23 @@ namespace NetGore.Editor.Grhs
         private System.Windows.Forms.Label label4;
         private GrhDataTextureTextBox txtTexture;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TabPage tpBoundWalls;
+        private WallsListBox lstWalls;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox chkPlatform;
+        private System.Windows.Forms.TextBox txtWallH;
+        private System.Windows.Forms.TextBox txtWallW;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox txtWallY;
+        private System.Windows.Forms.TextBox txtWallX;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnAccept;
 
     }
 }

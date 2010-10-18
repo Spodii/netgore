@@ -90,6 +90,8 @@ namespace DemoGame.Editor
 
             _frmDbEditor = new DbEditorForm();
             _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
+
+            _frmGrhTreeView.Show(dockPanel, DockState.DockRight);
         }
 
         /// <summary>

@@ -28,9 +28,6 @@ namespace NetGore.Editor.Grhs
 
         bool _compactMode = true;
         IContentManager _contentManager;
-        CreateWallEntityHandler _createWall;
-        EditGrhForm _editGrhDataForm;
-        MapGrhWalls _mapGrhWalls;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhTreeView"/> class.
@@ -60,36 +57,6 @@ namespace NetGore.Editor.Grhs
         /// Notifies listeners when a <see cref="GrhData"/> node is double-clicked.
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
-
-        /// <summary>
-        /// Gets the <see cref="EditGrhForm"/> when applicable. Will be null if the form is not visible.
-        /// </summary>
-        public EditGrhForm EditGrhForm
-        {
-            get
-            {
-                if (_editGrhDataForm != null && _editGrhDataForm.Visible && !_editGrhDataForm.IsDisposed)
-                    return _editGrhDataForm;
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets if the form for editing a <see cref="GrhData"/> is currently visible.
-        /// </summary>
-        public bool IsEditingGrhData
-        {
-            get { return _editGrhDataForm != null; }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="GrhTreeView"/> needs to draw.
-        /// </summary>
-        public bool NeedsToDraw
-        {
-            get { return _editGrhDataForm != null; }
-        }
 
         /// <summary>
         /// Adds a <see cref="GrhData"/> to the tree or updates it if it already exists.
@@ -138,6 +105,10 @@ namespace NetGore.Editor.Grhs
             return BeginEditGrhData(FindGrhDataNode(gd), gd, deleteOnCancel);
         }
 
+        public delegate void EditGrhDataEventHandler(GrhTreeView sender, TreeNode node, GrhData gd, bool deleteOnCancel);
+
+        public event EditGrhDataEventHandler EditGrhDataRequested;
+
         /// <summary>
         /// Attempts to begin the editing of a <see cref="GrhData"/>.
         /// </summary>
@@ -148,38 +119,13 @@ namespace NetGore.Editor.Grhs
         /// <returns>True if the editing started successfully; otherwise false.</returns>
         bool BeginEditGrhData(TreeNode node, GrhData gd, bool deleteOnCancel)
         {
-            // TODO: !! Add back in support for this
-
-            return false;
-
-            /*
-            if ((_editGrhDataForm != null && !_editGrhDataForm.IsDisposed) || node == null || gd == null)
+            if (node == null || gd == null)
                 return false;
 
-            _editGrhDataForm = new EditGrhForm(gd, _mapGrhWalls, _createWall, _gameScreenSize);
-            _editGrhDataForm.FormClosed += delegate
-            {
-                if (_editGrhDataForm == null)
-                    return;
+            if (EditGrhDataRequested != null)
+                EditGrhDataRequested(this, node, gd, deleteOnCancel);
 
-                if (deleteOnCancel && _editGrhDataForm.WasCanceled)
-                {
-                    // Delete the GrhData
-                    GrhInfo.Delete(gd);
-                }
-                else
-                {
-                    // Update the GrhData
-                    UpdateGrhData(gd);
-                }
-
-                _editGrhDataForm = null;
-            };
-
-            _editGrhDataForm.Show();
-            
             return true;
-            */
         }
 
         void CheckForMissingTextures()
@@ -251,9 +197,6 @@ namespace NetGore.Editor.Grhs
                     _animTimer.Dispose();
                 }
 
-                if (_editGrhDataForm != null)
-                    _editGrhDataForm.Dispose();
-
                 if (_contextMenu != null)
                     _contextMenu.Dispose();
 
@@ -263,16 +206,6 @@ namespace NetGore.Editor.Grhs
             }
 
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Draws the <see cref="GrhTreeView"/>.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        public void Draw(ISpriteBatch sb)
-        {
-            if (_editGrhDataForm != null)
-                _editGrhDataForm.Draw(sb);
         }
 
         void DuplicateGrhDataNode(GrhTreeViewNode node, string oldCategoryStart, string newCategoryStart)
@@ -483,21 +416,12 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         /// <param name="cm">The <see cref="IContentManager"/> used for loading content needed by the
         /// <see cref="GrhTreeView"/>.</param>
-        /// <param name="createWall">Delegate used to create a <see cref="WallEntityBase"/>.</param>
-        /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance to use.</param>
-        public void Initialize(IContentManager cm, CreateWallEntityHandler createWall, MapGrhWalls mapGrhWalls)
+        public void Initialize(IContentManager cm)
         {
             if (DesignMode)
                 return;
 
-            if (createWall == null)
-                throw new ArgumentNullException("createWall");
-            if (mapGrhWalls == null)
-                throw new ArgumentNullException("mapGrhWalls");
-
             _contentManager = cm;
-            _createWall = createWall;
-            _mapGrhWalls = mapGrhWalls;
 
             // Check for missing textures
             CheckForMissingTextures();
