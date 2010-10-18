@@ -21,8 +21,8 @@ namespace NetGore.Graphics.GUI
         readonly List<Control> _controls = new List<Control>(2);
         readonly ISkinManager _skinManager;
         readonly Tooltip _tooltip;
-        readonly Window _window;
 
+        Window _window;
         IDragDropProvider _draggedDragDropProvider;
         IDragDropProvider _dropOntoControl;
         Control _focusedControl = null;
@@ -30,6 +30,15 @@ namespace NetGore.Graphics.GUI
         Control _lastPressedControl;
         Vector2 _screenSize;
         Control _underCursor;
+
+        public Window Window
+        {
+            get { return _window; }
+            set
+            {
+                _window = value;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
@@ -42,8 +51,6 @@ namespace NetGore.Graphics.GUI
         /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
         public GUIManager(Window window, Font font, ISkinManager skinManager, Vector2 screenSize)
         {
-            if (window == null)
-                throw new ArgumentNullException("window");
             if (skinManager == null)
                 throw new ArgumentNullException("skinManager");
 
@@ -304,7 +311,13 @@ namespace NetGore.Graphics.GUI
         /// <value>The cursor position.</value>
         public Vector2 CursorPosition
         {
-            get { return new Vector2(_window.Input.GetMouseX(), _window.Input.GetMouseY()); }
+            get
+            {
+                var w = Window;
+                if (w == null || w.IsDisposed)
+                    return Vector2.Zero;
+
+                return new Vector2(w.Input.GetMouseX(), w.Input.GetMouseY()); }
         }
 
         /// <summary>
@@ -559,7 +572,11 @@ namespace NetGore.Graphics.GUI
         /// <returns>True if the <paramref name="key"/> is currently being pressed; otherwise false.</returns>
         public bool IsKeyDown(KeyCode key)
         {
-            return _window.Input.IsKeyDown(key);
+            var w = Window;
+            if (w == null || w.IsDisposed)
+                return false;
+
+            return w.Input.IsKeyDown(key);
         }
 
         /// <summary>
@@ -569,7 +586,11 @@ namespace NetGore.Graphics.GUI
         /// <returns>True if the <paramref name="button"/> is currently being pressed; otherwise false.</returns>
         public bool IsMouseButtonDown(MouseButton button)
         {
-            return _window.Input.IsMouseButtonDown(button);
+            var w = Window;
+            if (w == null || w.IsDisposed)
+                return false;
+
+            return w.Input.IsMouseButtonDown(button);
         }
 
         /// <summary>

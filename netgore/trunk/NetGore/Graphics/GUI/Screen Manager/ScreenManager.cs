@@ -20,7 +20,7 @@ namespace NetGore.Graphics.GUI
         readonly Font _defaultFont;
         readonly IDrawingManager _drawingManager;
         readonly FrameCounter _fps = new FrameCounter();
-        readonly RenderWindow _game;
+        readonly IGameContainer _game;
         readonly Dictionary<string, IGameScreen> _screens = new Dictionary<string, IGameScreen>(StringComparer.OrdinalIgnoreCase);
         readonly ISkinManager _skinManager;
 
@@ -30,14 +30,14 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenManager"/> class.
         /// </summary>
-        /// <param name="game">The Game that the game component should be attached to.</param>
+        /// <param name="game">The <see cref="IGameContainer"/>.</param>
         /// <param name="skinManager">The <see cref="ISkinManager"/> used to manage all the general skinning
         /// between all screens.</param>
         /// <param name="defaultFontName">The asset name of the default font.</param>
         /// <param name="defaultFontSize">The size of the default font.</param>
         /// <exception cref="ArgumentNullException"><paramref name="game"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
-        public ScreenManager(RenderWindow game, ISkinManager skinManager, string defaultFontName, int defaultFontSize)
+        public ScreenManager(IGameContainer game, ISkinManager skinManager, string defaultFontName, int defaultFontSize)
         {
             if (game == null)
                 throw new ArgumentNullException("game");
@@ -45,10 +45,12 @@ namespace NetGore.Graphics.GUI
                 throw new ArgumentNullException("skinManager");
 
             _game = game;
+            _game.RenderWindowChanged += _game_RenderWindowChanged;
+
             _skinManager = skinManager;
 
             _content = ContentManager.Create();
-            _drawingManager = new DrawingManager(_game);
+            _drawingManager = new DrawingManager(_game.RenderWindow);
 
             _audioManager = Audio.AudioManager.GetInstance(_content);
 
@@ -67,6 +69,18 @@ namespace NetGore.Graphics.GUI
             foreach (var screen in _screens.Values)
             {
                 screen.LoadContent();
+            }
+        }
+
+        void _game_RenderWindowChanged(IGameContainer sender, RenderWindow oldValue, RenderWindow newValue)
+        {
+            _drawingManager.RenderWindow = newValue;
+
+            foreach (var gs in _screens.Values)
+            {
+                var guiMan = gs.GUIManager;
+                if (guiMan != null)
+                    guiMan.Window = newValue;
             }
         }
 
@@ -92,7 +106,7 @@ namespace NetGore.Graphics.GUI
             _fps.Update(gameTime);
 
             // Clear the screen
-            _game.Clear(DrawingManager.BackgroundColor);
+            _game.RenderWindow.Clear(DrawingManager.BackgroundColor);
 
             // Draw the active non-console screen
             var ancs = ActiveNonConsoleScreen;
@@ -336,9 +350,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="IScreenManager.Game"/>.
+        /// Gets the <see cref="IGameContainer"/>.
         /// </summary>
-        public RenderWindow Game
+        public IGameContainer Game
         {
             get { return _game; }
         }
@@ -356,7 +370,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public Vector2 ScreenSize
         {
-            get { return new Vector2(_game.Width, _game.Height); }
+            get { return _game.ScreenSize; }
         }
 
         /// <summary>
@@ -415,7 +429,7 @@ namespace NetGore.Graphics.GUI
         /// </returns>
         public virtual IGUIManager CreateGUIManager(Font font)
         {
-            return new GUIManager(_game, font, SkinManager, ScreenSize);
+            return new GUIManager(_game.RenderWindow, font, SkinManager, ScreenSize);
         }
 
         /// <summary>

@@ -13,6 +13,11 @@ namespace NetGore.Graphics
         /// Gets or sets the background <see cref="Color"/>.
         /// </summary>
         Color BackgroundColor { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the <see cref="RenderWindow"/> to draw to.
+        /// </summary>
+        RenderWindow RenderWindow { get; set; }
 
         /// <summary>
         /// Gets if this <see cref="IDrawingManager"/> has been disposed.

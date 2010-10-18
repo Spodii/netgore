@@ -9,7 +9,7 @@ using SFML.Window;
 
 namespace DemoGame.GUITester
 {
-    sealed class Game1 : RenderWindow
+    sealed class Game1 : GameBase
     {
         readonly ScreenManager _screenManager;
         readonly ISkinManager _skinManager;
@@ -17,11 +17,10 @@ namespace DemoGame.GUITester
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
         /// </summary>
-        public Game1() : base(new VideoMode(1024, 768), "GUI test bench", Styles.Titlebar | Styles.Close)
+        public Game1() : base(IntPtr.Zero, new  Point(1024, 768), new Point(1024, 768))
         {
-            UseVerticalSync(true);
-            ShowMouseCursor(true);
-            SetFramerateLimit(60);
+            UseVerticalSync = true;
+            ShowMouseCursor = true;
 
             _skinManager = new SkinManager("Default");
             _screenManager = new ScreenManager(this, _skinManager, "Font/Arial", 14);
@@ -37,23 +36,32 @@ namespace DemoGame.GUITester
 
         void Game1_Closed(object sender, EventArgs e)
         {
-            Close();
+            Dispose();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles drawing the game.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleDraw(TickCount currentTime)
+        {
+            _screenManager.Draw(currentTime);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles updating the game.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleUpdate(TickCount currentTime)
+        {
+            _screenManager.Update(currentTime);
         }
 
         void GameLoop()
         {
-            while (IsOpened())
+            while (!IsDisposed)
             {
-                // Update
-                DispatchEvents();
-
-                _screenManager.Update(TickCount.Now);
-
-                // Draw
-                _screenManager.Draw(TickCount.Now);
-
-                // Present
-                Display();
+                HandleFrame();
             }
         }
     }

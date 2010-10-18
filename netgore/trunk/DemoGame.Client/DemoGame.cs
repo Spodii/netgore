@@ -16,7 +16,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Root object for the Client
     /// </summary>
-    public class DemoGame : RenderWindow
+    public class DemoGame : GameBase
     {
         readonly ScreenManager _screenManager;
         readonly ClientSockets _sockets;
@@ -28,7 +28,8 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="p">The <see cref="IntPtr"/> to the handle to display the game on
         /// (usually a <see cref="System.Windows.Forms.Control"/>).</param>
-        public DemoGame(IntPtr p) : base(p)
+        public DemoGame(IntPtr p) : base(p, new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
+            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y))
         {
             EngineSettingsInitializer.Initialize();
 
@@ -61,8 +62,8 @@ namespace DemoGame.Client
             ScreenManager.AudioManager.SoundManager.Volume = 70f;
             ScreenManager.AudioManager.MusicManager.Volume = 20f;
 
-            ShowMouseCursor(true);
-            UseVerticalSync(true);
+            ShowMouseCursor = true;
+            UseVerticalSync = true;
 
             KeyPressed += DemoGame_KeyPressed;
         }
@@ -127,15 +128,19 @@ namespace DemoGame.Client
         {
             if (e.Code == KeyCode.Tilde)
                 _screenManager.ShowConsole = !_screenManager.ShowConsole;
+
+            if (e.Code == KeyCode.Return && e.Alt)
+                IsFullscreen = !IsFullscreen;
         }
 
         /// <summary>
-        /// Handle the destruction of the object.
+        /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        protected override void Destroy(bool disposing)
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposeManaged)
         {
-            if (disposing)
+            if (disposeManaged)
             {
                 if (_globalAtlases != null)
                 {
@@ -148,37 +153,29 @@ namespace DemoGame.Client
                 _screenManager.Dispose();
             }
 
-            base.Destroy(disposing);
+            base.Dispose(disposeManaged);
         }
 
         /// <summary>
-        /// Draws the game.
+        /// When overridden in the derived class, handles drawing the game.
         /// </summary>
-        public virtual void Draw()
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleDraw(TickCount currentTime)
         {
             _screenManager.Draw(TickCount.Now);
         }
 
         /// <summary>
-        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
-        /// stream of updates.
+        /// When overridden in the derived class, handles updating the game.
         /// </summary>
-        public void HandleFrame()
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleUpdate(TickCount currentTime)
         {
-            // Process events
-            DispatchEvents();
-
-            // Draw everything
-            Draw();
-
             // Update the sockets
             _sockets.Heartbeat();
 
             // Update everything else
-            Update();
-
-            // Display the window
-            Display();
+            _screenManager.Update(TickCount.Now);
         }
 
         /// <summary>
@@ -220,14 +217,6 @@ namespace DemoGame.Client
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
             _screenManager.Content.Unload();
-        }
-
-        /// <summary>
-        /// Updates the game.
-        /// </summary>
-        public virtual void Update()
-        {
-            _screenManager.Update(TickCount.Now);
         }
     }
 }
