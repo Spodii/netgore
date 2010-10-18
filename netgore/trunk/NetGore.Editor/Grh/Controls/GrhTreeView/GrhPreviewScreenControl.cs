@@ -11,11 +11,7 @@ namespace NetGore.Editor.Grhs
 {
     public class GrhPreviewScreenControl : GraphicsDeviceControl
     {
-        /// <summary>
-        /// The percent of the screen to use as padding around the item veing viewed. This way the item doesn't
-        /// actually stretch all the way out to the sides.
-        /// </summary>
-        const float _defaultViewPaddingPercent = 0.05f;
+        const int _defaultViewPadding = 8;
 
         static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
 
@@ -98,8 +94,8 @@ namespace NetGore.Editor.Grhs
             {
                 try
                 {
-                    Grh.Draw(sb, Vector2.Zero);
-                    RenderRectangle.Draw(sb, new SFML.Graphics.Rectangle((int)ScreenSize.X - 2, (int)ScreenSize.Y - 2, 4, 4), Color.White);
+                    Grh.Draw(sb, new Vector2(_defaultViewPadding), Color.White, SpriteEffects.None, 0f, Vector2.Zero,
+                        Camera.GetFillScreenZoomLevel(Grh.Size + (new Vector2(_defaultViewPadding) * 2)));
                 }
                 catch (LoadingFailedException)
                 {
