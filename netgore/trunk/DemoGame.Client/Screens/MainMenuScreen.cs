@@ -37,7 +37,7 @@ namespace DemoGame.Client
             {
                 /* Not implemented */
             };
-            menuButtons["Quit"].Clicked += delegate { ScreenManager.Game.Close(); };
+            menuButtons["Quit"].Clicked += delegate { ScreenManager.Game.Dispose(); };
         }
     }
 }

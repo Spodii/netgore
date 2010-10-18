@@ -22,6 +22,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         IEnumerable<Control> Controls { get; }
 
+        Window Window { get; set; }
+
         /// <summary>
         /// Gets the cursor position.
         /// </summary>

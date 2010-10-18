@@ -47,20 +47,8 @@ namespace DemoGame.Client
         {
             try
             {
-                // Check if the game is running
-                bool isOpened;
-                try
-                {
-                    isOpened = _game.IsOpened();
-                }
-                catch (AccessViolationException)
-                {
-                    // SFML likes to throw an AccessViolationException when the game is disposed
-                    isOpened = false;
-                }
-
                 // If the game is running, handle the next frame. Otherwise, close the form.
-                if (isOpened)
+                if (!_game.IsDisposed)
                     _game.HandleFrame();
                 else
                     Close();
@@ -81,34 +69,7 @@ namespace DemoGame.Client
         {
             try
             {
-                bool isOpened;
-                try
-                {
-                    isOpened = _game.IsOpened();
-                }
-                catch (AccessViolationException)
-                {
-                    // SFML likes to throw an AccessViolationException when the game is disposed
-                    isOpened = false;
-                }
-
-                // If the game was not closed, close it and abort so the main loop can take care of it
-                if (isOpened)
-                {
-                    e.Cancel = true;
-
-                    try
-                    {
-                        _game.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        const string errmsg = "Exception thrown when trying to close the game: {0}";
-                        if (log.IsWarnEnabled)
-                            log.WarnFormat(errmsg, ex);
-                        Debug.Fail(string.Format(errmsg, ex));
-                    }
-                }
+                _game.Dispose();
             }
             catch (Exception ex)
             {
@@ -117,6 +78,8 @@ namespace DemoGame.Client
                     log.WarnFormat(errmsg, ex);
                 Debug.Fail(string.Format(errmsg, ex));
             }
+
+            base.OnClosing(e);
         }
 
         /// <summary>

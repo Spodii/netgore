@@ -65,9 +65,9 @@ namespace NetGore.Graphics.GUI
         int FPS { get; }
 
         /// <summary>
-        /// Gets the <see cref="Game"/>.
+        /// Gets the <see cref="IGameContainer"/>.
         /// </summary>
-        RenderWindow Game { get; }
+        IGameContainer Game { get; }
 
         /// <summary>
         /// Gets if this <see cref="IScreenManager"/> has been disposed.
