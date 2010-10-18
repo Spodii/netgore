@@ -83,6 +83,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closed"/> event.
+        /// </summary>
+        /// <param name="e">The <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnClosed(EventArgs e)
+        {
+#if !MONO
+            Application.Idle -= Application_Idle;
+#endif
+
+            base.OnClosed(e);
+        }
+
+        /// <summary>
         /// Processes a command key.
         /// </summary>
         /// <param name="msg">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the
