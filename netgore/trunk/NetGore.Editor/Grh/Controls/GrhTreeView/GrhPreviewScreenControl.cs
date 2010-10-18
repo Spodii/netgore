@@ -92,11 +92,14 @@ namespace NetGore.Editor.Grhs
             if (sb == null)
                 return;
 
+            RenderWindow.CurrentView.Reset(new FloatRect(Camera.Min.X, Camera.Min.Y, Camera.Size.X, Camera.Size.Y));
+
             try
             {
                 try
                 {
                     Grh.Draw(sb, Vector2.Zero);
+                    RenderRectangle.Draw(sb, new SFML.Graphics.Rectangle((int)ScreenSize.X - 2, (int)ScreenSize.Y - 2, 4, 4), Color.White);
                 }
                 catch (LoadingFailedException)
                 {
