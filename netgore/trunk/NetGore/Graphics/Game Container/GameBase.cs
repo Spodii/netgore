@@ -15,16 +15,34 @@ namespace NetGore.Graphics
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly IntPtr _displayHandle;
         readonly Point _fullscreenRes;
         readonly Point _windowedRes;
 
+        IntPtr _displayHandle;
         bool? _changeIsFullscreenValue;
         bool _isDisposed;
         bool _isFullscreen;
         RenderWindow _renderWindow;
         bool _showMouseCursor;
         bool _useVerticalSync;
+
+        public IntPtr DisplayHandle
+        {
+            get
+            {
+                return _displayHandle;
+            }
+            set
+            {
+                if (_displayHandle == value)
+                    return;
+
+                _displayHandle = value;
+
+                if (!IsFullscreen)
+                    SwitchToWindowed(true);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameBase"/> class.
@@ -204,13 +222,17 @@ namespace NetGore.Graphics
 
             RenderWindow newRW;
 
-            if (_displayHandle == IntPtr.Zero)
+            if (DisplayHandle == IntPtr.Zero)
             {
+                // Not using custom handle
                 var videoMode = new VideoMode((uint)WindowedResolution.X, (uint)WindowedResolution.Y);
                 newRW = new RenderWindow(videoMode, "My game", Styles.Titlebar | Styles.Close); // TODO: !! Title
             }
             else
-                newRW = new RenderWindow(_displayHandle);
+            {
+                // Using custom handle
+                newRW = new RenderWindow(DisplayHandle);
+            }
 
             _isFullscreen = false;
 
