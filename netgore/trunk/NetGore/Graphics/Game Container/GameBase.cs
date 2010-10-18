@@ -590,20 +590,34 @@ namespace NetGore.Graphics
             get { return _windowedRes; }
         }
 
+        bool _willDispose;
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
+            // Make sure we are not already disposed
             if (IsDisposed)
                 return;
 
+            // If handling a frame (which is common since dispose events frequently come from input events), then we will wait until
+            // the frame is over before disposing
+            if (_isHandlingFrame)
+            {
+                _willDispose = true;
+                return;
+            }
+
+            // Dispose
             _isDisposed = true;
 
             GC.SuppressFinalize(this);
 
             Dispose(true);
         }
+
+        bool _isHandlingFrame;
 
         /// <summary>
         /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
@@ -614,20 +628,56 @@ namespace NetGore.Graphics
             if (IsDisposed)
                 return;
 
-            ChangeFullscreen();
+            _isHandlingFrame = false;
 
-            var currentTime = TickCount.Now;
+            // Check if we need to dispose
+            if (_willDispose)
+            {
+                Dispose();
+                return;
+            }
 
-            if (RenderWindow != null)
-                RenderWindow.DispatchEvents();
+            // Begin handling frame
+            _isHandlingFrame = true;
 
-            HandleUpdate(currentTime);
+            try
+            {
+                // Check if we need to toggle fullscreen mode
+                ChangeFullscreen();
 
-            if (RenderWindow != null)
-                HandleDraw(currentTime);
+                // Get the current time
+                var currentTime = TickCount.Now;
 
-            if (RenderWindow != null)
-                RenderWindow.Display();
+                // Dispatch the events
+                var rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    rw.DispatchEvents();
+
+                // Update
+                HandleUpdate(currentTime);
+
+                // Draw
+                rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    HandleDraw(currentTime);
+
+                // Display
+                rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    rw.Display();
+            }
+            finally
+            {
+                // End handling frame
+                _isHandlingFrame = false;
+            }
+
+            // Check if we need to dispose
+            if (_willDispose)
+            {
+                Dispose();
+                return;
+            }
         }
 
         #endregion
