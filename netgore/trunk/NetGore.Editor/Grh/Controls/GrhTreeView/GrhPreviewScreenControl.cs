@@ -163,6 +163,8 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         public void ResetCamera()
         {
+            Camera.Scale = 1.0f;
+            Camera.Rotation = 0.0f;
             Camera.Min = Vector2.Zero;
             Camera.Size = ScreenSize * Camera.Scale;
         }

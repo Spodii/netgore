@@ -13,34 +13,13 @@ namespace NetGore.Graphics
     /// </summary>
     public class Camera2D : ICamera2D
     {
-        // NOTE: The internal Matrix is an artifact left over form the XNA implementation. This is not used (currently) for SFML since SFML does not let you set the transformation matrix. So right now, its just a waste.
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         bool _keepInMap = true;
-
         IMap _map;
-
-        /// <summary>
-        /// Transformation matrix to be used on the SpriteBatch.Begin call.
-        /// </summary>
-        Matrix _matrix = Matrix.Identity;
-
-        /// <summary>
-        /// Coordinate of the center of the top-left corner of the camera.
-        /// </summary>
         Vector2 _min = Vector2.Zero;
-
-        /// <summary>
-        /// Rotation magnitude in radians.
-        /// </summary>
         float _rotation = 0.0f;
-
-        /// <summary>
-        /// Scale percent (1 = 100% = normal).
-        /// </summary>
         float _scale = 1.0f;
-
         Vector2 _size;
 
         /// <summary>
@@ -52,32 +31,24 @@ namespace NetGore.Graphics
             _size = screenSize;
         }
 
-        /// <summary>
-        /// Update the transformation matrix.
-        /// </summary>
-        void UpdateMatrix()
+        void ApplyKeepInMap()
         {
-            // Force the camera to stay in the map
-            if (KeepInMap && Map != null)
-            {
-                // Check the max values
-                var max = Max;
-                if (max.X > Map.Width)
-                    _min.X = Map.Width - Size.X;
+            if (!KeepInMap || Map == null)
+                return;
 
-                if (max.Y > Map.Height)
-                    _min.Y = Map.Height - Size.Y;
+            // Check the max values
+            var max = Max;
+            if (max.X > Map.Width)
+                _min.X = Map.Width - Size.X;
 
-                // Check the min values
-                if (_min.X < 0)
-                    _min.X = 0;
-                if (_min.Y < 0)
-                    _min.Y = 0;
-            }
+            if (max.Y > Map.Height)
+                _min.Y = Map.Height - Size.Y;
 
-            // Update the matrix
-            var origin = new Vector3(_min, 0);
-            _matrix = Matrix.CreateTranslation(-origin) * Matrix.CreateScale(_scale) * Matrix.CreateRotationZ(_rotation);
+            // Check the min values
+            if (_min.X < 0)
+                _min.X = 0;
+            if (_min.Y < 0)
+                _min.Y = 0;
         }
 
         #region ICamera2D Members
@@ -103,7 +74,8 @@ namespace NetGore.Graphics
                     return;
 
                 _keepInMap = value;
-                UpdateMatrix();
+
+                ApplyKeepInMap();
             }
         }
 
@@ -116,17 +88,8 @@ namespace NetGore.Graphics
             set
             {
                 _map = value;
-                if (_map != null && KeepInMap)
-                    UpdateMatrix();
+                ApplyKeepInMap();
             }
-        }
-
-        /// <summary>
-        /// Gets a transformation matrix used to transform coordinates to respect the camera's settings.
-        /// </summary>
-        public Matrix Matrix
-        {
-            get { return _matrix; }
         }
 
         /// <summary>
@@ -151,7 +114,8 @@ namespace NetGore.Graphics
 
                 // Update the value and the matrix
                 _min = value;
-                UpdateMatrix();
+
+                ApplyKeepInMap();
             }
         }
 
@@ -169,7 +133,6 @@ namespace NetGore.Graphics
 
                 // Update the value and the matrix
                 _rotation = value;
-                UpdateMatrix();
             }
         }
 
@@ -195,7 +158,7 @@ namespace NetGore.Graphics
                 _scale = value;
                 _size = oldSizeUnscaled / _scale;
 
-                UpdateMatrix();
+                ApplyKeepInMap();
             }
         }
 
