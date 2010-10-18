@@ -85,6 +85,7 @@ namespace NetGore.Editor.Grhs
 
             Grh.Update(currentTime);
 
+            RenderWindow.CurrentView = RenderWindow.CurrentView;
             _drawingManager.Update(currentTime);
 
             var sb = _drawingManager.BeginDrawWorld(_camera);
@@ -163,7 +164,7 @@ namespace NetGore.Editor.Grhs
         public void ResetCamera()
         {
             Camera.Min = Vector2.Zero;
-            Camera.Size = ScreenSize;
+            Camera.Size = ScreenSize * Camera.Scale;
         }
     }
 }
