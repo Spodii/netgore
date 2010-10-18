@@ -18,7 +18,7 @@ namespace DemoGame.Client
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly DemoGame _game;
+        DemoGame _game;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameForm"/> class.
@@ -35,9 +35,24 @@ namespace DemoGame.Client
             ClientSize = new Size((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y);
 
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. 
+        ///                 </param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            Focus();
+            Refresh();
+            Update();
+            Show();
 
             // Create the game
-            _game = new DemoGame(Handle);
+            _game = new DemoGame(this);
         }
 
         /// <summary>
@@ -47,6 +62,10 @@ namespace DemoGame.Client
         {
             try
             {
+                // If the game has not been created yet, just don't do anything
+                if (_game == null)
+                    return;
+
                 // If the game is running, handle the next frame. Otherwise, close the form.
                 if (!_game.IsDisposed)
                     _game.HandleFrame();
@@ -69,7 +88,8 @@ namespace DemoGame.Client
         {
             try
             {
-                _game.Dispose();
+                if (_game != null && !_game.IsDisposed)
+                    _game.Dispose();
             }
             catch (Exception ex)
             {

@@ -10,6 +10,7 @@ using NetGore.Network;
 using NetGore.World;
 using SFML.Graphics;
 using SFML.Window;
+using Form = System.Windows.Forms.Form;
 
 namespace DemoGame.Client
 {
@@ -20,17 +21,20 @@ namespace DemoGame.Client
     {
         readonly ScreenManager _screenManager;
         readonly ClientSockets _sockets;
+        readonly Form _windowedForm;
 
         IEnumerable<TextureAtlas> _globalAtlases;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DemoGame"/> class.
         /// </summary>
-        /// <param name="p">The <see cref="IntPtr"/> to the handle to display the game on
-        /// (usually a <see cref="System.Windows.Forms.Control"/>).</param>
-        public DemoGame(IntPtr p) : base(p, new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
-            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y))
+        public DemoGame(Form windowedForm)
+            : base(
+                windowedForm.Handle, new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
+                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y))
         {
+            _windowedForm = windowedForm;
+
             EngineSettingsInitializer.Initialize();
 
             // Create the screen manager
@@ -66,6 +70,9 @@ namespace DemoGame.Client
             UseVerticalSync = true;
 
             KeyPressed += DemoGame_KeyPressed;
+
+            if (_windowedForm != null)
+                _windowedForm.Visible = !IsFullscreen;
         }
 
         /// <summary>
@@ -217,6 +224,25 @@ namespace DemoGame.Client
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
             _screenManager.Content.Unload();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IGameContainer.RenderWindowChanged"/> event.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected override void OnRenderWindowChanged(RenderWindow oldValue, RenderWindow newValue)
+        {
+            base.OnRenderWindowChanged(oldValue, newValue);
+
+            // Only show the WindowedForm when in windowed mode
+            if (_windowedForm != null)
+            {
+                if (IsFullscreen)
+                    _windowedForm.Visible = false;
+                else
+                    _windowedForm.Visible = true;
+            }
         }
     }
 }
