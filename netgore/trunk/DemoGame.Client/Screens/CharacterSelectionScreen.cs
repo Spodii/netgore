@@ -3,7 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
+using NetGore.World;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -151,6 +155,7 @@ namespace DemoGame.Client
             static readonly Vector2 slotPadding = new Vector2(10, 10);
 
             readonly Label _charNameControl;
+            readonly PreviewCharacter _character = new PreviewCharacter();
 
             readonly byte _slot;
             readonly Label _slotNumberControl;
@@ -221,6 +226,41 @@ namespace DemoGame.Client
             }
 
             /// <summary>
+            /// Draws the <see cref="Control"/>.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+            protected override void DrawControl(ISpriteBatch spriteBatch)
+            {
+                base.DrawControl(spriteBatch);
+
+                if (_character != null && _charInfo != null)
+                {
+                    _character.Position = GetCharacterPosition();
+                    _character.Body = _charInfo.BodyID;
+                    _character.Draw(spriteBatch);
+                }
+            }
+
+            /// <summary>
+            /// Gets the position to draw the <see cref="PreviewCharacter"/> at.
+            /// </summary>
+            /// <returns>The position to draw the <see cref="PreviewCharacter"/> at.</returns>
+            Vector2 GetCharacterPosition()
+            {
+                var sp = ScreenPosition;
+                var cs = ClientSize;
+                var max = sp + cs;
+
+                var center = sp + (cs / 2f);
+                var offset = _character.Size / 2f;
+                var pos = center - offset;
+
+                pos.Y = max.Y - _character.Size.Y - 5;
+
+                return pos;
+            }
+
+            /// <summary>
             /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
             /// from the given <paramref name="skinManager"/>.
             /// </summary>
@@ -263,6 +303,19 @@ namespace DemoGame.Client
             }
 
             /// <summary>
+            /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
+            /// not visible.
+            /// </summary>
+            /// <param name="currentTime">The current time in milliseconds.</param>
+            protected override void UpdateControl(TickCount currentTime)
+            {
+                base.UpdateControl(currentTime);
+
+                if (_character != null)
+                    _character.Update();
+            }
+
+            /// <summary>
             /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
             /// base class's method to ensure that changes to settings are hierchical.
             /// </summary>
@@ -293,6 +346,85 @@ namespace DemoGame.Client
 
                 Position = pos;
             }
+        }
+
+        class PreviewCharacter : Entity, IGetTime
+        {
+            static readonly SkeletonManager _skeletonManager = SkeletonManager.Create(ContentPaths.Build);
+
+            readonly ICharacterSprite _characterSprite;
+
+            BodyID _body;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PreviewCharacter"/> class.
+            /// </summary>
+            public PreviewCharacter()
+            {
+                _characterSprite = Character.CreateCharacterSprite(this, this, _skeletonManager);
+            }
+
+            public BodyID Body
+            {
+                get { return _body; }
+                set
+                {
+                    if (_body == value)
+                        return;
+
+                    _body = value;
+
+                    var bodyInfo = BodyInfoManager.Instance.GetBody(Body);
+
+                    if (bodyInfo != null)
+                    {
+                        _characterSprite.SetSet(bodyInfo.Walk, bodyInfo.Size);
+                        _characterSprite.SetBody(bodyInfo.Body);
+
+                        Size = bodyInfo.Size;
+                    }
+                    else
+                    {
+                        _characterSprite.SetSet(null, Vector2.Zero);
+                        _characterSprite.SetBody(null);
+
+                        Size = Vector2.One;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
+            /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
+            /// </summary>
+            public override bool CollidesAgainstWalls
+            {
+                get { return false; }
+            }
+
+            public void Draw(ISpriteBatch sb)
+            {
+                _characterSprite.Draw(sb, Position, Direction.East, Color.White);
+            }
+
+            public void Update()
+            {
+                if (_characterSprite != null)
+                    _characterSprite.Update(GetTime());
+            }
+
+            #region IGetTime Members
+
+            /// <summary>
+            /// Gets the current time in milliseconds.
+            /// </summary>
+            /// <returns>The current time in milliseconds.</returns>
+            public TickCount GetTime()
+            {
+                return TickCount.Now;
+            }
+
+            #endregion
         }
     }
 }

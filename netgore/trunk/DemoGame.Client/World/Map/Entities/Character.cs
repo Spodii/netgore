@@ -228,6 +228,15 @@ namespace DemoGame.Client
             return NameFont.MeasureString(Name);
         }
 
+        public static ICharacterSprite CreateCharacterSprite(IGetTime getTime, Entity entity, SkeletonManager skeletonManager)
+        {
+#if !TOPDOWN
+            return new SkeletonCharacterSprite(getTime, entity, skeletonManager, GameData.AnimationSpeedModifier);
+#else
+            return new BasicGrhCharacterSprite(this, "Character.Top Down");
+#endif
+        }
+
         /// <summary>
         /// Initializes the Character.
         /// </summary>
@@ -239,11 +248,7 @@ namespace DemoGame.Client
             _map = map;
             _interpolator.Teleport(Position);
 
-#if !TOPDOWN
-            _characterSprite = new SkeletonCharacterSprite(this, this, skelManager, GameData.AnimationSpeedModifier);
-#else
-            _characterSprite = new BasicGrhCharacterSprite(this, "Character.Top Down");
-#endif
+            _characterSprite = CreateCharacterSprite(this, this, skelManager);
 
             CharacterSprite.SetSet(BodyInfo.Stand, BodyInfo.Size);
             CharacterSprite.SetBody(BodyInfo.Body);
