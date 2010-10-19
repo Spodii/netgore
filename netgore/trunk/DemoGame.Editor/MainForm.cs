@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.UITypeEditors;
@@ -14,6 +15,8 @@ namespace DemoGame.Editor
 {
     public partial class MainForm : Form
     {
+        readonly DockContentDeserializer _deserializer;
+
         DbEditorForm _frmDbEditor;
         GrhTreeViewForm _frmGrhTreeView;
         NPCChatEditorForm _frmNPCChatEditor;
@@ -26,6 +29,8 @@ namespace DemoGame.Editor
         public MainForm()
         {
             InitializeComponent();
+
+            _deserializer = new DockContentDeserializer(this);
         }
 
         /// <summary>
@@ -58,6 +63,8 @@ namespace DemoGame.Editor
 
             // Save the tool settings
             ToolManager.Instance.SaveSettings();
+
+            SaveDockSettings("User");
 
             base.OnClosing(e);
         }
@@ -97,7 +104,25 @@ namespace DemoGame.Editor
             _frmDbEditor = new DbEditorForm();
             _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
 
-            _frmGrhTreeView.Show(dockPanel, DockState.DockRight);
+            LoadDockSettings("User");
+        }
+
+        static string GetDockSettingsFilePath(string settingsName)
+        {
+            return ContentPaths.Build.Settings.Join("EditorLayout." + settingsName + ".xml");
+        }
+
+        void SaveDockSettings(string settingsName)
+        {
+            var filePath = GetDockSettingsFilePath(settingsName);
+            dockPanel.SaveAsXml(filePath);
+        }
+
+        void LoadDockSettings(string settingsName)
+        {
+            var filePath = GetDockSettingsFilePath(settingsName);
+            if (File.Exists(filePath))
+                dockPanel.LoadFromXml(filePath, _deserializer.Deserialize);
         }
 
         /// <summary>
@@ -279,6 +304,43 @@ namespace DemoGame.Editor
                 _frmSkeletonEditor.Show(dockPanel, DockState.Float);
             else
                 _frmSkeletonEditor.Hide();
+        }
+
+        sealed class DockContentDeserializer 
+        {
+            readonly MainForm _form;
+
+            public DockContentDeserializer(MainForm form)
+            {
+                _form = form;
+            }
+
+            static bool IsNameFor(IDockContent control, string name)
+            {
+                return StringComparer.Ordinal.Equals(control.GetType().ToString(), name);
+            }
+
+            MainForm Owner { get { return _form; } }
+
+            public IDockContent Deserialize(string name)
+            {
+                if (IsNameFor(Owner._frmDbEditor, name))
+                    return Owner._frmDbEditor;
+
+                if (IsNameFor(Owner._frmGrhTreeView, name))
+                    return Owner._frmGrhTreeView;
+
+                if (IsNameFor(Owner._frmNPCChatEditor, name))
+                    return Owner._frmNPCChatEditor;
+
+                if (IsNameFor(Owner._frmSelectedObjs, name))
+                    return Owner._frmSelectedObjs;
+
+                if (IsNameFor(Owner._frmSkeletonEditor, name))
+                    return Owner._frmSkeletonEditor;
+
+                return null;
+            }
         }
     }
 }
