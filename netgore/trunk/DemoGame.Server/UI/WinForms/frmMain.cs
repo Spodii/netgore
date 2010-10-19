@@ -144,6 +144,12 @@ namespace DemoGame.Server.UI
         /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            if (_server == null)
+            {
+                AppendToConsole("Please wait for loading to finish before shutting down...", ConsoleTextType.Info);
+                return;
+            }
+
             _formClosing = true;
 
             AppendToConsole("Shutting down...", ConsoleTextType.Info);

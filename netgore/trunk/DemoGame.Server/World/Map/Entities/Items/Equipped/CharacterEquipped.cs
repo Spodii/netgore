@@ -17,15 +17,13 @@ namespace DemoGame.Server
     /// <summary>
     /// Base class for a <see cref="EquippedBase{T}"/> for any kind of <see cref="Character"/>.
     /// </summary>
-    public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer<StatType>
+    public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IModStatContainer<StatType>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Character _character;
         readonly bool _isPersistent;
         readonly EquippedPaperDoll _paperDoll;
-
-        bool _disposed = false;
 
         /// <summary>
         /// When true, the <see cref="OnEquipped"/> and <see cref="OnUnequipped"/> methods will be ignored.
@@ -268,17 +266,13 @@ namespace DemoGame.Server
             _paperDoll.SynchronizeBodyLayersTo(client);
         }
 
-        #region IDisposable Members
-
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// When overridden in the derived class, handles when this object is disposed.
         /// </summary>
-        public void Dispose()
+        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
+        protected override void Dispose(bool disposeManaged)
         {
-            if (_disposed)
-                return;
-
-            _disposed = true;
+            base.Dispose(disposeManaged);
 
             // If the Character is not persistent, we want to destroy every ItemEntity so it doesn't sit in the
             // database as garbage
@@ -290,8 +284,6 @@ namespace DemoGame.Server
                 }
             }
         }
-
-        #endregion
 
         #region IModStatContainer<StatType> Members
 

@@ -13,9 +13,54 @@ namespace DemoGame
     /// <summary>
     /// Base class for keeping track of a collection of equipped items.
     /// </summary>
-    public abstract class EquippedBase<T> : IEnumerable<KeyValuePair<EquipmentSlot, T>> where T : ItemEntityBase
+    public abstract class EquippedBase<T> : IDisposable, IEnumerable<KeyValuePair<EquipmentSlot, T>> where T : ItemEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        bool _disposed = false;
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed { get { return _disposed; } }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            _disposed = true;
+
+            GC.SuppressFinalize(this);
+
+            InternalDispose(true);
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// When overridden in the derived class, handles when this object is disposed.
+        /// </summary>
+        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+        }
+
+        void InternalDispose(bool disposeManaged)
+        {
+            foreach (var item in _equipped.Where(x =>x != null))
+            {
+                item.Disposed -= ItemDisposeHandler;
+            }
+
+            Dispose(disposeManaged);
+        }
 
         /// <summary>
         /// Greatest index of all the EquipmentSlots.
