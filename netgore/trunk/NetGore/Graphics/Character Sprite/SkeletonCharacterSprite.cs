@@ -130,6 +130,9 @@ namespace NetGore.Graphics
         /// <param name="currentTime">The current time.</param>
         public void Update(TickCount currentTime)
         {
+            if (_skelAnim == null)
+                return;
+
             _skelAnim.Update(currentTime);
 
             // Update the animation's speed
