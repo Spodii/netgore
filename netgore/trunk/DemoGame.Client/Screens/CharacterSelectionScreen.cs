@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -196,15 +197,19 @@ namespace DemoGame.Client
                 get { return _charInfo; }
                 set
                 {
-                    if (_charInfo == value)
-                        return;
-
                     _charInfo = value;
 
                     if (CharInfo != null)
                         _charNameControl.Text = CharInfo.Name;
                     else
                         _charNameControl.Text = _unusedCharacterSlotText;
+
+                    if (_character != null && _charInfo != null)
+                    {
+                        _character.Body = _charInfo.BodyID;
+                        _character.SetPaperDollLayers(_charInfo.EquippedBodies);
+                        _character.Position = GetCharacterPosition();
+                    }
                 }
             }
 
@@ -233,10 +238,8 @@ namespace DemoGame.Client
             {
                 base.DrawControl(spriteBatch);
 
-                if (_character != null && _charInfo != null)
+                if (_character != null)
                 {
-                    _character.Position = GetCharacterPosition();
-                    _character.Body = _charInfo.BodyID;
                     _character.Draw(spriteBatch);
                 }
             }
@@ -364,6 +367,11 @@ namespace DemoGame.Client
                 _characterSprite = Character.CreateCharacterSprite(this, this, _skeletonManager);
             }
 
+            public void SetPaperDollLayers(IEnumerable<string> values)
+            {
+                _characterSprite.SetPaperDollLayers(values);
+            }
+
             public BodyID Body
             {
                 get { return _body; }
@@ -380,6 +388,7 @@ namespace DemoGame.Client
                     {
                         _characterSprite.SetSet(bodyInfo.Walk, bodyInfo.Size);
                         _characterSprite.SetBody(bodyInfo.Body);
+                        _characterSprite.SetPaperDollLayers(null);
 
                         Size = bodyInfo.Size;
                     }
@@ -387,6 +396,7 @@ namespace DemoGame.Client
                     {
                         _characterSprite.SetSet(null, Vector2.Zero);
                         _characterSprite.SetBody(null);
+                        _characterSprite.SetPaperDollLayers(null);
 
                         Size = Vector2.One;
                     }
@@ -405,6 +415,15 @@ namespace DemoGame.Client
             public void Draw(ISpriteBatch sb)
             {
                 _characterSprite.Draw(sb, Position, Direction.East, Color.White);
+            }
+
+            /// <summary>
+            /// Perform pre-collision velocity and position updating.
+            /// </summary>
+            /// <param name="map">The map.</param>
+            /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
+            public override void UpdateVelocity(IMap map, int deltaTime)
+            {
             }
 
             public void Update()

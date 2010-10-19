@@ -67,8 +67,12 @@ namespace NetGore.Graphics
         /// <param name="color">The color of the sprite.</param>
         public void Draw(ISpriteBatch spriteBatch, Vector2 position, Direction heading, Color color)
         {
+            if (_skelAnim == null)
+                return;
+
             var se = (heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             var p = position + new Vector2(_bodySize.X / 2f, _bodySize.Y);
+
             _skelAnim.Draw(spriteBatch, p, color, se);
         }
 
@@ -91,6 +95,9 @@ namespace NetGore.Graphics
         public void SetPaperDollLayers(IEnumerable<string> layers)
         {
             _skelAnim.BodyLayers.Clear();
+
+            if (layers == null)
+                return;
 
             foreach (var layer in layers)
             {
