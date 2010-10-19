@@ -6,6 +6,8 @@ using DemoGame.Editor.UITypeEditors;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
+using NetGore.Graphics;
+using NetGore.IO;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
@@ -51,6 +53,10 @@ namespace DemoGame.Editor
                 return;
             }
 
+            // Save the GrhDatas
+            GrhInfo.Save(ContentPaths.Dev);
+
+            // Save the tool settings
             ToolManager.Instance.SaveSettings();
 
             base.OnClosing(e);
