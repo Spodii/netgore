@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame
@@ -6,12 +8,8 @@ namespace DemoGame
     /// <summary>
     /// Contains the information about a Character from the account-level view.
     /// </summary>
-    public class AccountCharacterInfo
+    public class AccountCharacterInfo : IPersistable
     {
-        const string _valueKeyBodyID = "BodyID";
-        const string _valueKeyIndex = "Index";
-        const string _valueKeyName = "Name";
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountCharacterInfo"/> class.
         /// </summary>
@@ -31,20 +29,35 @@ namespace DemoGame
         /// <param name="r">The <see cref="IValueReader"/> used to read the object data from..</param>
         public AccountCharacterInfo(IValueReader r)
         {
-            Index = r.ReadByte(_valueKeyIndex);
-            Name = r.ReadString(_valueKeyName);
-            BodyID = r.ReadBodyID(_valueKeyBodyID);
+            ReadState(r);
         }
 
+        [SyncValue]
         public BodyID BodyID { get; protected set; }
+
+        [SyncValue]
         public byte Index { get; protected set; }
+
+        [SyncValue]
         public string Name { get; protected set; }
 
-        public void Write(IValueWriter w)
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
         {
-            w.Write(_valueKeyIndex, Index);
-            w.Write(_valueKeyName, Name);
-            w.Write(_valueKeyBodyID, BodyID);
+            PersistableHelper.Read(this, reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
         }
     }
 }

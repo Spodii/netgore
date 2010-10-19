@@ -12,7 +12,7 @@ namespace DemoGame
 
         public static void Write(this IValueWriter writer, AccountCharacterInfo accountCharacterInfo)
         {
-            accountCharacterInfo.Write(writer);
+            accountCharacterInfo.WriteState(writer);
         }
     }
 }
