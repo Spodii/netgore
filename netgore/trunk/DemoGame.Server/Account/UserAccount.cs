@@ -243,7 +243,13 @@ namespace DemoGame.Server
             for (var i = 0; i < charInfos.Length; i++)
             {
                 var characterID = _characterIDs[i];
-                charInfos[i] = _dbController.GetQuery<SelectAccountCharacterInfoQuery>().Execute(characterID, (byte)i);
+
+                var v =  _dbController.GetQuery<SelectAccountCharacterInfoQuery>().Execute(characterID, (byte)i);
+
+                var eqBodies = _dbController.GetQuery<SelectCharacterEquippedBodiesQuery>().Execute(characterID);
+                v.SetEquippedBodies(eqBodies);
+
+                charInfos[i] = v;
             }
 
             using (var pw = ServerPacket.SendAccountCharacters(charInfos))
