@@ -14,11 +14,13 @@ namespace DemoGame
     /// Base class for an Inventory that contains ItemEntities.
     /// </summary>
     /// <typeparam name="T">The type of game item contained in the inventory.</typeparam>
-    public abstract class InventoryBase<T> : IInventory<T> where T : ItemEntityBase
+    public abstract class InventoryBase<T> : IInventory<T>, IDisposable where T : ItemEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly T[] _buffer;
+
+        bool _disposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryBase&lt;T&gt;"/> class.
@@ -38,6 +40,14 @@ namespace DemoGame
         {
             get { return this[new InventorySlot(slot)]; }
             set { this[new InventorySlot(slot)] = value; }
+        }
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
         }
 
         /// <summary>
@@ -67,6 +77,28 @@ namespace DemoGame
             // Destroy the item
             if (destroy)
                 item.Destroy();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when this object is disposed.
+        /// </summary>
+        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="InventoryBase{T}"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~InventoryBase()
+        {
+            if (IsDisposed)
+                return;
+
+            _disposed = true;
+
+            InternalDispose(false);
         }
 
         /// <summary>
@@ -155,11 +187,21 @@ namespace DemoGame
             return item;
         }
 
+        void InternalDispose(bool disposeManaged)
+        {
+            foreach (var item in _buffer.Where(x => x!=null))
+            {
+                item.Disposed -= ItemDisposeHandler;
+            }
+
+            Dispose(disposeManaged);
+        }
+
         /// <summary>
         /// Handles when an item is disposed while still in the Inventory.
         /// </summary>
         /// <param name="entity">Entity that was disposed.</param>
-        void ItemDisposeHandler(Entity entity)
+        protected virtual void ItemDisposeHandler(Entity entity)
         {
             var item = (T)entity;
 
@@ -241,6 +283,25 @@ namespace DemoGame
             stackableSlot = new InventorySlot(0);
             return false;
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            _disposed = true;
+
+            GC.SuppressFinalize(this);
+
+            InternalDispose(true);
+        }
+
+        #endregion
 
         #region IInventory<T> Members
 

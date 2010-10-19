@@ -12,14 +12,13 @@ namespace DemoGame.Server
     /// <summary>
     /// Base class for an inventory for a <see cref="Character"/>.
     /// </summary>
-    public abstract class CharacterInventory : InventoryBase<ItemEntity>, IDisposable
+    public abstract class CharacterInventory : InventoryBase<ItemEntity>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Character _character;
         readonly bool _isPersistent;
 
-        bool _disposed = false;
         bool _isLoading;
 
         /// <summary>
@@ -89,6 +88,20 @@ namespace DemoGame.Server
                 if (item.Amount <= 0)
                     ClearSlot(slot, true);
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when this object is disposed.
+        /// </summary>
+        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
+        protected override void Dispose(bool disposeManaged)
+        {
+            base.Dispose(disposeManaged);
+
+            // If the Character is not persistent, we want to dispose of every item so it doesn't sit in the
+            // database as garbage
+            if (!_isPersistent)
+                RemoveAll(true);
         }
 
         /// <summary>
@@ -271,25 +284,5 @@ namespace DemoGame.Server
         protected virtual void SendSlotUpdate(InventorySlot slot)
         {
         }
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-
-            // If the Character is not persistent, we want to dispose of every item so it doesn't sit in the
-            // database as garbage
-            if (!_isPersistent)
-                RemoveAll(true);
-        }
-
-        #endregion
     }
 }

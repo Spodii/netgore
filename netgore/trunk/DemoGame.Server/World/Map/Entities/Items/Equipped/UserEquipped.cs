@@ -8,8 +8,6 @@ namespace DemoGame.Server
     /// </summary>
     public class UserEquipped : CharacterEquipped
     {
-        // ReSharper disable SuggestBaseTypeForParameter
-
         /// <summary>
         /// Initializes a new instance of the <see cref="UserEquipped"/> class.
         /// </summary>
@@ -17,8 +15,6 @@ namespace DemoGame.Server
         public UserEquipped(User user) : base(user)
         {
         }
-
-        // ReSharper restore SuggestBaseTypeForParameter
 
         /// <summary>
         /// Gets the <see cref="User"/> this <see cref="UserEquipped"/> belongs to.
