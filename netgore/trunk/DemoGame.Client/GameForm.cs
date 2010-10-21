@@ -25,10 +25,6 @@ namespace DemoGame.Client
         /// </summary>
         public GameForm()
         {
-#if !MONO
-            Application.Idle += Application_Idle;
-#endif
-
             InitializeComponent();
 
             // Set up our form
@@ -40,16 +36,10 @@ namespace DemoGame.Client
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. 
-        ///                 </param>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            Focus();
-            Refresh();
-            Update();
-            Show();
 
             // Create the game
             _game = new DemoGame(this);
@@ -103,19 +93,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closed"/> event.
-        /// </summary>
-        /// <param name="e">The <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnClosed(EventArgs e)
-        {
-#if !MONO
-            Application.Idle -= Application_Idle;
-#endif
-
-            base.OnClosed(e);
-        }
-
-        /// <summary>
         /// Processes a command key.
         /// </summary>
         /// <param name="msg">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the
@@ -145,41 +122,6 @@ namespace DemoGame.Client
             return false;
         }
 
-        #region Windows-specific game loop
-#if !MONO
-        /// <summary>
-        /// Handles the <see cref="Application.Idle"/> event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void Application_Idle(object sender, EventArgs e)
-        {
-            while (IsAppStillIdle)
-            {
-                HandleFrame();
-            }
-        }
-
-        /// <summary>
-        /// Gets if there are any system messages waiting for this application.
-        /// </summary>
-        private static bool IsAppStillIdle
-        {
-            get
-            {
-                Message msg;
-                return !PeekMessage(out msg, IntPtr.Zero, 0, 0, 0);
-            }
-        }
-
-        [System.Security.SuppressUnmanagedCodeSecurity]
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        static extern bool PeekMessage(out Message msg, IntPtr hWnd, uint messageFilterMin, uint messageFilterMax, uint flags);
-#endif
-        #endregion
-
-        #region Mono-friendly game loop
-#if MONO
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == 0x000F)
@@ -187,7 +129,5 @@ namespace DemoGame.Client
             else
                 base.WndProc(ref m);
         }
-#endif
-        #endregion
     }
 }
