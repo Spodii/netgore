@@ -68,6 +68,16 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Performs an implicit conversion from <see cref="NetGore.TickCount"/> to <see cref="System.Int64"/>.
+        /// </summary>
+        /// <param name="time">The time.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator long(TickCount time)
+        {
+            return time._value;
+        }
+
+        /// <summary>
         /// Performs an implicit conversion from <see cref="NetGore.TickCount"/> to <see cref="System.Single"/>.
         /// </summary>
         /// <param name="time">The time.</param>

@@ -295,7 +295,8 @@ namespace DemoGame.Server
                 worldStatsTracker.Update();
 
                 // Check if we can afford sleeping the thread
-                var sleepTime = ServerSettings.Default.ServerUpdateRate - (GetTime() - loopStartTime);
+                long updateElapsedTime = (long)GetTime() - loopStartTime;
+                long sleepTime = ServerSettings.Default.ServerUpdateRate - updateElapsedTime;
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
 
