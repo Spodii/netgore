@@ -147,6 +147,7 @@
     <Compile Include="NetGore\IO\PathStringTests.cs" />
     <Compile Include="NetGore\IO\PersistableTests.cs" />
     <Compile Include="NetGore\IO\PropertyInterfaceTests.cs" />
+    <Compile Include="NetGore\IO\RuntimeSettingsBaseTests.cs" />
     <Compile Include="NetGore\IRemoveDuplicateTests.cs" />
     <Compile Include="NetGore\ISpatialExtensionTests.cs" />
     <Compile Include="NetGore\KeysExtensionsTests.cs" />
