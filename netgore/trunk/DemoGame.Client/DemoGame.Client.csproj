@@ -181,7 +181,7 @@
     <Compile Include="Networking\INetworkSenderExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interface\GUISettings.cs" />
+    <Compile Include="Interface\GUIStatePersister.cs" />
     <Compile Include="Networking\ClientPacket.cs" />
     <Compile Include="Networking\ClientSockets.cs" />
     <Compile Include="Controls\InfoBox.cs" />

@@ -174,7 +174,7 @@ namespace NetGore.Editor.EditorTool
         /// <param name="state">The state object, which is the <see cref="ToolStateManager"/> to save.</param>
         static void AutoSaveSettingsTimerCallback(object state)
         {
-            // Get the state object as a ToolSettingsManager
+            // Try to cast to the desired type
             var tsm = state as ToolStateManager;
             if (tsm == null)
             {

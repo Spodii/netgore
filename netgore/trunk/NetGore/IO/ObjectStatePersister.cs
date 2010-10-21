@@ -12,10 +12,10 @@ using Timer = System.Timers.Timer;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Manages the settings of a collection of <see cref="IPersistable"/> objects by saving the settings to file for
-    /// all managed objects, along with loading the previous settings for objects when they are added to the manager.
+    /// Manages the settings of a collection of <see cref="IPersistable"/> objects by saving the state to file for
+    /// all managed objects, along with loading the previous state for objects when they are added to the manager.
     /// </summary>
-    public class SettingsManager : IDisposable
+    public class ObjectStatePersister : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _countValueName = "Count";
@@ -59,17 +59,17 @@ namespace NetGore.IO
         bool _disposed = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
+        /// Initializes a new instance of the <see cref="ObjectStatePersister"/> class.
         /// </summary>
         /// <param name="rootNode">Name of the root node. Used to ensure the correct file is loaded when
         /// loading settings. Not required to be unique, but recommended.</param>
         /// <param name="filePath">Primary file path to use, and first place to check for settings.</param>
-        public SettingsManager(string rootNode, string filePath) : this(rootNode, filePath, string.Empty)
+        public ObjectStatePersister(string rootNode, string filePath) : this(rootNode, filePath, string.Empty)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
+        /// Initializes a new instance of the <see cref="ObjectStatePersister"/> class.
         /// </summary>
         /// <param name="rootNode">Name of the root node. Used to ensure the correct file is loaded when
         /// loading settings. Not required to be unique, but recommended.</param>
@@ -77,13 +77,13 @@ namespace NetGore.IO
         /// <param name="secondaryPath">Secondary path to check for settings from. The FilePath will still be
         /// <paramref name="filePath"/>, but the settings can be loaded from somewhere else, like a default
         /// settings file.</param>
-        public SettingsManager(string rootNode, string filePath, string secondaryPath)
+        public ObjectStatePersister(string rootNode, string filePath, string secondaryPath)
             : this(rootNode, filePath, new string[] { secondaryPath })
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
+        /// Initializes a new instance of the <see cref="ObjectStatePersister"/> class.
         /// </summary>
         /// <param name="rootNode">Name of the root node. Used to ensure the correct file is loaded when
         /// loading settings. Not required to be unique, but recommended.</param>
@@ -92,7 +92,7 @@ namespace NetGore.IO
         /// <paramref name="filePath"/>, but the settings can be loaded from somewhere else, like a default
         /// settings file. The first path to contain a file, even if not a valid settings file, is used to
         /// load the settings from.</param>
-        public SettingsManager(string rootNode, string filePath, IEnumerable<string> secondaryPaths)
+        public ObjectStatePersister(string rootNode, string filePath, IEnumerable<string> secondaryPaths)
         {
             _rootNode = rootNode;
             _filePath = filePath;
@@ -116,7 +116,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets or sets the rate in milliseconds at which the <see cref="SettingsManager"/> is automatically saved. If the
+        /// Gets or sets the rate in milliseconds at which the <see cref="ObjectStatePersister"/> is automatically saved. If the
         /// value is less than or equal to 0, auto-saving will be disabled.
         /// </summary>
         public int AutoSaveRate
@@ -179,7 +179,7 @@ namespace NetGore.IO
 
         /// <summary>
         /// Gets the name of the root node used for Xml file. Only an Xml file that contains the same
-        /// root node name as this will be able to be loaded by this <see cref="SettingsManager"/>.
+        /// root node name as this will be able to be loaded by this <see cref="ObjectStatePersister"/>.
         /// </summary>
         public string RootNode
         {
@@ -187,7 +187,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Adds an object to be tracked by this <see cref="SettingsManager"/> and loads the previous settings
+        /// Adds an object to be tracked by this <see cref="ObjectStatePersister"/> and loads the previous settings
         /// for the object if possible.
         /// </summary>
         /// <param name="objs">The persistable object and unique key pairs.</param>
@@ -202,7 +202,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Adds an object to be tracked by this <see cref="SettingsManager"/> and loads the previous settings
+        /// Adds an object to be tracked by this <see cref="ObjectStatePersister"/> and loads the previous settings
         /// for the object if possible.
         /// </summary>
         /// <param name="obj">The persistable object and unique key pair.</param>
@@ -214,7 +214,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Adds an object to be tracked by this <see cref="SettingsManager"/> and loads the previous settings
+        /// Adds an object to be tracked by this <see cref="ObjectStatePersister"/> and loads the previous settings
         /// for the object if possible.
         /// </summary>
         /// <param name="key">Unique identifier of the <see cref="IPersistable"/> object.</param>
@@ -258,14 +258,14 @@ namespace NetGore.IO
         /// <summary>
         /// Callback for saving using the thread pool.
         /// </summary>
-        /// <param name="sender">SettingsManager the request came from.</param>
+        /// <param name="sender">The <see cref="ObjectStatePersister"/> the request came from.</param>
         static void AsyncSaveCallback(object sender)
         {
-            ((SettingsManager)sender).Save();
+            ((ObjectStatePersister)sender).Save();
         }
 
         /// <summary>
-        /// Handles the Elapsed event of the AutoSaveTimer control.
+        /// Handles the Elapsed event of the <see cref="_autoSaveTimer"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Timers.ElapsedEventArgs"/> instance containing the event data.</param>
@@ -284,9 +284,9 @@ namespace NetGore.IO
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="SettingsManager"/> is reclaimed by garbage collection.
+        /// <see cref="ObjectStatePersister"/> is reclaimed by garbage collection.
         /// </summary>
-        ~SettingsManager()
+        ~ObjectStatePersister()
         {
             Dispose();
         }

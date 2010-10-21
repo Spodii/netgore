@@ -47,7 +47,7 @@ namespace DemoGame.Client
         EquippedForm _equippedForm;
         GameplayScreenControls _gameControls;
         Font _guiFont;
-        GUISettings _guiSettings;
+        GUIStatePersister _guiStatePersister;
         GuildForm _guildForm;
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
@@ -297,8 +297,8 @@ namespace DemoGame.Client
         /// </summary>
         public override void Dispose()
         {
-            if (_guiSettings != null)
-                _guiSettings.Dispose();
+            if (_guiStatePersister != null)
+                _guiStatePersister.Dispose();
 
             if (Socket != null)
             {
@@ -538,17 +538,17 @@ namespace DemoGame.Client
             { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler };
 
             // Add the forms to the GUI settings manager (which also restores any existing settings)
-            _guiSettings = new GUISettings("Default"); // FUTURE: Allow changing of the profile
-            _guiSettings.Add("InventoryForm", _inventoryForm);
-            _guiSettings.Add("EquippedForm", _equippedForm);
-            _guiSettings.Add("StatsForm", _statsForm);
-            _guiSettings.Add("ChatForm", _chatForm);
-            _guiSettings.Add("ToolbarForm", toolbar);
-            _guiSettings.Add("GuildForm", _guildForm);
-            _guiSettings.Add("StatusEffectsForm", _statusEffectsForm);
-            _guiSettings.Add("SkillsForm", _skillsForm);
-            _guiSettings.Add("QuickBarForm", _quickBarForm);
-            _guiSettings.Add("PeerTradeForm", _peerTradeForm);
+            _guiStatePersister = new GUIStatePersister("Default"); // FUTURE: Allow changing of the profile
+            _guiStatePersister.Add("InventoryForm", _inventoryForm);
+            _guiStatePersister.Add("EquippedForm", _equippedForm);
+            _guiStatePersister.Add("StatsForm", _statsForm);
+            _guiStatePersister.Add("ChatForm", _chatForm);
+            _guiStatePersister.Add("ToolbarForm", toolbar);
+            _guiStatePersister.Add("GuildForm", _guildForm);
+            _guiStatePersister.Add("StatusEffectsForm", _statusEffectsForm);
+            _guiStatePersister.Add("SkillsForm", _skillsForm);
+            _guiStatePersister.Add("QuickBarForm", _quickBarForm);
+            _guiStatePersister.Add("PeerTradeForm", _peerTradeForm);
 
             // Set the focus to the screen container
             _cScreen.SetFocus();
@@ -738,7 +738,7 @@ namespace DemoGame.Client
             // Update some other goodies
             World.Update();
             _damageTextPool.Update(_currentTime);
-            _guiSettings.Update(_currentTime);
+            _guiStatePersister.Update(_currentTime);
             _emoticonDisplayManager.Update(_currentTime);
 
             // Update targeting
