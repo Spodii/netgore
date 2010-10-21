@@ -182,7 +182,6 @@
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
-    <Compile Include="IO\Runtime Settings\IRuntimeSettings.cs" />
     <Compile Include="Graphics\Game Container\GameBase.cs" />
     <Compile Include="Graphics\Game Container\GameContainerPropertyChangedEventHandler.cs" />
     <Compile Include="Graphics\Game Container\IGameContainer.cs" />
@@ -217,8 +216,6 @@
     <Compile Include="IO\BitStream\BitStream.IValueWriter.cs" />
     <Compile Include="IO\BitStream\BitStream.Read.cs" />
     <Compile Include="IO\BitStream\BitStream.Write.cs" />
-    <Compile Include="IO\Runtime Settings\RuntimeSettingsBase.cs" />
-    <Compile Include="IO\Runtime Settings\RuntimeSettingsEventHandler.cs" />
     <Compile Include="Network\MessageProcessor\MessageProcessorID.cs" />
     <Compile Include="Network\Sockets\IIPSocketEventHandler.cs" />
     <Compile Include="Network\Sockets\SocketHelper.cs" />
