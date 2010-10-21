@@ -611,9 +611,9 @@ namespace DemoGame.Server
 
             // Send the MOTD
             var user = userAccount.User;
-            if (user != null && !string.IsNullOrEmpty(Settings.Default.MOTD))
+            if (user != null && !string.IsNullOrEmpty(ServerSettings.Default.MOTD))
             {
-                using (var pw = ServerPacket.Chat(Settings.Default.MOTD))
+                using (var pw = ServerPacket.Chat(ServerSettings.Default.MOTD))
                 {
                     user.Send(pw, ServerMessageType.GUIChat);
                 }

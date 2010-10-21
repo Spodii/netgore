@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Server.Guilds;
+using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -65,7 +66,17 @@ namespace DemoGame.Server
             _guildMemberPerformer = new GuildMemberPerformer(DbController, FindUser);
 
             // Create the unarmed weapon
-            _unarmedWeapon = new ItemEntity(_itemTemplateManager[ServerConfig.UnarmedItemTemplateID], 1);
+            var unarmedWeaponID = ServerSettings.Default.UnarmedItemTemplateID;
+            var unarmedWeaponTemplate = _itemTemplateManager[unarmedWeaponID];
+            if (unarmedWeaponTemplate == null)
+            {
+                const string errmsg = "Unable to create unarmed weapon - couldn't find item template with ID `{0}`.";
+                if (log.IsFatalEnabled)
+                    log.FatalFormat(errmsg, unarmedWeaponID);
+                throw new Exception(string.Format(errmsg, unarmedWeaponID));
+            }
+
+            _unarmedWeapon = new ItemEntity(unarmedWeaponTemplate, 1);
 
             // Load the maps
             var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
@@ -74,7 +85,12 @@ namespace DemoGame.Server
             {
                 MapID mapID;
                 if (!MapBase.TryGetIndexFromPath(mapFile, out mapID))
-                    throw new Exception(string.Format("Failed to get the ID of map file `{0}`.", mapFile));
+                {
+                    const string errmsg = "Failed to get the ID of map file `{0}`.";
+                    if (log.IsFatalEnabled)
+                        log.FatalFormat(errmsg, mapFile);
+                    throw new Exception(string.Format(errmsg, mapFile));
+                }
 
                 var m = new Map(mapID, this);
                 _maps[(int)mapID] = m;
@@ -463,14 +479,14 @@ namespace DemoGame.Server
             // If enough time has elapsed, update stuff to be respawned
             if (_updateRespawnablesTime < currentTime)
             {
-                _updateRespawnablesTime = currentTime + ServerConfig.RespawnablesUpdateRate;
+                _updateRespawnablesTime = currentTime + ServerSettings.Default.RespawnablesUpdateRate;
                 _respawnTaskList.Process();
             }
 
             // If enough time has elapsed, update the extra user information
             if (_syncExtraUserInfoTime < currentTime)
             {
-                _syncExtraUserInfoTime = currentTime + ServerConfig.SyncExtraUserInformationRate;
+                _syncExtraUserInfoTime = currentTime + ServerSettings.Default.SyncExtraUserInformationRate;
                 SyncExtraUserInformation();
             }
 

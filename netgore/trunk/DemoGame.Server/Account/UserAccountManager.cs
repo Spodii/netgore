@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
+using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -130,7 +131,7 @@ namespace DemoGame.Server
             // Check if the account is already logged in to
             if (accountTable.CurrentIp.HasValue)
             {
-                if (ServerConfig.AccountDropExistingConnectionWheninUse)
+                if (ServerSettings.Default.AccountDropExistingConnectionWhenInUse)
                 {
                     // Kick existing user so the new connection can enter the account
                     UserAccount existingAccount;
@@ -284,7 +285,7 @@ namespace DemoGame.Server
             if (ip != GameData.DefaultCreateAccountIP)
             {
                 var recentCreatedCount = DbController.GetQuery<CountRecentlyCreatedAccounts>().Execute(ip);
-                if (recentCreatedCount >= ServerConfig.MaxRecentlyCreatedAccounts)
+                if (recentCreatedCount >= ServerSettings.Default.MaxRecentlyCreatedAccounts)
                 {
                     failReason = GameMessage.CreateAccountTooManyCreated;
                     return false;

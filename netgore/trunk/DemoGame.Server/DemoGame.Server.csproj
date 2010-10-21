@@ -152,10 +152,10 @@
     <Compile Include="Networking\ServerMessageTypeExtensions.cs" />
     <Compile Include="PeerTrading\PeerTradingHelper.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Include="Properties\ServerSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+      <DependentUpon>ServerSettings.settings</DependentUpon>
     </Compile>
     <Compile Include="Queries\Account\AccountIDCreator.cs" />
     <Compile Include="DbObjs\AccountIpsTable.cs" />
@@ -349,11 +349,10 @@
     <Compile Include="Say\SayHandlerCommands.LesserAdmin.cs" />
     <Compile Include="Say\SayHandlerCommands.Moderator.cs" />
     <Compile Include="ServerGameData.cs" />
-    <Compile Include="ServerConfig.cs" />
-    <Compile Include="Properties\SettingsDescriptions.Designer.cs">
+    <Compile Include="Properties\ServerSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SettingsDescriptions.resx</DependentUpon>
+      <DependentUpon>ServerSettingsDescriptions.resx</DependentUpon>
     </Compile>
     <Compile Include="UI\Compact\CompactUI.cs" />
     <Compile Include="UI\WinForms\frmMain.cs">
@@ -610,9 +609,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\SettingsDescriptions.resx">
+    <EmbeddedResource Include="Properties\ServerSettingsDescriptions.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SettingsDescriptions.Designer.cs</LastGenOutput>
+      <LastGenOutput>ServerSettingsDescriptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\WinForms\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -620,9 +619,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Settings.settings">
+    <None Include="Properties\ServerSettings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <LastGenOutput>ServerSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="_ProjectInfo.txt" />
   </ItemGroup>

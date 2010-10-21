@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -264,7 +265,8 @@ namespace DemoGame.Server
             var updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
             var serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
 
-            _nextServerSaveTime = GetTime() + ServerConfig.RoutineServerSaveRate;
+            // Set the initial auto-save time
+            _nextServerSaveTime = GetTime() + ServerSettings.Default.RoutineServerSaveRate;
 
             var worldStatsTracker = WorldStatsTracker.Instance;
 
@@ -293,7 +295,7 @@ namespace DemoGame.Server
                 worldStatsTracker.Update();
 
                 // Check if we can afford sleeping the thread
-                var sleepTime = (long)ServerConfig.ServerUpdateRate - (GetTime() - loopStartTime);
+                var sleepTime = ServerSettings.Default.ServerUpdateRate - (GetTime() - loopStartTime);
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
 
@@ -554,7 +556,7 @@ namespace DemoGame.Server
                 log.InfoFormat("World state saved. Save took a total of `{0}` milliseconds.", saveEndTime - saveStartTime);
 
             // Update the next auto save time
-            _nextServerSaveTime = saveEndTime + ServerConfig.RoutineServerSaveRate;
+            _nextServerSaveTime = saveEndTime + ServerSettings.Default.RoutineServerSaveRate;
         }
 
         #endregion
