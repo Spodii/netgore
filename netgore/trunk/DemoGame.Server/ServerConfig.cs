@@ -30,6 +30,13 @@ namespace DemoGame.Server
         public const int MaxConnections = 100;
 
         /// <summary>
+        /// When true, if a user logs into an account that is already in use, the existing connection will be kicked so that the
+        /// user will log into the account. When false, they will be unable to log into the account until the existing connection
+        /// is dropped.
+        /// </summary>
+        public const bool AccountDropExistingConnectionWheninUse = true;
+
+        /// <summary>
         /// The maximum number of connections allowed for a single IP address. Set to a value less than or equal to 0 to disable.
         /// </summary>
         public const int MaxConnectionsPerIP = 6;

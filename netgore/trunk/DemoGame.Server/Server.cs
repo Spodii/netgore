@@ -34,11 +34,14 @@ namespace DemoGame.Server
         readonly ServerSockets _sockets;
         readonly TickCount _startupTime = TickCount.Now;
         readonly World _world;
+        readonly UserAccountManager _userAccountManager;
 
         bool _disposed;
         bool _isRunning = true;
         TickCount _nextServerSaveTime;
         int _tick;
+
+        public UserAccountManager UserAccountManager { get { return _userAccountManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
@@ -79,6 +82,7 @@ namespace DemoGame.Server
             // Create some objects
             _consoleCommands = new ConsoleCommands(this);
             _groupManager = new GroupManager((gm, x) => new Group(x));
+            _userAccountManager = new UserAccountManager(DbController);
             _world = new World(this);
             _sockets = new ServerSockets(this);
 
@@ -165,7 +169,7 @@ namespace DemoGame.Server
             // Create the account
             AccountID id;
             GameMessage failReason;
-            var success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id, out failReason);
+            var success = UserAccountManager.TryCreateAccount(conn, name, password, email, out id, out failReason);
 
             // Send the appropriate success message
             using (var pw = ServerPacket.CreateAccount(success, failReason))
@@ -183,12 +187,12 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            var account = conn.Tag as UserAccount;
+            var account = conn.Tag as IUserAccount;
             if (account == null)
                 return;
 
             string errorMessage;
-            var success = UserAccount.TryAddCharacter(DbController, account.Name, name, out errorMessage);
+            var success = UserAccountManager.TryAddCharacter(account.Name, name, out errorMessage);
 
             using (var pw = ServerPacket.CreateAccountCharacter(success, errorMessage))
             {
@@ -362,8 +366,8 @@ namespace DemoGame.Server
             }
 
             // Try to log in the account
-            UserAccount userAccount;
-            var loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
+            IUserAccount userAccount;
+            var loginResult = UserAccountManager.Login(conn, name, password, out userAccount);
 
             // Check that the login was successful
             if (loginResult != AccountLoginResult.Successful)

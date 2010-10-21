@@ -88,7 +88,7 @@ namespace DemoGame.Server
         {
             AccountID accountID;
             GameMessage failReason;
-            var success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID,
+            var success = Server.UserAccountManager.TryCreateAccount(null, accountName, accountPassword, email, out accountID,
                                                        out failReason);
 
             if (success)
@@ -107,7 +107,7 @@ namespace DemoGame.Server
         public string CreateAccountUser(string accountName, string userName)
         {
             string errorMsg;
-            if (!UserAccount.TryAddCharacter(DbController, accountName, userName, out errorMsg))
+            if (!Server.UserAccountManager.TryAddCharacter(accountName, userName, out errorMsg))
                 return string.Format("Failed to create character `{0}` on account `{1}`: {2}", userName, accountName, errorMsg);
 
             return "Character successfully added to account.";
@@ -217,7 +217,7 @@ namespace DemoGame.Server
                 return "Invalid account name.";
 
             AccountID accountID;
-            if (!UserAccount.TryGetAccountID(DbController, accountName, out accountID))
+            if (!Server.UserAccountManager.TryGetAccountID(accountName, out accountID))
                 return string.Format("Account {0} does not exist.", accountName);
             else
                 return string.Format("Account {0} has the ID {1}.", accountName, accountID);

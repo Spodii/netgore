@@ -313,15 +313,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the <see cref="UserAccount"/> attached to the <paramref name="conn"/>.
+        /// Gets the <see cref="IUserAccount"/> attached to the <paramref name="conn"/>.
         /// </summary>
-        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="UserAccount"/> for.</param>
+        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="IUserAccount"/> for.</param>
         /// <param name="warnIfNotFound">When true, when this method returns null, a warning message will be logged.</param>
         /// <returns>
-        /// The <see cref="UserAccount"/> for the <paramref name="conn"/>, or null if there
-        /// was a problem getting the <see cref="UserAccount"/>.
+        /// The <see cref="IUserAccount"/> for the <paramref name="conn"/>, or null if there
+        /// was a problem getting the <see cref="IUserAccount"/>.
         /// </returns>
-        public static UserAccount GetUserAccount(IIPSocket conn, bool warnIfNotFound = true)
+        public static IUserAccount GetUserAccount(IIPSocket conn, bool warnIfNotFound = true)
         {
             if (conn.Tag == null)
             {
@@ -334,7 +334,7 @@ namespace DemoGame.Server
                 return null;
             }
 
-            var userAccount = conn.Tag as UserAccount;
+            var userAccount = conn.Tag as IUserAccount;
             if (userAccount == null)
             {
                 if (warnIfNotFound)
