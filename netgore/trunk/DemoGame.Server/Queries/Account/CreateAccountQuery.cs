@@ -90,7 +90,7 @@ namespace DemoGame.Server.Queries
 
             bool success;
 
-            password = UserAccount.EncodePassword(password);
+            password = UserAccountManager.EncodePassword(password);
             var queryArgs = new QueryArgs(accountID, name, password, email, ip);
             try
             {

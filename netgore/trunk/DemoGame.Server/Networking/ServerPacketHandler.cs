@@ -845,7 +845,7 @@ namespace DemoGame.Server
             }
         }
 
-        static UserAccount TryGetAccount(IIPSocket conn)
+        static IUserAccount TryGetAccount(IIPSocket conn)
         {
             // Check for a valid conn
             if (conn == null)
@@ -857,7 +857,7 @@ namespace DemoGame.Server
                 return null;
             }
 
-            return conn.Tag as UserAccount;
+            return conn.Tag as IUserAccount;
         }
 
         static bool TryGetMap(Character user, out Map map)

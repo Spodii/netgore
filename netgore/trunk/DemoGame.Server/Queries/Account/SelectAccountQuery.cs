@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
@@ -8,7 +9,7 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectAccountQuery : DbQueryReader<SelectAccountQuery.QueryArgs>
+    public class SelectAccountQuery : DbQueryReader<string>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectAccountQuery"/> class.
@@ -50,39 +51,25 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, QueryArgs item)
+        protected override void SetParameters(DbParameterValues p, string item)
         {
-            p["name"] = item.Name;
+            p["name"] = item;
         }
 
-        public bool TryExecute(string name, string password, UserAccount userAccount)
+        public IAccountTable TryExecute(string name)
         {
-            bool ret;
+            AccountTable ret;
 
-            using (var r = ExecuteReader(new QueryArgs(name, password)))
+            using (var r = ExecuteReader(name))
             {
                 if (!r.Read())
-                    ret = false;
-                else
-                {
-                    userAccount.ReadValues(r);
-                    ret = true;
-                }
+                    return null;
+
+                ret = new AccountTable();
+                ret.ReadValues(r);
             }
 
             return ret;
-        }
-
-        public struct QueryArgs
-        {
-            public readonly string Name;
-            public readonly string Password;
-
-            public QueryArgs(string name, string password)
-            {
-                Name = name;
-                Password = password;
-            }
         }
     }
 }

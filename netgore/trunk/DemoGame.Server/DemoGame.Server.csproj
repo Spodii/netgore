@@ -120,6 +120,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\IUserAccount.cs" />
     <Compile Include="BanningManager.cs" />
     <Compile Include="DbObjs\AccountBanTable.cs" />
     <Compile Include="DbObjs\ActiveTradeCashTable.cs" />
@@ -518,7 +519,7 @@
     <Compile Include="World\Map\Entities\Characters\StatusEffects\ActiveStatusEffect.cs" />
     <Compile Include="World\Map\Entities\Characters\StatusEffects\StatusEffectManager.cs" />
     <Compile Include="World\Map\Entities\Characters\StatusEffects\StatusEffectStrengthen.cs" />
-    <Compile Include="Account\UserAccount.cs" />
+    <Compile Include="Account\UserAccountManager.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\UserInventory.cs" />
     <Compile Include="World\Map\Entities\Items\ItemEntity.cs" />
     <Compile Include="World\Map\Entities\Characters\UserStats.cs" />

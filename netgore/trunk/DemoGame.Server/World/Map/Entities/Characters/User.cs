@@ -337,11 +337,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets this <see cref="User"/>'s <see cref="UserAccount"/>.
+        /// Gets this <see cref="User"/>'s <see cref="IUserAccount"/>.
         /// </summary>
-        /// <returns>This <see cref="User"/>'s <see cref="UserAccount"/>. Shouldn't be null, but may potentially be and the caller
+        /// <returns>This <see cref="User"/>'s <see cref="IUserAccount"/>. Shouldn't be null, but may potentially be and the caller
         /// should always be prepared for the value being null.</returns>
-        public UserAccount GetAccount()
+        public IUserAccount GetAccount()
         {
             return World.GetUserAccount(Conn);
         }
