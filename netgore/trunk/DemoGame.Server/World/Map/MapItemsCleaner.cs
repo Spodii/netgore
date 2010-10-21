@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DemoGame.Server.Properties;
 using NetGore;
 using NetGore.Collections;
 
@@ -16,7 +17,8 @@ namespace DemoGame.Server
         /// </summary>
         protected override TickCount UpdateRate
         {
-            get { return ServerConfig.MapItemExpirationUpdateRate; }
+            get {
+                return ServerSettings.Default.MapItemExpirationUpdateRate; }
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace DemoGame.Server
         /// <param name="currentTime">The current time.</param>
         public void Add(ItemEntityBase item, TickCount currentTime)
         {
-            Add(item, currentTime, ServerConfig.DefaultMapItemLife);
+            Add(item, currentTime, ServerSettings.Default.DefaultMapItemLife);
         }
 
         /// <summary>

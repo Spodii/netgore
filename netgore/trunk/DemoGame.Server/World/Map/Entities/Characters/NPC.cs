@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.NPCChat;
+using DemoGame.Server.Properties;
 using log4net;
 using NetGore;
 using NetGore.AI;
@@ -260,7 +261,7 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
 
-                return ServerConfig.InvalidPersistentNPCLoadMap;
+                return ServerSettings.Default.InvalidPersistentNPCLoadMap;
             }
 
             return Map.ID;
@@ -286,7 +287,7 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
 
-                return ServerConfig.InvalidPersistentNPCLoadPosition;
+                return ServerSettings.Default.InvalidPersistentNPCLoadPosition;
             }
 
             return Position;

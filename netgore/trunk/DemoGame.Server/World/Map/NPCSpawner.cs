@@ -144,9 +144,6 @@ namespace DemoGame.Server
         /// </summary>
         void SpawnNPCs()
         {
-            // TODO: @@ TEMP
-            return;
-
             for (var i = 0; i < Amount; i++)
             {
                 var pos = RandomSpawnPosition();

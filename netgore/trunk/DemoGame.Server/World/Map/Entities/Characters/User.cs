@@ -7,6 +7,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server.Groups;
 using DemoGame.Server.Guilds;
 using DemoGame.Server.PeerTrading;
+using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
 using Lidgren.Network;
@@ -361,7 +362,7 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
 
-                return ServerConfig.InvalidUserLoadMap;
+                return ServerSettings.Default.InvalidUserLoadMap;
             }
 
             return RespawnMapID.Value;
@@ -383,7 +384,7 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
 
-                return ServerConfig.InvalidUserLoadPosition;
+                return ServerSettings.Default.InvalidUserLoadPosition;
             }
 
             return RespawnPosition;

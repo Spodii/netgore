@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame.Server.Properties;
 using Lidgren.Network;
 using NetGore;
 using NetGore.IO;
@@ -46,10 +47,11 @@ namespace DemoGame.Server
         protected override string AcceptConnect(uint ip, ushort port, BitStream data)
         {
             // Check for too many connections from the IP
-            if (ServerConfig.MaxConnectionsPerIP > 0)
+            var maxConnsPerIP = ServerSettings.Default.MaxConnectionsPerIP;
+            if (maxConnsPerIP > 0)
             {
                 var connsFromIP = Connections.Count(x => x.IP == ip);
-                if (connsFromIP >= ServerConfig.MaxConnectionsPerIP)
+                if (connsFromIP >= maxConnsPerIP)
                     return GameMessageHelper.AsString(GameMessage.DisconnectTooManyConnectionsFromIP);
             }
 
@@ -72,7 +74,7 @@ namespace DemoGame.Server
             config.SimulatedRandomLatency = CommonConfig.Network.SimulatedRandomLatency;
 
             // Settings unique to the server (not set on the client)
-            config.MaximumConnections = ServerConfig.MaxConnections;
+            config.MaximumConnections = ServerSettings.Default.MaxConnections;
         }
 
         /// <summary>
