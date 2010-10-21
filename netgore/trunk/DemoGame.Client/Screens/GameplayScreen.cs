@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Client.Properties;
 using log4net;
 using NetGore;
 using NetGore.Content;
@@ -53,7 +54,7 @@ namespace DemoGame.Client
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
         Label _latencyLabel;
-        TickCount _nextSyncGameTime = TickCount.Now + ClientConfig.SyncGameTimeFrequency;
+        TickCount _nextSyncGameTime = TickCount.Now + ClientSettings.Default.SyncGameTimeFrequency;
         PeerTradeForm _peerTradeForm;
         QuickBarForm _quickBarForm;
         ShopForm _shopForm;
@@ -511,8 +512,9 @@ namespace DemoGame.Client
             _quickBarForm = new QuickBarForm(this, _cScreen, _cScreen.Position);
 
             _guildForm = new GuildForm(_cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo, IsVisible = false };
-            _guildForm.JoinRequested += new GuildForm.EventHandler(_guildForm_JoinRequested);
-            _guildForm.LeaveRequested += new GuildForm.EventHandler(_guildForm_LeaveRequested);
+            _guildForm.JoinRequested += _guildForm_JoinRequested;
+            _guildForm.LeaveRequested += _guildForm_LeaveRequested;
+
             new GroupForm(_cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
@@ -582,11 +584,6 @@ namespace DemoGame.Client
                     Socket.Send(pw, ClientMessageType.Chat);
                 }
             };
-        }
-
-        void ib_OptionSelected(Control sender, MessageBoxButton args)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -759,7 +756,7 @@ namespace DemoGame.Client
             // Periodically synchronize the game time
             if (Socket != null && _nextSyncGameTime < gameTime)
             {
-                _nextSyncGameTime = gameTime + ClientConfig.SyncGameTimeFrequency;
+                _nextSyncGameTime = gameTime + ClientSettings.Default.SyncGameTimeFrequency;
                 using (var pw = ClientPacket.SynchronizeGameTime())
                 {
                     Socket.Send(pw, ClientMessageType.System);

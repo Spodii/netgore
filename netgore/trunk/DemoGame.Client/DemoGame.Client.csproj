@@ -144,7 +144,11 @@
     <Compile Include="AccountCharacterInfos.cs" />
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
-    <Compile Include="ClientConfig.cs" />
+    <Compile Include="Properties\ClientSettingsDescriptions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClientSettingsDescriptions.resx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameChatBubble.cs" />
     <Compile Include="Controls\GameMenuForm.cs" />
     <Compile Include="Controls\IQuickBarItemProvider.cs" />
@@ -189,10 +193,10 @@
     <Compile Include="Networking\ClientPacketHandler.cs" />
     <Compile Include="Controls\ChatForm.cs" />
     <Compile Include="Controls\EquippedForm.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Include="Properties\ClientSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+      <DependentUpon>ClientSettings.settings</DependentUpon>
     </Compile>
     <Compile Include="Screens\GameMenuScreenBase.cs" />
     <Compile Include="Screens\CharacterSelectionScreen.cs" />
@@ -273,15 +277,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\ClientSettingsDescriptions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClientSettingsDescriptions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Settings.settings">
+    <None Include="Properties\ClientSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <LastGenOutput>ClientSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="_ProjectInfo.txt" />
   </ItemGroup>

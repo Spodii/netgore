@@ -13,11 +13,11 @@ namespace DemoGame.Client.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class ClientSettings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        private static ClientSettings defaultInstance = ((ClientSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new ClientSettings())));
         
-        public static Settings Default {
+        public static ClientSettings Default {
             get {
                 return defaultInstance;
             }
@@ -29,6 +29,15 @@ namespace DemoGame.Client.Properties {
         public string ServerIP {
             get {
                 return ((string)(this["ServerIP"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("600000")]
+        public uint SyncGameTimeFrequency {
+            get {
+                return ((uint)(this["SyncGameTimeFrequency"]));
             }
         }
     }
