@@ -23,6 +23,10 @@ namespace DemoGame.Server
         readonly object _accountsSync = new object();
         readonly IDbController _dbController;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserAccountManager"/> class.
+        /// </summary>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
         public UserAccountManager(IDbController dbController)
         {
             if (dbController == null)
@@ -31,9 +35,30 @@ namespace DemoGame.Server
             _dbController = dbController;
         }
 
+        /// <summary>
+        /// Gets the <see cref="IDbController"/> to use.
+        /// </summary>
         public IDbController DbController
         {
             get { return _dbController; }
+        }
+
+        /// <summary>
+        /// Finds the <see cref="IUserAccount"/> for a given user. Can only find the <see cref="IUserAccount"/> instance for
+        /// a user that is logged into this server.
+        /// </summary>
+        /// <param name="userName">The name of the user to find the <see cref="IUserAccount"/> for.</param>
+        /// <returns>The <see cref="IUserAccount"/> for the <paramref name="userName"/>, or null if not found.</returns>
+        public IUserAccount FindUserAccount(string userName)
+        {
+            lock (_accountsSync)
+            {
+                UserAccount ret;
+                if (!_accounts.TryGetValue(userName, out ret))
+                    return null;
+
+                return ret;
+            }
         }
 
         /// <summary>
@@ -165,6 +190,10 @@ namespace DemoGame.Server
             return AccountLoginResult.Successful;
         }
 
+        /// <summary>
+        /// Handles when a <see cref="UserAccount"/> is disposed.
+        /// </summary>
+        /// <param name="account">The <see cref="UserAccount"/> that was disposed.</param>
         void NotifyAccountDisposed(UserAccount account)
         {
             lock (_accountsSync)
