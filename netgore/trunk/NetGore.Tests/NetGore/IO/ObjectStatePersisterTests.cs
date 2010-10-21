@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace NetGore.Tests.IO
 {
     [TestFixture]
-    public class SettingsManagerTests
+    public class ObjectStatePersisterTests
     {
         static readonly SafeRandom r = new SafeRandom();
 
@@ -77,13 +77,13 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     settingsWriter.Add("t2", t2);
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", t3);
                     settingsReader.Add("t1", retT1);
@@ -117,14 +117,14 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("T2", t2);
                     settingsWriter.Add("T3", t3);
                     settingsWriter.Add("T1", t1);
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -157,14 +157,14 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                     settingsWriter.Add("t1", t1);
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsReader.Add("T3", retT3);
                     settingsReader.Add("T1", retT1);
@@ -192,7 +192,7 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     Assert.Throws<ArgumentException>(() => settingsWriter.Add("t1", t2));
@@ -220,13 +220,13 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -259,7 +259,7 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     for (var i = 0; i < items.Count; i++)
                     {
@@ -267,7 +267,7 @@ namespace NetGore.Tests.IO
                     }
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     for (var i = 0; i < items.Count; i++)
                     {
@@ -299,14 +299,14 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -339,14 +339,14 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                     settingsWriter.Add("t1", t1);
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -377,13 +377,13 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     settingsWriter.Add("t2", t2);
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     settingsReader.Add("t1", retT1);
                     settingsReader.Add("t2", retT2);
@@ -415,7 +415,7 @@ namespace NetGore.Tests.IO
 
             try
             {
-                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new ObjectStatePersister("TestSettings", filePath))
                 {
                     for (var i = 0; i < items.Count; i++)
                     {
@@ -423,7 +423,7 @@ namespace NetGore.Tests.IO
                     }
                 }
 
-                using (var settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new ObjectStatePersister("TestSettings", filePath))
                 {
                     for (var i = items.Count - 1; i > 0; i -= 22)
                     {

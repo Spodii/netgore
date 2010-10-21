@@ -549,7 +549,7 @@
     <Compile Include="IO\ContentPaths.cs" />
     <Compile Include="IO\PathString.cs" />
     <Compile Include="IO\MessageCollectionBase.cs" />
-    <Compile Include="IO\SettingsManager.cs" />
+    <Compile Include="IO\ObjectStatePersister.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteCategorization.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteCategorizationConverter.cs" />
     <Compile Include="IO\Sprite Categorization\SpriteCategory.cs" />

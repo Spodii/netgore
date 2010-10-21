@@ -5,9 +5,9 @@ using NetGore.IO;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Manages the settings of multiple GUI components.
+    /// Persists the state of multiple GUI components.
     /// </summary>
-    class GUISettings : SettingsManager
+    class GUIStatePersister : ObjectStatePersister
     {
         /// <summary>
         /// Name of the default profile.
@@ -32,18 +32,18 @@ namespace DemoGame.Client
         TickCount _lastSaveTime = TickCount.MinValue;
 
         /// <summary>
-        /// Initializes the <see cref="GUISettings"/> class.
+        /// Initializes the <see cref="GUIStatePersister"/> class.
         /// </summary>
-        static GUISettings()
+        static GUIStatePersister()
         {
             _defaultProfilePath = GetPath(_defaultProfile);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GUISettings"/> class.
+        /// Initializes a new instance of the <see cref="GUIStatePersister"/> class.
         /// </summary>
         /// <param name="profile">Name of the profile to use for the GUI settings.</param>
-        public GUISettings(string profile) : base(_rootNodeName, GetPath(profile), _defaultProfilePath)
+        public GUIStatePersister(string profile) : base(_rootNodeName, GetPath(profile), _defaultProfilePath)
         {
         }
 
