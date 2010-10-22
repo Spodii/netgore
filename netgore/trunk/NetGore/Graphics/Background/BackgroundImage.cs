@@ -173,16 +173,6 @@ namespace NetGore.Graphics
             }
         }
 
-        protected void Draw(ISpriteBatch spriteBatch, Vector2 spriteSize)
-        {
-            if (!IsSpriteSet())
-                return;
-
-            var position = GetPosition(Map.Size, Camera, spriteSize);
-            var rect = new Rectangle((int)position.X, (int)position.Y, (int)spriteSize.X, (int)spriteSize.Y);
-            Sprite.Draw(spriteBatch, rect, Color);
-        }
-
         static Vector2 GetOffsetMultiplier(Alignment alignment)
         {
             switch (alignment)
@@ -269,7 +259,7 @@ namespace NetGore.Graphics
         /// Gets if the Sprite is set and valid.
         /// </summary>
         /// <returns>True if the Sprite is set; otherwise false.</returns>
-        bool IsSpriteSet()
+        protected virtual bool IsSpriteSet()
         {
             return Sprite != null && Sprite.GrhData != null;
         }
@@ -450,23 +440,36 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Handles drawing the <see cref="BackgroundImage"/>.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        protected virtual void HandleDraw(ISpriteBatch spriteBatch)
+        {
+            var position = GetPosition(Map.Size, Camera);
+            Sprite.Draw(spriteBatch, position, Color);
+        }
+
+        /// <summary>
         /// Makes the object draw itself.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
-        public virtual void Draw(ISpriteBatch sb)
+        public void Draw(ISpriteBatch sb)
         {
+            // Ensure the sprite is set
             if (!IsSpriteSet())
                 return;
 
+            // Pre-drawing
             if (BeforeDraw != null)
                 BeforeDraw(this, sb);
 
+            // Draw
             if (IsVisible)
             {
-                var position = GetPosition(Map.Size, Camera);
-                Sprite.Draw(sb, position, Color);
+                HandleDraw(sb);
             }
 
+            // Post-drawing
             if (AfterDraw != null)
                 AfterDraw(this, sb);
         }

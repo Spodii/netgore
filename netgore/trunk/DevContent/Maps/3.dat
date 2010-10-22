@@ -12847,8 +12847,8 @@
         <Depth>1.5</Depth>
         <Offset>0,0</Offset>
         <GrhIndex>295</GrhIndex>
-        <HorizontalLayout>Stretched</HorizontalLayout>
-        <VerticalLayout>Stretched</VerticalLayout>
+        <HorizontalLayout>Tiled</HorizontalLayout>
+        <VerticalLayout>Tiled</VerticalLayout>
       </Item1>
       <Item2>
         <Name>BG 2</Name>
@@ -12857,8 +12857,8 @@
         <Depth>3</Depth>
         <Offset>0,0</Offset>
         <GrhIndex>296</GrhIndex>
-        <HorizontalLayout>Stretched</HorizontalLayout>
-        <VerticalLayout>Stretched</VerticalLayout>
+        <HorizontalLayout>Tiled</HorizontalLayout>
+        <VerticalLayout>Tiled</VerticalLayout>
       </Item2>
       <Item3>
         <Name>BG 1</Name>
@@ -12867,8 +12867,8 @@
         <Depth>4</Depth>
         <Offset>0,0</Offset>
         <GrhIndex>297</GrhIndex>
-        <HorizontalLayout>Stretched</HorizontalLayout>
-        <VerticalLayout>Stretched</VerticalLayout>
+        <HorizontalLayout>Tiled</HorizontalLayout>
+        <VerticalLayout>Tiled</VerticalLayout>
       </Item3>
     </BackgroundImages>
     <Lighting>

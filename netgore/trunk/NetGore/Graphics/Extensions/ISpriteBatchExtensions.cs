@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Reflection;
+using log4net;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -47,17 +49,34 @@ namespace NetGore.Graphics
         /// <param name="y">The Y coordinate to draw at.</param>
         /// <param name="s">The <see cref="ISprite"/> to draw.</param>
         /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
-        public static void DrawTiledX(this ISpriteBatch sb, int minX, int maxX, int y, ISprite s, Color color)
+        /// <param name="drawHeight">When a value greater than 0 is given, this will be used as the height of the drawn sprite instead
+        /// of the default height for the <paramref name="s"/>. This has no affect on the actual tiling.</param>
+        public static void DrawTiledX(this ISpriteBatch sb, int minX, int maxX, int y, ISprite s, Color color, int drawHeight = 0)
         {
+            if (!CanDrawSprite(s))
+                return;
+
+            if (maxX < minX)
+            {
+                const string errmsg = "Unable to draw sprite `{0}` since MaxX ({1}) < MinX ({2}).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, s, maxX, minX);
+                return;
+            }
+
             var src = s.Source;
             var destSize = maxX - minX;
             var fullSprites = destSize / s.Source.Width;
             var remainder = destSize % s.Source.Width;
 
+            if (drawHeight <= 0)
+                drawHeight = (int)s.Size.Y;
+
             // Set the sprite in general
             _repeatSprite.Color = color;
             _repeatSprite.Image = s.Texture;
             _repeatSprite.Scale = Vector2.One;
+            _repeatSprite.Height = drawHeight;
 
             // Set up the sprite for the full pieces
             if (fullSprites > 0)
@@ -84,6 +103,42 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Checks if a <see cref="ISprite"/> is valid to be drawn.
+        /// </summary>
+        /// <param name="sprite">The sprite to draw.</param>
+        /// <returns>True if the <paramref name="sprite"/> can be used to draw; otherwise false.</returns>
+        static bool CanDrawSprite(ISprite sprite)
+        {
+            if (sprite == null)
+            {
+                const string errmsg = "Attempted to draw using a null sprite.";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+                return false;
+            }
+
+            if (sprite.Texture == null || sprite.Texture.IsDisposed)
+            {
+                const string errmsg = "Attempted to draw using sprite `{0}`, but the texture is not set or is disposed.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, sprite);
+                return false;
+            }
+
+            if (sprite.Size.X < 1 || sprite.Size.Y < 1)
+            {
+                const string errmsg = "Attempted to draw using sprite `{0}`, but the size (width and/or height) is < 1.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, sprite);
+                return false;
+            }
+
+            return true;
+        }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
         /// Draws a <see cref="ISprite"/> tiled on both the X and Y axis.
         /// The <see cref="ISprite"/> is never scaled. If a fraction of a sprite must be drawn (the amount to draw is not
         /// perfectly divisible by the sprite's size) then only a portion of the sprite will be drawn.
@@ -97,6 +152,25 @@ namespace NetGore.Graphics
         /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
         public static void DrawTiledXY(this ISpriteBatch sb, int minX, int maxX, int minY, int maxY, ISprite s, Color color)
         {
+            if (!CanDrawSprite(s))
+                return;
+
+            if (maxX < minX)
+            {
+                const string errmsg = "Unable to draw sprite `{0}` since MaxX ({1}) < MinX ({2}).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, s, maxX, minX);
+                return;
+            }
+
+            if (maxY < minY)
+            {
+                const string errmsg = "Unable to draw sprite `{0}` since MaxY ({1}) < MinY ({2}).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, s, maxY, minY);
+                return;
+            }
+
             var src = s.Source;
             var destSizeX = maxX - minX;
             var destSizeY = maxY - minY;
@@ -177,17 +251,34 @@ namespace NetGore.Graphics
         /// <param name="x">The X coordinate to draw at.</param>
         /// <param name="s">The <see cref="ISprite"/> to draw.</param>
         /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
-        public static void DrawTiledY(this ISpriteBatch sb, int minY, int maxY, int x, ISprite s, Color color)
+        /// <param name="drawWidth">When a value greater than 0 is given, this will be used as the width of the drawn sprite instead
+        /// of the default width for the <paramref name="s"/>. This has no affect on the actual tiling.</param>
+        public static void DrawTiledY(this ISpriteBatch sb, int minY, int maxY, int x, ISprite s, Color color, int drawWidth = 0)
         {
+            if (!CanDrawSprite(s))
+                return;
+
+            if (maxY < minY)
+            {
+                const string errmsg = "Unable to draw sprite `{0}` since MaxY ({1}) < MinY ({2}).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, s, maxY, minY);
+                return;
+            }
+
             var src = s.Source;
             var destSize = maxY - minY;
             var fullSprites = destSize / s.Source.Height;
             var remainder = destSize % s.Source.Height;
 
+            if (drawWidth <= 0)
+                drawWidth = (int)s.Size.X;
+
             // Set the sprite in general
             _repeatSprite.Color = color;
             _repeatSprite.Image = s.Texture;
             _repeatSprite.Scale = Vector2.One;
+            _repeatSprite.Width = drawWidth;
 
             // Set up the sprite for the full pieces
             if (fullSprites > 0)
