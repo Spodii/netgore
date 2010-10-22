@@ -34,16 +34,26 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the <see cref="NPCChatEditorToolStripMenuItem"/> control.
+        /// Handles the FormLoaded event of the <see cref="EditMapForm"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void NPCChatEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        void EditMapForm_FormLoaded(object sender, EventArgs e)
         {
-            if (npcChatEditorToolStripMenuItem.Checked)
-                _frmNPCChatEditor.Show(dockPanel, DockState.Float);
-            else
-                _frmNPCChatEditor.Hide();
+            if (!_frmSelectedMapObjs.Visible)
+                _frmSelectedMapObjs.Show(dockPanel);
+        }
+
+        static string GetDockSettingsFilePath(string settingsName)
+        {
+            return ContentPaths.Build.Settings.Join("EditorLayout." + settingsName + ".xml");
+        }
+
+        void LoadDockSettings(string settingsName)
+        {
+            var filePath = GetDockSettingsFilePath(settingsName);
+            if (File.Exists(filePath))
+                dockPanel.LoadFromXml(filePath, _deserializer.Deserialize);
         }
 
         /// <summary>
@@ -104,25 +114,15 @@ namespace DemoGame.Editor
             _frmDbEditor = new DbEditorForm();
             _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
 
-            LoadDockSettings("User");
-        }
+            EditMapForm.FormLoaded += EditMapForm_FormLoaded;
 
-        static string GetDockSettingsFilePath(string settingsName)
-        {
-            return ContentPaths.Build.Settings.Join("EditorLayout." + settingsName + ".xml");
+            LoadDockSettings("User");
         }
 
         void SaveDockSettings(string settingsName)
         {
             var filePath = GetDockSettingsFilePath(settingsName);
             dockPanel.SaveAsXml(filePath);
-        }
-
-        void LoadDockSettings(string settingsName)
-        {
-            var filePath = GetDockSettingsFilePath(settingsName);
-            if (File.Exists(filePath))
-                dockPanel.LoadFromXml(filePath, _deserializer.Deserialize);
         }
 
         /// <summary>
@@ -223,29 +223,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the <see cref="loadPEToolStripMenuItem"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void loadPEToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (var uiFrm = new ParticleEffectUITypeEditorForm(null))
-            {
-                var result = uiFrm.ShowDialog(this);
-                if (result != DialogResult.OK && result != DialogResult.Yes)
-                    return;
-
-                var effect = uiFrm.SelectedItem;
-                if (effect == null)
-                    return;
-
-                var editorFrm = new ParticleEditorForm();
-                editorFrm.ParticleEffect = effect;
-                editorFrm.Show(dockPanel, DockState.Float);
-            }
-        }
-
-        /// <summary>
         /// Handles the Click event of the <see cref="loadMapToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -270,6 +247,29 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Handles the Click event of the <see cref="loadPEToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void loadPEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var uiFrm = new ParticleEffectUITypeEditorForm(null))
+            {
+                var result = uiFrm.ShowDialog(this);
+                if (result != DialogResult.OK && result != DialogResult.Yes)
+                    return;
+
+                var effect = uiFrm.SelectedItem;
+                if (effect == null)
+                    return;
+
+                var editorFrm = new ParticleEditorForm();
+                editorFrm.ParticleEffect = effect;
+                editorFrm.Show(dockPanel, DockState.Float);
+            }
+        }
+
+        /// <summary>
         /// Handles the Click event of the <see cref="newMapToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -277,12 +277,26 @@ namespace DemoGame.Editor
         void newMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var id = MapHelper.CreateNewMap(true);
-            if (!id.HasValue) return;
+            if (!id.HasValue)
+                return;
 
             var editorFrm = new EditMapForm();
             editorFrm.MapScreenControl.ChangeMap(id.Value);
 
             editorFrm.Show(dockPanel);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="npcChatEditorToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void npcChatEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (npcChatEditorToolStripMenuItem.Checked)
+                _frmNPCChatEditor.Show(dockPanel, DockState.Float);
+            else
+                _frmNPCChatEditor.Hide();
         }
 
         /// <summary>
@@ -311,7 +325,7 @@ namespace DemoGame.Editor
                 _frmSkeletonEditor.Hide();
         }
 
-        sealed class DockContentDeserializer 
+        sealed class DockContentDeserializer
         {
             readonly MainForm _form;
 
@@ -320,12 +334,10 @@ namespace DemoGame.Editor
                 _form = form;
             }
 
-            static bool IsNameFor(IDockContent control, string name)
+            MainForm Owner
             {
-                return StringComparer.Ordinal.Equals(control.GetType().ToString(), name);
+                get { return _form; }
             }
-
-            MainForm Owner { get { return _form; } }
 
             public IDockContent Deserialize(string name)
             {
@@ -345,6 +357,11 @@ namespace DemoGame.Editor
                     return Owner._frmSkeletonEditor;
 
                 return null;
+            }
+
+            static bool IsNameFor(IDockContent control, string name)
+            {
+                return StringComparer.Ordinal.Equals(control.GetType().ToString(), name);
             }
         }
     }
