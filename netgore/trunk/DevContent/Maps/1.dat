@@ -6,11 +6,11 @@
     <MusicID>1</MusicID>
     <Size>1600,800</Size>
     <Indoors>False</Indoors>
-	<CustomGravity>False</CustomGravity>
-	<Gravity>0,0</Gravity>
+    <CustomGravity>False</CustomGravity>
+    <Gravity>0,0</Gravity>
   </Header>
   <Walls>
-    <Count>17</Count>
+    <Count>9</Count>
     <Item0>
       <Position>0,736</Position>
       <Size>1600,64</Size>
@@ -19,83 +19,43 @@
     <Item1>
       <Position>6,676</Position>
       <Size>89,60</Size>
-      <IsPlatform>True</IsPlatform>
+      <IsPlatform>False</IsPlatform>
     </Item1>
     <Item2>
       <Position>0,482</Position>
       <Size>93,16</Size>
-      <IsPlatform>True</IsPlatform>
+      <IsPlatform>False</IsPlatform>
     </Item2>
     <Item3>
       <Position>1280,610</Position>
       <Size>93,16</Size>
-      <IsPlatform>True</IsPlatform>
+      <IsPlatform>False</IsPlatform>
     </Item3>
     <Item4>
       <Position>192,386</Position>
       <Size>93,16</Size>
-      <IsPlatform>True</IsPlatform>
+      <IsPlatform>False</IsPlatform>
     </Item4>
     <Item5>
       <Position>352,322</Position>
       <Size>93,16</Size>
-      <IsPlatform>True</IsPlatform>
+      <IsPlatform>False</IsPlatform>
     </Item5>
     <Item6>
       <Position>544,258</Position>
       <Size>93,16</Size>
-      <IsPlatform>True</IsPlatform>
+      <IsPlatform>False</IsPlatform>
     </Item6>
     <Item7>
       <Position>736,162</Position>
       <Size>93,16</Size>
-      <IsPlatform>True</IsPlatform>
+      <IsPlatform>False</IsPlatform>
     </Item7>
     <Item8>
-      <Position>256,578</Position>
-      <Size>93,16</Size>
-      <IsPlatform>True</IsPlatform>
-    </Item8>
-    <Item9>
-      <Position>6,676</Position>
-      <Size>89,60</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item9>
-    <Item10>
-      <Position>0,482</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item10>
-    <Item11>
-      <Position>1280,610</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item11>
-    <Item12>
-      <Position>192,386</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item12>
-    <Item13>
-      <Position>352,322</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item13>
-    <Item14>
-      <Position>544,258</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item14>
-    <Item15>
-      <Position>736,162</Position>
-      <Size>93,16</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item15>
-    <Item16>
       <Position>159,578</Position>
       <Size>93,16</Size>
       <IsPlatform>False</IsPlatform>
-    </Item16>
+    </Item8>
   </Walls>
   <DynamicEntities>
     <Count>2</Count>
