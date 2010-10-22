@@ -6,7 +6,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
-    public class BackgroundItemListBox : MapItemListBox<Map, BackgroundImage>
+    public class BackgroundItemListBox : MapItemListBox<EditorMap, BackgroundImage>
     {
         /// <summary>
         /// When overridden in the derived class, gets an IEnumerable of objects to be used in this MapItemListBox.

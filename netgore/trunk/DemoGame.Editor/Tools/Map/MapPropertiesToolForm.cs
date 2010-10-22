@@ -13,12 +13,12 @@ namespace DemoGame.Editor.Tools
 {
     public partial class MapPropertiesToolForm : DockContent
     {
-        Map _map;
+        EditorMap _map;
 
         /// <summary>
         /// Gets or sets the map to display the properties for.
         /// </summary>
-        public Map Map
+        public EditorMap Map
         {
             get { return _map; }
             set
@@ -34,7 +34,7 @@ namespace DemoGame.Editor.Tools
             }
         }
 
-        protected virtual void OnMapChanged(Map oldValue, Map newValue)
+        protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
         {
             Text = GetFormText(newValue);
 
@@ -49,7 +49,7 @@ namespace DemoGame.Editor.Tools
             InitializeComponent();
         }
 
-        static string GetFormText(Map map)
+        static string GetFormText(EditorMap map)
         {
             return "Map properties: " + (map == null ? "(No map loaded)" : map.ToString());
         }

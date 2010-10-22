@@ -114,7 +114,7 @@ namespace DemoGame.Editor.Tools
                     return;
 
                 // Ensure the map is valid
-                var clientMap = map as Map;
+                var clientMap = map as EditorMap;
                 if (clientMap == null)
                     return;
 
