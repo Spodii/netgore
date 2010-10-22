@@ -113,8 +113,20 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         void ResizeToFitText()
         {
-            if (AutoResize)
-                Size = Border.Size + Font.MeasureString(string.IsNullOrEmpty(Text) ? "W" : Text);
+            if (!AutoResize)
+                return;
+
+            if (Font != null && !Font.IsDisposed)
+            {
+                // Valid font
+                var textToMeasure = string.IsNullOrEmpty(Text) ? "W" : Text;
+                ClientSize = Font.MeasureString(textToMeasure);
+            }
+            else
+            {
+                // Invalid font
+                ClientSize = Vector2.One;
+            }
         }
 
         /// <summary>
