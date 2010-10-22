@@ -121,7 +121,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets the <see cref="IDynamicEntityFactory"/> instance to use.
         /// </summary>
-        public IDynamicEntityFactory DynamicEntityFactory { get { return MapEditorDynamicEntityFactory.Instance; } }
+        public IDynamicEntityFactory DynamicEntityFactory { get { return EditorDynamicEntityFactory.Instance; } }
 
         /// <summary>
         /// Gets the <see cref="GlobalState"/> instance.

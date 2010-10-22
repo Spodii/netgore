@@ -134,6 +134,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CustomUITypeEditors.cs" />
+    <Compile Include="Editor-Specific Derived Classes\EditorMap.cs" />
     <Compile Include="Forms\DisplayFilterManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,8 +203,8 @@
     <Compile Include="Forms\Dockable\EditMapForm.Designer.cs">
       <DependentUpon>EditMapForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MapEditorCharacter.cs" />
-    <Compile Include="MapEditorDynamicEntityFactory.cs" />
+    <Compile Include="Editor-Specific Derived Classes\EditorCharacter.cs" />
+    <Compile Include="Editor-Specific Derived Classes\EditorDynamicEntityFactory.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Program.cs" />
@@ -232,13 +233,13 @@
     <Compile Include="Controls\SkeletonBodyItemsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PropertyGrid Wrappers\CharacterTemplateEquippedItem.cs" />
-    <Compile Include="PropertyGrid Wrappers\CharacterTemplateInventoryItem.cs" />
-    <Compile Include="PropertyGrid Wrappers\EditorAlliance.cs" />
-    <Compile Include="PropertyGrid Wrappers\EditorCharacterTemplate.cs" />
-    <Compile Include="PropertyGrid Wrappers\EditorMapSpawnValues.cs" />
-    <Compile Include="PropertyGrid Wrappers\EditorQuest.cs" />
-    <Compile Include="PropertyGrid Wrappers\EditorShop.cs" />
+    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\CharacterTemplateEquippedItem.cs" />
+    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\CharacterTemplateInventoryItem.cs" />
+    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorAlliance.cs" />
+    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorCharacterTemplate.cs" />
+    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorMapSpawnValues.cs" />
+    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorQuest.cs" />
+    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorShop.cs" />
     <Compile Include="SkeletonLoader.cs" />
     <Compile Include="Controls\SkeletonNodesComboBox.cs">
       <SubType>Component</SubType>
@@ -583,6 +584,7 @@
   <ItemGroup>
     <None Include="Resources\MapPropertiesTool.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
