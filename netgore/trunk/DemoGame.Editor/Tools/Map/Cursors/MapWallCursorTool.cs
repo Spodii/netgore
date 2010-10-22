@@ -58,10 +58,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a key is raised on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
+        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
         {
             // Handle delete
             if (e.KeyCode == Keys.Delete)
@@ -81,10 +81,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse button is raised on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             var cursorPos = e.Position();
             var worldPos = camera.ToWorld(cursorPos);

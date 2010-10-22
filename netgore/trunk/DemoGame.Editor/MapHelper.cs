@@ -56,7 +56,7 @@ namespace DemoGame.Editor
                 var id = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
                 // Create the map and save it
-                using (var map = new Map(id, new Camera2D(new Vector2(800, 600)), new GetTimeProvider()) { Name = "New map" })
+                using (var map = new EditorMap(id, new Camera2D(new Vector2(800, 600)), new GetTimeProvider()) { Name = "New map" })
                 {
                     map.SetDimensions(new Vector2(960, 960));
                     SaveMap(map, false);
@@ -81,7 +81,7 @@ namespace DemoGame.Editor
         /// <param name="map">The map to delete.</param>
         /// <param name="showConfirmation">If true, a confirmation will be shown to make sure the user wants to
         /// perform this operation.</param>
-        public static void DeleteMap(Map map, bool showConfirmation = true)
+        public static void DeleteMap(EditorMap map, bool showConfirmation = true)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace DemoGame.Editor
         /// <param name="map">The map to save.</param>
         /// <param name="showConfirmation">If true, a confirmation will be shown to make sure the user wants to
         /// perform this operation.</param>
-        public static void SaveMap(Map map, bool showConfirmation = true)
+        public static void SaveMap(EditorMap map, bool showConfirmation = true)
         {
             try
             {
@@ -182,7 +182,7 @@ namespace DemoGame.Editor
         /// <param name="map">The map to save.</param>
         /// <param name="showConfirmation">If true, a confirmation will be shown to make sure the user wants to
         /// perform this operation.</param>
-        public static void SaveMapAs(Map map, bool showConfirmation = true)
+        public static void SaveMapAs(EditorMap map, bool showConfirmation = true)
         {
             try
             {

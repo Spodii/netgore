@@ -28,10 +28,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a key is pressed on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_KeyDown(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
+        protected virtual void MapContainer_KeyDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
         {
         }
 
@@ -39,10 +39,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a key is pressed on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_KeyPress(IToolTargetMapContainer sender, Map map, ICamera2D camera,
+        protected virtual void MapContainer_KeyPress(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
                                                      KeyPressEventArgs e)
         {
         }
@@ -51,10 +51,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a key is raised on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_KeyUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
+        protected virtual void MapContainer_KeyUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
         {
         }
 
@@ -62,10 +62,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a mouse button is pressed on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseDown(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
         }
 
@@ -73,10 +73,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse moves over a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
         }
 
@@ -84,10 +84,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse button is raised on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
         }
 
@@ -95,10 +95,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse wheel is moved while over a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseWheel(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseWheel(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
         }
 
@@ -165,7 +165,7 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
-            var map = mapContainer.Map as Map;
+            var map = mapContainer.Map as EditorMap;
             if (map == null)
                 return;
 
@@ -190,7 +190,7 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
-            var map = mapContainer.Map as Map;
+            var map = mapContainer.Map as EditorMap;
             if (map == null)
                 return;
 
@@ -215,7 +215,7 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
-            var map = mapContainer.Map as Map;
+            var map = mapContainer.Map as EditorMap;
             if (map == null)
                 return;
 
@@ -240,7 +240,7 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
-            var map = mapContainer.Map as Map;
+            var map = mapContainer.Map as EditorMap;
             if (map == null)
                 return;
 
@@ -265,7 +265,7 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
-            var map = mapContainer.Map as Map;
+            var map = mapContainer.Map as EditorMap;
             if (map == null)
                 return;
 
@@ -290,7 +290,7 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
-            var map = mapContainer.Map as Map;
+            var map = mapContainer.Map as EditorMap;
             if (map == null)
                 return;
 
@@ -315,7 +315,7 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
-            var map = mapContainer.Map as Map;
+            var map = mapContainer.Map as EditorMap;
             if (map == null)
                 return;
 

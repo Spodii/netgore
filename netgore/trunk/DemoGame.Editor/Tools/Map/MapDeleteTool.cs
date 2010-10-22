@@ -29,7 +29,7 @@ namespace DemoGame.Editor.Tools
             if (tb == null)
                 return;
 
-            MapHelper.DeleteMap(tb.DisplayObject as Map);
+            MapHelper.DeleteMap(tb.DisplayObject as EditorMap);
         }
 
         /// <summary>

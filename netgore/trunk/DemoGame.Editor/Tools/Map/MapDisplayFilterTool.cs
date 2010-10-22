@@ -108,7 +108,7 @@ namespace DemoGame.Editor.Tools
             // Ensure the correct filter is set on all the maps
             foreach (var mapC in _mapContainers)
             {
-                var map = mapC.Map as Map;
+                var map = mapC.Map as EditorMap;
                 if (map != null)
                     map.DrawFilter = fFunc;
             }

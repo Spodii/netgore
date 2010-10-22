@@ -66,7 +66,7 @@ If you do not save, all chances will be lost.";
             base.OnClosing(e);
         }
 
-        void MapScreenControl_MapChanged(MapScreenControl sender, Map oldValue, Map newValue)
+        void MapScreenControl_MapChanged(MapScreenControl sender, EditorMap oldValue, EditorMap newValue)
         {
             // When the map changes, and it was our map that made the ToolBar visibile, then update the reference on the ToolBar
 

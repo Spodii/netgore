@@ -87,10 +87,10 @@ namespace DemoGame.Editor.Tools
         /// <summary>
         /// Gets the map objects to select in the given region.
         /// </summary>
-        /// <param name="map">The <see cref="Map"/>.</param>
+        /// <param name="map">The <see cref="EditorMap"/>.</param>
         /// <param name="selectionArea">The selection box area.</param>
         /// <returns>The objects to select.</returns>
-        protected virtual IEnumerable<object> CursorSelectObjects(Map map, Rectangle selectionArea)
+        protected virtual IEnumerable<object> CursorSelectObjects(EditorMap map, Rectangle selectionArea)
         {
             return map.Spatial.GetMany<object>(selectionArea, CanSelect);
         }
@@ -98,10 +98,10 @@ namespace DemoGame.Editor.Tools
         /// <summary>
         /// Gets the selectable object currently under the cursor.
         /// </summary>
-        /// <param name="map">The map.</param>
+        /// <param name="map">The <see cref="EditorMap"/>.</param>
         /// <param name="worldPos">The world position.</param>
         /// <returns>The selectable object currently under the cursor, or null if none.</returns>
-        protected virtual object GetObjUnderCursor(Map map, Vector2 worldPos)
+        protected virtual object GetObjUnderCursor(EditorMap map, Vector2 worldPos)
         {
             // By default, this will only get anything that implements ISpatial since its much faster that way and most
             // map cursors will be working with types that implement ISpatial
@@ -149,7 +149,7 @@ namespace DemoGame.Editor.Tools
         {
             base.HandleBeforeDrawMapGUI(spriteBatch, imap);
 
-            var map = imap as Map;
+            var map = imap as EditorMap;
             if (map == null)
                 return;
 
@@ -184,10 +184,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a mouse button is pressed on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             // Terminate any current area selection when any mouse button is pressed
             _selectionStart = Vector2.Zero;
@@ -214,10 +214,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse moves over a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             var worldPos = camera.ToWorld(e.Position());
 
@@ -255,10 +255,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse button is raised on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             if (IsSelecting && e.Button == SelectMouseButton)
             {

@@ -59,7 +59,7 @@ namespace DemoGame.Editor.Tools
             if (tb == null)
                 return;
 
-            var map = tb.DisplayObject as Map;
+            var map = tb.DisplayObject as EditorMap;
             if (map == null)
                 return;
 
@@ -85,7 +85,7 @@ namespace DemoGame.Editor.Tools
         /// Shows the properties for a map.
         /// </summary>
         /// <param name="map">The map to show the properties for.</param>
-        public void ShowMapProperties(Map map)
+        public void ShowMapProperties(EditorMap map)
         {
             if (_currentPropertiesForm == null)
                 _currentPropertiesForm = new MapPropertiesToolForm();

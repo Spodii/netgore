@@ -27,7 +27,7 @@ namespace DemoGame.Editor
         /// <param name="sender">The <see cref="MapScreenControl"/> the event came from.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        public delegate void MapChangedEventHandler(MapScreenControl sender, Map oldValue, Map newValue);
+        public delegate void MapChangedEventHandler(MapScreenControl sender, EditorMap oldValue, EditorMap newValue);
 
         readonly ICamera2D _camera;
         readonly DrawingManager _drawingManager = new DrawingManager();
@@ -35,7 +35,7 @@ namespace DemoGame.Editor
 
         Vector2 _cameraVelocity = Vector2.Zero;
         TickCount _lastUpdateTime = TickCount.MinValue;
-        Map _map;
+        EditorMap _map;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapScreenControl"/> class.
@@ -76,7 +76,7 @@ namespace DemoGame.Editor
         /// Gets or sets the map being displayed on this <see cref="MapScreenControl"/>.
         /// </summary>
         [Browsable(false)]
-        public Map Map
+        public EditorMap Map
         {
             get { return _map; }
             set
@@ -120,7 +120,7 @@ namespace DemoGame.Editor
             if (Map != null && Map.ID == mapID)
                 return;
 
-            Map = new Map(mapID, Camera, this);
+            Map = new EditorMap(mapID, Camera, this);
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        protected virtual void OnMapChanged(Map oldValue, Map newValue)
+        protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
         {
             // Update some references
             Camera.Map = newValue;

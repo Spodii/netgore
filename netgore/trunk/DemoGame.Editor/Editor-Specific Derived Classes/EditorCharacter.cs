@@ -19,19 +19,19 @@ namespace DemoGame.Editor
         readonly CharacterID _characterID;
         readonly ICharacterTable _table;
 
+        // TODO: Class is currently unused because displaying persistent Characters in the editor is not yet supported
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorCharacter"/> class.
         /// </summary>
         /// <param name="table">The <see cref="ICharacterTable"/> describing the character.</param>
         /// <param name="map">The <see cref="Map"/> to place the character on.</param>
-        public EditorCharacter(ICharacterTable table, Map map)
+        public EditorCharacter(ICharacterTable table, EditorMap map)
         {
             if (table == null)
                 throw new ArgumentNullException("table");
             if (map == null)
                 throw new ArgumentNullException("map");
-
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
             _table = table;
             _characterID = table.ID;
@@ -45,8 +45,6 @@ namespace DemoGame.Editor
             Name = charInfo.Name;
 
             Initialize(map, SkeletonManager.Create(ContentPaths.Build));
-
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         public CharacterID CharacterID

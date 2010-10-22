@@ -6,7 +6,7 @@ using NetGore.Graphics.ParticleEngine;
 
 namespace DemoGame.Editor
 {
-    public class MapParticleEffectsListBox : MapParticleEffectsListBoxBase<Map>
+    public class MapParticleEffectsListBox : MapParticleEffectsListBoxBase<EditorMap>
     {
         /// <summary>
         /// When overridden in the derived class, gets an IEnumerable of objects to be used in this MapItemListBox.

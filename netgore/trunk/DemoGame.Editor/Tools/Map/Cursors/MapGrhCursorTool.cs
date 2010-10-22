@@ -15,7 +15,7 @@ namespace DemoGame.Editor.Tools
     {
         const Keys _placeMapGrhKey = Keys.Control;
 
-        Map _mouseOverMap;
+        EditorMap _mouseOverMap;
         Vector2 _mousePos;
 
         /// <summary>
@@ -95,10 +95,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a key is raised on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, Map map, ICamera2D camera, KeyEventArgs e)
+        protected override void MapContainer_KeyUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
         {
             // Handle deletes
             if (e.KeyCode == Keys.Delete)
@@ -118,10 +118,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when a mouse button is pressed on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -156,10 +156,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse moves over a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, Map map, ICamera2D camera, MouseEventArgs e)
+        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             base.MapContainer_MouseMove(sender, map, camera, e);
 
@@ -173,10 +173,10 @@ namespace DemoGame.Editor.Tools
         /// Handles when the mouse wheel is moved while over a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
-        /// <param name="map">The <see cref="Map"/>. Cannot be null.</param>
+        /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseWheel(IToolTargetMapContainer sender, Map map, ICamera2D camera,
+        protected override void MapContainer_MouseWheel(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
                                                         MouseEventArgs e)
         {
             if (e.Delta == 0)

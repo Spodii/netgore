@@ -54,7 +54,7 @@ namespace DemoGame.Editor
             if (Camera == null || Camera.Map == null)
                 return;
 
-            var map = Camera.Map as Map;
+            var map = Camera.Map as EditorMap;
             if (map == null)
                 return;
 

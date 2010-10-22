@@ -32,7 +32,7 @@ namespace DemoGame.Editor.Tools
             if (tb == null)
                 return;
 
-            MapHelper.SaveMap(tb.DisplayObject as Map);
+            MapHelper.SaveMap(tb.DisplayObject as EditorMap);
         }
 
         /// <summary>
