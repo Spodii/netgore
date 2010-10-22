@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 

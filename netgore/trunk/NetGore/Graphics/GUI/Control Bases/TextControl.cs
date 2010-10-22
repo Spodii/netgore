@@ -110,8 +110,12 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position relative to the Control to draw the text.</param>
         protected virtual void DrawText(ISpriteBatch spriteBatch, Vector2 position)
         {
-            if (!string.IsNullOrEmpty(Text) && Font != null)
-                spriteBatch.DrawString(Font, Text, ScreenPosition + position, ForeColor);
+            // Ensure the font is valid
+            if (string.IsNullOrEmpty(Text) || Font == null || Font.IsDisposed)
+                return;
+
+            // Draw the text
+            spriteBatch.DrawString(Font, Text, ScreenPosition + position, ForeColor);
         }
 
         /// <summary>
