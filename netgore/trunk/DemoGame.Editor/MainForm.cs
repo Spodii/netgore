@@ -20,7 +20,7 @@ namespace DemoGame.Editor
         DbEditorForm _frmDbEditor;
         GrhTreeViewForm _frmGrhTreeView;
         NPCChatEditorForm _frmNPCChatEditor;
-        SelectedObjectsForm _frmSelectedObjs;
+        SelectedMapObjectsForm _frmSelectedMapObjs;
         SkeletonEditorForm _frmSkeletonEditor;
 
         /// <summary>
@@ -34,13 +34,13 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the NPCChatEditorToolStripMenuItem control.
+        /// Handles the Click event of the <see cref="NPCChatEditorToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void NPCChatEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (NPCChatEditorToolStripMenuItem.Checked)
+            if (npcChatEditorToolStripMenuItem.Checked)
                 _frmNPCChatEditor.Show(dockPanel, DockState.Float);
             else
                 _frmNPCChatEditor.Hide();
@@ -92,8 +92,8 @@ namespace DemoGame.Editor
             _frmGrhTreeView = new GrhTreeViewForm();
             _frmGrhTreeView.VisibleChanged += _frmGrhTreeView_VisibleChanged;
 
-            _frmSelectedObjs = new SelectedObjectsForm();
-            _frmSelectedObjs.VisibleChanged += _frmSelectedObjs_VisibleChanged;
+            _frmSelectedMapObjs = new SelectedMapObjectsForm();
+            _frmSelectedMapObjs.VisibleChanged += _frmSelectedMapObjs_VisibleChanged;
 
             _frmNPCChatEditor = new NPCChatEditorForm();
             _frmNPCChatEditor.VisibleChanged += _frmNPCChatEditor_VisibleChanged;
@@ -126,7 +126,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmDbEditor control.
+        /// Handles the VisibleChanged event of the <see cref="_frmDbEditor"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -136,7 +136,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmGrhTreeView control.
+        /// Handles the VisibleChanged event of the <see cref="_frmGrhTreeView"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -146,27 +146,27 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmNPCChatEditor control.
+        /// Handles the VisibleChanged event of the <see cref="_frmNPCChatEditor"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void _frmNPCChatEditor_VisibleChanged(object sender, EventArgs e)
         {
-            NPCChatEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+            npcChatEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmSelectedObjs control.
+        /// Handles the VisibleChanged event of the <see cref="_frmSelectedMapObjs"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void _frmSelectedObjs_VisibleChanged(object sender, EventArgs e)
+        void _frmSelectedMapObjs_VisibleChanged(object sender, EventArgs e)
         {
-            selectedObjectsToolStripMenuItem.Checked = ((Form)sender).Visible;
+            selectedMapObjectsToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmSkeletonEditor control.
+        /// Handles the VisibleChanged event of the <see cref="_frmSkeletonEditor"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -176,7 +176,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the closeToolStripMenuItem control.
+        /// Handles the Click event of the <see cref="closeToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -186,7 +186,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the dbEditorToolStripMenuItem control.
+        /// Handles the Click event of the <see cref="dbEditorToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -199,7 +199,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the dockPanel control.
+        /// Handles the Click event of the <see cref="dockPanel"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -222,7 +222,12 @@ namespace DemoGame.Editor
                 _frmGrhTreeView.Hide();
         }
 
-        void loadToolStripMenuItem1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Handles the Click event of the <see cref="loadPEToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void loadPEToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var uiFrm = new ParticleEffectUITypeEditorForm(null))
             {
@@ -241,11 +246,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the loadToolStripMenuItem control.
+        /// Handles the Click event of the <see cref="loadMapToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        void loadMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var uiFrm = new MapUITypeEditorForm(null))
             {
@@ -265,11 +270,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the newToolStripMenuItem control.
+        /// Handles the Click event of the <see cref="newMapToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void newToolStripMenuItem_Click(object sender, EventArgs e)
+        void newMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var id = MapHelper.CreateNewMap(true);
             if (!id.HasValue) return;
@@ -281,20 +286,20 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the <see cref="selectedObjectsToolStripMenuItem"/> control.
+        /// Handles the CheckedChanged event of the <see cref="selectedMapObjectsToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void selectedObjectsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        void selectedMapObjectsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            if (selectedObjectsToolStripMenuItem.Checked)
-                _frmSelectedObjs.Show(dockPanel, DockState.Float);
+            if (selectedMapObjectsToolStripMenuItem.Checked)
+                _frmSelectedMapObjs.Show(dockPanel, DockState.Float);
             else
-                _frmSelectedObjs.Hide();
+                _frmSelectedMapObjs.Hide();
         }
 
         /// <summary>
-        /// Handles the Click event of the skeletonEditorToolStripMenuItem control.
+        /// Handles the Click event of the <see cref="skeletonEditorToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -333,8 +338,8 @@ namespace DemoGame.Editor
                 if (IsNameFor(Owner._frmNPCChatEditor, name))
                     return Owner._frmNPCChatEditor;
 
-                if (IsNameFor(Owner._frmSelectedObjs, name))
-                    return Owner._frmSelectedObjs;
+                if (IsNameFor(Owner._frmSelectedMapObjs, name))
+                    return Owner._frmSelectedMapObjs;
 
                 if (IsNameFor(Owner._frmSkeletonEditor, name))
                     return Owner._frmSkeletonEditor;

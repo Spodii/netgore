@@ -4,12 +4,12 @@ using NetGore.Editor.Docking;
 
 namespace DemoGame.Editor
 {
-    public partial class SelectedObjectsForm : DockContent
+    public partial class SelectedMapObjectsForm : DockContent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectedObjectsForm"/> class.
+        /// Initializes a new instance of the <see cref="SelectedMapObjectsForm"/> class.
         /// </summary>
-        public SelectedObjectsForm()
+        public SelectedMapObjectsForm()
         {
             InitializeComponent();
         }

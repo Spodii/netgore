@@ -121,6 +121,84 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="loadMapToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="loadMapToolStripMenuItem.Text" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="newMapToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="newMapToolStripMenuItem.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="mapToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="mapToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="loadPEToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 22</value>
+  </data>
+  <data name="loadPEToolStripMenuItem.Text" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="particleEffectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="particleEffectToolStripMenuItem.Text" xml:space="preserve">
+    <value>Particle Effect</value>
+  </data>
+  <data name="closeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="closeToolStripMenuItem.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 20</value>
+  </data>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="selectedMapObjectsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 22</value>
+  </data>
+  <data name="selectedMapObjectsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Selected Map Objects</value>
+  </data>
+  <data name="grhDatasToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 22</value>
+  </data>
+  <data name="grhDatasToolStripMenuItem.Text" xml:space="preserve">
+    <value>GrhDatas</value>
+  </data>
+  <data name="npcChatEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 22</value>
+  </data>
+  <data name="npcChatEditorToolStripMenuItem.Text" xml:space="preserve">
+    <value>NPC Chat Editor</value>
+  </data>
+  <data name="skeletonEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 22</value>
+  </data>
+  <data name="skeletonEditorToolStripMenuItem.Text" xml:space="preserve">
+    <value>Skeleton Editor</value>
+  </data>
+  <data name="dbEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 22</value>
+  </data>
+  <data name="dbEditorToolStripMenuItem.Text" xml:space="preserve">
+    <value>Db Editor</value>
+  </data>
+  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 20</value>
+  </data>
+  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
+    <value>Screens</value>
+  </data>
   <data name="msMenu.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -145,84 +223,6 @@
   </data>
   <data name="&gt;&gt;msMenu.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 20</value>
-  </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="mapToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 22</value>
-  </data>
-  <data name="mapToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Map</value>
-  </data>
-  <data name="loadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
-  </data>
-  <data name="loadToolStripMenuItem.Text" xml:space="preserve">
-    <value>Load</value>
-  </data>
-  <data name="newToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
-  </data>
-  <data name="newToolStripMenuItem.Text" xml:space="preserve">
-    <value>New</value>
-  </data>
-  <data name="particleEffectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 22</value>
-  </data>
-  <data name="particleEffectToolStripMenuItem.Text" xml:space="preserve">
-    <value>Particle Effect</value>
-  </data>
-  <data name="loadToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
-  </data>
-  <data name="loadToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Load</value>
-  </data>
-  <data name="closeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 22</value>
-  </data>
-  <data name="closeToolStripMenuItem.Text" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 20</value>
-  </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>Screens</value>
-  </data>
-  <data name="selectedObjectsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 22</value>
-  </data>
-  <data name="selectedObjectsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Selected Objects</value>
-  </data>
-  <data name="grhDatasToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 22</value>
-  </data>
-  <data name="grhDatasToolStripMenuItem.Text" xml:space="preserve">
-    <value>GrhDatas</value>
-  </data>
-  <data name="NPCChatEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 22</value>
-  </data>
-  <data name="NPCChatEditorToolStripMenuItem.Text" xml:space="preserve">
-    <value>NPC Chat Editor</value>
-  </data>
-  <data name="skeletonEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 22</value>
-  </data>
-  <data name="skeletonEditorToolStripMenuItem.Text" xml:space="preserve">
-    <value>Skeleton Editor</value>
-  </data>
-  <data name="dbEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 22</value>
-  </data>
-  <data name="dbEditorToolStripMenuItem.Text" xml:space="preserve">
-    <value>Db Editor</value>
   </data>
   <metadata name="ssStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>206, 17</value>
@@ -354,16 +354,16 @@
   <data name="&gt;&gt;mapToolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;loadToolStripMenuItem.Name" xml:space="preserve">
-    <value>loadToolStripMenuItem</value>
+  <data name="&gt;&gt;loadMapToolStripMenuItem.Name" xml:space="preserve">
+    <value>loadMapToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;loadToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;loadMapToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;newToolStripMenuItem.Name" xml:space="preserve">
-    <value>newToolStripMenuItem</value>
+  <data name="&gt;&gt;newMapToolStripMenuItem.Name" xml:space="preserve">
+    <value>newMapToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;newToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;newMapToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;particleEffectToolStripMenuItem.Name" xml:space="preserve">
@@ -372,10 +372,10 @@
   <data name="&gt;&gt;particleEffectToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;loadToolStripMenuItem1.Name" xml:space="preserve">
-    <value>loadToolStripMenuItem1</value>
+  <data name="&gt;&gt;loadPEToolStripMenuItem.Name" xml:space="preserve">
+    <value>loadPEToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;loadToolStripMenuItem1.Type" xml:space="preserve">
+  <data name="&gt;&gt;loadPEToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;closeToolStripMenuItem.Name" xml:space="preserve">
@@ -390,10 +390,10 @@
   <data name="&gt;&gt;viewToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;selectedObjectsToolStripMenuItem.Name" xml:space="preserve">
-    <value>selectedObjectsToolStripMenuItem</value>
+  <data name="&gt;&gt;selectedMapObjectsToolStripMenuItem.Name" xml:space="preserve">
+    <value>selectedMapObjectsToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;selectedObjectsToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;selectedMapObjectsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;grhDatasToolStripMenuItem.Name" xml:space="preserve">
@@ -402,10 +402,10 @@
   <data name="&gt;&gt;grhDatasToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;NPCChatEditorToolStripMenuItem.Name" xml:space="preserve">
-    <value>NPCChatEditorToolStripMenuItem</value>
+  <data name="&gt;&gt;npcChatEditorToolStripMenuItem.Name" xml:space="preserve">
+    <value>npcChatEditorToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;NPCChatEditorToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;npcChatEditorToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;skeletonEditorToolStripMenuItem.Name" xml:space="preserve">
