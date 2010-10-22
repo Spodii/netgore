@@ -42,17 +42,7 @@ namespace DemoGame.Editor.UITypeEditors
         /// <returns>The items to add to the list.</returns>
         protected override IEnumerable<IMapTable> GetListItems()
         {
-            var ids = DbController.GetQuery<SelectMapIDsQuery>().Execute();
-
-            var ret = new List<IMapTable>();
-            var templateQuery = DbController.GetQuery<SelectMapQuery>();
-            foreach (var id in ids)
-            {
-                var template = templateQuery.Execute(id);
-                ret.Add(template);
-            }
-
-            return ret.OrderBy(x => x.ID);
+            return MapHelper.FindAllMaps(DbController);
         }
 
         /// <summary>
