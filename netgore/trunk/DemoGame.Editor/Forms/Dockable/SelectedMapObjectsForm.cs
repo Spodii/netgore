@@ -28,6 +28,40 @@ namespace DemoGame.Editor
             var som = GlobalState.Instance.Map.SelectedObjsManager;
             som.SelectedListBox = lstItems;
             som.PropertyGrid = pgSelected;
+
+            lstItemsUpdateVisibility();
+        }
+
+        void lstItemsUpdateVisibility()
+        {
+            if (lstItems.Items.Count <= 1)
+            {
+                sc.Panel2Collapsed = true;
+            }
+            else
+            {
+                sc.Panel2Collapsed = false;
+            }
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the <see cref="lstItems"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lstItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lstItemsUpdateVisibility();
+        }
+
+        /// <summary>
+        /// Handles the Tick event of the <see cref="tmrUpdateLstItemsVisibility"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void tmrUpdateLstItemsVisibility_Tick(object sender, EventArgs e)
+        {
+            lstItemsUpdateVisibility();
         }
     }
 }
