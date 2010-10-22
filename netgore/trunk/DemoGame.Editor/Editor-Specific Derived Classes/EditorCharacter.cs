@@ -11,12 +11,20 @@ using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
-    public class MapEditorCharacter : Character
+    /// <summary>
+    /// Implementation of <see cref="Character"/> specifically for the editor.
+    /// </summary>
+    public class EditorCharacter : Character
     {
         readonly CharacterID _characterID;
         readonly ICharacterTable _table;
 
-        public MapEditorCharacter(ICharacterTable table, Map map)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorCharacter"/> class.
+        /// </summary>
+        /// <param name="table">The <see cref="ICharacterTable"/> describing the character.</param>
+        /// <param name="map">The <see cref="Map"/> to place the character on.</param>
+        public EditorCharacter(ICharacterTable table, Map map)
         {
             if (table == null)
                 throw new ArgumentNullException("table");

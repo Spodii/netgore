@@ -149,7 +149,7 @@ namespace DemoGame.Editor
                 }
 
                 // Save the map
-                map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
+                map.Save(ContentPaths.Dev, EditorDynamicEntityFactory.Instance);
 
                 // Update the database
                 GlobalState.Instance.DbController.GetQuery<InsertMapQuery>().Execute(map);

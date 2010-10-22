@@ -7,22 +7,25 @@ using NetGore.World;
 
 namespace DemoGame.Editor
 {
-    class MapEditorDynamicEntityFactory : DynamicEntityFactoryBase
+    /// <summary>
+    /// Implementation of the <see cref="DynamicEntityFactoryBase"/> specifically for the editor.
+    /// </summary>
+    public class EditorDynamicEntityFactory : DynamicEntityFactoryBase
     {
         static readonly IDynamicEntityFactory _instance;
 
         /// <summary>
-        /// Initializes the <see cref="MapEditorDynamicEntityFactory"/> class.
+        /// Initializes the <see cref="EditorDynamicEntityFactory"/> class.
         /// </summary>
-        static MapEditorDynamicEntityFactory()
+        static EditorDynamicEntityFactory()
         {
-            _instance = new MapEditorDynamicEntityFactory();
+            _instance = new EditorDynamicEntityFactory();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapEditorDynamicEntityFactory"/> class.
+        /// Initializes a new instance of the <see cref="EditorDynamicEntityFactory"/> class.
         /// </summary>
-        MapEditorDynamicEntityFactory()
+        EditorDynamicEntityFactory()
         {
         }
 
