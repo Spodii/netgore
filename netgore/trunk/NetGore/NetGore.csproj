@@ -225,6 +225,7 @@
     <Compile Include="Network\Sockets\SocketManager\ISocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ServerSocketManager.cs" />
     <Compile Include="NPCChat\PropertySyncNPCChatDialogID.cs" />
+    <Compile Include="SFML\LazyContentLoadFailCounter.cs" />
     <Compile Include="Stats\PropertySyncStatValueType.cs" />
     <Compile Include="World\Entities\IInventory.cs" />
     <Compile Include="World\Map\MapEvent\IDelayedMapEvent.cs" />

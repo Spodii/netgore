@@ -9,6 +9,7 @@ namespace SFML.Graphics
     /// </summary>
     public class LazySoundBuffer : SoundBuffer
     {
+        LazyContentLoadFailCounter _loadFailCounter;
         string _filename;
 
         /// <summary>
@@ -47,8 +48,31 @@ namespace SFML.Graphics
         {
             get
             {
-                if (FileName != null && !EnsureLoaded(FileName))
-                    OnReload();
+                // Check for a valid file name
+                if (FileName != null)
+                {
+                    // Check if enough time has elapsed to try loading again
+                    if (_loadFailCounter == null || _loadFailCounter.HasEnoughTimeElapsed)
+                    {
+                        try
+                        {
+                            // Reload (if needed)
+                            if (!EnsureLoaded(FileName))
+                                OnReload();
+
+                            // Loading was successful
+                            _loadFailCounter = null;
+                        }
+                        catch (LoadingFailedException ex)
+                        {
+                            // Loading was not successful
+                            if (_loadFailCounter == null)
+                                _loadFailCounter = new LazyContentLoadFailCounter();
+
+                            _loadFailCounter.HandleLoadException(this, ex);
+                        }
+                    }
+                }
 
                 return base.This;
             }
