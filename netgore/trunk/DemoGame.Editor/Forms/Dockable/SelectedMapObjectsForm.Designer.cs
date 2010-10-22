@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.sc = new System.Windows.Forms.SplitContainer();
             this.pgSelected = new System.Windows.Forms.PropertyGrid();
             this.lstItems = new System.Windows.Forms.ListBox();
+            this.tmrUpdateLstItemsVisibility = new System.Windows.Forms.Timer(this.components);
             this.sc.Panel1.SuspendLayout();
             this.sc.Panel2.SuspendLayout();
             this.sc.SuspendLayout();
@@ -69,8 +71,15 @@
             this.lstItems.Name = "lstItems";
             this.lstItems.Size = new System.Drawing.Size(169, 318);
             this.lstItems.TabIndex = 2;
+            this.lstItems.SelectedIndexChanged += new System.EventHandler(this.lstItems_SelectedIndexChanged);
             // 
-            // SelectedObjectsForm
+            // tmrUpdateLstItemsVisibility
+            // 
+            this.tmrUpdateLstItemsVisibility.Enabled = true;
+            this.tmrUpdateLstItemsVisibility.Interval = 500;
+            this.tmrUpdateLstItemsVisibility.Tick += new System.EventHandler(this.tmrUpdateLstItemsVisibility_Tick);
+            // 
+            // SelectedMapObjectsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -92,6 +101,7 @@
         private System.Windows.Forms.SplitContainer sc;
         private System.Windows.Forms.PropertyGrid pgSelected;
         private System.Windows.Forms.ListBox lstItems;
+        private System.Windows.Forms.Timer tmrUpdateLstItemsVisibility;
 
     }
 }
