@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.Client;
+using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
@@ -114,8 +117,21 @@ namespace DemoGame.Editor
             _frmDbEditor = new DbEditorForm();
             _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
 
+            // Set up some other stuff
             EditMapForm.FormLoaded += EditMapForm_FormLoaded;
 
+            var mapPropertiesTool = ToolManager.Instance.TryGetTool<MapPropertiesTool>();
+            if (mapPropertiesTool != null)
+            {
+                mapPropertiesTool.DockPanel = dockPanel;
+            }
+            else
+            {
+                const string errmsg = "Unable to set DockPanel on MapPropertiesTool - couldn't find tool instance.";
+                Debug.Fail(errmsg);
+            }
+
+            // Load the settings
             LoadDockSettings("User");
         }
 
