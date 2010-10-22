@@ -155,7 +155,7 @@ namespace DemoGame.Editor
             this.npcChatEditorToolStripMenuItem.CheckOnClick = true;
             this.npcChatEditorToolStripMenuItem.Name = "npcChatEditorToolStripMenuItem";
             resources.ApplyResources(this.npcChatEditorToolStripMenuItem, "npcChatEditorToolStripMenuItem");
-            this.npcChatEditorToolStripMenuItem.Click += new System.EventHandler(this.NPCChatEditorToolStripMenuItem_Click);
+            this.npcChatEditorToolStripMenuItem.Click += new System.EventHandler(this.npcChatEditorToolStripMenuItem_Click);
             // 
             // skeletonEditorToolStripMenuItem
             // 

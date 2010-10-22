@@ -12,6 +12,11 @@ namespace DemoGame.Editor
     public sealed partial class EditMapForm : ToolTargetFormBase
     {
         /// <summary>
+        /// Notifies listeners when a <see cref="EditMapForm"/> is loaded.
+        /// </summary>
+        public static event EventHandler FormLoaded;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EditMapForm"/> class.
         /// </summary>
         public EditMapForm()
@@ -86,6 +91,9 @@ If you do not save, all chances will be lost.";
                 return;
 
             MapScreenControl.MapChanged += MapScreenControl_MapChanged;
+
+            if (FormLoaded != null)
+                FormLoaded(this, e);
         }
     }
 }
