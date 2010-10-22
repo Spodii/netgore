@@ -182,6 +182,7 @@
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
+    <Compile Include="Core\GetTimeDummy.cs" />
     <Compile Include="Graphics\Game Container\GameBase.cs" />
     <Compile Include="Graphics\Game Container\GameContainerPropertyChangedEventHandler.cs" />
     <Compile Include="Graphics\Game Container\IGameContainer.cs" />

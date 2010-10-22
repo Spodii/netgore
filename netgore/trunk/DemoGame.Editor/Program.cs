@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +7,7 @@ using System.Windows.Forms;
 using log4net;
 using NetGore;
 using NetGore.Editor.WinForms;
+using NetGore.Graphics;
 using NetGore.IO;
 
 // Highest priority (do these first!):
@@ -82,10 +84,7 @@ The path to the development content is required by the editor. See the file ment
             // Initialize stuff
             EngineSettingsInitializer.Initialize();
             GlobalState.Initailize();
-
-            // Get the command-line switches
-            var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
-
+          
             // Ensure the content is copied over
             if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
             {
@@ -97,8 +96,123 @@ The path to the development content is required by the editor. See the file ment
                 Debug.Fail(errmsg);
             }
 
-            // Start up the application
-            Application.Run(new MainForm());
+            // Get the command-line switches
+            var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
+            var showEditor = !HandleSwitches(switches);
+
+            if (showEditor)
+            {
+                // Start up the application
+                Application.Run(new MainForm());
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandLineSwitch.SaveMaps"/> switch.
+        /// </summary>
+        /// <param name="values">The values passed to the switch at the command line.</param>
+        /// <returns>True if completed without errors; false if there were any errors.</returns>
+        static bool HandleSwitch_SaveMaps(string[] values)
+        {
+            bool ret = true;
+
+            var camera = new Camera2D(GameData.ScreenSize);
+            var dynamicEntityFactory = EditorDynamicEntityFactory.Instance;
+            var contentPath = ContentPaths.Dev;
+
+            // Get the maps
+            var mapInfos = MapHelper.FindAllMaps();
+
+            // For each map, load it then save it
+            foreach (var mapInfo in mapInfos)
+            {
+                // Load
+                EditorMap map;
+                try
+                {
+                    map = new EditorMap(mapInfo.ID, camera, GetTimeDummy.Instance);
+                    map.Load(contentPath, true, dynamicEntityFactory);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to load map ID `{0}`. Exception: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, mapInfo.ID, ex);
+                    Debug.Fail(string.Format(errmsg, mapInfo.ID, ex));
+                    map = null;
+                    ret = false;
+                }
+
+                // Save
+                try
+                {
+                    if (map != null)
+                        MapHelper.SaveMap(map, false);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to save map `{0}`. Exception: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, mapInfo, ex);
+                    Debug.Fail(string.Format(errmsg, mapInfo, ex));
+                    ret = false;
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Handles the command-line switches that are not applicable to the <see cref="MainForm"/>.
+        /// </summary>
+        /// <param name="switches">The switches to handle.</param>
+        /// <returns>True if the program should close; false if the editor form should be loaded like normal.</returns>
+        static bool HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
+        {
+            bool hasErrors = false;
+            bool ret = false;
+            
+            // Loop through the switches
+            foreach (var s in switches)
+            {
+                try
+                {
+                    // Process the switch
+                    switch (s.Key)
+                    {
+                        case CommandLineSwitch.SaveMaps:
+                            if (!HandleSwitch_SaveMaps(s.Value))
+                                hasErrors = true;
+                            break;
+
+                        case CommandLineSwitch.Close:
+                            ret = true;
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unhandled exceptions from the switch handler
+                    const string errmsg = "Failed to handle switch `{0}` (values: `{1}`). Terminating program. Exception: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, s.Key, s.Value.Implode(), ex);
+                    Debug.Fail(string.Format(errmsg, s.Key, s.Value.Implode(), ex));
+                    hasErrors = true;
+                    ret = true;
+                }
+            }
+
+            // Display message when there were any errors
+            if (hasErrors)
+            {
+                const string errmsg = "WARNING: One or more command-line switches threw an error while executing."
+                    + " See the log for details.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                MessageBox.Show(errmsg,"Error handling switches");
+            }
+
+            return ret;
         }
     }
 }
