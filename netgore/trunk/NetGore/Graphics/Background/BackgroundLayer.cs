@@ -1,18 +1,19 @@
-using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.IO;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    // TODO: Add support for BackgroundLayerLayout.Stretched
-
     /// <summary>
     /// A single simple image that sits in the background of the map.
     /// </summary>
     public class BackgroundLayer : BackgroundImage
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _horizontalLayoutKey = "HorizontalLayout";
         const string _verticalLayoutKey = "VerticalLayout";
 
@@ -60,42 +61,7 @@ namespace NetGore.Graphics
         public BackgroundLayerLayout VerticalLayout { get; set; }
 
         /// <summary>
-        /// Draws the image to the specified <see cref="ISpriteBatch"/>.
-        /// </summary>
-        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw the image to.</param>
-        public override void Draw(ISpriteBatch spriteBatch)
-        {
-            var spriteSize = SpriteSourceSize;
-
-            // Adjust the horizontal layout
-            switch (HorizontalLayout)
-            {
-                case BackgroundLayerLayout.Stretched:
-                    spriteSize.X = GetStretchedSize(Camera.Size.X * Camera.Scale, Map.Size.X, Depth);
-                    break;
-
-                case BackgroundLayerLayout.Tiled:
-                    // TODO: Add tiling support
-                    throw new NotImplementedException("No support for tiling yet...");
-            }
-
-            // Adjust the veritcal layout
-            switch (VerticalLayout)
-            {
-                case BackgroundLayerLayout.Stretched:
-                    spriteSize.Y = GetStretchedSize(Camera.Size.Y * Camera.Scale, Map.Size.Y, Depth);
-                    break;
-
-                case BackgroundLayerLayout.Tiled:
-                    // TODO: Add tiling support
-                    throw new NotImplementedException("No support for tiling yet...");
-            }
-
-            Draw(spriteBatch, spriteSize);
-        }
-
-        /// <summary>
-        /// Gets the size to use for a BackgroundLayer sprite to stretch it across the whole map.
+        /// Gets the size to use for a <see cref="BackgroundLayer"/> sprite to stretch it across the whole map.
         /// </summary>
         /// <param name="normalCameraSize">The unscaled size of the camera for the given axis. This will always make the layer
         /// spread across the whole map exactly only for that zoom level. Zooming in will make it so the whole image cannot be shown
@@ -106,6 +72,75 @@ namespace NetGore.Graphics
         protected static float GetStretchedSize(float normalCameraSize, float targetSize, float depth)
         {
             return normalCameraSize + ((targetSize - normalCameraSize) / depth);
+        }
+
+        /// <summary>
+        /// Handles drawing the <see cref="BackgroundImage"/>.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        protected override void HandleDraw(ISpriteBatch sb)
+        {
+            var spriteSize = SpriteSourceSize;
+            var pos = GetPosition(Map.Size, Camera, spriteSize);
+
+            var vl = VerticalLayout;
+            var hl = HorizontalLayout;
+
+            if (hl == BackgroundLayerLayout.Stretched && vl == BackgroundLayerLayout.Stretched)
+            {
+                // Stretch both directions
+                spriteSize.X = GetStretchedSize(Camera.Size.X * Camera.Scale, Map.Size.X, Depth);
+                spriteSize.Y = GetStretchedSize(Camera.Size.Y * Camera.Scale, Map.Size.Y, Depth);
+
+                var rect = new Rectangle((int)pos.X, (int)pos.Y, (int)spriteSize.X, (int)spriteSize.Y);
+                Sprite.Draw(sb, rect, Color);
+            }
+            else if (vl == BackgroundLayerLayout.Tiled &&
+                     (hl == BackgroundLayerLayout.None || hl == BackgroundLayerLayout.Stretched))
+            {
+                // Stretch/none horizontal, tile vertical
+                int drawWidth;
+                if (hl == BackgroundLayerLayout.None)
+                    drawWidth = (int)spriteSize.X;
+                else
+                    drawWidth = (int)GetStretchedSize(Camera.Size.X * Camera.Scale, Map.Size.X, Depth);
+
+                sb.DrawTiledY((int)pos.Y, (int)Camera.Max.Y + 64, (int)pos.X, Sprite, Color.White, drawWidth);
+            }
+            else if (hl == BackgroundLayerLayout.Tiled &&
+                     (vl == BackgroundLayerLayout.None || vl == BackgroundLayerLayout.Stretched))
+            {
+                // Tile horizontal, stretch/none vertical
+                int drawHeight;
+                if (vl == BackgroundLayerLayout.None)
+                    drawHeight = (int)spriteSize.Y;
+                else
+                    drawHeight = (int)GetStretchedSize(Camera.Size.X * Camera.Scale, Map.Size.X, Depth);
+
+                sb.DrawTiledX((int)pos.X, (int)Camera.Max.X + 64, (int)pos.Y, Sprite, Color.White, drawHeight);
+            }
+            else if (hl == BackgroundLayerLayout.Tiled && vl == BackgroundLayerLayout.Tiled)
+            {
+                // Tile both directions
+                sb.DrawTiledXY((int)pos.X, (int)Camera.Max.X + 64, (int)pos.Y, (int)Camera.Max.Y + 64, Sprite, Color);
+            }
+            else if (hl == BackgroundLayerLayout.None && vl == BackgroundLayerLayout.None)
+            {
+                // None in both directions
+                Sprite.Draw(sb, pos);
+            }
+            else
+            {
+                // Unknown or unhandled permutation
+                const string errmsg =
+                    "Unknown or unhandled BackgroundLayerLayout provided." +
+                    " Changing layouts to BackgroundLayerLayout.None. HorizontalLayout: `{0}` VerticalLayout: `{1}`";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, HorizontalLayout, VerticalLayout);
+
+                HorizontalLayout = BackgroundLayerLayout.None;
+                VerticalLayout = BackgroundLayerLayout.None;
+            }
         }
 
         /// <summary>
