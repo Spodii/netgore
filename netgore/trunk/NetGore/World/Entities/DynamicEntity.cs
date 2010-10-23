@@ -309,6 +309,11 @@ namespace NetGore.World
                 SetPositionRaw(position);
                 SetVelocityRaw(velocity);
             }
+            else
+            {
+                const string errmsg = "TEST! On: `{0}`  Old: `{1}`  New: `{2}`";
+                Trace.WriteLine(string.Format(errmsg, this, _lastTimeStamp, timeStamp));
+            }
         }
 
         /// <summary>
