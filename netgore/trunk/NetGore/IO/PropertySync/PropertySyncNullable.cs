@@ -77,8 +77,11 @@ namespace NetGore.IO.PropertySync
                 if (writer.SupportsNameLookup)
                 {
                     writer.WriteStartNode(name);
-                    writer.Write(_hasValueValueKey, value.HasValue);
-                    _nonNullableSync.InternalWrite(_valueValueKey, writer, (value.HasValue ? value.Value : default(T)));
+                    {
+                        writer.Write(_hasValueValueKey, value.HasValue);
+                        _nonNullableSync.InternalWrite(_valueValueKey, writer, (value.HasValue ? value.Value : default(T)));
+                    }
+                    writer.WriteEndNode(name);
                 }
                 else
                 {
