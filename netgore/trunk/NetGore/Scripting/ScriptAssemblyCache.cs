@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Timers;
 using log4net;
+using NetGore.Cryptography;
 using NetGore.IO;
 
 namespace NetGore.Scripting
@@ -126,8 +127,8 @@ namespace NetGore.Scripting
         /// <returns>The byte array representation of the hash.</returns>
         protected static byte[] CalculateHash(string code)
         {
-            var hasher = MD5.Create();
-            return hasher.ComputeHash(Encoding.ASCII.GetBytes(code));
+            var bytes = Hasher.GetHash(code);
+            return bytes;
         }
 
         /// <summary>
@@ -137,18 +138,13 @@ namespace NetGore.Scripting
         /// <returns>The byte array representation of the hash.</returns>
         protected static byte[] CalculateHash(IEnumerable<string> files)
         {
-            var hasher = MD5.Create();
             byte[] hash = null;
 
             // Loop through each file
             foreach (var file in files)
             {
                 // Calculate the file hash
-                byte[] fileHash;
-                using (var fs = File.OpenRead(file))
-                {
-                    fileHash = hasher.ComputeHash(fs);
-                }
+                byte[] fileHash = Hasher.GetFileHash(file);
 
                 if (hash == null)
                 {
