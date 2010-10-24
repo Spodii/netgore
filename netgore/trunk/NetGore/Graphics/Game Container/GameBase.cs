@@ -199,6 +199,9 @@ namespace NetGore.Graphics
             if (!force && _isFullscreen)
                 return;
 
+            if (log.IsInfoEnabled)
+                log.Info("Changing to fullscreen mode.");
+
             RenderWindow = null;
 
             var videoMode = new VideoMode((uint)FullscreenResolution.X, (uint)FullscreenResolution.Y);
@@ -217,6 +220,9 @@ namespace NetGore.Graphics
         {
             if (!force && !_isFullscreen)
                 return;
+
+            if (log.IsInfoEnabled)
+                log.Info("Changing to windowed mode.");
 
             RenderWindow = null;
 
