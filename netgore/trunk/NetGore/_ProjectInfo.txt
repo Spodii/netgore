@@ -48,7 +48,7 @@ The following is a description of each of these folders:
  * Network: All of the networking stuff. For the most part, you only really see the IIPSocket, SocketManager, and PacketWriter classes along
 		with the MessageHandler attribute. However, a lot of work is done to ensure that the networking is simple, scalable, high-performance,
 		and implements reliable and unreliable channels seamlessly.
- * NPCChat: Soon to be moved into NetGore.Features...
+ * NPCChat: The base classes related to the NPC chat dialog system. Should be in NetGore.Features, but was added way before that ever existed.
  * Scripting: Everything related to scripting. NetGore only supports scripting with C#, VB.NET, and JScript by default. This handles the loading,
 		caching, and invoking of scripts. While scripting is provided, its not a big focus of NetGore. While we do understand that scripting
 		can be very nice to have, it isn't exactly necessary in a fully open-source engine where the only people writing code are those
