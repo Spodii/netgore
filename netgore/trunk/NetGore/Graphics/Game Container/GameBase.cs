@@ -17,27 +17,43 @@ namespace NetGore.Graphics
 
         readonly Point _fullscreenRes;
         readonly Point _windowedRes;
+        bool _callEnterAppRun = false;
 
-        IntPtr _displayHandle;
         bool? _changeIsFullscreenValue;
+        object _displayContainer;
         bool _isDisposed;
         bool _isFullscreen;
+        bool _isHandlingFrame;
         RenderWindow _renderWindow;
         bool _showMouseCursor;
-        bool _useVerticalSync;
         string _title;
+        bool _useVerticalSync;
+        bool _usingCustomDisplayContainer = false;
+        bool _willDispose;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameBase"/> class.
+        /// </summary>
+        /// <param name="windowedResolution">The windowed resolution.</param>
+        /// <param name="fullscreenResolution">The fullscreen resolution.</param>
+        /// <param name="title">The initial title value.</param>
+        protected GameBase(Point windowedResolution, Point fullscreenResolution, string title = null)
+        {
+            _windowedRes = windowedResolution;
+            _fullscreenRes = fullscreenResolution;
+
+            Title = title;
+
+            SwitchToWindowed(true);
+        }
 
         /// <summary>
         /// Gets or sets the title for the automatically generated windows. Changing this value may not immediately change the actual
-        /// title of the window, and only applies to automatically generated windows (when <see cref="GameBase.DisplayHandle"/> is
-        /// set to <see cref="IntPtr.Zero"/>).
+        /// title of the window, and only applies to automatically generated windows.
         /// </summary>
         public string Title
         {
-            get
-            {
-                return _title;
-            }
+            get { return _title; }
             set
             {
                 if (value == null)
@@ -45,48 +61,6 @@ namespace NetGore.Graphics
 
                 _title = value;
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the handle of the system control that is used to display the game. Use <see cref="IntPtr.Zero"/> to
-        /// automatically generate a control to display on.
-        /// </summary>
-        public IntPtr DisplayHandle
-        {
-            get
-            {
-                return _displayHandle;
-            }
-            set
-            {
-                if (_displayHandle == value)
-                    return;
-
-                _displayHandle = value;
-
-                if (!IsFullscreen)
-                    SwitchToWindowed(true);
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameBase"/> class.
-        /// </summary>
-        /// <param name="displayHandle">The display handle. Use <see cref="IntPtr.Zero"/> when you want to create a separate window,
-        /// or use the <see cref="IntPtr"/> for the handle of the control to display on.</param>
-        /// <param name="windowedResolution">The windowed resolution.</param>
-        /// <param name="fullscreenResolution">The fullscreen resolution.</param>
-        /// <param name="title">The initial title value.</param>
-        protected GameBase(IntPtr displayHandle, Point windowedResolution, Point fullscreenResolution,
-            string title = null)
-        {
-            _displayHandle = displayHandle;
-            _windowedRes = windowedResolution;
-            _fullscreenRes = fullscreenResolution;
-
-            Title = title;
-
-            SwitchToWindowed(true);
         }
 
         /// <summary>
@@ -110,6 +84,34 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the system handle to use to display the game on when using windowed mode. If <see cref="IntPtr.Zero"/> is returned,
+        /// a system form will be created automatically.
+        /// </summary>
+        /// <param name="displayContainer">When this method returns a value other than <see cref="IntPtr.Zero"/>, contains the
+        /// object that the returned system handle belongs to. This is then later used in other virutal methods to initialize
+        /// and dispose the container at the appropriate times.</param>
+        /// <returns>The handle to the custom control to display the game on, or <see cref="IntPtr.Zero"/> to create the window
+        /// to display the game on internally.</returns>
+        protected virtual IntPtr CreateWindowedDisplayHandle(out object displayContainer)
+        {
+            displayContainer = null;
+            return IntPtr.Zero;
+        }
+
+        /// <summary>
+        /// Provides the ability to dispose of a custom display container. This is only invoked when you use
+        /// <see cref="GameBase.CreateWindowedDisplayHandle"/> and when there is an object to clean up.
+        /// </summary>
+        /// <param name="displayContainer">The display container reference that was used in the last call to
+        /// <see cref="GameBase.CreateWindowedDisplayHandle"/>.</param>
+        protected virtual void DestroyCustomWindowedDisplayHandle(object displayContainer)
+        {
+            var asDisposable = displayContainer as IDisposable;
+            if (asDisposable != null)
+                asDisposable.Dispose();
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
@@ -118,6 +120,22 @@ namespace NetGore.Graphics
         {
             if (disposeManaged)
                 RenderWindow = null;
+        }
+
+        /// <summary>
+        /// Provides the ability for the derived class to enter a custom loop. This is primarily intended to allow event-driven
+        /// objects such as the Windows Forms to run without freezing. If this method blocks, it is up to the implementation
+        /// to call <see cref="IGameContainer.HandleFrame"/> manually.
+        /// </summary>
+        /// <example>
+        /// When using WinForms, this should contain a call to Application.Run() where the <paramref name="displayContainer"/>
+        /// is the Form that the game exists on. You will have to add additional logic to your form to have it call
+        /// <see cref="IGameContainer.HandleFrame"/> whenever the form is idle.
+        /// </example>
+        /// <param name="displayContainer">The display container reference that was used in the last call to
+        /// <see cref="GameBase.CreateWindowedDisplayHandle"/>.</param>
+        protected virtual void RunCustomWindowedDisplayHandleLoop(object displayContainer)
+        {
         }
 
         /// <summary>
@@ -139,6 +157,67 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         protected abstract void HandleDraw(TickCount currentTime);
+
+        /// <summary>
+        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
+        /// stream of updates.
+        /// </summary>
+        public void HandleFrame()
+        {
+            if (IsDisposed)
+                return;
+
+            _isHandlingFrame = false;
+
+            // Check if we need to dispose
+            if (_willDispose)
+            {
+                Dispose();
+                return;
+            }
+
+            // Begin handling frame
+            _isHandlingFrame = true;
+
+            try
+            {
+                // Check if we need to toggle fullscreen mode
+                ChangeFullscreen();
+
+                // Get the current time
+                var currentTime = TickCount.Now;
+
+                // Dispatch the events
+                var rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    rw.DispatchEvents();
+
+                // Update
+                HandleUpdate(currentTime);
+
+                // Draw
+                rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    HandleDraw(currentTime);
+
+                // Display
+                rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    rw.Display();
+            }
+            finally
+            {
+                // End handling frame
+                _isHandlingFrame = false;
+            }
+
+            // Check if we need to dispose
+            if (_willDispose)
+            {
+                Dispose();
+                return;
+            }
+        }
 
         /// <summary>
         /// When overridden in the derived class, handles updating the game.
@@ -237,6 +316,8 @@ namespace NetGore.Graphics
             var newRW = new RenderWindow(videoMode, Title, Styles.Fullscreen);
 
             _isFullscreen = true;
+            _usingCustomDisplayContainer = false;
+            _displayContainer = null;
 
             RenderWindow = newRW;
         }
@@ -257,16 +338,24 @@ namespace NetGore.Graphics
 
             RenderWindow newRW;
 
-            if (DisplayHandle == IntPtr.Zero)
+            // Get the new display container
+            var displayHandle = CreateWindowedDisplayHandle(out _displayContainer);
+
+            if (displayHandle == IntPtr.Zero)
             {
                 // Not using custom handle
+                _usingCustomDisplayContainer = false;
+                _displayContainer = null;
                 var videoMode = new VideoMode((uint)WindowedResolution.X, (uint)WindowedResolution.Y);
                 newRW = new RenderWindow(videoMode, Title, Styles.Titlebar | Styles.Close);
+                _callEnterAppRun = false;
             }
             else
             {
                 // Using custom handle
-                newRW = new RenderWindow(DisplayHandle);
+                _usingCustomDisplayContainer = true;
+                newRW = new RenderWindow(displayHandle);
+                _callEnterAppRun = true;
             }
 
             _isFullscreen = false;
@@ -579,7 +668,16 @@ namespace NetGore.Graphics
 
                 // Remove the event listeners from the old RenderWindow, and add to the new
                 if (oldRW != null)
+                {
                     SetRenderWindowListeners(oldRW, true);
+
+                    // Destroy old custom display container
+                    if (_usingCustomDisplayContainer)
+                    {
+                        DestroyCustomWindowedDisplayHandle(_displayContainer);
+                        _displayContainer = null;
+                    }
+                }
 
                 if (_renderWindow != null)
                     SetRenderWindowListeners(_renderWindow, false);
@@ -647,8 +745,6 @@ namespace NetGore.Graphics
             get { return _windowedRes; }
         }
 
-        bool _willDispose;
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -674,66 +770,21 @@ namespace NetGore.Graphics
             Dispose(true);
         }
 
-        bool _isHandlingFrame;
-
         /// <summary>
-        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
-        /// stream of updates.
+        /// Starts running the game loop for this <see cref="IGameContainer"/>. This will create a blocking loop that will
+        /// continuously call <see cref="HandleFrame"/> until the game is terminated.
         /// </summary>
-        public void HandleFrame()
+        public void Run()
         {
-            if (IsDisposed)
-                return;
-
-            _isHandlingFrame = false;
-
-            // Check if we need to dispose
-            if (_willDispose)
+            while (!IsDisposed)
             {
-                Dispose();
-                return;
-            }
+                if (_callEnterAppRun)
+                {
+                    _callEnterAppRun = false;
+                    RunCustomWindowedDisplayHandleLoop(_displayContainer);
+                }
 
-            // Begin handling frame
-            _isHandlingFrame = true;
-
-            try
-            {
-                // Check if we need to toggle fullscreen mode
-                ChangeFullscreen();
-
-                // Get the current time
-                var currentTime = TickCount.Now;
-
-                // Dispatch the events
-                var rw = RenderWindow;
-                if (rw != null && !rw.IsDisposed)
-                    rw.DispatchEvents();
-
-                // Update
-                HandleUpdate(currentTime);
-
-                // Draw
-                rw = RenderWindow;
-                if (rw != null && !rw.IsDisposed)
-                    HandleDraw(currentTime);
-
-                // Display
-                rw = RenderWindow;
-                if (rw != null && !rw.IsDisposed)
-                    rw.Display();
-            }
-            finally
-            {
-                // End handling frame
-                _isHandlingFrame = false;
-            }
-
-            // Check if we need to dispose
-            if (_willDispose)
-            {
-                Dispose();
-                return;
+                HandleFrame();
             }
         }
 

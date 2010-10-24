@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Windows.Forms;
+using log4net;
 using NetGore;
 using NetGore.Content;
 using NetGore.Graphics;
@@ -10,7 +14,8 @@ using NetGore.Network;
 using NetGore.World;
 using SFML.Graphics;
 using SFML.Window;
-using Form = System.Windows.Forms.Form;
+using Control = NetGore.Graphics.GUI.Control;
+using KeyEventArgs = SFML.Window.KeyEventArgs;
 
 namespace DemoGame.Client
 {
@@ -19,22 +24,20 @@ namespace DemoGame.Client
     /// </summary>
     public class DemoGame : GameBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly ScreenManager _screenManager;
         readonly ClientSockets _sockets;
-        readonly Form _windowedForm;
 
         IEnumerable<TextureAtlas> _globalAtlases;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DemoGame"/> class.
         /// </summary>
-        public DemoGame(Form windowedForm)
+        public DemoGame()
             : base(
-                windowedForm.Handle, new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
-                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), windowedForm.Text)
+                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
+                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), "NetGore")
         {
-            _windowedForm = windowedForm;
-
             EngineSettingsInitializer.Initialize();
 
             // Create the screen manager
@@ -70,9 +73,6 @@ namespace DemoGame.Client
             UseVerticalSync = true;
 
             KeyPressed += DemoGame_KeyPressed;
-
-            if (_windowedForm != null)
-                _windowedForm.Visible = !IsFullscreen;
         }
 
         /// <summary>
@@ -117,13 +117,31 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the <see cref="ChatBubble.CreateChatBubbleInstance"/> to create custom <see cref="ChatBubble"/>s.
         /// </summary>
-        /// <param name="parent">The parent <see cref="Control"/>.</param>
+        /// <param name="parent">The parent <see cref="NetGore.Graphics.GUI.Control"/>.</param>
         /// <param name="owner">The <see cref="Entity"/> the chat bubble is for.</param>
         /// <param name="text">The text to display.</param>
         /// <returns>The <see cref="ChatBubble"/> instance.</returns>
         static ChatBubble CreateChatBubbleInstanceHandler(Control parent, Entity owner, string text)
         {
             return new GameChatBubble(parent, owner, text);
+        }
+
+        /// <summary>
+        /// Gets the system handle to use to display the game on when using windowed mode. If <see cref="IntPtr.Zero"/> is returned,
+        /// a system form will be created automatically.
+        /// </summary>
+        /// <param name="displayContainer">When this method returns a value other than <see cref="IntPtr.Zero"/>, contains the
+        /// object that the returned system handle belongs to. This is then later used in other virutal methods to initialize
+        /// and dispose the container at the appropriate times.</param>
+        /// <returns>
+        /// The handle to the custom control to display the game on, or <see cref="IntPtr.Zero"/> to create the window
+        /// to display the game on internally.
+        /// </returns>
+        protected override IntPtr CreateWindowedDisplayHandle(out object displayContainer)
+        {
+            var frm = new GameForm(this);
+            displayContainer = frm;
+            return frm.Handle;
         }
 
         /// <summary>
@@ -138,6 +156,22 @@ namespace DemoGame.Client
 
             if (e.Code == KeyCode.Return && e.Alt)
                 IsFullscreen = !IsFullscreen;
+        }
+
+        /// <summary>
+        /// Provides the ability to dispose of a custom display container. This is only invoked when you use
+        /// <see cref="GameBase.CreateWindowedDisplayHandle"/> and when there is an object to clean up.
+        /// </summary>
+        /// <param name="displayContainer">The display container reference that was used in the last call to
+        /// <see cref="GameBase.CreateWindowedDisplayHandle"/>.</param>
+        protected override void DestroyCustomWindowedDisplayHandle(object displayContainer)
+        {
+            var frm = GetDisplayContainerAsGameForm(displayContainer);
+            if (frm == null)
+                return;
+
+            if (!frm.IsDisposed)
+                frm.Dispose();
         }
 
         /// <summary>
@@ -161,6 +195,29 @@ namespace DemoGame.Client
             }
 
             base.Dispose(disposeManaged);
+        }
+
+        /// <summary>
+        /// Gets a displayContainer parameter as a <see cref="GameForm"/>, and makes sure it is a <see cref="GameForm"/> like
+        /// we expect.
+        /// </summary>
+        /// <param name="displayContainer">The display container.</param>
+        /// <returns>The <see cref="GameForm"/>, or null if <paramref name="displayContainer"/> is not a <see cref="GameForm"/>.</returns>
+        static GameForm GetDisplayContainerAsGameForm(object displayContainer)
+        {
+            var frm = displayContainer as GameForm;
+            if (frm == null)
+            {
+                const string errmsg = "Was expecting `{0}` to be type GameForm, but was `{1}` instead.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, displayContainer,
+                                    displayContainer != null ? displayContainer.GetType().ToString() : "[NULL]");
+                Debug.Fail(string.Format(errmsg, displayContainer,
+                                         displayContainer != null ? displayContainer.GetType().ToString() : "[NULL]"));
+                return null;
+            }
+
+            return frm;
         }
 
         /// <summary>
@@ -227,22 +284,24 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the <see cref="IGameContainer.RenderWindowChanged"/> event.
+        /// Provides the ability for the derived class to enter a custom loop. This is primarily intended to allow event-driven
+        /// objects such as the Windows Forms to run without freezing. If this method blocks, it is up to the implementation
+        /// to call <see cref="IGameContainer.HandleFrame"/> manually.
         /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected override void OnRenderWindowChanged(RenderWindow oldValue, RenderWindow newValue)
+        /// <param name="displayContainer">The display container reference that was used in the last call to
+        /// <see cref="GameBase.CreateWindowedDisplayHandle"/>.</param>
+        /// <example>
+        /// When using WinForms, this should contain a call to Application.Run() where the <paramref name="displayContainer"/>
+        /// is the Form that the game exists on. You will have to add additional logic to your form to have it call
+        /// <see cref="IGameContainer.HandleFrame"/> whenever the form is idle.
+        /// </example>
+        protected override void RunCustomWindowedDisplayHandleLoop(object displayContainer)
         {
-            base.OnRenderWindowChanged(oldValue, newValue);
+            var frm = GetDisplayContainerAsGameForm(displayContainer);
+            if (frm == null)
+                return;
 
-            // Only show the WindowedForm when in windowed mode
-            if (_windowedForm != null)
-            {
-                if (IsFullscreen)
-                    _windowedForm.Visible = false;
-                else
-                    _windowedForm.Visible = true;
-            }
+            Application.Run(frm);
         }
     }
 }
