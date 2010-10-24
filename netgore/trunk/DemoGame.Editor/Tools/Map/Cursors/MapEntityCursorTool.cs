@@ -40,11 +40,14 @@ namespace DemoGame.Editor.Tools
         /// <summary>
         /// When overridden in the derived class, gets if this cursor can select the given object.
         /// </summary>
+        /// <param name="map">The map containing the object to be selected.</param>
         /// <param name="obj">The object to try to select.</param>
-        /// <returns>True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.</returns>
-        protected override bool CanSelect(object obj)
+        /// <returns>
+        /// True if the <paramref name="obj"/> can be selected and handled by this cursor; otherwise false.
+        /// </returns>
+        protected override bool CanSelect(EditorMap map, object obj)
         {
-            return (obj is Entity) && !(obj is CharacterEntity) && !(obj is WallEntity);
+            return (obj is Entity) && !(obj is CharacterEntity) && !(obj is WallEntity) && base.CanSelect(map, obj);
         }
 
         /// <summary>
