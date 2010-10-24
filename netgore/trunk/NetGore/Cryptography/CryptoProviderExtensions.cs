@@ -8,6 +8,18 @@ namespace NetGore.Cryptography
     /// </summary>
     public static class CryptoProviderExtensions
     {
+        public static byte[] Encode(this ISimpleCryptoProvider c, string data, byte[] key)
+        {
+            var bytes = Encoding.UTF8.GetBytes(data);
+            return c.Encode(bytes, key);
+        }
+
+        public static byte[] Decode(this ISimpleCryptoProvider c, string data, byte[] key)
+        {
+            var bytes = Encoding.UTF8.GetBytes(data);
+            return c.Decode(bytes, key);
+        }
+
         public static string EncodeToBase64(this ISimpleCryptoProvider c, string data, byte[] key)
         {
             var bytes = Encoding.UTF8.GetBytes(data);
