@@ -25,6 +25,7 @@ namespace DemoGame.Client
     public class DemoGame : GameBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly ScreenManager _screenManager;
         readonly ClientSockets _sockets;
 
@@ -169,6 +170,8 @@ namespace DemoGame.Client
             var frm = GetDisplayContainerAsGameForm(displayContainer);
             if (frm == null)
                 return;
+
+            frm.DisposeGameOnClose = false;
 
             if (!frm.IsDisposed)
                 frm.Dispose();
