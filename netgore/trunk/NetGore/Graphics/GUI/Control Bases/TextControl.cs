@@ -94,6 +94,9 @@ namespace NetGore.Graphics.GUI
             get { return _text; }
             set
             {
+                if (value == null)
+                    value = string.Empty;
+
                 if (StringComparer.Ordinal.Equals(value, _text))
                     return;
 

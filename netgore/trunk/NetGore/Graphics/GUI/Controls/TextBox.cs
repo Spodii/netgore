@@ -288,6 +288,9 @@ namespace NetGore.Graphics.GUI
             get { return _lines.GetRawText(); }
             set
             {
+                if (value == null)
+                    value = string.Empty;
+
                 if (StringComparer.Ordinal.Equals(_lines.GetRawText(), value))
                     return;
 
