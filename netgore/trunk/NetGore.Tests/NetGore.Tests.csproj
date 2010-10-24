@@ -121,6 +121,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptography\SimpleCryptoProviderTests.cs" />
     <Compile Include="Db\DbQueryBuilderTests.cs" />
     <Compile Include="Db\MySql\MySqlQueryBuilderTests.cs" />
     <Compile Include="Graphics\AutomaticAnimatedGrhDataTests.cs" />
