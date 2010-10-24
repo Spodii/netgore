@@ -31,6 +31,11 @@ namespace NetGore.World
         const string _sizeValueKey = "Size";
 
         /// <summary>
+        /// Local cache of the <see cref="EngineSettings.MaxWallStepUpHeight"/> value.
+        /// </summary>
+        static readonly int _maxWallStepUpHeight = EngineSettings.Instance.MaxWallStepUpHeight;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
         /// </summary>
         /// <param name="r">The r.</param>
@@ -155,11 +160,6 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Local cache of the <see cref="EngineSettings.MaxWallStepUpHeight"/> value.
-        /// </summary>
-        static readonly int _maxWallStepUpHeight = EngineSettings.Instance.MaxWallStepUpHeight;
-
-        /// <summary>
         /// Handles collision for when this wall is a wall.
         /// </summary>
         /// <param name="map">The map that the <see cref="WallEntityBase"/> is on.</param>
@@ -168,7 +168,7 @@ namespace NetGore.World
         /// to make it no longer overlap this wall.</param>
         void HandleCollideIntoWall(IMap map, Entity other, Vector2 displacement)
         {
-            bool displaced = false;
+            var displaced = false;
 
 #if !TOPDOWN
             // Allow entities to walk up very small inclines. Makes no sense in top-down, so its used in sidescroller only.
@@ -178,7 +178,7 @@ namespace NetGore.World
             {
                 // Check how far the "other" is from being on top of "this"
                 var distFromThis = other.Max.Y - Position.Y;
-                
+
                 // If they are not that far away from being on top of "this", then instead of displacing them horizontally away
                 // from us, pop them up on top of us, effectively "stepping" up
                 if (distFromThis > 0 && distFromThis < _maxWallStepUpHeight)

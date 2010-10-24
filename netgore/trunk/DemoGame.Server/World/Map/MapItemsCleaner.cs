@@ -17,8 +17,7 @@ namespace DemoGame.Server
         /// </summary>
         protected override TickCount UpdateRate
         {
-            get {
-                return ServerSettings.Default.MapItemExpirationUpdateRate; }
+            get { return ServerSettings.Default.MapItemExpirationUpdateRate; }
         }
 
         /// <summary>

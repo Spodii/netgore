@@ -246,6 +246,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Handles drawing the <see cref="BackgroundImage"/>.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        protected virtual void HandleDraw(ISpriteBatch spriteBatch)
+        {
+            var position = GetPosition(Map.Size, Camera);
+            Sprite.Draw(spriteBatch, position, Color);
+        }
+
+        /// <summary>
         /// Gets the <see cref="BackgroundImage.LayerDepth"/> value from the <see cref="IDrawable.LayerDepth"/>.
         /// </summary>
         /// <param name="imageDepth">The <see cref="BackgroundImage.LayerDepth"/> value.</param>
@@ -440,16 +450,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Handles drawing the <see cref="BackgroundImage"/>.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        protected virtual void HandleDraw(ISpriteBatch spriteBatch)
-        {
-            var position = GetPosition(Map.Size, Camera);
-            Sprite.Draw(spriteBatch, position, Color);
-        }
-
-        /// <summary>
         /// Makes the object draw itself.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
@@ -465,9 +465,7 @@ namespace NetGore.Graphics
 
             // Draw
             if (IsVisible)
-            {
                 HandleDraw(sb);
-            }
 
             // Post-drawing
             if (AfterDraw != null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using NetGore.World;
 using SFML.Graphics;
@@ -14,6 +15,15 @@ namespace NetGore.Editor
         bool _alignByDefault;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GridAlignerBase"/> class.
+        /// </summary>
+        protected GridAlignerBase()
+        {
+            InvertAlignmentKey = Keys.Shift;
+            AlignByDefault = false;
+        }
+
+        /// <summary>
         /// Gets or sets if objects are aligned to the grid by default.
         /// The default value is false.
         /// </summary>
@@ -22,15 +32,6 @@ namespace NetGore.Editor
         {
             get { return _alignByDefault; }
             set { _alignByDefault = value; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GridAlignerBase"/> class.
-        /// </summary>
-        protected GridAlignerBase()
-        {
-            InvertAlignmentKey = Keys.Shift;
-            AlignByDefault = false;
         }
 
         /// <summary>
@@ -46,20 +47,6 @@ namespace NetGore.Editor
         public Keys InvertAlignmentKey { get; set; }
 
         /// <summary>
-        /// Aligns an <see cref="ISpatial"/>'s position to the grid.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/>.</param>
-        /// <returns>The position for the <paramref name="spatial"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="spatial"/> is null.</exception>
-        public Vector2 Align(ISpatial spatial)
-        {
-            if (spatial == null)
-                throw new ArgumentNullException("spatial");
-
-            return Align(spatial.Position);
-        }
-
-        /// <summary>
         /// Gets if the alignment will occur at this time.
         /// </summary>
         protected bool WillAlign
@@ -72,6 +59,20 @@ namespace NetGore.Editor
                 else
                     return AlignByDefault;
             }
+        }
+
+        /// <summary>
+        /// Aligns an <see cref="ISpatial"/>'s position to the grid.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/>.</param>
+        /// <returns>The position for the <paramref name="spatial"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="spatial"/> is null.</exception>
+        public Vector2 Align(ISpatial spatial)
+        {
+            if (spatial == null)
+                throw new ArgumentNullException("spatial");
+
+            return Align(spatial.Position);
         }
 
         /// <summary>

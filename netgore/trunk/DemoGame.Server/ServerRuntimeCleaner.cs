@@ -31,27 +31,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Runs the clean-up routines.
-        /// </summary>
-        /// <param name="extensive">If true, the extensive clean-up routines will also be run.
-        /// This can take a long time, especially in larger databases.</param>
-        public void Run(bool extensive = false)
-        {
-            if (log.IsInfoEnabled)
-                log.Info("Starting cleanup");
-
-            SetAccountCurrentIPsNull();
-
-            if (extensive)
-            {
-                RemoveUnreferencedItems();
-            }
-
-            if (log.IsInfoEnabled)
-                log.Info("Cleanup complete");
-        }
-
-        /// <summary>
         /// Gets the <see cref="IDbController"/>.
         /// </summary>
         IDbController DbController
@@ -86,6 +65,25 @@ namespace DemoGame.Server
             }
 
             DbController.RemoveUnreferencedPrimaryKeys(DbController.Database, ItemTable.TableName, ItemTable.DbKeyColumns.First());
+        }
+
+        /// <summary>
+        /// Runs the clean-up routines.
+        /// </summary>
+        /// <param name="extensive">If true, the extensive clean-up routines will also be run.
+        /// This can take a long time, especially in larger databases.</param>
+        public void Run(bool extensive = false)
+        {
+            if (log.IsInfoEnabled)
+                log.Info("Starting cleanup");
+
+            SetAccountCurrentIPsNull();
+
+            if (extensive)
+                RemoveUnreferencedItems();
+
+            if (log.IsInfoEnabled)
+                log.Info("Cleanup complete");
         }
 
         /// <summary>

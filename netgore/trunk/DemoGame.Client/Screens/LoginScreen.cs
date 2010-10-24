@@ -107,16 +107,6 @@ namespace DemoGame.Client
             ScreenManager.SetScreen(MainMenuScreen.ScreenName);
         }
 
-        /// <summary>
-        /// Handles the Clicked event of the login button.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
-        void _btnLogin_Clicked(object sender, MouseButtonEventArgs e)
-        {
-            _sockets.Connect();
-        }
-
         void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
         {
             // Show the character selection screen
@@ -162,6 +152,16 @@ namespace DemoGame.Client
                                      sock.Status == NetConnectionStatus.None));
 
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the login button.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        void _btnLogin_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            _sockets.Connect();
         }
 
         void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)

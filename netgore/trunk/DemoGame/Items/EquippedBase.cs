@@ -17,51 +17,6 @@ namespace DemoGame
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        bool _disposed = false;
-
-        /// <summary>
-        /// Gets if this object has been disposed.
-        /// </summary>
-        public bool IsDisposed { get { return _disposed; } }
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (IsDisposed)
-                return;
-
-            _disposed = true;
-
-            GC.SuppressFinalize(this);
-
-            InternalDispose(true);
-        }
-
-        #endregion
-
-
-        /// <summary>
-        /// When overridden in the derived class, handles when this object is disposed.
-        /// </summary>
-        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
-        protected virtual void Dispose(bool disposeManaged)
-        {
-        }
-
-        void InternalDispose(bool disposeManaged)
-        {
-            foreach (var item in _equipped.Where(x =>x != null))
-            {
-                item.Disposed -= ItemDisposeHandler;
-            }
-
-            Dispose(disposeManaged);
-        }
-
         /// <summary>
         /// Greatest index of all the EquipmentSlots.
         /// </summary>
@@ -72,6 +27,8 @@ namespace DemoGame
         /// corresponding to that slot.
         /// </summary>
         readonly T[] _equipped = new T[_highestSlotIndex + 1];
+
+        bool _disposed = false;
 
         /// <summary>
         /// Notifies listeners when an item has been equipped.
@@ -105,6 +62,14 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, checks if the given <paramref name="item"/> can be
         /// equipped at all by the owner of this EquippedBase. This does not guarentee that the item
         /// will be equipped successfully when calling Equip().
@@ -122,6 +87,14 @@ namespace DemoGame
         protected abstract bool CanRemove(EquipmentSlot slot);
 
         /// <summary>
+        /// When overridden in the derived class, handles when this object is disposed.
+        /// </summary>
+        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+        }
+
+        /// <summary>
         /// Gets the EquipmentSlot of the specified <paramref name="item"/> in this EquippedBase.
         /// </summary>
         /// <param name="item">Item to find the EquipmentSlot for.</param>
@@ -136,6 +109,16 @@ namespace DemoGame
             }
 
             throw new ArgumentException("Specified item could not be found in this EquippedBase.");
+        }
+
+        void InternalDispose(bool disposeManaged)
+        {
+            foreach (var item in _equipped.Where(x => x != null))
+            {
+                item.Disposed -= ItemDisposeHandler;
+            }
+
+            Dispose(disposeManaged);
         }
 
         /// <summary>
@@ -300,6 +283,25 @@ namespace DemoGame
             // Slot setting was successful (since we always aborted early with false if it wasn't)
             return true;
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            _disposed = true;
+
+            GC.SuppressFinalize(this);
+
+            InternalDispose(true);
+        }
+
+        #endregion
 
         #region IEnumerable<KeyValuePair<EquipmentSlot,T>> Members
 

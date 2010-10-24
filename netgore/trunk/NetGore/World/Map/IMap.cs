@@ -20,6 +20,11 @@ namespace NetGore.World
         IEnumerable<Entity> Entities { get; }
 
         /// <summary>
+        /// Gets the gravity to use on the map.
+        /// </summary>
+        Vector2 Gravity { get; }
+
+        /// <summary>
         /// Gets the height of the map in pixels.
         /// </summary>
         float Height { get; }
@@ -33,11 +38,6 @@ namespace NetGore.World
         /// Gets the size of the map in pixels.
         /// </summary>
         Vector2 Size { get; }
-
-        /// <summary>
-        /// Gets the gravity to use on the map.
-        /// </summary>
-        Vector2 Gravity { get; }
 
         /// <summary>
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.

@@ -89,7 +89,7 @@ namespace DemoGame.Server
             AccountID accountID;
             GameMessage failReason;
             var success = Server.UserAccountManager.TryCreateAccount(null, accountName, accountPassword, email, out accountID,
-                                                       out failReason);
+                                                                     out failReason);
 
             if (success)
                 return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);

@@ -1,5 +1,4 @@
 using System.Linq;
-using DemoGame.Server.AI;
 using NetGore;
 using NetGore.AI;
 

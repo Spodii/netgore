@@ -34,15 +34,13 @@ namespace DemoGame.Server
         readonly GroupManager _groupManager;
         readonly ServerSockets _sockets;
         readonly TickCount _startupTime = TickCount.Now;
-        readonly World _world;
         readonly UserAccountManager _userAccountManager;
+        readonly World _world;
 
         bool _disposed;
         bool _isRunning = true;
         TickCount _nextServerSaveTime;
         int _tick;
-
-        public UserAccountManager UserAccountManager { get { return _userAccountManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
@@ -139,6 +137,11 @@ namespace DemoGame.Server
         public int Tick
         {
             get { return _tick; }
+        }
+
+        public UserAccountManager UserAccountManager
+        {
+            get { return _userAccountManager; }
         }
 
         /// <summary>
@@ -295,8 +298,8 @@ namespace DemoGame.Server
                 worldStatsTracker.Update();
 
                 // Check if we can afford sleeping the thread
-                long updateElapsedTime = (long)GetTime() - loopStartTime;
-                long sleepTime = ServerSettings.Default.ServerUpdateRate - updateElapsedTime;
+                var updateElapsedTime = (long)GetTime() - loopStartTime;
+                var sleepTime = ServerSettings.Default.ServerUpdateRate - updateElapsedTime;
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
 

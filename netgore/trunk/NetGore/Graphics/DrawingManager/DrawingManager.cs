@@ -75,31 +75,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="RenderWindow"/> to draw to.
-        /// </summary>
-        public RenderWindow RenderWindow
-        {
-            get { return _rw; }
-            set
-            {
-                if (_rw == value)
-                    return;
-
-                _rw = value;
-
-                _sb.RenderTarget = _rw;
-
-                if (_rw != null)
-                {
-                    LightManager.Initialize(_rw);
-                    RefractionManager.Initialize(_rw);
-                }
-
-                OnRenderWindowChanged(_rw);
-            }
-        }
-
-        /// <summary>
         /// Creates the <see cref="ILightManager"/> to use.
         /// </summary>
         /// <returns>The <see cref="ILightManager"/> to use. Cannot be null.</returns>
@@ -250,6 +225,31 @@ namespace NetGore.Graphics
         public IRefractionManager RefractionManager
         {
             get { return _refractionManager; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="RenderWindow"/> to draw to.
+        /// </summary>
+        public RenderWindow RenderWindow
+        {
+            get { return _rw; }
+            set
+            {
+                if (_rw == value)
+                    return;
+
+                _rw = value;
+
+                _sb.RenderTarget = _rw;
+
+                if (_rw != null)
+                {
+                    LightManager.Initialize(_rw);
+                    RefractionManager.Initialize(_rw);
+                }
+
+                OnRenderWindowChanged(_rw);
+            }
         }
 
         /// <summary>

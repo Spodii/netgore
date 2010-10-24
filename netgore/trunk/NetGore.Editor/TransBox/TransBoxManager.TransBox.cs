@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -23,6 +22,7 @@ namespace NetGore.Editor
             readonly TransBoxType _type;
 
             Vector2 _position;
+            Vector2 _selectPos;
             Vector2 _spatialInitPos;
             Vector2 _spatialInitSize;
 
@@ -41,6 +41,14 @@ namespace NetGore.Editor
 
                 _size = GetTransBoxSize(type);
                 _position = GetPosition();
+            }
+
+            Vector2 Align(Vector2 v)
+            {
+                if (_owner == null || _owner.GridAligner == null)
+                    return v;
+
+                return _owner.GridAligner.Align(v);
             }
 
             /// <summary>
@@ -88,6 +96,43 @@ namespace NetGore.Editor
                 }
             }
 
+            static Vector2 GetResizeVector(TransBoxType t)
+            {
+                switch (t)
+                {
+                    case TransBoxType.Bottom:
+                        return new Vector2(0, 1);
+
+                    case TransBoxType.BottomLeft:
+                        return new Vector2(-1, 1);
+
+                    case TransBoxType.BottomRight:
+                        return new Vector2(1, 1);
+
+                    case TransBoxType.Left:
+                        return new Vector2(-1, 0);
+
+                    case TransBoxType.Right:
+                        return new Vector2(1, 0);
+
+                    case TransBoxType.Top:
+                        return new Vector2(0, -1);
+
+                    case TransBoxType.TopLeft:
+                        return new Vector2(-1, -1);
+
+                    case TransBoxType.TopRight:
+                        return new Vector2(1, -1);
+
+                    default:
+                        const string errmsg = "Unsupported TransBoxType `{0}`.";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, t);
+                        Debug.Fail(string.Format(errmsg, t));
+                        return Vector2.Zero;
+                }
+            }
+
             /// <summary>
             /// Creates a series of transformation boxes around an entity.
             /// </summary>
@@ -128,28 +173,7 @@ namespace NetGore.Editor
                 return ret;
             }
 
-            Vector2 _selectPos;
-
             #region ITransBox Members
-
-            /// <summary>
-            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
-            /// </summary>
-            /// <param name="cursorWorldPos">The world position of the cursor.</param>
-            void ITransBox.Deselect(Vector2 cursorWorldPos)
-            {
-            }
-
-            /// <summary>
-            /// Notifies the <see cref="ITransBox"/> that it has been selected.
-            /// </summary>
-            /// <param name="cursorWorldPos">The world position of the cursor.</param>
-            void ITransBox.Select(Vector2 cursorWorldPos)
-            {
-                _selectPos = cursorWorldPos;
-                _spatialInitPos = _spatial.Position;
-                _spatialInitSize = _spatial.Size;
-            }
 
             /// <summary>
             /// Gets the max (bottom-right) point of the <see cref="ITransBox"/>.
@@ -196,52 +220,6 @@ namespace NetGore.Editor
                 return (lo.X <= w.X) && (lo.Y <= w.Y) && (hi.X >= w.X) && (hi.Y >= w.Y);
             }
 
-            Vector2 Align(Vector2 v)
-            {
-                if (_owner == null || _owner.GridAligner == null)
-                    return v;
-
-                return _owner.GridAligner.Align(v);
-            }
-
-            static Vector2 GetResizeVector(TransBoxType t)
-            {
-                switch (t)
-                {
-                    case TransBoxType.Bottom:
-                        return new Vector2(0, 1);
-
-                    case TransBoxType.BottomLeft:
-                        return new Vector2(-1, 1);
-
-                    case TransBoxType.BottomRight:
-                        return new Vector2(1, 1);
-
-                    case TransBoxType.Left:
-                        return new Vector2(-1, 0);
-
-                    case TransBoxType.Right:
-                        return new Vector2(1, 0);
-
-                    case TransBoxType.Top:
-                        return new Vector2(0, -1);
-
-                    case TransBoxType.TopLeft:
-                        return new Vector2(-1, -1);
-
-                    case TransBoxType.TopRight:
-                        return new Vector2(1, -1);
-
-                    default:
-                        const string errmsg = "Unsupported TransBoxType `{0}`.";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, t);
-                        Debug.Fail(string.Format(errmsg, t));
-                        return Vector2.Zero;
-                }
-            }
-
-
             /// <summary>
             /// Handles when the mouse cursor moves while this <see cref="ITransBox"/> is selected.
             /// </summary>
@@ -261,8 +239,8 @@ namespace NetGore.Editor
 
                 // Handle resizing, which is the harder part
                 var resizeVector = GetResizeVector(_type);
-                
-                Vector2 newSize = _spatialInitSize + (delta * resizeVector);
+
+                var newSize = _spatialInitSize + (delta * resizeVector);
                 newSize = Align(_spatialInitPos + newSize) - _spatialInitPos;
 
                 newSize = Vector2.Max(Vector2.One, newSize);
@@ -281,9 +259,7 @@ namespace NetGore.Editor
                     newPos.X = alignPos.X;
                 }
                 else if (resizeVector.X == 0)
-                {
                     newSize.X = _spatialInitSize.X;
-                }
 
                 if (resizeVector.Y < 0)
                 {
@@ -291,15 +267,21 @@ namespace NetGore.Editor
                     newPos.Y = alignPos.Y;
                 }
                 else if (resizeVector.Y == 0)
-                {
                     newSize.Y = _spatialInitSize.Y;
-                }
 
                 // Apply the new size and position
                 if (!_spatial.TryResize(newSize))
                     return;
 
                 _spatial.TryMove(newPos);
+            }
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Deselect(Vector2 cursorWorldPos)
+            {
             }
 
             /// <summary>
@@ -318,6 +300,17 @@ namespace NetGore.Editor
                 var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
 
                 sprite.Draw(spriteBatch, r, Color.White);
+            }
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Select(Vector2 cursorWorldPos)
+            {
+                _selectPos = cursorWorldPos;
+                _spatialInitPos = _spatial.Position;
+                _spatialInitSize = _spatial.Size;
             }
 
             /// <summary>

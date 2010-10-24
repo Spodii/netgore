@@ -22,7 +22,6 @@ namespace NetGore.Graphics.GUI
         readonly ISkinManager _skinManager;
         readonly Tooltip _tooltip;
 
-        Window _window;
         IDragDropProvider _draggedDragDropProvider;
         IDragDropProvider _dropOntoControl;
         Control _focusedControl = null;
@@ -30,15 +29,7 @@ namespace NetGore.Graphics.GUI
         Control _lastPressedControl;
         Vector2 _screenSize;
         Control _underCursor;
-
-        public Window Window
-        {
-            get { return _window; }
-            set
-            {
-                _window = value;
-            }
-        }
+        Window _window;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
@@ -317,7 +308,8 @@ namespace NetGore.Graphics.GUI
                 if (w == null || w.IsDisposed)
                     return Vector2.Zero;
 
-                return new Vector2(w.Input.GetMouseX(), w.Input.GetMouseY()); }
+                return new Vector2(w.Input.GetMouseX(), w.Input.GetMouseY());
+            }
         }
 
         /// <summary>
@@ -484,6 +476,12 @@ namespace NetGore.Graphics.GUI
         public Control UnderCursor
         {
             get { return _underCursor; }
+        }
+
+        public Window Window
+        {
+            get { return _window; }
+            set { _window = value; }
         }
 
         /// <summary>

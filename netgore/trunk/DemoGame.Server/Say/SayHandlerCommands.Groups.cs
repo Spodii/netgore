@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using NetGore;
 using NetGore.Features.Groups;
 
 namespace DemoGame.Server

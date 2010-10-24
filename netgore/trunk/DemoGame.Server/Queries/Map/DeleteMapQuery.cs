@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
@@ -14,8 +15,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="DeleteMapQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public DeleteMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        public DeleteMapQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 

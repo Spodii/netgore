@@ -33,14 +33,6 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Gets if the user is currently in a guild.
-        /// </summary>
-        public bool IsInGuild
-        {
-            get { return GuildInfo != null && GuildInfo.InGuild; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GuildInfoFormBase"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
@@ -77,6 +69,14 @@ namespace NetGore.Features.Guilds
                 if (GuildInfoChanged != null)
                     GuildInfoChanged(this, _guildInfo, old);
             }
+        }
+
+        /// <summary>
+        /// Gets if the user is currently in a guild.
+        /// </summary>
+        public bool IsInGuild
+        {
+            get { return GuildInfo != null && GuildInfo.InGuild; }
         }
 
         /// <summary>

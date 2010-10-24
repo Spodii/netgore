@@ -9,8 +9,8 @@ namespace SFML.Graphics
     /// </summary>
     public class LazySoundBuffer : SoundBuffer
     {
-        LazyContentLoadFailCounter _loadFailCounter;
         string _filename;
+        LazyContentLoadFailCounter _loadFailCounter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LazySoundBuffer"/> class.

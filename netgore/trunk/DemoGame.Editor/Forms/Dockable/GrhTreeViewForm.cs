@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Forms;
 using NetGore.Editor.Docking;
 using NetGore.Editor.Grhs;
+using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
@@ -30,12 +32,13 @@ namespace DemoGame.Editor
             gtv.EditGrhDataRequested += gtv_EditGrhDataRequested;
         }
 
-        void gtv_EditGrhDataRequested(GrhTreeView sender, System.Windows.Forms.TreeNode node, NetGore.Graphics.GrhData gd, bool deleteOnCancel)
+        void gtv_EditGrhDataRequested(GrhTreeView sender, TreeNode node, GrhData gd, bool deleteOnCancel)
         {
             if (gd == null)
                 return;
 
-            var frm = new EditGrhForm(gd, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size), deleteOnCancel);
+            var frm = new EditGrhForm(gd, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size),
+                                      deleteOnCancel);
             frm.Show();
         }
 

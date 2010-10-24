@@ -13,18 +13,6 @@ namespace NetGore.Editor
         interface ITransBox
         {
             /// <summary>
-            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
-            /// </summary>
-            /// <param name="cursorWorldPos">The world position of the cursor.</param>
-            void Deselect(Vector2 cursorWorldPos);
-
-            /// <summary>
-            /// Notifies the <see cref="ITransBox"/> that it has been selected.
-            /// </summary>
-            /// <param name="cursorWorldPos">The world position of the cursor.</param>
-            void Select(Vector2 cursorWorldPos);
-
-            /// <summary>
             /// Gets the max (bottom-right) point of the <see cref="ITransBox"/>.
             /// </summary>
             Vector2 Max { get; }
@@ -58,11 +46,23 @@ namespace NetGore.Editor
             void CursorMoved(Vector2 cursorWorldPos);
 
             /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void Deselect(Vector2 cursorWorldPos);
+
+            /// <summary>
             /// Draws the <see cref="ITransBox"/>.
             /// </summary>
             /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
             /// <param name="camera">The <see cref="ICamera2D"/>.</param>
             void Draw(ISpriteBatch spriteBatch, ICamera2D camera);
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void Select(Vector2 cursorWorldPos);
 
             /// <summary>
             /// Updates the <see cref="ITransBox"/>.

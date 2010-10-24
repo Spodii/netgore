@@ -1,4 +1,6 @@
-﻿namespace NetGore
+﻿using System.Linq;
+
+namespace NetGore
 {
     /// <summary>
     /// A very straight-forward implementation of <see cref="IGetTime"/> that always returns <see cref="TickCount.Now"/>.
@@ -21,13 +23,18 @@
         /// Initializes a new instance of the <see cref="GetTimeDummy"/> class.
         /// </summary>
         GetTimeDummy()
-        { 
+        {
         }
 
         /// <summary>
         /// Gets the <see cref="GetTimeDummy"/> instance.
         /// </summary>
-        public static GetTimeDummy Instance { get { return _instance; } }
+        public static GetTimeDummy Instance
+        {
+            get { return _instance; }
+        }
+
+        #region IGetTime Members
 
         /// <summary>
         /// Gets the current time in milliseconds.
@@ -37,5 +44,7 @@
         {
             return TickCount.Now;
         }
+
+        #endregion
     }
 }

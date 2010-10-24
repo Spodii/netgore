@@ -157,7 +157,7 @@ namespace NetGore.Graphics
         public virtual void Begin(BlendMode blendMode)
         {
             var v = new Vector2(_rt.Width, _rt.Height);
-            
+
             _rt.CurrentView.Size = v;
             _rt.CurrentView.Center = v / 2f;
 

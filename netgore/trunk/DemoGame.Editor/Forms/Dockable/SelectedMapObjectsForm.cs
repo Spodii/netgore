@@ -35,13 +35,9 @@ namespace DemoGame.Editor
         void lstItemsUpdateVisibility()
         {
             if (lstItems.Items.Count <= 1)
-            {
                 sc.Panel2Collapsed = true;
-            }
             else
-            {
                 sc.Panel2Collapsed = false;
-            }
         }
 
         /// <summary>
@@ -49,7 +45,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstItems_SelectedIndexChanged(object sender, EventArgs e)
+        void lstItems_SelectedIndexChanged(object sender, EventArgs e)
         {
             lstItemsUpdateVisibility();
         }
@@ -59,7 +55,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void tmrUpdateLstItemsVisibility_Tick(object sender, EventArgs e)
+        void tmrUpdateLstItemsVisibility_Tick(object sender, EventArgs e)
         {
             lstItemsUpdateVisibility();
         }

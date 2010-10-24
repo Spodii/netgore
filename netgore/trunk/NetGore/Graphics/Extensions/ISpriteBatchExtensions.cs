@@ -10,11 +10,47 @@ namespace NetGore.Graphics
     /// </summary>
     public static class ISpriteBatchExtensions
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The <see cref="SFML.Graphics.Sprite"/> used for repeated draws.
         /// </summary>
         static readonly SFML.Graphics.Sprite _repeatSprite = new SFML.Graphics.Sprite
         { BlendMode = BlendMode.Alpha, Scale = Vector2.One, Rotation = 0f, Origin = Vector2.Zero };
+
+        /// <summary>
+        /// Checks if a <see cref="ISprite"/> is valid to be drawn.
+        /// </summary>
+        /// <param name="sprite">The sprite to draw.</param>
+        /// <returns>True if the <paramref name="sprite"/> can be used to draw; otherwise false.</returns>
+        static bool CanDrawSprite(ISprite sprite)
+        {
+            if (sprite == null)
+            {
+                const string errmsg = "Attempted to draw using a null sprite.";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+                return false;
+            }
+
+            if (sprite.Texture == null || sprite.Texture.IsDisposed)
+            {
+                const string errmsg = "Attempted to draw using sprite `{0}`, but the texture is not set or is disposed.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, sprite);
+                return false;
+            }
+
+            if (sprite.Size.X < 1 || sprite.Size.Y < 1)
+            {
+                const string errmsg = "Attempted to draw using sprite `{0}`, but the size (width and/or height) is < 1.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, sprite);
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Draws a string with shading.
@@ -101,42 +137,6 @@ namespace NetGore.Graphics
                 sb.Draw(_repeatSprite);
             }
         }
-
-        /// <summary>
-        /// Checks if a <see cref="ISprite"/> is valid to be drawn.
-        /// </summary>
-        /// <param name="sprite">The sprite to draw.</param>
-        /// <returns>True if the <paramref name="sprite"/> can be used to draw; otherwise false.</returns>
-        static bool CanDrawSprite(ISprite sprite)
-        {
-            if (sprite == null)
-            {
-                const string errmsg = "Attempted to draw using a null sprite.";
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                return false;
-            }
-
-            if (sprite.Texture == null || sprite.Texture.IsDisposed)
-            {
-                const string errmsg = "Attempted to draw using sprite `{0}`, but the texture is not set or is disposed.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, sprite);
-                return false;
-            }
-
-            if (sprite.Size.X < 1 || sprite.Size.Y < 1)
-            {
-                const string errmsg = "Attempted to draw using sprite `{0}`, but the size (width and/or height) is < 1.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, sprite);
-                return false;
-            }
-
-            return true;
-        }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Draws a <see cref="ISprite"/> tiled on both the X and Y axis.

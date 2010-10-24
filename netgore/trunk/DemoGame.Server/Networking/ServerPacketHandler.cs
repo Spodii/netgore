@@ -484,7 +484,7 @@ namespace DemoGame.Server
                 return;
 
             // Get the item
-            ItemEntityBase item = map.GetDynamicEntity<ItemEntityBase>(mapEntityIndex);
+            var item = map.GetDynamicEntity<ItemEntityBase>(mapEntityIndex);
             if (item == null)
                 return;
 

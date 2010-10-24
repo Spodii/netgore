@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
 using NetGore.Editor.Docking;
@@ -122,9 +121,7 @@ namespace DemoGame.Editor
 
             var mapPropertiesTool = ToolManager.Instance.TryGetTool<MapPropertiesTool>();
             if (mapPropertiesTool != null)
-            {
                 mapPropertiesTool.DockPanel = dockPanel;
-            }
             else
             {
                 const string errmsg = "Unable to set DockPanel on MapPropertiesTool - couldn't find tool instance.";

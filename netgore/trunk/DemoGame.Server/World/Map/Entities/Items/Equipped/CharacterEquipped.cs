@@ -84,6 +84,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles when this object is disposed.
+        /// </summary>
+        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
+        protected override void Dispose(bool disposeManaged)
+        {
+            base.Dispose(disposeManaged);
+
+            // If the Character is not persistent, we want to destroy every ItemEntity so it doesn't sit in the
+            // database as garbage
+            if (!_isPersistent)
+            {
+                foreach (var item in this.Select(x => x.Value))
+                {
+                    item.Destroy();
+                }
+            }
+        }
+
+        /// <summary>
         /// Equips an <paramref name="item"/>, automatically choosing the EquipmentSlot to use.
         /// </summary>
         /// <param name="item">Item to be equipped.</param>
@@ -264,25 +283,6 @@ namespace DemoGame.Server
         public void SynchronizePaperdollTo(INetworkSender client)
         {
             _paperDoll.SynchronizeBodyLayersTo(client);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when this object is disposed.
-        /// </summary>
-        /// <param name="disposeManaged">True if dispose was called directly; false if this object was garbage collected.</param>
-        protected override void Dispose(bool disposeManaged)
-        {
-            base.Dispose(disposeManaged);
-
-            // If the Character is not persistent, we want to destroy every ItemEntity so it doesn't sit in the
-            // database as garbage
-            if (!_isPersistent)
-            {
-                foreach (var item in this.Select(x => x.Value))
-                {
-                    item.Destroy();
-                }
-            }
         }
 
         #region IModStatContainer<StatType> Members

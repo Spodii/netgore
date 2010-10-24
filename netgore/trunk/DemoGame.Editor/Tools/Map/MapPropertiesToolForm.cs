@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using DemoGame.Client;
+﻿using System.Linq;
 using NetGore.Editor.Docking;
 
 namespace DemoGame.Editor.Tools
@@ -14,6 +6,14 @@ namespace DemoGame.Editor.Tools
     public partial class MapPropertiesToolForm : DockContent
     {
         EditorMap _map;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapPropertiesToolForm"/> class.
+        /// </summary>
+        public MapPropertiesToolForm()
+        {
+            InitializeComponent();
+        }
 
         /// <summary>
         /// Gets or sets the map to display the properties for.
@@ -34,24 +34,16 @@ namespace DemoGame.Editor.Tools
             }
         }
 
+        static string GetFormText(EditorMap map)
+        {
+            return "Map properties: " + (map == null ? "(No map loaded)" : map.ToString());
+        }
+
         protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
         {
             Text = GetFormText(newValue);
 
             pg.SelectedObject = newValue;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapPropertiesToolForm"/> class.
-        /// </summary>
-        public MapPropertiesToolForm()
-        {
-            InitializeComponent();
-        }
-
-        static string GetFormText(EditorMap map)
-        {
-            return "Map properties: " + (map == null ? "(No map loaded)" : map.ToString());
         }
     }
 }

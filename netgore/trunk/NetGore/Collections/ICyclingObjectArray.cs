@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.Collections
 {
@@ -35,11 +36,6 @@ namespace NetGore.Collections
         IEnumerable<TKey> Keys { get; }
 
         /// <summary>
-        /// Gets the values in the collection.
-        /// </summary>
-        IEnumerable<TValue> Values { get; }
-
-        /// <summary>
         /// Gets the value of the maximum supported index value.
         /// </summary>
         int MaxIndex { get; }
@@ -50,12 +46,9 @@ namespace NetGore.Collections
         int MinIndex { get; }
 
         /// <summary>
-        /// Gets the next free key and reserves the key for a short period.
-        /// It is highly recommended to use <see cref="ICyclingObjectArray{T,U}.Add"/> instead whenever possible.
+        /// Gets the values in the collection.
         /// </summary>
-        /// <returns>The next free key.</returns>
-        /// <exception cref="InvalidOperationException">No free indices could be found.</exception>
-        TKey NextFreeKey();
+        IEnumerable<TValue> Values { get; }
 
         /// <summary>
         /// Adds a value into the collection.
@@ -78,5 +71,13 @@ namespace NetGore.Collections
         /// <param name="key">The key.</param>
         /// <returns>True if an object exists at the given <paramref name="key"/>; otherwise false.</returns>
         bool IsSet(int key);
+
+        /// <summary>
+        /// Gets the next free key and reserves the key for a short period.
+        /// It is highly recommended to use <see cref="ICyclingObjectArray{T,U}.Add"/> instead whenever possible.
+        /// </summary>
+        /// <returns>The next free key.</returns>
+        /// <exception cref="InvalidOperationException">No free indices could be found.</exception>
+        TKey NextFreeKey();
     }
 }

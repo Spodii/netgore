@@ -556,36 +556,6 @@ namespace DemoGame.Client
             _cScreen.SetFocus();
         }
 
-        void _guildForm_LeaveRequested(GuildForm sender)
-        {
-            using (var pw = ClientPacket.Say("/leaveguild"))
-            {
-                Socket.Send(pw, ClientMessageType.Chat);
-            }
-        }
-
-        void _guildForm_JoinRequested(GuildForm sender)
-        {
-            var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.",
-                 MessageBoxButton.OkCancel);
-
-            ib.OptionSelected += delegate(Control s, MessageBoxButton args)
-            {
-                var c = s as InputBox;
-                if (c == null || args != MessageBoxButton.Ok || Socket == null)
-                    return;
-
-                var input = c.InputText;
-                if (string.IsNullOrEmpty(input))
-                    return;
-
-                using (var pw = ClientPacket.Say(string.Format("/joinguild \"{0}\"", input)))
-                {
-                    Socket.Send(pw, ClientMessageType.Chat);
-                }
-            };
-        }
-
         /// <summary>
         /// Handles the <see cref="InventoryForm.RequestDropItem"/> event.
         /// </summary>
@@ -818,6 +788,36 @@ namespace DemoGame.Client
             foreach (var fx in newMap.RefractionEffects)
             {
                 DrawingManager.RefractionManager.Add(fx);
+            }
+        }
+
+        void _guildForm_JoinRequested(GuildForm sender)
+        {
+            var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.",
+                                  MessageBoxButton.OkCancel);
+
+            ib.OptionSelected += delegate(Control s, MessageBoxButton args)
+            {
+                var c = s as InputBox;
+                if (c == null || args != MessageBoxButton.Ok || Socket == null)
+                    return;
+
+                var input = c.InputText;
+                if (string.IsNullOrEmpty(input))
+                    return;
+
+                using (var pw = ClientPacket.Say(string.Format("/joinguild \"{0}\"", input)))
+                {
+                    Socket.Send(pw, ClientMessageType.Chat);
+                }
+            };
+        }
+
+        void _guildForm_LeaveRequested(GuildForm sender)
+        {
+            using (var pw = ClientPacket.Say("/leaveguild"))
+            {
+                Socket.Send(pw, ClientMessageType.Chat);
             }
         }
 

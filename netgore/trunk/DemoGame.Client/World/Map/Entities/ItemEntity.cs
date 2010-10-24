@@ -61,14 +61,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles destroying the <see cref="ItemEntityBase"/>.
-        /// </summary>
-        protected override void HandleDestroy()
-        {
-            Dispose();
-        }
-
-        /// <summary>
         /// Gets or sets the size of this item cluster (1 for a single item)
         /// </summary>
         public override byte Amount { get; set; }
@@ -156,6 +148,14 @@ namespace DemoGame.Client
         public void Draw(ISpriteBatch sb, Vector2 pos)
         {
             Draw(sb, pos, Color);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles destroying the <see cref="ItemEntityBase"/>.
+        /// </summary>
+        protected override void HandleDestroy()
+        {
+            Dispose();
         }
 
         /// <summary>

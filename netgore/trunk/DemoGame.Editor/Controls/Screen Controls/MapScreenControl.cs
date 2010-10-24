@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using NetGore;
 using NetGore.Editor;

@@ -33,79 +33,13 @@ namespace DemoGame.Editor
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main(string[] args)
-        {
-            log.Info("Starting editor...");
-
-            ThreadAsserts.IsMainThread();
-
-#if DEBUG
-            WinFormExceptionHelper.AddUnhandledExceptionHooks();
-#endif
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            // Check for a valid path to the development content
-            if (ContentPaths.Dev == null)
-            {
-                const string errmsg =
-                    @"Could not find the path to the development content (ContentPaths.Dev). The file containing this path should be located at:
-    \Content\Data\devpath.txt
-
-The path to the development content is required by the editor. See the file mentioned above for details.";
-                MessageBox.Show(errmsg, "Error finding content path", MessageBoxButtons.OK);
-                return;
-            }
-
-            // Ensure the content is copied over
-            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
-            {
-                const string errmsg =
-                    "Failed to copy the content from the dev to build path." +
-                    " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg);
-                Debug.Fail(errmsg);
-            }
-
-            // Initialize stuff
-            EngineSettingsInitializer.Initialize();
-            GlobalState.Initailize();
-          
-            // Ensure the content is copied over
-            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
-            {
-                const string errmsg =
-                    "Failed to copy the content from the dev to build path." +
-                    " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg);
-                Debug.Fail(errmsg);
-            }
-
-            // Get the command-line switches
-            var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
-            var showEditor = !HandleSwitches(switches);
-
-            if (showEditor)
-            {
-                // Start up the application
-                Application.Run(new MainForm());
-            }
-        }
-
-        /// <summary>
         /// Handles the <see cref="CommandLineSwitch.SaveMaps"/> switch.
         /// </summary>
         /// <param name="values">The values passed to the switch at the command line.</param>
         /// <returns>True if completed without errors; false if there were any errors.</returns>
         static bool HandleSwitch_SaveMaps(string[] values)
         {
-            bool ret = true;
+            var ret = true;
 
             var camera = new Camera2D(GameData.ScreenSize);
             var dynamicEntityFactory = EditorDynamicEntityFactory.Instance;
@@ -160,9 +94,9 @@ The path to the development content is required by the editor. See the file ment
         /// <returns>True if the program should close; false if the editor form should be loaded like normal.</returns>
         static bool HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
-            bool hasErrors = false;
-            bool ret = false;
-            
+            var hasErrors = false;
+            var ret = false;
+
             // Loop through the switches
             foreach (var s in switches)
             {
@@ -196,14 +130,80 @@ The path to the development content is required by the editor. See the file ment
             // Display message when there were any errors
             if (hasErrors)
             {
-                const string errmsg = "WARNING: One or more command-line switches threw an error while executing."
-                    + " See the log for details.";
+                const string errmsg =
+                    "WARNING: One or more command-line switches threw an error while executing." + " See the log for details.";
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
-                MessageBox.Show(errmsg,"Error handling switches");
+                MessageBox.Show(errmsg, "Error handling switches");
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main(string[] args)
+        {
+            log.Info("Starting editor...");
+
+            ThreadAsserts.IsMainThread();
+
+#if DEBUG
+            WinFormExceptionHelper.AddUnhandledExceptionHooks();
+#endif
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            // Check for a valid path to the development content
+            if (ContentPaths.Dev == null)
+            {
+                const string errmsg =
+                    @"Could not find the path to the development content (ContentPaths.Dev). The file containing this path should be located at:
+    \Content\Data\devpath.txt
+
+The path to the development content is required by the editor. See the file mentioned above for details.";
+                MessageBox.Show(errmsg, "Error finding content path", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Ensure the content is copied over
+            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
+            {
+                const string errmsg =
+                    "Failed to copy the content from the dev to build path." +
+                    " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg);
+                Debug.Fail(errmsg);
+            }
+
+            // Initialize stuff
+            EngineSettingsInitializer.Initialize();
+            GlobalState.Initailize();
+
+            // Ensure the content is copied over
+            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
+            {
+                const string errmsg =
+                    "Failed to copy the content from the dev to build path." +
+                    " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg);
+                Debug.Fail(errmsg);
+            }
+
+            // Get the command-line switches
+            var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
+            var showEditor = !HandleSwitches(switches);
+
+            if (showEditor)
+            {
+                // Start up the application
+                Application.Run(new MainForm());
+            }
         }
     }
 }

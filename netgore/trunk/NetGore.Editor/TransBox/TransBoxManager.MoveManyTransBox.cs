@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,10 +16,10 @@ namespace NetGore.Editor
         sealed class MoveManyTransBox : ITransBox
         {
             static readonly Vector2 _size = GetTransBoxSize(TransBoxType.Move);
+            readonly Dictionary<ISpatial, Vector2> _initialPos = new Dictionary<ISpatial, Vector2>();
 
             readonly TransBoxManager _owner;
             readonly IEnumerable<ISpatial> _spatials;
-            readonly Dictionary<ISpatial, Vector2> _initialPos = new Dictionary<ISpatial, Vector2>();
 
             Vector2 _position;
             Vector2 _selectPos;
@@ -39,27 +38,6 @@ namespace NetGore.Editor
             }
 
             #region ITransBox Members
-
-            /// <summary>
-            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
-            /// </summary>
-            /// <param name="cursorWorldPos">The world position of the cursor.</param>
-            void ITransBox.Deselect(Vector2 cursorWorldPos)
-            {
-                _initialPos.Clear();
-            }
-
-            /// <summary>
-            /// Notifies the <see cref="ITransBox"/> that it has been selected.
-            /// </summary>
-            /// <param name="cursorWorldPos">The world position of the cursor.</param>
-            void ITransBox.Select(Vector2 cursorWorldPos)
-            {
-                _selectPos = cursorWorldPos;
-
-                foreach (var s in _spatials)
-                    _initialPos.Add(s, s.Position);
-            }
 
             /// <summary>
             /// Gets the max (bottom-right) point of the <see cref="ITransBox"/>.
@@ -137,6 +115,15 @@ namespace NetGore.Editor
             }
 
             /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been un-selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Deselect(Vector2 cursorWorldPos)
+            {
+                _initialPos.Clear();
+            }
+
+            /// <summary>
             /// Draws the <see cref="ITransBox"/>.
             /// </summary>
             /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
@@ -147,6 +134,20 @@ namespace NetGore.Editor
                 var s = Size.Round();
                 var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
                 SystemSprites.Move.Draw(spriteBatch, r, Color.White);
+            }
+
+            /// <summary>
+            /// Notifies the <see cref="ITransBox"/> that it has been selected.
+            /// </summary>
+            /// <param name="cursorWorldPos">The world position of the cursor.</param>
+            void ITransBox.Select(Vector2 cursorWorldPos)
+            {
+                _selectPos = cursorWorldPos;
+
+                foreach (var s in _spatials)
+                {
+                    _initialPos.Add(s, s.Position);
+                }
             }
 
             /// <summary>

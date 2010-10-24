@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Windows.Forms;
-using DemoGame.Client;
+using System.Linq;
 using DemoGame.Editor.Properties;
-using log4net;
 using NetGore.Editor.EditorTool;
-using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor.Tools
 {
@@ -16,8 +11,7 @@ namespace DemoGame.Editor.Tools
         /// Initializes a new instance of the <see cref="MapDeleteTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapDeleteTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
+        protected MapDeleteTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Delete the currently selected map";
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using NetGore.Cryptography;
 using NUnit.Framework;
@@ -10,10 +8,24 @@ namespace NetGore.Tests.Cryptography
     [TestFixture]
     public class MachineCryptoTests
     {
+        #region Unit tests
+
+        [Test]
+        public void InvalidTest()
+        {
+            var c = new MachineCrypto();
+
+            var enc = c.Encode("asdf", null);
+            enc[6]++;
+            var decRaw = c.ValidatedDecode(enc);
+
+            Assert.IsNull(decRaw);
+        }
+
         [Test]
         public void ValidTest()
         {
-            MachineCrypto c = new MachineCrypto();
+            var c = new MachineCrypto();
 
             var enc = c.Encode("asdf", null);
             var decRaw = c.ValidatedDecode(enc);
@@ -22,16 +34,6 @@ namespace NetGore.Tests.Cryptography
             Assert.AreEqual("asdf", dec);
         }
 
-        [Test]
-        public void InvalidTest()
-        {
-            MachineCrypto c = new MachineCrypto();
-
-            var enc = c.Encode("asdf", null);
-            enc[6]++;
-            var decRaw = c.ValidatedDecode(enc);
-
-            Assert.IsNull(decRaw);
-        }
+        #endregion
     }
 }
