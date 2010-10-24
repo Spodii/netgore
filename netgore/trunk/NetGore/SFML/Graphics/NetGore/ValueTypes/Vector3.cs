@@ -713,7 +713,7 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
 
             for (var i = 0; i < sourceArray.Length; i++)
             {
@@ -741,9 +741,10 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (sourceArray.Length < (sourceIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughSourceSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughSourceSize);
             if (destinationArray.Length < (destinationIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
+
             while (length > 0)
             {
                 var x = sourceArray[sourceIndex].X;
@@ -769,7 +770,8 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
+
             for (var i = 0; i < sourceArray.Length; i++)
             {
                 var x = sourceArray[i].X;
@@ -796,9 +798,10 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (sourceArray.Length < (sourceIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughSourceSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughSourceSize);
             if (destinationArray.Length < (destinationIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
+
             while (length > 0)
             {
                 var x = sourceArray[sourceIndex].X;
@@ -824,7 +827,8 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
+
             var num16 = rotation.X + rotation.X;
             var num6 = rotation.Y + rotation.Y;
             var num2 = rotation.Z + rotation.Z;
@@ -872,9 +876,10 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (sourceArray.Length < (sourceIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughSourceSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughSourceSize);
             if (destinationArray.Length < (destinationIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
+
             var num15 = rotation.X + rotation.X;
             var num5 = rotation.Y + rotation.Y;
             var num = rotation.Z + rotation.Z;

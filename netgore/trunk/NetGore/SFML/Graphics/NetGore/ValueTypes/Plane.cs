@@ -368,7 +368,7 @@ namespace SFML.Graphics
         public PlaneIntersectionType Intersects(BoundingFrustum frustum)
         {
             if (null == frustum)
-                throw new ArgumentNullException("frustum", FrameworkResources.NullNotAllowed);
+                throw new ArgumentNullException("frustum", FrameworkMessages.NullNotAllowed);
             return frustum.Intersects(this);
         }
 

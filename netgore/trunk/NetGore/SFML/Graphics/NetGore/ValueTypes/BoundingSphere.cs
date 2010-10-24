@@ -26,7 +26,7 @@ namespace SFML.Graphics
         public BoundingSphere(Vector3 center, float radius)
         {
             if (radius < 0f)
-                throw new ArgumentException(FrameworkResources.NegativeRadius);
+                throw new ArgumentException(FrameworkMessages.NegativeRadius);
             Center = center;
             Radius = radius;
         }
@@ -161,7 +161,7 @@ namespace SFML.Graphics
                 throw new ArgumentNullException("points");
             var enumerator = points.GetEnumerator();
             if (!enumerator.MoveNext())
-                throw new ArgumentException(FrameworkResources.BoundingSphereZeroPoints);
+                throw new ArgumentException(FrameworkMessages.BoundingSphereZeroPoints);
             var vector4 = vector5 = vector6 = vector7 = vector8 = vector9 = enumerator.Current;
             foreach (var vector in points)
             {
@@ -260,7 +260,7 @@ namespace SFML.Graphics
         {
             bool flag;
             if (null == frustum)
-                throw new ArgumentNullException("frustum", FrameworkResources.NullNotAllowed);
+                throw new ArgumentNullException("frustum", FrameworkMessages.NullNotAllowed);
             frustum.Intersects(ref this, out flag);
             return flag;
         }
@@ -440,7 +440,7 @@ namespace SFML.Graphics
         public ContainmentType Contains(BoundingFrustum frustum)
         {
             if (null == frustum)
-                throw new ArgumentNullException("frustum", FrameworkResources.NullNotAllowed);
+                throw new ArgumentNullException("frustum", FrameworkMessages.NullNotAllowed);
             if (!frustum.Intersects(this))
                 return ContainmentType.Disjoint;
             var num2 = Radius * Radius;

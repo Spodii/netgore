@@ -226,6 +226,7 @@
     <Compile Include="Network\Sockets\SocketManager\ISocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ServerSocketManager.cs" />
     <Compile Include="NPCChat\PropertySyncNPCChatDialogID.cs" />
+    <Compile Include="SFML\FrameworkMessages.cs" />
     <Compile Include="SFML\LazyContentLoadFailCounter.cs" />
     <Compile Include="Stats\PropertySyncStatValueType.cs" />
     <Compile Include="World\Entities\IInventory.cs" />
@@ -449,11 +450,6 @@
     <Compile Include="SFML\Audio\SoundBufferRecorder.cs" />
     <Compile Include="SFML\Audio\SoundRecorder.cs" />
     <Compile Include="SFML\Audio\SoundStream.cs" />
-    <Compile Include="SFML\FrameworkResources1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FrameworkResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="SFML\Graphics\Context.cs" />
     <Compile Include="SFML\Graphics\Drawable.cs" />
     <Compile Include="SFML\Graphics\FloatRect.cs" />
@@ -718,11 +714,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SFML\FrameworkResources.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>FrameworkResources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
