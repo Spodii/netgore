@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
-using NetGore.Network;
 using SFML.Graphics;
 
 /* NOTE ON THE POSITION AND VELOCITY SYNCING:
@@ -54,7 +53,6 @@ namespace NetGore.World
         /// </summary>
         const int _syncPnVMoveRate = 800;
 
-        const string _timeStampValueKey = "TimeStamp";
         const string _velocityValueKey = "Velocity";
 
         /// <summary>
@@ -70,8 +68,6 @@ namespace NetGore.World
         /// </summary>
         readonly IPropertySync[] _propertySyncs;
 
-        bool _isFirstPVSync = true;
-
         /// <summary>
         /// If we know if one of the PropertySync's value have changed.
         /// </summary>
@@ -86,8 +82,6 @@ namespace NetGore.World
         /// Last sent Velocity.
         /// </summary>
         Vector2 _lastSentVelocity;
-
-        ushort _lastTimeStamp = 0;
 
         /// <summary>
         /// Index of the map this DynamicEntity is on.
@@ -298,22 +292,10 @@ namespace NetGore.World
         {
             Vector2 position;
             Vector2 velocity;
-            ushort timeStamp;
-            DeserializePositionAndVelocity(reader, out position, out velocity, out timeStamp);
+            DeserializePositionAndVelocity(reader, out position, out velocity);
 
-            if (_isFirstPVSync || (PacketTimeStampHelper.IsTimeStampNewer(timeStamp, _lastTimeStamp)))
-            {
-                _lastTimeStamp = timeStamp;
-                _isFirstPVSync = false;
-
-                SetPositionRaw(position);
-                SetVelocityRaw(velocity);
-            }
-            else
-            {
-                const string errmsg = "TEST! On: `{0}`  Old: `{1}`  New: `{2}`";
-                Trace.WriteLine(string.Format(errmsg, this, _lastTimeStamp, timeStamp));
-            }
+            SetPositionRaw(position);
+            SetVelocityRaw(velocity);
         }
 
         /// <summary>
@@ -323,11 +305,8 @@ namespace NetGore.World
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         /// <param name="position">The read position value.</param>
         /// <param name="velocity">The read velocity value.</param>
-        /// <param name="timeStamp">The time stamp of the read values.</param>
-        static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity,
-                                                   out ushort timeStamp)
+        static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity)
         {
-            timeStamp = reader.ReadUShort(_timeStampValueKey);
             position = reader.ReadVector2(_positionValueKey);
             velocity = reader.ReadVector2(_velocityValueKey);
         }
@@ -342,8 +321,7 @@ namespace NetGore.World
             // Do nothing with the values, just read them to progress the reader
             Vector2 position;
             Vector2 velocity;
-            ushort timeStamp;
-            DeserializePositionAndVelocity(reader, out position, out velocity, out timeStamp);
+            DeserializePositionAndVelocity(reader, out position, out velocity);
         }
 
         /// <summary>
@@ -483,7 +461,6 @@ namespace NetGore.World
             if (_syncPnVDupeCounter > 0)
                 --_syncPnVDupeCounter;
 
-            writer.Write(_timeStampValueKey, PacketTimeStampHelper.GetTimeStamp());
             writer.Write(_positionValueKey, Position);
             writer.Write(_velocityValueKey, Velocity);
 

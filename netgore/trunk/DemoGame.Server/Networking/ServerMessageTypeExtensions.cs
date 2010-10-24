@@ -58,8 +58,8 @@ namespace DemoGame.Server
 
             if (msgType == ServerMessageType.MapDynamicEntitySpatialUpdate)
             {
-                method = NetDeliveryMethod.Unreliable;
-                seqChannel = 0;
+                method = NetDeliveryMethod.ReliableSequenced;
+                seqChannel = 1;
             }
             else
             {
