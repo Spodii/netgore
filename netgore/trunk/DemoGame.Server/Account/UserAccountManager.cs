@@ -11,6 +11,7 @@ using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
+using NetGore.Cryptography;
 using NetGore.Db;
 using NetGore.Network;
 
@@ -51,15 +52,7 @@ namespace DemoGame.Server
         /// <returns>The hash-encoded password.</returns>
         public static string EncodePassword(string originalPassword)
         {
-            MD5 md5 = new MD5CryptoServiceProvider();
-
-            var originalBytes = Encoding.Default.GetBytes(originalPassword);
-            var encodedBytes = md5.ComputeHash(originalBytes);
-
-            var ret = BitConverter.ToString(encodedBytes);
-            ret = ret.Replace("-", string.Empty).ToLower();
-
-            return ret;
+            return Hasher.GetHashAsBase16String(originalPassword);
         }
 
         /// <summary>

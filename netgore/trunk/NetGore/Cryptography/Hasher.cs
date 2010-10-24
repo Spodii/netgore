@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -14,6 +15,17 @@ namespace NetGore.Cryptography
         {
             var bytes = CryptoHelper.StringToBytes(data);
             return GetHash(bytes);
+        }
+
+        public static byte[] GetFileHash(string filePath)
+        {
+            using (var fs = File.OpenRead(filePath))
+            {
+                using (var md5 = MD5.Create())
+                {
+                    return md5.ComputeHash(fs);
+                }
+            }
         }
 
         public static byte[] GetHash(byte[] data)
@@ -34,6 +46,18 @@ namespace NetGore.Cryptography
         {
             var h = GetHash(data);
             return CryptoHelper.BytesToString64(h);
+        }
+
+        public static string GetHashAsBase16String(byte[] data)
+        {
+            var h = GetHash(data);
+            return CryptoHelper.BytesToString16(h);
+        }
+
+        public static string GetHashAsBase16String(string data)
+        {
+            var h = GetHash(data);
+            return CryptoHelper.BytesToString16(h);
         }
     }
 }

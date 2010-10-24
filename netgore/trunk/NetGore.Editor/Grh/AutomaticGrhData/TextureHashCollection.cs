@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using log4net;
 using NetGore.Content;
+using NetGore.Cryptography;
 using NetGore.IO;
 
 namespace NetGore.Editor.Grhs
@@ -32,7 +33,7 @@ namespace NetGore.Editor.Grhs
             new Dictionary<string, HashInfo>(StringComparer.CurrentCultureIgnoreCase);
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TextureHashCollection" /> class.
+        /// Initializes a new instance of the <see cref="TextureHashCollection"/> class.
         /// </summary>
         public TextureHashCollection()
         {
@@ -47,10 +48,9 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        ///   Gets or sets the <see cref = "HashInfo" /> for a texture.
+        /// Gets or sets the <see cref="HashInfo"/> for a texture.
         /// </summary>
-        /// <param name = "textureName">The name of the texture.</param>
-        /// <returns>The <see cref = "HashInfo" /> for the <paramref name = "textureName" />.</returns>
+        /// <returns>The <see cref="HashInfo"/> for the <paramref name="textureName"/>.</returns>
         HashInfo this[string textureName]
         {
             get { return _textureHash[SanitizeTextureName(textureName)]; }
@@ -58,7 +58,7 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        ///   Clears the <see cref = "TextureHashCollection" /> of all the stored hashes.
+        /// Clears the <see cref="TextureHashCollection"/> of all the stored hashes.
         /// </summary>
         void Clear()
         {
@@ -66,21 +66,25 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        ///   Checks if this <see cref = "TextureHashCollection" /> contains the given texture.
+        /// Checks if this <see cref="TextureHashCollection"/> contains the given texture.
         /// </summary>
-        /// <param name = "textureName">The name of the texture.</param>
-        /// <returns>True if the <paramref name = "textureName" /> is in this collection; otherwise false.</returns>
+        /// <param name="textureName">The name of the texture.</param>
+        /// <returns>
+        /// True if the <paramref name="textureName"/> is in this collection; otherwise false.
+        /// </returns>
         bool Contains(string textureName)
         {
             return _textureHash.ContainsKey(SanitizeTextureName(textureName));
         }
 
         /// <summary>
-        ///   Checks which existing texture file closest resembles the specified <paramref name = "matchTextureName" />.
+        /// Checks which existing texture file closest resembles the specified <paramref name="matchTextureName"/>.
         /// </summary>
-        /// <param name = "matchTextureName">Name of the texture to to find the best match for.</param>
-        /// <returns>Name of the texture file that best matches the specified <paramref name = "matchTextureName" />, or
-        ///   null if no decent matches were found.</returns>
+        /// <param name="matchTextureName">Name of the texture to to find the best match for.</param>
+        /// <returns>
+        /// Name of the texture file that best matches the specified <paramref name="matchTextureName"/>, or
+        /// null if no decent matches were found.
+        /// </returns>
         public string FindBestMatchTexture(string matchTextureName)
         {
             // Check that we even have this texture
@@ -107,34 +111,25 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        ///   Gets the hash for a file.
+        /// Gets the hash for a file.
         /// </summary>
-        /// <param name = "filePath">The path to the file to get the hash for.</param>
-        /// <returns>The hash for the given <paramref name = "filePath" />.</returns>
+        /// <param name="filePath">The path to the file to get the hash for.</param>
+        /// <returns>
+        /// The hash for the given <paramref name="filePath"/>.
+        /// </returns>
         static string GetFileHash(string filePath)
         {
-            byte[] hash;
-            using (var fs = new FileStream(filePath, FileMode.Open))
-            {
-                MD5 md5 = new MD5CryptoServiceProvider();
-                hash = md5.ComputeHash(fs);
-            }
-
-            var sb = new StringBuilder(hash.Length);
-            foreach (var hex in hash)
-            {
-                sb.Append(Convert.ToString(hex, 16));
-            }
-
-            return sb.ToString();
+            byte[] hashBytes = Hasher.GetFileHash(filePath);
+            string hashHex = CryptoHelper.BytesToString16(hashBytes);
+            return hashHex;
         }
 
         /// <summary>
-        ///   Gets the file size and last modified time.
+        /// Gets the file size and last modified time.
         /// </summary>
-        /// <param name = "filePath">The path to the file.</param>
-        /// <param name = "size">Contains the size of the file in bytes.</param>
-        /// <param name = "lastMod">Contains when the file was last modified.</param>
+        /// <param name="filePath">The path to the file.</param>
+        /// <param name="size">Contains the size of the file in bytes.</param>
+        /// <param name="lastMod">Contains when the file was last modified.</param>
         static void GetFileSizeAndLastModified(string filePath, out int size, out long lastMod)
         {
             var fi = new FileInfo(filePath);

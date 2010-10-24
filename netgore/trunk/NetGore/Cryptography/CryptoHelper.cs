@@ -53,6 +53,19 @@ namespace NetGore.Cryptography
         }
 
         /// <summary>
+        /// Converts a byte array to a base-16 string.
+        /// This should be used by all cryptographic implementations performing this operating to ensure consistent behavior.
+        /// </summary>
+        /// <param name="data">The byte array.</param>
+        /// <returns>The string.</returns>
+        public static string BytesToString16(byte[] data)
+        {
+            var ret = BitConverter.ToString(data);
+            ret = ret.Replace("-", string.Empty);
+            return ret;
+        }
+
+        /// <summary>
         /// Converts a byte array to a string.
         /// This should be used by all cryptographic implementations performing this operating to ensure consistent behavior.
         /// </summary>
