@@ -65,7 +65,7 @@ namespace NetGore.Cryptography
             var decData = _crypt.Decode(encData, Key);
 
             // Calculate the hash of the decoded data
-            var actualHeader = Hasher.GetHash(encData);
+            var actualHeader = Hasher.GetHash(decData);
 
             // Check that the actual header equals the expected header
             for (var i = 0; i < _headerBytes; i++)
@@ -83,9 +83,9 @@ namespace NetGore.Cryptography
         /// Decodes a byte array of data.
         /// </summary>
         /// <param name="data">The data to decode.</param>
-        /// <param name="key">Unused by the <see cref="MachineCrypto"/>.</param>
+        /// <param name="unusedKey">Unused by the <see cref="MachineCrypto"/>.</param>
         /// <returns>The decoded data.</returns>
-        public byte[] Decode(byte[] data, byte[] key)
+        public byte[] Decode(byte[] data, byte[] unusedKey)
         {
             // Pull the header from the data
             var expectedHeader = new byte[_headerBytes];
@@ -105,15 +105,15 @@ namespace NetGore.Cryptography
         /// Encodes a byte array of data.
         /// </summary>
         /// <param name="data">The data to encode.</param>
-        /// <param name="key">Unused by the <see cref="MachineCrypto"/>.</param>
+        /// <param name="unusedKey">Unused by the <see cref="MachineCrypto"/>.</param>
         /// <returns>The encoded data.</returns>
-        public byte[] Encode(byte[] data, byte[] key)
+        public byte[] Encode(byte[] data, byte[] unusedKey)
         {
             // Calculate the header (hash of the decrypted data)
             var header = Hasher.GetHash(data);
 
             // Encrypt the data
-            var encData = _crypt.Encode(data, key);
+            var encData = _crypt.Encode(data, Key);
 
             // Join the header and encrypted data
             var joinedData = new byte[encData.Length + _headerBytes];

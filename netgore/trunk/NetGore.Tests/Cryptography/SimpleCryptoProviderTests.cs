@@ -18,6 +18,7 @@ namespace NetGore.Tests.Cryptography
         static SimpleCryptoProviderTests()
         {
             // Add all your ISimpleCryptoProvider implementations to test in here
+
             _cryptoProviders = new ISimpleCryptoProvider[] { XorCryptoProvider.Create(), MachineCrypto.Create() };
         }
 
