@@ -12,12 +12,16 @@ namespace DemoGame.Client
     /// </summary>
     public class MapDrawFilterHelper : IPersistable
     {
-        const string _categoryName = "Map Draw Filter";
+        const string _generalCategoryName = "Draw Filters";
+        const string _mapGrhCategoryName = "Draw Filters - MapGrh";
 
         const bool _defaultDrawBackground = true;
         const bool _defaultDrawCharacters = true;
         const bool _defaultDrawItems = true;
-        const bool _defaultDrawMapGrhs = true;
+        const bool _defaultDrawForegroundMapGrhs = true;
+        const bool _defaultDrawBackgroundMapGrhs = true;
+        static readonly int? _defaultMapGrhMinDepth = null;
+        static readonly int? _defaultMapGrhMaxDepth = null;
 
         readonly Func<IDrawable, bool> _filterFunc;
 
@@ -42,7 +46,10 @@ namespace DemoGame.Client
             DrawBackground = _defaultDrawBackground;
             DrawCharacters = _defaultDrawCharacters;
             DrawItems = _defaultDrawItems;
-            DrawMapGrhs = _defaultDrawMapGrhs;
+            DrawForegroundMapGrhs = _defaultDrawForegroundMapGrhs;
+            DrawBackgroundMapGrhs = _defaultDrawBackgroundMapGrhs;
+            MapGrhMinDepth = _defaultMapGrhMinDepth;
+            MapGrhMaxDepth = _defaultMapGrhMaxDepth;
         }
 
         /// <summary>
@@ -50,7 +57,7 @@ namespace DemoGame.Client
         /// The default value is true.
         /// </summary>
         [SyncValue]
-        [Category(_categoryName)]
+        [Category(_generalCategoryName)]
         [DefaultValue(_defaultDrawBackground)]
         [Browsable(true)]
         [Description("If the map background is drawn.")]
@@ -61,7 +68,7 @@ namespace DemoGame.Client
         /// The default value is true.
         /// </summary>
         [SyncValue]
-        [Category(_categoryName)]
+        [Category(_generalCategoryName)]
         [DefaultValue(_defaultDrawCharacters)]
         [Browsable(true)]
         [Description("If characters on the map are drawn.")]
@@ -72,22 +79,55 @@ namespace DemoGame.Client
         /// The default value is true.
         /// </summary>
         [SyncValue]
-        [Category(_categoryName)]
+        [Category(_generalCategoryName)]
         [DefaultValue(_defaultDrawItems)]
         [Browsable(true)]
         [Description("If items on the map are drawn.")]
         public bool DrawItems { get; set; }
 
         /// <summary>
-        /// Gets or sets if the <see cref="MapGrh"/>s are drawn.
+        /// Gets or sets if the background <see cref="MapGrh"/>s are drawn.
         /// The default value is true.
         /// </summary>
         [SyncValue]
-        [Category(_categoryName)]
-        [DefaultValue(_defaultDrawMapGrhs)]
+        [Category(_mapGrhCategoryName)]
+        [DefaultValue(_defaultDrawBackgroundMapGrhs)]
         [Browsable(true)]
-        [Description("If the MapGrhs are drawn.")]
-        public bool DrawMapGrhs { get; set; }
+        [Description("If the background MapGrhs are drawn.")]
+        public bool DrawBackgroundMapGrhs { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the foreground <see cref="MapGrh"/>s are drawn.
+        /// The default value is true.
+        /// </summary>
+        [SyncValue]
+        [Category(_mapGrhCategoryName)]
+        [DefaultValue(_defaultDrawForegroundMapGrhs)]
+        [Browsable(true)]
+        [Description("If the foreground MapGrhs are drawn.")]
+        public bool DrawForegroundMapGrhs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum layer depth of the <see cref="MapGrh"/>s to draw.
+        /// Default value is null.
+        /// </summary>
+        [SyncValue]
+        [Category(_mapGrhCategoryName)]
+        [DefaultValue(null)]
+        [Browsable(true)]
+        [Description("The minimum layer depth of the MapGrhs to draw.")]
+        public int? MapGrhMinDepth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum layer depth of the <see cref="MapGrh"/>s to draw.
+        /// Default value is null.
+        /// </summary>
+        [SyncValue]
+        [Category(_mapGrhCategoryName)]
+        [DefaultValue(null)]
+        [Browsable(true)]
+        [Description("The maximum layer depth of the MapGrhs to draw.")]
+        public int? MapGrhMaxDepth { get; set; }
 
         /// <summary>
         /// Gets a Func describing this filter.
@@ -106,17 +146,39 @@ namespace DemoGame.Client
         /// <returns>True if the <paramref name="drawable"/> should be drawn; otherwise false.</returns>
         public bool Filter(IDrawable drawable)
         {
+            // Background layer
             if (!DrawBackground && drawable.MapRenderLayer == MapRenderLayer.Background)
                 return false;
 
+            // Character layer
             if (!DrawCharacters && drawable.MapRenderLayer == MapRenderLayer.Chararacter)
                 return false;
 
+            // Item layer
             if (!DrawItems && drawable.MapRenderLayer == MapRenderLayer.Item)
                 return false;
 
-            if (!DrawMapGrhs && drawable is MapGrh)
-                return false;
+            // MapGrhs
+            if (drawable is MapGrh)
+            {
+                var mg = (MapGrh)drawable;
+                if (mg.IsForeground)
+                {
+                    if (!DrawForegroundMapGrhs)
+                        return false;
+                }
+                else
+                {
+                    if (!DrawBackgroundMapGrhs)
+                        return false;
+                }
+
+                if (MapGrhMinDepth.HasValue && mg.LayerDepth < MapGrhMinDepth.Value)
+                    return false;
+
+                if (MapGrhMaxDepth.HasValue && mg.LayerDepth > MapGrhMaxDepth.Value)
+                    return false;
+            }
 
             return true;
         }
