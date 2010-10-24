@@ -965,25 +965,25 @@ namespace SFML.Graphics
             {
                 throw new ArgumentOutOfRangeException("fieldOfView",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.OutRangeFieldOfView,
+                                                                    FrameworkMessages.OutRangeFieldOfView,
                                                                     new object[] { "fieldOfView" }));
             }
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
-                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
+                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
             var num = 1f / ((float)Math.Tan((fieldOfView * 0.5f)));
             var num9 = num / aspectRatio;
             matrix.M11 = num9;
@@ -1011,25 +1011,25 @@ namespace SFML.Graphics
             {
                 throw new ArgumentOutOfRangeException("fieldOfView",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.OutRangeFieldOfView,
+                                                                    FrameworkMessages.OutRangeFieldOfView,
                                                                     new object[] { "fieldOfView" }));
             }
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
-                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
+                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
             var num = 1f / ((float)Math.Tan((fieldOfView * 0.5f)));
             var num9 = num / aspectRatio;
             result.M11 = num9;
@@ -1055,18 +1055,18 @@ namespace SFML.Graphics
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
-                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
+                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
             matrix.M11 = (2f * nearPlaneDistance) / width;
             matrix.M12 = matrix.M13 = matrix.M14 = 0f;
             matrix.M22 = (2f * nearPlaneDistance) / height;
@@ -1092,18 +1092,18 @@ namespace SFML.Graphics
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
-                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
+                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
             result.M11 = (2f * nearPlaneDistance) / width;
             result.M12 = result.M13 = result.M14 = 0f;
             result.M22 = (2f * nearPlaneDistance) / height;
@@ -1130,18 +1130,18 @@ namespace SFML.Graphics
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
-                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
+                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
             matrix.M11 = (2f * nearPlaneDistance) / (right - left);
             matrix.M12 = matrix.M13 = matrix.M14 = 0f;
             matrix.M22 = (2f * nearPlaneDistance) / (top - bottom);
@@ -1170,18 +1170,18 @@ namespace SFML.Graphics
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
                                                       string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
+                                                                    FrameworkMessages.NegativePlaneDistance,
                                                                     new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
-                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
+                throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
             result.M11 = (2f * nearPlaneDistance) / (right - left);
             result.M12 = result.M13 = result.M14 = 0f;
             result.M22 = (2f * nearPlaneDistance) / (top - bottom);

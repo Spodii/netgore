@@ -78,7 +78,7 @@ namespace SFML.Graphics.Design
         public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
         {
             if (propertyValues == null)
-                throw new ArgumentNullException("propertyValues", FrameworkResources.NullNotAllowed);
+                throw new ArgumentNullException("propertyValues", FrameworkMessages.NullNotAllowed);
             return new Matrix((float)propertyValues["M11"], (float)propertyValues["M12"], (float)propertyValues["M13"],
                               (float)propertyValues["M14"], (float)propertyValues["M21"], (float)propertyValues["M22"],
                               (float)propertyValues["M23"], (float)propertyValues["M24"], (float)propertyValues["M31"],

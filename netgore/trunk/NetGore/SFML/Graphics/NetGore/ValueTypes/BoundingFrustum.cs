@@ -251,7 +251,7 @@ namespace SFML.Graphics
             if (corners == null)
                 throw new ArgumentNullException("corners");
             if (corners.Length < 8)
-                throw new ArgumentOutOfRangeException("corners", FrameworkResources.NotEnoughCorners);
+                throw new ArgumentOutOfRangeException("corners", FrameworkMessages.NotEnoughCorners);
             cornerArray.CopyTo(corners, 0);
         }
 

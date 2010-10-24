@@ -62,7 +62,7 @@ namespace SFML.Graphics.Design
         public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
         {
             if (propertyValues == null)
-                throw new ArgumentNullException("propertyValues", FrameworkResources.NullNotAllowed);
+                throw new ArgumentNullException("propertyValues", FrameworkMessages.NullNotAllowed);
             return new Point((int)propertyValues["X"], (int)propertyValues["Y"]);
         }
     }

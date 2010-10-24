@@ -41,7 +41,7 @@ namespace SFML.Graphics
             if (corners == null)
                 throw new ArgumentNullException("corners");
             if (corners.Length < 8)
-                throw new ArgumentOutOfRangeException("corners", FrameworkResources.NotEnoughCorners);
+                throw new ArgumentOutOfRangeException("corners", FrameworkMessages.NotEnoughCorners);
             corners[0].X = Min.X;
             corners[0].Y = Max.Y;
             corners[0].Z = Max.Z;
@@ -176,7 +176,7 @@ namespace SFML.Graphics
                 flag = true;
             }
             if (!flag)
-                throw new ArgumentException(FrameworkResources.BoundingBoxZeroPoints);
+                throw new ArgumentException(FrameworkMessages.BoundingBoxZeroPoints);
             return new BoundingBox(vector3, vector2);
         }
 
@@ -207,7 +207,7 @@ namespace SFML.Graphics
         public bool Intersects(BoundingFrustum frustum)
         {
             if (null == frustum)
-                throw new ArgumentNullException("frustum", FrameworkResources.NullNotAllowed);
+                throw new ArgumentNullException("frustum", FrameworkMessages.NullNotAllowed);
             return frustum.Intersects(this);
         }
 
@@ -462,7 +462,7 @@ namespace SFML.Graphics
         public ContainmentType Contains(BoundingFrustum frustum)
         {
             if (null == frustum)
-                throw new ArgumentNullException("frustum", FrameworkResources.NullNotAllowed);
+                throw new ArgumentNullException("frustum", FrameworkMessages.NullNotAllowed);
             if (!frustum.Intersects(this))
                 return ContainmentType.Disjoint;
             foreach (var vector in frustum.cornerArray)

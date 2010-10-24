@@ -565,7 +565,7 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
 
             for (var i = 0; i < sourceArray.Length; i++)
             {
@@ -591,9 +591,9 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (sourceArray.Length < (sourceIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughSourceSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughSourceSize);
             if (destinationArray.Length < (destinationIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
             while (length > 0)
             {
                 var x = sourceArray[sourceIndex].X;
@@ -617,7 +617,7 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
             for (var i = 0; i < sourceArray.Length; i++)
             {
                 var x = sourceArray[i].X;
@@ -642,9 +642,9 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (sourceArray.Length < (sourceIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughSourceSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughSourceSize);
             if (destinationArray.Length < (destinationIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
             while (length > 0)
             {
                 var x = sourceArray[sourceIndex].X;
@@ -668,7 +668,8 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
+
             var num15 = rotation.X + rotation.X;
             var num8 = rotation.Y + rotation.Y;
             var num7 = rotation.Z + rotation.Z;
@@ -681,6 +682,7 @@ namespace SFML.Graphics
             var num11 = num5 - num6;
             var num10 = num5 + num6;
             var num9 = (1f - num14) - num4;
+
             for (var i = 0; i < sourceArray.Length; i++)
             {
                 var x = sourceArray[i].X;
@@ -705,9 +707,10 @@ namespace SFML.Graphics
             if (destinationArray == null)
                 throw new ArgumentNullException("destinationArray");
             if (sourceArray.Length < (sourceIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughSourceSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughSourceSize);
             if (destinationArray.Length < (destinationIndex + length))
-                throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+                throw new ArgumentException(FrameworkMessages.NotEnoughTargetSize);
+
             var num14 = rotation.X + rotation.X;
             var num7 = rotation.Y + rotation.Y;
             var num6 = rotation.Z + rotation.Z;
@@ -720,6 +723,7 @@ namespace SFML.Graphics
             var num10 = num4 - num5;
             var num9 = num4 + num5;
             var num8 = (1f - num13) - num3;
+
             while (length > 0)
             {
                 var x = sourceArray[sourceIndex].X;
