@@ -31,7 +31,7 @@ namespace DemoGame.Client
         public DemoGame(Form windowedForm)
             : base(
                 windowedForm.Handle, new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
-                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y))
+                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), windowedForm.Text)
         {
             _windowedForm = windowedForm;
 
