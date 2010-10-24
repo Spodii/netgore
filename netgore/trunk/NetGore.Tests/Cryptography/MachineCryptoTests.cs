@@ -13,11 +13,9 @@ namespace NetGore.Tests.Cryptography
         [Test]
         public void InvalidTest()
         {
-            var c = new MachineCrypto();
-
-            var enc = c.Encode("asdf", null);
-            enc[6]++;
-            var decRaw = c.ValidatedDecode(enc);
+            var enc = MachineCrypto.Encode("asdf");
+            enc = (char)(enc[0] + 1) + enc.Substring(1);
+            var decRaw = MachineCrypto.ValidatedDecode(enc);
 
             Assert.IsNull(decRaw);
         }
@@ -25,11 +23,8 @@ namespace NetGore.Tests.Cryptography
         [Test]
         public void ValidTest()
         {
-            var c = new MachineCrypto();
-
-            var enc = c.Encode("asdf", null);
-            var decRaw = c.ValidatedDecode(enc);
-            var dec = Encoding.UTF8.GetString(decRaw);
+            var enc = MachineCrypto.Encode("asdf");
+            var dec = MachineCrypto.ValidatedDecode(enc);
 
             Assert.AreEqual("asdf", dec);
         }

@@ -20,6 +20,50 @@ namespace NetGore.Cryptography
         }
 
         /// <summary>
+        /// Converts a string to a byte array.
+        /// This should be used by all cryptographic implementations performing this operating to ensure consistent behavior.
+        /// </summary>
+        /// <param name="data">The string.</param>
+        /// <returns>The byte array.</returns>
+        public static byte[] StringToBytes(string data)
+        {
+            return Encoding.UTF8.GetBytes(data);
+        }
+
+        /// <summary>
+        /// Converts a base-64 string to a byte array.
+        /// This should be used by all cryptographic implementations performing this operating to ensure consistent behavior.
+        /// </summary>
+        /// <param name="data">The base-64 string.</param>
+        /// <returns>The byte array.</returns>
+        public static byte[] String64ToBytes(string data)
+        {
+            return Convert.FromBase64String(data);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a base-64 string.
+        /// This should be used by all cryptographic implementations performing this operating to ensure consistent behavior.
+        /// </summary>
+        /// <param name="data">The byte array.</param>
+        /// <returns>The string.</returns>
+        public static string BytesToString64(byte[] data)
+        {
+            return Convert.ToBase64String(data);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a string.
+        /// This should be used by all cryptographic implementations performing this operating to ensure consistent behavior.
+        /// </summary>
+        /// <param name="data">The byte array.</param>
+        /// <returns>The string.</returns>
+        public static string BytesToString(byte[] data)
+        {
+            return Encoding.UTF8.GetString(data);
+        }
+
+        /// <summary>
         /// A key generated from information about the machine this application is running on.
         /// Can end up changing when anything from hardware to the operating system and even some
         /// OS-level configuration changes, so do not rely on it to be consistent over time.

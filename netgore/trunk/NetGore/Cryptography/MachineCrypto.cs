@@ -51,8 +51,11 @@ namespace NetGore.Cryptography
         /// </summary>
         /// <param name="data">The data to decode.</param>
         /// <returns>The decoded data, or null if the key used to encode it differs from the key used to decode it.</returns>
-        public byte[] ValidatedDecode(byte[] data)
+        public static byte[] ValidatedDecode(byte[] data)
         {
+            if (data == null || data.Length <= 0)
+                return null;
+
             // Pull the header from the data
             var expectedHeader = new byte[_headerBytes];
             Buffer.BlockCopy(data, 0, expectedHeader, 0, _headerBytes);
@@ -75,6 +78,30 @@ namespace NetGore.Cryptography
             }
 
             return decData;
+        }
+
+        public static byte[] Encode(byte[] data)
+        {
+            return Create().Encode(data, null);
+        }
+
+        public static string Encode(string data)
+        {
+            return Create().EncodeToBase64(data, null);
+        }
+
+        public static string ValidatedDecode(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+                return null;
+
+            var bytes = CryptoHelper.String64ToBytes(data);
+            var decBytes = ValidatedDecode(bytes);
+            if (decBytes == null)
+                return null;
+
+            var str = CryptoHelper.BytesToString(decBytes);
+            return str;
         }
 
         #region ISimpleCryptoProvider Members

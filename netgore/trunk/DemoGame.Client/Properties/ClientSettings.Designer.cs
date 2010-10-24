@@ -40,5 +40,29 @@ namespace DemoGame.Client.Properties {
                 return ((uint)(this["SyncGameTimeFrequency"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Spodi")]
+        public string EnteredUserName {
+            get {
+                return ((string)(this["EnteredUserName"]));
+            }
+            set {
+                this["EnteredUserName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EnteredPassword {
+            get {
+                return ((string)(this["EnteredPassword"]));
+            }
+            set {
+                this["EnteredPassword"] = value;
+            }
+        }
     }
 }

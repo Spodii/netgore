@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using System.Linq;
+using DemoGame.Client.Properties;
 using Lidgren.Network;
 using NetGore;
+using NetGore.Cryptography;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;
@@ -51,6 +53,10 @@ namespace DemoGame.Client
         {
             SetError(null);
 
+            ClientSettings.Default.EnteredUserName = _cNameText.Text;
+            ClientSettings.Default.EnteredPassword = MachineCrypto.Encode(_cPasswordText.Text);
+            ClientSettings.Default.Save();
+
             base.Deactivate();
         }
 
@@ -63,17 +69,20 @@ namespace DemoGame.Client
         {
             base.Initialize();
 
+            var decodedPass = MachineCrypto.ValidatedDecode(ClientSettings.Default.EnteredPassword) ?? string.Empty;
+
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the login fields
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Name:");
-            _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
+            _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = ClientSettings.Default.EnteredUserName };
             _cNameText.KeyPressed += cNameText_KeyPressed;
             _cNameText.TextChanged += cNameText_TextChanged;
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Password:");
             _cPasswordText = new MaskedTextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
-            { IsMultiLine = false, Text = "qwerty123" };
+            { IsMultiLine = false, Text = decodedPass};
+
             _cPasswordText.KeyPressed += cPasswordText_KeyPressed;
             _cPasswordText.TextChanged += cPasswordText_TextChanged;
 

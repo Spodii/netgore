@@ -8,5 +8,11 @@
     <Setting Name="SyncGameTimeFrequency" Type="System.UInt32" Scope="Application">
       <Value Profile="(Default)">600000</Value>
     </Setting>
+    <Setting Name="EnteredUserName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Spodi</Value>
+    </Setting>
+    <Setting Name="EnteredPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

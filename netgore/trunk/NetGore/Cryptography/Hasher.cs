@@ -12,7 +12,7 @@ namespace NetGore.Cryptography
     {
         public static byte[] GetHash(string data)
         {
-            var bytes = Encoding.UTF8.GetBytes(data);
+            var bytes = CryptoHelper.StringToBytes(data);
             return GetHash(bytes);
         }
 
@@ -27,13 +27,13 @@ namespace NetGore.Cryptography
         public static string GetHashAsBase64String(byte[] data)
         {
             var h = GetHash(data);
-            return Convert.ToBase64String(h);
+            return CryptoHelper.BytesToString64(h);
         }
 
         public static string GetHashAsBase64String(string data)
         {
             var h = GetHash(data);
-            return Convert.ToBase64String(h);
+            return CryptoHelper.BytesToString64(h);
         }
     }
 }
