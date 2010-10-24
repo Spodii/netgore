@@ -47,16 +47,8 @@ namespace NetGore.Editor
         /// <param name="index">The index of the item to refresh the text of.</param>
         public static void RefreshItemAt<T>(this T listBox, int index) where T : ListBox
         {
-            if (index < 0 || index >= listBox.Items.Count)
-                return;
-
-            var selectedIndex = listBox.SelectedIndex;
-
-            var item = listBox.Items[index];
-            listBox.Items.RemoveAt(index);
-            listBox.Items.Insert(index, item);
-
-            listBox.SelectedIndex = selectedIndex;
+            var region = listBox.GetItemRectangle(index);
+            listBox.Invalidate(region);
         }
 
         /// <summary>
@@ -139,20 +131,30 @@ namespace NetGore.Editor
                     buffer.Add(item);
             }
 
-            foreach (var item in buffer)
-            {
-                listBox.Items.Remove(item);
-            }
+            listBox.BeginUpdate();
 
-            // Add
-            buffer.Clear();
-            foreach (var item in values)
+            try
             {
-                if (!thisItemsCasted.Contains(item))
-                    buffer.Add(item);
-            }
 
-            listBox.Items.AddRange(buffer.ToArray());
+                foreach (var item in buffer)
+                {
+                    listBox.Items.Remove(item);
+                }
+
+                // Add
+                buffer.Clear();
+                foreach (var item in values)
+                {
+                    if (!thisItemsCasted.Contains(item))
+                        buffer.Add(item);
+                }
+
+                listBox.Items.AddRange(buffer.ToArray());
+            }
+            finally
+            {
+                listBox.EndUpdate();
+            }
         }
     }
 }
