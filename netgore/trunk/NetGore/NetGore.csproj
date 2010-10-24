@@ -171,6 +171,8 @@
     <Compile Include="Core\Direction.cs" />
     <Compile Include="Core\DirectionHelper.cs" />
     <Compile Include="Core\DurationParser.cs" />
+    <Compile Include="Cryptography\CryptoHelper.cs" />
+    <Compile Include="Cryptography\CryptoProviderExtensions.cs" />
     <Compile Include="Core\EngineSettings.cs" />
     <Compile Include="Core\Enum\EnumFieldAttributeManager.cs" />
     <Compile Include="Core\Exceptions\DuplicateKeyException.cs" />
@@ -183,6 +185,10 @@
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
     <Compile Include="Core\GetTimeDummy.cs" />
+    <Compile Include="Cryptography\Hasher.cs" />
+    <Compile Include="Cryptography\ISimpleCryptoProvider.cs" />
+    <Compile Include="Cryptography\MachineCrypto.cs" />
+    <Compile Include="Cryptography\XorCryptoProvider.cs" />
     <Compile Include="Graphics\Game Container\GameBase.cs" />
     <Compile Include="Graphics\Game Container\GameContainerPropertyChangedEventHandler.cs" />
     <Compile Include="Graphics\Game Container\IGameContainer.cs" />
