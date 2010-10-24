@@ -25,7 +25,32 @@ namespace NetGore.Graphics
         RenderWindow _renderWindow;
         bool _showMouseCursor;
         bool _useVerticalSync;
+        string _title;
 
+        /// <summary>
+        /// Gets or sets the title for the automatically generated windows. Changing this value may not immediately change the actual
+        /// title of the window, and only applies to automatically generated windows (when <see cref="GameBase.DisplayHandle"/> is
+        /// set to <see cref="IntPtr.Zero"/>).
+        /// </summary>
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                if (value == null)
+                    value = string.Empty;
+
+                _title = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the handle of the system control that is used to display the game. Use <see cref="IntPtr.Zero"/> to
+        /// automatically generate a control to display on.
+        /// </summary>
         public IntPtr DisplayHandle
         {
             get
@@ -51,11 +76,15 @@ namespace NetGore.Graphics
         /// or use the <see cref="IntPtr"/> for the handle of the control to display on.</param>
         /// <param name="windowedResolution">The windowed resolution.</param>
         /// <param name="fullscreenResolution">The fullscreen resolution.</param>
-        protected GameBase(IntPtr displayHandle, Point windowedResolution, Point fullscreenResolution)
+        /// <param name="title">The initial title value.</param>
+        protected GameBase(IntPtr displayHandle, Point windowedResolution, Point fullscreenResolution,
+            string title = null)
         {
             _displayHandle = displayHandle;
             _windowedRes = windowedResolution;
             _fullscreenRes = fullscreenResolution;
+
+            Title = title;
 
             SwitchToWindowed(true);
         }
@@ -205,7 +234,7 @@ namespace NetGore.Graphics
             RenderWindow = null;
 
             var videoMode = new VideoMode((uint)FullscreenResolution.X, (uint)FullscreenResolution.Y);
-            var newRW = new RenderWindow(videoMode, "My game", Styles.Fullscreen); // TODO: !! Title
+            var newRW = new RenderWindow(videoMode, Title, Styles.Fullscreen);
 
             _isFullscreen = true;
 
@@ -232,7 +261,7 @@ namespace NetGore.Graphics
             {
                 // Not using custom handle
                 var videoMode = new VideoMode((uint)WindowedResolution.X, (uint)WindowedResolution.Y);
-                newRW = new RenderWindow(videoMode, "My game", Styles.Titlebar | Styles.Close); // TODO: !! Title
+                newRW = new RenderWindow(videoMode, Title, Styles.Titlebar | Styles.Close);
             }
             else
             {
