@@ -45,24 +45,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Finds the <see cref="IUserAccount"/> for a given user. Can only find the <see cref="IUserAccount"/> instance for
-        /// a user that is logged into this server.
-        /// </summary>
-        /// <param name="userName">The name of the user to find the <see cref="IUserAccount"/> for.</param>
-        /// <returns>The <see cref="IUserAccount"/> for the <paramref name="userName"/>, or null if not found.</returns>
-        public IUserAccount FindUserAccount(string userName)
-        {
-            lock (_accountsSync)
-            {
-                UserAccount ret;
-                if (!_accounts.TryGetValue(userName, out ret))
-                    return null;
-
-                return ret;
-            }
-        }
-
-        /// <summary>
         /// Encodes a password in a hash.
         /// </summary>
         /// <param name="originalPassword">The original password.</param>
@@ -78,6 +60,24 @@ namespace DemoGame.Server
             ret = ret.Replace("-", string.Empty).ToLower();
 
             return ret;
+        }
+
+        /// <summary>
+        /// Finds the <see cref="IUserAccount"/> for a given user. Can only find the <see cref="IUserAccount"/> instance for
+        /// a user that is logged into this server.
+        /// </summary>
+        /// <param name="userName">The name of the user to find the <see cref="IUserAccount"/> for.</param>
+        /// <returns>The <see cref="IUserAccount"/> for the <paramref name="userName"/>, or null if not found.</returns>
+        public IUserAccount FindUserAccount(string userName)
+        {
+            lock (_accountsSync)
+            {
+                UserAccount ret;
+                if (!_accounts.TryGetValue(userName, out ret))
+                    return null;
+
+                return ret;
+            }
         }
 
         /// <summary>

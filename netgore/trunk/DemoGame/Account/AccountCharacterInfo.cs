@@ -26,12 +26,6 @@ namespace DemoGame
             BodyID = bodyID;
         }
 
-        public void SetEquippedBodies(IEnumerable<string> values)
-        {
-            _equippedBodies.Clear();
-            _equippedBodies.AddRange(values);
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountCharacterInfo"/> class.
         /// </summary>
@@ -44,13 +38,22 @@ namespace DemoGame
         [SyncValue]
         public BodyID BodyID { get; protected set; }
 
-        public IEnumerable<string> EquippedBodies { get { return _equippedBodies; } }
+        public IEnumerable<string> EquippedBodies
+        {
+            get { return _equippedBodies; }
+        }
 
         [SyncValue]
         public byte Index { get; protected set; }
 
         [SyncValue]
         public string Name { get; protected set; }
+
+        public void SetEquippedBodies(IEnumerable<string> values)
+        {
+            _equippedBodies.Clear();
+            _equippedBodies.AddRange(values);
+        }
 
         #region IPersistable Members
 
@@ -68,7 +71,7 @@ namespace DemoGame
             int count = reader.ReadByte("EquippedBodiesCount");
             _equippedBodies.Clear();
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var s = reader.ReadString("EquippedBody_" + i);
                 _equippedBodies.Add(s);
@@ -89,7 +92,7 @@ namespace DemoGame
 
             writer.Write("EquippedBodiesCount", (byte)_equippedBodies.Count);
 
-            for (int i = 0; i < _equippedBodies.Count; i++)
+            for (var i = 0; i < _equippedBodies.Count; i++)
             {
                 writer.Write("EquippedBody_" + i, _equippedBodies[i]);
             }

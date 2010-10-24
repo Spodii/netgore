@@ -9,7 +9,7 @@ namespace DemoGame.Client.Properties
     //  The PropertyChanged event is raised after a setting's value is changed.
     //  The SettingsLoaded event is raised after the setting values are loaded.
     //  The SettingsSaving event is raised before the setting values are saved.
-    sealed partial class Settings
+    sealed class Settings
     {
         void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
         {

@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
-using NetGore.World;
 
 namespace NetGore.Editor.Grhs
 {
@@ -17,6 +16,8 @@ namespace NetGore.Editor.Grhs
     /// </summary>
     public class GrhTreeView : TreeView, IComparer, IComparer<TreeNode>
     {
+        public delegate void EditGrhDataEventHandler(GrhTreeView sender, TreeNode node, GrhData gd, bool deleteOnCancel);
+
         static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
 
         /// <summary>
@@ -37,6 +38,8 @@ namespace NetGore.Editor.Grhs
             ImageList = new ImageList { ImageSize = new Size(GrhImageList.ImageWidth, GrhImageList.ImageHeight) };
             DrawMode = TreeViewDrawMode.OwnerDrawAll;
         }
+
+        public event EditGrhDataEventHandler EditGrhDataRequested;
 
         /// <summary>
         /// Notofies listeners after a new <see cref="GrhData"/> node is selected.
@@ -104,10 +107,6 @@ namespace NetGore.Editor.Grhs
         {
             return BeginEditGrhData(FindGrhDataNode(gd), gd, deleteOnCancel);
         }
-
-        public delegate void EditGrhDataEventHandler(GrhTreeView sender, TreeNode node, GrhData gd, bool deleteOnCancel);
-
-        public event EditGrhDataEventHandler EditGrhDataRequested;
 
         /// <summary>
         /// Attempts to begin the editing of a <see cref="GrhData"/>.

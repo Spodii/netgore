@@ -189,7 +189,7 @@ namespace DemoGame
 
         void InternalDispose(bool disposeManaged)
         {
-            foreach (var item in _buffer.Where(x => x!=null))
+            foreach (var item in _buffer.Where(x => x != null))
             {
                 item.Disposed -= ItemDisposeHandler;
             }

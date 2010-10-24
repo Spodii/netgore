@@ -7,7 +7,7 @@ namespace SFML
     /// in the SFML .NET bindings). Should only ever be used by the custom SFML classes.
     /// This is a replacement of using a resource file since we do not support localizing NetGore's internal messages.
     /// </summary>
-    internal class FrameworkMessages
+    class FrameworkMessages
     {
         public const string BoundingBoxZeroPoints = "You should have at least one point in points";
 

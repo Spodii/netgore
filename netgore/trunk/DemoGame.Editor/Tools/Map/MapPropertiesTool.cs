@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;

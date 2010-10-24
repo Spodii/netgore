@@ -72,18 +72,6 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        void _game_RenderWindowChanged(IGameContainer sender, RenderWindow oldValue, RenderWindow newValue)
-        {
-            _drawingManager.RenderWindow = newValue;
-
-            foreach (var gs in _screens.Values)
-            {
-                var guiMan = gs.GUIManager;
-                if (guiMan != null)
-                    guiMan.Window = newValue;
-            }
-        }
-
         /// <summary>
         /// Releases the unmanaged resources used by the DrawableGameComponent and optionally
         /// releases the managed resources.
@@ -226,6 +214,18 @@ namespace NetGore.Graphics.GUI
             var a = ActiveScreen;
             if (a != null)
                 a.GUIManager.SendEventMouseMoved(e);
+        }
+
+        void _game_RenderWindowChanged(IGameContainer sender, RenderWindow oldValue, RenderWindow newValue)
+        {
+            _drawingManager.RenderWindow = newValue;
+
+            foreach (var gs in _screens.Values)
+            {
+                var guiMan = gs.GUIManager;
+                if (guiMan != null)
+                    guiMan.Window = newValue;
+            }
         }
 
         /// <summary>

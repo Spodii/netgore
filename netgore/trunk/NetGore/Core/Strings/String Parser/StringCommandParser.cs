@@ -17,36 +17,6 @@ namespace NetGore
     /// contain an Attribute of this type will be handled.</typeparam>
     public class StringCommandParser<T> where T : StringCommandBaseAttribute
     {
-        /// <summary>
-        /// Describes a command in the <see cref="StringCommandParser{T}"/>.
-        /// </summary>
-        public class CommandData
-        {
-            readonly T _attribute;
-            readonly MethodInfo _method;
-            
-            /// <summary>
-            /// Gets the <see cref="MethodInfo"/> for the method to be invoked.
-            /// </summary>
-            public MethodInfo Method { get { return _method; } }
-
-            /// <summary>
-            /// Gets the attribute that resulted in this method being binded to the command.
-            /// </summary>
-            public T Attribute {get { return _attribute; }}
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;.CommandData"/> class.
-            /// </summary>
-            /// <param name="method">The <see cref="MethodInfo"/>.</param>
-            /// <param name="attribute">The attribute.</param>
-            public CommandData(MethodInfo method, T attribute)
-            {
-                _attribute = attribute;
-                _method = method;
-            }
-        }
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -88,7 +58,7 @@ namespace NetGore
             // Set up the methods
             foreach (var method in methods)
             {
-                bool isValidMethod = true;
+                var isValidMethod = true;
 
                 // Get the StringCommandBaseAttributes
                 var attributes = method.GetCustomAttributes(typeof(T), true).Cast<T>();
@@ -183,6 +153,21 @@ namespace NetGore
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets if the <paramref name="binder"/> is allowed to invoke the method
+        /// defined by the given <see cref="CommandData"/> using the given set of <paramref name="args"/>.
+        /// </summary>
+        /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
+        /// this is ignored and can be null.</param>
+        /// <param name="cmdData">The <see cref="CommandData"/> containing the method to invoke and the corresponding attribute
+        /// that is attached to it.</param>
+        /// <param name="args">The casted arguments to use to invoke the method.</param>
+        /// <returns></returns>
+        protected virtual bool AllowInvokeMethod(object binder, CommandData cmdData, object[] args)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Checks if the parameter types in two lists are of the same Type. Length and order must also be same.
         /// </summary>
         /// <param name="a">First collection.</param>
@@ -272,7 +257,8 @@ namespace NetGore
         /// <returns>A string containing a message about why the command failed to be handled.</returns>
         protected virtual string HandleCommandInvokeDenied(object binder, CommandData cd, string[] args)
         {
-            return string.Format("Object `{0}` was not allowed to invoke command `{1}`.", binder != null ? binder.ToString() : "NULL", cd.Attribute.Command);
+            return string.Format("Object `{0}` was not allowed to invoke command `{1}`.",
+                                 binder != null ? binder.ToString() : "NULL", cd.Attribute.Command);
         }
 
         /// <summary>
@@ -299,6 +285,46 @@ namespace NetGore
             }
 
             return "Expected usage: " + commandName + " (" + GetParameterInfo(cmdDatas.Select(x => x.Method).First()) + ")";
+        }
+
+        static bool MethodCanBeInvokedWithArgs(MethodInfo method, IList<string> args, out object[] convertedArgs)
+        {
+            convertedArgs = null;
+
+            var parameters = method.GetParameters();
+
+            // Args always has to be >= the number of parameters
+            if (parameters.Length > args.Count)
+                return false;
+
+            // The number of parameters can only be less than the number of args if the last parameter is a string
+            var lastParameter = parameters.LastOrDefault();
+            if (parameters.Length < args.Count && (lastParameter == null || lastParameter.ParameterType != typeof(string)))
+                return false;
+
+            convertedArgs = new object[parameters.Length];
+
+            // If args.Length > parameters.Length, then the last parameter is a string, so just join them all together
+            // as one big string. Otherwise, we have to parse the last argument.
+            var length = parameters.Length;
+            if (parameters.Length < args.Count)
+            {
+                length--; // Makes it so we don't try to parse the last argument
+                var combinedString = CombineStrings(args, convertedArgs.Length - 1, args.Count - 1, ' ');
+                convertedArgs[convertedArgs.Length - 1] = combinedString;
+            }
+
+            // Try to perform the needed casts for all of the arguments
+            for (var i = 0; i < length; i++)
+            {
+                object parsed;
+                if (!StringParser.TryParse(args[i], parameters[i].ParameterType, out parsed) || parsed == null)
+                    return false;
+
+                convertedArgs[i] = parsed;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -381,52 +407,6 @@ namespace NetGore
             args = splits.ToArray();
         }
 
-        static bool MethodCanBeInvokedWithArgs(MethodInfo method, IList<string> args, out object[] convertedArgs)
-        {
-            convertedArgs = null;
-
-            var parameters = method.GetParameters();
-
-            // Args always has to be >= the number of parameters
-            if (parameters.Length > args.Count)
-            {
-                return false;
-            }
-
-            // The number of parameters can only be less than the number of args if the last parameter is a string
-            var lastParameter = parameters.LastOrDefault();
-            if (parameters.Length < args.Count && (lastParameter == null || lastParameter.ParameterType != typeof(string)))
-            {
-                return false;
-            }
-
-            convertedArgs = new object[parameters.Length];
-
-            // If args.Length > parameters.Length, then the last parameter is a string, so just join them all together
-            // as one big string. Otherwise, we have to parse the last argument.
-            var length = parameters.Length;
-            if (parameters.Length < args.Count)
-            {
-                length--; // Makes it so we don't try to parse the last argument
-                var combinedString = CombineStrings(args, convertedArgs.Length - 1, args.Count - 1, ' ');
-                convertedArgs[convertedArgs.Length - 1] = combinedString;
-            }
-
-            // Try to perform the needed casts for all of the arguments
-            for (var i = 0; i < length; i++)
-            {
-                object parsed;
-                if (!StringParser.TryParse(args[i], parameters[i].ParameterType, out parsed) || parsed == null)
-                {
-                    return false;
-                }
-
-                convertedArgs[i] = parsed;
-            }
-
-            return true;
-        }
-
         /// <summary>
         /// Tries to invoke a method.
         /// </summary>
@@ -462,21 +442,6 @@ namespace NetGore
             else
                 result = string.Empty;
 
-            return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if the <paramref name="binder"/> is allowed to invoke the method
-        /// defined by the given <see cref="CommandData"/> using the given set of <paramref name="args"/>.
-        /// </summary>
-        /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
-        /// this is ignored and can be null.</param>
-        /// <param name="cmdData">The <see cref="CommandData"/> containing the method to invoke and the corresponding attribute
-        /// that is attached to it.</param>
-        /// <param name="args">The casted arguments to use to invoke the method.</param>
-        /// <returns></returns>
-        protected virtual bool AllowInvokeMethod(object binder, CommandData cmdData, object[] args)
-        {
             return true;
         }
 
@@ -546,6 +511,42 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Describes a command in the <see cref="StringCommandParser{T}"/>.
+        /// </summary>
+        public class CommandData
+        {
+            readonly T _attribute;
+            readonly MethodInfo _method;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;.CommandData"/> class.
+            /// </summary>
+            /// <param name="method">The <see cref="MethodInfo"/>.</param>
+            /// <param name="attribute">The attribute.</param>
+            public CommandData(MethodInfo method, T attribute)
+            {
+                _attribute = attribute;
+                _method = method;
+            }
+
+            /// <summary>
+            /// Gets the attribute that resulted in this method being binded to the command.
+            /// </summary>
+            public T Attribute
+            {
+                get { return _attribute; }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="MethodInfo"/> for the method to be invoked.
+            /// </summary>
+            public MethodInfo Method
+            {
+                get { return _method; }
+            }
+        }
+
+        /// <summary>
         /// Provides sorting for the <see cref="CommandData"/>s based on which <see cref="MethodInfo"/> has the least number
         /// of parameters of type string or object.
         /// </summary>
@@ -566,7 +567,7 @@ namespace NetGore
                 return p.ParameterType != typeof(string) && p.ParameterType != typeof(object);
             }
 
-            #region IComparer<MethodInfo> Members
+            #region IComparer<StringCommandParser<T>.CommandData> Members
 
             /// <summary>
             /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
@@ -588,10 +589,8 @@ namespace NetGore
                 var a = x.Method;
                 var b = y.Method;
 
-                var nonStringX =
-                    a.GetParameters().Count(_countFuncDelegate);
-                var nonStringY =
-                    b.GetParameters().Count(_countFuncDelegate);
+                var nonStringX = a.GetParameters().Count(_countFuncDelegate);
+                var nonStringY = b.GetParameters().Count(_countFuncDelegate);
 
                 return nonStringX.CompareTo(nonStringY);
             }

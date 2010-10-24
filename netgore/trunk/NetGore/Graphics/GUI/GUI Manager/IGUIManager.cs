@@ -22,8 +22,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         IEnumerable<Control> Controls { get; }
 
-        Window Window { get; set; }
-
         /// <summary>
         /// Gets the cursor position.
         /// </summary>
@@ -108,6 +106,8 @@ namespace NetGore.Graphics.GUI
         /// by this <see cref="IGUIManager"/> is currently under the cursor.
         /// </summary>
         Control UnderCursor { get; }
+
+        Window Window { get; set; }
 
         /// <summary>
         /// Adds a <see cref="Control"/> to this <see cref="IGUIManager"/> at the root level. This should only be called

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -17,27 +15,11 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectCharacterEquippedBodiesQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterEquippedBodiesQuery(DbConnectionPool connectionPool) : base(connectionPool, 
-            CreateQuery(connectionPool.QueryBuilder))
+        public SelectCharacterEquippedBodiesQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(ItemTable.DbColumns, "id", "equipped_body");
             QueryAsserts.ContainsColumns(CharacterEquippedTable.DbColumns, "item_id", "character_id");
-        }
-
-        public IEnumerable<string> Execute(CharacterID charID)
-        {
-            List<string> ret = new List<string>();
-
-            using (var r = ExecuteReader(charID))
-            {
-                while (r.Read())
-                {
-                    var v = r.GetString(0);
-                    ret.Add(v);
-                }
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -55,11 +37,28 @@ namespace DemoGame.Server.Queries
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(ItemTable.TableName, "i").Add("i.equipped_body")
-                .InnerJoinOnColumn(CharacterEquippedTable.TableName, "e", "item_id", "i", "id")
-                .Where(f.Equals("e.character_id", s.Parameterize("charID")));
+                qb.Select(ItemTable.TableName, "i").Add("i.equipped_body").InnerJoinOnColumn(CharacterEquippedTable.TableName, "e",
+                                                                                             "item_id", "i", "id").Where(
+                                                                                                 f.Equals("e.character_id",
+                                                                                                          s.Parameterize("charID")));
 
             return q.ToString();
+        }
+
+        public IEnumerable<string> Execute(CharacterID charID)
+        {
+            var ret = new List<string>();
+
+            using (var r = ExecuteReader(charID))
+            {
+                while (r.Read())
+                {
+                    var v = r.GetString(0);
+                    ret.Add(v);
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>

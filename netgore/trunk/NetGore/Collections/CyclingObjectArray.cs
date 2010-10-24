@@ -238,14 +238,6 @@ namespace NetGore.Collections
             }
 
             /// <summary>
-            /// Gets the values in the collection.
-            /// </summary>
-            public IEnumerable<TValue> Values
-            {
-                get { return _d.Values; }
-            }
-
-            /// <summary>
             /// Gets the value of the maximum supported index value.
             /// </summary>
             public abstract int MaxIndex { get; }
@@ -254,6 +246,14 @@ namespace NetGore.Collections
             /// Gets the value of the minimum supported index value.
             /// </summary>
             public abstract int MinIndex { get; }
+
+            /// <summary>
+            /// Gets the values in the collection.
+            /// </summary>
+            public IEnumerable<TValue> Values
+            {
+                get { return _d.Values; }
+            }
 
             /// <summary>
             /// Adds a value into the collection.
@@ -269,6 +269,30 @@ namespace NetGore.Collections
                 var key = NextFreeKey();
                 this[key] = value;
                 return key;
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>1</filterpriority>
+            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+            {
+                return _d.GetEnumerator();
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
             }
 
             /// <summary>
@@ -317,30 +341,6 @@ namespace NetGore.Collections
             }
 
             #endregion
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>1</filterpriority>
-            public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-            {
-                return _d.GetEnumerator();
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>2</filterpriority>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
 
         /// <summary>

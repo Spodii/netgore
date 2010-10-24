@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using DemoGame.Server.AI;
-using NetGore;
 using NetGore.World;
 using SFML.Graphics;
 

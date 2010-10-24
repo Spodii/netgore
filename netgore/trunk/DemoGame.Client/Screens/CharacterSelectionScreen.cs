@@ -239,9 +239,7 @@ namespace DemoGame.Client
                 base.DrawControl(spriteBatch);
 
                 if (_character != null)
-                {
                     _character.Draw(spriteBatch);
-                }
             }
 
             /// <summary>
@@ -306,6 +304,17 @@ namespace DemoGame.Client
             }
 
             /// <summary>
+            /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+            /// base class's method to ensure that changes to settings are hierchical.
+            /// </summary>
+            protected override void SetDefaultValues()
+            {
+                base.SetDefaultValues();
+
+                ResizeToChildren = false;
+            }
+
+            /// <summary>
             /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
             /// not visible.
             /// </summary>
@@ -316,17 +325,6 @@ namespace DemoGame.Client
 
                 if (_character != null)
                     _character.Update();
-            }
-
-            /// <summary>
-            /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-            /// base class's method to ensure that changes to settings are hierchical.
-            /// </summary>
-            protected override void SetDefaultValues()
-            {
-                base.SetDefaultValues();
-
-                ResizeToChildren = false;
             }
 
             /// <summary>
@@ -365,11 +363,6 @@ namespace DemoGame.Client
             public PreviewCharacter()
             {
                 _characterSprite = Character.CreateCharacterSprite(this, this, _skeletonManager);
-            }
-
-            public void SetPaperDollLayers(IEnumerable<string> values)
-            {
-                _characterSprite.SetPaperDollLayers(values);
             }
 
             public BodyID Body
@@ -417,6 +410,17 @@ namespace DemoGame.Client
                 _characterSprite.Draw(sb, Position, Direction.East, Color.White);
             }
 
+            public void SetPaperDollLayers(IEnumerable<string> values)
+            {
+                _characterSprite.SetPaperDollLayers(values);
+            }
+
+            public void Update()
+            {
+                if (_characterSprite != null)
+                    _characterSprite.Update(GetTime());
+            }
+
             /// <summary>
             /// Perform pre-collision velocity and position updating.
             /// </summary>
@@ -424,12 +428,6 @@ namespace DemoGame.Client
             /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
             public override void UpdateVelocity(IMap map, int deltaTime)
             {
-            }
-
-            public void Update()
-            {
-                if (_characterSprite != null)
-                    _characterSprite.Update(GetTime());
             }
 
             #region IGetTime Members

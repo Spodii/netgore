@@ -67,7 +67,7 @@ namespace DemoGame.Server
                 seqChannel = 0;
             }
 #else
-            // Listing of the used sequence numbers, grouped by delivery method
+    // Listing of the used sequence numbers, grouped by delivery method
             const int chRO_General = 0;
             const int chRO_GUI = 1;
             const int chRO_GUIChat = 2;

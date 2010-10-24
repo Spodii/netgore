@@ -123,22 +123,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Provides the ability for the derived class to enter a custom loop. This is primarily intended to allow event-driven
-        /// objects such as the Windows Forms to run without freezing. If this method blocks, it is up to the implementation
-        /// to call <see cref="IGameContainer.HandleFrame"/> manually.
-        /// </summary>
-        /// <example>
-        /// When using WinForms, this should contain a call to Application.Run() where the <paramref name="displayContainer"/>
-        /// is the Form that the game exists on. You will have to add additional logic to your form to have it call
-        /// <see cref="IGameContainer.HandleFrame"/> whenever the form is idle.
-        /// </example>
-        /// <param name="displayContainer">The display container reference that was used in the last call to
-        /// <see cref="GameBase.CreateWindowedDisplayHandle"/>.</param>
-        protected virtual void RunCustomWindowedDisplayHandleLoop(object displayContainer)
-        {
-        }
-
-        /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
         /// <see cref="GameBase"/> is reclaimed by garbage collection.
         /// </summary>
@@ -159,67 +143,6 @@ namespace NetGore.Graphics
         protected abstract void HandleDraw(TickCount currentTime);
 
         /// <summary>
-        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
-        /// stream of updates.
-        /// </summary>
-        public void HandleFrame()
-        {
-            if (IsDisposed)
-                return;
-
-            _isHandlingFrame = false;
-
-            // Check if we need to dispose
-            if (_willDispose)
-            {
-                Dispose();
-                return;
-            }
-
-            // Begin handling frame
-            _isHandlingFrame = true;
-
-            try
-            {
-                // Check if we need to toggle fullscreen mode
-                ChangeFullscreen();
-
-                // Get the current time
-                var currentTime = TickCount.Now;
-
-                // Dispatch the events
-                var rw = RenderWindow;
-                if (rw != null && !rw.IsDisposed)
-                    rw.DispatchEvents();
-
-                // Update
-                HandleUpdate(currentTime);
-
-                // Draw
-                rw = RenderWindow;
-                if (rw != null && !rw.IsDisposed)
-                    HandleDraw(currentTime);
-
-                // Display
-                rw = RenderWindow;
-                if (rw != null && !rw.IsDisposed)
-                    rw.Display();
-            }
-            finally
-            {
-                // End handling frame
-                _isHandlingFrame = false;
-            }
-
-            // Check if we need to dispose
-            if (_willDispose)
-            {
-                Dispose();
-                return;
-            }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles updating the game.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
@@ -237,6 +160,22 @@ namespace NetGore.Graphics
 
             newValue.ShowMouseCursor(ShowMouseCursor);
             newValue.UseVerticalSync(UseVerticalSync);
+        }
+
+        /// <summary>
+        /// Provides the ability for the derived class to enter a custom loop. This is primarily intended to allow event-driven
+        /// objects such as the Windows Forms to run without freezing. If this method blocks, it is up to the implementation
+        /// to call <see cref="IGameContainer.HandleFrame"/> manually.
+        /// </summary>
+        /// <example>
+        /// When using WinForms, this should contain a call to Application.Run() where the <paramref name="displayContainer"/>
+        /// is the Form that the game exists on. You will have to add additional logic to your form to have it call
+        /// <see cref="IGameContainer.HandleFrame"/> whenever the form is idle.
+        /// </example>
+        /// <param name="displayContainer">The display container reference that was used in the last call to
+        /// <see cref="GameBase.CreateWindowedDisplayHandle"/>.</param>
+        protected virtual void RunCustomWindowedDisplayHandleLoop(object displayContainer)
+        {
         }
 
         /// <summary>
@@ -768,6 +707,67 @@ namespace NetGore.Graphics
             GC.SuppressFinalize(this);
 
             Dispose(true);
+        }
+
+        /// <summary>
+        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
+        /// stream of updates.
+        /// </summary>
+        public void HandleFrame()
+        {
+            if (IsDisposed)
+                return;
+
+            _isHandlingFrame = false;
+
+            // Check if we need to dispose
+            if (_willDispose)
+            {
+                Dispose();
+                return;
+            }
+
+            // Begin handling frame
+            _isHandlingFrame = true;
+
+            try
+            {
+                // Check if we need to toggle fullscreen mode
+                ChangeFullscreen();
+
+                // Get the current time
+                var currentTime = TickCount.Now;
+
+                // Dispatch the events
+                var rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    rw.DispatchEvents();
+
+                // Update
+                HandleUpdate(currentTime);
+
+                // Draw
+                rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    HandleDraw(currentTime);
+
+                // Display
+                rw = RenderWindow;
+                if (rw != null && !rw.IsDisposed)
+                    rw.Display();
+            }
+            finally
+            {
+                // End handling frame
+                _isHandlingFrame = false;
+            }
+
+            // Check if we need to dispose
+            if (_willDispose)
+            {
+                Dispose();
+                return;
+            }
         }
 
         /// <summary>

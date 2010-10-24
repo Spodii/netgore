@@ -8,8 +8,8 @@ namespace SFML.Graphics
     /// </summary>
     public class LazyFont : Font
     {
-        LazyContentLoadFailCounter _loadFailCounter;
         string _filename;
+        LazyContentLoadFailCounter _loadFailCounter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LazyFont"/> class.

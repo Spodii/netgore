@@ -17,7 +17,7 @@ namespace DemoGame.GUITester
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
         /// </summary>
-        public Game1() : base(new  Point(1024, 768), new Point(1024, 768))
+        public Game1() : base(new Point(1024, 768), new Point(1024, 768))
         {
             UseVerticalSync = true;
             ShowMouseCursor = true;
@@ -36,15 +36,15 @@ namespace DemoGame.GUITester
             Run();
         }
 
+        void Game1_Closed(object sender, EventArgs e)
+        {
+            Dispose();
+        }
+
         void Game1_KeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Code == KeyCode.Return && e.Alt)
                 IsFullscreen = !IsFullscreen;
-        }
-
-        void Game1_Closed(object sender, EventArgs e)
-        {
-            Dispose();
         }
 
         /// <summary>

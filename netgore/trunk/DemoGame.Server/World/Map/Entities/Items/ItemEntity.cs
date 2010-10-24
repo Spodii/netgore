@@ -270,6 +270,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Performs assertions on the <see cref="ItemEntity"/> during the <see cref="HandleDispose"/> method.
+        /// </summary>
+        /// <param name="disposeManaged">The disposedManaged value.</param>
+        [Conditional("DEBUG")]
+        void AssertHandleDisposeState(bool disposeManaged)
+        {
+            if (Amount == 0)
+            {
+                if (!disposeManaged)
+                {
+                    const string errmsg =
+                        "ItemEntity `{0}` had Amount = 0, but it was garbage collected. This is often indication " +
+                        " that you are alter item amounts somewhere, but are not calling Destroy() when the amount get set to 0." +
+                        " This is not an issue since the GC cleans it up for you, but its best to avoid this if you can.";
+
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, this);
+                }
+            }
+        }
+
+        /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
         /// not actually pick up this <see cref="Entity"/>.
         /// </summary>
@@ -359,27 +381,6 @@ namespace DemoGame.Server
         {
             Amount = 0;
             Dispose();
-        }
-
-        /// <summary>
-        /// Performs assertions on the <see cref="ItemEntity"/> during the <see cref="HandleDispose"/> method.
-        /// </summary>
-        /// <param name="disposeManaged">The disposedManaged value.</param>
-        [Conditional("DEBUG")]
-        void AssertHandleDisposeState(bool disposeManaged)
-        {
-            if (Amount == 0)
-            {
-                if (!disposeManaged)
-                {
-                    const string errmsg = "ItemEntity `{0}` had Amount = 0, but it was garbage collected. This is often indication " +
-                        " that you are alter item amounts somewhere, but are not calling Destroy() when the amount get set to 0." +
-                        " This is not an issue since the GC cleans it up for you, but its best to avoid this if you can.";
-
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, this);
-                }
-            }
         }
 
         /// <summary>

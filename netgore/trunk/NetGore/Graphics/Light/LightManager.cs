@@ -132,10 +132,7 @@ namespace NetGore.Graphics
         public bool IsEnabled
         {
             get { return _isEnabled; }
-            set
-            {
-                _isEnabled = value;
-            }
+            set { _isEnabled = value; }
         }
 
         /// <summary>

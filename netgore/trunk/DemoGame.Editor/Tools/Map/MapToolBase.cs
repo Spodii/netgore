@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 
@@ -31,7 +30,8 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_KeyDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
+        protected virtual void MapContainer_KeyDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
+                                                    KeyEventArgs e)
         {
         }
 
@@ -65,7 +65,8 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
+                                                      MouseEventArgs e)
         {
         }
 
@@ -76,7 +77,8 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
+                                                      MouseEventArgs e)
         {
         }
 
@@ -87,7 +89,8 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
+                                                    MouseEventArgs e)
         {
         }
 
@@ -98,7 +101,8 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected virtual void MapContainer_MouseWheel(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
+        protected virtual void MapContainer_MouseWheel(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
+                                                       MouseEventArgs e)
         {
         }
 

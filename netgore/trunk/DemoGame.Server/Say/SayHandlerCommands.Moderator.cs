@@ -21,16 +21,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Causes you to kill yourself.
-        /// </summary>
-        [SayHandlerCommand("Suicide", UserPermissions.Moderator)]
-        [SayHandlerCommand("Seppuku", UserPermissions.Moderator)]
-        public void Suicide()
-        {
-            User.Kill();
-        }
-
-        /// <summary>
         /// Warps the user to the player specified.
         /// </summary>
         /// <param name="userName">The name of the player to approach.</param>
@@ -154,6 +144,16 @@ namespace DemoGame.Server
 
             // User was found, so disconnect them and give the reason for the disconnect
             target.Conn.Disconnect(GameMessage.DisconnectUserKicked, reason);
+        }
+
+        /// <summary>
+        /// Causes you to kill yourself.
+        /// </summary>
+        [SayHandlerCommand("Suicide", UserPermissions.Moderator)]
+        [SayHandlerCommand("Seppuku", UserPermissions.Moderator)]
+        public void Suicide()
+        {
+            User.Kill();
         }
     }
 }

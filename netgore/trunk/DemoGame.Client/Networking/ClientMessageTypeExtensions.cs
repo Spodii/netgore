@@ -52,7 +52,7 @@ namespace DemoGame.Client
              * If you update this comment block, please also update it in the server under:
              *      ServerMessageTypeExtensions.GetDeliveryMethod().
              */
-            
+
 #if true
             // NOTE: For now, we use a very simple and straight-forward approach. In the future, we will use more complex deliveries.
 
@@ -60,7 +60,7 @@ namespace DemoGame.Client
             seqChannel = 0;
 
 #else
-            // Listing of the used sequence numbers, grouped by delivery method
+    // Listing of the used sequence numbers, grouped by delivery method
             const int chRO_General = 0;
             const int chRO_Chat = 1;
 

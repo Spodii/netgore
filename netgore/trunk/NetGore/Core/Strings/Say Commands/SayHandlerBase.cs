@@ -19,77 +19,14 @@ namespace NetGore
         readonly SayHandlerStringCommandParser _parser;
         readonly ISayCommands<T> _sayCommands;
 
-        sealed class SayHandlerStringCommandParser : StringCommandParser<U>
-        {
-            readonly SayHandlerBase<T, U> _sayHandlerBase;
-
-            public SayHandlerStringCommandParser(SayHandlerBase<T,U> sayHandlerBase, params Type[] types) : base((IEnumerable<Type>)types)
-            {
-                _sayHandlerBase = sayHandlerBase;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if the <paramref name="binder"/> is allowed to invoke the method
-            /// defined by the given <see cref="StringCommandParser{T}.CommandData"/> using the given set of <paramref name="args"/>.
-            /// </summary>
-            /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
-            /// this is ignored and can be null.</param>
-            /// <param name="cmdData">The <see cref="StringCommandParser{T}.CommandData"/>
-            /// containing the method to invoke and the corresponding attribute
-            /// that is attached to it.</param>
-            /// <param name="args">The casted arguments to use to invoke the method.</param>
-            /// <returns></returns>
-            protected override bool AllowInvokeMethod(object binder, CommandData cmdData, object[] args)
-            {
-                var sayCommands = binder as ISayCommands<T>;
-                if (sayCommands == null)
-                {
-                    const string errmsg = "Was expecting the binder `{0}` to be type ISayCommands<T>, but was `{1}`.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL");
-                    Debug.Fail(string.Format(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL"));
-                    return false;
-                }
-
-                return _sayHandlerBase.AllowInvokeCommand(sayCommands.User, cmdData);
-            }
-
-            /// <summary>
-            /// Handles when a command with the valid parameters was found, but <see cref="StringCommandParser{T}.AllowInvokeMethod"/>
-            /// returned false for the given <see cref="binder"/>.
-            /// </summary>
-            /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
-            /// this is ignored and can be null.</param>
-            /// <param name="cd">The <see cref="StringCommandParser{T}.CommandData"/> for the command that the
-            /// <paramref name="binder"/> was rejected from
-            /// invoking.</param>
-            /// <param name="args">Arguments used to invoke the command. Can be null.</param>
-            /// <returns>A string containing a message about why the command failed to be handled.</returns>
-            protected override string HandleCommandInvokeDenied(object binder, CommandData cd, string[] args)
-            {
-                var sayCommands = binder as ISayCommands<T>;
-                if (sayCommands == null)
-                {
-                    const string errmsg = "Was expecting the binder `{0}` to be type ISayCommands<T>, but was `{1}`.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL");
-                    Debug.Fail(string.Format(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL"));
-                    return string.Empty;
-                }
-
-                return _sayHandlerBase.GetCommandNotAllowedMessage(sayCommands.User, cd);
-            }
-        }
-
         /// <summary>
-        /// Gets the message to display when the user is not allowed to invoke a command.
+        /// Initializes a new instance of the <see cref="SayHandlerBase{T,U}"/> class.
         /// </summary>
-        /// <param name="user">The user invoking the command.</param>
-        /// <param name="commandData">The information about the command to be invoked.</param>
-        /// <returns>The message to display to the <paramref name="user"/>, or null or empty to display nothing.</returns>
-        protected virtual string GetCommandNotAllowedMessage(T user, StringCommandParser<U>.CommandData commandData)
+        /// <param name="sayCommands">The object containing the Say commands.</param>
+        protected SayHandlerBase(ISayCommands<T> sayCommands)
         {
-            return "You are not allowed to do that.";
+            _sayCommands = sayCommands;
+            _parser = new SayHandlerStringCommandParser(this, sayCommands.GetType());
         }
 
         /// <summary>
@@ -104,13 +41,14 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SayHandlerBase{T,U}"/> class.
+        /// Gets the message to display when the user is not allowed to invoke a command.
         /// </summary>
-        /// <param name="sayCommands">The object containing the Say commands.</param>
-        protected SayHandlerBase(ISayCommands<T> sayCommands)
+        /// <param name="user">The user invoking the command.</param>
+        /// <param name="commandData">The information about the command to be invoked.</param>
+        /// <returns>The message to display to the <paramref name="user"/>, or null or empty to display nothing.</returns>
+        protected virtual string GetCommandNotAllowedMessage(T user, StringCommandParser<U>.CommandData commandData)
         {
-            _sayCommands = sayCommands;
-            _parser = new SayHandlerStringCommandParser(this, sayCommands.GetType());
+            return "You are not allowed to do that.";
         }
 
         /// <summary>
@@ -237,6 +175,69 @@ namespace NetGore
         protected virtual string RemoveCommandSymbol(string text)
         {
             return text.Substring(1);
+        }
+
+        sealed class SayHandlerStringCommandParser : StringCommandParser<U>
+        {
+            readonly SayHandlerBase<T, U> _sayHandlerBase;
+
+            public SayHandlerStringCommandParser(SayHandlerBase<T, U> sayHandlerBase, params Type[] types)
+                : base((IEnumerable<Type>)types)
+            {
+                _sayHandlerBase = sayHandlerBase;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if the <paramref name="binder"/> is allowed to invoke the method
+            /// defined by the given <see cref="StringCommandParser{T}.CommandData"/> using the given set of <paramref name="args"/>.
+            /// </summary>
+            /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
+            /// this is ignored and can be null.</param>
+            /// <param name="cmdData">The <see cref="StringCommandParser{T}.CommandData"/>
+            /// containing the method to invoke and the corresponding attribute
+            /// that is attached to it.</param>
+            /// <param name="args">The casted arguments to use to invoke the method.</param>
+            /// <returns></returns>
+            protected override bool AllowInvokeMethod(object binder, CommandData cmdData, object[] args)
+            {
+                var sayCommands = binder as ISayCommands<T>;
+                if (sayCommands == null)
+                {
+                    const string errmsg = "Was expecting the binder `{0}` to be type ISayCommands<T>, but was `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL");
+                    Debug.Fail(string.Format(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL"));
+                    return false;
+                }
+
+                return _sayHandlerBase.AllowInvokeCommand(sayCommands.User, cmdData);
+            }
+
+            /// <summary>
+            /// Handles when a command with the valid parameters was found, but <see cref="StringCommandParser{T}.AllowInvokeMethod"/>
+            /// returned false for the given <see cref="binder"/>.
+            /// </summary>
+            /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
+            /// this is ignored and can be null.</param>
+            /// <param name="cd">The <see cref="StringCommandParser{T}.CommandData"/> for the command that the
+            /// <paramref name="binder"/> was rejected from
+            /// invoking.</param>
+            /// <param name="args">Arguments used to invoke the command. Can be null.</param>
+            /// <returns>A string containing a message about why the command failed to be handled.</returns>
+            protected override string HandleCommandInvokeDenied(object binder, CommandData cd, string[] args)
+            {
+                var sayCommands = binder as ISayCommands<T>;
+                if (sayCommands == null)
+                {
+                    const string errmsg = "Was expecting the binder `{0}` to be type ISayCommands<T>, but was `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL");
+                    Debug.Fail(string.Format(errmsg, binder, binder != null ? binder.GetType().ToString() : "NULL"));
+                    return string.Empty;
+                }
+
+                return _sayHandlerBase.GetCommandNotAllowedMessage(sayCommands.User, cd);
+            }
         }
     }
 }

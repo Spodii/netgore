@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.World;
@@ -48,11 +49,13 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         Vector2 ScreenSize
         {
-            get {
+            get
+            {
                 if (RenderWindow == null)
                     return ClientSize.ToVector2();
                 else
-                return new Vector2(RenderWindow.Width, RenderWindow.Height); }
+                    return new Vector2(RenderWindow.Width, RenderWindow.Height);
+            }
         }
 
         /// <summary>
@@ -127,6 +130,21 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            var newValue = Camera.Scale + (e.Delta / 1200f);
+            if (newValue < 0.1f)
+                newValue = 0.1f;
+
+            Camera.Scale = newValue;
+        }
+
+        /// <summary>
         /// Allows derived classes to handle when the <see cref="RenderWindow"/> is created or re-created.
         /// </summary>
         /// <param name="newRenderWindow">The current <see cref="RenderWindow"/>.</param>
@@ -152,21 +170,6 @@ namespace NetGore.Editor.Grhs
             _camera.Size = ScreenSize;
 
             ResetCamera();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseWheel(System.Windows.Forms.MouseEventArgs e)
-        {
-            base.OnMouseWheel(e);
-
-            var newValue = Camera.Scale + (e.Delta / 1200f);
-            if (newValue < 0.1f)
-                newValue = 0.1f;
-
-            Camera.Scale = newValue;
         }
 
         /// <summary>

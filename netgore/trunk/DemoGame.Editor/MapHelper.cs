@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
@@ -21,40 +20,6 @@ namespace DemoGame.Editor
     public static class MapHelper
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Gets the <see cref="IMapTable"/>s for all of the maps.
-        /// </summary>
-        /// <param name="dbController">The <see cref="IDbController"/> to use. If null, will attempt to find
-        /// the <see cref="IDbController"/> instance automatically.</param>
-        /// <returns>
-        /// The <see cref="IMapTable"/>s for all of the maps.
-        /// </returns>
-        /// <exception cref="ArgumentException"><paramref name="dbController"/> is null and no valid <see cref="IDbController"/>
-        /// instance could be found automatically.</exception>
-        public static IEnumerable<IMapTable> FindAllMaps(IDbController dbController = null)
-        {
-            if (dbController == null)
-                dbController = DbControllerBase.GetInstance();
-
-            if (dbController == null)
-                throw new ArgumentException("Param was null and could not find a valid IDbController instance.", "dbController");
-
-            // Get the IDs
-            var ids = dbController.GetQuery<SelectMapIDsQuery>().Execute();
-
-            // Get all of the maps one at a time using the IDs
-            var ret = new List<IMapTable>();
-            var templateQuery = dbController.GetQuery<SelectMapQuery>();
-            foreach (var id in ids)
-            {
-                var template = templateQuery.Execute(id);
-                ret.Add(template);
-            }
-
-            // Return the results sorted
-            return ret.OrderBy(x => x.ID).ToImmutable();
-        }
 
         /// <summary>
         /// Creates a new map.
@@ -78,7 +43,8 @@ namespace DemoGame.Editor
                 var id = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
                 // Create the map and save it
-                using (var map = new EditorMap(id, new Camera2D(new Vector2(800, 600)), GetTimeDummy.Instance) { Name = "New map" })
+                using (
+                    var map = new EditorMap(id, new Camera2D(new Vector2(800, 600)), GetTimeDummy.Instance) { Name = "New map" })
                 {
                     map.SetDimensions(new Vector2(960, 960));
                     SaveMap(map, false);
@@ -140,6 +106,40 @@ namespace DemoGame.Editor
                     log.ErrorFormat(errmsg, map, ex);
                 Debug.Fail(string.Format(errmsg, map, ex));
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IMapTable"/>s for all of the maps.
+        /// </summary>
+        /// <param name="dbController">The <see cref="IDbController"/> to use. If null, will attempt to find
+        /// the <see cref="IDbController"/> instance automatically.</param>
+        /// <returns>
+        /// The <see cref="IMapTable"/>s for all of the maps.
+        /// </returns>
+        /// <exception cref="ArgumentException"><paramref name="dbController"/> is null and no valid <see cref="IDbController"/>
+        /// instance could be found automatically.</exception>
+        public static IEnumerable<IMapTable> FindAllMaps(IDbController dbController = null)
+        {
+            if (dbController == null)
+                dbController = DbControllerBase.GetInstance();
+
+            if (dbController == null)
+                throw new ArgumentException("Param was null and could not find a valid IDbController instance.", "dbController");
+
+            // Get the IDs
+            var ids = dbController.GetQuery<SelectMapIDsQuery>().Execute();
+
+            // Get all of the maps one at a time using the IDs
+            var ret = new List<IMapTable>();
+            var templateQuery = dbController.GetQuery<SelectMapQuery>();
+            foreach (var id in ids)
+            {
+                var template = templateQuery.Execute(id);
+                ret.Add(template);
+            }
+
+            // Return the results sorted
+            return ret.OrderBy(x => x.ID).ToImmutable();
         }
 
         /// <summary>
@@ -217,7 +217,8 @@ namespace DemoGame.Editor
                 if (showConfirmation)
                 {
                     const string confirmMsg = "Are you sure you wish to save map `{0}` as a new map (with ID `{1}`)?";
-                    if (MessageBox.Show(string.Format(confirmMsg, map, newID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (MessageBox.Show(string.Format(confirmMsg, map, newID), "Save map as?", MessageBoxButtons.YesNo) ==
+                        DialogResult.No)
                         return;
                 }
 

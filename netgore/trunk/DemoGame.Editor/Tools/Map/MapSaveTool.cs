@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.Editor.Properties;
-using DemoGame.Server.Queries;
-using log4net;
-using NetGore.Db;
 using NetGore.Editor.EditorTool;
-using NetGore.IO;
-using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor.Tools
 {

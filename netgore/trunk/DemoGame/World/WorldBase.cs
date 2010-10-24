@@ -7,6 +7,8 @@ namespace DemoGame
 {
     public abstract class WorldBase : IGetTime
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The maximum number of times the world can be updated per tick. This is provided to ensure that when the program
         /// is paused for an extended period or gets really far behind, it doesn't get stuck updating over and over for a huge
@@ -16,8 +18,6 @@ namespace DemoGame
 
         bool _isFirstUpdate = true;
         TickCount _lastUpdateTime;
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Updates the World.

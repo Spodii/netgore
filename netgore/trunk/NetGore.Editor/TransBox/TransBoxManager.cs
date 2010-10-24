@@ -266,9 +266,7 @@ namespace NetGore.Editor
 
             // Update position
             if (SelectedTransBox != null)
-            {
                 SelectedTransBox.CursorMoved(_lastWorldPos);
-            }
 
             return SelectedTransBox != null;
         }

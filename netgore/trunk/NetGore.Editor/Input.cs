@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore;
 using NetGore.Collections;
 
 namespace NetGore.Editor

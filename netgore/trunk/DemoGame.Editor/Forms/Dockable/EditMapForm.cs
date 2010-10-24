@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -12,17 +13,17 @@ namespace DemoGame.Editor
     public sealed partial class EditMapForm : ToolTargetFormBase
     {
         /// <summary>
-        /// Notifies listeners when a <see cref="EditMapForm"/> is loaded.
-        /// </summary>
-        public static event EventHandler FormLoaded;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EditMapForm"/> class.
         /// </summary>
         public EditMapForm()
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Notifies listeners when a <see cref="EditMapForm"/> is loaded.
+        /// </summary>
+        public static event EventHandler FormLoaded;
 
         /// <summary>
         /// Gets the <see cref="MapScreenControl"/> for this EditMapForm.
@@ -44,28 +45,6 @@ namespace DemoGame.Editor
             return MapScreenControl.Map;
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            const string confirmMsg = @"Do you wish to save the map ({0}) before closing?
-If you do not save, all chances will be lost.";
-
-            // Save?
-            var map = mapScreen.Map;
-            if (map != null)
-            {
-                if (MessageBox.Show(string.Format(confirmMsg, map), "Save before closing?", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    MapHelper.SaveMap(map);
-                }
-            }
-
-            base.OnClosing(e);
-        }
-
         void MapScreenControl_MapChanged(MapScreenControl sender, EditorMap oldValue, EditorMap newValue)
         {
             // When the map changes, and it was our map that made the ToolBar visibile, then update the reference on the ToolBar
@@ -77,6 +56,28 @@ If you do not save, all chances will be lost.";
             var dispObj = GetToolBarObject();
             if (dispObj != null && tb.DisplayObject == dispObj)
                 tb.DisplayObject = dispObj;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            const string confirmMsg =
+                @"Do you wish to save the map ({0}) before closing?
+If you do not save, all chances will be lost.";
+
+            // Save?
+            var map = mapScreen.Map;
+            if (map != null)
+            {
+                if (MessageBox.Show(string.Format(confirmMsg, map), "Save before closing?", MessageBoxButtons.YesNo) ==
+                    DialogResult.Yes)
+                    MapHelper.SaveMap(map);
+            }
+
+            base.OnClosing(e);
         }
 
         /// <summary>

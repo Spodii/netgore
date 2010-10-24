@@ -38,14 +38,15 @@ namespace DemoGame
         /// </summary>
         const int _findValidPlacementPadding = 128;
 
+        const string _headerNodeCustomGravityKey = "CustomGravity";
+        const string _headerNodeGravityKey = "Gravity";
+
         const string _headerNodeHasMusicKey = "HasMusic";
         const string _headerNodeIndoorsKey = "Indoors";
         const string _headerNodeMusicKey = "MusicID";
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeSizeKey = "Size";
-        const string _headerNodeCustomGravityKey = "CustomGravity";
-        const string _headerNodeGravityKey = "Gravity";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
         const string _wallsNodeName = "Walls";
@@ -55,7 +56,8 @@ namespace DemoGame
         /// <summary>
         /// Collection of DynamicEntities on this map.
         /// </summary>
-        readonly ICyclingObjectArray<ushort, DynamicEntity> _dynamicEntities = CyclingObjectArray.CreateUsingUShortKey<DynamicEntity>();
+        readonly ICyclingObjectArray<ushort, DynamicEntity> _dynamicEntities =
+            CyclingObjectArray.CreateUsingUShortKey<DynamicEntity>();
 
         /// <summary>
         /// List of entities in the map
@@ -70,6 +72,7 @@ namespace DemoGame
         readonly ISpatialCollection _spatialCollection;
 
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
+        Vector2? _gravity = null;
 
         MapID _mapID;
 
@@ -79,7 +82,6 @@ namespace DemoGame
         string _name = string.Empty;
 
         Vector2 _size = new Vector2(0);
-        Vector2? _gravity = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -140,7 +142,8 @@ namespace DemoGame
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Debug.Assert(!_dynamicEntities.Values.Contains(entity), string.Format("`{0}` is already in the DynamicEntity list!", entity));
+            Debug.Assert(!_dynamicEntities.Values.Contains(entity),
+                         string.Format("`{0}` is already in the DynamicEntity list!", entity));
 
             var existingDE = _dynamicEntities[(int)mapEntityIndex];
             if (existingDE != null)
@@ -185,9 +188,10 @@ namespace DemoGame
             DynamicEntity dynamicEntity;
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-                Debug.Assert(!_dynamicEntities.Values.Contains(dynamicEntity), string.Format("`{0}` is already in the DynamicEntity list!", entity));
+                Debug.Assert(!_dynamicEntities.Values.Contains(dynamicEntity),
+                             string.Format("`{0}` is already in the DynamicEntity list!", entity));
 
-                var indexRaw= _dynamicEntities.Add(dynamicEntity);
+                var indexRaw = _dynamicEntities.Add(dynamicEntity);
                 var index = new MapEntityIndex(indexRaw);
                 dynamicEntity.MapEntityIndex = index;
             }
@@ -232,21 +236,21 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Changes the ID of the map. This is generally only something you will want to do in editors.
-        /// </summary>
-        /// <param name="newID">The new map ID.</param>
-        public void ChangeID(MapID newID)
-        {
-            _mapID = newID;
-        }
-
-        /// <summary>
         /// Changes the gravity of the map.
         /// </summary>
         /// <param name="value">The new gravity for the map, or null to use the default gravity.</param>
         public void ChangeGravity(Vector2? value)
         {
             _gravity = value;
+        }
+
+        /// <summary>
+        /// Changes the ID of the map. This is generally only something you will want to do in editors.
+        /// </summary>
+        /// <param name="newID">The new map ID.</param>
+        public void ChangeID(MapID newID)
+        {
+            _mapID = newID;
         }
 
         void CheckCollisionAgainstEntities(Entity entity)
@@ -1203,6 +1207,20 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the gravity to use on the map.
+        /// </summary>
+        public Vector2 Gravity
+        {
+            get
+            {
+                if (_gravity.HasValue)
+                    return _gravity.Value;
+                else
+                    return EngineSettings.Instance.Gravity;
+            }
+        }
+
+        /// <summary>
         /// Gets the height of the map in pixels
         /// </summary>
         [Browsable(false)]
@@ -1238,20 +1256,6 @@ namespace DemoGame
         public ISpatialCollection Spatial
         {
             get { return _spatialCollection; }
-        }
-
-        /// <summary>
-        /// Gets the gravity to use on the map.
-        /// </summary>
-        public Vector2 Gravity
-        {
-            get
-            {
-                if (_gravity.HasValue)
-                    return _gravity.Value;
-                else
-                    return EngineSettings.Instance.Gravity;
-            }
         }
 
         /// <summary>

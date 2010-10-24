@@ -19,6 +19,7 @@ namespace NetGore.Features.Guilds
         Button _btnOnline;
         GuildMembersForm _frmMembers;
         GuildOnlineMembersForm _frmOnline;
+        bool _lastIsInGuild;
         Label _lblName;
 
         /// <summary>
@@ -79,26 +80,6 @@ namespace NetGore.Features.Guilds
             RelocateControls();
         }
 
-        void UpdateGuildStatus()
-        {
-            if (IsInGuild)
-            {
-                _lblName.Text = GuildInfo.Name + " [" + GuildInfo.Tag + "]";
-                _btnJoinLeave.Text = "Leave guild";
-                _btnOnline.IsEnabled = true;
-                _btnMembers.IsEnabled = true;
-            }
-            else
-            {
-                _lblName.Text = "Not in a guild";
-                _btnJoinLeave.Text = "Join guild";
-                _btnOnline.IsEnabled = false;
-                _btnMembers.IsEnabled = false;
-            }
-        }
-
-        bool _lastIsInGuild;
-
         /// <summary>
         /// Draws the Control.
         /// </summary>
@@ -118,39 +99,6 @@ namespace NetGore.Features.Guilds
         static Vector2 GetPositionBelow(Control control)
         {
             return control.Position + new Vector2(0, control.Size.Y + 4);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when the <see cref="UserGuildInformation"/> changes.
-        /// </summary>
-        /// <param name="newValue">The new value.</param>
-        /// <param name="oldValue">The old value.</param>
-        protected override void OnGuildInfoChanged(UserGuildInformation newValue, UserGuildInformation oldValue)
-        {
-            base.OnGuildInfoChanged(newValue, oldValue);
-
-            if (_frmOnline != null)
-            {
-                _frmOnline.GuildInfo = newValue;
-                _frmMembers.GuildInfo = newValue;
-            }
-
-            UpdateGuildStatus();
-
-            if (oldValue != null)
-            {
-                oldValue.GuildChanged -= UserGuildInfo_GuildChanged;
-            }
-
-            if (newValue != null)
-            {
-                newValue.GuildChanged += UserGuildInfo_GuildChanged;
-            }
-        }
-
-        void UserGuildInfo_GuildChanged(UserGuildInformation sender)
-        {
-            UpdateGuildStatus();
         }
 
         /// <summary>
@@ -175,6 +123,30 @@ namespace NetGore.Features.Guilds
             base.OnBorderChanged();
 
             RelocateControls();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the <see cref="UserGuildInformation"/> changes.
+        /// </summary>
+        /// <param name="newValue">The new value.</param>
+        /// <param name="oldValue">The old value.</param>
+        protected override void OnGuildInfoChanged(UserGuildInformation newValue, UserGuildInformation oldValue)
+        {
+            base.OnGuildInfoChanged(newValue, oldValue);
+
+            if (_frmOnline != null)
+            {
+                _frmOnline.GuildInfo = newValue;
+                _frmMembers.GuildInfo = newValue;
+            }
+
+            UpdateGuildStatus();
+
+            if (oldValue != null)
+                oldValue.GuildChanged -= UserGuildInfo_GuildChanged;
+
+            if (newValue != null)
+                newValue.GuildChanged += UserGuildInfo_GuildChanged;
         }
 
         /// <summary>
@@ -212,6 +184,29 @@ namespace NetGore.Features.Guilds
             base.SetDefaultValues();
 
             Text = "Guild";
+        }
+
+        void UpdateGuildStatus()
+        {
+            if (IsInGuild)
+            {
+                _lblName.Text = GuildInfo.Name + " [" + GuildInfo.Tag + "]";
+                _btnJoinLeave.Text = "Leave guild";
+                _btnOnline.IsEnabled = true;
+                _btnMembers.IsEnabled = true;
+            }
+            else
+            {
+                _lblName.Text = "Not in a guild";
+                _btnJoinLeave.Text = "Join guild";
+                _btnOnline.IsEnabled = false;
+                _btnMembers.IsEnabled = false;
+            }
+        }
+
+        void UserGuildInfo_GuildChanged(UserGuildInformation sender)
+        {
+            UpdateGuildStatus();
         }
 
         /// <summary>

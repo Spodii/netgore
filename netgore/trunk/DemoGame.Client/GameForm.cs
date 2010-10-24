@@ -37,6 +37,12 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets if the game will be disposed when this form closes.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool DisposeGameOnClose { get; set; }
+
+        /// <summary>
         /// Handles a frame of the main game loop.
         /// </summary>
         void HandleFrame()
@@ -60,12 +66,6 @@ namespace DemoGame.Client
                     throw;
             }
         }
-
-        /// <summary>
-        /// Gets or sets if the game will be disposed when this form closes.
-        /// </summary>
-        [DefaultValue(true)]
-        public bool DisposeGameOnClose { get; set; }
 
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
