@@ -17,13 +17,17 @@ namespace DemoGame.Client
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        DemoGame _game;
+        readonly DemoGame _game;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameForm"/> class.
         /// </summary>
-        public GameForm()
+        public GameForm(DemoGame game)
         {
+            DisposeGameOnClose = true;
+
+            _game = game;
+
             InitializeComponent();
 
             // Set up our form
@@ -58,6 +62,12 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets if the game will be disposed when this form closes.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool DisposeGameOnClose { get; set; }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
@@ -65,7 +75,7 @@ namespace DemoGame.Client
         {
             try
             {
-                if (_game != null && !_game.IsDisposed)
+                if (DisposeGameOnClose && _game != null && !_game.IsDisposed)
                     _game.Dispose();
             }
             catch (Exception ex)
@@ -77,18 +87,6 @@ namespace DemoGame.Client
             }
 
             base.OnClosing(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            // Create the game
-            _game = new DemoGame(this);
         }
 
         /// <summary>

@@ -21,7 +21,11 @@ namespace DemoGame.Client
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameForm());
+
+            using (var game = new DemoGame())
+            {
+                game.Run();
+            }
         }
     }
 }

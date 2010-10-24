@@ -15,6 +15,18 @@ namespace NetGore.Graphics
         RenderWindow RenderWindow { get; }
 
         /// <summary>
+        /// Starts running the game loop for this <see cref="IGameContainer"/>. This will create a blocking loop that will
+        /// continuously call <see cref="HandleFrame"/> until the game is terminated.
+        /// </summary>
+        void Run();
+
+        /// <summary>
+        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
+        /// stream of updates.
+        /// </summary>
+        void HandleFrame();
+
+        /// <summary>
         /// Gets the resolution to use while in fullscreen mode.
         /// </summary>
         Point FullscreenResolution { get; }
@@ -58,12 +70,6 @@ namespace NetGore.Graphics
         /// Gets the size of the screen in pixels.
         /// </summary>
         Vector2 ScreenSize { get; }
-        
-        /// <summary>
-        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
-        /// stream of updates.
-        /// </summary>
-        void HandleFrame();
 
         /// <summary>
         /// Event handler for the GainedFocus event.

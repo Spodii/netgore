@@ -17,7 +17,7 @@ namespace DemoGame.GUITester
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
         /// </summary>
-        public Game1() : base(IntPtr.Zero, new  Point(1024, 768), new Point(1024, 768))
+        public Game1() : base(new  Point(1024, 768), new Point(1024, 768))
         {
             UseVerticalSync = true;
             ShowMouseCursor = true;
@@ -33,7 +33,7 @@ namespace DemoGame.GUITester
 
             KeyPressed += Game1_KeyPressed;
 
-            GameLoop();
+            Run();
         }
 
         void Game1_KeyPressed(object sender, KeyEventArgs e)
@@ -63,14 +63,6 @@ namespace DemoGame.GUITester
         protected override void HandleUpdate(TickCount currentTime)
         {
             _screenManager.Update(currentTime);
-        }
-
-        void GameLoop()
-        {
-            while (!IsDisposed)
-            {
-                HandleFrame();
-            }
         }
     }
 }
