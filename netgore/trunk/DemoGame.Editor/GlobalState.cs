@@ -18,8 +18,6 @@ using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
-    // TODO: !! Need to save the GlobalState values... where applicable
-
     /// <summary>
     /// Describes the global state for the editors. This contains state that is shared across multiple parts of the editor and
     /// can be utilized by any part of the editor. When something is specific to a single control instance, it belongs in that
