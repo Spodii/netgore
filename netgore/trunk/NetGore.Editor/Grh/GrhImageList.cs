@@ -136,6 +136,59 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
+        /// Scales the unscaled <see cref="Bitmap"/> for a <see cref="StationaryGrhData"/>.
+        /// </summary>
+        /// <param name="unscaled">The unscaled <see cref="Bitmap"/>.</param>
+        /// <returns>The scaled <see cref="Bitmap"/> scaled to the size for this image list, or null if an error occured.</returns>
+        static Bitmap CreateScaledBitmap(Bitmap unscaled)
+        {
+            try
+            {
+                return unscaled.CreateScaled(ImageWidth, ImageHeight, true, null, null);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to scale bitmap down to size. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates an unscaled <see cref="Bitmap"/> of a <see cref="StationaryGrhData"/>.
+        /// </summary>
+        /// <param name="gd">The <see cref="StationaryGrhData"/>.</param>
+        /// <returns>The unscaled <see cref="Bitmap"/>, or null if an error occured.</returns>
+        static Bitmap CreateUnscaledBitmap(StationaryGrhData gd)
+        {
+            Bitmap img;
+
+            // The image was null, so we are going to be the ones to create it
+            try
+            {
+                // Try to create the image
+                var tex = gd.GetOriginalTexture();
+                if (tex == null)
+                    img = null;
+                else
+                    img = tex.ToBitmap(gd.OriginalSourceRect);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to create GrhImageList image for `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, gd, ex);
+                if (!(ex is LoadingFailedException))
+                    Debug.Fail(string.Format(errmsg, gd, ex));
+                img = null;
+            }
+
+            return img;
+        }
+
+        /// <summary>
         /// Creates an <see cref="Image"/> for a <see cref="StationaryGrhData"/>, adds it to the cache, and returns it.
         /// Only call this if the image actually needs to be created, and never call this while in the <see cref="_imagesSync"/>
         /// lock!
@@ -157,20 +210,13 @@ namespace NetGore.Editor.Grhs
                 else
                     img = tex.ToBitmap(gd.OriginalSourceRect, ImageWidth, ImageHeight);
             }
-            catch (LoadingFailedException ex)
-            {
-                // A LoadingFailedException is generally fine since it probably means the file did not exist
-                const string errmsg = "Failed to create GrhImageList image for `{0}`. Exception: {1}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, gd, ex);
-                img = _errorImage;
-            }
             catch (Exception ex)
             {
                 const string errmsg = "Failed to create GrhImageList image for `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, gd, ex);
-                Debug.Fail(string.Format(errmsg, gd, ex));
+                if (!(ex is LoadingFailedException))
+                    Debug.Fail(string.Format(errmsg, gd, ex));
                 img = _errorImage;
             }
 
@@ -214,7 +260,7 @@ namespace NetGore.Editor.Grhs
             {
                 // Try to add to the thread pool
                 wasEnqueued = ThreadPool.QueueUserWorkItem(_threadPoolCallback, state);
-
+    
                 if (!wasEnqueued)
                 {
                     const string errmsg =
@@ -383,7 +429,7 @@ namespace NetGore.Editor.Grhs
                         // good to wait for the image when there is no callback method.
                         if (callback != null)
                         {
-                            var tpacs = new ThreadPoolAsyncCallbackState(gd, callback, userState, true);
+                            var tpacs = new ThreadPoolAsyncCallbackState(gd, callback, userState, true, null);
                             ExecuteOnThreadPool(tpacs);
                         }
                     }
@@ -397,8 +443,32 @@ namespace NetGore.Editor.Grhs
                 }
                 else
                 {
-                    var tpacs = new ThreadPoolAsyncCallbackState(gd, callback, userState, false);
-                    ExecuteOnThreadPool(tpacs);
+                    // NOTE: The asynchronous aspect is less than optimal due to this.
+                    // When originally designing this, I was working under the assumption that SFML would be able to deal with the threading
+                    // better. Turns out I was wrong. There are probably some other threading issues that would have to be taken into
+                    // account, too, like that content can be disposed on the main thread. I could offload more onto the worker thread
+                    // than just the rescaling, such as the generation of the original unscaled bitmap, but the biggest gains come from
+                    // the ability to offload the actual image loading. I guess its helpful to have at least a little work offloaded
+                    // than to be completely synchronous since that does mean multi-core CPUs can load a bit faster.
+                    var bmp = CreateUnscaledBitmap(gd);
+                    if (bmp == null)
+                    {
+                        // If the bitmap failed to be created for whatever reason, use the ErrorImage
+                        if (callback != null)
+                            callback(this, gd, ErrorImage, userState);
+
+                        lock (_imagesSync)
+                        {
+                            Debug.Assert(_images[key] == _placeholder);
+                            _images[key] = ErrorImage;
+                        }
+                    }
+                    else
+                    {
+                        // Add the Image creation job to the thread pool
+                        var tpacs = new ThreadPoolAsyncCallbackState(gd, callback, userState, false, bmp);
+                        ExecuteOnThreadPool(tpacs);
+                    }
                 }
 
                 // Async always returns null
@@ -537,7 +607,17 @@ namespace NetGore.Editor.Grhs
             else
             {
                 // Create the image
-                img = CreateAndInsertImage(key, s.GrhData);
+                img = CreateScaledBitmap(s.Bitmap) ?? ErrorImage;
+
+                lock (_imagesSync)
+                {
+                    Debug.Assert(_images[key] == _placeholder);
+                    _images[key] = img;
+                }
+
+                // Dispose of our temporary bitmap containing the unscaled image
+                if (s.Bitmap != img)
+                    s.Bitmap.Dispose();
             }
 
             // Invoke the callback method
@@ -603,6 +683,7 @@ namespace NetGore.Editor.Grhs
             readonly StationaryGrhData _grhData;
             readonly object _userState;
             readonly bool _wait;
+            readonly Bitmap _bitmap;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ThreadPoolAsyncCallbackState"/> class.
@@ -611,14 +692,21 @@ namespace NetGore.Editor.Grhs
             /// <param name="callback">The callback to invoke when complete.</param>
             /// <param name="userState">The user state object.</param>
             /// <param name="wait">If true, performs a spin-wait. If false, generates the <see cref="Image"/> on the thread.</param>
+            /// <param name="bitmap">The unscaled <see cref="Bitmap"/>. Only needed when <paramref name="wait"/> is false.</param>
             public ThreadPoolAsyncCallbackState(StationaryGrhData grhData, GrhImageListAsyncCallback callback, object userState,
-                                                bool wait)
+                                                bool wait, Bitmap bitmap)
             {
                 _grhData = grhData;
                 _callback = callback;
                 _userState = userState;
                 _wait = wait;
+                _bitmap = bitmap;
             }
+
+            /// <summary>
+            /// Gets the unscaled <see cref="Bitmap"/> to scale down.
+            /// </summary>
+            public Bitmap Bitmap { get { return _bitmap; } }
 
             /// <summary>
             /// Gets the callback to invoke when done.
