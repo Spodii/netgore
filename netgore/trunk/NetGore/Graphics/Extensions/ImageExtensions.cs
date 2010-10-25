@@ -14,6 +14,11 @@ namespace NetGore.Graphics
     /// </summary>
     public static class ImageExtensions
     {
+        const CompositingQuality _defaultCompositingQuality = CompositingQuality.HighQuality;
+        const InterpolationMode _defaultInterpolationMode = InterpolationMode.HighQualityBicubic;
+        const PixelOffsetMode _defaultPixelOffsetMode = PixelOffsetMode.HighQuality;
+        const SmoothingMode _defaultSmoothingMode = SmoothingMode.HighQuality;
+
         /// <summary>
         /// Copies the pixels from a <see cref="SFML.Graphics.Image"/> to a <see cref="Bitmap"/>.
         /// </summary>
@@ -159,10 +164,10 @@ namespace NetGore.Graphics
             var ret = new Bitmap(destWidth, destHeight);
             using (var g = System.Drawing.Graphics.FromImage(ret))
             {
-                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.PixelOffsetMode = _defaultPixelOffsetMode;
+                g.CompositingQuality = _defaultCompositingQuality;
+                g.InterpolationMode = _defaultInterpolationMode;
+                g.SmoothingMode = _defaultSmoothingMode;
 
                 if (bgColor.HasValue)
                     g.Clear(bgColor.Value);

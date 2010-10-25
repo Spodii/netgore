@@ -16,11 +16,26 @@ namespace NetGore.Editor.Grhs
     [Serializable]
     public class GrhTreeViewNode : TreeNode, IGrhTreeViewNode
     {
-        static readonly GrhImageList _grhImageList = GrhImageList.Instance;
+        static readonly GrhImageList.GrhImageListAsyncCallback _asyncCallback;
+        static readonly GrhImageList _grhImageList;
+        static readonly SetNodeImageHandler _setNodeImage;
+
         readonly GrhData _grhData;
 
         Grh _animationGrh = null;
         Image _image;
+
+        delegate void SetNodeImageHandler(GrhTreeViewNode node, Image img);
+
+        /// <summary>
+        /// Initializes the <see cref="GrhTreeViewNode"/> class.
+        /// </summary>
+        static GrhTreeViewNode()
+        {
+            _grhImageList = GrhImageList.Instance;
+            _asyncCallback = GrhImageListAsyncCallback;
+            _setNodeImage = SetNodeImage;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhTreeViewNode"/> class.
@@ -163,6 +178,45 @@ namespace NetGore.Editor.Grhs
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Callback for getting an <see cref="Image"/> asynchronously.
+        /// We make this static and pass the <see cref="GrhTreeViewNode"/> as the <paramref name="userState"/> so we can
+        /// just create a single delegate instance and pass that around, greatly reducing garbage and overhead of async operations.
+        /// </summary>
+        /// <param name="sender">The <see cref="GrhImageList"/> the callback came from.</param>
+        /// <param name="gd">The <see cref="StationaryGrhData"/> that the <paramref name="image"/> is for. May be null if the
+        /// <paramref name="image"/> is equal to <see cref="GrhImageList.ErrorImage"/> or null.</param>
+        /// <param name="image">The <see cref="Image"/> that was created.</param>
+        /// <param name="userState">The optional user state object that was passed to the method.</param>
+        static void GrhImageListAsyncCallback(GrhImageList sender, StationaryGrhData gd, Image image, object userState)
+        {
+            var node = (GrhTreeViewNode)userState;
+
+            // If the async callback was run on another thread, we will have to use Control.Invoke() to get it to the correct thread.
+            // Unfortunately, this will result in a bit of overhead and create some garbage due to the parameter list, but
+            // its the best we can do (as far as I can see) and GrhImageList avoids running a new thread when possible anyways so
+            // it only really happens while loading.
+            if (!node.TreeView.InvokeRequired)
+            {
+                SetNodeImage(node, image);
+            }
+            else
+            {
+                node.TreeView.Invoke(_setNodeImage, node, image);
+            }
+        }
+        
+        /// <summary>
+        /// Sets the <see cref="Image"/> for a <see cref="GrhTreeViewNode"/> and refreshes it.
+        /// </summary>
+        /// <param name="node">The <see cref="GrhTreeViewNode"/>.</param>
+        /// <param name="image">The <see cref="Image"/>.</param>
+        static void SetNodeImage(GrhTreeViewNode node, Image image)
+        {
+            node._image = image;
+            ((GrhTreeView)node.TreeView).RefreshNodeImage(node);
+        }
+
         void InsertIntoTree(GrhTreeView treeView)
         {
             Remove();
@@ -206,7 +260,8 @@ namespace NetGore.Editor.Grhs
             }
 
             _animationGrh = new Grh(grhData, AnimType.Loop, TickCount.Now);
-            _image = _grhImageList.GetImage(grhData.GetFrame(0));
+
+            _grhImageList.GetImageAsync(grhData.GetFrame(0), _asyncCallback, this);
         }
 
         /// <summary>
@@ -215,7 +270,7 @@ namespace NetGore.Editor.Grhs
         /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
         void SetIconImageStationary(StationaryGrhData grhData)
         {
-            _image = _grhImageList.GetImage(grhData);
+            _grhImageList.GetImageAsync(grhData, _asyncCallback, this);
         }
 
         /// <summary>
@@ -295,8 +350,7 @@ namespace NetGore.Editor.Grhs
             if (oldGrhData != _animationGrh.CurrentGrhData)
             {
                 // Change the image
-                _image = _grhImageList.GetImage(current);
-                ((GrhTreeView)TreeView).RefreshNodeImage(this);
+                _grhImageList.GetImageAsync(current, _asyncCallback, this);
             }
         }
 
