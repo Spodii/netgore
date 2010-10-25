@@ -56,7 +56,7 @@
     <Item7>
       <Key>DemoGame.Editor.Tools.MapGrhCursorTool</Key>
       <Value>
-        <IsEnabled>False</IsEnabled>
+        <IsEnabled>True</IsEnabled>
         <IsOnToolBar>True</IsOnToolBar>
       </Value>
     </Item7>
@@ -81,7 +81,7 @@
         <IsOnToolBar>True</IsOnToolBar>
         <FilterCollection>
           <DisplayFilters>
-            <Count>3</Count>
+            <Count>4</Count>
             <Item0>
               <Name>Default</Name>
               <Value>
@@ -142,6 +142,26 @@
                 <MapGrhsOnDefaultLayerOnly>False</MapGrhsOnDefaultLayerOnly>
               </Value>
             </Item2>
+            <Item3>
+              <Name>Sprite - Current</Name>
+              <Value>
+                <DrawBackground>False</DrawBackground>
+                <DrawBackgroundMapGrhs>True</DrawBackgroundMapGrhs>
+                <DrawCharacters>False</DrawCharacters>
+                <DrawForegroundMapGrhs>True</DrawForegroundMapGrhs>
+                <DrawItems>False</DrawItems>
+                <MapGrhMaxDepth>
+                  <HasValue>False</HasValue>
+                  <Value>0</Value>
+                </MapGrhMaxDepth>
+                <MapGrhMinDepth>
+                  <HasValue>False</HasValue>
+                  <Value>0</Value>
+                </MapGrhMinDepth>
+                <MapGrhsOnDefaultDepthOnly>True</MapGrhsOnDefaultDepthOnly>
+                <MapGrhsOnDefaultLayerOnly>True</MapGrhsOnDefaultLayerOnly>
+              </Value>
+            </Item3>
           </DisplayFilters>
         </FilterCollection>
       </Value>
