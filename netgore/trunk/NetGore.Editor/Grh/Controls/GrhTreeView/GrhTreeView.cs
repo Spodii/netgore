@@ -382,6 +382,25 @@ namespace NetGore.Editor.Grhs
                 node.Update();
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.AfterExpand"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeViewEventArgs"/> that contains the event data.</param>
+        protected override void OnAfterExpand(TreeViewEventArgs e)
+        {
+            base.OnAfterExpand(e);
+
+            var n = e.Node;
+            if (n == null)
+                return;
+
+            // For each of the GrhTreeViewNodes that are in the node that just expanded, ensure the image has been set for them
+            foreach (var c in n.Nodes.OfType<GrhTreeViewNode>())
+            {
+                c.EnsureImageIsSet();
+            }
+        }
+
         void GrhTreeView_GrhMouseDoubleClick(object sender, GrhTreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Left && !(e.GrhData is AutomaticAnimatedGrhData))

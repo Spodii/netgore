@@ -46,6 +46,11 @@ namespace NetGore.Editor.Grhs
         {
             _grhData = grhData;
             Update(treeView);
+
+            // If this is a root node, load the image immediately since our lazy-loading of images only triggers when
+            // nodes expand, but the root nodes are never shown by expanding
+            if (Parent == null)
+                EnsureImageIsSet();
         }
 
         /// <summary>
@@ -234,10 +239,13 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        /// Sets the icon for the node.
+        /// Makes sure that the image for the node is set.
         /// </summary>
-        void SetIconImage()
+        internal void EnsureImageIsSet()
         {
+            if (_image != null)
+                return;
+
             // Set the preview picture
             if (GrhData is StationaryGrhData)
                 SetIconImageStationary((StationaryGrhData)GrhData);
@@ -323,9 +331,8 @@ namespace NetGore.Editor.Grhs
             v = GetToolTipText();
             if (!StringComparer.Ordinal.Equals(v, ToolTipText))
                 ToolTipText = v;
-
+            
             InsertIntoTree(treeView);
-            SetIconImage();
         }
 
         internal void UpdateIconImage()
