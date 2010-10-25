@@ -13,20 +13,20 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// An empty IEnumerable of <see cref="SFML.Window.KeyCode"/>.
         /// </summary>
-        static readonly IEnumerable<KeyCode> _emptyKeys = Enumerable.Empty<KeyCode>();
+        static readonly IEnumerable<IKeyCodeReference> _emptyKeys = Enumerable.Empty<IKeyCodeReference>();
 
-        IEnumerable<KeyCode> _keysDown;
-        IEnumerable<KeyCode> _keysUp;
+        IEnumerable<IKeyCodeReference> _keysDown;
+        IEnumerable<IKeyCodeReference> _keysUp;
         string _name;
-        IEnumerable<KeyCode> _newKeysDown;
+        IEnumerable<IKeyCodeReference> _newKeysDown;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
         /// </summary>
-        /// <param name="name">The optional name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
+        /// <param name="name">The name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
         /// <param name="keysDown">The keys required to be down.</param>
         /// <param name="keysUp">The keys required to be up.</param>
-        public GameControlKeys(string name, IEnumerable<KeyCode> keysDown, IEnumerable<KeyCode> keysUp = null)
+        public GameControlKeys(string name, IEnumerable<IKeyCodeReference> keysDown, IEnumerable<IKeyCodeReference> keysUp = null)
             : this(name, keysDown, keysUp, null)
         {
         }
@@ -34,12 +34,12 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
         /// </summary>
-        /// <param name="name">The optional name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
+        /// <param name="name">The name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
         /// <param name="keysDown">The keys required to be down.</param>
         /// <param name="keysUp">The keys required to be up.</param>
         /// <param name="newKeysDown">The keys required to be down this frame, and up last frame.</param>
-        public GameControlKeys(string name, IEnumerable<KeyCode> keysDown, IEnumerable<KeyCode> keysUp,
-                               IEnumerable<KeyCode> newKeysDown)
+        public GameControlKeys(string name, IEnumerable<IKeyCodeReference> keysDown, IEnumerable<IKeyCodeReference> keysUp,
+                               IEnumerable<IKeyCodeReference> newKeysDown)
         {
             Name = name;
             NewKeysDown = newKeysDown;
@@ -50,16 +50,16 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
         /// </summary>
-        /// <param name="name">The optional name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
+        /// <param name="name">The name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
         /// <param name="keyDown">The key required to be down.</param>
         /// <param name="keyUp">The key required to be up.</param>
         /// <param name="newKeyDown">The key required to be down this frame, and up last frame.</param>
-        public GameControlKeys(string name, KeyCode? keyDown, KeyCode? keyUp = null, KeyCode? newKeyDown = null)
+        public GameControlKeys(string name, IKeyCodeReference keyDown, IKeyCodeReference keyUp = null, IKeyCodeReference newKeyDown = null)
         {
             Name = name;
-            KeysDown = keyDown.HasValue ? new KeyCode[] { keyDown.Value } : _emptyKeys;
-            KeysUp = keyUp.HasValue ? new KeyCode[] { keyUp.Value } : _emptyKeys;
-            NewKeysDown = newKeyDown.HasValue ? new KeyCode[] { newKeyDown.Value } : _emptyKeys;
+            KeysDown = keyDown != null ? new IKeyCodeReference[] { keyDown } : _emptyKeys;
+            KeysUp = keyUp != null ? new IKeyCodeReference[] { keyUp } : _emptyKeys;
+            NewKeysDown = newKeyDown != null ? new IKeyCodeReference[] { newKeyDown } : _emptyKeys;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NetGore.Graphics.GUI
         /// The returned <see cref="IEnumerable{KeyCode}"/> can be empty, but will not be null. If this property
         /// is set to null, an empty <see cref="IEnumerable{KeyCode}"/> will be used instead.
         /// </summary>
-        public IEnumerable<KeyCode> KeysDown
+        public IEnumerable<IKeyCodeReference> KeysDown
         {
             get { return _keysDown; }
             set { _keysDown = value ?? _emptyKeys; }
@@ -80,7 +80,7 @@ namespace NetGore.Graphics.GUI
         /// The returned <see cref="IEnumerable{KeyCode}"/> can be empty, but will not be null. If this property
         /// is set to null, an empty <see cref="IEnumerable{KeyCode}"/> will be used instead.
         /// </summary>
-        public IEnumerable<KeyCode> KeysUp
+        public IEnumerable<IKeyCodeReference> KeysUp
         {
             get { return _keysUp; }
             set { _keysUp = value ?? _emptyKeys; }
@@ -109,7 +109,7 @@ namespace NetGore.Graphics.GUI
         /// The returned <see cref="IEnumerable{KeyCode}"/> can be empty, but will not be null. If this property
         /// is set to null, an empty <see cref="IEnumerable{KeyCode}"/> will be used instead.
         /// </summary>
-        public IEnumerable<KeyCode> NewKeysDown
+        public IEnumerable<IKeyCodeReference> NewKeysDown
         {
             get { return _newKeysDown; }
             set { _newKeysDown = value ?? _emptyKeys; }
