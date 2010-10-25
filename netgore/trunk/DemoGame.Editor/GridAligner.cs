@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DemoGame.Client;
+using DemoGame.Editor.Properties;
 using NetGore.Editor;
 using SFML.Graphics;
 
@@ -32,7 +33,7 @@ namespace DemoGame.Editor
         /// </summary>
         public override Vector2 GridSize
         {
-            get { return GlobalState.Instance.Map.GridSize; }
+            get { return EditorSettings.Default.GridSize; }
         }
 
         /// <summary>

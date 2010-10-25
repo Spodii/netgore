@@ -49,7 +49,7 @@ namespace DemoGame.Editor.Tools
             /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
             protected override void HandleDrawAfterMap(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
             {
-                _grid.Size = GlobalState.Instance.Map.GridSize;
+                _grid.Size = EditorSettings.Default.GridSize;
                 _grid.Draw(spriteBatch, camera);
             }
         }
