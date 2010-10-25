@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DemoGame.Editor.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DemoGame.Editor.Properties" GeneratedClassName="EditorSettings">
   <Profiles />
   <Settings>
     <Setting Name="Screen_ScrollLeft" Type="System.Windows.Forms.Keys" Scope="User">
@@ -16,6 +16,15 @@
     </Setting>
     <Setting Name="Screen_ScrollPixelsPerSec" Type="System.Single" Scope="User">
       <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="MapGrh_DefaultIsForeground" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MapGrh_DefaultDepth" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="GridSize" Type="SFML.Graphics.Vector2" Scope="User">
+      <Value Profile="(Default)">32, 32</Value>
     </Setting>
   </Settings>
 </SettingsFile>

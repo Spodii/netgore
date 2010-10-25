@@ -28,15 +28,6 @@ namespace DemoGame.Editor
     public class GlobalState
     {
         /// <summary>
-        /// Delegate for handling an event for when a property changes in the <see cref="GlobalState"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the property.</typeparam>
-        /// <param name="sender">The <see cref="GlobalState"/> the event took place in.</param>
-        /// <param name="oldValue">The old property value.</param>
-        /// <param name="newValue">The new property value.</param>
-        public delegate void PropertyChangedEventHandler<T>(GlobalState sender, T oldValue, T newValue);
-
-        /// <summary>
         /// Delegate for handling the <see cref="GlobalState.Tick"/> event.
         /// </summary>
         /// <param name="currentTime">The current <see cref="TickCount"/>.</param>
@@ -203,22 +194,9 @@ namespace DemoGame.Editor
         /// </summary>
         public class MapState
         {
-            /// <summary>
-            /// Delegate for handling an event for when a property changes in the <see cref="MapState"/>.
-            /// </summary>
-            /// <typeparam name="T">The type of the property.</typeparam>
-            /// <param name="sender">The <see cref="MapState"/> the event took place in.</param>
-            /// <param name="oldValue">The old property value.</param>
-            /// <param name="newValue">The new property value.</param>
-            public delegate void PropertyChangedEventHandler<T>(MapState sender, T oldValue, T newValue);
-
             readonly Grh _grhToPlace = new Grh();
             readonly GlobalState _parent;
             readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
-
-            Vector2 _gridSize = new Vector2(32);
-            bool _mapGrhDefaultBackground = true;
-            int _mapGrhDefaultDepth = 0;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MapState"/> class.
@@ -230,16 +208,6 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
-            /// Notifies listeners when the <see cref="MapState.MapGrhDefaultBackground"/> property has changed.
-            /// </summary>
-            public event PropertyChangedEventHandler<bool> MapGrhDefaultBackgroundChanged;
-
-            /// <summary>
-            /// Notifies listeners when the <see cref="MapState.MapGrhDefaultDepth"/> property has changed.
-            /// </summary>
-            public event PropertyChangedEventHandler<int> MapGrhDefaultDepthChanged;
-
-            /// <summary>
             /// Gets the <see cref="Grh"/> that has been selected to be placed on the map. When placing the <see cref="Grh"/>,
             /// create a deep copy.
             /// This property will never be null, but the <see cref="GrhData"/> can be unset.
@@ -247,68 +215,6 @@ namespace DemoGame.Editor
             public Grh GrhToPlace
             {
                 get { return _grhToPlace; }
-            }
-
-            /// <summary>
-            /// Gets or sets the size of the map grid in pixels. Must be greater than or equal to 1.
-            /// </summary>
-            /// <exception cref="ArgumentOutOfRangeException">The <paramref name="value"/>'s X or Y field are less than one.</exception>
-            public Vector2 GridSize
-            {
-                get { return _gridSize; }
-                set
-                {
-                    if (_gridSize.X <= float.Epsilon || _gridSize.Y <= float.Epsilon)
-                        throw new ArgumentOutOfRangeException("value",
-                                                              "The X and Y fields of the value must be greater than or equal to 1.");
-
-                    _gridSize = value;
-                }
-            }
-
-            /// <summary>
-            /// Gets or sets if <see cref="MapGrh"/>s are placed on the background by default. If false, they are placed
-            /// on the foreground by default.
-            /// </summary>
-            public bool MapGrhDefaultBackground
-            {
-                get { return _mapGrhDefaultBackground; }
-                set
-                {
-                    if (_mapGrhDefaultBackground == value)
-                        return;
-
-                    var oldValue = _mapGrhDefaultBackground;
-                    _mapGrhDefaultBackground = value;
-
-                    if (MapGrhDefaultBackgroundChanged != null)
-                        MapGrhDefaultBackgroundChanged(this, oldValue, value);
-                }
-            }
-
-            /// <summary>
-            /// Gets or sets the default depth for a <see cref="MapGrh"/>.
-            /// </summary>
-            public int MapGrhDefaultDepth
-            {
-                get { return _mapGrhDefaultDepth; }
-                set
-                {
-                    if (value < short.MinValue)
-                        value = short.MinValue;
-
-                    if (value > short.MaxValue)
-                        value = short.MaxValue;
-
-                    if (_mapGrhDefaultDepth == value)
-                        return;
-
-                    var oldValue = _mapGrhDefaultDepth;
-                    _mapGrhDefaultDepth = value;
-
-                    if (MapGrhDefaultDepthChanged != null)
-                        MapGrhDefaultDepthChanged(this, oldValue, value);
-                }
             }
 
             /// <summary>

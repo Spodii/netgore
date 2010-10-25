@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.Properties;
@@ -153,8 +154,8 @@ namespace DemoGame.Editor.Tools
                     if (map.MapGrhs.Any(x => x.Position == drawPos && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
                         return;
 
-                    bool isForeground = !GlobalState.Instance.Map.MapGrhDefaultBackground;
-                    int depth = GlobalState.Instance.Map.MapGrhDefaultDepth;
+                    var isForeground = EditorSettings.Default.MapGrh_DefaultIsForeground;
+                    var depth = EditorSettings.Default.MapGrh_DefaultDepth;
 
                     var g = new Grh(gd, AnimType.Loop, map.GetTime());
                     var mg = new MapGrh(g, drawPos, isForeground) { LayerDepth = depth };
@@ -230,12 +231,20 @@ namespace DemoGame.Editor.Tools
             /// </summary>
             public MenuDefaultDepth()
             {
-                GlobalState.Instance.Map.MapGrhDefaultDepthChanged += Map_MapGrhDefaultDepthChanged;
+                EditorSettings.Default.PropertyChanged += EditorSettings_PropertyChanged;
                 UpdateText();
             }
 
-            void Map_MapGrhDefaultDepthChanged(GlobalState.MapState sender, int oldValue, int newValue)
+            /// <summary>
+            /// Handles the PropertyChanged event of the EditorSettings control.
+            /// </summary>
+            /// <param name="sender">The source of the event.</param>
+            /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+            void EditorSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
             {
+                if (!StringComparer.Ordinal.Equals("MapGrh_DefaultDepth", e.PropertyName))
+                    return;
+
                 UpdateText();
             }
 
@@ -253,14 +262,14 @@ Must be value between {0} and {1}.";
 
                 while (true)
                 {
-                    var defaultValue = GlobalState.Instance.Map.MapGrhDefaultDepth.ToString();
+                    var defaultValue = EditorSettings.Default.MapGrh_DefaultDepth.ToString();
                     var result = InputBox.Show(title, string.Format(msg, short.MinValue, short.MaxValue), defaultValue);
 
                     if (string.IsNullOrEmpty(result))
                         return;
 
-                    int newValue;
-                    if (!int.TryParse(result, out newValue))
+                    short newValue;
+                    if (!short.TryParse(result, out newValue))
                     {
                         const string errTitle = "Invalid value";
                         const string errMsg = "You entered an invalid value. Please enter a numeric value in the required range.";
@@ -268,7 +277,7 @@ Must be value between {0} and {1}.";
                     }
                     else
                     {
-                        GlobalState.Instance.Map.MapGrhDefaultDepth = newValue;
+                        EditorSettings.Default.MapGrh_DefaultDepth = newValue;
                         break;
                     }
                 }
@@ -276,7 +285,7 @@ Must be value between {0} and {1}.";
 
             void UpdateText()
             {
-                Text = "Default depth: " + GlobalState.Instance.Map.MapGrhDefaultDepth;
+                Text = "Default depth: " + EditorSettings.Default.MapGrh_DefaultDepth;
             }
         }
 
@@ -287,12 +296,20 @@ Must be value between {0} and {1}.";
             /// </summary>
             public MenuDefaultLayer()
             {
-                GlobalState.Instance.Map.MapGrhDefaultBackgroundChanged += Map_MapGrhDefaultBackgroundChanged;
+                EditorSettings.Default.PropertyChanged += EditorSettings_PropertyChanged;
                 UpdateText();
             }
 
-            void Map_MapGrhDefaultBackgroundChanged(GlobalState.MapState sender, bool oldValue, bool newValue)
+            /// <summary>
+            /// Handles the PropertyChanged event of the EditorSettings control.
+            /// </summary>
+            /// <param name="sender">The source of the event.</param>
+            /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+            void EditorSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
             {
+                if (!StringComparer.Ordinal.Equals("MapGrh_DefaultIsForeground", e.PropertyName))
+                    return;
+
                 UpdateText();
             }
 
@@ -304,12 +321,12 @@ Must be value between {0} and {1}.";
             {
                 base.OnClick(e);
 
-                GlobalState.Instance.Map.MapGrhDefaultBackground = !GlobalState.Instance.Map.MapGrhDefaultBackground;
+                EditorSettings.Default.MapGrh_DefaultIsForeground = !EditorSettings.Default.MapGrh_DefaultIsForeground;
             }
 
             void UpdateText()
             {
-                Text = "Default in BG: " + GlobalState.Instance.Map.MapGrhDefaultBackground;
+                Text = "Default in BG: " + EditorSettings.Default.MapGrh_DefaultIsForeground;
             }
         }
     }

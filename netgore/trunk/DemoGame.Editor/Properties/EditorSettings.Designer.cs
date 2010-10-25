@@ -82,5 +82,41 @@ namespace DemoGame.Editor.Properties {
                 this["Screen_ScrollPixelsPerSec"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MapGrh_DefaultIsForeground {
+            get {
+                return ((bool)(this["MapGrh_DefaultIsForeground"]));
+            }
+            set {
+                this["MapGrh_DefaultIsForeground"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public short MapGrh_DefaultDepth {
+            get {
+                return ((short)(this["MapGrh_DefaultDepth"]));
+            }
+            set {
+                this["MapGrh_DefaultDepth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32, 32")]
+        public global::SFML.Graphics.Vector2 GridSize {
+            get {
+                return ((global::SFML.Graphics.Vector2)(this["GridSize"]));
+            }
+            set {
+                this["GridSize"] = value;
+            }
+        }
     }
 }
