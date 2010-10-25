@@ -65,24 +65,26 @@ namespace NetGore.Editor
         /// Aligns an <see cref="ISpatial"/>'s position to the grid.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/>.</param>
+        /// <param name="forceAlign">When true, aligning to the grid will be forced.</param>
         /// <returns>The position for the <paramref name="spatial"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="spatial"/> is null.</exception>
-        public Vector2 Align(ISpatial spatial)
+        public Vector2 Align(ISpatial spatial, bool forceAlign = false)
         {
             if (spatial == null)
                 throw new ArgumentNullException("spatial");
 
-            return Align(spatial.Position);
+            return Align(spatial.Position, forceAlign);
         }
 
         /// <summary>
         /// When aligning to the grid, aligns the given <paramref name="pos"/> to the grid.
         /// </summary>
         /// <param name="pos">The position to align to the grid.</param>
+        /// <param name="forceAlign">When true, aligning to the grid will be forced.</param>
         /// <returns>The position to use.</returns>
-        public Vector2 Align(Vector2 pos)
+        public Vector2 Align(Vector2 pos, bool forceAlign = false)
         {
-            if (!WillAlign)
+            if (!WillAlign && !forceAlign)
                 return pos;
 
             return (pos / GridSize).Round() * GridSize;
@@ -93,23 +95,24 @@ namespace NetGore.Editor
         /// The <paramref name="spatial"/> must support both <see cref="ISpatial.SupportsMove"/> and
         /// <see cref="ISpatial.SupportsResize"/>.
         /// </summary>
+        /// <param name="forceAlign">When true, aligning to the grid will be forced.</param>
         /// <param name="spatial">The <see cref="ISpatial"/>.</param>
-        public void Fit(ISpatial spatial)
+        public void Fit(ISpatial spatial, bool forceAlign = false)
         {
             if (spatial == null)
                 return;
 
-            if (!WillAlign)
+            if (!WillAlign && !forceAlign)
                 return;
 
             if (!spatial.SupportsMove || !spatial.SupportsResize)
                 return;
 
-            var pos = Align(spatial);
+            var pos = Align(spatial, forceAlign);
             if (!spatial.TryMove(pos))
                 return;
 
-            var size = Resize(spatial);
+            var size = Resize(spatial, forceAlign);
             spatial.TryResize(size);
         }
 
@@ -117,17 +120,18 @@ namespace NetGore.Editor
         /// Gets the new size to give an <see cref="ISpatial"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/>.</param>
+        /// <param name="forceAlign">When true, aligning to the grid will be forced.</param>
         /// <returns>The new size for the <paramref name="spatial"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="spatial"/> is null.</exception>
-        public Vector2 Resize(ISpatial spatial)
+        public Vector2 Resize(ISpatial spatial, bool forceAlign = false)
         {
             if (spatial == null)
                 throw new ArgumentNullException("spatial");
 
-            if (!WillAlign)
+            if (!WillAlign && !forceAlign)
                 return spatial.Size;
 
-            var s = Align(spatial.Max);
+            var s = Align(spatial.Max, forceAlign);
 
             if (s.X < 1)
                 s.X = GridSize.X;
