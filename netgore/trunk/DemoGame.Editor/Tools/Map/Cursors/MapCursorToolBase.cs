@@ -94,7 +94,7 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The current map.</param>
         /// <param name="obj">The object to check if visible.</param>
         /// <returns>True if the <paramref name="obj"/> is visible or not applicable to the map drawing filter; otherwise false.</returns>
-        protected static bool IsObjectVisible(EditorMap map, object obj)
+        protected virtual bool IsObjectVisible(EditorMap map, object obj)
         {
             var drawable = obj as IDrawable;
             if (drawable == null)
