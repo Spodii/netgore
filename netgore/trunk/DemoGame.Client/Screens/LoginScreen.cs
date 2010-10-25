@@ -113,13 +113,13 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void LoginScreen_Clicked(object sender, MouseButtonEventArgs e)
         {
-            ScreenManager.SetScreen(MainMenuScreen.ScreenName);
+            ScreenManager.SetScreen < MainMenuScreen>();
         }
 
         void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
         {
             // Show the character selection screen
-            ScreenManager.ActiveScreen = ScreenManager.GetScreen<CharacterSelectionScreen>();
+            ScreenManager.SetScreen<CharacterSelectionScreen>();
         }
 
         void PacketHandler_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string e)

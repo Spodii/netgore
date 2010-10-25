@@ -53,7 +53,7 @@ namespace DemoGame.Client
 
             AccountCharacterInfo charInfo;
             if (!_sockets.PacketHandler.AccountCharacterInfos.TryGetInfo(slot, out charInfo))
-                ScreenManager.SetScreen(CreateCharacterScreen.ScreenName);
+                ScreenManager.SetScreen<CreateCharacterScreen>();
             else
             {
                 using (var pw = ClientPacket.SelectAccountCharacter(slot))
@@ -66,7 +66,7 @@ namespace DemoGame.Client
         void ClickButton_LogOut(object sender, MouseButtonEventArgs e)
         {
             // Change screens
-            ScreenManager.SetScreen(LoginScreen.ScreenName);
+            ScreenManager.SetScreen<LoginScreen>();
 
             // Disconnect the socket so we actually "log out"
             if (_sockets != null)

@@ -364,7 +364,11 @@ namespace DemoGame.Editor.Tools
             /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
             void EditorSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                if (!StringComparer.Ordinal.Equals("MapGrh_DefaultDepth", e.PropertyName))
+                const string propName ="MapGrh_DefaultDepth";
+
+                EditorSettings.Default.AssertPropertyExists(propName);
+
+                if (!StringComparer.Ordinal.Equals(propName, e.PropertyName))
                     return;
 
                 UpdateText();

@@ -129,7 +129,7 @@ namespace NetGore.Graphics.GUI
         /// The <see cref="IGameScreen"/> of the given type..
         /// </returns>
         /// <exception cref="ArgumentException">No screen with the given type was found.</exception>
-        T GetScreen<T>();
+        T GetScreen<T>() where T : IGameScreen;
 
         /// <summary>
         /// Sets the currently active <see cref="IGameScreen"/> based on the <paramref name="name"/>.
@@ -137,5 +137,12 @@ namespace NetGore.Graphics.GUI
         /// <param name="name">The name of the <see cref="IGameScreen"/>.</param>
         /// <exception cref="ArgumentException">No screen with the given <paramref name="name"/> was found.</exception>
         void SetScreen(string name);
+
+        /// <summary>
+        /// Sets the currently active <see cref="IGameScreen"/> based on the type.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="IGameScreen"/>.</typeparam>
+        /// <exception cref="ArgumentException">No screen of the given type was found.</exception>
+        void SetScreen<T>() where T : IGameScreen;
     }
 }

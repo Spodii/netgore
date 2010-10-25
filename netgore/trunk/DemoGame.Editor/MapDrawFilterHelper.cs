@@ -182,9 +182,15 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
         void EditorSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (StringComparer.Ordinal.Equals("MapGrh_DefaultDepth", e.PropertyName))
+            const string defaultDepthName = "MapGrh_DefaultDepth";
+            const string defaultIsForegroundName = "MapGrh_DefaultIsForeground";
+
+            EditorSettings.Default.AssertPropertyExists(defaultDepthName);
+            EditorSettings.Default.AssertPropertyExists(defaultIsForegroundName);
+
+            if (StringComparer.Ordinal.Equals(defaultDepthName, e.PropertyName))
                 _mapGrh_DefaultDepth_Cache = EditorSettings.Default.MapGrh_DefaultDepth;
-            else if (StringComparer.Ordinal.Equals("MapGrh_DefaultIsForeground", e.PropertyName))
+            else if (StringComparer.Ordinal.Equals(defaultIsForegroundName, e.PropertyName))
                 _mapGrh_DefaultIsForeground_Cache = EditorSettings.Default.MapGrh_DefaultIsForeground;
         }
 

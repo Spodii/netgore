@@ -468,7 +468,7 @@ namespace NetGore.Graphics.GUI
         /// The <see cref="IGameScreen"/> of the given type..
         /// </returns>
         /// <exception cref="ArgumentException">No screen with the given type was found.</exception>
-        public T GetScreen<T>()
+        public T GetScreen<T>() where T : IGameScreen
         {
             var ret = _screens.Values.OfType<T>().FirstOrDefault();
             if (Equals(ret, default(T)))
@@ -485,6 +485,16 @@ namespace NetGore.Graphics.GUI
         public void SetScreen(string name)
         {
             ActiveScreen = GetScreen(name);
+        }
+
+        /// <summary>
+        /// Sets the currently active <see cref="IGameScreen"/> based on the type.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="IGameScreen"/>.</typeparam>
+        /// <exception cref="ArgumentException">No screen of the given type was found.</exception>
+        public void SetScreen<T>() where T : IGameScreen
+        {
+            ActiveScreen = GetScreen<T>();
         }
 
         #endregion
