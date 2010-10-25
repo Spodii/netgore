@@ -98,6 +98,8 @@
                   <HasValue>False</HasValue>
                   <Value>0</Value>
                 </MapGrhMinDepth>
+                <MapGrhsOnDefaultDepthOnly>False</MapGrhsOnDefaultDepthOnly>
+                <MapGrhsOnDefaultLayerOnly>False</MapGrhsOnDefaultLayerOnly>
               </Value>
             </Item0>
             <Item1>
@@ -116,6 +118,8 @@
                   <HasValue>False</HasValue>
                   <Value>0</Value>
                 </MapGrhMinDepth>
+                <MapGrhsOnDefaultDepthOnly>False</MapGrhsOnDefaultDepthOnly>
+                <MapGrhsOnDefaultLayerOnly>False</MapGrhsOnDefaultLayerOnly>
               </Value>
             </Item1>
             <Item2>
@@ -134,6 +138,8 @@
                   <HasValue>False</HasValue>
                   <Value>0</Value>
                 </MapGrhMinDepth>
+                <MapGrhsOnDefaultDepthOnly>False</MapGrhsOnDefaultDepthOnly>
+                <MapGrhsOnDefaultLayerOnly>False</MapGrhsOnDefaultLayerOnly>
               </Value>
             </Item2>
           </DisplayFilters>
