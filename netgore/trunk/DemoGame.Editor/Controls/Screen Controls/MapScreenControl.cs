@@ -267,7 +267,7 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return base.IsInputKey(keyData);
 
-            var s = Settings.Default;
+            var s = EditorSettings.Default;
 
             if (keyData == s.Screen_ScrollLeft || keyData == s.Screen_ScrollRight || keyData == s.Screen_ScrollUp ||
                 keyData == s.Screen_ScrollDown)
@@ -288,7 +288,7 @@ namespace DemoGame.Editor
                 return;
 
             // Update the camera velocity
-            var s = Settings.Default;
+            var s = EditorSettings.Default;
             if (e.KeyCode == s.Screen_ScrollLeft)
                 _cameraVelocity.X = -s.Screen_ScrollPixelsPerSec;
             else if (e.KeyCode == s.Screen_ScrollRight)
@@ -311,7 +311,7 @@ namespace DemoGame.Editor
                 return;
 
             // Update the camera velocity
-            var s = Settings.Default;
+            var s = EditorSettings.Default;
             if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollRight)
                 _cameraVelocity.X = 0;
             else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
