@@ -205,6 +205,8 @@
     </Compile>
     <Compile Include="Editor-Specific Derived Classes\EditorCharacter.cs" />
     <Compile Include="Editor-Specific Derived Classes\EditorDynamicEntityFactory.cs" />
+    <Compile Include="MapDrawFilterHelper.cs" />
+    <Compile Include="MapDrawFilterHelperCollection.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Program.cs" />

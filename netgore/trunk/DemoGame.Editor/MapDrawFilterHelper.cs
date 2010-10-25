@@ -5,7 +5,7 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 
-namespace DemoGame.Client
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Provides assistance in creating a draw filter for the <see cref="Map"/>.
