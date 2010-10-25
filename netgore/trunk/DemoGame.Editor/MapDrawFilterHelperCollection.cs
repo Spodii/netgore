@@ -5,7 +5,7 @@ using System.Linq;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Client
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A collection of <see cref="MapDrawFilterHelper"/>s.
