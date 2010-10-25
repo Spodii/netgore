@@ -58,6 +58,7 @@
       <Value>
         <IsEnabled>True</IsEnabled>
         <IsOnToolBar>True</IsOnToolBar>
+        <TileMode>False</TileMode>
       </Value>
     </Item7>
     <Item8>
