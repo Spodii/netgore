@@ -921,7 +921,8 @@ namespace NetGore.Editor.Grhs
         /// <param name="n">The node to refresh.</param>
         internal void RefreshNodeImage(TreeNode n)
         {
-            var rect = new Rectangle(n.Bounds.X - ImageList.ImageSize.Width, n.Bounds.Y, ImageList.ImageSize.Width, n.Bounds.Height);
+            var w = ImageList.ImageSize.Width + 4;
+            var rect = new Rectangle(n.Bounds.X - w, n.Bounds.Y, w, n.Bounds.Height);
             Invalidate(rect);
         }
 
