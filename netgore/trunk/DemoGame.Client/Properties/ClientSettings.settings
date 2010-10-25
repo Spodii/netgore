@@ -9,10 +9,88 @@
       <Value Profile="(Default)">600000</Value>
     </Setting>
     <Setting Name="EnteredUserName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Spodi</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EnteredPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Keys_MoveLeft" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Left</Value>
+    </Setting>
+    <Setting Name="Keys_MoveRight" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Right</Value>
+    </Setting>
+    <Setting Name="Keys_MoveUp" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Up</Value>
+    </Setting>
+    <Setting Name="Keys_MoveDown" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Down</Value>
+    </Setting>
+    <Setting Name="Keys_Attack" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">LControl</Value>
+    </Setting>
+    <Setting Name="Keys_UseWorld" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">LAlt</Value>
+    </Setting>
+    <Setting Name="Keys_UseShop" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">LAlt</Value>
+    </Setting>
+    <Setting Name="Keys_TalkToNPC" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">LAlt</Value>
+    </Setting>
+    <Setting Name="Keys_PickUp" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Space</Value>
+    </Setting>
+    <Setting Name="Keys_EmoteEllipsis" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Num1</Value>
+    </Setting>
+    <Setting Name="Keys_EmoteExclamation" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Num2</Value>
+    </Setting>
+    <Setting Name="Keys_EmoteHeartbroken" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Num3</Value>
+    </Setting>
+    <Setting Name="Keys_EmoteHearts" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Num4</Value>
+    </Setting>
+    <Setting Name="Keys_EmoteMeat" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Num5</Value>
+    </Setting>
+    <Setting Name="Keys_EmoteQuestion" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Num6</Value>
+    </Setting>
+    <Setting Name="Keys_EmoteSweat" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">Num7</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem0" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F1</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem1" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F2</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem2" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F3</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem3" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F4</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem4" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F5</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem5" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F6</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem6" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F7</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem7" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F8</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem8" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F9</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem9" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">F10</Value>
     </Setting>
   </Settings>
 </SettingsFile>

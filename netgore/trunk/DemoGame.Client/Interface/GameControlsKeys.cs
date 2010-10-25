@@ -1,4 +1,5 @@
 using System.Linq;
+using DemoGame.Client.Properties;
 using NetGore.Graphics.GUI;
 using SFML.Window;
 
@@ -47,13 +48,24 @@ namespace DemoGame.Client
 #endif
 
         /// <summary>
+        /// Helper method to create a <see cref="SettingsKeyCodeReference"/>.
+        /// </summary>
+        /// <param name="settingName">The setting name for the key, without the Keys_ prefix.</param>
+        /// <returns>The <see cref="IKeyCodeReference"/> instance.</returns>
+        static IKeyCodeReference SKC(string settingName)
+        {
+            const string prefix = "Keys_";
+            return SettingsKeyCodeReference.Create(ClientSettings.Default, prefix + settingName);
+        }
+
+        /// <summary>
         /// Initializes the <see cref="GameControlsKeys"/> class.
         /// </summary>
         static GameControlsKeys()
         {
             // Create the GameControlKeys with the default keys
-            _moveLeft = new GameControlKeys("Move Left", KeyCode.Left, KeyCode.Right);
-            _moveRight = new GameControlKeys("Move Right", KeyCode.Right, KeyCode.Left);
+            _moveLeft = new GameControlKeys("Move Left", SKC("MoveLeft"), SKC("MoveRight"));
+            _moveRight = new GameControlKeys("Move Right", SKC("MoveRight"), SKC("MoveLeft"));
 
 #if TOPDOWN
             _moveUp = new GameControlKeys("Move Up", KeyCode.Up, KeyCode.Down);
@@ -63,34 +75,34 @@ namespace DemoGame.Client
             _moveStop = new GameControlKeys("Move Stop", null,
                 _moveLeft.KeysDown.Concat(_moveRight.KeysDown).Concat(_moveUp.KeysDown).Concat(_moveDown.KeysDown));
 #else
-            _jump = new GameControlKeys("Jump", KeyCode.Up);
+            _jump = new GameControlKeys("Jump", SKC("MoveUp"));
             _moveStop = new GameControlKeys("Move Stop", null, _moveLeft.KeysDown.Concat(_moveRight.KeysDown));
 #endif
 
-            _attack = new GameControlKeys("Attack", KeyCode.LControl);
-            _useWorld = new GameControlKeys("Use World", KeyCode.LAlt);
-            _useShop = new GameControlKeys("Use Shop", KeyCode.LAlt);
-            _talkToNPC = new GameControlKeys("Talk To NPC", KeyCode.LAlt);
-            _pickUp = new GameControlKeys("Pick Up", KeyCode.Space);
+            _attack = new GameControlKeys("Attack", SKC("Attack"));
+            _useWorld = new GameControlKeys("Use World", SKC("UseWorld"));
+            _useShop = new GameControlKeys("Use Shop", SKC("UseShop"));
+            _talkToNPC = new GameControlKeys("Talk To NPC", SKC("TalkToNPC"));
+            _pickUp = new GameControlKeys("Pick Up", SKC("PickUp"));
 
-            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", KeyCode.Num1);
-            _emoteExclamation = new GameControlKeys("Emote Exclamation", KeyCode.Num2);
-            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", KeyCode.Num3);
-            _emoteHearts = new GameControlKeys("Emote Hearts", KeyCode.Num4);
-            _emoteMeat = new GameControlKeys("Emote Meat", KeyCode.Num5);
-            _emoteQuestion = new GameControlKeys("Emote Question", KeyCode.Num6);
-            _emoteSweat = new GameControlKeys("Emote Sweat", KeyCode.Num7);
+            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", SKC("EmoteEllipsis"));
+            _emoteExclamation = new GameControlKeys("Emote Exclamation", SKC("EmoteExclamation"));
+            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", SKC("EmoteHeartbroken"));
+            _emoteHearts = new GameControlKeys("Emote Hearts", SKC("EmoteHearts"));
+            _emoteMeat = new GameControlKeys("Emote Meat", SKC("EmoteMeat"));
+            _emoteQuestion = new GameControlKeys("Emote Question", SKC("EmoteQuestion"));
+            _emoteSweat = new GameControlKeys("Emote Sweat", SKC("EmoteSweat"));
 
-            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, KeyCode.F1);
-            _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, KeyCode.F2);
-            _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, KeyCode.F3);
-            _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, KeyCode.F4);
-            _quickBarItem4 = new GameControlKeys("Quick bar item 4", null, null, KeyCode.F5);
-            _quickBarItem5 = new GameControlKeys("Quick bar item 5", null, null, KeyCode.F6);
-            _quickBarItem6 = new GameControlKeys("Quick bar item 6", null, null, KeyCode.F7);
-            _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, KeyCode.F8);
-            _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, KeyCode.F9);
-            _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, KeyCode.F10);
+            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, SKC("QuickBarItem0"));
+            _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, SKC("QuickBarItem1"));
+            _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, SKC("QuickBarItem2"));
+            _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, SKC("QuickBarItem3"));
+            _quickBarItem4 = new GameControlKeys("Quick bar item 4", null, null, SKC("QuickBarItem4"));
+            _quickBarItem5 = new GameControlKeys("Quick bar item 5", null, null, SKC("QuickBarItem5"));
+            _quickBarItem6 = new GameControlKeys("Quick bar item 6", null, null, SKC("QuickBarItem6"));
+            _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, SKC("QuickBarItem7"));
+            _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, SKC("QuickBarItem8"));
+            _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, SKC("QuickBarItem9"));
         }
 
         public static GameControlKeys EmoteEllipsis

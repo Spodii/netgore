@@ -17,7 +17,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="GameControl"/> class.
         /// </summary>
-        /// <param name="keys">The GameControlKeys.</param>
+        /// <param name="keys">The <see cref="GameControlKeys"/>.</param>
         public GameControl(GameControlKeys keys)
         {
             GameControlKeys = keys;
@@ -106,7 +106,7 @@ namespace NetGore.Graphics.GUI
             // If there all the NewKeysDown are up, and we need to reset, then reset
             if (_needsReset)
             {
-                if (GameControlKeys.NewKeysDown.IsEmpty() || !GameControlKeys.NewKeysDown.All(guiManager.IsKeyDown))
+                if (GameControlKeys.NewKeysDown.IsEmpty() || !GameControlKeys.NewKeysDown.All(x => guiManager.IsKeyDown(x.Key)))
                 {
                     // All of the keys are up, so set the bool to false, allowing us to invoke again
                     _needsReset = false;
@@ -122,14 +122,14 @@ namespace NetGore.Graphics.GUI
             // Check the key states
 
             // Check if any of the keys required to be up are down
-            if (GameControlKeys.KeysUp.Any(guiManager.IsKeyDown))
+            if (GameControlKeys.KeysUp.Any(x => guiManager.IsKeyDown(x.Key)))
                 return;
 
             // Check that all of the keys required to be down are down
-            if (!GameControlKeys.KeysDown.All(guiManager.IsKeyDown))
+            if (!GameControlKeys.KeysDown.All(x => guiManager.IsKeyDown(x.Key)))
                 return;
 
-            if (!GameControlKeys.NewKeysDown.All(guiManager.IsKeyDown))
+            if (!GameControlKeys.NewKeysDown.All(x => guiManager.IsKeyDown(x.Key)))
                 return;
 
             // Check additional requirements

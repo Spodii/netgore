@@ -192,6 +192,9 @@
     <Compile Include="Graphics\Game Container\GameBase.cs" />
     <Compile Include="Graphics\Game Container\GameContainerPropertyChangedEventHandler.cs" />
     <Compile Include="Graphics\Game Container\IGameContainer.cs" />
+    <Compile Include="Graphics\GUI\GameControl\IKeyCodeReference.cs" />
+    <Compile Include="Graphics\GUI\GameControl\SettingsKeyCodeReference.cs" />
+    <Compile Include="Graphics\GUI\GameControl\StaticKeyCodeReference.cs" />
     <Compile Include="Graphics\Map\MapDrawEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffectEmitterEventHandler.cs" />
