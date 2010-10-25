@@ -92,5 +92,11 @@
     <Setting Name="Keys_QuickBarItem9" Type="SFML.Window.KeyCode" Scope="User">
       <Value Profile="(Default)">F10</Value>
     </Setting>
+    <Setting Name="Audio_SoundVolume" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="Audio_MusicVolume" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

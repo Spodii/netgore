@@ -57,7 +57,6 @@ namespace NetGore.Graphics.GUI
             UpdateValue();
         }
 
-
         /// <summary>
         /// Handles the PropertyChanged event of the <see cref="_settings"/>.
         /// </summary>

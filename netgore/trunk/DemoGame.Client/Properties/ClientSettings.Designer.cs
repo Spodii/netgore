@@ -376,5 +376,29 @@ namespace DemoGame.Client.Properties {
                 this["Keys_QuickBarItem9"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public byte Audio_SoundVolume {
+            get {
+                return ((byte)(this["Audio_SoundVolume"]));
+            }
+            set {
+                this["Audio_SoundVolume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public byte Audio_MusicVolume {
+            get {
+                return ((byte)(this["Audio_MusicVolume"]));
+            }
+            set {
+                this["Audio_MusicVolume"] = value;
+            }
+        }
     }
 }

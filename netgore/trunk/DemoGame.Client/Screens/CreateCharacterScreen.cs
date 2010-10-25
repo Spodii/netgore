@@ -43,7 +43,7 @@ namespace DemoGame.Client
 
         void ClickButton_Back(object sender, MouseButtonEventArgs e)
         {
-            ScreenManager.SetScreen(CharacterSelectionScreen.ScreenName);
+            ScreenManager.SetScreen<CharacterSelectionScreen>();
         }
 
         void ClickButton_CreateCharacter(object sender, MouseButtonEventArgs e)
@@ -98,7 +98,7 @@ namespace DemoGame.Client
 
             if (successful)
             {
-                ScreenManager.SetScreen(CharacterSelectionScreen.ScreenName);
+                ScreenManager.SetScreen<CharacterSelectionScreen>();
                 return;
             }
 

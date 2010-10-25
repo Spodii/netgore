@@ -143,7 +143,7 @@ namespace DemoGame.Client
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Create Account", "Back");
             menuButtons["Create Account"].Clicked += ClickButton_CreateAccount;
-            menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
+            menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen < MainMenuScreen>(); };
 
             _createAccountButton = menuButtons["Create Account"];
 

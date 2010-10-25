@@ -736,7 +736,7 @@ namespace DemoGame.Client
             GameplayScreen.ScreenManager.Content.Unload(ContentLevel.Map);
 
             // Change the screens, if needed
-            GameplayScreen.ScreenManager.SetScreen(GameplayScreen.ScreenName);
+            GameplayScreen.ScreenManager.SetScreen<GameplayScreen>();
         }
 
         [MessageHandler((uint)ServerPacketID.SetProvidedQuests)]

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using DemoGame.Client.Properties;
 using log4net;
 using NetGore;
 using NetGore.Content;
@@ -64,16 +65,48 @@ namespace DemoGame.Client
             new NewAccountScreen(ScreenManager);
 
             ScreenManager.ConsoleScreen = new ConsoleScreen(ScreenManager);
-            ScreenManager.ActiveScreen = ScreenManager.GetScreen<MainMenuScreen>();
-
-            // NOTE: Temporary volume reduction
-            ScreenManager.AudioManager.SoundManager.Volume = 70f;
-            ScreenManager.AudioManager.MusicManager.Volume = 20f;
+            ScreenManager.SetScreen<MainMenuScreen>();
 
             ShowMouseCursor = true;
             UseVerticalSync = true;
 
             KeyPressed += DemoGame_KeyPressed;
+
+            // Apply some of the initial settings
+            ScreenManager.AudioManager.SoundManager.Volume = ClientSettings.Default.Audio_SoundVolume;
+            ScreenManager.AudioManager.MusicManager.Volume = ClientSettings.Default.Audio_MusicVolume;
+
+            // Listen for changes to the settings
+            ClientSettings.Default.PropertyChanged += Default_PropertyChanged;
+        }
+
+        /// <summary>
+        /// Handles the PropertyChanged event of the <see cref="ClientSettings"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        void Default_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            const string soundVolumeName = "Audio_SoundVolume";
+            const string musicVolumeName = "Audio_MusicVolume";
+
+            ClientSettings.Default.AssertPropertyExists(soundVolumeName);
+            ClientSettings.Default.AssertPropertyExists(musicVolumeName);
+
+            var sc = StringComparer.Ordinal;
+
+            if (sc.Equals(e.PropertyName, soundVolumeName))
+            {
+                // Sound volume
+                var value = ClientSettings.Default.Audio_SoundVolume;
+                ScreenManager.AudioManager.SoundManager.Volume = value;
+            }
+            else if (sc.Equals(e.PropertyName, musicVolumeName))
+            {
+                // Music volume
+                var value = ClientSettings.Default.Audio_MusicVolume;
+                ScreenManager.AudioManager.MusicManager.Volume = value;
+            }
         }
 
         /// <summary>

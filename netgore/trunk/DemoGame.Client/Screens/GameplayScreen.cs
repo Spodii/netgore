@@ -376,7 +376,7 @@ namespace DemoGame.Client
         void GameMenuClickedLogOut(object sender, EventArgs e)
         {
             // Change to the login screen
-            ScreenManager.SetScreen(LoginScreen.ScreenName);
+            ScreenManager.SetScreen<LoginScreen>();
 
             // Disconnect the socket to close the connection
             Socket.Disconnect();

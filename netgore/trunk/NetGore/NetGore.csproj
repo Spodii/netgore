@@ -171,6 +171,7 @@
     <Compile Include="Core\Direction.cs" />
     <Compile Include="Core\DirectionHelper.cs" />
     <Compile Include="Core\DurationParser.cs" />
+    <Compile Include="Core\Extensions\SettingsBaseExtensions.cs" />
     <Compile Include="Cryptography\CryptoHelper.cs" />
     <Compile Include="Cryptography\CryptoProviderExtensions.cs" />
     <Compile Include="Core\EngineSettings.cs" />
