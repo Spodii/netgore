@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.Properties;
 using NetGore;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
+using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.World;
 using SFML.Graphics;
@@ -23,7 +25,12 @@ namespace DemoGame.Editor.Tools
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
         public MapGrhCursorTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
-            ToolBarControl.ControlSettings.AsSplitButtonSettings().ClickToEnable = true;
+            var s = ToolBarControl.ControlSettings.AsSplitButtonSettings();
+            s.ClickToEnable = true;
+
+            // Build the menu
+            s.DropDownItems.Add(new MenuDefaultLayer());
+            s.DropDownItems.Add(new MenuDefaultDepth());
         }
 
         /// <summary>
@@ -146,8 +153,11 @@ namespace DemoGame.Editor.Tools
                     if (map.MapGrhs.Any(x => x.Position == drawPos && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
                         return;
 
+                    bool isForeground = !GlobalState.Instance.Map.MapGrhDefaultBackground;
+                    int depth = GlobalState.Instance.Map.MapGrhDefaultDepth;
+
                     var g = new Grh(gd, AnimType.Loop, map.GetTime());
-                    var mg = new MapGrh(g, drawPos, false);
+                    var mg = new MapGrh(g, drawPos, isForeground) { LayerDepth = depth };
                     map.AddMapGrh(mg);
                 }
             }
@@ -211,6 +221,96 @@ namespace DemoGame.Editor.Tools
             base.OnIsEnabledChanged(oldValue, newValue);
 
             HandleResetState();
+        }
+
+        class MenuDefaultDepth : ToolStripMenuItem
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MenuDefaultDepth"/> class.
+            /// </summary>
+            public MenuDefaultDepth()
+            {
+                GlobalState.Instance.Map.MapGrhDefaultDepthChanged += Map_MapGrhDefaultDepthChanged;
+                UpdateText();
+            }
+
+            void Map_MapGrhDefaultDepthChanged(GlobalState.MapState sender, int oldValue, int newValue)
+            {
+                UpdateText();
+            }
+
+            /// <summary>
+            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.Click"/> event.
+            /// </summary>
+            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+            protected override void OnClick(EventArgs e)
+            {
+                base.OnClick(e);
+
+                const string title = "New default depth";
+                const string msg = @"Enter the new default depth value.
+Must be value between {0} and {1}.";
+
+                while (true)
+                {
+                    var defaultValue = GlobalState.Instance.Map.MapGrhDefaultDepth.ToString();
+                    var result = InputBox.Show(title, string.Format(msg, short.MinValue, short.MaxValue), defaultValue);
+
+                    if (string.IsNullOrEmpty(result))
+                        return;
+
+                    int newValue;
+                    if (!int.TryParse(result, out newValue))
+                    {
+                        const string errTitle = "Invalid value";
+                        const string errMsg = "You entered an invalid value. Please enter a numeric value in the required range.";
+                        MessageBox.Show(errMsg, errTitle, MessageBoxButtons.OK);
+                    }
+                    else
+                    {
+                        GlobalState.Instance.Map.MapGrhDefaultDepth = newValue;
+                        break;
+                    }
+                }
+            }
+
+            void UpdateText()
+            {
+                Text = "Default depth: " + GlobalState.Instance.Map.MapGrhDefaultDepth;
+            }
+        }
+
+        class MenuDefaultLayer : ToolStripMenuItem
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MenuDefaultLayer"/> class.
+            /// </summary>
+            public MenuDefaultLayer()
+            {
+                GlobalState.Instance.Map.MapGrhDefaultBackgroundChanged += Map_MapGrhDefaultBackgroundChanged;
+                UpdateText();
+            }
+
+            void Map_MapGrhDefaultBackgroundChanged(GlobalState.MapState sender, bool oldValue, bool newValue)
+            {
+                UpdateText();
+            }
+
+            /// <summary>
+            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.Click"/> event.
+            /// </summary>
+            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+            protected override void OnClick(EventArgs e)
+            {
+                base.OnClick(e);
+
+                GlobalState.Instance.Map.MapGrhDefaultBackground = !GlobalState.Instance.Map.MapGrhDefaultBackground;
+            }
+
+            void UpdateText()
+            {
+                Text = "Default in BG: " + GlobalState.Instance.Map.MapGrhDefaultBackground;
+            }
         }
     }
 }

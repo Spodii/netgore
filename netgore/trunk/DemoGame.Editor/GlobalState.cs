@@ -18,6 +18,8 @@ using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
+    // TODO: !! Need to save the GlobalState values... where applicable
+
     /// <summary>
     /// Describes the global state for the editors. This contains state that is shared across multiple parts of the editor and
     /// can be utilized by any part of the editor. When something is specific to a single control instance, it belongs in that
@@ -25,6 +27,15 @@ namespace DemoGame.Editor
     /// </summary>
     public class GlobalState
     {
+        /// <summary>
+        /// Delegate for handling an event for when a property changes in the <see cref="GlobalState"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the property.</typeparam>
+        /// <param name="sender">The <see cref="GlobalState"/> the event took place in.</param>
+        /// <param name="oldValue">The old property value.</param>
+        /// <param name="newValue">The new property value.</param>
+        public delegate void PropertyChangedEventHandler<T>(GlobalState sender, T oldValue, T newValue);
+
         /// <summary>
         /// Delegate for handling the <see cref="GlobalState.Tick"/> event.
         /// </summary>
@@ -75,7 +86,7 @@ namespace DemoGame.Editor
             _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev, x => new WallEntity(x));
 
             // Load the child classes
-            _mapState = new MapState();
+            _mapState = new MapState(this);
 
             // Grab the audio manager instances, which will ensure that they are property initialized
             // before something that can't pass it an ContentManager tries to get an instance
@@ -192,17 +203,41 @@ namespace DemoGame.Editor
         /// </summary>
         public class MapState
         {
+            /// <summary>
+            /// Delegate for handling an event for when a property changes in the <see cref="MapState"/>.
+            /// </summary>
+            /// <typeparam name="T">The type of the property.</typeparam>
+            /// <param name="sender">The <see cref="MapState"/> the event took place in.</param>
+            /// <param name="oldValue">The old property value.</param>
+            /// <param name="newValue">The new property value.</param>
+            public delegate void PropertyChangedEventHandler<T>(MapState sender, T oldValue, T newValue);
+
             readonly Grh _grhToPlace = new Grh();
+            readonly GlobalState _parent;
             readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
 
             Vector2 _gridSize = new Vector2(32);
+            bool _mapGrhDefaultBackground = true;
+            int _mapGrhDefaultDepth = 0;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MapState"/> class.
             /// </summary>
-            internal MapState()
+            /// <param name="parent">The <see cref="GlobalState"/>.</param>
+            internal MapState(GlobalState parent)
             {
+                _parent = parent;
             }
+
+            /// <summary>
+            /// Notifies listeners when the <see cref="MapState.MapGrhDefaultBackground"/> property has changed.
+            /// </summary>
+            public event PropertyChangedEventHandler<bool> MapGrhDefaultBackgroundChanged;
+
+            /// <summary>
+            /// Notifies listeners when the <see cref="MapState.MapGrhDefaultDepth"/> property has changed.
+            /// </summary>
+            public event PropertyChangedEventHandler<int> MapGrhDefaultDepthChanged;
 
             /// <summary>
             /// Gets the <see cref="Grh"/> that has been selected to be placed on the map. When placing the <see cref="Grh"/>,
@@ -229,6 +264,59 @@ namespace DemoGame.Editor
 
                     _gridSize = value;
                 }
+            }
+
+            /// <summary>
+            /// Gets or sets if <see cref="MapGrh"/>s are placed on the background by default. If false, they are placed
+            /// on the foreground by default.
+            /// </summary>
+            public bool MapGrhDefaultBackground
+            {
+                get { return _mapGrhDefaultBackground; }
+                set
+                {
+                    if (_mapGrhDefaultBackground == value)
+                        return;
+
+                    var oldValue = _mapGrhDefaultBackground;
+                    _mapGrhDefaultBackground = value;
+
+                    if (MapGrhDefaultBackgroundChanged != null)
+                        MapGrhDefaultBackgroundChanged(this, oldValue, value);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the default depth for a <see cref="MapGrh"/>.
+            /// </summary>
+            public int MapGrhDefaultDepth
+            {
+                get { return _mapGrhDefaultDepth; }
+                set
+                {
+                    if (value < short.MinValue)
+                        value = short.MinValue;
+
+                    if (value > short.MaxValue)
+                        value = short.MaxValue;
+
+                    if (_mapGrhDefaultDepth == value)
+                        return;
+
+                    var oldValue = _mapGrhDefaultDepth;
+                    _mapGrhDefaultDepth = value;
+
+                    if (MapGrhDefaultDepthChanged != null)
+                        MapGrhDefaultDepthChanged(this, oldValue, value);
+                }
+            }
+
+            /// <summary>
+            /// Gets the parent <see cref="GlobalState"/>.
+            /// </summary>
+            public GlobalState Parent
+            {
+                get { return _parent; }
             }
 
             /// <summary>
