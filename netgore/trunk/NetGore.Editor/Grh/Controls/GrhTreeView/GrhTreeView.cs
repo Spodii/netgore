@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Content;
@@ -382,25 +383,6 @@ namespace NetGore.Editor.Grhs
                 node.Update();
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.TreeView.AfterExpand"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeViewEventArgs"/> that contains the event data.</param>
-        protected override void OnAfterExpand(TreeViewEventArgs e)
-        {
-            base.OnAfterExpand(e);
-
-            var n = e.Node;
-            if (n == null)
-                return;
-
-            // For each of the GrhTreeViewNodes that are in the node that just expanded, ensure the image has been set for them
-            foreach (var c in n.Nodes.OfType<GrhTreeViewNode>())
-            {
-                c.EnsureImageIsSet();
-            }
-        }
-
         void GrhTreeView_GrhMouseDoubleClick(object sender, GrhTreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Left && !(e.GrhData is AutomaticAnimatedGrhData))
@@ -587,6 +569,25 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.AfterExpand"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.TreeViewEventArgs"/> that contains the event data.</param>
+        protected override void OnAfterExpand(TreeViewEventArgs e)
+        {
+            base.OnAfterExpand(e);
+
+            var n = e.Node;
+            if (n == null)
+                return;
+
+            // For each of the GrhTreeViewNodes that are in the node that just expanded, ensure the image has been set for them
+            foreach (var c in n.Nodes.OfType<GrhTreeViewNode>())
+            {
+                c.EnsureImageIsSet();
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.TreeView.AfterLabelEdit"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.NodeLabelEditEventArgs"/> that contains the event data.</param>
@@ -746,6 +747,8 @@ namespace NetGore.Editor.Grhs
             }
         }
 
+        const int _drawImageOffset = 2;
+
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.TreeView.DrawNode"/> event.
         /// </summary>
@@ -754,7 +757,6 @@ namespace NetGore.Editor.Grhs
         {
             // Perform the default drawing
             e.DrawDefault = true;
-            base.OnDrawNode(e);
 
             // Draw the node's image
             var casted = e.Node as IGrhTreeViewNode;
@@ -765,7 +767,8 @@ namespace NetGore.Editor.Grhs
             if (image == null)
                 return;
 
-            e.Graphics.DrawImage(image, new Point(e.Node.Bounds.X - ImageList.ImageSize.Width - 2, e.Node.Bounds.Y));
+            var p = new Point(e.Node.Bounds.X - ImageList.ImageSize.Width - _drawImageOffset, e.Node.Bounds.Y);
+            e.Graphics.DrawImageUnscaled(image, p);
         }
 
         /// <summary>
@@ -921,8 +924,8 @@ namespace NetGore.Editor.Grhs
         /// <param name="n">The node to refresh.</param>
         internal void RefreshNodeImage(TreeNode n)
         {
-            var w = ImageList.ImageSize.Width + 4;
-            var rect = new Rectangle(n.Bounds.X - w, n.Bounds.Y, w, n.Bounds.Height);
+            var w = ImageList.ImageSize.Width;
+            var rect = new Rectangle(n.Bounds.X - w - _drawImageOffset, n.Bounds.Y, w, n.Bounds.Height);
             Invalidate(rect);
         }
 
@@ -986,6 +989,20 @@ namespace NetGore.Editor.Grhs
 
                 grhDataNode.SyncGrhData();
             }
+        }
+
+        /// <summary>
+        /// Overrides <see cref="M:System.Windows.Forms.Control.WndProc(System.Windows.Forms.Message@)"/>.
+        /// </summary>
+        /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message"/> to process.</param>
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_ERASEBKGND = 0x0014;
+
+            // Prevent the TreeView from erasing its own background, which helps reduce flickering
+            if (m.Msg == WM_ERASEBKGND)
+                m.Msg = 0x0000;
+            base.WndProc(ref m);
         }
 
         #region IComparer Members
