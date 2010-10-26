@@ -211,6 +211,7 @@
     <Compile Include="Controls\Toolbar.cs" />
     <Compile Include="Screens\NewAccountScreen.cs" />
     <Compile Include="Screens\GameScreenHelper.cs" />
+    <Compile Include="Screens\OptionsScreen.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="StatTypeExtensions.cs" />
     <Compile Include="CharacterTargeter.cs" />

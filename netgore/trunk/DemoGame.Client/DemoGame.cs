@@ -57,6 +57,7 @@ namespace DemoGame.Client
             ChatBubble.CreateChatBubbleInstance = CreateChatBubbleInstanceHandler;
 
             // Create the screens
+            new OptionsScreen(ScreenManager);
             new GameplayScreen(ScreenManager);
             new MainMenuScreen(ScreenManager);
             new LoginScreen(ScreenManager);
@@ -217,6 +218,8 @@ namespace DemoGame.Client
         /// <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManaged)
         {
+            ClientSettings.Default.Save();
+
             if (disposeManaged)
             {
                 if (_globalAtlases != null)
