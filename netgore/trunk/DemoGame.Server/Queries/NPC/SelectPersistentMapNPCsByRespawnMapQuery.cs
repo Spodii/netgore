@@ -18,7 +18,7 @@ namespace DemoGame.Server.Queries
         public SelectPersistentMapNPCsByRespawnMapQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(NpcCharacterTable.DbColumns, "id", "load_map_id");
+            QueryAsserts.ContainsColumns(ViewNpcCharacterTable.DbColumns, "id", "load_map_id");
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(NpcCharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("load_map_id"),
+                qb.Select(ViewNpcCharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("load_map_id"),
                                                                                 s.Parameterize("mapID")));
             return q.ToString();
         }

@@ -107,12 +107,12 @@ For more information on the DbClassCreator, please see:
 
                 // Custom external types
                 generator.AddCustomType(typeof(AccountID), "account", "id");
+                generator.AddCustomType(typeof(UserPermissions), "account", "permissions");
 
                 generator.AddCustomType(typeof(AllianceID), "alliance", "id");
 
                 generator.AddCustomType(typeof(CharacterID), "character", "id");
                 generator.AddCustomType(typeof(CharacterTemplateID), "character", "template_id");
-                generator.AddCustomType(typeof(UserPermissions), "character", "permissions");
 
                 generator.AddCustomType(typeof(EquipmentSlot), "character_equipped", "slot");
 

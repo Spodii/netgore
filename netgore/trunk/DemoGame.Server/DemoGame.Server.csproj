@@ -123,11 +123,15 @@
     <Compile Include="Account\IUserAccount.cs" />
     <Compile Include="BanningManager.cs" />
     <Compile Include="DbObjs\AccountBanTable.cs" />
+    <Compile Include="DbObjs\AccountCharacterTable.cs" />
     <Compile Include="DbObjs\ActiveTradeCashTable.cs" />
     <Compile Include="DbObjs\ActiveTradeItemTable.cs" />
     <Compile Include="DbObjs\DbExtensions\AccountBanTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\AccountCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeCashTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeItemTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\ViewNpcCharacterTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\ViewUserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountConsumeItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountItemBuyTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountItemCreateTableDbExtensions.cs" />
@@ -137,6 +141,8 @@
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountShopSellTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountUserConsumeItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountUserKillNpcTableDbExtensions.cs" />
+    <Compile Include="DbObjs\ViewNpcCharacterTable.cs" />
+    <Compile Include="DbObjs\ViewUserCharacterTable.cs" />
     <Compile Include="DbObjs\WorldStatsCountConsumeItemTable.cs" />
     <Compile Include="DbObjs\WorldStatsCountItemBuyTable.cs" />
     <Compile Include="DbObjs\WorldStatsCountItemCreateTable.cs" />
@@ -195,7 +201,6 @@
     <Compile Include="DbObjs\DbExtensions\ItemTemplateTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapSpawnTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapTableDbExtensions.cs" />
-    <Compile Include="DbObjs\DbExtensions\NpcCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireFinishItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireFinishQuestTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRequireKillTableDbExtensions.cs" />
@@ -206,7 +211,6 @@
     <Compile Include="DbObjs\DbExtensions\ServerTimeTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
-    <Compile Include="DbObjs\DbExtensions\UserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsGuildUserChangeTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsNetworkTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsNpcKillUserTableDbExtensions.cs" />
@@ -221,7 +225,6 @@
     <Compile Include="DbObjs\GuildMemberTable.cs" />
     <Compile Include="DbObjs\GuildTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />
-    <Compile Include="DbObjs\NpcCharacterTable.cs" />
     <Compile Include="DbObjs\QuestRequireFinishItemTable.cs" />
     <Compile Include="DbObjs\QuestRequireFinishQuestTable.cs" />
     <Compile Include="DbObjs\QuestRequireKillTable.cs" />
@@ -232,7 +235,6 @@
     <Compile Include="DbObjs\ServerTimeTable.cs" />
     <Compile Include="DbObjs\ShopItemTable.cs" />
     <Compile Include="DbObjs\ShopTable.cs" />
-    <Compile Include="DbObjs\UserCharacterTable.cs" />
     <Compile Include="DbObjs\WorldStatsGuildUserChangeTable.cs" />
     <Compile Include="DbObjs\WorldStatsNetworkTable.cs" />
     <Compile Include="DbObjs\WorldStatsNpcKillUserTable.cs" />
@@ -248,9 +250,10 @@
     <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="IServerSaveable.cs" />
     <Compile Include="Queries\Account\SelectAccountCharacterNamesQuery.cs" />
+    <Compile Include="Queries\Account\SelectAccountIDFromUserNameQuery.cs" />
     <Compile Include="Queries\Banning\InsertAccountBanQuery.cs" />
     <Compile Include="Queries\Banning\SelectAccountBansQuery.cs" />
-    <Compile Include="Queries\Character\DeleteCharacterQuery.cs" />
+    <Compile Include="Queries\Character\DeleteUserCharacterQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterEquippedBodiesQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateEquippedForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateInventoryForCharacterQuery.cs" />
@@ -412,7 +415,6 @@
     <Compile Include="Queries\Guild\UpdateGuildQuery.cs" />
     <Compile Include="Queries\Guild\UpdateGuildTagQuery.cs" />
     <Compile Include="Queries\NPC\DeletePersistentNPCQuery.cs" />
-    <Compile Include="Queries\NPC\SelectPersistentMapNPCsQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />

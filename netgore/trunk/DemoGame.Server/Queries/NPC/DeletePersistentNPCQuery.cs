@@ -31,7 +31,7 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var s = qb.Settings;
-            var q = qb.Delete(NpcCharacterTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            var q = qb.Delete(ViewNpcCharacterTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
             return q.ToString();
         }
 

@@ -18,7 +18,7 @@ namespace DemoGame.Server.Queries
         public SelectAccountCharacterIDsQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "account_id");
+            QueryAsserts.ContainsColumns(AccountCharacterTable.DbColumns, "character_id", "account_id", "time_deleted");
         }
 
         /// <summary>
@@ -28,13 +28,20 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // SELECT `id` FROM `{0}` WHERE `account_id`=@accountID
+            /*
+                SELECT `character_id` FROM `account_character`
+                    WHERE `account_id` = @accountID
+                        AND `time_deleted` IS NULL;
+            */
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(CharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("account_id"),
-                                                                             s.Parameterize("accountID")));
+                qb.Select(AccountCharacterTable.TableName).Add("character_id")
+                .Where(
+                f.And(
+                    f.Equals(s.EscapeColumn("account_id"),s.Parameterize("accountID")),
+                    f.IsNull(s.EscapeColumn("time_deleted"))));
             return q.ToString();
         }
 

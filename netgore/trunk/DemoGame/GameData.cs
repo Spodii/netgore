@@ -44,7 +44,7 @@ namespace DemoGame
         /// <summary>
         /// Maximum number of characters allowed in a single account.
         /// If you update this value, you must also update the `max_character_count` parameter in the
-        /// stored database function `CreateUserOnAccount`.
+        /// stored database function `create_user_on_account`.
         /// </summary>
         public const byte MaxCharactersPerAccount = 9;
 

@@ -18,7 +18,8 @@ namespace DemoGame.Server.Queries
         public CountAccountCharactersByIDQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "account_id");
+            QueryAsserts.ContainsColumns(ViewUserCharacterTable.DbColumns, "id");
+            QueryAsserts.ContainsColumns(AccountCharacterTable.DbColumns, "account_id", "character_id");
         }
 
         /// <summary>
@@ -28,12 +29,18 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // SELECT COUNT(*) FROM `{0}` WHERE `account_id`=@accountID
+            // SELECT COUNT(*) FROM `account_character` a
+	        //      INNER JOIN `view_user_character` u
+		    //          ON a.character_id = u.id
+	        //      WHERE a.account_id = @accountID
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(CharacterTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("account_id"), "@accountID"));
+                qb.Select(AccountCharacterTable.TableName, "a").
+                AddFunc(f.Count())
+                .InnerJoinOnColumn(ViewUserCharacterTable.TableName, "u", "id", "a", "character_id")
+                .Where(f.Equals(s.ApplyTableAlias("account_id", "a"), "@accountID"));
             return q.ToString();
         }
 

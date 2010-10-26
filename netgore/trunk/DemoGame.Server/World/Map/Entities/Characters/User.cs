@@ -45,7 +45,6 @@ namespace DemoGame.Server
         static readonly UpdateCharacterQuestStatusFinishedQuery _updateCharacterQuestStatusFinishedQuery;
 
         readonly UserChatDialogState _chatState;
-        readonly IIPSocket _conn;
         readonly GroupMemberInfo _groupMemberInfo;
         readonly GuildMemberInfo _guildMemberInfo;
         readonly QuestPerformerStatusHelper _questInfo;
@@ -53,7 +52,30 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
+        readonly IUserAccount _userAccount;
+
+        /// <summary>
+        /// Gets the <see cref="UserPermissions"/> level for this user.
+        /// </summary>
+        public UserPermissions Permissions
+        {
+            get
+            {
+                var acc = UserAccount;
+                if (acc == null)
+                    return UserPermissions.None;
+
+                return acc.Permissions;
+            }
+        }
+
         IPeerTradeSession<User, ItemEntity> _peerTradeSession;
+
+        /// <summary>
+        /// Gets the <see cref="IUserAccount"/> for the account that this <see cref="User"/> is on.
+        /// Will not be null.
+        /// </summary>
+        public IUserAccount UserAccount { get { return _userAccount; } }
 
         /// <summary>
         /// Initializes the <see cref="User"/> class.
@@ -74,12 +96,19 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="User"/> class.
         /// </summary>
-        /// <param name="conn">Connection to the user's client.</param>
+        /// <param name="userAccount">The user's account.</param>
         /// <param name="world">World the user belongs to.</param>
         /// <param name="characterID">User's CharacterID.</param>
-        public User(IIPSocket conn, World world, CharacterID characterID) : base(world, true)
+        /// <exception cref="ArgumentNullException"><paramref name="userAccount"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="world"/> is null.</exception>
+        public User(IUserAccount userAccount, World world, CharacterID characterID) : base(world, true)
         {
-            _conn = conn;
+            if (userAccount == null)
+                throw new ArgumentNullException("userAccount");
+            if (world == null)
+                throw new ArgumentNullException("world");
+
+            _userAccount = userAccount;
 
             // Create some objects
             _guildMemberInfo = new GuildMemberInfo(this);
@@ -148,7 +177,7 @@ namespace DemoGame.Server
         /// </summary>
         public IIPSocket Conn
         {
-            get { return _conn; }
+            get { return UserAccount.Socket; }
         }
 
         /// <summary>
@@ -235,7 +264,7 @@ namespace DemoGame.Server
                 return false;
             }
 
-            if (_conn == null || !_conn.IsConnected)
+            if (Conn == null || !Conn.IsConnected)
             {
                 const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
                 if (log.IsErrorEnabled)
@@ -412,9 +441,6 @@ namespace DemoGame.Server
         protected override void HandleAdditionalLoading(ICharacterTable v)
         {
             base.HandleAdditionalLoading(v);
-
-            // Permissions
-            Permissions = v.Permissions;
 
             // Load the guild information
             var guildInfo = _selectGuildMemberQuery.Execute(ID);
@@ -716,7 +742,7 @@ namespace DemoGame.Server
             if (!CheckIfCanSendToUser())
                 return;
 
-            _conn.Send(data, messageType);
+            Conn.Send(data, messageType);
         }
 
         /// <summary>
@@ -1312,7 +1338,7 @@ namespace DemoGame.Server
         /// </summary>
         bool INetworkSender.IsConnected
         {
-            get { return _conn != null && _conn.IsConnected; }
+            get { return Conn != null && Conn.IsConnected; }
         }
 
         /// <summary>
@@ -1338,7 +1364,7 @@ namespace DemoGame.Server
             if (!CheckIfCanSendToUser())
                 return false;
 
-            return _conn.Send(data, deliveryMethod, sequenceChannel);
+            return Conn.Send(data, deliveryMethod, sequenceChannel);
         }
 
         /// <summary>
@@ -1364,7 +1390,7 @@ namespace DemoGame.Server
             if (!CheckIfCanSendToUser())
                 return false;
 
-            return _conn.Send(data, deliveryMethod, sequenceChannel);
+            return Conn.Send(data, deliveryMethod, sequenceChannel);
         }
 
         #endregion
