@@ -43,7 +43,8 @@ namespace DemoGame.Client
             EngineSettingsInitializer.Initialize();
 
             // Create the screen manager
-            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Font/Arial", 24);
+            var skinManager= new SkinManager("Default");
+            _screenManager = new ScreenManager(this, skinManager, "Font/Arial", 24);
 
             // Initialize the socket manager
             ClientSockets.Initialize(ScreenManager);
@@ -51,7 +52,9 @@ namespace DemoGame.Client
 
             // Read the GrhInfo
             LoadGrhInfo();
-            _screenManager.DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+
+            var lightGD = GrhInfo.GetData("Effect", "light");
+            _screenManager.DrawingManager.LightManager.DefaultSprite = new Grh(lightGD);
 
             // Set up our custom chat bubbles
             ChatBubble.CreateChatBubbleInstance = CreateChatBubbleInstanceHandler;
@@ -69,13 +72,13 @@ namespace DemoGame.Client
             ScreenManager.SetScreen<MainMenuScreen>();
 
             ShowMouseCursor = true;
-            UseVerticalSync = true;
 
             KeyPressed += DemoGame_KeyPressed;
 
             // Apply some of the initial settings
             ScreenManager.AudioManager.SoundManager.Volume = ClientSettings.Default.Audio_SoundVolume;
             ScreenManager.AudioManager.MusicManager.Volume = ClientSettings.Default.Audio_MusicVolume;
+            UseVerticalSync = ClientSettings.Default.Graphics_VSync;
 
             // Listen for changes to the settings
             ClientSettings.Default.PropertyChanged += Default_PropertyChanged;
@@ -90,9 +93,11 @@ namespace DemoGame.Client
         {
             const string soundVolumeName = "Audio_SoundVolume";
             const string musicVolumeName = "Audio_MusicVolume";
+            const string graphicsVSyncName = "Graphics_VSync";
 
             ClientSettings.Default.AssertPropertyExists(soundVolumeName);
             ClientSettings.Default.AssertPropertyExists(musicVolumeName);
+            ClientSettings.Default.AssertPropertyExists(graphicsVSyncName);
 
             var sc = StringComparer.Ordinal;
 
@@ -107,6 +112,12 @@ namespace DemoGame.Client
                 // Music volume
                 var value = ClientSettings.Default.Audio_MusicVolume;
                 ScreenManager.AudioManager.MusicManager.Volume = value;
+            }
+            else if (sc.Equals(e.PropertyName, graphicsVSyncName))
+            {
+                // VSync
+                var value = ClientSettings.Default.Graphics_VSync;
+                UseVerticalSync = value;
             }
         }
 
