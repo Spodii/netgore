@@ -23,6 +23,13 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter DeleteAccountCharacter(byte charSlot)
+        {
+            var pw = GetWriter(ClientPacketID.DeleteAccountCharacter);
+            pw.Write(charSlot);
+            return pw;
+        }
+
         public static PacketWriter Attack(MapEntityIndex? target)
         {
             var pw = GetWriter(ClientPacketID.Attack);

@@ -92,6 +92,8 @@ namespace DemoGame.Client
                 AccountCharacterInfo charInfo;
                 if (_sockets.PacketHandler.AccountCharacterInfos.TryGetInfo((byte)i, out charInfo))
                     _charSlotControls[i].CharInfo = charInfo;
+                else
+                    _charSlotControls[i].CharInfo = null;
             }
         }
 
@@ -116,7 +118,69 @@ namespace DemoGame.Client
             {
                 var c = new CharacterSlotControl(cScreen, (byte)i);
                 c.Clicked += ClickButton_CharacterSelection;
+                c.DeleteCharacterClicked += ClickButton_DeleteCharacter;
                 _charSlotControls[i] = c;
+            }
+        }
+
+        void ClickButton_DeleteCharacter(Control sender, MouseButtonEventArgs args)
+        {
+            var s = (CharacterSlotControl)sender;
+            var ci = s.CharInfo;
+            if (ci == null)
+                return;
+
+            var mb = new DeleteCharacterMessageBox(GUIManager, ci.Name, ci.Index) { Font = GameScreenHelper.DefaultChatFont };
+            mb.DeleteRequested += DeleteCharacterMsgBox_DeleteRequested;
+        }
+
+        void DeleteCharacterMsgBox_DeleteRequested(Control sender, byte charSlot)
+        {
+            using (var pw = ClientPacket.DeleteAccountCharacter(charSlot))
+            {
+                _sockets.Send(pw, ClientMessageType.System);
+            }
+        }
+
+        class DeleteCharacterMessageBox : MessageBox
+        {
+            const string _msgBoxTitle = "Delete character?";
+            const string _msgBoxMsg = @"Are you sure you wish to delete your character `{0}`? This cannot be undone!
+
+Press ""OK"" to delete the character, or ""Cancel"" to abort.";
+
+            readonly byte _slot;
+
+            public byte CharacterSlot { get { return _slot; } }
+
+            public DeleteCharacterMessageBox(IGUIManager guiManager, string characterName, byte slot)
+                : base(guiManager, _msgBoxTitle, string.Format(_msgBoxMsg, characterName), MessageBoxButton.OkCancel)
+            {
+                _slot = slot;
+
+                DisposeOnSelection = true;
+            }
+
+            /// <summary>
+            /// Notifies listeners when this control has requested the character to be deleted.
+            /// </summary>
+            public event ControlEventHandler<byte> DeleteRequested;
+
+            /// <summary>
+            /// Handles when the <see cref="MessageBox"/> has been closed from an option button being clicked.
+            /// This is called immediately before <see cref="CheckBox.TickedOverSpriteChanged"/>.
+            /// Override this method instead of using an event hook on <see cref="CheckBox.TickedOverSpriteChanged"/> when possible.
+            /// </summary>
+            /// <param name="button">The button that was used to close the <see cref="MessageBox"/>.</param>
+            protected override void OnOptionSelected(MessageBoxButton button)
+            {
+                if (button == MessageBoxButton.Ok)
+                {
+                    if (DeleteRequested != null)
+                        DeleteRequested(this, CharacterSlot);
+                }
+
+                base.OnOptionSelected(button);
             }
         }
 
@@ -157,9 +221,9 @@ namespace DemoGame.Client
 
             readonly Label _charNameControl;
             readonly PreviewCharacter _character = new PreviewCharacter();
-
             readonly byte _slot;
             readonly Label _slotNumberControl;
+            readonly Label _deleteControl;
 
             AccountCharacterInfo _charInfo;
             ControlBorder _defaultBorder;
@@ -184,9 +248,34 @@ namespace DemoGame.Client
                 _slotNumberControl = CreateChildLabel(new Vector2(2, 2), (Slot + 1) + ". ");
                 _slotNumberControl.ForeColor = _slotNumberTextColor;
 
+                // Delete
+                _deleteControl = CreateChildLabel(Vector2.Zero, "X", true);
+                _deleteControl.Position = new Vector2(ClientSize.X - _deleteControl.ClientSize.X, 0) - new Vector2(2);
+                _deleteControl.Clicked += _deleteControl_Clicked;
+                _deleteControl.ForeColor = Color.White;
+                _deleteControl.MouseEnter += delegate { _deleteControl.ForeColor = Color.Red; };
+                _deleteControl.MouseLeave += delegate { _deleteControl.ForeColor = Color.White; };
+                _deleteControl.IsVisible = (CharInfo != null);
+
                 // Character name
                 var charNameControlPos = _slotNumberControl.Position + new Vector2(_slotNumberControl.Size.X + 2, 0f);
                 _charNameControl = CreateChildLabel(charNameControlPos, _unusedCharacterSlotText);
+            }
+
+            /// <summary>
+            /// Notifies listeners when the Delete Character button has been clicked.
+            /// </summary>
+            public event ControlEventHandler<MouseButtonEventArgs> DeleteCharacterClicked;
+
+            /// <summary>
+            /// Handles the Clicked event of the <see cref="_deleteControl"/> control.
+            /// </summary>
+            /// <param name="sender">The source of the event.</param>
+            /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+            void _deleteControl_Clicked(object sender, MouseButtonEventArgs e)
+            {
+                if (DeleteCharacterClicked != null)
+                    DeleteCharacterClicked(this, e);
             }
 
             /// <summary>
@@ -210,6 +299,8 @@ namespace DemoGame.Client
                         _character.SetPaperDollLayers(_charInfo.EquippedBodies);
                         _character.Position = GetCharacterPosition();
                     }
+
+                    _deleteControl.IsVisible = (_charInfo != null);
                 }
             }
 
@@ -221,11 +312,11 @@ namespace DemoGame.Client
                 get { return _slot; }
             }
 
-            Label CreateChildLabel(Vector2 position, string text)
+            Label CreateChildLabel(Vector2 position, string text, bool enabled = false)
             {
                 var ret = GameScreenHelper.CreateMenuLabel(this, position, text);
-                ret.IsEnabled = false;
-                ret.CanFocus = false;
+                ret.IsEnabled = enabled;
+                ret.CanFocus = enabled;
                 ret.IsBoundToParentArea = false;
                 return ret;
             }
@@ -238,7 +329,7 @@ namespace DemoGame.Client
             {
                 base.DrawControl(spriteBatch);
 
-                if (_character != null)
+                if (_character != null && _charInfo != null)
                     _character.Draw(spriteBatch);
             }
 

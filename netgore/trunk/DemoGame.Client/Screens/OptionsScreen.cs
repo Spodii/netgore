@@ -76,7 +76,7 @@ namespace DemoGame.Client
             }
 
             var mb = new MessageBox(GUIManager, title, string.Format(msg, property), MessageBoxButton.Ok)
-            { Font = GameScreenHelper.DefaultChatFont };
+            { Font = GameScreenHelper.DefaultChatFont, DisposeOnSelection = true };
             mb.OptionSelected += delegate
             {
                 foreach (var c in _menuButtons.Values)

@@ -19,6 +19,7 @@ namespace DemoGame
         BuyFromShop,
         CreateNewAccount,
         CreateNewAccountCharacter,
+        DeleteAccountCharacter,
         DropInventoryItem,
         Emoticon,
         EndNPCChatDialog,

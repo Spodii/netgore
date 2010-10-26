@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.PeerTrading;
 using DemoGame.Server.Properties;
+using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
 using log4net;
 using NetGore;
@@ -329,6 +330,50 @@ namespace DemoGame.Server
             var password = r.ReadString();
 
             Server.LoginAccount(conn, name, password);
+        }
+
+        [MessageHandler((uint)ClientPacketID.DeleteAccountCharacter)]
+        void RecvDeleteAccountCharacter(IIPSocket conn, BitStream r)
+        {
+            var slot = r.ReadByte();
+
+            // Check for a valid account
+            var account = TryGetAccount(conn);
+            if (account == null)
+            {
+                const string errmsg =
+                    "Connection `{0}` tried to delete account character but no account is associated with this connection.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, conn);
+                return;
+            }
+
+            // Ensure the connection isn't logged in
+            if (account.User != null)
+            {
+                const string errmsg = "User `{0}` tried to delete account character while already logged in.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, account.User);
+                return;
+            }
+
+            // Get the character ID
+            CharacterID charID;
+            if (!account.TryGetCharacterID(slot, out charID))
+            {
+                const string errmsg = "Could not delete character in slot `{0}` - no character exists.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, slot);
+                return;
+            }
+
+            // Delete
+            var q = DbController.GetQuery<DeleteCharacterQuery>();
+            q.Execute(charID);
+
+            // Update
+            account.LoadCharacterIDs();
+            account.SendAccountCharacterInfos();
         }
 
         [MessageHandler((uint)ClientPacketID.CreateNewAccountCharacter)]
