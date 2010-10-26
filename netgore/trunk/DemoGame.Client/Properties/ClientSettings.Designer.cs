@@ -400,5 +400,17 @@ namespace DemoGame.Client.Properties {
                 this["Audio_MusicVolume"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Graphics_VSync {
+            get {
+                return ((bool)(this["Graphics_VSync"]));
+            }
+            set {
+                this["Graphics_VSync"] = value;
+            }
+        }
     }
 }
