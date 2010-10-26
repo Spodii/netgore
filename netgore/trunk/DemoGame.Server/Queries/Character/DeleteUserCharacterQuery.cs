@@ -7,16 +7,15 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class DeleteCharacterQuery : DbQueryNonReader<CharacterID>
+    public class DeleteUserCharacterQuery : DbQueryNonReader<CharacterID>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteCharacterQuery"/> class.
+        /// Initializes a new instance of the <see cref="DeleteUserCharacterQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public DeleteCharacterQuery(DbConnectionPool connectionPool)
+        public DeleteUserCharacterQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
         }
 
         /// <summary>
@@ -26,11 +25,9 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // DELETE FROM `{0}` WHERE `id`=@id
+            // CALL delete_user_on_account(@id)
 
-            var f = qb.Functions;
-            var s = qb.Settings;
-            var q = qb.Delete(CharacterTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+            var q = qb.CallProcedure("delete_user_on_account").AddParam("id");
             return q.ToString();
         }
 

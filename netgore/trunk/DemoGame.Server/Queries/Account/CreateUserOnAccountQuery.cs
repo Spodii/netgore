@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
             // SELECT CreateUserOnAccount(@accountName, @userName, @characterID)
 
             var s = qb.Settings;
-            var q = qb.SelectFunction("CreateUserOnAccount").Add(s.Parameterize("accountName"), s.Parameterize("userName"),
+            var q = qb.SelectFunction("create_user_on_account").Add(s.Parameterize("accountName"), s.Parameterize("userName"),
                                                                  s.Parameterize("characterID"));
             return q.ToString();
         }

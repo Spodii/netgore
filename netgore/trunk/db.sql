@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.38, for Win64 (unknown)
+-- MySQL dump 10.13  Distrib 5.1.51, for Win64 (unknown)
 --
 -- Host: localhost    Database: demogame
 -- ------------------------------------------------------
--- Server version	5.1.38-community
+-- Server version	5.1.51-community
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -20,6 +20,7 @@ CREATE TABLE `account` (
   `name` varchar(30) NOT NULL COMMENT 'The account name.',
   `password` varchar(40) NOT NULL COMMENT 'The account password.',
   `email` varchar(60) NOT NULL COMMENT 'The email address.',
+  `permissions` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `time_created` datetime NOT NULL COMMENT 'The DateTime of when the account was created.',
   `time_last_login` datetime NOT NULL COMMENT 'The DateTime that the account was last logged in to.',
   `creator_ip` int(10) unsigned NOT NULL COMMENT 'The IP address that created the account.',
@@ -34,7 +35,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-10-15 01:27:57',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com',0,'2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',0,'2009-09-07 15:43:16','2010-10-26 13:41:07',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com',0,'2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,6 +110,31 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Table structure for table `account_character`
+--
+
+DROP TABLE IF EXISTS `account_character`;
+CREATE TABLE `account_character` (
+  `character_id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `time_deleted` datetime DEFAULT NULL,
+  PRIMARY KEY (`character_id`),
+  KEY `account_id` (`account_id`),
+  CONSTRAINT `account_character_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `account_character_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `account_character`
+--
+
+LOCK TABLES `account_character` WRITE;
+/*!40000 ALTER TABLE `account_character` DISABLE KEYS */;
+INSERT INTO `account_character` VALUES (0,0,NULL),(1,1,NULL),(4,2,NULL);
+/*!40000 ALTER TABLE `account_character` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `account_ips`
 --
 
@@ -121,7 +147,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=74;
+) TYPE=InnoDB AUTO_INCREMENT=66;
 
 --
 -- Dumping data for table `account_ips`
@@ -129,6 +155,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (64,1,16777343,'2010-10-26 13:41:00'),(65,1,16777343,'2010-10-26 13:41:07');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -254,10 +281,8 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `character`;
 CREATE TABLE `character` (
   `id` int(11) NOT NULL,
-  `account_id` int(11) DEFAULT NULL,
   `character_template_id` smallint(5) unsigned DEFAULT NULL,
-  `name` varchar(30) NOT NULL,
-  `permissions` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(60) NOT NULL DEFAULT '' COMMENT 'The character''s name. Prefixed with `~<ID>_` when its a deleted user. The ~ denotes deleted, and the <ID> ensures a unique value.',
   `shop_id` smallint(5) unsigned DEFAULT NULL,
   `chat_dialog` smallint(5) unsigned DEFAULT NULL,
   `ai_id` smallint(5) unsigned DEFAULT NULL,
@@ -284,14 +309,12 @@ CREATE TABLE `character` (
   `stat_int` smallint(6) NOT NULL DEFAULT '1',
   `stat_str` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_name` (`name`),
   KEY `template_id` (`character_template_id`),
   KEY `character_ibfk_2` (`load_map_id`),
-  KEY `idx_name` (`name`),
-  KEY `account_id` (`account_id`),
   KEY `shop_id` (`shop_id`),
   KEY `character_ibfk_5` (`respawn_map_id`),
   CONSTRAINT `character_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_2` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_3` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_4` FOREIGN KEY (`load_map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_5` FOREIGN KEY (`respawn_map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -303,7 +326,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,0,NULL,'Test',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',255,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,201980,50,1475,243,15,100,100,100,1,1,1,1,3,1),(2,NULL,1,'Test A',0,NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,2,NULL,'testchar',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
+INSERT INTO `character` VALUES (0,NULL,'Test',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,201985,50,1480,243,76,100,100,100,1,1,1,1,3,1),(2,1,'Test A',NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,1,'Test B',NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,'testchar',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -574,7 +597,6 @@ CREATE TABLE `guild` (
 
 LOCK TABLES `guild` WRITE;
 /*!40000 ALTER TABLE `guild` DISABLE KEYS */;
-INSERT INTO `guild` VALUES (0,'Test Guild','tg','2010-10-15 14:15:06'),(1,'asdf','a','2010-10-15 14:34:42'),(2,'asdfa','1','2010-10-15 15:18:34');
 /*!40000 ALTER TABLE `guild` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -680,6 +702,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (0,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',33,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(4,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(5,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',21,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(6,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(7,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(8,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(9,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(10,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(11,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(12,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(13,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',4,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(14,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',31,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(15,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(16,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(17,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(18,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',26,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(19,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(20,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(21,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',3,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(22,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',24,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(23,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(24,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(25,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',22,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(26,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(27,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(28,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(29,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(30,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',37,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(31,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(32,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(33,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(34,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',25,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(35,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(36,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(37,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(38,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',30,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(39,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(40,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(41,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',26,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(42,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(43,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(44,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(45,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',18,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(46,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(47,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(48,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(49,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(50,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',22,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(51,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(52,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',3,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(53,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(54,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(55,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',31,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(56,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(57,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(58,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(59,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(60,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(61,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',27,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(62,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(63,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(64,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',38,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(65,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(66,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',21,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(67,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(68,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',30,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(69,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(70,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(71,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',20,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(72,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(73,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',35,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(74,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(75,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(76,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',25,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(77,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(78,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(79,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',36,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(80,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(81,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(82,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',13,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(83,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(84,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(85,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(86,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(87,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',31,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(88,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(89,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(90,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',15,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(91,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(92,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(93,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(94,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',22,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(95,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(96,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',25,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(97,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(98,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(99,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(100,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(101,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(102,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(103,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',25,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(104,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(105,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(106,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(107,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',33,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(108,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(109,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(110,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',26,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(111,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(112,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(114,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',25,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(115,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -775,51 +798,9 @@ CREATE TABLE `map_spawn` (
 
 LOCK TABLES `map_spawn` WRITE;
 /*!40000 ALTER TABLE `map_spawn` DISABLE KEYS */;
-INSERT INTO `map_spawn` VALUES (0,1,1,3,NULL,NULL,NULL,NULL),(1,1,2,1,190,278,64,64),(3,1,4,1,545,151,64,64),(4,1,5,1,736,58,64,64),(5,2,6,25,NULL,NULL,NULL,NULL),(6,3,1,5,NULL,NULL,NULL,NULL),(7,4,1,3,NULL,NULL,NULL,NULL);
+INSERT INTO `map_spawn` VALUES (0,1,1,3,NULL,NULL,NULL,NULL),(1,1,2,1,190,278,64,64),(3,1,4,1,545,151,64,64),(4,1,5,1,736,58,64,64),(5,2,6,15,NULL,NULL,NULL,NULL),(6,3,1,3,NULL,NULL,NULL,NULL),(7,4,1,3,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `map_spawn` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary table structure for view `npc_character`
---
-
-DROP TABLE IF EXISTS `npc_character`;
-/*!50001 DROP VIEW IF EXISTS `npc_character`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `npc_character` (
-  `id` int(11),
-  `account_id` int(11),
-  `character_template_id` smallint(5) unsigned,
-  `name` varchar(30),
-  `permissions` tinyint(3) unsigned,
-  `shop_id` smallint(5) unsigned,
-  `chat_dialog` smallint(5) unsigned,
-  `ai_id` smallint(5) unsigned,
-  `load_map_id` smallint(5) unsigned,
-  `load_x` smallint(5) unsigned,
-  `load_y` smallint(5) unsigned,
-  `respawn_map_id` smallint(5) unsigned,
-  `respawn_x` float,
-  `respawn_y` float,
-  `body_id` smallint(5) unsigned,
-  `move_speed` smallint(5) unsigned,
-  `cash` int(11),
-  `level` tinyint(3) unsigned,
-  `exp` int(11),
-  `statpoints` int(11),
-  `hp` smallint(6),
-  `mp` smallint(6),
-  `stat_maxhp` smallint(6),
-  `stat_maxmp` smallint(6),
-  `stat_minhit` smallint(6),
-  `stat_maxhit` smallint(6),
-  `stat_defence` smallint(6),
-  `stat_agi` smallint(6),
-  `stat_int` smallint(6),
-  `stat_str` smallint(6)
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `quest`
@@ -1004,7 +985,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-10-15 01:28:10');
+INSERT INTO `server_time` VALUES ('2010-10-26 13:41:54');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1055,19 +1036,57 @@ INSERT INTO `shop_item` VALUES (0,1),(1,1),(0,2),(1,2),(0,3),(0,4),(0,5),(0,6),(
 UNLOCK TABLES;
 
 --
--- Temporary table structure for view `user_character`
+-- Temporary table structure for view `view_npc_character`
 --
 
-DROP TABLE IF EXISTS `user_character`;
-/*!50001 DROP VIEW IF EXISTS `user_character`*/;
+DROP TABLE IF EXISTS `view_npc_character`;
+/*!50001 DROP VIEW IF EXISTS `view_npc_character`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `user_character` (
+/*!50001 CREATE TABLE `view_npc_character` (
   `id` int(11),
-  `account_id` int(11),
   `character_template_id` smallint(5) unsigned,
-  `name` varchar(30),
-  `permissions` tinyint(3) unsigned,
+  `name` varchar(60),
+  `shop_id` smallint(5) unsigned,
+  `chat_dialog` smallint(5) unsigned,
+  `ai_id` smallint(5) unsigned,
+  `load_map_id` smallint(5) unsigned,
+  `load_x` smallint(5) unsigned,
+  `load_y` smallint(5) unsigned,
+  `respawn_map_id` smallint(5) unsigned,
+  `respawn_x` float,
+  `respawn_y` float,
+  `body_id` smallint(5) unsigned,
+  `move_speed` smallint(5) unsigned,
+  `cash` int(11),
+  `level` tinyint(3) unsigned,
+  `exp` int(11),
+  `statpoints` int(11),
+  `hp` smallint(6),
+  `mp` smallint(6),
+  `stat_maxhp` smallint(6),
+  `stat_maxmp` smallint(6),
+  `stat_minhit` smallint(6),
+  `stat_maxhit` smallint(6),
+  `stat_defence` smallint(6),
+  `stat_agi` smallint(6),
+  `stat_int` smallint(6),
+  `stat_str` smallint(6)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `view_user_character`
+--
+
+DROP TABLE IF EXISTS `view_user_character`;
+/*!50001 DROP VIEW IF EXISTS `view_user_character`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `view_user_character` (
+  `id` int(11),
+  `character_template_id` smallint(5) unsigned,
+  `name` varchar(60),
   `shop_id` smallint(5) unsigned,
   `chat_dialog` smallint(5) unsigned,
   `ai_id` smallint(5) unsigned,
@@ -1159,6 +1178,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
+INSERT INTO `world_stats_count_item_create` VALUES (3,13,'0000-00-00 00:00:00'),(5,11,'0000-00-00 00:00:00'),(7,278,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1318,7 +1338,7 @@ CREATE TABLE `world_stats_guild_user_change` (
   KEY `guild_id` (`guild_id`),
   CONSTRAINT `world_stats_guild_user_change_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_guild_user_change_ibfk_2` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=7;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_guild_user_change`
@@ -1344,7 +1364,7 @@ CREATE TABLE `world_stats_network` (
   `connections` mediumint(8) unsigned NOT NULL COMMENT 'Connections made with the server (accepted connections).',
   `connections_rejected` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=736;
+) TYPE=MyISAM AUTO_INCREMENT=460;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1352,6 +1372,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
+INSERT INTO `world_stats_network` VALUES (458,'2010-10-26 20:40:39',0,0,0,0,0,0),(459,'2010-10-26 20:41:34',0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1378,7 +1399,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=305;
+) TYPE=InnoDB AUTO_INCREMENT=6;
 
 --
 -- Dumping data for table `world_stats_npc_kill_user`
@@ -1536,7 +1557,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=130;
+) TYPE=InnoDB AUTO_INCREMENT=2;
 
 --
 -- Dumping data for table `world_stats_user_kill_npc`
@@ -1561,7 +1582,7 @@ CREATE TABLE `world_stats_user_level` (
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   PRIMARY KEY (`id`)
-) TYPE=InnoDB AUTO_INCREMENT=23;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_level`
@@ -1612,7 +1633,7 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'demogame'
 --
-/*!50003 DROP FUNCTION IF EXISTS `CreateUserOnAccount` */;
+/*!50003 DROP FUNCTION IF EXISTS `create_user_on_account` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1622,44 +1643,45 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `CreateUserOnAccount`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
-BEGIN
-		
-		DECLARE character_count INT DEFAULT 0;
-		DECLARE max_character_count INT DEFAULT 9;
-		DECLARE is_id_free INT DEFAULT 0;
-		DECLARE is_name_free INT DEFAULT 0;
-		DECLARE errorMsg VARCHAR(100) DEFAULT "";
-		DECLARE accountID INT DEFAULT NULL;
-
-		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
-
-		IF ISNULL(accountID) THEN
-			SET errorMsg = "Account with the specified name does not exist.";
-		ELSE
-			SELECT COUNT(*) INTO character_count FROM `character` WHERE `account_id` = accountID;
-
-			IF character_count > max_character_count THEN
-				SET errorMsg = "No free character slots available in the account.";
-			ELSE
-				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
-				
-				IF is_id_free > 0 THEN
-					SET errorMsg = "The specified CharacterID is not available for use.";
-				ELSE
-					SELECT COUNT(*) INTO is_name_free FROM `user_character` WHERE `name` = characterName;
-						
-					IF is_name_free > 0 THEN
-						SET errorMsg = "The specified character name is not available for use.";
-					ELSE
-						INSERT INTO `character` SET `id` = characterID, `name`	= characterName, `account_id`= 	accountID;
-					END IF;
-				END IF;
-			END IF;
-		END IF;
-				
-		RETURN errorMsg;
-  
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 FUNCTION `create_user_on_account`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
+BEGIN
+		
+		DECLARE character_count INT DEFAULT 0;
+		DECLARE max_character_count INT DEFAULT 9;
+		DECLARE is_id_free INT DEFAULT 0;
+		DECLARE is_name_free INT DEFAULT 0;
+		DECLARE errorMsg VARCHAR(100) DEFAULT "";
+		DECLARE accountID INT DEFAULT NULL;
+
+		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
+
+		IF ISNULL(accountID) THEN
+			SET errorMsg = "Account with the specified name does not exist.";
+		ELSE
+			SELECT COUNT(*) INTO character_count FROM `account_character` WHERE `account_id` = accountID;
+
+			IF character_count > max_character_count THEN
+				SET errorMsg = "No free character slots available in the account.";
+			ELSE
+				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
+				
+				IF is_id_free > 0 THEN
+					SET errorMsg = "The specified CharacterID is not available for use.";
+				ELSE
+					SELECT COUNT(*) INTO is_name_free FROM `character` WHERE `name` = characterName LIMIT 1;
+						
+					IF is_name_free > 0 THEN
+						SET errorMsg = "The specified character name is not available for use.";
+					ELSE
+						INSERT INTO `character` SET `id` = characterID, `name`	= characterName;
+						INSERT INTO `account_character` SET `character_id` = characterID, `account_id` = accountID;
+					END IF;
+				END IF;
+			END IF;
+		END IF;
+				
+		RETURN errorMsg;
+  
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1696,6 +1718,35 @@ BEGIN
 				AND `account_id` = accountID;
 				
 		RETURN cnt;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_user_on_account` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `delete_user_on_account`(characterID INT)
+BEGIN
+
+	UPDATE `account_character`
+		SET `time_deleted` = NOW()
+		WHERE `character_id` = characterID
+		AND `time_deleted` IS NULL;
+
+	UPDATE `character`
+		SET `name` = CONCAT('~',`id`,'_',name)
+		WHERE `id` = characterID
+			AND SUBSTR(`name`, 1) != '~';
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1787,7 +1838,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `Rebuild_Views` */;
+/*!50003 DROP PROCEDURE IF EXISTS `rebuild_views` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1797,41 +1848,19 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_Views`()
-BEGIN
-	
-	CALL Rebuild_View_NPC_Character();
-	CALL Rebuild_View_User_Character();
-    
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `rebuild_views`()
+BEGIN
+	
+	CALL rebuild_view_npc_character();
+	CALL rebuild_view_user_character();
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `Rebuild_View_NPC_Character` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = latin1 */ ;
-/*!50003 SET character_set_results = latin1 */ ;
-/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_View_NPC_Character`()
-BEGIN
-	
-	DROP VIEW IF EXISTS `npc_character`;
-	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `npc_character` AS SELECT *FROM `character` WHERE `account_id` IS NULL;
-    
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `Rebuild_View_User_Character` */;
+/*!50003 DROP PROCEDURE IF EXISTS `rebuild_view_npc_character` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1841,12 +1870,34 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_View_User_Character`()
-BEGIN
-	
-	DROP VIEW IF EXISTS `user_character`;
-	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS SELECT * FROM `character` WHERE `account_id` IS NOT NULL;
-    
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `rebuild_view_npc_character`()
+BEGIN
+	
+	DROP VIEW IF EXISTS `view_npc_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_npc_character` AS SELECT c.*  FROM `character` c LEFT JOIN `account_character` a ON c.id = a.character_id WHERE a.account_id IS NULL;
+    
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `rebuild_view_user_character` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `rebuild_view_user_character`()
+BEGIN
+	
+	DROP VIEW IF EXISTS `view_user_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_user_character` AS SELECT c.* FROM `character` c INNER JOIN `account_character` a ON c.id = a.character_id WHERE a.time_deleted IS NULL;
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1855,30 +1906,11 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Final view structure for view `npc_character`
+-- Final view structure for view `view_npc_character`
 --
 
-/*!50001 DROP TABLE IF EXISTS `npc_character`*/;
-/*!50001 DROP VIEW IF EXISTS `npc_character`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = latin1 */;
-/*!50001 SET character_set_results     = latin1 */;
-/*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `npc_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`permissions` AS `permissions`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`load_map_id` AS `load_map_id`,`character`.`load_x` AS `load_x`,`character`.`load_y` AS `load_y`,`character`.`respawn_map_id` AS `respawn_map_id`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`move_speed` AS `move_speed`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where isnull(`character`.`account_id`) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `user_character`
---
-
-/*!50001 DROP TABLE IF EXISTS `user_character`*/;
-/*!50001 DROP VIEW IF EXISTS `user_character`*/;
+/*!50001 DROP TABLE IF EXISTS `view_npc_character`*/;
+/*!50001 DROP VIEW IF EXISTS `view_npc_character`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1887,7 +1919,26 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`permissions` AS `permissions`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`load_map_id` AS `load_map_id`,`character`.`load_x` AS `load_x`,`character`.`load_y` AS `load_y`,`character`.`respawn_map_id` AS `respawn_map_id`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`move_speed` AS `move_speed`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where (`character`.`account_id` is not null) */;
+/*!50001 VIEW `view_npc_character` AS select `c`.`id` AS `id`,`c`.`character_template_id` AS `character_template_id`,`c`.`name` AS `name`,`c`.`shop_id` AS `shop_id`,`c`.`chat_dialog` AS `chat_dialog`,`c`.`ai_id` AS `ai_id`,`c`.`load_map_id` AS `load_map_id`,`c`.`load_x` AS `load_x`,`c`.`load_y` AS `load_y`,`c`.`respawn_map_id` AS `respawn_map_id`,`c`.`respawn_x` AS `respawn_x`,`c`.`respawn_y` AS `respawn_y`,`c`.`body_id` AS `body_id`,`c`.`move_speed` AS `move_speed`,`c`.`cash` AS `cash`,`c`.`level` AS `level`,`c`.`exp` AS `exp`,`c`.`statpoints` AS `statpoints`,`c`.`hp` AS `hp`,`c`.`mp` AS `mp`,`c`.`stat_maxhp` AS `stat_maxhp`,`c`.`stat_maxmp` AS `stat_maxmp`,`c`.`stat_minhit` AS `stat_minhit`,`c`.`stat_maxhit` AS `stat_maxhit`,`c`.`stat_defence` AS `stat_defence`,`c`.`stat_agi` AS `stat_agi`,`c`.`stat_int` AS `stat_int`,`c`.`stat_str` AS `stat_str` from (`character` `c` left join `account_character` `a` on((`c`.`id` = `a`.`character_id`))) where isnull(`a`.`account_id`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_user_character`
+--
+
+/*!50001 DROP TABLE IF EXISTS `view_user_character`*/;
+/*!50001 DROP VIEW IF EXISTS `view_user_character`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `view_user_character` AS select `c`.`id` AS `id`,`c`.`character_template_id` AS `character_template_id`,`c`.`name` AS `name`,`c`.`shop_id` AS `shop_id`,`c`.`chat_dialog` AS `chat_dialog`,`c`.`ai_id` AS `ai_id`,`c`.`load_map_id` AS `load_map_id`,`c`.`load_x` AS `load_x`,`c`.`load_y` AS `load_y`,`c`.`respawn_map_id` AS `respawn_map_id`,`c`.`respawn_x` AS `respawn_x`,`c`.`respawn_y` AS `respawn_y`,`c`.`body_id` AS `body_id`,`c`.`move_speed` AS `move_speed`,`c`.`cash` AS `cash`,`c`.`level` AS `level`,`c`.`exp` AS `exp`,`c`.`statpoints` AS `statpoints`,`c`.`hp` AS `hp`,`c`.`mp` AS `mp`,`c`.`stat_maxhp` AS `stat_maxhp`,`c`.`stat_maxmp` AS `stat_maxmp`,`c`.`stat_minhit` AS `stat_minhit`,`c`.`stat_maxhit` AS `stat_maxhit`,`c`.`stat_defence` AS `stat_defence`,`c`.`stat_agi` AS `stat_agi`,`c`.`stat_int` AS `stat_int`,`c`.`stat_str` AS `stat_str` from (`character` `c` join `account_character` `a` on((`c`.`id` = `a`.`character_id`))) where isnull(`a`.`time_deleted`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1898,4 +1949,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-10-15  3:06:02
+-- Dump completed on 2010-10-26 13:42:15

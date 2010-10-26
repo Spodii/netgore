@@ -368,7 +368,7 @@ namespace DemoGame.Server
             }
 
             // Delete
-            var q = DbController.GetQuery<DeleteCharacterQuery>();
+            var q = DbController.GetQuery<DeleteUserCharacterQuery>();
             q.Execute(charID);
 
             // Update

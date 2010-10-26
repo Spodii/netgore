@@ -18,7 +18,7 @@ namespace DemoGame.Server.Queries
         public SelectUserByNameQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(UserCharacterTable.DbColumns, "name");
+            QueryAsserts.ContainsColumns(ViewUserCharacterTable.DbColumns, "name");
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(UserCharacterTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("name"), s.Parameterize("name")));
+                qb.Select(ViewUserCharacterTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("name"), s.Parameterize("name")));
             return q.ToString();
         }
 
@@ -41,18 +41,18 @@ namespace DemoGame.Server.Queries
         /// Executes the query for the specified user.
         /// </summary>
         /// <param name="userName">The name of the user.</param>
-        /// <returns>The <see cref="IUserCharacterTable"/> for the user with the name <paramref name="userName"/>, or
+        /// <returns>The <see cref="IViewUserCharacterTable"/> for the user with the name <paramref name="userName"/>, or
         /// null if they do not exist.</returns>
-        public IUserCharacterTable Execute(string userName)
+        public IViewUserCharacterTable Execute(string userName)
         {
-            UserCharacterTable ret;
+            ViewUserCharacterTable ret;
 
             using (var r = ExecuteReader(userName))
             {
                 if (!r.Read())
                     return null;
 
-                ret = new UserCharacterTable();
+                ret = new ViewUserCharacterTable();
                 ret.ReadValues(r);
             }
 

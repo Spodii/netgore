@@ -139,12 +139,6 @@ namespace DemoGame.Server
         readonly World _world;
 
         /// <summary>
-        /// The account ID of this Character, or null if they don't have an account. Normally, a User should always have
-        /// an account ID, and an NPC should never have one.
-        /// </summary>
-        AccountID? _accountID;
-
-        /// <summary>
         /// Character's alliance.
         /// </summary>
         Alliance _alliance;
@@ -1312,7 +1306,6 @@ namespace DemoGame.Server
             Name = v.Name;
             _id = v.ID;
             _templateID = v.CharacterTemplateID;
-            _accountID = v.AccountID;
             MoveSpeed = v.MoveSpeed;
 
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
@@ -2164,14 +2157,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the value of the database column `account_id`.
-        /// </summary>
-        AccountID? ICharacterTable.AccountID
-        {
-            get { return _accountID; }
-        }
-
-        /// <summary>
         /// Gets the value of the database column `body_id`.
         /// </summary>
         BodyID ICharacterTable.BodyID
@@ -2390,11 +2375,6 @@ namespace DemoGame.Server
                 _name = value;
             }
         }
-
-        /// <summary>
-        /// Gets the value of the database column `permissions`.
-        /// </summary>
-        public UserPermissions Permissions { get; set; }
 
         /// <summary>
         /// Gets the value of the database column `respawn_map`.

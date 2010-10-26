@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -17,8 +18,7 @@ namespace DemoGame.Server.Queries
         public SelectAccountCharacterInfoQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
-            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name", "body_id");
+            QueryAsserts.ContainsColumns(ViewUserCharacterTable.DbColumns, "name", "body_id");
         }
 
         /// <summary>
@@ -28,12 +28,15 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // SELECT `name`,`body_id` FROM `{0}` WHERE `id`=@id
+            /*
+                SELECT `name`,`body_id` 
+                    FROM `{0}` WHERE `id`=@id
+            */
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(CharacterTable.TableName).Add("name", "body_id").Where(f.Equals(s.EscapeColumn("id"),
+                qb.Select(ViewUserCharacterTable.TableName).Add("name", "body_id").Where(f.Equals(s.EscapeColumn("id"),
                                                                                           s.Parameterize("id")));
             return q.ToString();
         }
@@ -47,10 +50,11 @@ namespace DemoGame.Server.Queries
                 if (!r.Read())
                     return null;
 
-                var ct = new CharacterTable();
-                ct.TryReadValues(r);
+                var name = r.GetString("name");
+                var bodyID = r.GetBodyID("body_id");
 
-                ret = new AccountCharacterInfo(accountCharacterIndex, ct.Name, ct.BodyID);
+                Debug.Assert(!string.IsNullOrEmpty(name));
+                ret = new AccountCharacterInfo(accountCharacterIndex, name, bodyID);
             }
 
             return ret;

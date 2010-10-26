@@ -359,6 +359,11 @@ namespace DemoGame.Server
                 _parent = parent;
             }
 
+            public void SetPermissions()
+            {
+                // TODO: !!
+            }
+
             /// <summary>
             /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
             /// </summary>
@@ -504,11 +509,16 @@ namespace DemoGame.Server
                     var characterID = _characterIDs[i];
 
                     var v = DbController.GetQuery<SelectAccountCharacterInfoQuery>().Execute(characterID, (byte)i);
+                    if (v != null)
+                    {
+                        var eqBodies = DbController.GetQuery<SelectCharacterEquippedBodiesQuery>().Execute(characterID);
+                        if (eqBodies != null)
+                        {
+                            v.SetEquippedBodies(eqBodies);
+                        }
 
-                    var eqBodies = DbController.GetQuery<SelectCharacterEquippedBodiesQuery>().Execute(characterID);
-                    v.SetEquippedBodies(eqBodies);
-
-                    charInfos[i] = v;
+                        charInfos[i] = v;
+                    }
                 }
 
                 using (var pw = ServerPacket.SendAccountCharacters(charInfos))
@@ -547,7 +557,7 @@ namespace DemoGame.Server
                 }
 
                 // Load the User
-                _user = new User(_socket, world, characterID);
+                _user = new User(this, world, characterID);
 
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Set User `{0}` on account `{1}`.", _user, this);

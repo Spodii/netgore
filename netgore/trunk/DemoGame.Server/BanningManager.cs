@@ -147,17 +147,17 @@ namespace DemoGame.Server
         /// <returns>True if the ID of the account for the given <paramref name="userName"/> was found; otherwise false.</returns>
         protected override bool TryGetAccountIDFromUserName(string userName, out AccountID accountID)
         {
-            var query = DbController.GetQuery<SelectUserByNameQuery>();
-            var chr = query.Execute(userName);
+            var query = DbController.GetQuery<SelectAccountIDFromUserNameQuery>();
+            var id = query.Execute(userName);
 
-            if (chr == null || !chr.AccountID.HasValue)
+            if (!id.HasValue)
             {
                 accountID = new AccountID(0);
                 return false;
             }
             else
             {
-                accountID = chr.AccountID.Value;
+                accountID = id.Value;
                 return true;
             }
         }

@@ -116,6 +116,9 @@
     <Compile Include="Account\AccountCharacterInfo.cs" />
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
     <Compile Include="Account\AccountIDTypeConverter.cs" />
+    <Compile Include="DbObjs\Interfaces\IAccountCharacterTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IViewNpcCharacterTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IViewUserCharacterTable.cs" />
     <Compile Include="IO\PropertySyncAccountID.cs" />
     <Compile Include="Body\BodyID.cs" />
     <Compile Include="Body\BodyIDTypeConverter.cs" />
@@ -147,7 +150,6 @@
     <Compile Include="DbObjs\Interfaces\IItemTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapTable.cs" />
-    <Compile Include="DbObjs\Interfaces\INpcCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireFinishItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireFinishQuestTable.cs" />
     <Compile Include="DbObjs\Interfaces\IQuestRequireKillTable.cs" />
@@ -158,7 +160,6 @@
     <Compile Include="DbObjs\Interfaces\IServerTimeTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopTable.cs" />
-    <Compile Include="DbObjs\Interfaces\IUserCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsCountConsumeItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsCountItemBuyTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsCountItemCreateTable.cs" />
