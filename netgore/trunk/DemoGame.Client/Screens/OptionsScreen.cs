@@ -1,4 +1,5 @@
-﻿using DemoGame.Client.Properties;
+﻿using System.Collections.Generic;
+using DemoGame.Client.Properties;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 
@@ -18,6 +19,8 @@ namespace DemoGame.Client
         {
         }
 
+        IDictionary<string, Control> _menuButtons;
+
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
@@ -30,10 +33,10 @@ namespace DemoGame.Client
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
-            var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Accept", "Cancel");
+            _menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Accept", "Cancel");
 
-            menuButtons["Accept"].Clicked += accept_Clicked;
-            menuButtons["Cancel"].Clicked += cancel_Clicked;
+            _menuButtons["Accept"].Clicked += accept_Clicked;
+            _menuButtons["Cancel"].Clicked += cancel_Clicked;
 
             // Create the options
             var pos = new Vector2(60, 180);
@@ -45,6 +48,10 @@ namespace DemoGame.Client
             _txtMusic = new TextBox(cScreen, pos + new Vector2(lblMusic.Size.X + 10, -6), new Vector2(128, lblMusic.ClientSize.Y + 4));
         }
 
+        /// <summary>
+        /// Handles screen activation, which occurs every time the screen becomes the current
+        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
+        /// </summary>
         public override void Activate()
         {
             base.Activate();
@@ -103,7 +110,16 @@ namespace DemoGame.Client
             const string title = "Invalid value";
             const string msg = "Invalid value entered for the {0} volume. Please enter a value between 0 and 100.";
 
-            var mb = new MessageBox(GUIManager, title, string.Format(msg, property), MessageBoxButton.Ok);
+            foreach (var c in _menuButtons.Values)
+                c.IsEnabled = false;
+
+            var mb = new MessageBox(GUIManager, title, string.Format(msg, property), MessageBoxButton.Ok) 
+            { Font = GameScreenHelper.DefaultChatFont };
+            mb.OptionSelected += delegate
+            {
+                foreach (var c in _menuButtons.Values)
+                    c.IsEnabled = true;
+            };
         }
     }
 }
