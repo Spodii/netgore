@@ -5,10 +5,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
@@ -19,6 +20,8 @@ namespace DemoGame.Server.UI
 {
     public partial class frmMain : Form
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// How many extra items are removed from the log buffer when removing. Allows for less removals to be made.
         /// </summary>
@@ -40,7 +43,7 @@ namespace DemoGame.Server.UI
         readonly Thread _serverThread;
 
         Regex _filterRegex;
-        bool _formClosing = false;
+        bool _serverDisposed = false;
 
         /// <summary>
         /// Incrementing counter that keeps track of the number of times <see cref="tmrUpdateDisplay_Tick"/> has been called.
@@ -49,31 +52,21 @@ namespace DemoGame.Server.UI
 
         Server _server;
 
-#if !MONO
-        [DllImport("user32.dll")]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-#endif
-
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
         /// </summary>
         public frmMain()
         {
-#if !MONO
-            // Hide the console window
-            var ptr = FindWindow(null, Console.Title);
-            ShowWindow(ptr, 0);
-#endif
+            var cwh = ConsoleWindowHider.TryCreate();
+            if (cwh != null)
+                cwh.Hide();
 
             _logger = new MemoryAppender();
             BasicConfigurator.Configure(_logger);
 
             InitializeComponent();
 
-            _serverThread = new Thread(ServerThread) { Name = "Server Thread" };
+            _serverThread = new Thread(ServerThread) { Name = "Server Thread", IsBackground = true };
         }
 
         /// <summary>
@@ -108,16 +101,6 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the log CheckBoxes.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void LogCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
         /// Sets the log display information.
         /// </summary>
         /// <param name="e">The log event.</param>
@@ -136,52 +119,6 @@ namespace DemoGame.Server.UI
             txtLogLevel.ForeColor = e.Level.GetSystemColor();
 
             tabControl1.SelectTab(tbLogItem);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            if (_server == null)
-            {
-                AppendToConsole("Please wait for loading to finish before shutting down...", ConsoleTextType.Info);
-                return;
-            }
-
-            _formClosing = true;
-
-            AppendToConsole("Shutting down...", ConsoleTextType.Info);
-            txtConsoleOut.Refresh();
-
-            _server.Shutdown();
-
-            base.OnFormClosing(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            Show();
-            Update();
-
-            UpdateExternalIP();
-
-            _serverThread.Start();
-
-            GetLogCheckBox(Level.Debug).ForeColor = Level.Debug.GetSystemColor();
-            GetLogCheckBox(Level.Info).ForeColor = Level.Info.GetSystemColor();
-            GetLogCheckBox(Level.Warn).ForeColor = Level.Warn.GetSystemColor();
-            GetLogCheckBox(Level.Error).ForeColor = Level.Error.GetSystemColor();
-            GetLogCheckBox(Level.Fatal).ForeColor = Level.Fatal.GetSystemColor();
-
-            AppendToConsole("Server started. Type 'help' for a list of server console commands.", ConsoleTextType.Info);
         }
 
         /// <summary>
@@ -238,29 +175,73 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
-        /// Handles the KeyDown event of the lbLog control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-        void lbLog_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                lstLog.Enabled = false;
-                lstLog.SelectedIndex = lstLog.Items.Count - 1;
-                lstLog.SelectedIndex = -1;
-                lstLog.Enabled = true;
-            }
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the lbLog control.
+        /// Handles the CheckedChanged event of the log CheckBoxes.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lbLog_SelectedIndexChanged(object sender, EventArgs e)
+        void LogCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            DisplayLogInfo(lstLog.SelectedItem as LoggingEvent);
+            RebuildLogList();
+        }
+
+        bool _shutdownRequested = false;
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            _shutdownRequested = true;
+
+            // Wait for the server to be created first, otherwise we might not close it properly. It has likely already
+            // started to be created, but just not assigned to the variable yet (constructor is still running).
+            if (_server == null)
+            {
+                e.Cancel = true;
+                base.OnFormClosing(e);
+                return;
+            }
+
+            // Don't actually close if _serverDisposed is not set. This will happen in the _serverThread after the server
+            // loop has terminated and the server has been fully shut down
+            if (!_serverDisposed)
+            {
+                e.Cancel = true;
+
+                // But if the server is running, we do still need to start the shutdown
+                if (_server.IsRunning)
+                {
+                    txtConsoleOut.Refresh();
+                    _server.Shutdown();
+                }
+            }
+
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            Show();
+            Update();
+
+            UpdateExternalIP();
+
+            _serverThread.Start();
+
+            GetLogCheckBox(Level.Debug).ForeColor = Level.Debug.GetSystemColor();
+            GetLogCheckBox(Level.Info).ForeColor = Level.Info.GetSystemColor();
+            GetLogCheckBox(Level.Warn).ForeColor = Level.Warn.GetSystemColor();
+            GetLogCheckBox(Level.Error).ForeColor = Level.Error.GetSystemColor();
+            GetLogCheckBox(Level.Fatal).ForeColor = Level.Fatal.GetSystemColor();
+
+            AppendToConsole("Server started. Type 'help' for a list of server console commands.", ConsoleTextType.Info);
         }
 
         /// <summary>
@@ -294,6 +275,41 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
+        /// Worker thread for the server.
+        /// </summary>
+        void ServerThread()
+        {
+            // Create the server
+            _server = new Server();
+            _server.ConsoleCommandExecuted += Server_ConsoleCommandExecuted;
+
+            // Check if a shutdown request was made before the server even got a chance to finish being constructed
+            if (_shutdownRequested)
+                _server.Shutdown();
+
+            // Start the main loop (the thread will block here until the server is closed)
+            _server.Start();
+
+            // No longer blocking, so the server loop has terminated
+            _serverDisposed = true;
+
+            // Close the form when the server stops
+            try
+            {
+                // Do not call close if we are already closing
+                if (!Disposing && !IsDisposed)
+                    Invoke(new EventHandler(delegate { Close(); }));
+            }
+            catch (InvalidOperationException ex)
+            {
+                const string errmsg = "Error occured while trying to shut down the server. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+            }
+        }
+
+        /// <summary>
         /// Handles when a console command was executed on the server.
         /// </summary>
         /// <param name="server">The server.</param>
@@ -314,28 +330,59 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
-        /// Worker thread for the server.
+        /// Creates a background thread to find and update the external IP address text.
         /// </summary>
-        void ServerThread()
+        void UpdateExternalIP()
         {
-            // Create the server
-            using (_server = new Server())
-            {
-                _server.ConsoleCommandExecuted += Server_ConsoleCommandExecuted;
+            var externalIP = string.Empty;
+            var hostName = string.Empty;
 
-                // Start the main loop (the thread will block here until the server is closed)
-                _server.Start();
-            }
+            var w = new BackgroundWorker();
 
-            // Close the form if the server stops
-            try
+            // Create the work method
+            w.DoWork += delegate
             {
-                if (!Disposing && !_formClosing)
-                    Invoke(new EventHandler(delegate { Close(); }));
-            }
-            catch (InvalidOperationException)
+                hostName = Dns.GetHostName();
+                externalIP = IPAddressHelper.GetExternalIP();
+                if (string.IsNullOrEmpty(externalIP))
+                    externalIP = "[Failed to get external IP]";
+            };
+
+            // Create the updater
+            w.RunWorkerCompleted += delegate
             {
+                lblIP.Invoke((Action)delegate { lblIP.Text = string.Format("{0} ({1})", externalIP, hostName); });
+                w.Dispose();
+            };
+
+            // Run the worker
+            w.RunWorkerAsync();
+        }
+
+        /// <summary>
+        /// Handles the KeyDown event of the lbLog control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
+        void lbLog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                lstLog.Enabled = false;
+                lstLog.SelectedIndex = lstLog.Items.Count - 1;
+                lstLog.SelectedIndex = -1;
+                lstLog.Enabled = true;
             }
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lbLog control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lbLog_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisplayLogInfo(lstLog.SelectedItem as LoggingEvent);
         }
 
         /// <summary>
@@ -451,36 +498,6 @@ namespace DemoGame.Server.UI
                 _filterRegex = null;
                 txtFilterRegex.BackColor = Color.Red;
             }
-        }
-
-        /// <summary>
-        /// Creates a background thread to find and update the external IP address text.
-        /// </summary>
-        void UpdateExternalIP()
-        {
-            var externalIP = string.Empty;
-            var hostName = string.Empty;
-
-            var w = new BackgroundWorker();
-
-            // Create the work method
-            w.DoWork += delegate
-            {
-                hostName = Dns.GetHostName();
-                externalIP = IPAddressHelper.GetExternalIP();
-                if (string.IsNullOrEmpty(externalIP))
-                    externalIP = "[Failed to get external IP]";
-            };
-
-            // Create the updater
-            w.RunWorkerCompleted += delegate
-            {
-                lblIP.Invoke((Action)delegate { lblIP.Text = string.Format("{0} ({1})", externalIP, hostName); });
-                w.Dispose();
-            };
-
-            // Run the worker
-            w.RunWorkerAsync();
         }
 
         /// <summary>
