@@ -23,7 +23,7 @@ namespace DemoGame.Server
     /// <summary>
     /// The core component of the game server.
     /// </summary>
-    public class Server : IDisposable, IGetTime, IServerSaveable
+    public class Server : IGetTime, IServerSaveable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -36,8 +36,8 @@ namespace DemoGame.Server
         readonly TickCount _startupTime = TickCount.Now;
         readonly UserAccountManager _userAccountManager;
         readonly World _world;
+        bool _hasStarted;
 
-        bool _disposed;
         bool _isRunning = true;
         TickCount _nextServerSaveTime;
         int _tick;
@@ -108,11 +108,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets if this <see cref="Server"/> has been disposed.
+        /// Gets if the server is running.
         /// </summary>
-        public bool IsDisposed
+        public bool IsRunning
         {
-            get { return _disposed; }
+            get { return _isRunning; }
         }
 
         /// <summary>
@@ -161,6 +161,9 @@ namespace DemoGame.Server
         /// <param name="email">The email address.</param>
         public void CreateAccount(IIPSocket conn, string name, string password, string email)
         {
+            if (!RequireServerRunning())
+                return;
+
             ThreadAsserts.IsMainThread();
 
             if (conn == null)
@@ -189,6 +192,9 @@ namespace DemoGame.Server
         /// <param name="name">The name of the character to create.</param>
         public void CreateAccountCharacter(IIPSocket conn, string name)
         {
+            if (!RequireServerRunning())
+                return;
+
             ThreadAsserts.IsMainThread();
 
             var account = conn.Tag as IUserAccount;
@@ -252,6 +258,9 @@ namespace DemoGame.Server
         /// <param name="commandString">The command to be executed.</param>
         public void EnqueueConsoleCommand(string commandString)
         {
+            if (!RequireServerRunning())
+                return;
+
             lock (_consoleCommandSync)
             {
                 _consoleCommandQueue.Enqueue(commandString);
@@ -273,7 +282,7 @@ namespace DemoGame.Server
 
             var worldStatsTracker = WorldStatsTracker.Instance;
 
-            while (_isRunning)
+            while (IsRunning)
             {
                 // Store the loop start time so we can calculate how long the loop took
                 var loopStartTime = GetTime();
@@ -310,6 +319,10 @@ namespace DemoGame.Server
 
             // Update the world stats one last time before the server closes
             worldStatsTracker.Update();
+
+            // Dispose
+            _world.Dispose();
+            _dbController.Dispose();
         }
 
         static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)
@@ -362,6 +375,9 @@ namespace DemoGame.Server
         /// <param name="password">Entered password for this account.</param>
         public void LoginAccount(IIPSocket conn, string name, string password)
         {
+            if (!RequireServerRunning())
+                return;
+
             ThreadAsserts.IsMainThread();
 
             if (conn == null)
@@ -467,7 +483,23 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Shuts down the <see cref="Server"/>.
+        /// Ensures that the server is running.
+        /// </summary>
+        /// <returns>If false, the server is not running and the method should be aborted.</returns>
+        bool RequireServerRunning()
+        {
+            if (IsRunning)
+                return true;
+
+            const string errmsg = "Cannot process request - server is not running.";
+            if (log.IsErrorEnabled)
+                log.Error(errmsg);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Makes a request to shut down the server.
         /// </summary>
         public void Shutdown()
         {
@@ -475,10 +507,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Starts the <see cref="Server"/>.
+        /// Starts the <see cref="Server"/> loop. This will block the calling thread until the server has shut down.
         /// </summary>
+        /// <exception cref="MethodAccessException">The server has already been started.</exception>
         public void Start()
         {
+            if (_hasStarted)
+                throw new MethodAccessException("The server has already started.");
+
+            _hasStarted = true;
+
             // Clean up the garbage generated during the initialization phase
             GC.Collect();
 
@@ -505,24 +543,6 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, type, attribType);
             });
         }
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Disposes of the <see cref="Server"/>.
-        /// </summary>
-        public void Dispose()
-        {
-            if (IsDisposed)
-                return;
-
-            _disposed = true;
-
-            _world.Dispose();
-            _dbController.Dispose();
-        }
-
-        #endregion
 
         #region IGetTime Members
 

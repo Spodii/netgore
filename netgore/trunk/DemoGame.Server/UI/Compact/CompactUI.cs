@@ -47,7 +47,7 @@ namespace DemoGame.Server.UI
                     continue;
 
                 // Ensure the server is still running
-                if (_server.IsDisposed)
+                if (!_server.IsRunning)
                     break;
 
                 // Forward the line to the server
@@ -74,7 +74,7 @@ namespace DemoGame.Server.UI
         /// </summary>
         public void Dispose()
         {
-            _server.Dispose();
+            _server.Shutdown();
         }
 
         #endregion

@@ -68,9 +68,9 @@
             this.chkWarn = new System.Windows.Forms.CheckBox();
             this.chkInfo = new System.Windows.Forms.CheckBox();
             this.chkDebug = new System.Windows.Forms.CheckBox();
+            this.lstLog = new DemoGame.Server.UI.LogListBox();
             this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.tt = new System.Windows.Forms.ToolTip(this.components);
-            this.lstLog = new DemoGame.Server.UI.LogListBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -624,12 +624,6 @@
             this.chkDebug.UseVisualStyleBackColor = true;
             this.chkDebug.CheckedChanged += new System.EventHandler(this.LogCheckBox_CheckedChanged);
             // 
-            // tmrUpdateDisplay
-            // 
-            this.tmrUpdateDisplay.Enabled = true;
-            this.tmrUpdateDisplay.Interval = 500;
-            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
-            // 
             // lstLog
             // 
             this.lstLog.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -641,6 +635,12 @@
             this.lstLog.TabIndex = 0;
             this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lbLog_SelectedIndexChanged);
             this.lstLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);
+            // 
+            // tmrUpdateDisplay
+            // 
+            this.tmrUpdateDisplay.Enabled = true;
+            this.tmrUpdateDisplay.Interval = 500;
+            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
             // 
             // frmMain
             // 

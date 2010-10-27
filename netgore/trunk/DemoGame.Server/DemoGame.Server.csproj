@@ -359,6 +359,7 @@
       <DependentUpon>ServerSettingsDescriptions.resx</DependentUpon>
     </Compile>
     <Compile Include="UI\Compact\CompactUI.cs" />
+    <Compile Include="UI\WinForms\ConsoleWindowHider.cs" />
     <Compile Include="UI\WinForms\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -370,6 +371,7 @@
     <Compile Include="Guilds\GuildManager.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformer.cs" />
+    <Compile Include="UI\WinForms\IConsoleWindowHider.cs" />
     <Compile Include="UI\WinForms\LevelExtensions.cs" />
     <Compile Include="UI\WinForms\LogListBox.cs">
       <SubType>Component</SubType>
@@ -444,6 +446,7 @@
     <Compile Include="Queries\Shop\SelectShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\SelectShopItemsQuery.cs" />
     <Compile Include="Queries\User\UserExistsQuery.cs" />
+    <Compile Include="UI\WinForms\ConsoleWindowHider.WindowsImpl.cs" />
     <Compile Include="WorldStatsTracker.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
