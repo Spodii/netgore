@@ -45,6 +45,16 @@ namespace NetGore.Cryptography
             return _instance;
         }
 
+        public static byte[] Encode(byte[] data)
+        {
+            return Create().Encode(data, null);
+        }
+
+        public static string Encode(string data)
+        {
+            return Create().EncodeToBase64(data, null);
+        }
+
         /// <summary>
         /// Decodes a byte array of data and validates that the key used to decode it was the same as the key used to
         /// encode it.
@@ -78,16 +88,6 @@ namespace NetGore.Cryptography
             }
 
             return decData;
-        }
-
-        public static byte[] Encode(byte[] data)
-        {
-            return Create().Encode(data, null);
-        }
-
-        public static string Encode(string data)
-        {
-            return Create().EncodeToBase64(data, null);
         }
 
         public static string ValidatedDecode(string data)

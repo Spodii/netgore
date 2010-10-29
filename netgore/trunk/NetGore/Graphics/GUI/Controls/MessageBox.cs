@@ -57,18 +57,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
-        /// </summary>
-        protected override void OnFontChanged()
-        {
-            base.OnFontChanged();
-
-            CreateChildControls();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MessageBox"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
@@ -241,7 +229,8 @@ namespace NetGore.Graphics.GUI
 
                 var text = possibleType.ToString();
                 var fontSize = Font.MeasureString(text);
-                var btn = new Button(this, Vector2.Zero, fontSize + new Vector2(6)) { Text = text, Tag = possibleType, Font = Font };
+                var btn = new Button(this, Vector2.Zero, fontSize + new Vector2(6))
+                { Text = text, Tag = possibleType, Font = Font };
                 btn.Clicked += Button_Clicked;
                 ret.Add(btn);
             }
@@ -374,6 +363,18 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void OnButtonTypesChanged()
         {
+            CreateChildControls();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
+        /// </summary>
+        protected override void OnFontChanged()
+        {
+            base.OnFontChanged();
+
             CreateChildControls();
         }
 

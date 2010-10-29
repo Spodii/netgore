@@ -43,7 +43,6 @@ namespace DemoGame.Server.UI
         readonly Thread _serverThread;
 
         Regex _filterRegex;
-        bool _serverDisposed = false;
 
         /// <summary>
         /// Incrementing counter that keeps track of the number of times <see cref="tmrUpdateDisplay_Tick"/> has been called.
@@ -51,6 +50,8 @@ namespace DemoGame.Server.UI
         int _interfaceUpdateTicker;
 
         Server _server;
+        bool _serverDisposed = false;
+        bool _shutdownRequested = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
@@ -183,8 +184,6 @@ namespace DemoGame.Server.UI
         {
             RebuildLogList();
         }
-
-        bool _shutdownRequested = false;
 
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.

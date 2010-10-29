@@ -33,7 +33,8 @@ namespace DemoGame.Server.Queries
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(ViewUserCharacterTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("name"), s.Parameterize("name")));
+                qb.Select(ViewUserCharacterTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("name"),
+                                                                                        s.Parameterize("name")));
             return q.ToString();
         }
 

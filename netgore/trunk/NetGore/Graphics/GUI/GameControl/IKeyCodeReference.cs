@@ -1,4 +1,5 @@
-﻿using SFML.Window;
+﻿using System.Linq;
+using SFML.Window;
 
 namespace NetGore.Graphics.GUI
 {
@@ -10,6 +11,6 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets the referenced <see cref="KeyCode"/>.
         /// </summary>
-        KeyCode Key {get;}
+        KeyCode Key { get; }
     }
 }

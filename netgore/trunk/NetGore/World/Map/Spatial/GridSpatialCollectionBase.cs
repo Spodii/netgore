@@ -100,76 +100,6 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// A straight-forward implementation of the <see cref="IGridSpatialCollectionSegment"/>.
-        /// </summary>
-        class CollectionSegment : IGridSpatialCollectionSegment
-        {
-            readonly List<ISpatial> _spatials = new List<ISpatial>();
-
-            #region IGridSpatialCollectionSegment Members
-
-            /// <summary>
-            /// Adds the <see cref="ISpatial"/> to the segment.
-            /// </summary>
-            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
-            public void Add(ISpatial spatial)
-            {
-                _spatials.Add(spatial);
-            }
-
-            /// <summary>
-            /// Adds multiple <see cref="ISpatial"/>s to the segment.
-            /// </summary>
-            /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
-            public void AddRange(IEnumerable<ISpatial> spatials)
-            {
-                _spatials.AddRange(spatials);
-            }
-
-            /// <summary>
-            /// Clears all <see cref="ISpatial"/>s from the segment.
-            /// </summary>
-            public void Clear()
-            {
-                _spatials.Clear();
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            public IEnumerator<ISpatial> GetEnumerator()
-            {
-                return _spatials.GetEnumerator();
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>2</filterpriority>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-
-            /// <summary>
-            /// Remove the <see cref="ISpatial"/> from the segment.
-            /// </summary>
-            /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
-            public void Remove(ISpatial spatial)
-            {
-                _spatials.Remove(spatial);
-            }
-
-            #endregion
-        }
-
-        /// <summary>
         /// Gets the grid segment for the specified grid index.
         /// </summary>
         /// <param name="gridIndex">The grid segment index.</param>
@@ -693,7 +623,6 @@ namespace NetGore.World
             return null;
         }
 
-
         /// <summary>
         /// Gets the first <see cref="ISpatial"/> matching the given condition.
         /// </summary>
@@ -872,7 +801,7 @@ namespace NetGore.World
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
-            List<ISpatial> ret = new List<ISpatial>();
+            var ret = new List<ISpatial>();
 
             foreach (var spatial in segment)
             {
@@ -894,7 +823,7 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
 
-            List<ISpatial> ret = new List<ISpatial>();
+            var ret = new List<ISpatial>();
 
             foreach (var segment in segments)
             {
@@ -922,7 +851,7 @@ namespace NetGore.World
             if (segment == null)
                 return Enumerable.Empty<T>();
 
-            List<T> ret = new List<T>();
+            var ret = new List<T>();
 
             foreach (var spatial in segment)
             {
@@ -945,7 +874,7 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
 
-            List<T> ret = new List<T>();
+            var ret = new List<T>();
 
             foreach (var segment in segments)
             {
@@ -966,7 +895,7 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition)
         {
-            List<ISpatial> ret = new List<ISpatial>();
+            var ret = new List<ISpatial>();
 
             foreach (var segment in _gridSegments)
             {
@@ -987,7 +916,7 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<T> GetMany<T>(Predicate<T> condition)
         {
-            List<T> ret = new List<T>();
+            var ret = new List<T>();
 
             foreach (var segment in _gridSegments)
             {
@@ -1014,16 +943,14 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>()
         {
-            List<T> ret = new List<T>();
+            var ret = new List<T>();
 
             foreach (var segment in _gridSegments)
             {
                 foreach (var spatial in segment)
                 {
                     if (spatial is T)
-                    {
                         ret.Add((T)spatial);
-                    }
                 }
             }
 
@@ -1126,14 +1053,14 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
 
-            List<ISpatial> ret = new List<ISpatial>();
+            var ret = new List<ISpatial>();
 
             foreach (var segment in segments)
             {
                 foreach (var spatial in segment)
                 {
                     if (spatial.Intersects(rect) && condition(spatial))
-                        ret.Add(spatial); 
+                        ret.Add(spatial);
                 }
             }
 
@@ -1213,5 +1140,75 @@ namespace NetGore.World
         }
 
         #endregion
+
+        /// <summary>
+        /// A straight-forward implementation of the <see cref="IGridSpatialCollectionSegment"/>.
+        /// </summary>
+        class CollectionSegment : IGridSpatialCollectionSegment
+        {
+            readonly List<ISpatial> _spatials = new List<ISpatial>();
+
+            #region IGridSpatialCollectionSegment Members
+
+            /// <summary>
+            /// Adds the <see cref="ISpatial"/> to the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+            public void Add(ISpatial spatial)
+            {
+                _spatials.Add(spatial);
+            }
+
+            /// <summary>
+            /// Adds multiple <see cref="ISpatial"/>s to the segment.
+            /// </summary>
+            /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
+            public void AddRange(IEnumerable<ISpatial> spatials)
+            {
+                _spatials.AddRange(spatials);
+            }
+
+            /// <summary>
+            /// Clears all <see cref="ISpatial"/>s from the segment.
+            /// </summary>
+            public void Clear()
+            {
+                _spatials.Clear();
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            public IEnumerator<ISpatial> GetEnumerator()
+            {
+                return _spatials.GetEnumerator();
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            /// <summary>
+            /// Remove the <see cref="ISpatial"/> from the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
+            public void Remove(ISpatial spatial)
+            {
+                _spatials.Remove(spatial);
+            }
+
+            #endregion
+        }
     }
 }

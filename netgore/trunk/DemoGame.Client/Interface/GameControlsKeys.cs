@@ -1,7 +1,6 @@
 using System.Linq;
 using DemoGame.Client.Properties;
 using NetGore.Graphics.GUI;
-using SFML.Window;
 
 namespace DemoGame.Client
 {

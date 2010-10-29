@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Content;
@@ -18,6 +17,8 @@ namespace NetGore.Editor.Grhs
     public class GrhTreeView : TreeView, IComparer, IComparer<TreeNode>
     {
         public delegate void EditGrhDataEventHandler(GrhTreeView sender, TreeNode node, GrhData gd, bool deleteOnCancel);
+
+        const int _drawImageOffset = 2;
 
         static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
 
@@ -746,8 +747,6 @@ namespace NetGore.Editor.Grhs
                 }
             }
         }
-
-        const int _drawImageOffset = 2;
 
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.TreeView.DrawNode"/> event.

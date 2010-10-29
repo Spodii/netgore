@@ -11,7 +11,6 @@ using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
-using NetGore.World;
 using SFML.Graphics;
 
 namespace DemoGame.Editor.Tools
@@ -171,72 +170,6 @@ namespace DemoGame.Editor.Tools
         }
 
         /// <summary>
-        /// Places a <see cref="MapGrh"/> on the map.
-        /// </summary>
-        /// <param name="map">The map to place the <see cref="MapGrh"/> on.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/>.</param>
-        /// <param name="screenPos">The screen position to place the <see cref="MapGrh"/>.</param>
-        /// <param name="useTileMode">If TileMode should be used.</param>
-        /// <param name="gd">The <see cref="GrhData"/> to place. Set to null to attempt to use the <see cref="GrhData"/> that is
-        /// currently selected in the <see cref="GlobalState"/>.</param>
-        /// <returns>The <see cref="MapGrh"/> instance that was added, or null if the the <see cref="MapGrh"/> could not be
-        /// added for any reason.</returns>
-        public static MapGrh PlaceMapGrh(EditorMap map, ICamera2D camera, Vector2 screenPos, bool useTileMode, GrhData gd = null)
-        {
-            // Get the GrhData to place from the global state
-            if (gd == null)
-                gd = GlobalState.Instance.Map.GrhToPlace.GrhData;
-
-            // Ensure we have a GrhData to place
-            if (gd == null)
-                return null;
-
-            // Get the world position to place it
-            var drawPos = camera.ToWorld(screenPos);
-            drawPos = GridAligner.Instance.Align(drawPos, useTileMode);
-
-            // Cache some other values
-            var selGrhGrhIndex = gd.GrhIndex;
-            var isForeground = EditorSettings.Default.MapGrh_DefaultIsForeground;
-            var depth = EditorSettings.Default.MapGrh_DefaultDepth;
-            var drawPosArea = drawPos.ToArea(1, 1);
-
-            if (!useTileMode)
-            {
-                // Make sure the same MapGrh doesn't already exist at that position
-                if (map.Spatial.Contains<MapGrh>(drawPosArea, x=>x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
-                    return null;
-            }
-            else
-            {
-                // Make sure the same MapGrh doesn't already exist at that position on the same layer
-                if (map.Spatial.Contains<MapGrh>(drawPosArea, x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground))
-                    return null;
-
-                // In TileMode, do not allow ANY MapGrh at the same position and layer depth. And if it does exist, instead of aborting,
-                // delete the existing one.
-                var existingMapGrhs = map.Spatial.GetMany<MapGrh>(drawPosArea,x=> x.IsForeground == isForeground);
-                foreach (var toDelete in existingMapGrhs)
-                {
-                    Debug.Assert(toDelete != null);
-                    if (log.IsDebugEnabled)
-                        log.DebugFormat("TileMode caused MapGrh `{0}` to be overwritten.", toDelete);
-
-                    map.RemoveMapGrh(toDelete);
-                }
-
-                Debug.Assert(!map.Spatial.Contains<MapGrh>(drawPosArea, x => x.IsForeground == isForeground));
-            }
-
-            // Create the new MapGrh and add it to the map
-            var g = new Grh(gd, AnimType.Loop, map.GetTime());
-            var mg = new MapGrh(g, drawPos, isForeground) { LayerDepth = depth };
-            map.AddMapGrh(mg);
-
-            return mg;
-        }
-
-        /// <summary>
         /// Handles when a mouse button is pressed on a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
@@ -246,7 +179,7 @@ namespace DemoGame.Editor.Tools
         protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
                                                        MouseEventArgs e)
         {
-            bool wasMapGrhPlaced = false;
+            var wasMapGrhPlaced = false;
 
             if (e.Button == MouseButtons.Left)
             {
@@ -298,7 +231,7 @@ namespace DemoGame.Editor.Tools
                         worldPos = GridAligner.Instance.Align(worldPos, true);
                         var worldPosArea = worldPos.ToArea(1, 1);
                         var toDelete = map.Spatial.GetMany<MapGrh>(worldPosArea, x => IsObjectVisible(map, x));
-                        
+
                         foreach (var x in toDelete)
                         {
                             map.RemoveMapGrh(x);
@@ -348,6 +281,73 @@ namespace DemoGame.Editor.Tools
             HandleResetState();
         }
 
+        /// <summary>
+        /// Places a <see cref="MapGrh"/> on the map.
+        /// </summary>
+        /// <param name="map">The map to place the <see cref="MapGrh"/> on.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>.</param>
+        /// <param name="screenPos">The screen position to place the <see cref="MapGrh"/>.</param>
+        /// <param name="useTileMode">If TileMode should be used.</param>
+        /// <param name="gd">The <see cref="GrhData"/> to place. Set to null to attempt to use the <see cref="GrhData"/> that is
+        /// currently selected in the <see cref="GlobalState"/>.</param>
+        /// <returns>The <see cref="MapGrh"/> instance that was added, or null if the the <see cref="MapGrh"/> could not be
+        /// added for any reason.</returns>
+        public static MapGrh PlaceMapGrh(EditorMap map, ICamera2D camera, Vector2 screenPos, bool useTileMode, GrhData gd = null)
+        {
+            // Get the GrhData to place from the global state
+            if (gd == null)
+                gd = GlobalState.Instance.Map.GrhToPlace.GrhData;
+
+            // Ensure we have a GrhData to place
+            if (gd == null)
+                return null;
+
+            // Get the world position to place it
+            var drawPos = camera.ToWorld(screenPos);
+            drawPos = GridAligner.Instance.Align(drawPos, useTileMode);
+
+            // Cache some other values
+            var selGrhGrhIndex = gd.GrhIndex;
+            var isForeground = EditorSettings.Default.MapGrh_DefaultIsForeground;
+            var depth = EditorSettings.Default.MapGrh_DefaultDepth;
+            var drawPosArea = drawPos.ToArea(1, 1);
+
+            if (!useTileMode)
+            {
+                // Make sure the same MapGrh doesn't already exist at that position
+                if (map.Spatial.Contains<MapGrh>(drawPosArea, x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
+                    return null;
+            }
+            else
+            {
+                // Make sure the same MapGrh doesn't already exist at that position on the same layer
+                if (map.Spatial.Contains<MapGrh>(drawPosArea,
+                                                 x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground))
+                    return null;
+
+                // In TileMode, do not allow ANY MapGrh at the same position and layer depth. And if it does exist, instead of aborting,
+                // delete the existing one.
+                var existingMapGrhs = map.Spatial.GetMany<MapGrh>(drawPosArea, x => x.IsForeground == isForeground);
+                foreach (var toDelete in existingMapGrhs)
+                {
+                    Debug.Assert(toDelete != null);
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("TileMode caused MapGrh `{0}` to be overwritten.", toDelete);
+
+                    map.RemoveMapGrh(toDelete);
+                }
+
+                Debug.Assert(!map.Spatial.Contains<MapGrh>(drawPosArea, x => x.IsForeground == isForeground));
+            }
+
+            // Create the new MapGrh and add it to the map
+            var g = new Grh(gd, AnimType.Loop, map.GetTime());
+            var mg = new MapGrh(g, drawPos, isForeground) { LayerDepth = depth };
+            map.AddMapGrh(mg);
+
+            return mg;
+        }
+
         class MenuDefaultDepth : ToolStripMenuItem
         {
             /// <summary>
@@ -366,7 +366,7 @@ namespace DemoGame.Editor.Tools
             /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
             void EditorSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                const string propName ="MapGrh_DefaultDepth";
+                const string propName = "MapGrh_DefaultDepth";
 
                 EditorSettings.Default.AssertPropertyExists(propName);
 

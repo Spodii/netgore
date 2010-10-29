@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text;
 using System.Timers;
 using log4net;
@@ -144,7 +143,7 @@ namespace NetGore.Scripting
             foreach (var file in files)
             {
                 // Calculate the file hash
-                byte[] fileHash = Hasher.GetFileHash(file);
+                var fileHash = Hasher.GetFileHash(file);
 
                 if (hash == null)
                 {

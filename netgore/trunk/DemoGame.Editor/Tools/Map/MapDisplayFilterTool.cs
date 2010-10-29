@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using log4net;
 using NetGore;

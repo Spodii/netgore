@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using NetGore.Editor;
 using NetGore.Editor.WinForms;
 

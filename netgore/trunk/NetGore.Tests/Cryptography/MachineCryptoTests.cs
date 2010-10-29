@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text;
 using NetGore.Cryptography;
 using NUnit.Framework;
 

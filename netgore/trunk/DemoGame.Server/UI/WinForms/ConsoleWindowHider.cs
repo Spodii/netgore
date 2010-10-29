@@ -1,16 +1,13 @@
-﻿using System;
+﻿using System.Linq;
 
 namespace DemoGame.Server.UI
 {
     public abstract partial class ConsoleWindowHider : IConsoleWindowHider
     {
         /// <summary>
-        /// Hides the console window.
+        /// When overridden in the derived class, hides the console window.
         /// </summary>
-        public void Hide()
-        {
-            DoHide();
-        }
+        protected abstract void DoHide();
 
         /// <summary>
         /// Creates a <see cref="ConsoleWindowHider"/> instance.
@@ -25,14 +22,21 @@ namespace DemoGame.Server.UI
             // Windows
             return new WindowsConsoleWindowHider();
 #else
-            // Other OSes don't to actually hide the console right now (but can add them in the future if they do)
+    // Other OSes don't to actually hide the console right now (but can add them in the future if they do)
             return null;
 #endif
         }
 
+        #region IConsoleWindowHider Members
+
         /// <summary>
-        /// When overridden in the derived class, hides the console window.
+        /// Hides the console window.
         /// </summary>
-        protected abstract void DoHide();
+        public void Hide()
+        {
+            DoHide();
+        }
+
+        #endregion
     }
 }

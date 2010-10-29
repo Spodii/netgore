@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Server.UI
+﻿using System.Linq;
+
+namespace DemoGame.Server.UI
 {
     /// <summary>
     /// Interface for an object that can hide the console window.

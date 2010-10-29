@@ -30,17 +30,16 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // SELECT COUNT(*) FROM `account_character` a
-	        //      INNER JOIN `view_user_character` u
-		    //          ON a.character_id = u.id
-	        //      WHERE a.account_id = @accountID
+            //      INNER JOIN `view_user_character` u
+            //          ON a.character_id = u.id
+            //      WHERE a.account_id = @accountID
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(AccountCharacterTable.TableName, "a").
-                AddFunc(f.Count())
-                .InnerJoinOnColumn(ViewUserCharacterTable.TableName, "u", "id", "a", "character_id")
-                .Where(f.Equals(s.ApplyTableAlias("account_id", "a"), "@accountID"));
+                qb.Select(AccountCharacterTable.TableName, "a").AddFunc(f.Count()).InnerJoinOnColumn(
+                    ViewUserCharacterTable.TableName, "u", "id", "a", "character_id").Where(
+                        f.Equals(s.ApplyTableAlias("account_id", "a"), "@accountID"));
             return q.ToString();
         }
 

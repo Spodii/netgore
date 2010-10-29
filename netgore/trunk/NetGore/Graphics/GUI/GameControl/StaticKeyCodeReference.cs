@@ -1,4 +1,5 @@
-﻿using SFML.Window;
+﻿using System.Linq;
+using SFML.Window;
 
 namespace NetGore.Graphics.GUI
 {
@@ -27,6 +28,8 @@ namespace NetGore.Graphics.GUI
             _key = newValue;
         }
 
+        #region IKeyCodeReference Members
+
         /// <summary>
         /// Gets the referenced <see cref="KeyCode"/>.
         /// </summary>
@@ -34,5 +37,7 @@ namespace NetGore.Graphics.GUI
         {
             get { return _key; }
         }
+
+        #endregion
     }
 }

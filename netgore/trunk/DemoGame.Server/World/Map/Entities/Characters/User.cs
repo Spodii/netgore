@@ -49,33 +49,12 @@ namespace DemoGame.Server
         readonly GuildMemberInfo _guildMemberInfo;
         readonly QuestPerformerStatusHelper _questInfo;
         readonly UserShoppingState _shoppingState;
+        readonly IUserAccount _userAccount;
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
-        readonly IUserAccount _userAccount;
-
-        /// <summary>
-        /// Gets the <see cref="UserPermissions"/> level for this user.
-        /// </summary>
-        public UserPermissions Permissions
-        {
-            get
-            {
-                var acc = UserAccount;
-                if (acc == null)
-                    return UserPermissions.None;
-
-                return acc.Permissions;
-            }
-        }
 
         IPeerTradeSession<User, ItemEntity> _peerTradeSession;
-
-        /// <summary>
-        /// Gets the <see cref="IUserAccount"/> for the account that this <see cref="User"/> is on.
-        /// Will not be null.
-        /// </summary>
-        public IUserAccount UserAccount { get { return _userAccount; } }
 
         /// <summary>
         /// Initializes the <see cref="User"/> class.
@@ -199,6 +178,21 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the <see cref="UserPermissions"/> level for this user.
+        /// </summary>
+        public UserPermissions Permissions
+        {
+            get
+            {
+                var acc = UserAccount;
+                if (acc == null)
+                    return UserPermissions.None;
+
+                return acc.Permissions;
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="User"/>'s quest information.
         /// </summary>
         public QuestPerformerStatusHelper QuestInfo
@@ -220,6 +214,15 @@ namespace DemoGame.Server
         public UserShoppingState ShoppingState
         {
             get { return _shoppingState; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IUserAccount"/> for the account that this <see cref="User"/> is on.
+        /// Will not be null.
+        /// </summary>
+        public IUserAccount UserAccount
+        {
+            get { return _userAccount; }
         }
 
         /// <summary>

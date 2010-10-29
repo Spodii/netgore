@@ -63,6 +63,17 @@ namespace DemoGame.Client
             }
         }
 
+        void ClickButton_DeleteCharacter(Control sender, MouseButtonEventArgs args)
+        {
+            var s = (CharacterSlotControl)sender;
+            var ci = s.CharInfo;
+            if (ci == null)
+                return;
+
+            var mb = new DeleteCharacterMessageBox(GUIManager, ci.Name, ci.Index) { Font = GameScreenHelper.DefaultChatFont };
+            mb.DeleteRequested += DeleteCharacterMsgBox_DeleteRequested;
+        }
+
         void ClickButton_LogOut(object sender, MouseButtonEventArgs e)
         {
             // Change screens
@@ -82,6 +93,14 @@ namespace DemoGame.Client
                     if (log.IsErrorEnabled)
                         log.ErrorFormat("Failed to disconnect client socket ({0}). Exception: {1}", _sockets, ex);
                 }
+            }
+        }
+
+        void DeleteCharacterMsgBox_DeleteRequested(Control sender, byte charSlot)
+        {
+            using (var pw = ClientPacket.DeleteAccountCharacter(charSlot))
+            {
+                _sockets.Send(pw, ClientMessageType.System);
             }
         }
 
@@ -123,67 +142,6 @@ namespace DemoGame.Client
             }
         }
 
-        void ClickButton_DeleteCharacter(Control sender, MouseButtonEventArgs args)
-        {
-            var s = (CharacterSlotControl)sender;
-            var ci = s.CharInfo;
-            if (ci == null)
-                return;
-
-            var mb = new DeleteCharacterMessageBox(GUIManager, ci.Name, ci.Index) { Font = GameScreenHelper.DefaultChatFont };
-            mb.DeleteRequested += DeleteCharacterMsgBox_DeleteRequested;
-        }
-
-        void DeleteCharacterMsgBox_DeleteRequested(Control sender, byte charSlot)
-        {
-            using (var pw = ClientPacket.DeleteAccountCharacter(charSlot))
-            {
-                _sockets.Send(pw, ClientMessageType.System);
-            }
-        }
-
-        class DeleteCharacterMessageBox : MessageBox
-        {
-            const string _msgBoxTitle = "Delete character?";
-            const string _msgBoxMsg = @"Are you sure you wish to delete your character `{0}`? This cannot be undone!
-
-Press ""OK"" to delete the character, or ""Cancel"" to abort.";
-
-            readonly byte _slot;
-
-            public byte CharacterSlot { get { return _slot; } }
-
-            public DeleteCharacterMessageBox(IGUIManager guiManager, string characterName, byte slot)
-                : base(guiManager, _msgBoxTitle, string.Format(_msgBoxMsg, characterName), MessageBoxButton.OkCancel)
-            {
-                _slot = slot;
-
-                DisposeOnSelection = true;
-            }
-
-            /// <summary>
-            /// Notifies listeners when this control has requested the character to be deleted.
-            /// </summary>
-            public event ControlEventHandler<byte> DeleteRequested;
-
-            /// <summary>
-            /// Handles when the <see cref="MessageBox"/> has been closed from an option button being clicked.
-            /// This is called immediately before <see cref="CheckBox.TickedOverSpriteChanged"/>.
-            /// Override this method instead of using an event hook on <see cref="CheckBox.TickedOverSpriteChanged"/> when possible.
-            /// </summary>
-            /// <param name="button">The button that was used to close the <see cref="MessageBox"/>.</param>
-            protected override void OnOptionSelected(MessageBoxButton button)
-            {
-                if (button == MessageBoxButton.Ok)
-                {
-                    if (DeleteRequested != null)
-                        DeleteRequested(this, CharacterSlot);
-                }
-
-                base.OnOptionSelected(button);
-            }
-        }
-
         /// <summary>
         /// A <see cref="Control"/> that displays a single character slot.
         /// </summary>
@@ -221,9 +179,9 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
 
             readonly Label _charNameControl;
             readonly PreviewCharacter _character = new PreviewCharacter();
+            readonly Label _deleteControl;
             readonly byte _slot;
             readonly Label _slotNumberControl;
-            readonly Label _deleteControl;
 
             AccountCharacterInfo _charInfo;
             ControlBorder _defaultBorder;
@@ -266,17 +224,6 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
             /// Notifies listeners when the Delete Character button has been clicked.
             /// </summary>
             public event ControlEventHandler<MouseButtonEventArgs> DeleteCharacterClicked;
-
-            /// <summary>
-            /// Handles the Clicked event of the <see cref="_deleteControl"/> control.
-            /// </summary>
-            /// <param name="sender">The source of the event.</param>
-            /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
-            void _deleteControl_Clicked(object sender, MouseButtonEventArgs e)
-            {
-                if (DeleteCharacterClicked != null)
-                    DeleteCharacterClicked(this, e);
-            }
 
             /// <summary>
             /// Gets or sets the <see cref="AccountCharacterInfo"/> for the character in this slot.
@@ -437,6 +384,64 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
                 var pos = offset + (new Vector2(row, column) * (slotPadding + _slotSize));
 
                 Position = pos;
+            }
+
+            /// <summary>
+            /// Handles the Clicked event of the <see cref="_deleteControl"/> control.
+            /// </summary>
+            /// <param name="sender">The source of the event.</param>
+            /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+            void _deleteControl_Clicked(object sender, MouseButtonEventArgs e)
+            {
+                if (DeleteCharacterClicked != null)
+                    DeleteCharacterClicked(this, e);
+            }
+        }
+
+        class DeleteCharacterMessageBox : MessageBox
+        {
+            const string _msgBoxMsg =
+                @"Are you sure you wish to delete your character `{0}`? This cannot be undone!
+
+Press ""OK"" to delete the character, or ""Cancel"" to abort.";
+
+            const string _msgBoxTitle = "Delete character?";
+
+            readonly byte _slot;
+
+            public DeleteCharacterMessageBox(IGUIManager guiManager, string characterName, byte slot)
+                : base(guiManager, _msgBoxTitle, string.Format(_msgBoxMsg, characterName), MessageBoxButton.OkCancel)
+            {
+                _slot = slot;
+
+                DisposeOnSelection = true;
+            }
+
+            /// <summary>
+            /// Notifies listeners when this control has requested the character to be deleted.
+            /// </summary>
+            public event ControlEventHandler<byte> DeleteRequested;
+
+            public byte CharacterSlot
+            {
+                get { return _slot; }
+            }
+
+            /// <summary>
+            /// Handles when the <see cref="MessageBox"/> has been closed from an option button being clicked.
+            /// This is called immediately before <see cref="CheckBox.TickedOverSpriteChanged"/>.
+            /// Override this method instead of using an event hook on <see cref="CheckBox.TickedOverSpriteChanged"/> when possible.
+            /// </summary>
+            /// <param name="button">The button that was used to close the <see cref="MessageBox"/>.</param>
+            protected override void OnOptionSelected(MessageBoxButton button)
+            {
+                if (button == MessageBoxButton.Ok)
+                {
+                    if (DeleteRequested != null)
+                        DeleteRequested(this, CharacterSlot);
+                }
+
+                base.OnOptionSelected(button);
             }
         }
 

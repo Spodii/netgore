@@ -34,7 +34,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(ViewNpcCharacterTable.TableName).Add("id").Where(f.Equals(s.EscapeColumn("load_map_id"),
-                                                                                s.Parameterize("mapID")));
+                                                                                    s.Parameterize("mapID")));
             return q.ToString();
         }
 

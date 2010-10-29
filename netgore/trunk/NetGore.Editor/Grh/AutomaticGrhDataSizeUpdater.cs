@@ -113,7 +113,7 @@ namespace NetGore.Editor.Grhs
         string TryGetAbsoluteFilePath(StationaryGrhData gd, ContentPaths contentPath)
         {
             string ret = null;
-            bool isValid = true;
+            var isValid = true;
 
             try
             {
@@ -136,9 +136,7 @@ namespace NetGore.Editor.Grhs
                 return null;
             }
             else
-            {
                 return ret;
-            }
         }
 
         /// <summary>
