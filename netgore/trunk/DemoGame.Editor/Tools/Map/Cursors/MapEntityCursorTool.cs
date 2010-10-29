@@ -80,7 +80,7 @@ namespace DemoGame.Editor.Tools
                 // Only delete when it is an Entity that is on this map
                 foreach (var x in SOM.SelectedObjects.OfType<Entity>())
                 {
-                    if (map.Spatial.Contains(x))
+                    if (map.Spatial.CollectionContains(x))
                         map.RemoveEntity(x);
                 }
             }

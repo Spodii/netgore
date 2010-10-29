@@ -92,6 +92,28 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Gets if any of the <see cref="ISpatial"/>s match the given condition.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool Contains<T>(Predicate<T> condition)
+        {
+            return _spatials.OfType<T>().Any(x => condition(x));
+        }
+
+        /// <summary>
+        /// Gets if any of the <see cref="ISpatial"/>s match the given condition.
+        /// </summary>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool Contains(Predicate<ISpatial> condition)
+        {
+            return _spatials.Any(x => condition(x));
+        }
+
+        /// <summary>
         /// Gets if the specified area or location contains any <see cref="ISpatial"/>s.
         /// </summary>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
@@ -351,6 +373,26 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Gets all spatials matching the given condition.
+        /// </summary>
+        /// <param name="condition">The condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition)
+        {
+            return _spatials.Where(x => condition(x)).ToImmutable();
+        }
+
+        /// <summary>
+        /// Gets all spatials matching the given condition.
+        /// </summary>
+        /// <param name="condition">The condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<T> GetMany<T>(Predicate<T> condition)
+        {
+            return _spatials.OfType<T>().Where(x => condition(x)).ToImmutable();
+        }
+
+        /// <summary>
         /// Gets the <see cref="ISpatial"/>s found intersecting the given region.
         /// </summary>
         /// <typeparam name="T">Type of ISpatial to look for.</typeparam>
@@ -376,6 +418,28 @@ namespace NetGore.World
         public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
         {
             return _spatials.Where(x => x is T && x.Contains(p) && condition((T)x)).OfType<T>().ToImmutable();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        public T Get<T>(Predicate<T> condition)
+        {
+            return _spatials.OfType<T>().FirstOrDefault(x=>condition(x));
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        public ISpatial Get(Predicate<ISpatial> condition)
+        {
+            return _spatials.FirstOrDefault(x => condition(x));
         }
 
         /// <summary>

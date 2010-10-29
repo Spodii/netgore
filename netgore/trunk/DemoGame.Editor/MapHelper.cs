@@ -164,7 +164,8 @@ namespace DemoGame.Editor
                 }
 
                 // Add the MapGrh-bound walls
-                var extraWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(map.MapGrhs);
+                var mapGrhs = map.Spatial.GetMany<MapGrh>().Distinct();
+                var extraWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(mapGrhs);
                 foreach (var wall in extraWalls)
                 {
                     map.AddEntity(wall);

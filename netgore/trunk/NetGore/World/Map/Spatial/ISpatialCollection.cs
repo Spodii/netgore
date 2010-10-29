@@ -55,6 +55,22 @@ namespace NetGore.World
         bool Contains(Vector2 point);
 
         /// <summary>
+        /// Gets if any of the <see cref="ISpatial"/>s match the given condition.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        bool Contains<T>(Predicate<T> condition);
+
+        /// <summary>
+        /// Gets if any of the <see cref="ISpatial"/>s match the given condition.
+        /// </summary>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        bool Contains(Predicate<ISpatial> condition);
+
+        /// <summary>
         /// Gets if the specified area or location contains any <see cref="ISpatial"/>s.
         /// </summary>
         /// <param name="point">The map point to check.</param>
@@ -131,6 +147,22 @@ namespace NetGore.World
         /// will be ignored.</typeparam>
         /// <returns>First <see cref="ISpatial"/> found at the given point, or null if none found.</returns>
         T Get<T>(Vector2 p, Predicate<T> condition);
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        T Get<T>(Predicate<T> condition);
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        ISpatial Get(Predicate<ISpatial> condition);
 
         /// <summary>
         /// Gets the first <see cref="ISpatial"/> found at the given point.
@@ -215,6 +247,20 @@ namespace NetGore.World
         /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
         /// <returns>All of the spatials at the given point.</returns>
         IEnumerable<ISpatial> GetMany(Vector2 p, Predicate<ISpatial> condition);
+
+        /// <summary>
+        /// Gets all spatials matching the given condition.
+        /// </summary>
+        /// <param name="condition">The condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition);
+
+        /// <summary>
+        /// Gets all spatials matching the given condition.
+        /// </summary>
+        /// <param name="condition">The condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        IEnumerable<T> GetMany<T>(Predicate<T> condition);
 
         /// <summary>
         /// Gets the <see cref="ISpatial"/>s found intersecting the given region.

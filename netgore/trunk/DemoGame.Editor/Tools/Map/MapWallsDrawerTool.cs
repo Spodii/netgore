@@ -133,11 +133,9 @@ namespace DemoGame.Editor.Tools
                 // Draw the MapGrh walls
                 if (p.DrawMapGrhWalls)
                 {
-                    foreach (var mg in clientMap.MapGrhs)
+                    var toDraw = clientMap.Spatial.GetMany<MapGrh>(viewArea);
+                    foreach (var mg in toDraw)
                     {
-                        if (!camera.InView(mg.Grh, mg.Position))
-                            continue;
-
                         var boundWalls = GlobalState.Instance.MapGrhWalls[mg.Grh.GrhData];
                         if (boundWalls == null)
                             continue;
