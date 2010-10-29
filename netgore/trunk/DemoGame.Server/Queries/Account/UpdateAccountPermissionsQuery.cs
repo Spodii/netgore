@@ -1,6 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
@@ -8,16 +7,27 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class UpdateTimeLastLoginQuery : DbQueryNonReader<AccountID>
+    public class UpdateAccountPermissionsQuery : DbQueryNonReader<KeyValuePair<AccountID, UserPermissions>>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateTimeLastLoginQuery"/> class.
+        /// Initializes a new instance of the <see cref="UpdateAccountPermissionsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public UpdateTimeLastLoginQuery(DbConnectionPool connectionPool)
+        public UpdateAccountPermissionsQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login");
+            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "permissions");
+        }
+
+        /// <summary>
+        /// Executes the query on the database using the specified values.
+        /// </summary>
+        /// <param name="id">The <see cref="AccountID"/>.</param>
+        /// <param name="permissions">The new <see cref="UserPermissions"/> value.</param>
+        /// <returns>Number of rows affected by the query.</returns>
+        public int Execute(AccountID id, UserPermissions permissions)
+        {
+            return Execute(new KeyValuePair<AccountID, UserPermissions>(id, permissions));
         }
 
         /// <summary>
@@ -27,13 +37,13 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // UPDATE `{0}` SET `time_last_login` = NOW() WHERE `id`=@id
+            // UPDATE `{0}` SET `permissions` = @value WHERE `id`=@id
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Update(AccountTable.TableName).Add("time_last_login", f.Now()).Where(f.Equals(s.EscapeColumn("id"),
-                                                                                                 s.Parameterize("id")));
+                qb.Update(AccountTable.TableName).Add("permissions", s.Parameterize("value")).Where(f.Equals(s.EscapeColumn("id"),
+                                                                                                             s.Parameterize("id")));
             return q.ToString();
         }
 
@@ -44,7 +54,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("id");
+            return CreateParameters("id", "value");
         }
 
         /// <summary>
@@ -53,9 +63,10 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, AccountID item)
+        protected override void SetParameters(DbParameterValues p, KeyValuePair<AccountID, UserPermissions> item)
         {
-            p["id"] = (int)item;
+            p["id"] = (int)item.Key;
+            p["value"] = (int)item.Value;
         }
     }
 }

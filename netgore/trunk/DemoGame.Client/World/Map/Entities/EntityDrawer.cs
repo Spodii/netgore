@@ -5,7 +5,6 @@ using SFML.Graphics;
 
 namespace DemoGame.Client
 {
-    // TODO: !! Probably get rid of this... eventually
     /// <summary>
     /// Assists in drawing different types of Entities.
     /// </summary>
