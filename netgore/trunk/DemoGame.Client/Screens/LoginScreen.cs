@@ -19,9 +19,9 @@ namespace DemoGame.Client
         Control _btnLogin;
         TextBox _cNameText;
         MaskedTextBox _cPasswordText;
+        CheckBox _cRememberPassword;
         TextBox _cStatus;
         ClientSockets _sockets;
-        CheckBox _cRememberPassword;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginScreen"/> class.
@@ -60,21 +60,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Saves the <see cref="ClientSettings"/> related to this screen.
-        /// </summary>
-        void SaveScreenSettings()
-        {
-            ClientSettings.Default.EnteredUserName = _cNameText.Text;
-
-            if (ClientSettings.Default.RememberPassword)
-                ClientSettings.Default.EnteredPassword = MachineCrypto.Encode(_cPasswordText.Text);
-            else
-                ClientSettings.Default.EnteredPassword = string.Empty;
-
-            ClientSettings.Default.Save();
-        }
-
-        /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
         /// use this instead of the constructor. This is invoked only once.
@@ -89,13 +74,14 @@ namespace DemoGame.Client
 
             // Create the login fields
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Name:");
-            _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = ClientSettings.Default.EnteredUserName };
+            _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
+            { IsMultiLine = false, Text = ClientSettings.Default.EnteredUserName };
             _cNameText.KeyPressed += cNameText_KeyPressed;
             _cNameText.TextChanged += cNameText_TextChanged;
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Password:");
             _cPasswordText = new MaskedTextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
-            { IsMultiLine = false, Text = decodedPass};
+            { IsMultiLine = false, Text = decodedPass };
 
             _cPasswordText.KeyPressed += cPasswordText_KeyPressed;
             _cPasswordText.TextChanged += cPasswordText_TextChanged;
@@ -105,9 +91,13 @@ namespace DemoGame.Client
             _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
             { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
-            _cRememberPassword = new CheckBox(cScreen, _cPasswordText.Position + new Vector2(50, _cPasswordText.Size.Y + 8)) 
-            { Text = "Remember Password", Value = ClientSettings.Default.RememberPassword,
-            ForeColor = Color.White, Font = GameScreenHelper.DefaultChatFont };
+            _cRememberPassword = new CheckBox(cScreen, _cPasswordText.Position + new Vector2(50, _cPasswordText.Size.Y + 8))
+            {
+                Text = "Remember Password",
+                Value = ClientSettings.Default.RememberPassword,
+                ForeColor = Color.White,
+                Font = GameScreenHelper.DefaultChatFont
+            };
             _cRememberPassword.ValueChanged += _cRememberPassword_ValueChanged;
 
             // Create the menu buttons
@@ -125,12 +115,6 @@ namespace DemoGame.Client
             _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
         }
 
-        void _cRememberPassword_ValueChanged(Control sender)
-        {
-            ClientSettings.Default.RememberPassword = _cRememberPassword.Value;
-            SaveScreenSettings();
-        }
-
         /// <summary>
         /// Handles the Clicked event of the back button.
         /// </summary>
@@ -138,7 +122,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void LoginScreen_Clicked(object sender, MouseButtonEventArgs e)
         {
-            ScreenManager.SetScreen < MainMenuScreen>();
+            ScreenManager.SetScreen<MainMenuScreen>();
         }
 
         void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
@@ -154,6 +138,21 @@ namespace DemoGame.Client
 
             // Display the message
             SetError(e);
+        }
+
+        /// <summary>
+        /// Saves the <see cref="ClientSettings"/> related to this screen.
+        /// </summary>
+        void SaveScreenSettings()
+        {
+            ClientSettings.Default.EnteredUserName = _cNameText.Text;
+
+            if (ClientSettings.Default.RememberPassword)
+                ClientSettings.Default.EnteredPassword = MachineCrypto.Encode(_cPasswordText.Text);
+            else
+                ClientSettings.Default.EnteredPassword = string.Empty;
+
+            ClientSettings.Default.Save();
         }
 
         /// <summary>
@@ -196,6 +195,12 @@ namespace DemoGame.Client
         void _btnLogin_Clicked(object sender, MouseButtonEventArgs e)
         {
             _sockets.Connect();
+        }
+
+        void _cRememberPassword_ValueChanged(Control sender)
+        {
+            ClientSettings.Default.RememberPassword = _cRememberPassword.Value;
+            SaveScreenSettings();
         }
 
         void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
