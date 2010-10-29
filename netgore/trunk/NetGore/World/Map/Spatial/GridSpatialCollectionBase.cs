@@ -60,7 +60,7 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Gets the 0-based size of the grid in each dimension.
+        /// Gets the size of the grid in each dimension.
         /// </summary>
         protected Point GridSize
         {
@@ -84,7 +84,8 @@ namespace NetGore.World
         /// <exception cref="IndexOutOfRangeException">The <paramref name="gridIndex"/> is invalid.</exception>
         protected IGridSpatialCollectionSegment GetSegment(Point gridIndex)
         {
-            return _gridSegments[gridIndex.X + (gridIndex.Y * GridSize.X)];
+            int i = gridIndex.X + (gridIndex.Y * GridSize.X);
+            return _gridSegments[i];
         }
 
         /// <summary>
@@ -96,14 +97,16 @@ namespace NetGore.World
         /// <returns>The grid segments for the specified grid index range.</returns>
         protected IEnumerable<IGridSpatialCollectionSegment> GetSegments(Point startIndex, Point length)
         {
-            var maxX = startIndex.X + length.X;
-            var maxY = startIndex.Y + length.Y;
+            var maxX = startIndex.X + length.X + 1;
+            var maxY = startIndex.Y + length.Y + 1;
 
-            for (var x = Math.Max(0, startIndex.X); x <= Math.Min(maxX, GridSize.X); x++)
+            for (var y = Math.Max(0, startIndex.Y); y < Math.Min(maxY, GridSize.Y); y++)
             {
-                for (var y = Math.Max(0, startIndex.Y); y <= Math.Min(maxY, GridSize.Y); y++)
+                for (var x = Math.Max(0, startIndex.X); x < Math.Min(maxX, GridSize.X); x++)
                 {
-                    yield return GetSegment(new Point(x, y));
+                    var p = new Point(x, y);
+                    var segment = GetSegment(p);
+                    yield return segment;
                 }
             }
         }
@@ -154,7 +157,7 @@ namespace NetGore.World
         /// <returns>True if the grid segment index is valid; otherwise false.</returns>
         protected bool IsLegalGridSegment(Point gridIndex)
         {
-            return gridIndex.X >= 0 && gridIndex.Y >= 0 && gridIndex.X <= GridSize.X && gridIndex.Y <= GridSize.Y;
+            return gridIndex.X >= 0 && gridIndex.Y >= 0 && gridIndex.X < GridSize.X && gridIndex.Y < GridSize.Y;
         }
 
         /// <summary>
@@ -310,7 +313,9 @@ namespace NetGore.World
             }
             // TODO: !! Shouldn't really NEED this full scan... only do it in debug mode as an assertion
             // They weren't in the segment, or the segment was invalid, so just scan the whole grid
-            return _gridSegments.Any(x => x.Contains(spatial));
+            var ret = _gridSegments.Any(x => x.Contains(spatial));
+            Debug.Assert(!ret);
+            return ret;
         }
 
         /// <summary>
@@ -1078,6 +1083,7 @@ namespace NetGore.World
         public void SetAreaSize(Vector2 size)
         {
             var newSize = WorldPositionToGridSegment(size);
+            newSize = new Point(newSize.X + 1, newSize.Y + 1);
 
             // Don't rebuild the grid of the size didn't change at all
             if (_gridSegments != null && newSize == GridSize)
@@ -1096,7 +1102,7 @@ namespace NetGore.World
 
             // Set the new grid
             _gridSize = newSize;
-            _gridSegments = new IGridSpatialCollectionSegment[(newSize.X + 1) * (newSize.Y + 1)];
+            _gridSegments = new IGridSpatialCollectionSegment[newSize.X * newSize.Y];
 
             // Instantiate the segments
             for (var i = 0; i < _gridSegments.Length; i++)
@@ -1141,6 +1147,7 @@ namespace NetGore.World
             /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
             public void Add(ISpatial spatial)
             {
+                Debug.Assert(!_spatials.Contains(spatial));
                 _spatials.Add(spatial);
             }
 
@@ -1191,6 +1198,7 @@ namespace NetGore.World
             public void Remove(ISpatial spatial)
             {
                 _spatials.Remove(spatial);
+                Debug.Assert(!_spatials.Contains(spatial));
             }
 
             #endregion
