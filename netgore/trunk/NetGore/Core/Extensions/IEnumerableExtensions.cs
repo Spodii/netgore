@@ -394,6 +394,10 @@ namespace NetGore
         /// <returns>The given IEnumerable as an immutable IEnumerable.</returns>
         public static IEnumerable<T> ToImmutable<T>(this IEnumerable<T> e)
         {
+            // An array is already considered "safe" since, while the values may change, it will not break the enumeration
+            if (e is T[])
+                return e;
+
             return e.ToArray();
         }
     }
