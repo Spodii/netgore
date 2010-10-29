@@ -139,7 +139,7 @@ namespace CopyContent
 
             // Check to delete existing files
             var relativePath = AddPathSeparatorSuffix(dest.Substring(_destRoot.Length));
-            if (_cleanFolders.Any(x => x.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase)))
+            if (_cleanFolders.Any(x => relativePath.StartsWith(x, StringComparison.OrdinalIgnoreCase)))
             {
                 foreach (var dstFile in Directory.GetFiles(dest))
                 {
@@ -344,7 +344,7 @@ namespace CopyContent
         /// <param name="args">The args.</param>
         static void Main(string[] args)
         {
-            //args = new string[] { @"E:\NetGore\DevContent", @"E:\NetGore\DevContentTest", @"--clean=[Font, Grh\Background, Grh\Character]" };
+            //args = new string[] { @"E:\NetGore\DevContent", @"E:\NetGore\DevContentTest", @"--clean=[Font,Grh]" };
 
             // Check for all the args
             if (args == null || args.Length < 2)
