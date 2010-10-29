@@ -131,11 +131,6 @@ namespace DemoGame.Editor
 
             // Load the settings
             LoadDockSettings("User");
-
-            // TODO: !!
-            var editorFrm = new EditMapForm();
-            editorFrm.MapScreenControl.ChangeMap(new MapID(3));
-            editorFrm.Show(dockPanel);
         }
 
         void SaveDockSettings(string settingsName)
