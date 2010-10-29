@@ -512,6 +512,16 @@ namespace DemoGame.Client
             // Expand the view area a bit to update stuff just out of view
             viewRect.Inflate(32, 32);
 
+            // TODO: !!
+            Stopwatch w = new Stopwatch();
+            w.Start();
+            for (int i = 0; i < 1000; i++)
+            {
+                var xx = Spatial.GetMany(viewRect).ToImmutable();
+            }
+            w.Stop();
+            Trace.WriteLine(w.ElapsedMilliseconds);
+
             // Update the map Grhs in view
             foreach (var mg in Spatial.GetMany<MapGrh>(viewRect))
             {

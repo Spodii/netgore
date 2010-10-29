@@ -25,17 +25,5 @@ namespace NetGore.World
         public StaticGridSpatialCollection()
         {
         }
-
-        /// <summary>
-        /// Gets an immutable version of the <paramref name="values"/>. Provided as virtual for specialized derived
-        /// classes that do not need immutable values since it can guarantee the underlying collection won't change.
-        /// </summary>
-        /// <typeparam name="T">The type of value.</typeparam>
-        /// <param name="values">The values to get the distinct and immutable copy of.</param>
-        /// <returns>The immutable copy of the <paramref name="values"/>.</returns>
-        protected override IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
-        {
-            return values;
-        }
     }
 }

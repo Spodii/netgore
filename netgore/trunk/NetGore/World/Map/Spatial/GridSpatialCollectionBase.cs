@@ -21,7 +21,7 @@ namespace NetGore.World
         /// <summary>
         /// The default segment size to use for when the segment size is not specified.
         /// </summary>
-        const int _defaultSegmentSize = 16384;
+        const int _defaultSegmentSize = 384;
 
         /// <summary>
         /// The size of each grid segment.
@@ -65,29 +65,6 @@ namespace NetGore.World
         protected Point GridSize
         {
             get { return _gridSize; }
-        }
-
-        /// <summary>
-        /// Gets a distinct and immutable version of the <paramref name="values"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of value.</typeparam>
-        /// <param name="values">The values to get the distinct and immutable copy of.</param>
-        /// <returns>The distinct and immutable copy of the <paramref name="values"/>.</returns>
-        protected IEnumerable<T> AsDistinctAndImmutable<T>(IEnumerable<T> values)
-        {
-            return AsImmutable(values.Distinct());
-        }
-
-        /// <summary>
-        /// Gets an immutable version of the <paramref name="values"/>. Provided as virtual for specialized derived
-        /// classes that do not need immutable values since it can guarantee the underlying collection won't change.
-        /// </summary>
-        /// <typeparam name="T">The type of value.</typeparam>
-        /// <param name="values">The values to get the distinct and immutable copy of.</param>
-        /// <returns>The immutable copy of the <paramref name="values"/>.</returns>
-        protected virtual IEnumerable<T> AsImmutable<T>(IEnumerable<T> values)
-        {
-            return values.ToImmutable();
         }
 
         /// <summary>
@@ -823,7 +800,7 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
 
-            var ret = new List<ISpatial>();
+            var ret = new HashSet<ISpatial>();
 
             foreach (var segment in segments)
             {
@@ -834,7 +811,7 @@ namespace NetGore.World
                 }
             }
 
-            return AsDistinctAndImmutable(ret);
+            return ret;
         }
 
         /// <summary>
@@ -874,14 +851,18 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
 
-            var ret = new List<T>();
+            var ret = new HashSet<T>();
 
             foreach (var segment in segments)
             {
                 foreach (var spatial in segment)
                 {
-                    if (spatial is T && spatial.Intersects(rect))
-                        ret.Add((T)spatial);
+                    if (spatial is T)
+                    {
+                        var asT = (T)spatial;
+                        if (spatial.Intersects(rect))
+                            ret.Add(asT);
+                    }
                 }
             }
 
@@ -895,13 +876,13 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition)
         {
-            var ret = new List<ISpatial>();
+            var ret = new HashSet<ISpatial>();
 
             foreach (var segment in _gridSegments)
             {
                 foreach (var spatial in segment)
                 {
-                    if (condition(spatial))
+                    if (!ret.Contains(spatial) && condition(spatial))
                         ret.Add(spatial);
                 }
             }
@@ -916,7 +897,7 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<T> GetMany<T>(Predicate<T> condition)
         {
-            var ret = new List<T>();
+            var ret = new HashSet<T>();
 
             foreach (var segment in _gridSegments)
             {
@@ -925,7 +906,7 @@ namespace NetGore.World
                     if (spatial is T)
                     {
                         var asT = (T)spatial;
-                        if (condition(asT))
+                        if (!ret.Contains(asT) && condition(asT))
                             ret.Add(asT);
                     }
                 }
@@ -943,18 +924,21 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>()
         {
-            var ret = new List<T>();
+            var ret = new HashSet<T>();
 
             foreach (var segment in _gridSegments)
             {
                 foreach (var spatial in segment)
                 {
                     if (spatial is T)
-                        ret.Add((T)spatial);
+                    {
+                        var asT = (T)spatial;
+                        ret.Add(asT);
+                    }
                 }
             }
 
-            return AsDistinctAndImmutable(ret);
+            return ret;
         }
 
         /// <summary>
@@ -993,7 +977,7 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
 
-            var ret = new List<T>();
+            var ret = new HashSet<T>();
 
             foreach (var segment in segments)
             {
@@ -1002,13 +986,13 @@ namespace NetGore.World
                     if (spatial is T)
                     {
                         var asT = (T)spatial;
-                        if (spatial.Intersects(rect) && condition(asT))
+                        if (spatial.Intersects(rect) && !ret.Contains(asT) && condition(asT))
                             ret.Add(asT);
                     }
                 }
             }
 
-            return AsDistinctAndImmutable(ret);
+            return ret;
         }
 
         /// <summary>
@@ -1053,18 +1037,18 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
 
-            var ret = new List<ISpatial>();
+            var ret = new HashSet<ISpatial>();
 
             foreach (var segment in segments)
             {
                 foreach (var spatial in segment)
                 {
-                    if (spatial.Intersects(rect) && condition(spatial))
+                    if (spatial.Intersects(rect) && !ret.Contains(spatial) && condition(spatial))
                         ret.Add(spatial);
                 }
             }
 
-            return AsDistinctAndImmutable(ret);
+            return ret;
         }
 
         /// <summary>
