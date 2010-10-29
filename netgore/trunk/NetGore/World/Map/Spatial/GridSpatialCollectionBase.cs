@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -90,10 +91,83 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a new <see cref="IGridSpatialCollectionSegment"/>.
+        /// Creates a new <see cref="IGridSpatialCollectionSegment"/>.
         /// </summary>
         /// <returns>The new <see cref="IGridSpatialCollectionSegment"/> instance.</returns>
-        protected abstract IGridSpatialCollectionSegment CreateSegment();
+        protected virtual IGridSpatialCollectionSegment CreateSegment()
+        {
+            return new CollectionSegment();
+        }
+
+        /// <summary>
+        /// A straight-forward implementation of the <see cref="IGridSpatialCollectionSegment"/>.
+        /// </summary>
+        class CollectionSegment : IGridSpatialCollectionSegment
+        {
+            readonly List<ISpatial> _spatials = new List<ISpatial>();
+
+            #region IGridSpatialCollectionSegment Members
+
+            /// <summary>
+            /// Adds the <see cref="ISpatial"/> to the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
+            public void Add(ISpatial spatial)
+            {
+                _spatials.Add(spatial);
+            }
+
+            /// <summary>
+            /// Adds multiple <see cref="ISpatial"/>s to the segment.
+            /// </summary>
+            /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
+            public void AddRange(IEnumerable<ISpatial> spatials)
+            {
+                _spatials.AddRange(spatials);
+            }
+
+            /// <summary>
+            /// Clears all <see cref="ISpatial"/>s from the segment.
+            /// </summary>
+            public void Clear()
+            {
+                _spatials.Clear();
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            /// </returns>
+            public IEnumerator<ISpatial> GetEnumerator()
+            {
+                return _spatials.GetEnumerator();
+            }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through a collection.
+            /// </summary>
+            /// <returns>
+            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            /// </returns>
+            /// <filterpriority>2</filterpriority>
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            /// <summary>
+            /// Remove the <see cref="ISpatial"/> from the segment.
+            /// </summary>
+            /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
+            public void Remove(ISpatial spatial)
+            {
+                _spatials.Remove(spatial);
+            }
+
+            #endregion
+        }
 
         /// <summary>
         /// Gets the grid segment for the specified grid index.
@@ -347,7 +421,13 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x is T && x.Contains(point));
+            foreach (var x in segment)
+            {
+                if (x is T && x.Contains(point))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -363,7 +443,13 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x.Contains(point));
+            foreach (var x in segment)
+            {
+                if (x.Contains(point))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -378,7 +464,16 @@ namespace NetGore.World
             if (_gridSegments == null)
                 return false;
 
-            return _gridSegments.Any(segment => segment.OfType<T>().Any(spatial => condition(spatial)));
+            foreach (var segment in _gridSegments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T && condition((T)spatial))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -391,7 +486,16 @@ namespace NetGore.World
             if (_gridSegments == null)
                 return false;
 
-            return _gridSegments.Any(segment => segment.Any(spatial => condition(spatial)));
+            foreach (var segment in _gridSegments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (condition(spatial))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -410,7 +514,13 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x is T && x.Contains(point) && condition((T)x));
+            foreach (var spatial in segment)
+            {
+                if (spatial is T && spatial.Contains(point) && condition((T)spatial))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -426,7 +536,17 @@ namespace NetGore.World
         public bool Contains<T>(Rectangle rect, Predicate<T> condition)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x is T && x.Intersects(rect) && condition((T)x)));
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T && spatial.Intersects(rect) && condition((T)spatial))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -443,7 +563,13 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            return segment.Any(x => x.Contains(point) && condition(x));
+            foreach (var spatial in segment)
+            {
+                if (spatial.Contains(point) && condition(spatial))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -458,7 +584,17 @@ namespace NetGore.World
         public bool Contains<T>(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x is T && x.Intersects(rect)));
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T && spatial.Intersects(rect))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -471,7 +607,17 @@ namespace NetGore.World
         public bool Contains(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x.Intersects(rect)));
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial.Intersects(rect))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -485,7 +631,17 @@ namespace NetGore.World
         public bool Contains(Rectangle rect, Predicate<ISpatial> condition)
         {
             var segments = GetSegments(rect);
-            return segments.Any(seg => seg.Any(x => x.Intersects(rect) && condition(x)));
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial.Intersects(rect) && condition(spatial))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -716,7 +872,15 @@ namespace NetGore.World
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
-            return AsImmutable(segment.Where(x => x.Contains(p)));
+            List<ISpatial> ret = new List<ISpatial>();
+
+            foreach (var spatial in segment)
+            {
+                if (spatial.Contains(p))
+                    ret.Add(spatial);
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -729,7 +893,19 @@ namespace NetGore.World
         public IEnumerable<ISpatial> GetMany(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect))));
+
+            List<ISpatial> ret = new List<ISpatial>();
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial.Intersects(rect))
+                        ret.Add(spatial);
+                }
+            }
+
+            return AsDistinctAndImmutable(ret);
         }
 
         /// <summary>
@@ -746,7 +922,15 @@ namespace NetGore.World
             if (segment == null)
                 return Enumerable.Empty<T>();
 
-            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>());
+            List<T> ret = new List<T>();
+
+            foreach (var spatial in segment)
+            {
+                if (spatial is T && spatial.Contains(p))
+                    ret.Add((T)spatial);
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -760,7 +944,19 @@ namespace NetGore.World
         public IEnumerable<T> GetMany<T>(Rectangle rect)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>()));
+
+            List<T> ret = new List<T>();
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T && spatial.Intersects(rect))
+                        ret.Add((T)spatial);
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -770,7 +966,18 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition)
         {
-            return AsDistinctAndImmutable(_gridSegments.SelectMany(seg => seg.Where(x => condition(x))));
+            List<ISpatial> ret = new List<ISpatial>();
+
+            foreach (var segment in _gridSegments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (condition(spatial))
+                        ret.Add(spatial);
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -780,7 +987,22 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<T> GetMany<T>(Predicate<T> condition)
         {
-            return AsDistinctAndImmutable(_gridSegments.SelectMany(seg => seg.OfType<T>().Where(x => condition(x))));
+            List<T> ret = new List<T>();
+
+            foreach (var segment in _gridSegments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T)
+                    {
+                        var asT = (T)spatial;
+                        if (condition(asT))
+                            ret.Add(asT);
+                    }
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -792,7 +1014,20 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>()
         {
-            return AsDistinctAndImmutable(_gridSegments.SelectMany(x => x).OfType<T>());
+            List<T> ret = new List<T>();
+
+            foreach (var segment in _gridSegments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T)
+                    {
+                        ret.Add((T)spatial);
+                    }
+                }
+            }
+
+            return AsDistinctAndImmutable(ret);
         }
 
         /// <summary>
@@ -807,7 +1042,15 @@ namespace NetGore.World
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
-            return AsImmutable(segment.Where(x => x.Contains(p) && condition(x)));
+            var ret = new List<ISpatial>();
+
+            foreach (var spatial in segment)
+            {
+                if (spatial.Contains(p) && condition(spatial))
+                    ret.Add(spatial);
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -822,9 +1065,23 @@ namespace NetGore.World
         public IEnumerable<T> GetMany<T>(Rectangle rect, Predicate<T> condition)
         {
             var segments = GetSegments(rect);
-            return
-                AsDistinctAndImmutable(
-                    segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>().Where(x => condition(x))));
+
+            var ret = new List<T>();
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial is T)
+                    {
+                        var asT = (T)spatial;
+                        if (spatial.Intersects(rect) && condition(asT))
+                            ret.Add(asT);
+                    }
+                }
+            }
+
+            return AsDistinctAndImmutable(ret);
         }
 
         /// <summary>
@@ -842,7 +1099,19 @@ namespace NetGore.World
             if (segment == null)
                 return Enumerable.Empty<T>();
 
-            return AsImmutable(segment.Where(x => x.Contains(p)).OfType<T>().Where(x => condition(x)));
+            var ret = new List<T>();
+
+            foreach (var spatial in segment)
+            {
+                if (spatial is T)
+                {
+                    var asT = (T)spatial;
+                    if (spatial.Contains(p) && condition(asT))
+                        ret.Add(asT);
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -856,7 +1125,19 @@ namespace NetGore.World
         public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
         {
             var segments = GetSegments(rect);
-            return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect) && condition(x))));
+
+            List<ISpatial> ret = new List<ISpatial>();
+
+            foreach (var segment in segments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (spatial.Intersects(rect) && condition(spatial))
+                        ret.Add(spatial); 
+                }
+            }
+
+            return AsDistinctAndImmutable(ret);
         }
 
         /// <summary>
