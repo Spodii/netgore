@@ -167,7 +167,7 @@ namespace NetGore.Db.Schema
         {
             var tables = _tableSchemas.ToArray();
 
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
             {
                 writer.WriteManyNodes(_tablesNodeName, tables, (w, table) => table.Write(w));
             }

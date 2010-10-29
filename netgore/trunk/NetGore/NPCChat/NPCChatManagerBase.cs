@@ -172,7 +172,7 @@ namespace NetGore.NPCChat
 
             // Write
             var filePath = GetFilePath(contentPath);
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
             {
                 writer.WriteManyNodes(_chatDialogsNodeName, dialogs, ((w, item) => item.Write(w)));
             }

@@ -336,7 +336,7 @@ namespace NetGore.Editor.EditorTool
 
             lock (_saveSync)
             {
-                using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+                using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
                 {
                     writer.WriteManyNodes(_toolSettingsNodeName, kvps, WriteKVP);
                     writer.WriteManyNodes(_toolBarItemsNodeName, toolBars, WriteToolBarItems);

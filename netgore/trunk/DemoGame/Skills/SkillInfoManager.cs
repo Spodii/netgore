@@ -66,7 +66,7 @@ namespace DemoGame
         /// <param name="filePath">The file path to save to.</param>
         public void Save(string filePath)
         {
-            using (var w = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            using (var w = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(w);
             }

@@ -171,7 +171,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Save(ContentPaths contentPath)
         {
             var filePath = GetFilePath(contentPath);
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
             {
                 writer.WriteManyNodes(_particleEffectsNodeName, _effects.Values, (w, v) => v.WriteState(w));
             }
