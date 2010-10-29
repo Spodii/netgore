@@ -90,6 +90,8 @@ namespace NetGore.Content
         /// </summary>
         /// <param name="rootPath">The root content path.</param>
         /// <returns>The absolute file path for the content asset.</returns>
+        /// <exception cref="ArgumentException">Either zero or more than one files matching this <see cref="ContentAssetName"/>
+        /// were found in the <paramref name="rootPath"/>.</exception>
         public string GetAbsoluteFilePath(ContentPaths rootPath)
         {
             var sb = new StringBuilder();

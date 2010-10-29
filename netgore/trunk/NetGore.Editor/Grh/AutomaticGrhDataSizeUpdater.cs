@@ -110,6 +110,37 @@ namespace NetGore.Editor.Grhs
             }
         }
 
+        string TryGetAbsoluteFilePath(StationaryGrhData gd, ContentPaths contentPath)
+        {
+            string ret = null;
+            bool isValid = true;
+
+            try
+            {
+                ret = gd.TextureName.GetAbsoluteFilePath(contentPath);
+                if (!File.Exists(ret))
+                    isValid = false;
+            }
+            catch (ArgumentException)
+            {
+                isValid = false;
+            }
+
+            if (!isValid)
+            {
+                const string errmsg =
+                    "Could not update the size of GrhData `{0}` since the file for the texture named `{1}`" +
+                    " could not be found in the ContentPaths.Dev. Expected file: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, gd, gd.TextureName, ret ?? "[NULL]");
+                return null;
+            }
+            else
+            {
+                return ret;
+            }
+        }
+
         /// <summary>
         /// Updates the sizes of the <see cref="StationaryGrhData"/>s where <see cref="StationaryGrhData.AutomaticSize"/> is set and
         /// the cached size is invalid.
@@ -124,16 +155,9 @@ namespace NetGore.Editor.Grhs
                     continue;
 
                 // Make sure the asset exists in the dev path
-                var devTexturePath = gd.TextureName.GetAbsoluteFilePath(ContentPaths.Dev);
-                if (!File.Exists(devTexturePath))
-                {
-                    const string errmsg =
-                        "Could not update the size of GrhData `{0}` since the file for the texture named `{1}` could not be found in the ContentPaths.Dev. Expected file: {2}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, gd, gd.TextureName, devTexturePath);
-                    Debug.Fail(string.Format(errmsg, gd, gd.TextureName, devTexturePath));
+                var devTexturePath = TryGetAbsoluteFilePath(gd, ContentPaths.Dev);
+                if (devTexturePath == null)
                     continue;
-                }
 
                 // Get the size of the file from the Dev path since we will be needing it later
                 var realFileSize = GetFileSize(devTexturePath);
@@ -154,16 +178,9 @@ namespace NetGore.Editor.Grhs
                 }
 
                 // Make sure the asset exists in the build path
-                var buildTexturePath = gd.TextureName.GetAbsoluteFilePath(ContentPaths.Build);
-                if (!File.Exists(buildTexturePath))
-                {
-                    const string errmsg =
-                        "Could not update the size of GrhData `{0}` since the file for the texture named `{1}` could not be found in the ContentPaths.Build. Expected file: {2}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, gd, gd.TextureName, buildTexturePath);
-                    Debug.Fail(string.Format(errmsg, gd, gd.TextureName, buildTexturePath));
+                var buildTexturePath = TryGetAbsoluteFilePath(gd, ContentPaths.Build);
+                if (buildTexturePath == null)
                     continue;
-                }
 
                 // The GrhData was not in the cache or the cache contains outdated values, so find the real size by grabbing it directly
                 // from the GrhData's texture
