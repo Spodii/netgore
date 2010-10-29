@@ -135,7 +135,6 @@ namespace NetGore.Editor
 
             try
             {
-
                 foreach (var item in buffer)
                 {
                     listBox.Items.Remove(item);

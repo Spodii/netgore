@@ -88,28 +88,6 @@ namespace DemoGame.Editor.Tools
         }
 
         /// <summary>
-        /// Gets if the given object is visible according to the drawing filter currently being used.
-        /// Objects that are never drawn or are never filtered always return true, even if they are not actually visible.
-        /// </summary>
-        /// <param name="map">The current map.</param>
-        /// <param name="obj">The object to check if visible.</param>
-        /// <returns>True if the <paramref name="obj"/> is visible or not applicable to the map drawing filter; otherwise false.</returns>
-        protected virtual bool IsObjectVisible(EditorMap map, object obj)
-        {
-            var drawable = obj as IDrawable;
-            if (drawable == null)
-                return true;
-
-            if (map == null)
-                return true;
-
-            if (map.DrawFilter == null)
-                return true;
-
-            return map.DrawFilter(drawable);
-        }
-
-        /// <summary>
         /// Gets the map objects to select in the given region.
         /// </summary>
         /// <param name="map">The <see cref="EditorMap"/>.</param>
@@ -117,7 +95,7 @@ namespace DemoGame.Editor.Tools
         /// <returns>The objects to select.</returns>
         protected virtual IEnumerable<object> CursorSelectObjects(EditorMap map, Rectangle selectionArea)
         {
-            return map.Spatial.GetMany<object>(selectionArea, x=>CanSelect(map,x));
+            return map.Spatial.GetMany<object>(selectionArea, x => CanSelect(map, x));
         }
 
         /// <summary>
@@ -130,7 +108,7 @@ namespace DemoGame.Editor.Tools
         {
             // By default, this will only get anything that implements ISpatial since its much faster that way and most
             // map cursors will be working with types that implement ISpatial
-            return map.Spatial.Get(worldPos, x=>CanSelect(map,x));
+            return map.Spatial.Get(worldPos, x => CanSelect(map, x));
         }
 
         /// <summary>
@@ -203,6 +181,28 @@ namespace DemoGame.Editor.Tools
                     spriteBatch.DrawStringShaded(font, _toolTip, _toolTipPos, Color.White, Color.Black);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets if the given object is visible according to the drawing filter currently being used.
+        /// Objects that are never drawn or are never filtered always return true, even if they are not actually visible.
+        /// </summary>
+        /// <param name="map">The current map.</param>
+        /// <param name="obj">The object to check if visible.</param>
+        /// <returns>True if the <paramref name="obj"/> is visible or not applicable to the map drawing filter; otherwise false.</returns>
+        protected virtual bool IsObjectVisible(EditorMap map, object obj)
+        {
+            var drawable = obj as IDrawable;
+            if (drawable == null)
+                return true;
+
+            if (map == null)
+                return true;
+
+            if (map.DrawFilter == null)
+                return true;
+
+            return map.DrawFilter(drawable);
         }
 
         /// <summary>

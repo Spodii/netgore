@@ -17,78 +17,61 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Linq;
+
 namespace DemoGame.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `world_stats_network`.
-/// </summary>
-public interface IWorldStatsNetworkTable
-{
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-IWorldStatsNetworkTable DeepCopy();
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `world_stats_network`.
+    /// </summary>
+    public interface IWorldStatsNetworkTable
+    {
+        /// <summary>
+        /// Gets the value of the database column `connections`.
+        /// </summary>
+        UInt32 Connections { get; }
 
-/// <summary>
-/// Gets the value of the database column `connections`.
-/// </summary>
-System.UInt32 Connections
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `connections_rejected`.
-/// </summary>
-System.UInt32 ConnectionsRejected
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `id`.
-/// </summary>
-System.UInt32 ID
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `recv`.
-/// </summary>
-System.UInt32 Recv
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `recvs`.
-/// </summary>
-System.UInt32 Recvs
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `sends`.
-/// </summary>
-System.UInt32 Sends
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `sent`.
-/// </summary>
-System.UInt32 Sent
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `when`.
-/// </summary>
-System.DateTime When
-{
-get;
-}
-}
+        /// <summary>
+        /// Gets the value of the database column `connections_rejected`.
+        /// </summary>
+        UInt32 ConnectionsRejected { get; }
 
+        /// <summary>
+        /// Gets the value of the database column `id`.
+        /// </summary>
+        UInt32 ID { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `recv`.
+        /// </summary>
+        UInt32 Recv { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `recvs`.
+        /// </summary>
+        UInt32 Recvs { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `sends`.
+        /// </summary>
+        UInt32 Sends { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `sent`.
+        /// </summary>
+        UInt32 Sent { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `when`.
+        /// </summary>
+        DateTime When { get; }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IWorldStatsNetworkTable DeepCopy();
+    }
 }

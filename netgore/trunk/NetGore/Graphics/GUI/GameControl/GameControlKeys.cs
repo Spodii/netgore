@@ -54,7 +54,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="keyDown">The key required to be down.</param>
         /// <param name="keyUp">The key required to be up.</param>
         /// <param name="newKeyDown">The key required to be down this frame, and up last frame.</param>
-        public GameControlKeys(string name, IKeyCodeReference keyDown, IKeyCodeReference keyUp = null, IKeyCodeReference newKeyDown = null)
+        public GameControlKeys(string name, IKeyCodeReference keyDown, IKeyCodeReference keyUp = null,
+                               IKeyCodeReference newKeyDown = null)
         {
             Name = name;
             KeysDown = keyDown != null ? new IKeyCodeReference[] { keyDown } : _emptyKeys;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -43,7 +44,7 @@ namespace DemoGame.Client
             EngineSettingsInitializer.Initialize();
 
             // Create the screen manager
-            var skinManager= new SkinManager("Default");
+            var skinManager = new SkinManager("Default");
             _screenManager = new ScreenManager(this, skinManager, "Font/Arial", 24);
 
             // Initialize the socket manager
@@ -82,43 +83,6 @@ namespace DemoGame.Client
 
             // Listen for changes to the settings
             ClientSettings.Default.PropertyChanged += Default_PropertyChanged;
-        }
-
-        /// <summary>
-        /// Handles the PropertyChanged event of the <see cref="ClientSettings"/>.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
-        void Default_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            const string soundVolumeName = "Audio_SoundVolume";
-            const string musicVolumeName = "Audio_MusicVolume";
-            const string graphicsVSyncName = "Graphics_VSync";
-
-            ClientSettings.Default.AssertPropertyExists(soundVolumeName);
-            ClientSettings.Default.AssertPropertyExists(musicVolumeName);
-            ClientSettings.Default.AssertPropertyExists(graphicsVSyncName);
-
-            var sc = StringComparer.Ordinal;
-
-            if (sc.Equals(e.PropertyName, soundVolumeName))
-            {
-                // Sound volume
-                var value = ClientSettings.Default.Audio_SoundVolume;
-                ScreenManager.AudioManager.SoundManager.Volume = value;
-            }
-            else if (sc.Equals(e.PropertyName, musicVolumeName))
-            {
-                // Music volume
-                var value = ClientSettings.Default.Audio_MusicVolume;
-                ScreenManager.AudioManager.MusicManager.Volume = value;
-            }
-            else if (sc.Equals(e.PropertyName, graphicsVSyncName))
-            {
-                // VSync
-                var value = ClientSettings.Default.Graphics_VSync;
-                UseVerticalSync = value;
-            }
         }
 
         /// <summary>
@@ -188,6 +152,43 @@ namespace DemoGame.Client
             var frm = new GameForm(this);
             displayContainer = frm;
             return frm.Handle;
+        }
+
+        /// <summary>
+        /// Handles the PropertyChanged event of the <see cref="ClientSettings"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            const string soundVolumeName = "Audio_SoundVolume";
+            const string musicVolumeName = "Audio_MusicVolume";
+            const string graphicsVSyncName = "Graphics_VSync";
+
+            ClientSettings.Default.AssertPropertyExists(soundVolumeName);
+            ClientSettings.Default.AssertPropertyExists(musicVolumeName);
+            ClientSettings.Default.AssertPropertyExists(graphicsVSyncName);
+
+            var sc = StringComparer.Ordinal;
+
+            if (sc.Equals(e.PropertyName, soundVolumeName))
+            {
+                // Sound volume
+                var value = ClientSettings.Default.Audio_SoundVolume;
+                ScreenManager.AudioManager.SoundManager.Volume = value;
+            }
+            else if (sc.Equals(e.PropertyName, musicVolumeName))
+            {
+                // Music volume
+                var value = ClientSettings.Default.Audio_MusicVolume;
+                ScreenManager.AudioManager.MusicManager.Volume = value;
+            }
+            else if (sc.Equals(e.PropertyName, graphicsVSyncName))
+            {
+                // VSync
+                var value = ClientSettings.Default.Graphics_VSync;
+                UseVerticalSync = value;
+            }
         }
 
         /// <summary>

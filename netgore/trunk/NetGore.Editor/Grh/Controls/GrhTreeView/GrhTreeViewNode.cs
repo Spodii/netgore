@@ -16,6 +16,8 @@ namespace NetGore.Editor.Grhs
     [Serializable]
     public class GrhTreeViewNode : TreeNode, IGrhTreeViewNode
     {
+        delegate void SetNodeImageHandler(GrhTreeViewNode node, Image img);
+
         static readonly GrhImageList.GrhImageListAsyncCallback _asyncCallback;
         static readonly GrhImageList _grhImageList;
         static readonly SetNodeImageHandler _setNodeImage;
@@ -24,8 +26,6 @@ namespace NetGore.Editor.Grhs
 
         Grh _animationGrh = null;
         Image _image;
-
-        delegate void SetNodeImageHandler(GrhTreeViewNode node, Image img);
 
         /// <summary>
         /// Initializes the <see cref="GrhTreeViewNode"/> class.
@@ -122,6 +122,21 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
+        /// Makes sure that the image for the node is set.
+        /// </summary>
+        internal void EnsureImageIsSet()
+        {
+            if (_image != null)
+                return;
+
+            // Set the preview picture
+            if (GrhData is StationaryGrhData)
+                SetIconImageStationary((StationaryGrhData)GrhData);
+            else
+                SetIconImageAnimated(GrhData);
+        }
+
+        /// <summary>
         /// Creates the tooltip text to use for a <see cref="GrhData"/>.
         /// </summary>
         /// <returns>The tooltip text to use for a <see cref="GrhData"/>.</returns>
@@ -202,24 +217,9 @@ namespace NetGore.Editor.Grhs
             // its the best we can do (as far as I can see) and GrhImageList avoids running a new thread when possible anyways so
             // it only really happens while loading.
             if (!node.TreeView.InvokeRequired)
-            {
                 SetNodeImage(node, image);
-            }
             else
-            {
                 node.TreeView.Invoke(_setNodeImage, node, image);
-            }
-        }
-        
-        /// <summary>
-        /// Sets the <see cref="Image"/> for a <see cref="GrhTreeViewNode"/> and refreshes it.
-        /// </summary>
-        /// <param name="node">The <see cref="GrhTreeViewNode"/>.</param>
-        /// <param name="image">The <see cref="Image"/>.</param>
-        static void SetNodeImage(GrhTreeViewNode node, Image image)
-        {
-            node._image = image;
-            ((GrhTreeView)node.TreeView).RefreshNodeImage(node);
         }
 
         void InsertIntoTree(GrhTreeView treeView)
@@ -236,21 +236,6 @@ namespace NetGore.Editor.Grhs
 
             if (parent != null)
                 parent.RemoveIfEmpty();
-        }
-
-        /// <summary>
-        /// Makes sure that the image for the node is set.
-        /// </summary>
-        internal void EnsureImageIsSet()
-        {
-            if (_image != null)
-                return;
-
-            // Set the preview picture
-            if (GrhData is StationaryGrhData)
-                SetIconImageStationary((StationaryGrhData)GrhData);
-            else
-                SetIconImageAnimated(GrhData);
         }
 
         /// <summary>
@@ -279,6 +264,17 @@ namespace NetGore.Editor.Grhs
         void SetIconImageStationary(StationaryGrhData grhData)
         {
             _grhImageList.GetImageAsync(grhData, _asyncCallback, this);
+        }
+
+        /// <summary>
+        /// Sets the <see cref="Image"/> for a <see cref="GrhTreeViewNode"/> and refreshes it.
+        /// </summary>
+        /// <param name="node">The <see cref="GrhTreeViewNode"/>.</param>
+        /// <param name="image">The <see cref="Image"/>.</param>
+        static void SetNodeImage(GrhTreeViewNode node, Image image)
+        {
+            node._image = image;
+            ((GrhTreeView)node.TreeView).RefreshNodeImage(node);
         }
 
         /// <summary>
@@ -331,7 +327,7 @@ namespace NetGore.Editor.Grhs
             v = GetToolTipText();
             if (!StringComparer.Ordinal.Equals(v, ToolTipText))
                 ToolTipText = v;
-            
+
             InsertIntoTree(treeView);
         }
 

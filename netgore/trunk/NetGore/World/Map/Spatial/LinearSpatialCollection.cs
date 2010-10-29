@@ -302,6 +302,28 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        public T Get<T>(Predicate<T> condition)
+        {
+            return _spatials.OfType<T>().FirstOrDefault(x => condition(x));
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        public ISpatial Get(Predicate<ISpatial> condition)
+        {
+            return _spatials.FirstOrDefault(x => condition(x));
+        }
+
+        /// <summary>
         /// Gets all spatials containing a given point.
         /// </summary>
         /// <param name="p">Point to find the spatials at.</param>
@@ -418,28 +440,6 @@ namespace NetGore.World
         public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
         {
             return _spatials.Where(x => x is T && x.Contains(p) && condition((T)x)).OfType<T>().ToImmutable();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> matching the given condition.
-        /// </summary>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
-        /// will be ignored.</typeparam>
-        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
-        public T Get<T>(Predicate<T> condition)
-        {
-            return _spatials.OfType<T>().FirstOrDefault(x=>condition(x));
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="ISpatial"/> matching the given condition.
-        /// </summary>
-        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
-        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
-        public ISpatial Get(Predicate<ISpatial> condition)
-        {
-            return _spatials.FirstOrDefault(x => condition(x));
         }
 
         /// <summary>

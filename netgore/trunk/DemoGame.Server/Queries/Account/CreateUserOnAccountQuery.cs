@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
 
             var s = qb.Settings;
             var q = qb.SelectFunction("create_user_on_account").Add(s.Parameterize("accountName"), s.Parameterize("userName"),
-                                                                 s.Parameterize("characterID"));
+                                                                    s.Parameterize("characterID"));
             return q.ToString();
         }
 

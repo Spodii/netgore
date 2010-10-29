@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
+using System.Linq;
 using NetGore.Collections;
 using SFML.Window;
 
@@ -11,33 +13,13 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class SettingsKeyCodeReference : IKeyCodeReference
     {
-        static readonly Dictionary<ApplicationSettingsBase, HashCache<string, SettingsKeyCodeReference>> _settingsCache = 
+        static readonly Dictionary<ApplicationSettingsBase, HashCache<string, SettingsKeyCodeReference>> _settingsCache =
             new Dictionary<ApplicationSettingsBase, HashCache<string, SettingsKeyCodeReference>>();
 
         readonly string _keySettingName;
         readonly ApplicationSettingsBase _settings;
 
         KeyCode _key;
-
-        public string KeySettingName { get { return _keySettingName; } }
-
-        /// <summary>
-        /// Creates a <see cref="SettingsKeyCodeReference"/> instance.
-        /// </summary>
-        /// <param name="settings">The settings.</param>
-        /// <param name="keySettingName">Name of the key setting.</param>
-        /// <returns>The <see cref="SettingsKeyCodeReference"/> instance.</returns>
-        public static SettingsKeyCodeReference Create(ApplicationSettingsBase settings, string keySettingName)
-        {
-            HashCache<string, SettingsKeyCodeReference> c;
-            if (!_settingsCache.TryGetValue(settings, out c))
-            {
-                c = new HashCache<string,SettingsKeyCodeReference>(x => new SettingsKeyCodeReference(settings, x), StringComparer.Ordinal);
-                _settingsCache.Add(settings, c);
-            }
-
-            return c[keySettingName];
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsKeyCodeReference"/> class.
@@ -57,17 +39,28 @@ namespace NetGore.Graphics.GUI
             UpdateValue();
         }
 
-        /// <summary>
-        /// Handles the PropertyChanged event of the <see cref="_settings"/>.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
-        void settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        public string KeySettingName
         {
-            if (!StringComparer.Ordinal.Equals(KeySettingName, e.PropertyName))
-                return;
+            get { return _keySettingName; }
+        }
 
-            UpdateValue();
+        /// <summary>
+        /// Creates a <see cref="SettingsKeyCodeReference"/> instance.
+        /// </summary>
+        /// <param name="settings">The settings.</param>
+        /// <param name="keySettingName">Name of the key setting.</param>
+        /// <returns>The <see cref="SettingsKeyCodeReference"/> instance.</returns>
+        public static SettingsKeyCodeReference Create(ApplicationSettingsBase settings, string keySettingName)
+        {
+            HashCache<string, SettingsKeyCodeReference> c;
+            if (!_settingsCache.TryGetValue(settings, out c))
+            {
+                c = new HashCache<string, SettingsKeyCodeReference>(x => new SettingsKeyCodeReference(settings, x),
+                                                                    StringComparer.Ordinal);
+                _settingsCache.Add(settings, c);
+            }
+
+            return c[keySettingName];
         }
 
         /// <summary>
@@ -79,11 +72,28 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles the PropertyChanged event of the <see cref="_settings"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        void settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!StringComparer.Ordinal.Equals(KeySettingName, e.PropertyName))
+                return;
+
+            UpdateValue();
+        }
+
+        #region IKeyCodeReference Members
+
+        /// <summary>
         /// Gets the referenced <see cref="KeyCode"/>.
         /// </summary>
         public KeyCode Key
         {
             get { return _key; }
         }
+
+        #endregion
     }
 }

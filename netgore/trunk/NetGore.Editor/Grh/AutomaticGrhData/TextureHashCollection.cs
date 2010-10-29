@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
 using log4net;
 using NetGore.Content;
 using NetGore.Cryptography;
@@ -119,8 +117,8 @@ namespace NetGore.Editor.Grhs
         /// </returns>
         static string GetFileHash(string filePath)
         {
-            byte[] hashBytes = Hasher.GetFileHash(filePath);
-            string hashHex = CryptoHelper.BytesToString16(hashBytes);
+            var hashBytes = Hasher.GetFileHash(filePath);
+            var hashHex = CryptoHelper.BytesToString16(hashBytes);
             return hashHex;
         }
 

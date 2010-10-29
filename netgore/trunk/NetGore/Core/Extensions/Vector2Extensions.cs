@@ -43,32 +43,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the area surrounding a point.
-        /// </summary>
-        /// <param name="source">The <see cref="Vector2"/> containing the point to surround.</param>
-        /// <param name="width">The width of the surrounding area on each side (that is, half the total width).</param>
-        /// <param name="height">The height of the surrounding area on each side (that is, half the total height).</param>
-        /// <returns>A <see cref="Rectangle"/> that surrounds the given <paramref name="source"/>.</returns>
-        public static Rectangle ToArea(this Vector2 source, int width, int height)
-        {
-            return ToArea(source, new Vector2(width, height));
-        }
-
-        /// <summary>
-        /// Gets the area surrounding a point.
-        /// </summary>
-        /// <param name="source">The <see cref="Vector2"/> containing the point to surround.</param>
-        /// <param name="size">The width and height of the surrounding area on each side (that is, half the total width/height).</param>
-        /// <returns>A <see cref="Rectangle"/> that surrounds the given <paramref name="source"/>.</returns>
-        public static Rectangle ToArea(this Vector2 source, Vector2 size)
-        {
-            var min = (source - size).Floor();
-            var max = (source + size).Ceiling();
-
-            return new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
-        }
-
-        /// <summary>
         /// Checks if both of a <see cref="Vector2"/>'s coordinates are greater than or equal to the
         /// corresponding coordinates in another <see cref="Vector2"/>.
         /// </summary>
@@ -270,6 +244,32 @@ namespace NetGore
         public static float Sum(this Vector2 source)
         {
             return source.X + source.Y;
+        }
+
+        /// <summary>
+        /// Gets the area surrounding a point.
+        /// </summary>
+        /// <param name="source">The <see cref="Vector2"/> containing the point to surround.</param>
+        /// <param name="width">The width of the surrounding area on each side (that is, half the total width).</param>
+        /// <param name="height">The height of the surrounding area on each side (that is, half the total height).</param>
+        /// <returns>A <see cref="Rectangle"/> that surrounds the given <paramref name="source"/>.</returns>
+        public static Rectangle ToArea(this Vector2 source, int width, int height)
+        {
+            return ToArea(source, new Vector2(width, height));
+        }
+
+        /// <summary>
+        /// Gets the area surrounding a point.
+        /// </summary>
+        /// <param name="source">The <see cref="Vector2"/> containing the point to surround.</param>
+        /// <param name="size">The width and height of the surrounding area on each side (that is, half the total width/height).</param>
+        /// <returns>A <see cref="Rectangle"/> that surrounds the given <paramref name="source"/>.</returns>
+        public static Rectangle ToArea(this Vector2 source, Vector2 size)
+        {
+            var min = (source - size).Floor();
+            var max = (source + size).Ceiling();
+
+            return new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
         }
     }
 }

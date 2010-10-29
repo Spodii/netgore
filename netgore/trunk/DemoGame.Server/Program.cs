@@ -18,7 +18,8 @@ namespace DemoGame.Server
             if (args != null && args.Any(x => StringComparer.OrdinalIgnoreCase.Equals(x, "--compact")))
             {
                 using (new CompactUI())
-                { }
+                {
+                }
             }
             else
             {

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Properties;
@@ -513,9 +511,7 @@ namespace DemoGame.Server
                     {
                         var eqBodies = DbController.GetQuery<SelectCharacterEquippedBodiesQuery>().Execute(characterID);
                         if (eqBodies != null)
-                        {
                             v.SetEquippedBodies(eqBodies);
-                        }
 
                         charInfos[i] = v;
                     }

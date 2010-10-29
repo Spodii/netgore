@@ -136,59 +136,6 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        /// Scales the unscaled <see cref="Bitmap"/> for a <see cref="StationaryGrhData"/>.
-        /// </summary>
-        /// <param name="unscaled">The unscaled <see cref="Bitmap"/>.</param>
-        /// <returns>The scaled <see cref="Bitmap"/> scaled to the size for this image list, or null if an error occured.</returns>
-        static Bitmap CreateScaledBitmap(Bitmap unscaled)
-        {
-            try
-            {
-                return unscaled.CreateScaled(ImageWidth, ImageHeight, true, null, null);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to scale bitmap down to size. Exception: {0}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-                Debug.Fail(string.Format(errmsg, ex));
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates an unscaled <see cref="Bitmap"/> of a <see cref="StationaryGrhData"/>.
-        /// </summary>
-        /// <param name="gd">The <see cref="StationaryGrhData"/>.</param>
-        /// <returns>The unscaled <see cref="Bitmap"/>, or null if an error occured.</returns>
-        static Bitmap CreateUnscaledBitmap(StationaryGrhData gd)
-        {
-            Bitmap img;
-
-            // The image was null, so we are going to be the ones to create it
-            try
-            {
-                // Try to create the image
-                var tex = gd.GetOriginalTexture();
-                if (tex == null)
-                    img = null;
-                else
-                    img = tex.ToBitmap(gd.OriginalSourceRect);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to create GrhImageList image for `{0}`. Exception: {1}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, gd, ex);
-                if (!(ex is LoadingFailedException))
-                    Debug.Fail(string.Format(errmsg, gd, ex));
-                img = null;
-            }
-
-            return img;
-        }
-
-        /// <summary>
         /// Creates an <see cref="Image"/> for a <see cref="StationaryGrhData"/>, adds it to the cache, and returns it.
         /// Only call this if the image actually needs to be created, and never call this while in the <see cref="_imagesSync"/>
         /// lock!
@@ -247,6 +194,59 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
+        /// Scales the unscaled <see cref="Bitmap"/> for a <see cref="StationaryGrhData"/>.
+        /// </summary>
+        /// <param name="unscaled">The unscaled <see cref="Bitmap"/>.</param>
+        /// <returns>The scaled <see cref="Bitmap"/> scaled to the size for this image list, or null if an error occured.</returns>
+        static Bitmap CreateScaledBitmap(Bitmap unscaled)
+        {
+            try
+            {
+                return unscaled.CreateScaled(ImageWidth, ImageHeight, true, null, null);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to scale bitmap down to size. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates an unscaled <see cref="Bitmap"/> of a <see cref="StationaryGrhData"/>.
+        /// </summary>
+        /// <param name="gd">The <see cref="StationaryGrhData"/>.</param>
+        /// <returns>The unscaled <see cref="Bitmap"/>, or null if an error occured.</returns>
+        static Bitmap CreateUnscaledBitmap(StationaryGrhData gd)
+        {
+            Bitmap img;
+
+            // The image was null, so we are going to be the ones to create it
+            try
+            {
+                // Try to create the image
+                var tex = gd.GetOriginalTexture();
+                if (tex == null)
+                    img = null;
+                else
+                    img = tex.ToBitmap(gd.OriginalSourceRect);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to create GrhImageList image for `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, gd, ex);
+                if (!(ex is LoadingFailedException))
+                    Debug.Fail(string.Format(errmsg, gd, ex));
+                img = null;
+            }
+
+            return img;
+        }
+
+        /// <summary>
         /// Executes a <see cref="ThreadPoolAsyncCallbackState"/> on the <see cref="ThreadPool"/> by passing it to the
         /// <see cref="ThreadPoolCallback"/> method. If it fails to be added to the <see cref="ThreadPool"/> for whatever
         /// reason, it will execute synchronously.
@@ -260,7 +260,7 @@ namespace NetGore.Editor.Grhs
             {
                 // Try to add to the thread pool
                 wasEnqueued = ThreadPool.QueueUserWorkItem(_threadPoolCallback, state);
-    
+
                 if (!wasEnqueued)
                 {
                     const string errmsg =
@@ -679,11 +679,11 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         class ThreadPoolAsyncCallbackState
         {
+            readonly Bitmap _bitmap;
             readonly GrhImageListAsyncCallback _callback;
             readonly StationaryGrhData _grhData;
             readonly object _userState;
             readonly bool _wait;
-            readonly Bitmap _bitmap;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ThreadPoolAsyncCallbackState"/> class.
@@ -706,7 +706,10 @@ namespace NetGore.Editor.Grhs
             /// <summary>
             /// Gets the unscaled <see cref="Bitmap"/> to scale down.
             /// </summary>
-            public Bitmap Bitmap { get { return _bitmap; } }
+            public Bitmap Bitmap
+            {
+                get { return _bitmap; }
+            }
 
             /// <summary>
             /// Gets the callback to invoke when done.
