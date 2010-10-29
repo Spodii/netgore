@@ -21,6 +21,7 @@ namespace DemoGame.Client
         MaskedTextBox _cPasswordText;
         TextBox _cStatus;
         ClientSockets _sockets;
+        CheckBox _cRememberPassword;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginScreen"/> class.
@@ -51,13 +52,26 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
+            SaveScreenSettings();
+
             SetError(null);
 
-            ClientSettings.Default.EnteredUserName = _cNameText.Text;
-            ClientSettings.Default.EnteredPassword = MachineCrypto.Encode(_cPasswordText.Text);
-            ClientSettings.Default.Save();
-
             base.Deactivate();
+        }
+
+        /// <summary>
+        /// Saves the <see cref="ClientSettings"/> related to this screen.
+        /// </summary>
+        void SaveScreenSettings()
+        {
+            ClientSettings.Default.EnteredUserName = _cNameText.Text;
+
+            if (ClientSettings.Default.RememberPassword)
+                ClientSettings.Default.EnteredPassword = MachineCrypto.Encode(_cPasswordText.Text);
+            else
+                ClientSettings.Default.EnteredPassword = string.Empty;
+
+            ClientSettings.Default.Save();
         }
 
         /// <summary>
@@ -91,6 +105,11 @@ namespace DemoGame.Client
             _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
             { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
+            _cRememberPassword = new CheckBox(cScreen, _cPasswordText.Position + new Vector2(50, _cPasswordText.Size.Y + 8)) 
+            { Text = "Remember Password", Value = ClientSettings.Default.RememberPassword,
+            ForeColor = Color.White, Font = GameScreenHelper.DefaultChatFont };
+            _cRememberPassword.ValueChanged += _cRememberPassword_ValueChanged;
+
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Login", "Back");
             _btnLogin = menuButtons["Login"];
@@ -104,6 +123,12 @@ namespace DemoGame.Client
             _sockets.StatusChanged += _sockets_StatusChanged;
             _sockets.PacketHandler.ReceivedLoginSuccessful += PacketHandler_ReceivedLoginSuccessful;
             _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
+        }
+
+        void _cRememberPassword_ValueChanged(Control sender)
+        {
+            ClientSettings.Default.RememberPassword = _cRememberPassword.Value;
+            SaveScreenSettings();
         }
 
         /// <summary>
