@@ -146,8 +146,16 @@ namespace NetGore.Graphics
         public Vector2 Scale
         {
             get { return _scale; }
-            set { _scale = value; }
+            set { 
+                _scale = value;
+                _scaledGrhSizeCache = Grh.Size * Scale;
+            }
         }
+
+        /// <summary>
+        /// Cache of the <see cref="Grh"/>.Size * <see cref="Scale"/>.
+        /// </summary>
+        Vector2 _scaledGrhSizeCache;
 
         /// <summary>
         /// Gets or sets the <see cref="SpriteEffects"/> to apply to the sprite when drawing.
@@ -180,6 +188,9 @@ namespace NetGore.Graphics
         public virtual void Update(TickCount currentTime)
         {
             _grh.Update(currentTime);
+
+            var grhSize = Grh.Size;
+            Vector2.Multiply(ref _scale, ref grhSize, out _scaledGrhSizeCache);
         }
 
         #region IDrawable Members
@@ -422,7 +433,7 @@ namespace NetGore.Graphics
         [Browsable(false)]
         public Vector2 Size
         {
-            get { return _grh.Size * Scale; }
+            get { return _scaledGrhSizeCache; }
         }
 
         /// <summary>
