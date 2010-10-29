@@ -311,11 +311,12 @@ namespace NetGore.World
                 if (segment.Contains(spatial))
                     return true;
             }
-            // TODO: !! Shouldn't really NEED this full scan... only do it in debug mode as an assertion
-            // They weren't in the segment, or the segment was invalid, so just scan the whole grid
-            var ret = _gridSegments.Any(x => x.Contains(spatial));
-            Debug.Assert(!ret);
-            return ret;
+            
+            // In debug mode, make sure our check we performed above returned the correct result
+            Debug.Assert(!_gridSegments.Any(x => x.Contains(spatial)), 
+                "CollectionContains() returned false when the spatial really was in the collection. May be a position updating issue...");
+
+            return false;
         }
 
         /// <summary>
@@ -1066,14 +1067,15 @@ namespace NetGore.World
             spatial.Resized -= _spatialResizeHandler;
 
             // Remove the spatial from the segments
-            // Just remove from ALL segments, just to be on the safe side
-            // TODO: !! Remove only from the segments it intersects
             foreach (var segment in _gridSegments)
             {
                 segment.Remove(spatial);
             }
 
-            Debug.Assert(!CollectionContains(spatial), "Didn't fully and completely remove the spatial from all segments...");
+            // In debug mode, make sure we got all instances of the object
+            Debug.Assert(!CollectionContains(spatial), 
+                "Didn't fully and completely remove the spatial from all segments." + 
+                " It most likely failed to be removed from segments at some other time...");
         }
 
         /// <summary>
