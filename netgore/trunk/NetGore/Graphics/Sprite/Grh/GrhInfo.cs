@@ -739,7 +739,7 @@ namespace NetGore.Graphics
 
             // Write
             var path = GetGrhDataFilePath(contentPath);
-            using (IValueWriter writer = new GenericValueWriter(path, _rootNodeName, EncodingFormat))
+            using (IValueWriter writer = GenericValueWriter.Create(path, _rootNodeName, EncodingFormat))
             {
                 writer.WriteManyNodes(_nonAnimatedGrhDatasNodeName, stationaryGrhDatas, ((w, item) => item.Write(w)));
                 writer.WriteManyNodes(_animatedGrhDatasNodeName, animatedGrhDatas, ((w, item) => item.Write(w)));

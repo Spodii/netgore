@@ -330,7 +330,7 @@ namespace NetGore.Graphics
                 throw new Exception("Skeleton returned false for IsValid() - unable to save!");
 
             // Write the file
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(writer);
             }

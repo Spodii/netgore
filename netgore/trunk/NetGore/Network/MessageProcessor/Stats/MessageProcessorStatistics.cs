@@ -161,7 +161,7 @@ namespace NetGore.Network
         /// <param name="filePath">The file path to write to.</param>
         public void Write(string filePath)
         {
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(writer);
             }

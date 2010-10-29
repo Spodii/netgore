@@ -346,7 +346,7 @@ namespace NetGore.IO
             // Lock to ensure we never try to save from multiple threads at once
             lock (_saveLock)
             {
-                using (var w = new GenericValueWriter(_filePath, _rootNode, EncodingFormat))
+                using (var w = GenericValueWriter.Create(_filePath, _rootNode, EncodingFormat))
                 {
                     w.WriteStartNode(_itemsNodeName);
                     {

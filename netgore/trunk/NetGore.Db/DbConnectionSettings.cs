@@ -168,7 +168,7 @@ namespace NetGore.Db
         /// </summary>
         public void Save()
         {
-            using (var writer = new GenericValueWriter(FilePath, _rootNodeName, EncodingFormat))
+            using (var writer = GenericValueWriter.Create(FilePath, _rootNodeName, EncodingFormat))
             {
                 ((IPersistable)this).WriteState(writer);
             }

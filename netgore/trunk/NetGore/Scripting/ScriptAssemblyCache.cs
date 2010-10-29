@@ -427,8 +427,8 @@ namespace NetGore.Scripting
                 if (!_isDirty)
                     return;
 
-                var items = _cache.Values.ToArray();
-                using (var w = new GenericValueWriter(CacheDataFilePath, _rootNodeName, EncodingFormat))
+                var items = _cache.Values.ToImmutable();
+                using (var w = GenericValueWriter.Create(CacheDataFilePath, _rootNodeName, EncodingFormat))
                 {
                     w.WriteManyNodes(_cacheItemNodeName, items, (x, y) => y.Write(x));
                 }

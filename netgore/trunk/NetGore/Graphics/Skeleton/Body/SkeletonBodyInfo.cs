@@ -97,7 +97,7 @@ namespace NetGore.Graphics
 
         public void Save(string filePath)
         {
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(writer);
             }
