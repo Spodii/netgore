@@ -308,7 +308,7 @@ namespace NetGore.World
                 if (segment.Contains(spatial))
                     return true;
             }
-            // TODO: Shouldn't really NEED this full scan... only do it in debug mode as an assertion
+            // TODO: !! Shouldn't really NEED this full scan... only do it in debug mode as an assertion
             // They weren't in the segment, or the segment was invalid, so just scan the whole grid
             return _gridSegments.Any(x => x.Contains(spatial));
         }
@@ -1062,7 +1062,7 @@ namespace NetGore.World
 
             // Remove the spatial from the segments
             // Just remove from ALL segments, just to be on the safe side
-            // TODO: Remove only from the segments it intersects
+            // TODO: !! Remove only from the segments it intersects
             foreach (var segment in _gridSegments)
             {
                 segment.Remove(spatial);
