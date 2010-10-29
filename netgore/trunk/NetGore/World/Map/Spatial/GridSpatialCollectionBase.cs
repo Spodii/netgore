@@ -367,6 +367,34 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Gets if any of the <see cref="ISpatial"/>s match the given condition.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
+        /// <see cref="ISpatial"/> will be ignored.</typeparam>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool Contains<T>(Predicate<T> condition)
+        {
+            if (_gridSegments == null)
+                return false;
+
+            return _gridSegments.Any(segment => segment.OfType<T>().Any(spatial => condition(spatial)));
+        }
+
+        /// <summary>
+        /// Gets if any of the <see cref="ISpatial"/>s match the given condition.
+        /// </summary>
+        /// <param name="condition">The additional condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
+        public bool Contains(Predicate<ISpatial> condition)
+        {
+            if (_gridSegments == null)
+                return false;
+
+            return _gridSegments.Any(segment => segment.Any(spatial => condition(spatial)));
+        }
+
+        /// <summary>
         /// Gets if the specified area or location contains any <see cref="ISpatial"/>s.
         /// </summary>
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
@@ -502,6 +530,47 @@ namespace NetGore.World
                 foreach (var spatial in segment)
                 {
                     if (spatial.Intersects(rect) && condition(spatial))
+                        return spatial;
+                }
+            }
+
+            return null;
+        }
+
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="ISpatial"/> to look for. Any other type of <see cref="ISpatial"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        public T Get<T>(Predicate<T> condition)
+        {
+            foreach (var segment in _gridSegments)
+            {
+                foreach (var spatial in segment.OfType<T>())
+                {
+                    if (condition(spatial))
+                        return spatial;
+                }
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="ISpatial"/> matching the given condition.
+        /// </summary>
+        /// <param name="condition">Condition the <see cref="ISpatial"/> must meet.</param>
+        /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
+        public ISpatial Get(Predicate<ISpatial> condition)
+        {
+            foreach (var segment in _gridSegments)
+            {
+                foreach (var spatial in segment)
+                {
+                    if (condition(spatial))
                         return spatial;
                 }
             }
@@ -692,6 +761,26 @@ namespace NetGore.World
         {
             var segments = GetSegments(rect);
             return AsDistinctAndImmutable(segments.SelectMany(seg => seg.Where(x => x.Intersects(rect)).OfType<T>()));
+        }
+
+        /// <summary>
+        /// Gets all spatials matching the given condition.
+        /// </summary>
+        /// <param name="condition">The condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition)
+        {
+            return AsDistinctAndImmutable(_gridSegments.SelectMany(seg => seg.Where(x => condition(x))));
+        }
+
+        /// <summary>
+        /// Gets all spatials matching the given condition.
+        /// </summary>
+        /// <param name="condition">The condition an <see cref="ISpatial"/> must match to be included.</param>
+        /// <returns>All of the spatials at the given point.</returns>
+        public IEnumerable<T> GetMany<T>(Predicate<T> condition)
+        {
+            return AsDistinctAndImmutable(_gridSegments.SelectMany(seg => seg.OfType<T>().Where(x => condition(x))));
         }
 
         /// <summary>

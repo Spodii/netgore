@@ -162,7 +162,7 @@ namespace DemoGame.Editor.Tools
                 // Only delete when it is an Entity that is on this map
                 foreach (var x in SOM.SelectedObjects.OfType<MapGrh>())
                 {
-                    if (map.Spatial.Contains(x))
+                    if (map.Spatial.CollectionContains(x))
                         map.RemoveMapGrh(x);
                 }
             }
@@ -199,22 +199,23 @@ namespace DemoGame.Editor.Tools
             var selGrhGrhIndex = gd.GrhIndex;
             var isForeground = EditorSettings.Default.MapGrh_DefaultIsForeground;
             var depth = EditorSettings.Default.MapGrh_DefaultDepth;
+            var drawPosArea = drawPos.ToArea(1, 1);
 
             if (!useTileMode)
             {
                 // Make sure the same MapGrh doesn't already exist at that position
-                if (map.MapGrhs.Any(x => x.Position.QuickDistance(drawPos) < 1 && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
+                if (map.Spatial.Contains<MapGrh>(drawPosArea, x=>x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
                     return null;
             }
             else
             {
                 // Make sure the same MapGrh doesn't already exist at that position on the same layer
-                if (map.MapGrhs.Any(x => x.Position.QuickDistance(drawPos) < 1 && x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground))
+                if (map.Spatial.Contains<MapGrh>(drawPosArea, x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground))
                     return null;
 
                 // In TileMode, do not allow ANY MapGrh at the same position and layer depth. And if it does exist, instead of aborting,
                 // delete the existing one.
-                var existingMapGrhs = map.MapGrhs.Where(x => x.Position.QuickDistance(drawPos) < 1 && x.IsForeground == isForeground).ToImmutable();
+                var existingMapGrhs = map.Spatial.GetMany<MapGrh>(drawPosArea,x=> x.IsForeground == isForeground);
                 foreach (var toDelete in existingMapGrhs)
                 {
                     Debug.Assert(toDelete != null);
@@ -224,7 +225,7 @@ namespace DemoGame.Editor.Tools
                     map.RemoveMapGrh(toDelete);
                 }
 
-                Debug.Assert(!map.MapGrhs.Any(x => x.Position.QuickDistance(drawPos) < 1 && x.IsForeground == isForeground));
+                Debug.Assert(!map.Spatial.Contains<MapGrh>(drawPosArea, x => x.IsForeground == isForeground));
             }
 
             // Create the new MapGrh and add it to the map
@@ -295,7 +296,8 @@ namespace DemoGame.Editor.Tools
                         // Drag delete
                         var worldPos = camera.ToWorld(e.Position());
                         worldPos = GridAligner.Instance.Align(worldPos, true);
-                        var toDelete = map.MapGrhs.Where(x => x.Position.QuickDistance(worldPos) < 1 && IsObjectVisible(map, x)).ToImmutable();
+                        var worldPosArea = worldPos.ToArea(1, 1);
+                        var toDelete = map.Spatial.GetMany<MapGrh>(worldPosArea, x => IsObjectVisible(map, x));
                         
                         foreach (var x in toDelete)
                         {
@@ -325,7 +327,7 @@ namespace DemoGame.Editor.Tools
                 return;
 
             // Require the MapGrh to be on the map the scroll event took place on
-            if (!map.Spatial.Contains(focusedMapGrh))
+            if (!map.Spatial.CollectionContains(focusedMapGrh))
                 return;
 
             // Change layer depth, making sure it is clamped in the needed range

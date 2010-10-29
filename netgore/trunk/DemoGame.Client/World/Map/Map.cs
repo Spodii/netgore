@@ -32,25 +32,14 @@ namespace DemoGame.Client
 
         static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
 
-        /// <summary>
-        /// List of BackgroundImages on this map.
-        /// </summary>
         readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
-
         readonly DrawableSorter _drawableSorter = new DrawableSorter();
         readonly List<ILight> _lights = new List<ILight>();
-
         readonly List<ITemporaryMapEffect> _mapEffects = new List<ITemporaryMapEffect>(32);
-
-        /// <summary>
-        /// List of map grhs on the map
-        /// </summary>
-        readonly List<MapGrh> _mapGrhs = new List<MapGrh>(128);
-
         readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
         readonly List<IRefractionEffect> _refractionEffects = new List<IRefractionEffect>();
-        Color _ambientLight = Color.White;
 
+        Color _ambientLight = Color.White;
         TextureAtlas _atlas;
         ICamera2D _camera;
 
@@ -113,15 +102,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the MapGrhs on the Map.
-        /// </summary>
-        [Browsable(false)]
-        public IEnumerable<MapGrh> MapGrhs
-        {
-            get { return _mapGrhs; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="MapParticleEffectCollection"/> containing the particle effects for the map.
         /// </summary>
         [Browsable(false)]
@@ -180,15 +160,17 @@ namespace DemoGame.Client
         {
             if (mg == null)
             {
-                Debug.Fail("mg is null.");
+                const string errmsg = "Parameter mg is null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
                 return;
             }
 
             // When in debug mode, ensure there are no duplicates
-            Debug.Assert(!_mapGrhs.Contains(mg), "mg is already in the MapGrhs list.");
+            Debug.Assert(!Spatial.CollectionContains(mg), string.Format("MapGrh `{0}` is already in the spatial collection.", mg));
 
-            // Add to the MapGrh list and spatial
-            _mapGrhs.Add(mg);
+            // Add to the spatial
             Spatial.Add(mg);
         }
 
@@ -252,8 +234,11 @@ namespace DemoGame.Client
             var ret = new List<WallEntityBase>(32);
 
             // Loop through the supplied list of walls
-            foreach (var cmpTo in compareTo)
+            foreach (var cmpToTemp in compareTo)
             {
+                // Copy the iterated variable to a local... ReSharper told me to ;)
+                var cmpTo = cmpToTemp;
+
                 // Get the area of walls to look for, adding some padding just in case there are rounding issues
                 var cmpToArea = new Rectangle((int)cmpTo.Position.X - 2, (int)cmpTo.Position.Y - 2, 4, 4);
 
@@ -296,7 +281,7 @@ namespace DemoGame.Client
         /// <returns>An IEnumerable of the GrhIndexes used in the map.</returns>
         IEnumerable<GrhIndex> GetMapGrhList()
         {
-            return _mapGrhs.Select(x => x.Grh.GrhData.GrhIndex).Distinct().OrderBy(x => x);
+            return Spatial.GetMany<MapGrh>().Select(x => x.Grh.GrhData.GrhIndex).OrderBy(x => x).Distinct().ToImmutable();
         }
 
         /// <summary>
@@ -444,13 +429,9 @@ namespace DemoGame.Client
                 return;
             }
 
-            // Remove from the MapGrhs list and spatial
-            if (!_mapGrhs.Remove(mg))
-            {
-                // In debug build, ensure the MapGrh was in the MapGrhs list
-                Debug.Fail("mg wasn't in the MapGrhs list.");
-            }
+            Debug.Assert(Spatial.CollectionContains(mg), string.Format("MapGrh `{0}` isn't in the spatial collection.", mg));
 
+            // Remove from the spatial
             Spatial.Remove(mg);
         }
 
@@ -476,7 +457,7 @@ namespace DemoGame.Client
                 w.WriteMany(_usedIndiciesNodeName, GetMapGrhList(), w.Write);
 
                 // MapGrhs
-                w.WriteManyNodes(_mapGrhsNodeName, _mapGrhs, ((writer, item) => item.WriteState(writer)));
+                w.WriteManyNodes(_mapGrhsNodeName, Spatial.GetMany<MapGrh>().Distinct(), ((writer, item) => item.WriteState(writer)));
             }
             w.WriteEndNode(_mapGrhsNodeName);
         }
@@ -524,11 +505,16 @@ namespace DemoGame.Client
 
             var currentTime = GetTime();
 
-            // Update the map Grhs
-            foreach (var g in _mapGrhs)
+            // Grab the view area
+            var viewRect = Camera.GetViewArea();
+
+            // Expand the view area a bit to update stuff just out of view
+            viewRect.Inflate(32, 32);
+
+            // Update the map Grhs in view
+            foreach (var mg in Spatial.GetMany<MapGrh>(viewRect))
             {
-                if (Camera.InView(g.Grh, g.Position))
-                    g.Update(currentTime);
+                mg.Update(currentTime);
             }
 
             // Update the temporary map effects
