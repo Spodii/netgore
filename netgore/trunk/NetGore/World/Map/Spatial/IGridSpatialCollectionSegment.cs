@@ -15,6 +15,12 @@ namespace NetGore.World
         void Add(ISpatial spatial);
 
         /// <summary>
+        /// Adds multiple <see cref="ISpatial"/>s to the segment.
+        /// </summary>
+        /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
+        void AddRange(IEnumerable<ISpatial> spatials);
+
+        /// <summary>
         /// Clears all <see cref="ISpatial"/>s from the segment.
         /// </summary>
         void Clear();
