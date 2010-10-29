@@ -5,7 +5,7 @@ using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
 
-namespace DemoGame.Server.Queries.Account
+namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class UpdateTimeLastLoginQuery : DbQueryNonReader<AccountID>

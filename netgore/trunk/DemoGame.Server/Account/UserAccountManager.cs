@@ -357,11 +357,6 @@ namespace DemoGame.Server
                 _parent = parent;
             }
 
-            public void SetPermissions()
-            {
-                // TODO: !!
-            }
-
             /// <summary>
             /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
             /// </summary>
@@ -521,6 +516,22 @@ namespace DemoGame.Server
                 {
                     Socket.Send(pw, ServerMessageType.System);
                 }
+            }
+
+            /// <summary>
+            /// Sets the permission level for this account.
+            /// </summary>
+            /// <param name="newPermissions">The new <see cref="UserPermissions"/> level.</param>
+            public void SetPermissions(UserPermissions newPermissions)
+            {
+                if (newPermissions == Permissions)
+                    return;
+
+                // Set the new value
+                Permissions = newPermissions;
+
+                // Update the database
+                DbController.GetQuery<UpdateAccountPermissionsQuery>().Execute(ID, Permissions);
             }
 
             /// <summary>
