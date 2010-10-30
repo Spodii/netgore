@@ -163,13 +163,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets a <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
+        /// Gets a <see cref="Rectangle"/> that represents the valid area that items can be picked up at from
         /// the given <paramref name="spatial"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> doing the picking-up.</param>
-        /// <returns>A <see cref="Rectangle"/> that represents the valid region that items can be picked up at from
+        /// <returns>A <see cref="Rectangle"/> that represents the area region that items can be picked up at from
         /// the given <paramref name="spatial"/>.</returns>
-        public static Rectangle GetPickupRegion(ISpatial spatial)
+        public static Rectangle GetPickupArea(ISpatial spatial)
         {
             const int padding = 70;
             var r = spatial.ToRectangle();
@@ -193,6 +193,19 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets a <see cref="Rectangle"/> containing the area that the <paramref name="shopper"/> may use to
+        /// shop. Any <see cref="Entity"/> that owns a shop and intersects with this area is considered in a valid
+        /// distance to shop with.
+        /// </summary>
+        /// <param name="shopper">The <see cref="Entity"/> doing the shopping.</param>
+        /// <returns>A <see cref="Rectangle"/> containing the area that the <paramref name="shopper"/> may use to
+        /// shop.</returns>
+        public static Rectangle GetValidShopArea(Entity shopper)
+        {
+            return shopper.ToRectangle();
+        }
+
+        /// <summary>
         /// Gets if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to shop.
         /// </summary>
         /// <param name="shopper">The Entity doing the shopping.</param>
@@ -201,7 +214,8 @@ namespace DemoGame
         /// shop; otherwise false.</returns>
         public static bool IsValidDistanceToShop(Entity shopper, Entity shopOwner)
         {
-            return shopper.Intersects(shopOwner);
+            var area = GetValidShopArea(shopper);
+            return shopOwner.Intersects(area);
         }
 
         /// <summary>
@@ -213,7 +227,7 @@ namespace DemoGame
         /// to pick it up; otherwise false.</returns>
         public static bool IsValidPickupDistance(ISpatial grabber, ISpatial toGrab)
         {
-            var region = GetPickupRegion(grabber);
+            var region = GetPickupArea(grabber);
             return toGrab.Intersects(region);
         }
 

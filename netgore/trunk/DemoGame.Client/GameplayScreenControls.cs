@@ -139,9 +139,8 @@ namespace DemoGame.Client
         /// <returns>The closest valid shop owner to the given source Entity, or null if none found.</returns>
         DynamicEntity GetClosestValidShopOwner(Entity source)
         {
-            // TODO: Query the SpatialManager instead
-            var shopOwners = Map.DynamicEntities.OfType<CharacterEntity>().Where(x => x.HasShop);
-            var validShopOwners = shopOwners.Where(x => GameData.IsValidDistanceToShop(source, x));
+            var area = GameData.GetValidShopArea(source);
+            var validShopOwners = Map.Spatial.GetMany<CharacterEntity>(area, x => x.HasShop);
 
             // Return first if there is zero or one elements
             if (validShopOwners.Count() <= 1)
@@ -248,7 +247,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_PickUp(GameControl sender)
         {
-            var pickupItem = Map.Spatial.Get<ItemEntity>(GameData.GetPickupRegion(UserChar));
+            var pickupItem = Map.Spatial.Get<ItemEntity>(GameData.GetPickupArea(UserChar));
             if (pickupItem == null)
                 return;
 
