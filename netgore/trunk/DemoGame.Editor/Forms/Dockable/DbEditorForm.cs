@@ -715,14 +715,9 @@ namespace DemoGame.Editor
                 return;
 
             // Get the name to use
-            string name;
-            using (var f = new LanguageNameForm())
-            {
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                name = f.Value;
-            }
+            string name = InputBox.Show("New language name", "Enter the name of the new language");
+            if (string.IsNullOrEmpty(name))
+                return;
 
             // Create the new language files, and select it
             var langFile = GameMessageCollection.GetLanguageFile(ContentPaths.Dev, name);
