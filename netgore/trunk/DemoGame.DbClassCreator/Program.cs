@@ -6,8 +6,8 @@ using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
 using NetGore.Features.ActionDisplays;
+using NetGore.Features.NPCChat;
 using NetGore.Features.Shops;
-using NetGore.NPCChat;
 using NetGore.Stats;
 using NetGore.World;
 

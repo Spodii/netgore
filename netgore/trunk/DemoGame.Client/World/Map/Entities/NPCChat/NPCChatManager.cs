@@ -1,6 +1,6 @@
 using System.Linq;
+using NetGore.Features.NPCChat;
 using NetGore.IO;
-using NetGore.NPCChat;
 
 namespace DemoGame.Client.NPCChat
 {

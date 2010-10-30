@@ -8,7 +8,7 @@ using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using log4net;
-using NetGore.NPCChat;
+using NetGore.Features.NPCChat;
 
 namespace NetGore.Editor.UI
 {

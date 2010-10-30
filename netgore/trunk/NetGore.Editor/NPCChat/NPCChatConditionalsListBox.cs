@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.NPCChat.Conditionals;
+using NetGore.Features.NPCChat.Conditionals;
 
 namespace NetGore.Editor.NPCChat
 {

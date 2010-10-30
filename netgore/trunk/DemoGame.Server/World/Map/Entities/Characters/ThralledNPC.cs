@@ -3,9 +3,9 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
+using NetGore.Features.NPCChat;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
-using NetGore.NPCChat;
 using SFML.Graphics;
 
 namespace DemoGame.Server

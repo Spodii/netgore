@@ -132,6 +132,23 @@
     <Compile Include="Guilds\UserGuildInformation.cs" />
     <Compile Include="Guilds\GuildRank.cs" />
     <Compile Include="Guilds\GuildSettings.cs" />
+    <Compile Include="NPCChat\Conditionals\NPCChatConditionalBase.cs" />
+    <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
+    <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
+    <Compile Include="NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameter.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterFloat.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterInteger.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterString.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterType.cs" />
+    <Compile Include="NPCChat\NPCChatDialogBase.cs" />
+    <Compile Include="NPCChat\NPCChatDialogID.cs" />
+    <Compile Include="NPCChat\NPCChatDialogItemBase.cs" />
+    <Compile Include="NPCChat\NPCChatDialogItemID.cs" />
+    <Compile Include="NPCChat\NPCChatManagerBase.cs" />
+    <Compile Include="NPCChat\NPCChatResponseActionBase.cs" />
+    <Compile Include="NPCChat\NPCChatResponseBase.cs" />
+    <Compile Include="NPCChat\PropertySyncNPCChatDialogID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quests\PropertySyncQuestID.cs" />
     <Compile Include="Quests\QuestID.cs" />
@@ -200,6 +217,9 @@
     <None Include="PeerTrading\_FeatureInfo.txt" />
     <None Include="WorldStats\_FeatureInfo.txt" />
     <None Include="_ProjectInfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NPCChat\_FeatureInfo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.Features.NPCChat;
 using NetGore.IO;
-using NetGore.NPCChat;
 
 namespace DemoGame.Client.NPCChat
 {

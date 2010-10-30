@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
-using NetGore.NPCChat;
+using NetGore.Features.NPCChat;
 using NetGore.World;
 
 namespace DemoGame.Server

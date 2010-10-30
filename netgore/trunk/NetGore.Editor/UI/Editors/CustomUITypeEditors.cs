@@ -4,9 +4,9 @@ using System.Drawing.Design;
 using System.Linq;
 using NetGore.AI;
 using NetGore.Audio;
+using NetGore.Features.NPCChat;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
-using NetGore.NPCChat;
 using SFML.Graphics;
 
 namespace NetGore.Editor.UI

@@ -18,8 +18,8 @@ For more information on the DbClassCreator, please see:
 using System;
 using System.Linq;
 using NetGore.AI;
+using NetGore.Features.NPCChat;
 using NetGore.Features.Shops;
-using NetGore.NPCChat;
 using NetGore.World;
 
 namespace DemoGame.DbObjs
