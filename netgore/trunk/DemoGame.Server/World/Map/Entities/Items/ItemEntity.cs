@@ -610,7 +610,7 @@ namespace DemoGame.Server
                     return closestLegalPosition;
                 else
                 {
-                    // TODO: Could not find a valid position for the ItemEntity
+                    // TODO: !! Could not find a valid position for the ItemEntity
                 }
             }
 

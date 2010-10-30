@@ -298,7 +298,7 @@ namespace DemoGame.Server
         /// </returns>
         public int GetStatModBonus(StatType statType)
         {
-            // TODO: [STATS] This totally sucks. Add some kind of cache.
+            // TODO: !! This totally sucks. Add some kind of cache.
             return this.SelectMany(x => x.Value.BaseStats).Where(x => x.StatType == statType).Select(x => (int)x.Value).Sum();
         }
 
