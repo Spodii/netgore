@@ -1,4 +1,4 @@
-﻿// TODO: [SFML2] Render targets are supported in SFML 2.0. Until then, this will not be able to work properly.
+﻿// TODO: !! Render targets are supported in SFML 2.0. Until then, this will not be able to work properly.
 
 using System;
 using System.Collections.Generic;

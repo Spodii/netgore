@@ -149,7 +149,7 @@ void main (void)
 
             try
             {
-                // TODO: Optimize by only drawing refraction effects actually in view
+                // TODO: !! Optimize by only drawing refraction effects actually in view
                 foreach (var effect in this.OrderBy(x => x.DrawPriority))
                 {
                     effect.Draw(sb);

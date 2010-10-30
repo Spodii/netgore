@@ -10,7 +10,7 @@ namespace NetGore.Network
     /// </summary>
     public class NetStats
     {
-        // TODO: Add support for the NetStats back in. Right now, I don't think any of the stats update...
+        // TODO: !! Add support for the NetStats back in. Right now, I don't think any of the stats update...
 
         static readonly NetStats _global;
 
