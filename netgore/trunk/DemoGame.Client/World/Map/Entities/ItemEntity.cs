@@ -18,24 +18,21 @@ namespace DemoGame.Client
     public class ItemEntity : ItemEntityBase, IDrawable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly Grh _grh;
         Color _color = Color.White;
         bool _isVisible = true;
 
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Amount = 1;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _grh = new Grh(null);
         }
 
         public ItemEntity(GrhIndex graphicIndex, byte amount, TickCount currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Amount = amount;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
@@ -43,9 +40,7 @@ namespace DemoGame.Client
         public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, TickCount currentTime)
             : base(pos, size)
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Amount = 0;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             MapEntityIndex = mapEntityIndex;
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
