@@ -270,23 +270,5 @@ namespace DemoGame
         {
             return (int)(velocity * 10000.0f);
         }
-
-        /// <summary>
-        /// Settings specific to the networking.
-        /// </summary>
-        public static class NetworkSettings
-        {
-            /// <summary>
-            /// Gets the IP address of the server.
-            /// </summary>
-            public static string ServerIP
-            {
-                get
-                {
-                    // TODO: Should be specified through file and only for the client
-                    return "127.0.0.1";
-                }
-            }
-        }
     }
 }
