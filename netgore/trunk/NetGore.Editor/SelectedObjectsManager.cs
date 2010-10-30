@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.World;
 
 namespace NetGore.Editor
 {
@@ -13,6 +14,7 @@ namespace NetGore.Editor
     {
         // TODO: !! Automatically listen for when IDisposable objects are disposed
 
+        readonly EntityEventHandler _disposedListenerEntity;
         readonly EventHandler _selectedIndexChangedHandler;
         readonly List<T> _selectedObjs = new List<T>();
         T _focused;
@@ -25,6 +27,8 @@ namespace NetGore.Editor
         /// </summary>
         public SelectedObjectsManager()
         {
+            _disposedListenerEntity = DisposedListener_Entity;
+
             _selectedIndexChangedHandler = SelectedListBox_SelectedIndexChanged;
         }
 
@@ -32,6 +36,16 @@ namespace NetGore.Editor
         /// Notifies listeners when the focused object has changed.
         /// </summary>
         public event SelectedObjectManagerEventHandler<T, T> FocusedChanged;
+
+        /// <summary>
+        /// Notifies listeners when an object has been added to this collection.
+        /// </summary>
+        public event SelectedObjectManagerEventHandler<T, T> ObjectAdded;
+
+        /// <summary>
+        /// Notifies listeners when an object has been removed from this collection.
+        /// </summary>
+        public event SelectedObjectManagerEventHandler<T, T> ObjectRemoved;
 
         /// <summary>
         /// Notifies listeners when the selected objects have changed.
@@ -124,10 +138,18 @@ namespace NetGore.Editor
         /// <param name="obj">The object to add.</param>
         public void Add(T obj)
         {
+            if (obj == null)
+                return;
+
             if (_selectedObjs.Contains(obj))
                 return;
 
             _selectedObjs.Add(obj);
+
+            OnObjectAdded(obj);
+            if (ObjectAdded != null)
+                ObjectAdded(this, obj);
+
             UpdateSelection();
         }
 
@@ -171,8 +193,53 @@ namespace NetGore.Editor
             if (_selectedObjs.Count == 0)
                 return;
 
-            _selectedObjs.Clear();
+            while (_selectedObjs.Count > 0)
+            {
+                var obj = _selectedObjs[_selectedObjs.Count - 1];
+                _selectedObjs.RemoveAt(_selectedObjs.Count - 1);
+
+                OnObjectRemoved(obj);
+                if (ObjectRemoved != null)
+                    ObjectRemoved(this, obj);
+            }
+
+            Debug.Assert(_selectedObjs.Count == 0);
+
             UpdateSelection();
+        }
+
+        void DisposedListener_Entity(Entity entity)
+        {
+            Remove(entity as T);
+        }
+
+        /// <summary>
+        /// Occurs when an object is added to the collection.
+        /// </summary>
+        /// <param name="obj">The object that was added.</param>
+        protected virtual void OnObjectAdded(T obj)
+        {
+            var asEntity = obj as Entity;
+            if (asEntity != null)
+            {
+                asEntity.Disposed -= _disposedListenerEntity;
+                asEntity.Disposed += _disposedListenerEntity;
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Occurs when an object is removed from the collection.
+        /// </summary>
+        /// <param name="obj">The object that was removed.</param>
+        protected virtual void OnObjectRemoved(T obj)
+        {
+            var asEntity = obj as Entity;
+            if (asEntity != null)
+            {
+                asEntity.Disposed -= _disposedListenerEntity;
+                return;
+            }
         }
 
         /// <summary>
@@ -181,8 +248,15 @@ namespace NetGore.Editor
         /// <param name="obj">The object to remove.</param>
         public void Remove(T obj)
         {
+            if (obj == null)
+                return;
+
             if (!_selectedObjs.Remove(obj))
                 return;
+
+            OnObjectRemoved(obj);
+            if (ObjectRemoved != null)
+                ObjectRemoved(this, obj);
 
             UpdateSelection();
         }
@@ -221,12 +295,19 @@ namespace NetGore.Editor
         /// false.</returns>
         public bool SetFocused(T obj, bool addIfMissing = false)
         {
+            if (obj == null)
+                return false;
+
             if (!_selectedObjs.Contains(obj))
             {
                 if (!addIfMissing)
                     return false;
 
                 _selectedObjs.Add(obj);
+
+                OnObjectAdded(obj);
+                if (ObjectAdded != null)
+                    ObjectAdded(this, obj);
             }
 
             Focused = obj;
@@ -246,15 +327,23 @@ namespace NetGore.Editor
                 return;
             }
 
-            selectedObjs = selectedObjs.Distinct();
+            selectedObjs = selectedObjs.Distinct().ToImmutable();
 
             // Ignore if we already have this exact set as the current selection
             if (selectedObjs.ContainSameElements(_selectedObjs))
                 return;
 
             // Set the new selected objects and update
-            _selectedObjs.Clear();
-            _selectedObjs.AddRange(selectedObjs);
+            Clear();
+
+            foreach (var obj in selectedObjs)
+            {
+                _selectedObjs.Add(obj);
+                OnObjectAdded(obj);
+                if (ObjectAdded != null)
+                    ObjectAdded(this, obj);
+            }
+
             UpdateSelection();
         }
 
@@ -276,8 +365,14 @@ namespace NetGore.Editor
                 return;
 
             // Set the new selected objects and update
-            _selectedObjs.Clear();
+            Clear();
+
             _selectedObjs.Add(selected);
+
+            OnObjectAdded(selected);
+            if (ObjectAdded != null)
+                ObjectAdded(this, selected);
+
             UpdateSelection();
         }
 
