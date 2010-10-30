@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using NetGore.NPCChat.Conditionals;
+using NetGore.Features.NPCChat.Conditionals;
 
 namespace NetGore.Editor.NPCChat
 {

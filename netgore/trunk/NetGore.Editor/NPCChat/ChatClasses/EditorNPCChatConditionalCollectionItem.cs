@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore.Features.NPCChat.Conditionals;
 using NetGore.IO;
-using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.Editor.NPCChat
 {

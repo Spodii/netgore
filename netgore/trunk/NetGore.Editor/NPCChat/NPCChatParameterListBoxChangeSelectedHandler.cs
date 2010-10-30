@@ -1,5 +1,5 @@
 using System.Linq;
-using NetGore.NPCChat.Conditionals;
+using NetGore.Features.NPCChat.Conditionals;
 
 namespace NetGore.Editor.NPCChat
 {

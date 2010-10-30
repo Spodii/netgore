@@ -14,10 +14,10 @@ using NetGore.AI;
 using NetGore.Db;
 using NetGore.Editor;
 using NetGore.Editor.UI;
+using NetGore.Features.NPCChat;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
-using NetGore.NPCChat;
 using NetGore.World;
 
 namespace DemoGame.Editor

@@ -9,8 +9,8 @@ using NetGore;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
 using NetGore.Editor.NPCChat;
-using NetGore.NPCChat;
-using NetGore.NPCChat.Conditionals;
+using NetGore.Features.NPCChat;
+using NetGore.Features.NPCChat.Conditionals;
 
 namespace DemoGame.Editor
 {

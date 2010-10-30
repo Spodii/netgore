@@ -10,13 +10,13 @@ using NetGore.Content;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
+using NetGore.Features.NPCChat;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
-using NetGore.NPCChat;
 using NetGore.World;
 using SFML.Graphics;
 

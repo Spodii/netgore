@@ -488,6 +488,10 @@
       <Name>NetGore.Db</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
+      <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
+      <Name>NetGore.Features</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>

@@ -235,7 +235,6 @@
     <Compile Include="Network\Sockets\SocketManager\IServerSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ISocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ServerSocketManager.cs" />
-    <Compile Include="NPCChat\PropertySyncNPCChatDialogID.cs" />
     <Compile Include="SFML\FrameworkMessages.cs" />
     <Compile Include="SFML\LazyContentLoadFailCounter.cs" />
     <Compile Include="Stats\PropertySyncStatValueType.cs" />
@@ -637,8 +636,6 @@
     <Compile Include="Core\Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Core\Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
-    <Compile Include="NPCChat\NPCChatDialogID.cs" />
-    <Compile Include="NPCChat\NPCChatDialogItemID.cs" />
     <Compile Include="Stats\StatValueType.cs" />
     <Compile Include="World\Map\MapEntityIndexTypeConverter.cs" />
     <Compile Include="World\Map\MapIDTypeConverter.cs" />
@@ -655,20 +652,6 @@
     <Compile Include="World\Map\Spatial\SpatialManager.cs" />
     <Compile Include="World\Map\MapEntityAttribute.cs" />
     <Compile Include="Audio\Music\MusicID.cs" />
-    <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
-    <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
-    <Compile Include="NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
-    <Compile Include="NPCChat\Conditionals\NPCChatConditionalBase.cs" />
-    <Compile Include="NPCChat\NPCChatResponseActionBase.cs" />
-    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameter.cs" />
-    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterFloat.cs" />
-    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterInteger.cs" />
-    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterString.cs" />
-    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterType.cs" />
-    <Compile Include="NPCChat\NPCChatDialogBase.cs" />
-    <Compile Include="NPCChat\NPCChatDialogItemBase.cs" />
-    <Compile Include="NPCChat\NPCChatManagerBase.cs" />
-    <Compile Include="NPCChat\NPCChatResponseBase.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncAlignment.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncBool.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncColor.cs" />

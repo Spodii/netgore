@@ -21,9 +21,9 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.AI;
+using NetGore.Features.NPCChat;
 using NetGore.Features.Shops;
 using NetGore.IO;
-using NetGore.NPCChat;
 
 namespace DemoGame.Server.DbObjs
 {

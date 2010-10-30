@@ -145,6 +145,7 @@
   <ItemGroup>
     <Folder Include="Banning\" />
     <Folder Include="GameTime\" />
+    <Folder Include="NPCChat\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
     <Folder Include="WorldStats\" />
