@@ -267,7 +267,7 @@ namespace NetGore.Db.MySql.QueryBuilder
                 return "@" + parameterName;
             else
             {
-                // TODO: errmsg - already escaped
+                // TODO: !! errmsg - already escaped
                 return parameterName;
             }
         }

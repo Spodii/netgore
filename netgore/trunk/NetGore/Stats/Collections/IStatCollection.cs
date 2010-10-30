@@ -11,7 +11,7 @@ namespace NetGore.Stats
     public interface IStatCollection<TStatType> : IEnumerable<Stat<TStatType>>
         where TStatType : struct, IComparable, IConvertible, IFormattable
     {
-        // TODO: IStatCollection tests...
+        // TODO: !! IStatCollection tests...
 
         /// <summary>
         /// Notifies listeners when the value of any of the stats in this collection have changed.

@@ -16,7 +16,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// </remarks>
     public interface IParticleEmitter : IDisposable, IPersistable
     {
-        // TODO: Is this interface really something I need - or at least in this way? The whole "restriction" purpose seems a bit... useless. Wish I remember why I did it in the first place...
+        // TODO: !! Is this interface really something I need - or at least in this way? The whole "restriction" purpose seems a bit... useless. Wish I remember why I did it in the first place...
 
         /// <summary>
         /// Notifies listeners when this <see cref="IParticleEmitter"/> has bene disposed.
