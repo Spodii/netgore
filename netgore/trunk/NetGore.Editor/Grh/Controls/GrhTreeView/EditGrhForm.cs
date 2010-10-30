@@ -223,7 +223,6 @@ namespace NetGore.Editor.Grhs
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAccept_Click(object sender, EventArgs e)
         {
-            // TODO: Clean this up a lot by adding more specialized textboxes, and using .IsValid()
             var gdStationary = _gd as StationaryGrhData;
             var gdAnimated = _gd as AnimatedGrhData;
 
