@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.Stats;
 using NUnit.Framework;
 
@@ -10,15 +8,12 @@ namespace NetGore.Tests.Stats
     [TestFixture]
     public class StatCollectionTests
     {
-        enum ST : byte
-        {
-            A,B
-        }
-
         static IEnumerable<IStatCollection<ST>> CreateStatCollections()
         {
-            return new IStatCollection<ST>[] { new StatCollection<ST>( StatCollectionType.Base) };
+            return new IStatCollection<ST>[] { new StatCollection<ST>(StatCollectionType.Base) };
         }
+
+        #region Unit tests
 
         [Test]
         public void DeepCopyTest()
@@ -37,25 +32,6 @@ namespace NetGore.Tests.Stats
 
                 Assert.AreEqual(c[ST.A], 15);
                 Assert.AreEqual(copy[ST.A], 10);
-            }
-        }
-
-        [Test]
-        public void SetAllTest()
-        {
-            foreach (var c in CreateStatCollections())
-            {
-                c.SetAll(50);
-                foreach (var v in c)
-                {
-                    Assert.AreEqual(50, v.Value);
-                }
-
-                c.SetAll(75);
-                foreach (var v in c)
-                {
-                    Assert.AreEqual(75, v.Value);
-                }
             }
         }
 
@@ -197,7 +173,6 @@ namespace NetGore.Tests.Stats
             }
         }
 
-
         [Test]
         public void HasAnyGreaterValuesTest()
         {
@@ -245,33 +220,6 @@ namespace NetGore.Tests.Stats
         }
 
         [Test]
-        public void StatChangedTest()
-        {
-            foreach (var c in CreateStatCollections())
-            {
-                bool changed = false;
-
-                Assert.IsFalse(changed);
-
-                c[ST.A] = 1;
-
-                Assert.IsFalse(changed);
-
-                c.StatChanged += delegate { changed = true; };
-
-                Assert.IsFalse(changed);
-
-                c[ST.A] = 1;
-
-                Assert.IsFalse(changed);
-
-                c[ST.A] = 2;
-
-                Assert.IsTrue(changed);
-            }
-        }
-
-        [Test]
         public void HasSameValuesTest()
         {
             var b = new StatCollection<ST>(StatCollectionType.Base);
@@ -301,6 +249,60 @@ namespace NetGore.Tests.Stats
                 Assert.IsFalse(c.HasSameValues(b));
                 Assert.IsFalse(b.HasSameValues(c));
             }
+        }
+
+        [Test]
+        public void SetAllTest()
+        {
+            foreach (var c in CreateStatCollections())
+            {
+                c.SetAll(50);
+                foreach (var v in c)
+                {
+                    Assert.AreEqual(50, v.Value);
+                }
+
+                c.SetAll(75);
+                foreach (var v in c)
+                {
+                    Assert.AreEqual(75, v.Value);
+                }
+            }
+        }
+
+        [Test]
+        public void StatChangedTest()
+        {
+            foreach (var c in CreateStatCollections())
+            {
+                var changed = false;
+
+                Assert.IsFalse(changed);
+
+                c[ST.A] = 1;
+
+                Assert.IsFalse(changed);
+
+                c.StatChanged += delegate { changed = true; };
+
+                Assert.IsFalse(changed);
+
+                c[ST.A] = 1;
+
+                Assert.IsFalse(changed);
+
+                c[ST.A] = 2;
+
+                Assert.IsTrue(changed);
+            }
+        }
+
+        #endregion
+
+        enum ST : byte
+        {
+            A,
+            B
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder

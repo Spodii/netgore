@@ -1,4 +1,6 @@
-﻿namespace NetGore.World
+﻿using System.Linq;
+
+namespace NetGore.World
 {
     /// <summary>
     /// Interface for a <see cref="DynamicEntity"/> to hide the ability to set the <see cref="MapEntityIndex"/>.

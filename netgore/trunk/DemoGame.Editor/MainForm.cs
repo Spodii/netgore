@@ -11,7 +11,6 @@ using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
 using NetGore.Graphics;
 using NetGore.IO;
-using NetGore.World;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
