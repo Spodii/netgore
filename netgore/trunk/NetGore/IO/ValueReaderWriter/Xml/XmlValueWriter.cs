@@ -37,29 +37,6 @@ namespace NetGore.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
-        /// <param name="writer">XmlWriter to write the values to.</param>
-        /// <param name="nodeName">Name to give the root node containing the values.</param>
-        /// <param name="attributeName">Name of the attribute.</param>
-        /// <param name="attributeValue">Value of the attribute.</param>
-        public XmlValueWriter(XmlWriter writer, string nodeName, string attributeName, string attributeValue)
-        {
-            // TODO: !! Remove the usage of this. It is provided just to write an attribute which is something that probably shouldn't be done - at least not this way.
-
-            if (writer == null)
-                throw new ArgumentNullException("writer");
-            if (string.IsNullOrEmpty(attributeName))
-                throw new ArgumentNullException("attributeName");
-            if (string.IsNullOrEmpty(attributeValue))
-                throw new ArgumentNullException("attributeValue");
-
-            _writer = writer;
-            _writer.WriteStartElement(nodeName);
-            _writer.WriteAttributeString(attributeName, attributeValue);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
-        /// </summary>
         /// <param name="filePath">The path to the file to write to.</param>
         /// <param name="nodeName">Name to give the root node containing the values.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
