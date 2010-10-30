@@ -169,7 +169,7 @@ namespace DemoGame
                 }
             }
 
-            entity.MapEntityIndex = mapEntityIndex;
+            ((IDynamicEntitySetMapEntityIndex)entity).SetMapEntityIndex(mapEntityIndex);
             _dynamicEntities[(int)mapEntityIndex] = entity;
 
             AddEntityFinish(entity);
@@ -193,7 +193,7 @@ namespace DemoGame
 
                 var indexRaw = _dynamicEntities.Add(dynamicEntity);
                 var index = new MapEntityIndex(indexRaw);
-                dynamicEntity.MapEntityIndex = index;
+                ((IDynamicEntitySetMapEntityIndex)dynamicEntity).SetMapEntityIndex(index);
             }
 
             // Finish adding the Entity

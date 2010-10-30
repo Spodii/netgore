@@ -42,7 +42,7 @@ namespace DemoGame.Client
         {
             Amount = 0;
 
-            MapEntityIndex = mapEntityIndex;
+            ((IDynamicEntitySetMapEntityIndex)this).SetMapEntityIndex(mapEntityIndex);
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 

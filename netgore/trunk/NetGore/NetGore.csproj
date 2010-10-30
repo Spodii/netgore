@@ -239,6 +239,7 @@
     <Compile Include="SFML\FrameworkMessages.cs" />
     <Compile Include="SFML\LazyContentLoadFailCounter.cs" />
     <Compile Include="Stats\PropertySyncStatValueType.cs" />
+    <Compile Include="World\Entities\IDynamicEntitySetMapEntityIndex.cs" />
     <Compile Include="World\Entities\IInventory.cs" />
     <Compile Include="World\Map\MapEvent\IDelayedMapEvent.cs" />
     <Compile Include="World\Map\MapEvent\TimeDelayedMapEvent.cs" />
