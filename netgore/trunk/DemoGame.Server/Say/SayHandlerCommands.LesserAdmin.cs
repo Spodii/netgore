@@ -173,7 +173,7 @@ namespace DemoGame.Server
                         x = RandomHelper.NextInt(minX, maxX);
 
                     var y = thrallArea.Y - (int)npc.Size.Y;
-                    npc.Teleport(new Vector2(x, y));
+                    npc.Position = new Vector2(x, y);
                 }
             }
         }

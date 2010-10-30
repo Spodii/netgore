@@ -94,7 +94,7 @@ namespace NetGore.Graphics
 
             var x = (float)(Math.Round(entity.Position.X / Width)) * Width;
             var y = (float)(Math.Round(entity.Position.Y / Height)) * Height;
-            entity.Teleport(new Vector2(x, y));
+            entity.Position = new Vector2(x, y);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace NetGore.Graphics
 
             var newPos = (entity.Position / Size).Round() * Size;
 
-            entity.Teleport(newPos);
+            entity.Position = newPos;
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace NetGore.Graphics
             if (newSize.Y < Size.Y)
                 newSize.Y = Size.Y;
 
-            entity.Resize(newSize);
+            entity.Size = newSize;
         }
 
         #region IPersistable Members

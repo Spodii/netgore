@@ -363,8 +363,7 @@ namespace DemoGame
             if (max.Y >= Height)
                 min.Y = Height - entity.Size.Y;
 
-            if (min != entity.Position)
-                entity.Teleport(min);
+            entity.Position = min;
         }
 
         /// <summary>
@@ -883,7 +882,7 @@ namespace DemoGame
                 size.Y = Height - entity.Position.Y;
 
             // Set the size
-            entity.Resize(size);
+            entity.Size =size;
         }
 
         /// <summary>
@@ -913,7 +912,7 @@ namespace DemoGame
                 pos.Y = Height - entity.Size.Y;
 
             // Teleport to the altered position
-            entity.Teleport(pos);
+            entity.Position = pos;
         }
 
         /// <summary>

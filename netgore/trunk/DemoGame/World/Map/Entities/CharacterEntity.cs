@@ -248,7 +248,7 @@ namespace DemoGame
         /// also be set to zero upon teleporting.
         /// </summary>
         /// <param name="position">New position</param>
-        public override void Teleport(Vector2 position)
+        protected override void Teleport(Vector2 position)
         {
             // Force the character to stop moving
 #if !TOPDOWN

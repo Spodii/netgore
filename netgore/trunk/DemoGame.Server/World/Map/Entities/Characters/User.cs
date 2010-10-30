@@ -911,7 +911,7 @@ namespace DemoGame.Server
         /// interest that the character has teleported.
         /// </summary>
         /// <param name="position">Position to teleport to.</param>
-        public override void Teleport(Vector2 position)
+        protected override void Teleport(Vector2 position)
         {
             CancelPeerTradeIfTrading();
 

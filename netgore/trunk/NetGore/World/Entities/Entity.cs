@@ -47,10 +47,28 @@ namespace NetGore.World
         public event SpatialEventHandler<Vector2> Moved;
 
         /// <summary>
+        /// When overridden in the derived class, allows for handling for when the <see cref="ISpatial.Moved"/> event occurs.
+        /// This is the same as listening to the event directly, but with less overhead.
+        /// </summary>
+        /// <param name="oldPos">The old position.</param>
+        protected virtual void OnMoved(Vector2 oldPos)
+        {
+        }
+
+        /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
         [Browsable(false)]
         public event SpatialEventHandler<Vector2> Resized;
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling for when the <see cref="ISpatial.Resized"/> event occurs.
+        /// This is the same as listening to the event directly, but with less overhead.
+        /// </summary>
+        /// <param name="oldSize">The old size.</param>
+        protected virtual void OnResized(Vector2 oldSize)
+        {
+        }
 
         /// <summary>
         /// Tries to move the <see cref="ISpatial"/>.
@@ -206,7 +224,10 @@ namespace NetGore.World
                 if (StandingOn != null)
                 {
                     _velocity.Y = 0;
-                    _position = new Vector2(Position.X, StandingOn.Position.Y - Size.Y);
+
+                    // Move them so that they really are standing right on top of the entity
+                    var newPos = new Vector2(Position.X, StandingOn.Position.Y - Size.Y);
+                    SetPositionRaw(newPos);
                 }
 #endif
             }
@@ -353,22 +374,6 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Loads the Entity's values directly, completely bypassing any events or updating. This should only be used
-        /// for when constructing an Entity when these values cannot be passed directly to the constructor or Create().
-        /// </summary>
-        /// <param name="position">New position value.</param>
-        /// <param name="size">New size value.</param>
-        /// <param name="velocity">New velocity value.</param>
-        /// <param name="weight">New weight value.</param>
-        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight)
-        {
-            _position = position;
-            _size = size;
-            _velocity = velocity;
-            _weight = weight;
-        }
-
-        /// <summary>
         /// Translates the entity from its current position.
         /// </summary>
         /// <param name="adjustment">Amount to move.</param>
@@ -377,30 +382,17 @@ namespace NetGore.World
             if (adjustment == Vector2.Zero)
                 return;
 
-            var oldPos = Position;
-
-            _position += adjustment;
-
-            // Notify of movement
-            if (Moved != null)
-                Moved(this, oldPos);
+            var newPos = Position + adjustment;
+            SetPositionRaw(newPos);
         }
 
         /// <summary>
         /// Resizes the <see cref="Entity"/>.
         /// </summary>
         /// <param name="newSize">The new size of this <see cref="Entity"/>.</param>
-        public virtual void Resize(Vector2 newSize)
+        protected virtual void Resize(Vector2 newSize)
         {
-            if (newSize == Size)
-                return;
-
-            var oldSize = Size;
-
-            _size = newSize;
-
-            if (Resized != null)
-                Resized(this, oldSize);
+            SetSizeRaw(newSize);
         }
 
         /// <summary>
@@ -410,7 +402,17 @@ namespace NetGore.World
         /// <param name="newPosition">The new <see cref="Position"/> value.</param>
         protected internal void SetPositionRaw(Vector2 newPosition)
         {
+            if (newPosition == Position)
+                return;
+
+            var oldPos = Position;
+
             _position = newPosition;
+
+            // Notify listeners
+            OnMoved(oldPos);
+            if (Moved != null)
+                Moved(this, oldPos);
         }
 
         /// <summary>
@@ -420,7 +422,17 @@ namespace NetGore.World
         /// <param name="newSize">The new <see cref="Size"/> value.</param>
         protected internal void SetSizeRaw(Vector2 newSize)
         {
+            if (newSize == Size)
+                return;
+
+            var oldSize = Size;
+
             _size = newSize;
+
+            // Notify listeners
+            OnResized(oldSize);
+            if (Resized != null)
+                Resized(this, oldSize);
         }
 
         /// <summary>
@@ -453,10 +465,10 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Moves the Entity to a new location instantly.
+        /// Moves the <see cref="Entity"/> to a new location instantly.
         /// </summary>
-        /// <param name="newPosition">New position for the Entity.</param>
-        public virtual void Teleport(Vector2 newPosition)
+        /// <param name="newPosition">New position for the <see cref="Entity"/>.</param>
+        protected virtual void Teleport(Vector2 newPosition)
         {
             // Do not update if we're already at the specified position
             if (newPosition == Position)
@@ -466,12 +478,7 @@ namespace NetGore.World
             StandingOn = null;
 
             // Move the entity
-            var oldPos = Position;
-            _position = newPosition;
-            _lastPosition = newPosition;
-
-            if (Moved != null)
-                Moved(this, oldPos);
+            SetPositionRaw(newPosition);
         }
 
         /// <summary>

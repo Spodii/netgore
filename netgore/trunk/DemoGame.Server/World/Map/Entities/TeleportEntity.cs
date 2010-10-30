@@ -75,7 +75,7 @@ namespace DemoGame.Server
             }
 
             // Teleport the CharacterEntity to our predefined location
-            charEntity.Teleport(Destination);
+            charEntity.Position = Destination;
 
             // Notify listeners
             if (OnUse != null)

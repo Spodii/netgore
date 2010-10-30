@@ -283,7 +283,8 @@ namespace NetGore.World
             Debug.Assert(!CollectionContains(spatial), "The spatial was already in this spatial collection!");
 
             // Add the spatial to the segments
-            foreach (var segment in GetSegments(spatial))
+            var segments = GetSegments(spatial);
+            foreach (var segment in segments)
             {
                 segment.Add(spatial);
             }
@@ -1159,7 +1160,8 @@ namespace NetGore.World
             /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
             public void AddRange(IEnumerable<ISpatial> spatials)
             {
-                _spatials.AddRange(spatials);
+                foreach (var spatial in spatials)
+                    Add(spatial);
             }
 
             /// <summary>
