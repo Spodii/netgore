@@ -36,28 +36,28 @@ namespace NetGore.Tests.NetGore
 
             Assert.IsTrue(a.Intersects(b));
 
-            a.Teleport(new Vector2(9, 9));
+            a.Position = new Vector2(9, 9);
             Assert.IsTrue(a.Intersects(b));
 
-            a.Teleport(new Vector2(-9, -9));
+            a.Position = new Vector2(-9, -9);
             Assert.IsTrue(a.Intersects(b));
 
-            a.Teleport(new Vector2(-9, 0));
+            a.Position = new Vector2(-9, 0);
             Assert.IsTrue(a.Intersects(b));
 
-            a.Teleport(new Vector2(0, -9));
+            a.Position = new Vector2(0, -9);
             Assert.IsTrue(a.Intersects(b));
 
-            a.Teleport(new Vector2(-11, -11));
+            a.Position = new Vector2(-11, -11);
             Assert.IsFalse(a.Intersects(b));
 
-            a.Teleport(new Vector2(-11, 0));
+            a.Position = new Vector2(-11, 0);
             Assert.IsFalse(a.Intersects(b));
 
-            a.Teleport(new Vector2(0, -11));
+            a.Position = new Vector2(0, -11);
             Assert.IsFalse(a.Intersects(b));
 
-            a.Teleport(new Vector2(11, 11));
+            a.Position = new Vector2(11, 11);
             Assert.IsFalse(a.Intersects(b));
         }
 
@@ -86,7 +86,7 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(10, e.Size.X);
             Assert.AreEqual(10, e.Size.Y);
 
-            e.Teleport(new Vector2(5, 10));
+            e.Position = new Vector2(5, 10);
             Assert.AreEqual(5, e.Position.X);
             Assert.AreEqual(10, e.Position.Y);
             Assert.AreEqual(10, e.Size.X);

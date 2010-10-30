@@ -468,7 +468,7 @@ namespace NetGore.World
         /// Moves the Entity to a new location instantly.
         /// </summary>
         /// <param name="newPosition">New position for the Entity.</param>
-        public override void Teleport(Vector2 newPosition)
+        protected override void Teleport(Vector2 newPosition)
         {
             base.Teleport(newPosition);
 

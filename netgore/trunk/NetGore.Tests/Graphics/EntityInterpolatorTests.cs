@@ -18,7 +18,7 @@ namespace NetGore.Tests.Graphics
             var e = new TestEntity();
             var i = new EntityInterpolator();
 
-            e.Teleport(new Vector2(0));
+            e.Position = new Vector2(0);
             i.Update(e, 1);
             Assert.AreEqual(Vector2.Zero, i.DrawPosition);
 
@@ -37,7 +37,7 @@ namespace NetGore.Tests.Graphics
             var e = new TestEntity();
             var i = new EntityInterpolator();
 
-            e.Teleport(new Vector2(0));
+            e.Position = new Vector2(0);
             i.Update(e, 1);
             Assert.AreEqual(Vector2.Zero, i.DrawPosition);
 

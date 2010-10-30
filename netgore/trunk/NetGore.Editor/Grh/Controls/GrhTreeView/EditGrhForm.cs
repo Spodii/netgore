@@ -626,7 +626,7 @@ namespace NetGore.Editor.Grhs
 
             try
             {
-                wall.Resize(new Vector2(wall.Size.X, Parser.Current.ParseFloat(txtWallH.Text)));
+                wall.Size = new Vector2(wall.Size.X, Parser.Current.ParseFloat(txtWallH.Text));
                 txtWallH.BackColor = EditorColors.Normal;
             }
             catch
@@ -648,7 +648,7 @@ namespace NetGore.Editor.Grhs
 
             try
             {
-                wall.Resize(new Vector2(Parser.Current.ParseFloat(txtWallW.Text), wall.Size.Y));
+                wall.Size = new Vector2(Parser.Current.ParseFloat(txtWallW.Text), wall.Size.Y);
                 txtWallW.BackColor = EditorColors.Normal;
             }
             catch

@@ -82,7 +82,7 @@ namespace NetGore.Tests.NetGore
                 spatial.Add(entity);
                 Assert.IsTrue(spatial.CollectionContains(entity), "Current spatial: " + spatial);
 
-                entity.Teleport(new Vector2(128, 128));
+                entity.Position = new Vector2(128, 128);
                 Assert.IsTrue(spatial.Contains(new Vector2(128, 128)), "Current spatial: " + spatial);
                 Assert.IsFalse(spatial.Contains(new Vector2(256, 128)), "Current spatial: " + spatial);
                 Assert.IsFalse(spatial.Contains(new Vector2(128, 256)), "Current spatial: " + spatial);
