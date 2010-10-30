@@ -45,7 +45,7 @@ namespace NetGore.Graphics
 
             foreach (var light in this)
             {
-                // TODO: Optimize by only drawing lights actually in view. Doing so would require making ILight return the correct spatial values.
+                // TODO: !! Optimize by only drawing lights actually in view. Doing so would require making ILight return the correct spatial values.
                 light.Draw(sb);
             }
 

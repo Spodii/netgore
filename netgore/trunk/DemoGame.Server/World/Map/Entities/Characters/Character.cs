@@ -2070,7 +2070,7 @@ namespace DemoGame.Server
                     return closestLegalPosition;
                 else
                 {
-                    // TODO: Could not find a valid position for the Character. Need to do SOMETHING here...
+                    // TODO: !! Could not find a valid position for the Character. Need to do SOMETHING here...
                 }
             }
 

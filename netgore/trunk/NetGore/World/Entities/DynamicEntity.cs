@@ -163,7 +163,7 @@ namespace NetGore.World
             get { return _mapEntityIndex; }
             set
             {
-                // TODO: Setter needs to eventually be hidden from alteration outside of the map
+                // TODO: !! Setter needs to eventually be hidden from alteration outside of the map
                 _mapEntityIndex = value;
             }
         }
