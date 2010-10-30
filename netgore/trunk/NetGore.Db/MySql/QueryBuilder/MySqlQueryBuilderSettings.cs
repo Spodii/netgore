@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
@@ -9,6 +12,7 @@ namespace NetGore.Db.MySql.QueryBuilder
     /// </summary>
     public class MySqlQueryBuilderSettings : IQueryBuilderSettings
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly MySqlQueryBuilderSettings _instance;
 
         /// <summary>
@@ -267,7 +271,10 @@ namespace NetGore.Db.MySql.QueryBuilder
                 return "@" + parameterName;
             else
             {
-                // TODO: !! errmsg - already escaped
+                const string errmsg = "Parameter `{0}` was already parameterized.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, parameterName);
+                Debug.Fail(string.Format(errmsg, parameterName));
                 return parameterName;
             }
         }
