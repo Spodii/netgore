@@ -261,8 +261,6 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public string DisplayedString
             {
-                // TODO : use unicode functions
-                // (convert from UTF-16 to UTF-32, and find how to marshal System.String as sfUint32*...)
                 get { return sfText_GetString(This); }
                 set { sfText_SetString(This, value); }
             }

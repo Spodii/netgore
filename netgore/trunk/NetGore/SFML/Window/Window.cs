@@ -216,7 +216,6 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected Window(IntPtr thisPtr, int dummy) : base(thisPtr)
             {
-                // TODO : find a cleaner way of separating this constructor from Window(IntPtr handle)
             }
 
             /// <summary>Event handler for the Closed event</summary>
