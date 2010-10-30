@@ -7,35 +7,50 @@ using NetGore.Features.NPCChat;
 using NetGore.Features.NPCChat.Conditionals;
 using NetGore.IO;
 
-namespace DemoGame.Client.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
     /// Describes a single page of dialog in a NPCChatDialogBase, and the possible responses available for the page.
-    /// This class is immutable and intended for use in the Client only.
+    /// This class is immutable.
     /// </summary>
-    public class NPCChatDialogItem : NPCChatDialogItemBase
+    public class ServerNPCChatDialogItem : NPCChatDialogItemBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        NPCChatConditionalCollectionBase _conditionals;
         NPCChatDialogItemID _id;
+        bool _isBranch;
         NPCChatResponseBase[] _responses;
+
+#if DEBUG
+        // ReSharper disable UnaccessedField.Local
+        /// <summary>
+        /// The text. Only available in debug builds.
+        /// </summary>
         string _text;
+
+        // ReSharper restore UnaccessedField.Local
+#endif
+
+#if DEBUG
+        // ReSharper disable UnaccessedField.Local
+        /// <summary>
+        /// The title. Only available in debug builds.
+        /// </summary>
         string _title;
 
-        /// <summary>
-        /// NPCChatDialogItem constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatDialogItem(IValueReader reader) : base(reader)
-        {
-        }
+        // ReSharper restore UnaccessedField.Local
+#endif
 
         /// <summary>
-        /// Not used by the Client and always returns null.
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
         /// </summary>
         public override NPCChatConditionalCollectionBase Conditionals
         {
-            get { return null; }
+            get { return _conditionals; }
         }
 
         /// <summary>
@@ -48,11 +63,13 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
-        /// Unused by the Client and will always return false.
+        /// When overridden in the derived class, gets if this NPCChatDialogItemBase is a branch dialog or not. If
+        /// true, the dialog should be automatically progressed by using EvaluateBranch() instead of waiting for
+        /// and accepting input from the user for a response.
         /// </summary>
         public override bool IsBranch
         {
-            get { return false; }
+            get { return _isBranch; }
         }
 
         /// <summary>
@@ -65,20 +82,35 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the main dialog text in this page of dialog.
+        /// This property is not supported by the Server's NPCChatDialogItem, and will always return String.Empty.
         /// </summary>
         public override string Text
         {
-            get { return _text; }
+            get
+            {
+                Debug.Fail("This property is not supported by the Server.");
+                return string.Empty;
+            }
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the title for this page of dialog. The title is primarily
-        /// used for debugging and development purposes only.
+        /// This property is not supported by the Server's NPCChatDialogItem, and will always return String.Empty.
         /// </summary>
         public override string Title
         {
-            get { return _title; }
+            get
+            {
+                Debug.Fail("This property is not supported by the Server.");
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        internal ServerNPCChatDialogItem(IValueReader r) : base(r)
+        {
         }
 
         /// <summary>
@@ -88,7 +120,7 @@ namespace DemoGame.Client.NPCChat
         /// want to load the conditionals when using Read.</returns>
         protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
         {
-            return null;
+            return new ServerNPCChatConditionalCollection();
         }
 
         /// <summary>
@@ -98,7 +130,7 @@ namespace DemoGame.Client.NPCChat
         /// <returns>A NPCChatResponseBase created using the given IValueReader</returns>
         protected override NPCChatResponseBase CreateResponse(IValueReader reader)
         {
-            return new NPCChatResponse(reader);
+            return new ServerNPCChatResponse(reader);
         }
 
         /// <summary>
@@ -107,7 +139,7 @@ namespace DemoGame.Client.NPCChat
         /// </summary>
         /// <param name="responseIndex">Index of the response.</param>
         /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
-        /// if the response is invalid.</returns>
+        /// if the response is invalid or ends the chat dialog.</returns>
         public override NPCChatResponseBase GetResponse(byte responseIndex)
         {
             if (responseIndex >= _responses.Length)
@@ -134,14 +166,29 @@ namespace DemoGame.Client.NPCChat
                                               IEnumerable<NPCChatResponseBase> responses,
                                               NPCChatConditionalCollectionBase conditionals)
         {
-            Debug.Assert(
-                _id == default(NPCChatDialogItemID) && _title == default(string) && _text == default(string) &&
-                _responses == default(IEnumerable<NPCChatResponseBase>), "Values were already set?");
+            Debug.Assert(_id == default(NPCChatDialogItemID) && _responses == default(IEnumerable<NPCChatResponseBase>),
+                         "Values were already set?");
 
             _id = page;
-            _title = title;
-            _text = text;
+            _isBranch = isBranch;
             _responses = responses.ToArray();
+            _conditionals = conditionals;
+
+#if DEBUG
+            _text = text;
+            _title = title;
+#endif
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(string.Format("{0} [Index: {1}]", GetType().Name, ID));
         }
     }
 }

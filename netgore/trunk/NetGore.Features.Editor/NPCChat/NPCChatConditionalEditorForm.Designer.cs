@@ -1,6 +1,4 @@
-﻿using NetGore.Editor.NPCChat;
-
-namespace NetGore.Editor.NPCChat
+﻿namespace NetGore.Features.NPCChat
 {
     public partial class NPCChatConditionalEditorForm
     {
@@ -35,7 +33,7 @@ namespace NetGore.Editor.NPCChat
             this.cmbConditionalType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtValue = new System.Windows.Forms.TextBox();
-            this.lstParameters = new NetGore.Editor.NPCChat.NPCChatParameterListBox();
+            this.lstParameters = new NetGore.Features.NPCChat.NPCChatParameterListBox();
             this.SuspendLayout();
             // 
             // label1

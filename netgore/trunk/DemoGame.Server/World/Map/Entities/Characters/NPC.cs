@@ -33,7 +33,7 @@ namespace DemoGame.Server
         /// </summary>
         static readonly IEnumerable<IQuest<User>> _emptyQuests = Enumerable.Empty<IQuest<User>>();
 
-        static readonly NPCChatManagerBase _npcChatManager = NPCChatManager.Instance;
+        static readonly NPCChatManagerBase _npcChatManager = ServerNPCChatManager.Instance;
 
         IAI _ai;
         NPCChatDialogBase _chatDialog;

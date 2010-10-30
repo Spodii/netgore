@@ -1,4 +1,4 @@
-﻿using NetGore.Editor.NPCChat;
+﻿using NetGore.Features.NPCChat;
 
 namespace DemoGame.Editor
 {
@@ -32,7 +32,7 @@ namespace DemoGame.Editor
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.npcChatDialogView = new NetGore.Editor.NPCChat.NPCChatDialogView();
+            this.npcChatDialogView = new NetGore.Features.NPCChat.NPCChatDialogView();
             this.gbSelectedNode = new System.Windows.Forms.GroupBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
@@ -65,7 +65,7 @@ namespace DemoGame.Editor
             this.label4 = new System.Windows.Forms.Label();
             this.gbConditionals = new System.Windows.Forms.GroupBox();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstConditionals = new NetGore.Editor.NPCChat.NPCChatConditionalsListBox();
+            this.lstConditionals = new NetGore.Features.NPCChat.NPCChatConditionalsListBox();
             this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnAddConditional = new System.Windows.Forms.Button();
@@ -75,7 +75,7 @@ namespace DemoGame.Editor
             this.btnSave = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.cmbSelectedDialog = new NetGore.Editor.NPCChat.NPCChatDialogComboBox();
+            this.cmbSelectedDialog = new NetGore.Features.NPCChat.NPCChatDialogComboBox();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.splitContainer1.Panel1.SuspendLayout();

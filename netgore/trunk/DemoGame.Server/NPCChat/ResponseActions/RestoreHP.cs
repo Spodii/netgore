@@ -3,7 +3,7 @@ using NetGore.Features.NPCChat;
 
 namespace DemoGame.Server.NPCChat.ResponseActions
 {
-    public class RestoreHP : NPCChatResponseAction
+    public class RestoreHP : ServerNPCChatResponseAction<User, NPC>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatResponseActionBase"/> class.

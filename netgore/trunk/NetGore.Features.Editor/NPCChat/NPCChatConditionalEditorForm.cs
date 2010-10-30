@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Features.NPCChat.Conditionals;
 
-namespace NetGore.Editor.NPCChat
+namespace NetGore.Features.NPCChat
 {
     public partial class NPCChatConditionalEditorForm : Form
     {

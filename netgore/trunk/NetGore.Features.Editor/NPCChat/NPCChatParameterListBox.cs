@@ -3,9 +3,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using NetGore.Editor;
 using NetGore.Features.NPCChat.Conditionals;
 
-namespace NetGore.Editor.NPCChat
+namespace NetGore.Features.NPCChat
 {
     public class NPCChatParameterListBox : ListBox
     {
