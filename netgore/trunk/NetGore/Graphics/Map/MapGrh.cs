@@ -28,6 +28,12 @@ namespace NetGore.Graphics
         Vector2 _position;
         float _rotation = 0f;
         Vector2 _scale = Vector2.One;
+
+        /// <summary>
+        /// Cache of the <see cref="Grh"/>.Size * <see cref="Scale"/>.
+        /// </summary>
+        Vector2 _scaledGrhSizeCache;
+
         SpriteEffects _spriteEffects;
 
         /// <summary>
@@ -146,16 +152,12 @@ namespace NetGore.Graphics
         public Vector2 Scale
         {
             get { return _scale; }
-            set { 
+            set
+            {
                 _scale = value;
                 _scaledGrhSizeCache = Grh.Size * Scale;
             }
         }
-
-        /// <summary>
-        /// Cache of the <see cref="Grh"/>.Size * <see cref="Scale"/>.
-        /// </summary>
-        Vector2 _scaledGrhSizeCache;
 
         /// <summary>
         /// Gets or sets the <see cref="SpriteEffects"/> to apply to the sprite when drawing.

@@ -715,7 +715,7 @@ namespace DemoGame.Editor
                 return;
 
             // Get the name to use
-            string name = InputBox.Show("New language name", "Enter the name of the new language");
+            var name = InputBox.Show("New language name", "Enter the name of the new language");
             if (string.IsNullOrEmpty(name))
                 return;
 

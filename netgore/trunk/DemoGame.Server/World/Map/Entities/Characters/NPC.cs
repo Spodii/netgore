@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
-using DemoGame.Server.NPCChat;
 using DemoGame.Server.Properties;
 using log4net;
 using NetGore;

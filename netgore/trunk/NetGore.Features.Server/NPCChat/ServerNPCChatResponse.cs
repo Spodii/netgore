@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore.Features.NPCChat;
 using NetGore.Features.NPCChat.Conditionals;
 using NetGore.IO;
 

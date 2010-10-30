@@ -84,7 +84,7 @@ namespace NetGore.World
         /// <exception cref="IndexOutOfRangeException">The <paramref name="gridIndex"/> is invalid.</exception>
         protected IGridSpatialCollectionSegment GetSegment(Point gridIndex)
         {
-            int i = gridIndex.X + (gridIndex.Y * GridSize.X);
+            var i = gridIndex.X + (gridIndex.Y * GridSize.X);
             return _gridSegments[i];
         }
 
@@ -311,10 +311,10 @@ namespace NetGore.World
                 if (segment.Contains(spatial))
                     return true;
             }
-            
+
             // In debug mode, make sure our check we performed above returned the correct result
-            Debug.Assert(!_gridSegments.Any(x => x.Contains(spatial)), 
-                "CollectionContains() returned false when the spatial really was in the collection. May be a position updating issue...");
+            Debug.Assert(!_gridSegments.Any(x => x.Contains(spatial)),
+                         "CollectionContains() returned false when the spatial really was in the collection. May be a position updating issue...");
 
             return false;
         }
@@ -1073,9 +1073,9 @@ namespace NetGore.World
             }
 
             // In debug mode, make sure we got all instances of the object
-            Debug.Assert(!CollectionContains(spatial), 
-                "Didn't fully and completely remove the spatial from all segments." + 
-                " It most likely failed to be removed from segments at some other time...");
+            Debug.Assert(!CollectionContains(spatial),
+                         "Didn't fully and completely remove the spatial from all segments." +
+                         " It most likely failed to be removed from segments at some other time...");
         }
 
         /// <summary>

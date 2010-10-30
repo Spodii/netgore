@@ -1,7 +1,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.Features.NPCChat;
 
 namespace NetGore.Features.NPCChat
 {

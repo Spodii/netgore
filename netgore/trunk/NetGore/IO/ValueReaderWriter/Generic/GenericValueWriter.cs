@@ -27,27 +27,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Creates a <see cref="GenericValueReader"/>.
-        /// </summary>
-        /// <param name="filePath">The path to the file to load.</param>
-        /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
-        /// <param name="format">The <see cref="GenericValueIOFormat"/> that defines what output format to use. If null,
-        /// <see cref="GenericValueWriter.DefaultFormat"/> will be used.</param>
-        /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
-        /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueWriter"/> will be used.</param>
-        /// <returns>The <see cref="GenericValueReader"/> instance.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="format"/> contains an invalid value.</exception>
-        public static GenericValueWriter Create(string filePath, string rootNodeName, GenericValueIOFormat? format = null,
-                                  bool? useEnumNames = null)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentNullException("filePath");
-
-            return new GenericValueWriter(filePath, rootNodeName, format, useEnumNames);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GenericValueReader"/> class.
         /// </summary>
         /// <param name="filePath">The path to the file to load.</param>
@@ -58,8 +37,7 @@ namespace NetGore.IO
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueWriter"/> will be used.</param>
         /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="format"/> contains an invalid value.</exception>
-        GenericValueWriter(string filePath, string rootNodeName, GenericValueIOFormat? format = null,
-                                  bool? useEnumNames = null)
+        GenericValueWriter(string filePath, string rootNodeName, GenericValueIOFormat? format = null, bool? useEnumNames = null)
         {
             // Get the encoding format to use
             GenericValueIOFormat formatToUse;
@@ -99,6 +77,27 @@ namespace NetGore.IO
         /// <see cref="GenericValueIOFormat.Xml"/>.
         /// </summary>
         public static GenericValueIOFormat DefaultFormat { get; set; }
+
+        /// <summary>
+        /// Creates a <see cref="GenericValueReader"/>.
+        /// </summary>
+        /// <param name="filePath">The path to the file to load.</param>
+        /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
+        /// <param name="format">The <see cref="GenericValueIOFormat"/> that defines what output format to use. If null,
+        /// <see cref="GenericValueWriter.DefaultFormat"/> will be used.</param>
+        /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
+        /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueWriter"/> will be used.</param>
+        /// <returns>The <see cref="GenericValueReader"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="format"/> contains an invalid value.</exception>
+        public static GenericValueWriter Create(string filePath, string rootNodeName, GenericValueIOFormat? format = null,
+                                                bool? useEnumNames = null)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException("filePath");
+
+            return new GenericValueWriter(filePath, rootNodeName, format, useEnumNames);
+        }
 
         #region IValueWriter Members
 

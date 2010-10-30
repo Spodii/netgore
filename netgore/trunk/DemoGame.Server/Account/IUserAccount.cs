@@ -13,12 +13,6 @@ namespace DemoGame.Server
         /// Gets the number of Characters in this UserAccount.
         /// </summary>
         byte CharacterCount { get; }
-        
-        /// <summary>
-        /// Sets the permission level for this account.
-        /// </summary>
-        /// <param name="newPermissions">The new <see cref="UserPermissions"/> level.</param>
-        void SetPermissions(UserPermissions newPermissions);
 
         /// <summary>
         /// Gets an IEnumerable of the <see cref="CharacterID"/>s for the <see cref="Character"/>s that are in
@@ -70,6 +64,12 @@ namespace DemoGame.Server
         /// client.
         /// </summary>
         void SendAccountCharacterInfos();
+
+        /// <summary>
+        /// Sets the permission level for this account.
+        /// </summary>
+        /// <param name="newPermissions">The new <see cref="UserPermissions"/> level.</param>
+        void SetPermissions(UserPermissions newPermissions);
 
         /// <summary>
         /// Loads and sets the User being used by this account.

@@ -19,7 +19,7 @@ namespace NetGore.Tests.NetGore.IO
             {
                 using (
                     var writer = GenericValueWriter.Create(format: GenericValueIOFormat.Binary, filePath: filePath,
-                                                        rootNodeName: "Root"))
+                                                           rootNodeName: "Root"))
                 {
                     writer.Write("Test", "asdf");
                 }
@@ -43,8 +43,8 @@ namespace NetGore.Tests.NetGore.IO
             try
             {
                 using (
-                    var writer = GenericValueWriter.Create(format: GenericValueIOFormat.Xml, filePath: filePath, rootNodeName: "Root")
-                    )
+                    var writer = GenericValueWriter.Create(format: GenericValueIOFormat.Xml, filePath: filePath,
+                                                           rootNodeName: "Root"))
                 {
                     writer.Write("Test", "asdf");
                 }
