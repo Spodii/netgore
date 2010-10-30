@@ -49,13 +49,12 @@ namespace NetGore.Graphics
                 }
                 catch (AccessViolationException ex)
                 {
-                    // TODO: Would be nice to just make this exception to stop happening completely
-
                     // Try to keep exceptions transparent since they likely mean that something, for some reason, was disposed
                     // and will likely not be a persistant issue
                     const string errmsg = "Failed to measure string `{0}` with font `{1}`: {2}";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, str, font, ex);
+                    Debug.Fail(string.Format(errmsg, str, font, ex));
 
                     return new Vector2(4, 4);
                 }
