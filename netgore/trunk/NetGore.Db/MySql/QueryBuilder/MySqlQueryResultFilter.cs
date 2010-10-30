@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db.MySql.QueryBuilder
@@ -9,6 +12,8 @@ namespace NetGore.Db.MySql.QueryBuilder
     /// </summary>
     class MySqlQueryResultFilter : QueryResultFilterBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MySqlQueryResultFilter"/> class.
         /// </summary>
@@ -57,8 +62,10 @@ namespace NetGore.Db.MySql.QueryBuilder
                             break;
 
                         default:
-                            // TODO: !! errmsg
-                            break;
+                            const string errmsg = "Encountered undefined OrderByType `{0}`.";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, ob.Value);
+                            throw new InvalidOperationException(string.Format(errmsg, ob.Value));
                     }
 
                     sb.Append(", ");
