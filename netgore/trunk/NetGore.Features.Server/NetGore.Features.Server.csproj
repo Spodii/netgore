@@ -122,6 +122,14 @@
     <Compile Include="Guilds\GuildManagerBase.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformerBase.cs" />
+    <Compile Include="NPCChat\Conditionals\ServerNPCChatConditional.cs" />
+    <Compile Include="NPCChat\Conditionals\ServerNPCChatConditionalCollection.cs" />
+    <Compile Include="NPCChat\Conditionals\ServerNPCChatConditionalCollectionItem.cs" />
+    <Compile Include="NPCChat\ServerNPCChatDialog.cs" />
+    <Compile Include="NPCChat\ServerNPCChatDialogItem.cs" />
+    <Compile Include="NPCChat\ServerNPCChatManager.cs" />
+    <Compile Include="NPCChat\ServerNPCChatResponse.cs" />
+    <Compile Include="NPCChat\ServerNPCChatResponseAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quests\DbClassGeneratorSettings.cs" />
     <Compile Include="Quests\IQuest.cs" />

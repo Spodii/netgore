@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DemoGame.Server.NPCChat.Conditionals;
 using NetGore.Features.NPCChat;
 using NetGore.Features.NPCChat.Conditionals;
 using NetGore.IO;
 
-namespace DemoGame.Server.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
     /// Describes a single response in a NPCChatDialogItemBase.
-    /// This class is immutable and intended for use in the Server only.
+    /// This class is immutable.
     /// </summary>
-    public class NPCChatResponse : NPCChatResponseBase
+    public class ServerNPCChatResponse : NPCChatResponseBase
     {
         NPCChatConditionalCollectionBase _conditionals;
         NPCChatDialogItemID _page;
@@ -21,6 +20,7 @@ namespace DemoGame.Server.NPCChat
 
 #if DEBUG
         // ReSharper disable UnaccessedField.Local  
+
         /// <summary>
         /// The text. Only available in debug builds.
         /// </summary>
@@ -88,7 +88,7 @@ namespace DemoGame.Server.NPCChat
         /// NPCChatResponse constructor.
         /// </summary>
         /// <param name="r">IValueReader to read the values from.</param>
-        internal NPCChatResponse(IValueReader r) : base(r)
+        internal ServerNPCChatResponse(IValueReader r) : base(r)
         {
         }
 
@@ -99,7 +99,7 @@ namespace DemoGame.Server.NPCChat
         /// want to load the conditionals when using Read.</returns>
         protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
         {
-            return new NPCChatConditionalCollection();
+            return new ServerNPCChatConditionalCollection();
         }
 
         /// <summary>

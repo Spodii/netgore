@@ -221,10 +221,6 @@
     <Compile Include="World\Map\Entities\EntityDrawer.cs" />
     <Compile Include="World\Map\Entities\ItemEntity.cs" />
     <Compile Include="World\Map\Entities\NPC.cs" />
-    <Compile Include="World\Map\Entities\NPCChat\NPCChatDialog.cs" />
-    <Compile Include="World\Map\Entities\NPCChat\NPCChatDialogItem.cs" />
-    <Compile Include="World\Map\Entities\NPCChat\NPCChatManager.cs" />
-    <Compile Include="World\Map\Entities\NPCChat\NPCChatResponse.cs" />
     <Compile Include="World\Map\Entities\TeleportEntity.cs" />
     <Compile Include="World\Map\Entities\ThralledNPC.cs" />
     <Compile Include="World\Map\Entities\User.cs" />
@@ -291,6 +287,9 @@
       <LastGenOutput>ClientSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="_ProjectInfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="World\Map\Entities\NPCChat\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

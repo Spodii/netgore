@@ -1,20 +1,19 @@
 using System.Linq;
-using NetGore.Features.NPCChat.Conditionals;
 using NetGore.IO;
 
-namespace DemoGame.Server.NPCChat.Conditionals
+namespace NetGore.Features.NPCChat.Conditionals
 {
-    public class NPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
+    public class ServerNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
         NPCChatConditionalBase _conditional;
         bool _not;
         NPCChatConditionalParameter[] _parameters;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalCollectionItem"/> class.
+        /// Initializes a new instance of the <see cref="ServerNPCChatConditionalCollectionItem"/> class.
         /// </summary>
         /// <param name="r">The IValueReader to read from.</param>
-        public NPCChatConditionalCollectionItem(IValueReader r)
+        public ServerNPCChatConditionalCollectionItem(IValueReader r)
         {
             Read(r);
         }

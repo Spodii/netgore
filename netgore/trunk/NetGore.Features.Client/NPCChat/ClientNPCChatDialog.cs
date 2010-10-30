@@ -3,16 +3,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.Features.NPCChat;
 using NetGore.IO;
 
-namespace DemoGame.Client.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
     /// Describes all the parts of a conversation that can take place with an NPC.
     /// This class is immutable and intended for use in the Client only.
     /// </summary>
-    public class NPCChatDialog : NPCChatDialogBase
+    public class ClientNPCChatDialog : NPCChatDialogBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,10 +20,10 @@ namespace DemoGame.Client.NPCChat
         string _title;
 
         /// <summary>
-        /// NPCChatDialog constructor.
+        /// Initializes a new instance of the <see cref="ClientNPCChatDialog"/> class.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatDialog(IValueReader reader) : base(reader)
+        internal ClientNPCChatDialog(IValueReader reader) : base(reader)
         {
         }
 
@@ -53,7 +52,7 @@ namespace DemoGame.Client.NPCChat
         /// <returns>An NPCChatDialogItemBase created using the given IValueReader.</returns>
         protected override NPCChatDialogItemBase CreateDialogItem(IValueReader reader)
         {
-            return new NPCChatDialogItem(reader);
+            return new ClientNPCChatDialogItem(reader);
         }
 
         /// <summary>

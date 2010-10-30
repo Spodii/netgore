@@ -423,38 +423,6 @@
     <Compile Include="Grh\AutomaticGrhData\MissingTexturesForm.Designer.cs">
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollectionChangeHandler.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogEventHandler.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogItemEventHandler.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatResponseEventHandler.cs" />
-    <Compile Include="NPCChat\NPCChatConditionalEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NPCChat\NPCChatConditionalEditorForm.Designer.cs">
-      <DependentUpon>NPCChatConditionalEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollection.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollectionItem.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialog.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogItem.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatManager.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatResponse.cs" />
-    <Compile Include="NPCChat\NPCChatConditionalsListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="NPCChat\NPCChatDialogComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="NPCChat\NPCChatDialogView\NPCChatDialogView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="NPCChat\NPCChatDialogView\NPCChatDialogViewNode.cs" />
-    <Compile Include="NPCChat\NPCChatDialogView\NPCChatDialogViewNodeItemType.cs" />
-    <Compile Include="NPCChat\NPCChatParameterListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="NPCChat\NPCChatParameterListBoxChangeSelectedHandler.cs" />
-    <Compile Include="NPCChat\SelectedConditionalItemChangeHandler.cs" />
     <Compile Include="WinForms\ParticleEmitterComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -514,10 +482,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Editors\GrhUITypeEditorForm.resx">
       <DependentUpon>GrhUITypeEditorForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NPCChat\NPCChatConditionalEditorForm.resx">
-      <DependentUpon>NPCChatConditionalEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore.Editor.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
     /// Handles when the selected <see cref="EditorNPCChatConditionalCollectionItem"/> in the

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore.Features.NPCChat.Conditionals;
 using NetGore.IO;
 
-namespace DemoGame.Server.NPCChat.Conditionals
+namespace NetGore.Features.NPCChat.Conditionals
 {
-    class NPCChatConditionalCollection : NPCChatConditionalCollectionBase
+    class ServerNPCChatConditionalCollection : NPCChatConditionalCollectionBase
     {
         NPCChatConditionalEvaluationType _evaluationType;
         NPCChatConditionalCollectionItemBase[] _items;
@@ -29,7 +28,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// the <paramref name="reader"/>.</returns>
         protected override NPCChatConditionalCollectionItemBase CreateItem(IValueReader reader)
         {
-            return new NPCChatConditionalCollectionItem(reader);
+            return new ServerNPCChatConditionalCollectionItem(reader);
         }
 
         /// <summary>

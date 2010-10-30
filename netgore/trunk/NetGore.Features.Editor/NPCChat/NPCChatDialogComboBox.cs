@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Features.NPCChat;
 
-namespace NetGore.Editor.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
     /// A <see cref="ComboBox"/> for <see cref="NPCChatDialogBase"/>s.

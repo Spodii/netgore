@@ -1,27 +1,26 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore.Features.NPCChat;
 using NetGore.Features.NPCChat.Conditionals;
 using NetGore.IO;
 
-namespace DemoGame.Client.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
-    /// Describes a single response in a NPCChatDialogItemBase.
-    /// This class is immutable and intended for use in the Client only.
+    /// Describes a single response in a <see cref="NPCChatDialogItemBase"/>.
+    /// This class is immutable.
     /// </summary>
-    public class NPCChatResponse : NPCChatResponseBase
+    public class ClientNPCChatResponse : NPCChatResponseBase
     {
         NPCChatDialogItemID _page;
         string _text;
         byte _value;
 
         /// <summary>
-        /// NPCChatResponse constructor.
+        /// Initializes a new instance of the <see cref="ClientNPCChatResponse"/> class.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatResponse(IValueReader reader) : base(reader)
+        internal ClientNPCChatResponse(IValueReader reader) : base(reader)
         {
         }
 

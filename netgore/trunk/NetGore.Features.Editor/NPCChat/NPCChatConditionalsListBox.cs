@@ -2,9 +2,10 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.Editor;
 using NetGore.Features.NPCChat.Conditionals;
 
-namespace NetGore.Editor.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
     /// A <see cref="ListBox"/> specially for managing the NPC chat conditional for editors.

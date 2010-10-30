@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
 using log4net;
 using NetGore;
@@ -873,7 +872,7 @@ namespace DemoGame.Client
             var npcIndex = r.ReadMapEntityIndex();
             var dialogIndex = r.ReadNPCChatDialogID();
 
-            var dialog = NPCChatManager.Instance[dialogIndex];
+            var dialog = ClientNPCChatManager.Instance[dialogIndex];
             GameplayScreen.ChatDialogForm.StartDialog(dialog);
         }
 

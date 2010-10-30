@@ -3,7 +3,7 @@ using NetGore.Features.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
-    public class MPPercentLessThan : NPCChatConditional
+    public class MPPercentLessThan : ServerNPCChatConditional<User, NPC>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MPPercentLessThan"/> class.

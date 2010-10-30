@@ -1,38 +1,37 @@
 using System.Linq;
-using NetGore.Features.NPCChat;
 using NetGore.IO;
 
-namespace DemoGame.Server.NPCChat
+namespace NetGore.Features.NPCChat
 {
     /// <summary>
     /// Provides a means for accessing the NPC chat dialogs.
     /// </summary>
-    public class NPCChatManager : NPCChatManagerBase
+    public class ClientNPCChatManager : NPCChatManagerBase
     {
         /// <summary>
         /// The NPCChatManagerBase implementation instance.
         /// </summary>
-        static readonly NPCChatManager _instance;
+        static readonly ClientNPCChatManager _instance;
 
         /// <summary>
-        /// Initializes the <see cref="NPCChatManager"/> class.
+        /// Initializes the <see cref="ClientNPCChatManager"/> class.
         /// </summary>
-        static NPCChatManager()
+        static ClientNPCChatManager()
         {
-            _instance = new NPCChatManager();
+            _instance = new ClientNPCChatManager();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
+        /// Initializes a new instance of the <see cref="ClientNPCChatManager"/> class.
         /// </summary>
-        NPCChatManager() : base(true)
+        ClientNPCChatManager() : base(true)
         {
         }
 
         /// <summary>
-        /// Gets the <see cref="NPCChatManager"/> instance.
+        /// Gets the <see cref="ClientNPCChatManager"/> instance.
         /// </summary>
-        public static NPCChatManager Instance
+        public static ClientNPCChatManager Instance
         {
             get { return _instance; }
         }
@@ -44,7 +43,7 @@ namespace DemoGame.Server.NPCChat
         /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
         protected override NPCChatDialogBase CreateDialog(IValueReader reader)
         {
-            return new NPCChatDialog(reader);
+            return new ClientNPCChatDialog(reader);
         }
     }
 }

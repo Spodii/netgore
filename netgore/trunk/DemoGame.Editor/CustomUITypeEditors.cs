@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
-using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
 using DemoGame.Editor.TypeConverters;
 using DemoGame.Editor.UITypeEditors;
@@ -152,7 +151,7 @@ namespace DemoGame.Editor
 
             // Add the custom UITypeEditors defined by the base engine
             NetGore.Editor.UI.CustomUITypeEditors.AddEditors();
-            NetGore.Editor.UI.CustomUITypeEditors.AddNPCChatDialogEditor(NPCChatManager.Instance);
+            NetGore.Editor.UI.CustomUITypeEditors.AddNPCChatDialogEditor(EditorNPCChatManager.Instance);
             NetGore.Editor.UI.CustomUITypeEditors.AddAIIDEditor(AIFactory.Instance);
 
             AddAdvancedClassTypeConverters();
@@ -336,7 +335,7 @@ namespace DemoGame.Editor
         /// <returns>The extra text to display.</returns>
         static string ExtraTextProvider_NPCChatDialogID(NPCChatDialogID v)
         {
-            var dialog = NPCChatManager.Instance[v];
+            var dialog = ClientNPCChatManager.Instance[v];
             if (dialog == null)
                 return null;
 

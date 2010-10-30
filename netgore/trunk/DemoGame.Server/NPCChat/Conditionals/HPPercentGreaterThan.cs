@@ -3,7 +3,7 @@ using NetGore.Features.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
-    public class HPPercentGreaterThan : NPCChatConditional
+    public class HPPercentGreaterThan : ServerNPCChatConditional<User, NPC>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HPPercentGreaterThan"/> class.
