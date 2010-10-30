@@ -12,8 +12,6 @@ namespace NetGore.Editor
     /// </summary>
     public class SelectedObjectsManager<T> where T : class
     {
-        // TODO: !! Automatically listen for when IDisposable objects are disposed
-
         readonly EntityEventHandler _disposedListenerEntity;
         readonly EventHandler _selectedIndexChangedHandler;
         readonly List<T> _selectedObjs = new List<T>();
