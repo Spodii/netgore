@@ -30,7 +30,7 @@ namespace NetGore.World
     /// base class supplies the synchronization of the supplied Properties, and synchronizing of additional
     /// properties through the SyncValue attribute.
     /// </summary>
-    public abstract class DynamicEntity : Entity
+    public abstract class DynamicEntity : Entity, IDynamicEntitySetMapEntityIndex
     {
         const string _positionValueKey = "Position";
         const string _propertyIndexValueKey = "PropertyIndex";
@@ -161,11 +161,6 @@ namespace NetGore.World
         public MapEntityIndex MapEntityIndex
         {
             get { return _mapEntityIndex; }
-            set
-            {
-                // TODO: !! Setter needs to eventually be hidden from alteration outside of the map
-                _mapEntityIndex = value;
-            }
         }
 
         /// <summary>
@@ -517,5 +512,19 @@ namespace NetGore.World
             // Perform post creation-serialized tasks
             AfterSendCreated(writer);
         }
+
+        #region IDynamicEntitySetMapEntityIndex Members
+
+        /// <summary>
+        /// Sets the <see cref="MapEntityIndex"/> for this <see cref="DynamicEntity"/>. This should only ever be done by
+        /// the <see cref="IMap"/> that contains this <see cref="DynamicEntity"/>.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        void IDynamicEntitySetMapEntityIndex.SetMapEntityIndex(MapEntityIndex value)
+        {
+            _mapEntityIndex = value;
+        }
+
+        #endregion
     }
 }
