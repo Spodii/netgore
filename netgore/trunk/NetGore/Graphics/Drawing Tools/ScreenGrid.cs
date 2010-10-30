@@ -175,7 +175,6 @@ namespace NetGore.Graphics
 
             var newPos = (entity.Position / Size).Round() * Size;
 
-            // TODO: map.SafeTeleportEntity()
             entity.Teleport(newPos);
         }
 
@@ -198,7 +197,6 @@ namespace NetGore.Graphics
             if (newSize.Y < Size.Y)
                 newSize.Y = Size.Y;
 
-            // TODO: map.SafeResizeEntity()
             entity.Resize(newSize);
         }
 
