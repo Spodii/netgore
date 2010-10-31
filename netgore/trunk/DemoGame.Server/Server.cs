@@ -36,8 +36,8 @@ namespace DemoGame.Server
         readonly TickCount _startupTime = TickCount.Now;
         readonly UserAccountManager _userAccountManager;
         readonly World _world;
-        bool _hasStarted;
 
+        bool _hasStarted;
         bool _isRunning = true;
         TickCount _nextServerSaveTime;
         int _tick;
