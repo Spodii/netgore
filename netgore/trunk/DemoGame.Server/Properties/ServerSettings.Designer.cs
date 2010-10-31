@@ -176,5 +176,14 @@ namespace DemoGame.Server.Properties {
                 return ((global::DemoGame.ItemTemplateID)(this["UnarmedItemTemplateID"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AboveNormal")]
+        public global::System.Threading.ThreadPriority ThreadPriority {
+            get {
+                return ((global::System.Threading.ThreadPriority)(this["ThreadPriority"]));
+            }
+        }
     }
 }

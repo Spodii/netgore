@@ -43,6 +43,31 @@ namespace DemoGame.Server
         int _tick;
 
         /// <summary>
+        /// Sets the priority of the current thread.
+        /// </summary>
+        static void SetThreadPriority(ThreadPriority priority)
+        {
+            try
+            {
+                var ct = Thread.CurrentThread;
+
+                if (ct.Priority != priority)
+                {
+                    ct.Priority = priority;
+
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Server thread priority changed to `{0}`.", priority);
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to set server thread priority to `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, priority, ex);
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
         /// </summary>
         public Server()
@@ -84,6 +109,9 @@ namespace DemoGame.Server
             _userAccountManager = new UserAccountManager(DbController);
             _world = new World(this);
             _sockets = new ServerSockets(this);
+
+            // Set the thread priority
+            SetThreadPriority(ServerSettings.Default.ThreadPriority);
 
             if (log.IsInfoEnabled)
                 log.Info("Server loaded.");
