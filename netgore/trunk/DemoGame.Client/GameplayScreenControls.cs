@@ -160,20 +160,6 @@ namespace DemoGame.Client
 
         void HandleGameControl_Emote(Emoticon emoticon)
         {
-            // TODO: !! Temp
-            switch (emoticon)
-            {
-                case Emoticon.Ellipsis:
-                    using (var pw = ClientPacket.Say("/warp 1 50 50"))
-                        Socket.Send(pw, ClientMessageType.Chat);
-                    return;
-
-                case Emoticon.Exclamation:
-                    using (var pw = ClientPacket.Say("/warp 2 50 50"))
-                        Socket.Send(pw, ClientMessageType.Chat);
-                    return;
-            }
-
             using (var pw = ClientPacket.Emoticon(emoticon))
             {
                 Socket.Send(pw, ClientMessageType.CharacterEmote);
