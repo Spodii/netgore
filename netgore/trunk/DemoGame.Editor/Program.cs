@@ -185,17 +185,6 @@ The path to the development content is required by the editor. See the file ment
             EngineSettingsInitializer.Initialize();
             GlobalState.Initailize();
 
-            // Ensure the content is copied over
-            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
-            {
-                const string errmsg =
-                    "Failed to copy the content from the dev to build path." +
-                    " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg);
-                Debug.Fail(errmsg);
-            }
-
             // Get the command-line switches
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
             var showEditor = !HandleSwitches(switches);
