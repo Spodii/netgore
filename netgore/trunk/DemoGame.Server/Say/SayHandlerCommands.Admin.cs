@@ -38,7 +38,7 @@ namespace DemoGame.Server
             }
 
             // Add the user to the map
-            User.ChangeMap(instance, new Vector2(50, 50));
+            User.Teleport(instance, new Vector2(50, 50));
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace DemoGame.Server
             }
 
             // Teleport to respawn map/position
-            User.ChangeMap(map, User.RespawnPosition);
+            User.Teleport(map, User.RespawnPosition);
         }
 
         /// <summary>

@@ -351,7 +351,7 @@ namespace DemoGame.Server
                 // Destroy the DynamicEntity for everyone on the map
                 if (_users.Count > 0)
                 {
-                    using (var pw = ServerPacket.RemoveDynamicEntity(dynamicEntity))
+                    using (var pw = ServerPacket.RemoveDynamicEntity(dynamicEntity.MapEntityIndex))
                     {
                         Send(pw, ServerMessageType.Map);
                     }

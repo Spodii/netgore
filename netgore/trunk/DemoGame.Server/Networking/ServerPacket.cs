@@ -267,10 +267,10 @@ namespace DemoGame.Server
             return ret;
         }
 
-        public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)
+        public static PacketWriter RemoveDynamicEntity(MapEntityIndex mei)
         {
             var pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
-            pw.Write(dynamicEntity.MapEntityIndex);
+            pw.Write(mei);
             return pw;
         }
 

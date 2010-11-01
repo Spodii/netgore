@@ -773,31 +773,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Changes the Character's map.
-        /// </summary>
-        /// <param name="newMap">New map to place the Character on.</param>
-        /// <param name="position">The position to place the Character.</param>
-        public void ChangeMap(Map newMap, Vector2 position)
-        {
-            if (Map == newMap)
-                return;
-
-            // Remove the Character from the last map
-            if (Map != null)
-                Map.RemoveEntity(this);
-
-            _map = null;
-
-            // Set the Character's new map
-            if (newMap != null)
-                newMap.AddEntity(this);
-
-            Teleport(position);
-
-            _spSync.ForceSynchronize();
-        }
-
-        /// <summary>
         /// When overridden in the derived class, checks if enough time has elapesd since the Character died
         /// for them to be able to respawn.
         /// </summary>
@@ -1355,7 +1330,7 @@ namespace DemoGame.Server
             // Set the map
             var m = World.GetMap(v.LoadMapID);
             if (m != null)
-                ChangeMap(m, Position);
+                Teleport(m, Position);
             else
                 ((IRespawnable)this).Respawn();
 
@@ -1785,9 +1760,6 @@ namespace DemoGame.Server
         /// <param name="position">Position to teleport to.</param>
         public void Teleport(Map newMap, Vector2 position)
         {
-            if (newMap == null)
-                throw new ArgumentNullException("newMap");
-
             if (newMap != Map)
             {
                 // Take the character off the old map, teleport, then put them on the new map
@@ -1798,13 +1770,19 @@ namespace DemoGame.Server
 
                 Teleport(position);
 
-                newMap.AddEntity(this);
+                if (newMap != null)
+                {
+                    newMap.AddEntity(this);
+                    _spSync.ForceSynchronize();
+                }
             }
             else
             {
                 // Just teleport since the map didn't change
                 Teleport(position);
             }
+
+            Debug.Assert(Map == newMap);
         }
 
         /// <summary>
@@ -2074,11 +2052,7 @@ namespace DemoGame.Server
                 }
                 else
                 {
-                    // No legal position could be found...
-                    const string errmsg = "Could not find a legal position for character `{0}` (Map: `{1}`; Pos: `{2}`).";
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, this, Map, position);
-                    Debug.Fail(string.Format(errmsg, this, Map, position));
+                    // No legal position could be found
                     return HandleNoLegalPositionFound(position);
                 }
             }
@@ -2097,7 +2071,8 @@ namespace DemoGame.Server
         protected virtual Vector2 HandleNoLegalPositionFound(Vector2 position)
         {
             if (IsPersistent)
-            {// Persistent characters get sent to their loading position
+            {
+                // Persistent characters get sent to their loading position
                 const string errmsg = "Character `{0}` is persistent, so they are being set back to their respawn position.";
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, this);
@@ -2591,10 +2566,7 @@ namespace DemoGame.Server
 
             // Set the Character's new location
             Teleport(RespawnPosition);
-
-            // Set the Character as alive
-            IsAlive = true;
-
+ 
             // Set the map
             if (!RespawnMapID.HasValue)
             {
@@ -2619,8 +2591,11 @@ namespace DemoGame.Server
                 }
                 else
                 {
+                    // Set the Character as alive
+                    IsAlive = true;
+
                     // Move the Character to their respawn map
-                    ChangeMap(respawnMap, Position);
+                    Teleport(respawnMap, Position);
                 }
             }
         }

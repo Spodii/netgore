@@ -25,6 +25,8 @@ namespace DemoGame.Server
         readonly CharacterTemplate _characterTemplate;
         readonly Map _map;
 
+        NPCSpawnerNPC[] _npcs;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCSpawner"/> class.
         /// </summary>
@@ -94,6 +96,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the <see cref="NPCs"/> that were spawned by this <see cref="NPCSpawner"/>.
+        /// </summary>
+        public IEnumerable<NPC> NPCs
+        {
+            get { return _npcs; }
+        }
+
+        /// <summary>
         /// Loads the NPCSpawners for a Map.
         /// </summary>
         /// <param name="map">Map to load the spawners for.</param>
@@ -113,25 +123,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles when a NPC handled by this <see cref="NPCSpawner"/> is killed.
-        /// </summary>
-        /// <param name="character">The NPC that was killed.</param>
-        void NPC_Killed(Character character)
-        {
-            Debug.Assert(character is NPC, "How is this not a NPC?!");
-            Debug.Assert(!character.IsDisposed, "Uhm, why did somebody dispose my precious little map-spawned NPC? :(");
-
-            var respawnPos = RandomSpawnPosition();
-
-            character.RespawnMapID = _map.ID;
-            character.RespawnPosition = respawnPos;
-        }
-
-        /// <summary>
         /// Gets a random position that fits inside the <see cref="NPCSpawner.Area"/>.
         /// </summary>
         /// <returns>A random position that fits inside the <see cref="NPCSpawner.Area"/>.</returns>
-        Vector2 RandomSpawnPosition()
+        public Vector2 RandomSpawnPosition()
         {
             var x = _rnd.Next(Area.Left, Area.Right + 1);
             var y = _rnd.Next(Area.Top, Area.Bottom + 1);
@@ -144,11 +139,111 @@ namespace DemoGame.Server
         /// </summary>
         void SpawnNPCs()
         {
+            if (_npcs != null)
+            {
+                foreach (var npc in _npcs)
+                {
+                    npc.DelayedDispose();
+                }
+            }
+
+            _npcs = new NPCSpawnerNPC[Amount];
+
             for (var i = 0; i < Amount; i++)
             {
                 var pos = RandomSpawnPosition();
-                var npc = new NPC(_map.World, _characterTemplate, _map, pos);
-                npc.Killed += NPC_Killed;
+                var npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos);
+                _npcs[i] = npc;
+            }
+        }
+
+        /// <summary>
+        /// An <see cref="NPC"/> that is created from an <see cref="NPCSpawner"/>.
+        /// </summary>
+        class NPCSpawnerNPC : NPC
+        {
+            readonly NPCSpawner _spawner;
+
+            bool _requiresNewPosition = true;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="NPCSpawnerNPC"/> class.
+            /// </summary>
+            /// <param name="spawner">The spawner.</param>
+            /// <param name="parent">World that the NPC belongs to.</param>
+            /// <param name="template">NPCTemplate used to create the NPC.</param>
+            /// <param name="map">The map.</param>
+            /// <param name="position">The position.</param>
+            public NPCSpawnerNPC(NPCSpawner spawner, World parent, CharacterTemplate template, Map map, Vector2 position)
+                : base(parent, template, map, position)
+            {
+                if (spawner == null)
+                    throw new ArgumentNullException("spawner");
+
+                _spawner = spawner;
+            }
+
+            /// <summary>
+            /// Handles when no legal position could be found for this <see cref="Character"/>.
+            /// This will usually occur when performing a teleport into an area that is completely blocked off, and no near-by
+            /// position can be found. Moving a <see cref="Character"/> too far from the original position can result in them
+            /// going somewhere that they are not supposed to, so it is best to send them to a predefined location.
+            /// </summary>
+            /// <param name="position">The position that the <see cref="Character"/> tried to go to, but failed to.</param>
+            /// <returns>
+            /// The position to warp the <see cref="Character"/> to.
+            /// </returns>
+            protected override Vector2 HandleNoLegalPositionFound(Vector2 position)
+            {
+                // Set to not alive, but do NOT actually kill them!
+                IsAlive = false;
+
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Failed to find legal spawn position for NPC `{0}`. Will attempt again next update.", this);
+
+                _requiresNewPosition = true;
+
+                return position;
+            }
+
+            /// <summary>
+            /// Handles updating this <see cref="Entity"/>.
+            /// </summary>
+            /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
+            /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
+            protected override void HandleUpdate(IMap imap, int deltaTime)
+            {
+                if (_requiresNewPosition)
+                {
+                    _requiresNewPosition = false;
+
+                    RespawnMapID = _spawner.Map.ID;
+                    RespawnPosition = _spawner.RandomSpawnPosition();
+
+                    Teleport(_spawner.Map, RespawnPosition);
+
+                    if (_requiresNewPosition)
+                        return;
+
+                    IsAlive = true;
+                }
+
+                base.HandleUpdate(imap, deltaTime);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, allows for additional handling of the
+            /// <see cref="Character.Killed"/> event. It is recommended you override this method instead of
+            /// using the corresponding event when possible.
+            /// </summary>
+            protected override void OnKilled()
+            {
+                var respawnPos = _spawner.RandomSpawnPosition();
+
+                RespawnMapID = _spawner.Map.ID;
+                RespawnPosition = respawnPos;
+
+                base.OnKilled();
             }
         }
     }

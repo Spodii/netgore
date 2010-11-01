@@ -15,7 +15,7 @@ namespace NetGore.World
         /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
         /// that used this IUsableEntity may be null.
         /// </summary>
-        event EntityEventHandler<DynamicEntity> OnUse;
+        event EntityEventHandler<DynamicEntity> Used;
 
         /// <summary>
         /// Gets if the Client should be notified when this IUsableEntity is used. If true, when this IUsableEntity is

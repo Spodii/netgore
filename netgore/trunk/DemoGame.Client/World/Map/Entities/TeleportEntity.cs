@@ -11,7 +11,7 @@ namespace DemoGame.Client
         /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
         /// that used this IUsableEntity may be null.
         /// </summary>
-        public override event EntityEventHandler<DynamicEntity> OnUse;
+        public override event EntityEventHandler<DynamicEntity> Used;
 
         /// <summary>
         /// Client:
@@ -25,8 +25,8 @@ namespace DemoGame.Client
         /// unused.</returns>
         public override bool Use(DynamicEntity charEntity)
         {
-            if (OnUse != null)
-                OnUse(this, charEntity);
+            if (Used != null)
+                Used(this, charEntity);
 
             return true;
         }

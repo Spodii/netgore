@@ -42,9 +42,9 @@ namespace DemoGame.Server
         ushort _respawnSecs;
 
         /// <summary>
-        /// The game time at which the NPC will respawn.
+        /// Gets or sets the game time at which the NPC will respawn.
         /// </summary>
-        TickCount _respawnTime = 0;
+        protected TickCount RespawnTime { get; set; }
 
         IShop<ShopItem> _shop;
 
@@ -117,7 +117,7 @@ namespace DemoGame.Server
                 log.DebugFormat("Created NPC instance from template `{0}`.", template);
 
             // Spawn
-            ChangeMap(map, position);
+            Teleport(map, position);
 
             ((IRespawnable)this).Respawn();
         }
@@ -203,7 +203,7 @@ namespace DemoGame.Server
         /// <returns>True if enough time has elapsed; otherwise false.</returns>
         protected override bool CheckRespawnElapsedTime(TickCount currentTime)
         {
-            return currentTime > _respawnTime;
+            return currentTime > RespawnTime;
         }
 
         /// <summary>
@@ -382,11 +382,11 @@ namespace DemoGame.Server
             {
                 // Start the respawn sequence
                 IsAlive = false;
-                _respawnTime = (TickCount)(GetTime() + (RespawnSecs * 1000));
+                RespawnTime = (TickCount)(GetTime() + (RespawnSecs * 1000));
 
                 LoadSpawnItems();
 
-                ChangeMap(null, Vector2.Zero);
+                Teleport(null, Vector2.Zero);
                 World.AddToRespawn(this);
             }
             else
