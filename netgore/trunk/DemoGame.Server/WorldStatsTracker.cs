@@ -7,7 +7,6 @@ using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.WorldStats;
-using NetGore.Network;
 using NetGore.World;
 
 namespace DemoGame.Server
@@ -36,7 +35,6 @@ namespace DemoGame.Server
         readonly InsertWorldStatsCountShopSellQuery _countShopSellQuery;
         readonly InsertWorldStatsCountUserConsumeItemQuery _countUserConsumeItemQuery;
         readonly InsertWorldStatsCountUserKillNPCQuery _countUserKillNPCQuery;
-
         readonly InsertWorldStatsGuildUserChangeQuery _guildUserChangeQuery;
         readonly InsertWorldStatsNetworkQuery _networkQuery;
         readonly InsertWorldStatsNPCKillUserQuery _npcKillUserQuery;
@@ -355,17 +353,21 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, logs the <see cref="NetStats"/> to the database.
+        /// When overridden in the derived class, logs the network statistics to the database.
         /// </summary>
-        /// <param name="netStats">The <see cref="NetStats"/> containing the statistics to log. This contains the difference
-        /// in the <see cref="NetStats"/> from the last call.</param>
-        protected override void LogNetStats(NetStats netStats)
+        /// <param name="connections">The current number of connections.</param>
+        /// <param name="recvBytes">The average bytes received per second.</param>
+        /// <param name="recvPackets">The average packets received per second.</param>
+        /// <param name="recvMsgs">The average messages received per second.</param>
+        /// <param name="sentBytes">The average bytes sent per second.</param>
+        /// <param name="sentPackets">The average packets sent per second.</param>
+        /// <param name="sentMsgs">The average messages sent per second.</param>
+        protected override void LogNetStats(ushort connections, uint recvBytes, uint recvPackets, uint recvMsgs, uint sentBytes,
+                                            uint sentPackets, uint sentMsgs)
         {
-            var args = new WorldStatsNetworkTable(when: Now(), connections: (uint)netStats.Connections,
-                                                  connectionsRejected: (uint)netStats.RejectedConnections,
-                                                  recv: (uint)netStats.Recv, recvs: (uint)netStats.Receives,
-                                                  sends: (uint)netStats.Sends, sent: (uint)netStats.Sent, iD: 0);
-
+            var args = new WorldStatsNetworkTable(iD: 0, when: Now(), connections: connections, recvBytes: recvBytes,
+                                                  recvPackets: recvPackets, recvMessages: recvMsgs, sentBytes: sentBytes,
+                                                  sentPackets: sentPackets, sentMessages: sentMsgs);
             _networkQuery.Execute(args);
         }
     }

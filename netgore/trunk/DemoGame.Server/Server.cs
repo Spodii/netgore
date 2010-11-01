@@ -110,6 +110,8 @@ namespace DemoGame.Server
             _world = new World(this);
             _sockets = new ServerSockets(this);
 
+            WorldStatsTracker.Instance.NetPeerToTrack = _sockets.GetNetServer();
+
             // Set the thread priority
             SetThreadPriority(ServerSettings.Default.ThreadPriority);
 

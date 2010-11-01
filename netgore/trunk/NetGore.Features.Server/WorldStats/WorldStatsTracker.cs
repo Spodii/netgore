@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Lidgren.Network;
 using log4net;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
@@ -22,15 +23,17 @@ namespace NetGore.Features.WorldStats
                                                                                                          where TItem : class
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly TickCount _logNetStatsRate;
 
-        NetStats _lastNetStatsValues = new NetStats();
+        NetPeer _netPeer;
+        NetPeerStatisticsSnapshot _lastNetStatsValues;
         TickCount _nextLogNetStatsTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorldStatsTracker{TUser, TNPC, TItem}"/> class.
         /// </summary>
-        /// <param name="logNetStatsRate">The rate in milliseconds that the <see cref="NetStats"/> information is
+        /// <param name="logNetStatsRate">The rate in milliseconds that the <see cref="NetPeerStatisticsSnapshot"/> information is
         /// logged to the database.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="logNetStatsRate"/> is less than
         /// or equal to zero.</exception>
@@ -45,11 +48,34 @@ namespace NetGore.Features.WorldStats
         }
 
         /// <summary>
-        /// Gets the rate in milliseconds that the <see cref="NetStats"/> information is logged to the database.
+        /// Gets the rate in milliseconds that the <see cref="NetPeerStatisticsSnapshot"/> information is logged to the database.
         /// </summary>
         public TickCount LogNetStatsRate
         {
             get { return _logNetStatsRate; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="NetPeer"/> to log the statistics for.
+        /// If null, the statistics will not be logged.
+        /// </summary>
+        public NetPeer NetPeerToTrack
+        {
+            get { return _netPeer; }
+            set
+            {
+                if (_netPeer == value)
+                    return;
+
+                _netPeer = value;
+
+                _nextLogNetStatsTime = TickCount.Now + _logNetStatsRate;
+
+                if (NetPeerToTrack != null)
+                    _lastNetStatsValues = new NetPeerStatisticsSnapshot(NetPeerToTrack.Statistics);
+                else
+                    _lastNetStatsValues = null;
+            }
         }
 
         /// <summary>
@@ -221,20 +247,75 @@ namespace NetGore.Features.WorldStats
             // NetStats
             if (_nextLogNetStatsTime < currentTime)
             {
-                var statDiffs = NetStats.Global - _lastNetStatsValues;
-                _lastNetStatsValues = NetStats.Global;
-                LogNetStats(statDiffs);
+                // Ensure we have the NetPeer set
+                var netPeer = NetPeerToTrack;
+                var ss = _lastNetStatsValues;
+                if (netPeer != null && ss != null)
+                {
+                    // Grab the current snapshot
+                    var newSS = new NetPeerStatisticsSnapshot(netPeer.Statistics);
 
+                    // Find the time delta
+                    var deltaMS = newSS.Time - ss.Time;
+                    var deltaSecs = deltaMS / 1000f;
+
+                    // Find the values (most of which are diffs from the last value, averaged over time)
+                    var conns = (ushort)netPeer.ConnectionsCount;
+                    var recvBytes = NetAvg(newSS.ReceivedBytes, ss.ReceivedBytes, deltaSecs);
+                    var recvPackets = NetAvg(newSS.ReceivedPackets, ss.ReceivedPackets, deltaSecs);
+                    var recvMsgs = NetAvg(newSS.ReceivedMessages, ss.ReceivedMessages, deltaSecs);
+                    var sentBytes = NetAvg(newSS.SentBytes, ss.SentBytes, deltaSecs);
+                    var sentPackets = NetAvg(newSS.SentPackets, ss.SentPackets, deltaSecs);
+                    var sentMsgs = NetAvg(newSS.SentMessages, ss.SentMessages, deltaSecs);
+
+                    // Update the last snapshot to now
+                    _lastNetStatsValues = newSS;
+
+                    // Log
+                    LogNetStats(conns, recvBytes, recvPackets, recvMsgs, sentBytes, sentPackets, sentMsgs);
+                }
+
+                // Update the time to perform the next logging
                 _nextLogNetStatsTime = GetNextUpdateTime(currentTime, _nextLogNetStatsTime, LogNetStatsRate);
             }
         }
 
         /// <summary>
-        /// When overridden in the derived class, logs the <see cref="NetStats"/> to the database.
+        /// Gets the average rate per second for a <see cref="NetPeerStatisticsSnapshot"/>.
         /// </summary>
-        /// <param name="netStats">The <see cref="NetStats"/> containing the statistics to log. This contains the difference
-        /// in the <see cref="NetStats"/> from the last call.</param>
-        protected abstract void LogNetStats(NetStats netStats);
+        /// <param name="curr">The current value.</param>
+        /// <param name="last">The previous value.</param>
+        /// <param name="deltaSecs">The time delta between the <paramref name="curr"/> and <paramref name="last"/> in seconds.</param>
+        /// <returns>The average per second difference between the two values.</returns>
+        static uint NetAvg(int curr, int last, float deltaSecs)
+        {
+            if (curr < last)
+            {
+                Debug.Fail("How did the value decrease over time?");
+                return 0;
+            }
+
+            var diff = curr - last;
+
+            // Get the rate per second
+            var ret = Math.Round(diff / deltaSecs);
+
+            // Make sure we don't underflow
+            return (uint)Math.Max(0, ret);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, logs the network statistics to the database.
+        /// </summary>
+        /// <param name="connections">The current number of connections.</param>
+        /// <param name="recvBytes">The average bytes received per second.</param>
+        /// <param name="recvPackets">The average packets received per second.</param>
+        /// <param name="recvMsgs">The average messages received per second.</param>
+        /// <param name="sentBytes">The average bytes sent per second.</param>
+        /// <param name="sentPackets">The average packets sent per second.</param>
+        /// <param name="sentMsgs">The average messages sent per second.</param>
+        protected abstract void LogNetStats(ushort connections, uint recvBytes, uint recvPackets, uint recvMsgs,
+            uint sentBytes, uint sentPackets, uint sentMsgs);
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> for the current time.
