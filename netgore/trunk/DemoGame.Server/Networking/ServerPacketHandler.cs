@@ -566,7 +566,7 @@ namespace DemoGame.Server
             if (de == null)
             {
                 // The DynamicEntity for the index was null, so tell the client to delete whatever is at that index
-                using (var pw = ServerPacket.RemoveDynamicEntity(de))
+                using (var pw = ServerPacket.RemoveDynamicEntity(index))
                 {
                     conn.Send(pw, ServerMessageType.Map);
                 }

@@ -220,6 +220,7 @@
     <Compile Include="World\Map\Entities\EntityDrawer.cs" />
     <Compile Include="World\Map\Entities\ItemEntity.cs" />
     <Compile Include="World\Map\Entities\NPC.cs" />
+    <Compile Include="World\Map\Entities\NPCSpawnerNPC.cs" />
     <Compile Include="World\Map\Entities\TeleportEntity.cs" />
     <Compile Include="World\Map\Entities\ThralledNPC.cs" />
     <Compile Include="World\Map\Entities\User.cs" />

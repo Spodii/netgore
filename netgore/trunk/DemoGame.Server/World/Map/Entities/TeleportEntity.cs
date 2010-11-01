@@ -15,7 +15,7 @@ namespace DemoGame.Server
         /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
         /// that used this IUsableEntity may be null.
         /// </summary>
-        public override event EntityEventHandler<DynamicEntity> OnUse;
+        public override event EntityEventHandler<DynamicEntity> Used;
 
         /// <summary>
         /// Client: 
@@ -70,7 +70,8 @@ namespace DemoGame.Server
                             log.ErrorFormat(errmsg, c, this);
                         return false;
                     }
-                    c.ChangeMap(newMap, Position);
+
+                    c.Teleport(newMap, Position);
                 }
             }
 
@@ -78,8 +79,8 @@ namespace DemoGame.Server
             charEntity.Position = Destination;
 
             // Notify listeners
-            if (OnUse != null)
-                OnUse(this, charEntity);
+            if (Used != null)
+                Used(this, charEntity);
 
             // Successfully used
             return true;
