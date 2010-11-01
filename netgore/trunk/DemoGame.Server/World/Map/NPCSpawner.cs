@@ -162,9 +162,19 @@ namespace DemoGame.Server
         /// </summary>
         class NPCSpawnerNPC : NPC
         {
+            /// <summary>
+            /// The minimum amount of time to wait, in milliseconds, before attempting to find a new legal position for a
+            /// <see cref="NPCSpawnerNPC"/>.
+            /// </summary>
+            const int _findNewPositionTimeout = 1000;
+
             readonly NPCSpawner _spawner;
 
-            bool _requiresNewPosition = true;
+            /// <summary>
+            /// The <see cref="TickCount"/> at which we last requested a new respawn position for this <see cref="NPCSpawnerNPC"/>.
+            /// Will only attempt a new position after <see cref="_findNewPositionTimeout"/> milliseconds have elapsed.
+            /// </summary>
+            TickCount _reqNewPositionStartTime = TickCount.MinValue;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="NPCSpawnerNPC"/> class.
@@ -201,7 +211,10 @@ namespace DemoGame.Server
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Failed to find legal spawn position for NPC `{0}`. Will attempt again next update.", this);
 
-                _requiresNewPosition = true;
+                // Only set the time if it was not set already, otherwise we just might end up pushing the delay time up constantly
+                // and making it so they never try to actually respawn
+                if (_reqNewPositionStartTime == TickCount.MinValue)
+                    _reqNewPositionStartTime = TickCount.Now;
 
                 return position;
             }
@@ -213,18 +226,31 @@ namespace DemoGame.Server
             /// <param name="deltaTime">The amount of time (in milliseconds) that has elapsed since the last update.</param>
             protected override void HandleUpdate(IMap imap, int deltaTime)
             {
-                if (_requiresNewPosition)
+                // Check if they have requested a new spawn position
+                if (_reqNewPositionStartTime != TickCount.MinValue)
                 {
-                    _requiresNewPosition = false;
+                    // Check if enough time has elapsed to try and find the new position
+                    if (TickCount.Now - _reqNewPositionStartTime > _findNewPositionTimeout)
+                    {
+                        _reqNewPositionStartTime = TickCount.MinValue;
 
-                    RespawnMapID = _spawner.Map.ID;
-                    RespawnPosition = _spawner.RandomSpawnPosition();
+                        RespawnMapID = _spawner.Map.ID;
+                        RespawnPosition = _spawner.RandomSpawnPosition();
 
-                    Teleport(_spawner.Map, RespawnPosition);
+                        Teleport(_spawner.Map, RespawnPosition);
 
-                    if (_requiresNewPosition)
+                        // Check that our attempt to teleport actually succeeded, not just put them at another invalid position
+                        if (_reqNewPositionStartTime != TickCount.MinValue)
+                            return;
+                    }
+                    else
+                    {
+                        // Not enough time has elapsed...
                         return;
+                    }
 
+                    // They managed to teleport to a valid position - bring to life and clear the timer
+                    _reqNewPositionStartTime = TickCount.MinValue;
                     IsAlive = true;
                 }
 
