@@ -132,25 +132,69 @@ namespace NetGore.Graphics.GUI
         /// <param name="parent">The parent.</param>
         /// <param name="owner">The owner.</param>
         /// <param name="text">The text.</param>
-        /// <returns>The <see cref="ChatBubble"/> instance.</returns>
+        /// <returns>The <see cref="ChatBubble"/> instance, or null if any <see cref="Exception"/>s errors occured
+        /// while trying to make the <see cref="ChatBubble"/> or any of the supplied parameters were invalid.</returns>
         public static ChatBubble Create(Control parent, Entity owner, string text)
         {
+            if (parent == null)
+            {
+                const string errmsg = "ChatBubble.Create() failed - parent was null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return null;
+            }
+
+            if (owner == null)
+            {
+                const string errmsg = "ChatBubble.Create() failed - owner was null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(text))
+            {
+                const string errmsg = "ChatBubble.Create() failed - text was null or empty.";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+                return null;
+            }
+
             lock (_chatBubblesSync)
             {
-                // If the ChatBubble already exists for the given Entity, reuse that one
-                ChatBubble c;
-                if (_chatBubbles.TryGetValue(owner, out c) && c != null)
+                ChatBubble c = null;
+
+                try
                 {
-                    c._textControl.ChangeTextAndResize(text);
-                    c._deathTime = (TickCount)(TickCount.Now + Lifespan);
-                    return c;
+                    // If the ChatBubble already exists for the given Entity, reuse that one
+                    if (_chatBubbles.TryGetValue(owner, out c) && c != null)
+                    {
+                        c._textControl.ChangeTextAndResize(text);
+                        c._deathTime = (TickCount)(TickCount.Now + Lifespan);
+                        c.Update(TickCount.Now);
+                        return c;
+                    }
+
+                    // Create a new ChatBubble
+                    if (CreateChatBubbleInstance != null)
+                        c = CreateChatBubbleInstance(parent, owner, text);
+                    else
+                        c = new ChatBubble(parent, owner, text);
+
+                    c.Update(TickCount.Now);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Error attempting to create ChatBubble for entity `{0}` with text `{1}`. Exception: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, owner, text, ex);
+                    Debug.Fail(string.Format(errmsg, owner, text, ex));
                 }
 
-                // Create a new ChatBubble
-                if (CreateChatBubbleInstance != null)
-                    c = CreateChatBubbleInstance(parent, owner, text);
-                else
-                    c = new ChatBubble(parent, owner, text);
+                if (c == null)
+                    return null;
 
                 _chatBubbles.Add(owner, c);
 
@@ -165,25 +209,30 @@ namespace NetGore.Graphics.GUI
         /// this was raised by a destructor which means the managed resources are already disposed.</param>
         protected override void Dispose(bool disposeManaged)
         {
-            if (Owner == null)
-            {
-                const string errmsg = "ChatBubble `{0}` has no owner.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-                return;
-            }
+            Debug.Assert(disposeManaged, "Why was our ChatBubble garbage collected?");
 
-            // Remove the bubble from the dictionary
-            lock (_chatBubblesSync)
+            if (disposeManaged)
             {
-                if (!_chatBubbles.Remove(Owner))
+                if (Owner == null)
                 {
-                    const string errmsg =
-                        "Tried to remove ChatBubble `{0}` for entity `{1}`, but it was already gone from the collection...?";
+                    const string errmsg = "ChatBubble `{0}` has no owner.";
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, this, Owner);
-                    Debug.Fail(string.Format(errmsg, this, Owner));
+                        log.ErrorFormat(errmsg, this);
+                    Debug.Fail(string.Format(errmsg, this));
+                    return;
+                }
+
+                // Remove the bubble from the dictionary
+                lock (_chatBubblesSync)
+                {
+                    if (!_chatBubbles.Remove(Owner))
+                    {
+                        const string errmsg =
+                            "Tried to remove ChatBubble `{0}` for entity `{1}`, but it was already gone from the collection...?";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, this, Owner);
+                        Debug.Fail(string.Format(errmsg, this, Owner));
+                    }
                 }
             }
 
