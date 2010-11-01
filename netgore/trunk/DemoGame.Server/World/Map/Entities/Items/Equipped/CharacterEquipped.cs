@@ -298,8 +298,14 @@ namespace DemoGame.Server
         /// </returns>
         public int GetStatModBonus(StatType statType)
         {
-            // TODO: !! This totally sucks. Add some kind of cache.
-            return this.SelectMany(x => x.Value.BaseStats).Where(x => x.StatType == statType).Select(x => (int)x.Value).Sum();
+            int sum = 0;
+
+            foreach (var item in Items)
+            {
+                sum += item.BaseStats[statType];
+            }
+
+            return sum;
         }
 
         #endregion
