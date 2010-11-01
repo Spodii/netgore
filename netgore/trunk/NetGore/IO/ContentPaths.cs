@@ -477,58 +477,67 @@ namespace NetGore.IO
         public static bool TryCopyContent(ContentPaths dev = null, ContentPaths build = null, string copyContentFile = null,
                                           string userArgs = null)
         {
-            // Use the default dev/build paths if not defined
-            if (dev == null)
-                dev = Dev;
-
-            if (build == null)
-                build = Build;
-
-            if (dev == null || build == null)
-            {
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat("Failed to run CopyContent: Could not acquire the dev ContentPath.");
-                return false;
-            }
-
-            // Get the CopyContent binary file path
-            if (string.IsNullOrEmpty(copyContentFile))
-                copyContentFile = dev.Root.Join("CopyContent.exe");
-
-            // Ensure the file exists
-            if (!File.Exists(copyContentFile))
-            {
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat("Failed to run CopyContent: Could not find the CopyContent program at `{0}`", copyContentFile);
-                return false;
-            }
-
-            // Try to run the program
-            var arguments = string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root);
-            if (!string.IsNullOrEmpty(userArgs))
-                arguments += " " + userArgs;
-
-            var pi = new ProcessStartInfo(copyContentFile, arguments)
-            { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
-
             try
             {
-                var proc = Process.Start(pi);
-                if (proc == null)
+                // Use the default dev/build paths if not defined
+                if (dev == null)
+                    dev = Dev;
+
+                if (build == null)
+                    build = Build;
+
+                if (dev == null || build == null)
                 {
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat("Failed to run CopyContent process: Process.Start returned null.");
+                        log.ErrorFormat("Failed to run CopyContent: Could not acquire the dev ContentPath.");
                     return false;
                 }
 
-                proc.WaitForExit(30000);
+                // Get the CopyContent binary file path
+                if (string.IsNullOrEmpty(copyContentFile))
+                    copyContentFile = dev.Root.Join("CopyContent.exe");
+
+                // Ensure the file exists
+                if (!File.Exists(copyContentFile))
+                {
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat("Failed to run CopyContent: Could not find the CopyContent program at `{0}`", copyContentFile);
+                    return false;
+                }
+
+                // Try to run the program
+                var arguments = string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root);
+                if (!string.IsNullOrEmpty(userArgs))
+                    arguments += " " + userArgs;
+
+                var pi = new ProcessStartInfo(copyContentFile, arguments) { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
+
+                try
+                {
+                    var proc = Process.Start(pi);
+                    if (proc == null)
+                    {
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat("Failed to run CopyContent process: Process.Start returned null.");
+                        return false;
+                    }
+
+                    proc.WaitForExit(30000);
+                }
+                catch (Exception ex)
+                {
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat("Failed to run CopyContent process: {0}", ex);
+
+                    return false;
+                }
             }
             catch (Exception ex)
             {
+                const string errmsg = "TryCopyContent() failed to unknown and unexpected exception. Exception: {0}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat("Failed to run CopyContent process: {0}", ex);
-
-                return false;
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
             }
 
             return true;
