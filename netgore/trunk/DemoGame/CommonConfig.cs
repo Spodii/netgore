@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NetGore.IO;
 
 namespace DemoGame
 {
@@ -9,6 +10,11 @@ namespace DemoGame
     /// </summary>
     public static class CommonConfig
     {
+        /// <summary>
+        /// Holds the string to pass to <see cref="ContentPaths.TryCopyContent"/>.
+        /// </summary>
+        public const string TryCopyContentArgs = "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\"";
+
         /// <summary>
         /// Settings specific to the networking.
         /// </summary>

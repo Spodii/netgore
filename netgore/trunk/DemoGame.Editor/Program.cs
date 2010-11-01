@@ -174,7 +174,7 @@ The path to the development content is required by the editor. See the file ment
             }
 
             // Ensure the content is copied over
-            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
+            if (!ContentPaths.TryCopyContent(userArgs: CommonConfig.TryCopyContentArgs))
             {
                 const string errmsg =
                     "Failed to copy the content from the dev to build path." +
