@@ -200,13 +200,6 @@ The path to the development content is required by the editor. See the file ment
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
             var showEditor = !HandleSwitches(switches);
 
-            MapPreviewer p = new MapPreviewer();
-            for (int i = 1; i <= 4; i++)
-            {
-                p.CreatePreview(new MapID(i), null, @"C:\map"+i+".png");
-            }
-            showEditor = false;
-
             if (showEditor)
             {
                 // Start up the application
