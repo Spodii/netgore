@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.World;
 using NUnit.Framework;
 using SFML.Graphics;
+
+// ReSharper disable AccessToModifiedClosure
 
 namespace NetGore.Tests.NetGore
 {
@@ -37,6 +40,156 @@ namespace NetGore.Tests.NetGore
         }
 
         #region Unit tests
+
+        [Test(Description = "Puts an emphasis on ensuring Move() works.")]
+        public void MovementTest01()
+        {
+            int moveSize = (int)(Math.Min(SpatialSize.X, SpatialSize.Y) / 4);
+            Vector2 halfMoveSize = new Vector2(moveSize) / 2f;
+
+            Random r = new Random(654987645);
+            foreach (var spatial in GetSpatials())
+            {
+                var entities = new List<TestEntity>();
+                for (int i = 0; i < 20; i++)
+                {
+                    var e = new TestEntity { Position = new Vector2(r.Next((int)SpatialSize.X), r.Next((int)SpatialSize.Y)), Size = new Vector2(32) };
+                    entities.Add(e);
+                    spatial.Add(e);
+
+                    Assert.IsTrue(spatial.CollectionContains(e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                    Assert.IsTrue(spatial.Contains(e.Position, x => x == e));
+                }
+
+                for (int i = 0; i < 40; i++)
+                {
+                    foreach (var e in entities)
+                    {
+                        var v = new Vector2(r.Next(moveSize), r.Next(moveSize)) - halfMoveSize;
+                        var newPos = v + e.Position;
+                        if (newPos.X < 0 || newPos.X >= SpatialSize.X - e.Size.X)
+                            v.X = 0;
+                        if (newPos.Y < 0 || newPos.Y >= SpatialSize.Y - e.Size.Y)
+                            v.Y = 0;
+
+                        e.Move(v);
+
+                        Assert.IsTrue(spatial.CollectionContains(e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                        Assert.IsTrue(spatial.Contains(e.Position, x => x == e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                    }
+                }
+            }
+        }
+
+
+
+        [Test(Description = "Puts an emphasis on ensuring Teleport works.")]
+        public void MovementTest02()
+        {
+            int moveSize = (int)(Math.Min(SpatialSize.X, SpatialSize.Y) / 4);
+            Vector2 halfMoveSize = new Vector2(moveSize) / 2f;
+
+            Random r = new Random(654987645);
+            foreach (var spatial in GetSpatials())
+            {
+                var entities = new List<TestEntity>();
+                for (int i = 0; i < 20; i++)
+                {
+                    var e = new TestEntity { Position = new Vector2(r.Next((int)SpatialSize.X), r.Next((int)SpatialSize.Y)), Size = new Vector2(32) };
+                    entities.Add(e);
+                    spatial.Add(e);
+
+                    Assert.IsTrue(spatial.CollectionContains(e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                    Assert.IsTrue(spatial.Contains(e.Position, x => x == e));
+                }
+
+                for (int i = 0; i < 40; i++)
+                {
+                    foreach (var e in entities)
+                    {
+                        var v = new Vector2(r.Next(moveSize), r.Next(moveSize)) - halfMoveSize;
+                        var newPos = v + e.Position;
+
+                        if (newPos.X < 0)
+                            newPos.X = 0;
+                        else if (newPos.X >= SpatialSize.X - e.Size.X)
+                            newPos.X = SpatialSize.X - e.Size.X;
+
+                        if (newPos.Y < 0)
+                            newPos.Y = 0;
+                        else if (newPos.Y >= SpatialSize.Y - e.Size.Y)
+                            newPos.Y = SpatialSize.Y - e.Size.Y;
+
+                        e.Position = newPos;
+
+                        Assert.IsTrue(spatial.CollectionContains(e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                        Assert.IsTrue(spatial.Contains(e.Position, x => x == e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                    }
+                }
+            }
+        }
+
+
+
+
+        [Test(Description = "Tests both Teleport and Move().")]
+        public void MovementTest03()
+        {
+            int moveSize = (int)(Math.Min(SpatialSize.X, SpatialSize.Y) / 4);
+            Vector2 halfMoveSize = new Vector2(moveSize) / 2f;
+
+            Random r = new Random(654987645);
+            foreach (var spatial in GetSpatials())
+            {
+                var entities = new List<TestEntity>();
+                for (int i = 0; i < 20; i++)
+                {
+                    var e = new TestEntity { Position = new Vector2(r.Next((int)SpatialSize.X), r.Next((int)SpatialSize.Y)), Size = new Vector2(32) };
+                    entities.Add(e);
+                    spatial.Add(e);
+
+                    Assert.IsTrue(spatial.CollectionContains(e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                    Assert.IsTrue(spatial.Contains(e.Position, x => x == e));
+                }
+
+                for (int i = 0; i < 40; i++)
+                {
+                    foreach (var e in entities)
+                    {
+                        var v = new Vector2(r.Next(moveSize), r.Next(moveSize)) - halfMoveSize;
+                        var newPos = v + e.Position;
+
+                        bool teleport = r.Next(0, 2) == 0;
+                        if (teleport)
+                        {
+                            if (newPos.X < 0)
+                                newPos.X = 0;
+                            else if (newPos.X >= SpatialSize.X - e.Size.X)
+                                newPos.X = SpatialSize.X - e.Size.X;
+
+                            if (newPos.Y < 0)
+                                newPos.Y = 0;
+                            else if (newPos.Y >= SpatialSize.Y - e.Size.Y)
+                                newPos.Y = SpatialSize.Y - e.Size.Y;
+
+                            e.Position = newPos;
+                        }
+                        else
+                        {
+                            if (newPos.X < 0 || newPos.X >= SpatialSize.X - e.Size.X)
+                                v.X = 0;
+                            if (newPos.Y < 0 || newPos.Y >= SpatialSize.Y - e.Size.Y)
+                                v.Y = 0;
+
+                            e.Move(v);
+                        }
+
+                        Assert.IsTrue(spatial.CollectionContains(e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                        Assert.IsTrue(spatial.Contains(e.Position, x => x == e), "Spatial: {0}, i: {1}", spatial.GetType().Name, i);
+                    }
+                }
+            }
+        }
 
         [Test]
         public void AddTest()
