@@ -149,15 +149,28 @@ void main (void)
 
             try
             {
-                // TODO: !! Optimize by only drawing refraction effects actually in view
-                foreach (var effect in this.OrderBy(x => x.DrawPriority))
+                // Sort through the effects, grabbing those in view, then ordering by their drawing priority
+                foreach (var effect in this.Where(camera.InView).OrderBy(x => x.DrawPriority))
                 {
-                    effect.Draw(sb);
+                    try
+                    {
+                        // Draw the effect
+                        effect.Draw(sb);
+                    }
+                    catch (Exception ex)
+                    {
+                        // A single effect failed
+                        const string errmsg = "Error while drawing IRefractionEffect `{0}` for RefractionManager `{1}`. Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, effect, this, ex);
+                        Debug.Fail(string.Format(errmsg, effect, this, ex));
+                    }
                 }
             }
             catch (Exception ex)
             {
-                const string errmsg = "Error while drawing IRefractionEffect for RefractionManager `{0}`. Exception: {1}";
+                // Failed somewhere other than effect.Draw(), causing the whole drawing to fail
+                const string errmsg = "Error while drawing IRefractionEffects for RefractionManager `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this, ex);
                 Debug.Fail(string.Format(errmsg, this, ex));
