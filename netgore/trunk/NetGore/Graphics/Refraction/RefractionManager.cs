@@ -160,7 +160,8 @@ void main (void)
                     catch (Exception ex)
                     {
                         // A single effect failed
-                        const string errmsg = "Error while drawing IRefractionEffect `{0}` for RefractionManager `{1}`. Exception: {2}";
+                        const string errmsg =
+                            "Error while drawing IRefractionEffect `{0}` for RefractionManager `{1}`. Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, effect, this, ex);
                         Debug.Fail(string.Format(errmsg, effect, this, ex));

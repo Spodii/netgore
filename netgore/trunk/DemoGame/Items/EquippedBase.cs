@@ -62,26 +62,26 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
+
+        /// <summary>
         /// Gets all of the equipped items in this collection.
         /// </summary>
         public IEnumerable<T> Items
         {
             get
             {
-                for (int i = 0; i < _equipped.Length; i++)
+                for (var i = 0; i < _equipped.Length; i++)
                 {
                     if (_equipped[i] != null)
                         yield return _equipped[i];
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets if this object has been disposed.
-        /// </summary>
-        public bool IsDisposed
-        {
-            get { return _disposed; }
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Client
+﻿using System.Linq;
+
+namespace DemoGame.Client
 {
     /// <summary>
     /// Represents a <see cref="NPC"/> that was spawned by an NPC spawner.

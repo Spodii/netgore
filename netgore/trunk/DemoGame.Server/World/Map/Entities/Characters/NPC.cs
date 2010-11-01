@@ -41,11 +41,6 @@ namespace DemoGame.Server
         IEnumerable<IQuest<User>> _quests;
         ushort _respawnSecs;
 
-        /// <summary>
-        /// Gets or sets the game time at which the NPC will respawn.
-        /// </summary>
-        protected TickCount RespawnTime { get; set; }
-
         IShop<ShopItem> _shop;
 
         /// <summary>
@@ -164,6 +159,11 @@ namespace DemoGame.Server
             get { return _respawnSecs; }
             protected set { _respawnSecs = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the game time at which the NPC will respawn.
+        /// </summary>
+        protected TickCount RespawnTime { get; set; }
 
         /// <summary>
         /// When overridden in the derived class, gets this <see cref="Character"/>'s shop.

@@ -14,6 +14,24 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// Calls <see cref="ContentPaths.TryCopyContent"/> in debug builds.
+        /// </summary>
+        [Conditional("DEBUG")]
+        static void CopyContent()
+        {
+            if (ContentPaths.TryCopyContent(userArgs: CommonConfig.TryCopyContentArgs))
+            {
+                if (log.IsInfoEnabled)
+                    log.Info("TryCopyContent succeeded");
+            }
+            else
+            {
+                if (log.IsInfoEnabled)
+                    log.Info("TryCopyContent failed");
+            }
+        }
+
+        /// <summary>
         /// Server program entry point.
         /// </summary>
         static void Main(string[] args)
@@ -38,24 +56,6 @@ namespace DemoGame.Server
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new frmMain());
-            }
-        }
-
-        /// <summary>
-        /// Calls <see cref="ContentPaths.TryCopyContent"/> in debug builds.
-        /// </summary>
-        [Conditional("DEBUG")]
-        static void CopyContent()
-        {
-            if (ContentPaths.TryCopyContent(userArgs: CommonConfig.TryCopyContentArgs))
-            {
-                if (log.IsInfoEnabled)
-                    log.Info("TryCopyContent succeeded");
-            }
-            else
-            {
-                if (log.IsInfoEnabled)
-                    log.Info("TryCopyContent failed");
             }
         }
     }

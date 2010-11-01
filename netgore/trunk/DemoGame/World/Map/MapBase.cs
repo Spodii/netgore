@@ -882,7 +882,7 @@ namespace DemoGame
                 size.Y = Height - entity.Position.Y;
 
             // Set the size
-            entity.Size =size;
+            entity.Size = size;
         }
 
         /// <summary>

@@ -17,36 +17,31 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Linq;
+
 namespace DemoGame.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `active_trade_cash`.
-/// </summary>
-public interface IActiveTradeCashTable
-{
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-IActiveTradeCashTable DeepCopy();
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `active_trade_cash`.
+    /// </summary>
+    public interface IActiveTradeCashTable
+    {
+        /// <summary>
+        /// Gets the value of the database column `cash`.
+        /// </summary>
+        Int32 Cash { get; }
 
-/// <summary>
-/// Gets the value of the database column `cash`.
-/// </summary>
-System.Int32 Cash
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `character_id`.
-/// </summary>
-DemoGame.CharacterID CharacterID
-{
-get;
-}
-}
+        /// <summary>
+        /// Gets the value of the database column `character_id`.
+        /// </summary>
+        CharacterID CharacterID { get; }
 
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IActiveTradeCashTable DeepCopy();
+    }
 }

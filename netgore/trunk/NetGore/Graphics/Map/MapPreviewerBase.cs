@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using SFML.Graphics;
 using Color = SFML.Graphics.Color;
 using Image = System.Drawing.Image;
-using Point = SFML.Graphics.Point;
+using Point = System.Drawing.Point;
 
 namespace NetGore.Graphics
 {
@@ -16,6 +15,12 @@ namespace NetGore.Graphics
     /// </summary>
     public abstract class MapPreviewerBase<T> where T : IDrawableMap
     {
+        /// <summary>
+        /// The <see cref="PixelFormat"/> for the generated <see cref="System.Drawing.Image"/>s. Doesn't use the alpha channel since
+        /// we don't really need it.
+        /// </summary>
+        const PixelFormat _generatedImagePixelFormat = PixelFormat.Format24bppRgb;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MapPreviewerBase{T}"/> class.
         /// </summary>
@@ -50,12 +55,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// The <see cref="PixelFormat"/> for the generated <see cref="Image"/>s. Doesn't use the alpha channel since
-        /// we don't really need it.
-        /// </summary>
-        const PixelFormat _generatedImagePixelFormat = PixelFormat.Format24bppRgb;
-
-        /// <summary>
         /// Creates the preview of a map.
         /// </summary>
         /// <param name="map">The map to create the preview of.</param>
@@ -78,7 +77,7 @@ namespace NetGore.Graphics
                 drawExtensions.Clear();
 
             // Create the master image
-            Bitmap master = new Bitmap((int)map.Width, (int)map.Height, _generatedImagePixelFormat);
+            var master = new Bitmap((int)map.Width, (int)map.Height, _generatedImagePixelFormat);
 
             // Create the Graphics instance to draw to the master image
             using (var g = System.Drawing.Graphics.FromImage(master))
@@ -90,9 +89,9 @@ namespace NetGore.Graphics
                     using (var sb = new SpriteBatch(renderTarget))
                     {
                         // Loop through as many times as needed to cover the whole map
-                        for (int x = 0; x < map.Width; x += (int)renderTarget.Width)
+                        for (var x = 0; x < map.Width; x += (int)renderTarget.Width)
                         {
-                            for (int y = 0; y < map.Height; y += (int)renderTarget.Height)
+                            for (var y = 0; y < map.Height; y += (int)renderTarget.Height)
                             {
                                 // Clear the target with the background color
                                 renderTarget.Clear(BackgroundColor);
@@ -112,7 +111,7 @@ namespace NetGore.Graphics
                                 var sfmlImage = renderTarget.Image;
                                 var segmentImage = sfmlImage.ToBitmap();
 
-                                ImageCopy(g, segmentImage, new System.Drawing.Point(x, y));
+                                ImageCopy(g, segmentImage, new Point(x, y));
                             }
                         }
                     }
@@ -131,17 +130,6 @@ namespace NetGore.Graphics
             }
 
             return master;
-        }
-
-        /// <summary>
-        /// Copies an image.
-        /// </summary>
-        /// <param name="g">The <see cref="System.Drawing.Graphics"/> to use to draw to the destination.</param>
-        /// <param name="source">The source <see cref="Image"/>.</param>
-        /// <param name="offset">The offset to draw the <paramref name="source"/> onto the destination.</param>
-        static void ImageCopy(System.Drawing.Graphics g, Image source, System.Drawing.Point offset)
-        {
-            g.DrawImageUnscaled(source, offset);
         }
 
         /// <summary>
@@ -171,6 +159,17 @@ namespace NetGore.Graphics
             sb.Begin(BlendMode.Alpha, map.Camera);
             map.Draw(sb);
             sb.End();
+        }
+
+        /// <summary>
+        /// Copies an image.
+        /// </summary>
+        /// <param name="g">The <see cref="System.Drawing.Graphics"/> to use to draw to the destination.</param>
+        /// <param name="source">The source <see cref="Image"/>.</param>
+        /// <param name="offset">The offset to draw the <paramref name="source"/> onto the destination.</param>
+        static void ImageCopy(System.Drawing.Graphics g, Image source, Point offset)
+        {
+            g.DrawImageUnscaled(source, offset);
         }
 
         /// <summary>

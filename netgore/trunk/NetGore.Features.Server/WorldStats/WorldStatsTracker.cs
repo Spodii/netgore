@@ -26,8 +26,8 @@ namespace NetGore.Features.WorldStats
 
         readonly TickCount _logNetStatsRate;
 
-        NetPeer _netPeer;
         NetPeerStatisticsSnapshot _lastNetStatsValues;
+        NetPeer _netPeer;
         TickCount _nextLogNetStatsTime;
 
         /// <summary>
@@ -53,29 +53,6 @@ namespace NetGore.Features.WorldStats
         public TickCount LogNetStatsRate
         {
             get { return _logNetStatsRate; }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="NetPeer"/> to log the statistics for.
-        /// If null, the statistics will not be logged.
-        /// </summary>
-        public NetPeer NetPeerToTrack
-        {
-            get { return _netPeer; }
-            set
-            {
-                if (_netPeer == value)
-                    return;
-
-                _netPeer = value;
-
-                _nextLogNetStatsTime = TickCount.Now + _logNetStatsRate;
-
-                if (NetPeerToTrack != null)
-                    _lastNetStatsValues = new NetPeerStatisticsSnapshot(NetPeerToTrack.Statistics);
-                else
-                    _lastNetStatsValues = null;
-            }
         }
 
         /// <summary>
@@ -281,6 +258,19 @@ namespace NetGore.Features.WorldStats
         }
 
         /// <summary>
+        /// When overridden in the derived class, logs the network statistics to the database.
+        /// </summary>
+        /// <param name="connections">The current number of connections.</param>
+        /// <param name="recvBytes">The average bytes received per second.</param>
+        /// <param name="recvPackets">The average packets received per second.</param>
+        /// <param name="recvMsgs">The average messages received per second.</param>
+        /// <param name="sentBytes">The average bytes sent per second.</param>
+        /// <param name="sentPackets">The average packets sent per second.</param>
+        /// <param name="sentMsgs">The average messages sent per second.</param>
+        protected abstract void LogNetStats(ushort connections, uint recvBytes, uint recvPackets, uint recvMsgs, uint sentBytes,
+                                            uint sentPackets, uint sentMsgs);
+
+        /// <summary>
         /// Gets the average rate per second for a <see cref="NetPeerStatisticsSnapshot"/>.
         /// </summary>
         /// <param name="curr">The current value.</param>
@@ -305,19 +295,6 @@ namespace NetGore.Features.WorldStats
         }
 
         /// <summary>
-        /// When overridden in the derived class, logs the network statistics to the database.
-        /// </summary>
-        /// <param name="connections">The current number of connections.</param>
-        /// <param name="recvBytes">The average bytes received per second.</param>
-        /// <param name="recvPackets">The average packets received per second.</param>
-        /// <param name="recvMsgs">The average messages received per second.</param>
-        /// <param name="sentBytes">The average bytes sent per second.</param>
-        /// <param name="sentPackets">The average packets sent per second.</param>
-        /// <param name="sentMsgs">The average messages sent per second.</param>
-        protected abstract void LogNetStats(ushort connections, uint recvBytes, uint recvPackets, uint recvMsgs,
-            uint sentBytes, uint sentPackets, uint sentMsgs);
-
-        /// <summary>
         /// Gets the <see cref="DateTime"/> for the current time.
         /// </summary>
         /// <returns>The <see cref="DateTime"/> for the current time.</returns>
@@ -339,6 +316,29 @@ namespace NetGore.Features.WorldStats
         }
 
         #region IWorldStatsTracker<TUser,TNPC,TItem> Members
+
+        /// <summary>
+        /// Gets or sets the <see cref="NetPeer"/> to log the statistics for.
+        /// If null, the statistics will not be logged.
+        /// </summary>
+        public NetPeer NetPeerToTrack
+        {
+            get { return _netPeer; }
+            set
+            {
+                if (_netPeer == value)
+                    return;
+
+                _netPeer = value;
+
+                _nextLogNetStatsTime = TickCount.Now + _logNetStatsRate;
+
+                if (NetPeerToTrack != null)
+                    _lastNetStatsValues = new NetPeerStatisticsSnapshot(NetPeerToTrack.Statistics);
+                else
+                    _lastNetStatsValues = null;
+            }
+        }
 
         /// <summary>
         /// Adds to the item purchase counter.

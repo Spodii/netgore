@@ -615,7 +615,8 @@ namespace DemoGame.Server
                 else
                 {
                     // No legal position found, so just destroy the item...
-                    const string errmsg = "No legal position could be found for item `{0}` (Map: `{1}`; Position: `{2}`). Destroying item...";
+                    const string errmsg =
+                        "No legal position could be found for item `{0}` (Map: `{1}`; Position: `{2}`). Destroying item...";
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, this, map, position);
                     Debug.Fail(string.Format(errmsg, this, map, position));
