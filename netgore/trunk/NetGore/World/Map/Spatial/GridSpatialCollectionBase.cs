@@ -1161,7 +1161,9 @@ namespace NetGore.World
             public void AddRange(IEnumerable<ISpatial> spatials)
             {
                 foreach (var spatial in spatials)
+                {
                     Add(spatial);
+                }
             }
 
             /// <summary>

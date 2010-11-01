@@ -15,17 +15,17 @@ namespace NetGore.Features.WorldStats
     public interface IWorldStatsTracker<in TUser, in TNPC, in TItem> where TUser : class where TNPC : class where TItem : class
     {
         /// <summary>
+        /// Gets or sets the <see cref="NetPeer"/> to log the statistics for.
+        /// If null, the statistics will not be logged.
+        /// </summary>
+        NetPeer NetPeerToTrack { get; set; }
+
+        /// <summary>
         /// Adds to the item purchase counter.
         /// </summary>
         /// <param name="itemTID">The template ID of the item that was purchased from a shop.</param>
         /// <param name="amount">The number of items purchased.</param>
         void AddCountBuyItem(int itemTID, int amount);
-        
-        /// <summary>
-        /// Gets or sets the <see cref="NetPeer"/> to log the statistics for.
-        /// If null, the statistics will not be logged.
-        /// </summary>
-        NetPeer NetPeerToTrack { get; set; }
 
         /// <summary>
         /// Adds to the item consumption counter.

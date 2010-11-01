@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
-using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -2566,7 +2565,7 @@ namespace DemoGame.Server
 
             // Set the Character's new location
             Teleport(RespawnPosition);
- 
+
             // Set the map
             if (!RespawnMapID.HasValue)
             {

@@ -501,7 +501,8 @@ namespace NetGore.IO
                 if (!File.Exists(copyContentFile))
                 {
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat("Failed to run CopyContent: Could not find the CopyContent program at `{0}`", copyContentFile);
+                        log.ErrorFormat("Failed to run CopyContent: Could not find the CopyContent program at `{0}`",
+                                        copyContentFile);
                     return false;
                 }
 
@@ -510,7 +511,8 @@ namespace NetGore.IO
                 if (!string.IsNullOrEmpty(userArgs))
                     arguments += " " + userArgs;
 
-                var pi = new ProcessStartInfo(copyContentFile, arguments) { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
+                var pi = new ProcessStartInfo(copyContentFile, arguments)
+                { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
 
                 try
                 {

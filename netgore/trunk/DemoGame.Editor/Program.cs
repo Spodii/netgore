@@ -4,13 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using DemoGame.Client;
 using log4net;
 using NetGore;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.IO;
-using NetGore.World;
 
 // Highest priority (do these first!):
 // TODO: Only show a single map in one screen (if trying to load a form with a map that is already open, just focus the existing form)

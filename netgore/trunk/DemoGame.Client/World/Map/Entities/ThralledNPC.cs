@@ -11,6 +11,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="ThralledNPC"/> class.
         /// </summary>
         ThralledNPC()
-        { }
+        {
+        }
     }
 }

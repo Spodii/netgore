@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using NetGore.Editor.EditorTool;
-using NetGore.Graphics;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor.Tools
@@ -18,8 +18,7 @@ namespace DemoGame.Editor.Tools
         /// Initializes a new instance of the <see cref="MapPreviewTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapPreviewTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
+        protected MapPreviewTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Saves a preview image of the map to file";
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
@@ -37,7 +36,7 @@ namespace DemoGame.Editor.Tools
 
             var filePath = Path.GetFullPath(map.ID + ".png");
 
-            MapPreviewer mp = new MapPreviewer();
+            var mp = new MapPreviewer();
             mp.CreatePreview(map, ToolManager.MapDrawingExtensions, filePath);
 
             MessageBox.Show("Saved map preview to file:" + Environment.NewLine + filePath, "Preview saved", MessageBoxButtons.OK);

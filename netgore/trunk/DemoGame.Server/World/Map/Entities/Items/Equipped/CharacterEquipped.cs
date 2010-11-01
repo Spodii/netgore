@@ -298,7 +298,7 @@ namespace DemoGame.Server
         /// </returns>
         public int GetStatModBonus(StatType statType)
         {
-            int sum = 0;
+            var sum = 0;
 
             foreach (var item in Items)
             {

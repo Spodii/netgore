@@ -897,6 +897,23 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="Control"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~Control()
+        {
+            if (IsDisposed)
+            {
+                Debug.Fail("Why was the destructor called when already disposed?");
+                return;
+            }
+
+            _isDisposed = true;
+
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Finds the client size that this <see cref="Control"/> needs to be to be able to fit all of the child
         /// <see cref="Control"/>s.
         /// </summary>
@@ -1956,23 +1973,6 @@ namespace NetGore.Graphics.GUI
         {
             var newSize = FindRequiredClientSizeToFitChildren() + Border.Size + new Vector2(ResizeToChildrenPadding);
             InternalSetSize(newSize, false);
-        }
-
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="Control"/> is reclaimed by garbage collection.
-        /// </summary>
-        ~Control()
-        {
-            if (IsDisposed)
-            {
-                Debug.Fail("Why was the destructor called when already disposed?");
-                return;
-            }
-
-            _isDisposed = true;
-
-            Dispose(false);
         }
 
         #region IDisposable Members

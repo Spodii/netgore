@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
@@ -8,6 +7,8 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
+using SFML.Graphics;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
@@ -39,19 +40,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Creates a temporary <see cref="Map"/>.
-        /// </summary>
-        /// <param name="mapID">The <see cref="MapID"/> of the map.</param>
-        /// <returns>The temporary <see cref="Map"/>.</returns>
-        static Map CreateTempMap(MapID mapID)
-        {
-            var camera = new Camera2D(new SFML.Graphics.Vector2(800, 600));
-            var map = new Map(mapID, camera, GetTimeDummy.Instance);
-            map.Load(ContentPaths.Dev, false, EditorDynamicEntityFactory.Instance);
-            return map;
-        }
-
-        /// <summary>
         /// Creates the preview of a map.
         /// </summary>
         /// <param name="mapID">The ID of the map to create the preview of.</param>
@@ -62,6 +50,19 @@ namespace DemoGame.Editor
             {
                 return CreatePreview(map, drawExtensions);
             }
+        }
+
+        /// <summary>
+        /// Creates a temporary <see cref="Map"/>.
+        /// </summary>
+        /// <param name="mapID">The <see cref="MapID"/> of the map.</param>
+        /// <returns>The temporary <see cref="Map"/>.</returns>
+        static Map CreateTempMap(MapID mapID)
+        {
+            var camera = new Camera2D(new Vector2(800, 600));
+            var map = new Map(mapID, camera, GetTimeDummy.Instance);
+            map.Load(ContentPaths.Dev, false, EditorDynamicEntityFactory.Instance);
+            return map;
         }
 
         /// <summary>
