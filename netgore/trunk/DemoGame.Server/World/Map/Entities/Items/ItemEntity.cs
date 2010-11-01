@@ -106,11 +106,12 @@ namespace DemoGame.Server
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map) : this(t, pos, amount)
         {
             // Since the item is spawning on a map, ensure that the position is valid for the map
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            Teleport(ValidatePosition(map, pos));
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
-            map.AddEntity(this);
+            var validPos = ValidatePosition(map, pos);
+            if (!IsDisposed)
+            {
+                Teleport(validPos);
+                map.AddEntity(this);
+            }
         }
 
         /// <summary>
@@ -607,10 +608,19 @@ namespace DemoGame.Server
             if (!map.IsValidPlacementPosition(tempRect, out closestLegalPosition, out isClosestPositionValid))
             {
                 if (isClosestPositionValid)
+                {
+                    // Legal position found
                     return closestLegalPosition;
+                }
                 else
                 {
-                    // TODO: !! Could not find a valid position for the ItemEntity
+                    // No legal position found, so just destroy the item...
+                    const string errmsg = "No legal position could be found for item `{0}` (Map: `{1}`; Position: `{2}`). Destroying item...";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, this, map, position);
+                    Debug.Fail(string.Format(errmsg, this, map, position));
+
+                    Destroy();
                 }
             }
 
