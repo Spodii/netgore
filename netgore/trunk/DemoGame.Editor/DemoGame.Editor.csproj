@@ -202,6 +202,7 @@
     <Compile Include="MapDrawFilterHelper.cs" />
     <Compile Include="MapDrawFilterHelperCollection.cs" />
     <Compile Include="MapHelper.cs" />
+    <Compile Include="MapPreviewer.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

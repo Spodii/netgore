@@ -118,5 +118,17 @@ namespace DemoGame.Editor.Properties {
                 this["GridSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2048, 2048")]
+        public global::SFML.Graphics.Vector2 MapPreview_TextureSize {
+            get {
+                return ((global::SFML.Graphics.Vector2)(this["MapPreview_TextureSize"]));
+            }
+            set {
+                this["MapPreview_TextureSize"] = value;
+            }
+        }
     }
 }

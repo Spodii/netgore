@@ -1,9 +1,13 @@
-﻿// TODO: !! Render targets are supported in SFML 2.0. Until then, this will not be able to work properly.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using SFML.Graphics;
+using Color = SFML.Graphics.Color;
+using Image = System.Drawing.Image;
+using Point = SFML.Graphics.Point;
 
 namespace NetGore.Graphics
 {
@@ -17,7 +21,7 @@ namespace NetGore.Graphics
         /// </summary>
         protected MapPreviewerBase()
         {
-            TextureSize = new Vector2(2048);
+            TextureSize = new Vector2(1024);
             BackgroundColor = new Color(255, 0, 255);
         }
 
@@ -34,63 +38,110 @@ namespace NetGore.Graphics
         /// <summary>
         /// Creates the preview of a map.
         /// </summary>
-        /// <param name="rw">The <see cref="RenderWindow"/>.</param>
         /// <param name="map">The map to create the preview of.</param>
         /// <param name="drawExtensions">The collection of <see cref="IMapDrawingExtension"/>s applied to the map.</param>
         /// <param name="filePath">The file path to save the created preview to.</param>
-        public void CreatePreview(RenderWindow rw, T map, ICollection<IMapDrawingExtension> drawExtensions, string filePath)
+        public void CreatePreview(T map, ICollection<IMapDrawingExtension> drawExtensions, string filePath)
         {
-            using (var tex = CreatePreview(rw, map, drawExtensions))
+            using (var tex = CreatePreview(map, drawExtensions))
             {
                 SaveTexture(tex, filePath);
             }
         }
 
         /// <summary>
+        /// The <see cref="PixelFormat"/> for the generated <see cref="Image"/>s. Doesn't use the alpha channel since
+        /// we don't really need it.
+        /// </summary>
+        const PixelFormat _generatedImagePixelFormat = PixelFormat.Format24bppRgb;
+
+        /// <summary>
         /// Creates the preview of a map.
         /// </summary>
-        /// <param name="rw">The <see cref="RenderWindow"/>.</param>
         /// <param name="map">The map to create the preview of.</param>
         /// <param name="drawExtensions">The collection of <see cref="IMapDrawingExtension"/>s applied to the map.</param>
-        public Image CreatePreview(RenderWindow rw, T map, ICollection<IMapDrawingExtension> drawExtensions)
+        public Image CreatePreview(T map, ICollection<IMapDrawingExtension> drawExtensions)
         {
-            if (rw == null)
-                throw new ArgumentNullException("rw");
-
             // Set up the new camera
             var cam = new Camera2D(TextureSize);
-            var scaleValues = cam.Size / map.Size;
-            cam.Scale = Math.Min(scaleValues.X, scaleValues.Y);
-            cam.Size = map.Size * cam.Scale;
-            cam.Min = Vector2.Zero;
 
             // Store the existing map values so we can restore them when done
             var oldCamera = map.Camera;
             var oldDrawFilter = map.DrawFilter;
             var oldDrawParticles = map.DrawParticles;
-            var oldExtensions = drawExtensions.ToArray();
+            var oldExtensions = drawExtensions != null ? drawExtensions.ToArray() : new IMapDrawingExtension[0];
 
             // Set the new values
             SetMapValues(map, cam, DrawFilter, false);
-            drawExtensions.Clear();
 
-            // Create the SpriteBatch
-            // NOTE: Render the map to the render target here. Below is the old code used for XNA.
-            //var ret = RenderTarget2DHelper.CreateTexture2D(graphicsDevice, (int)TextureSize.X, (int)TextureSize.Y,
-            //                                                     BackgroundColor, x => DrawMap(x, map));
+            if (drawExtensions != null)
+                drawExtensions.Clear();
 
-            // NOTE: Create a temp image until we have this working again
-            var ret = new Image(128, 128, Color.Black);
+            // Create the master image
+            Bitmap master = new Bitmap((int)map.Width, (int)map.Height, _generatedImagePixelFormat);
+
+            // Create the Graphics instance to draw to the master image
+            using (var g = System.Drawing.Graphics.FromImage(master))
+            {
+                // Create the RenderTarget to draw to
+                using (var renderTarget = new RenderImage((uint)cam.Size.X, (uint)cam.Size.Y))
+                {
+                    // Create the SpriteBatch
+                    using (var sb = new SpriteBatch(renderTarget))
+                    {
+                        // Loop through as many times as needed to cover the whole map
+                        for (int x = 0; x < map.Width; x += (int)renderTarget.Width)
+                        {
+                            for (int y = 0; y < map.Height; y += (int)renderTarget.Height)
+                            {
+                                // Clear the target with the background color
+                                renderTarget.Clear(BackgroundColor);
+
+                                // Move the camera
+                                cam.Min = new Vector2(x, y);
+
+                                // Draw the map
+                                sb.Begin(BlendMode.Alpha, cam);
+                                map.Draw(sb);
+                                sb.End();
+
+                                // Finalize the rendering to the RenderTarget
+                                renderTarget.Display();
+
+                                // Grab the segment image and copy it to the master image
+                                var sfmlImage = renderTarget.Image;
+                                var segmentImage = sfmlImage.ToBitmap();
+
+                                ImageCopy(g, segmentImage, new System.Drawing.Point(x, y));
+                            }
+                        }
+                    }
+                }
+            }
 
             // Restore the map values
             SetMapValues(map, oldCamera, oldDrawFilter, oldDrawParticles);
 
-            foreach (var ex in oldExtensions)
+            if (drawExtensions != null)
             {
-                drawExtensions.Add(ex);
+                foreach (var ex in oldExtensions)
+                {
+                    drawExtensions.Add(ex);
+                }
             }
 
-            return ret;
+            return master;
+        }
+
+        /// <summary>
+        /// Copies an image.
+        /// </summary>
+        /// <param name="g">The <see cref="System.Drawing.Graphics"/> to use to draw to the destination.</param>
+        /// <param name="source">The source <see cref="Image"/>.</param>
+        /// <param name="offset">The offset to draw the <paramref name="source"/> onto the destination.</param>
+        static void ImageCopy(System.Drawing.Graphics g, Image source, System.Drawing.Point offset)
+        {
+            g.DrawImageUnscaled(source, offset);
         }
 
         /// <summary>
@@ -123,13 +174,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Saves an <see cref="Image"/> to file.
+        /// Saves an <see cref="SFML.Graphics.Image"/> to file.
         /// </summary>
-        /// <param name="texture">The <see cref="Image"/> to save.</param>
+        /// <param name="img">The <see cref="System.Drawing.Image"/> to save.</param>
         /// <param name="filePath">The file path to save the file to.</param>
-        protected virtual void SaveTexture(Image texture, string filePath)
+        protected virtual void SaveTexture(Image img, string filePath)
         {
-            texture.SaveToFile(filePath);
+            img.Save(filePath, ImageFormat.Png);
         }
 
         /// <summary>

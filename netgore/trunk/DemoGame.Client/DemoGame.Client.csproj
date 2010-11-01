@@ -226,7 +226,6 @@
     <Compile Include="World\Map\Entities\User.cs" />
     <Compile Include="World\Map\Map.cs" />
     <Compile Include="World\Map\MapEntityBoxDrawer.cs" />
-    <Compile Include="World\Map\MapPreviewer.cs" />
     <Compile Include="World\Map\MapWallDrawer.cs" />
     <Compile Include="World\World.cs" />
     <Compile Include="World\WorldEventHandler.cs" />

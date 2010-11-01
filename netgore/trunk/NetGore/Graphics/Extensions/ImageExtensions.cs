@@ -289,6 +289,20 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>
+        /// The <see cref="Bitmap"/> containing the <paramref name="image"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
+        public static Bitmap ToBitmap(this Image image)
+        {
+            var source = new Rectangle(0, 0, (int)image.Width, (int)image.Height);
+            return ToBitmap(image, source);
+        }
+
+        /// <summary>
         /// Creates a <see cref="SFML.Graphics.Image"/> from a <see cref="System.Drawing.Image"/>.
         /// </summary>
         /// <param name="img">The <see cref="System.Drawing.Image"/>.</param>
