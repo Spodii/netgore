@@ -151,6 +151,13 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapPreviewTool {
+            get {
+                object obj = ResourceManager.GetObject("MapPreviewTool", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapPropertiesTool {
             get {
                 object obj = ResourceManager.GetObject("MapPropertiesTool", resourceCulture);

@@ -244,6 +244,7 @@
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapLightCursorTool.cs" />
     <Compile Include="Tools\Map\MapDeleteTool.cs" />
+    <Compile Include="Tools\Map\MapPreviewTool.cs" />
     <Compile Include="Tools\Map\MapPropertiesTool.cs" />
     <Compile Include="Tools\Map\MapPropertiesToolForm.cs">
       <SubType>Form</SubType>
@@ -577,7 +578,9 @@
   <ItemGroup>
     <None Include="Resources\MapPropertiesTool.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\MapPreviewTool.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

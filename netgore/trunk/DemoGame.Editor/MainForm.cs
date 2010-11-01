@@ -92,6 +92,8 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
+            Show();
+
             // Set the ToolBarVisibility values. Do it here instead of setting the properties to avoid messing up
             // the controls order.
             tbGlobal.ToolBarVisibility = ToolBarVisibility.Global;

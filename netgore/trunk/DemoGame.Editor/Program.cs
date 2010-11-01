@@ -20,6 +20,9 @@ using NetGore.World;
 // TODO: Selected objects form be able to choose how the split for the listing is done (horizontal or vertical)
 // TODO: Ability to toggle the ToolTip display on the map cursors
 // TODO: Display some indication on which object the cursor is over when multiple are available
+// TODO: MapPreviewTool should let you pick the file path to save to (using one of those file browser dialog box thingies)
+// TODO: Command-line switch to save previews of all maps to a specific directory
+// TODO: Be able to specify a custom filter (probably from the MapDisplayFilterTool) when using the MapPreviewTool
 
 // Lowest priority (save these for the very end):
 // TODO: Move most of the keys & other configs into the Settings.settings so they can be changed at runtime
