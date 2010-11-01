@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
+using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -2067,14 +2068,56 @@ namespace DemoGame.Server
             if (!Map.IsValidPlacementPosition(tempRect, out closestLegalPosition, out isClosestPositionValid))
             {
                 if (isClosestPositionValid)
+                {
+                    // Near-by legal position found
                     return closestLegalPosition;
+                }
                 else
                 {
-                    // TODO: !! Could not find a valid position for the Character. Need to do SOMETHING here...
+                    // No legal position could be found...
+                    const string errmsg = "Could not find a legal position for character `{0}` (Map: `{1}`; Pos: `{2}`).";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, this, Map, position);
+                    return HandleNoLegalPositionFound(position);
                 }
             }
 
             return position;
+        }
+
+        /// <summary>
+        /// Handles when no legal position could be found for this <see cref="Character"/>.
+        /// This will usually occur when performing a teleport into an area that is completely blocked off, and no near-by
+        /// position can be found. Moving a <see cref="Character"/> too far from the original position can result in them
+        /// going somewhere that they are not supposed to, so it is best to send them to a predefined location.
+        /// </summary>
+        /// <param name="position">The position that the <see cref="Character"/> tried to go to, but failed to.</param>
+        /// <returns>The position to warp the <see cref="Character"/> to.</returns>
+        protected virtual Vector2 HandleNoLegalPositionFound(Vector2 position)
+        {
+            if (IsPersistent)
+            {// Persistent characters get sent to their loading position
+                const string errmsg = "Character `{0}` is persistent, so they are being set back to their respawn position.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this);
+
+                var mapID = GetLoadMap();
+                var map = World.GetMap(mapID);
+                var pos = GetLoadPosition();
+
+                Teleport(map, pos);
+                return pos;
+            }
+            else
+            {
+                // Non-persistent characters are destroyed
+                const string errmsg = "Character `{0}` is not persistent, so they are being disposed.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this);
+
+                DelayedDispose();
+                return position;
+            }
         }
 
 #if !TOPDOWN
