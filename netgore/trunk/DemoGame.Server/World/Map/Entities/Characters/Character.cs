@@ -2078,6 +2078,7 @@ namespace DemoGame.Server
                     const string errmsg = "Could not find a legal position for character `{0}` (Map: `{1}`; Pos: `{2}`).";
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, this, Map, position);
+                    Debug.Fail(string.Format(errmsg, this, Map, position));
                     return HandleNoLegalPositionFound(position);
                 }
             }
