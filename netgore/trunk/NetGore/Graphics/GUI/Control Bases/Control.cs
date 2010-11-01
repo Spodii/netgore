@@ -800,16 +800,12 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Disposes of the Control and all its resources.
+        /// Disposes of the <see cref="Control"/> and all its resources.
         /// </summary>
         /// <param name="disposeManaged">If true, managed resources need to be disposed. If false,
         /// this was raised by a destructor which means the managed resources are already disposed.</param>
         protected virtual void Dispose(bool disposeManaged)
         {
-            if (_isDisposed)
-                return;
-
-            _isDisposed = true;
             if (disposeManaged)
             {
                 // Dispose of all the child controls. An immutable collection must be
@@ -1962,15 +1958,38 @@ namespace NetGore.Graphics.GUI
             InternalSetSize(newSize, false);
         }
 
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="Control"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~Control()
+        {
+            if (IsDisposed)
+            {
+                Debug.Fail("Why was the destructor called when already disposed?");
+                return;
+            }
+
+            _isDisposed = true;
+
+            Dispose(false);
+        }
+
         #region IDisposable Members
 
         /// <summary>
         /// Disposes of this <see cref="Control"/> and all its resources.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            Dispose(true);
+            if (IsDisposed)
+                return;
+
+            _isDisposed = true;
+
             GC.SuppressFinalize(this);
+
+            Dispose(true);
         }
 
         #endregion
