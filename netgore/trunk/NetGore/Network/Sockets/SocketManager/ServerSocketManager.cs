@@ -73,6 +73,16 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Gets the <see cref="NetServer"/> instance.
+        /// Avoid using this object directly when possible.
+        /// </summary>
+        /// <returns>The <see cref="NetServer"/> instance.</returns>
+        public NetServer GetNetServer()
+        {
+            return _local;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional configuring of the <see cref="NetPeerConfiguration"/> instance
         /// that will be used for this <see cref="ServerSocketManager"/>.
         /// </summary>

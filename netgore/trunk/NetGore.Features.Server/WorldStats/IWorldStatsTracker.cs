@@ -1,4 +1,5 @@
 using System.Linq;
+using Lidgren.Network;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
@@ -19,6 +20,12 @@ namespace NetGore.Features.WorldStats
         /// <param name="itemTID">The template ID of the item that was purchased from a shop.</param>
         /// <param name="amount">The number of items purchased.</param>
         void AddCountBuyItem(int itemTID, int amount);
+        
+        /// <summary>
+        /// Gets or sets the <see cref="NetPeer"/> to log the statistics for.
+        /// If null, the statistics will not be logged.
+        /// </summary>
+        NetPeer NetPeerToTrack { get; set; }
 
         /// <summary>
         /// Adds to the item consumption counter.

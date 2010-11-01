@@ -228,6 +228,7 @@
     <Compile Include="IO\BitStream\BitStream.Read.cs" />
     <Compile Include="IO\BitStream\BitStream.Write.cs" />
     <Compile Include="Network\MessageProcessor\MessageProcessorID.cs" />
+    <Compile Include="Network\NetConnectionStatsTracker.cs" />
     <Compile Include="Network\Sockets\IIPSocketEventHandler.cs" />
     <Compile Include="Network\Sockets\SocketHelper.cs" />
     <Compile Include="Network\Sockets\SocketManager\ClientSocketManager.cs" />
@@ -424,7 +425,6 @@
     <Compile Include="Network\MessageProcessor\Stats\IMessageProcessorStats.cs" />
     <Compile Include="Network\MessageProcessor\Stats\MessageProcessorStatistics.cs" />
     <Compile Include="Network\MessageProcessor\Stats\StatMessageProcessorManager.cs" />
-    <Compile Include="Network\NetStats.cs" />
     <Compile Include="Network\PacketTimeStampHelper.cs" />
     <Compile Include="Core\SafeRandom.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

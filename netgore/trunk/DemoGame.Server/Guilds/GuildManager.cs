@@ -118,7 +118,7 @@ namespace DemoGame.Server.Guilds
         {
             // We want to insert the guild into the database first since if that query fails, we know that
             // we can't create the guild with the given values for whatever reason
-            var values = new GuildTable(iD: id, name: name, tag: tag, created: DateTime.UtcNow);
+            var values = new GuildTable(iD: id, name: name, tag: tag, created: DateTime.Now);
             var rowsAffected = _insertGuildQuery.Execute(values);
 
             if (rowsAffected <= 0)
