@@ -26,5 +26,8 @@
     <Setting Name="GridSize" Type="SFML.Graphics.Vector2" Scope="User">
       <Value Profile="(Default)">32, 32</Value>
     </Setting>
+    <Setting Name="MapPreview_TextureSize" Type="SFML.Graphics.Vector2" Scope="User">
+      <Value Profile="(Default)">2048, 2048</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

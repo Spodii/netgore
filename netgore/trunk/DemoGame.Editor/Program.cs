@@ -4,11 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using DemoGame.Client;
 using log4net;
 using NetGore;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.World;
 
 // Highest priority (do these first!):
 // TODO: Only show a single map in one screen (if trying to load a form with a map that is already open, just focus the existing form)
@@ -197,6 +199,13 @@ The path to the development content is required by the editor. See the file ment
             // Get the command-line switches
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
             var showEditor = !HandleSwitches(switches);
+
+            MapPreviewer p = new MapPreviewer();
+            for (int i = 1; i <= 4; i++)
+            {
+                p.CreatePreview(new MapID(i), null, @"C:\map"+i+".png");
+            }
+            showEditor = false;
 
             if (showEditor)
             {
