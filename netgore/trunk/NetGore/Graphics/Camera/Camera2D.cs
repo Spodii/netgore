@@ -212,20 +212,22 @@ namespace NetGore.Graphics
         /// <summary>
         /// Checks if a specified object is in view of the camera.
         /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to check.</param>
-        /// <returns>True if in the view area; otherwise false.</returns>
-        public bool InView(Entity entity)
+        /// <param name="spatial">The <see cref="ISpatial"/> to check if in view.</param>
+        /// <returns>
+        /// True if in the view area; otherwise false.
+        /// </returns>
+        public bool InView(ISpatial spatial)
         {
-            if (entity == null)
+            if (spatial == null)
             {
-                const string errmsg = "entity is null.";
+                const string errmsg = "spatial is null.";
                 Debug.Fail(errmsg);
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
                 return false;
             }
 
-            return InView(entity.Position, entity.Size);
+            return InView(spatial.Position, spatial.Size);
         }
 
         /// <summary>
@@ -256,8 +258,7 @@ namespace NetGore.Graphics
         /// <returns>True if in the view area, else false.</returns>
         public bool InView(Vector2 position, Vector2 size)
         {
-            var max = position + size;
-            return (max.X > Min.X) && (max.Y > Min.Y) && (position.X < Max.X) && (position.Y < Max.Y);
+            return (position.X < Max.X) && (position.Y < Max.Y) && (position.X + size.X > Min.X) && (position.Y + size.Y > Min.Y);
         }
 
         /// <summary>
