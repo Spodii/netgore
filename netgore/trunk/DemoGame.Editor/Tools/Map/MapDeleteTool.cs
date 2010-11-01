@@ -5,6 +5,9 @@ using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor.Tools
 {
+    /// <summary>
+    /// A <see cref="Tool"/> that deletes the current map.
+    /// </summary>
     public class MapDeleteTool : Tool
     {
         /// <summary>
