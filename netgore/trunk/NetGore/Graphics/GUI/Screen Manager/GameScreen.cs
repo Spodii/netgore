@@ -65,7 +65,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Turn off music
-            if (!PlayMusic || ScreenMusic == null)
+            if (!PlayMusic)
             {
                 MusicManager.Stop();
                 return;
