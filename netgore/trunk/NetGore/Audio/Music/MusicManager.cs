@@ -205,47 +205,59 @@ namespace NetGore.Audio
         /// </returns>
         public bool Play(MusicID id)
         {
-            // If the music is already playing, continue to play it
-            if (_playingInfo != null && _playingInfo.ID == id)
-            {
-                _playing.Play();
-                return true;
-            }
-
-            // Get the info for the music to play
-            var info = GetMusicInfo(id);
-            if (info == null)
-                return false;
-
-            // Stop the old music
-            Stop();
-
-            // Start the new music
-            _playingInfo = info;
-
-            var file = GetFilePath(info);
             try
             {
-                _playing = new Music(file);
+                // If the music is already playing, continue to play it
+                if (_playingInfo != null && _playingInfo.ID == id)
+                {
+                    if (_playing.Status != SoundStatus.Playing)
+                        _playing.Play();
+
+                    return true;
+                }
+
+                // Stop the old music
+                Stop();
+
+                // Get the info for the music to play
+                var info = GetMusicInfo(id);
+                if (info == null)
+                    return false;
+
+                // Start the new music
+                _playingInfo = info;
+
+                var file = GetFilePath(info);
+                try
+                {
+                    _playing = new Music(file);
+                }
+                catch (LoadingFailedException ex)
+                {
+                    const string errmsg = "Failed to load music `{0}`: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, info, ex);
+                    Debug.Fail(string.Format(errmsg, info, ex));
+
+                    _playing = null;
+                    _playingInfo = null;
+
+                    return false;
+                }
+
+                // Set the values for the music and start playing it
+                _playing.Volume = Volume;
+                _playing.Loop = Loop;
+                _playing.RelativeToListener = false;
+                _playing.Play();
             }
-            catch (LoadingFailedException ex)
+            catch (Exception ex)
             {
-                const string errmsg = "Failed to load music `{0}`: {1}";
+                const string errmsg = "Failed to play music with ID `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, info, ex);
-                Debug.Fail(string.Format(errmsg, info, ex));
-
-                _playing = null;
-                _playingInfo = null;
-
-                return false;
+                    log.ErrorFormat(errmsg, id, ex);
+                Debug.Fail(string.Format(errmsg, id, ex));
             }
-
-            // Set the values for the music and start playing it
-            _playing.Volume = Volume;
-            _playing.Loop = Loop;
-            _playing.RelativeToListener = false;
-            _playing.Play();
 
             return true;
         }
