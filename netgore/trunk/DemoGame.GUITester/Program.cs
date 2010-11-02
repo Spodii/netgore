@@ -1,4 +1,6 @@
 using System.Linq;
+using NetGore;
+using SFML.Graphics;
 
 namespace DemoGame.GUITester
 {
@@ -9,6 +11,8 @@ namespace DemoGame.GUITester
         /// </summary>
         static void Main()
         {
+            EngineSettings.Initialize(new EngineSettings(Vector2.Zero, Vector2.One));
+
             using (new Game1())
             {
             }
