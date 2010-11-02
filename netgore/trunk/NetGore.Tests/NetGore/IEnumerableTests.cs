@@ -272,7 +272,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ToImmutableTest()
         {
-            var i = new int[] { 1, 2, 3 };
+            var i = new List<int> { 1, 2, 3 };
             var e = i.ToImmutable();
 
             i[0] = 50;
