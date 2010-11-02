@@ -283,12 +283,15 @@ namespace NetGore.Audio
             {
                 _playing.Dispose();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
+                const string errmsg = "Failed to dispose music `{0}` [`{1}`] (can potentially ignore). Exception: {2}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, _playing, _playingInfo, ex);
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to dispose music `{0}` [`{1}`]: {2}";
+                const string errmsg = "Failed to dispose music `{0}` [`{1}`]. Exception {2}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, _playing, _playingInfo, ex);
                 Debug.Fail(string.Format(errmsg, _playing, _playingInfo, ex));
