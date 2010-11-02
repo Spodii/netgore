@@ -24,6 +24,36 @@ namespace NetGore
         readonly int _maxWallStepUpHeight;
 #endif
 
+        readonly float _soundAttenuation;
+        readonly float _soundListenerDepth;
+        readonly float _soundMinDistance;
+        readonly uint _soundUpdateRate;
+
+        /// <summary>
+        /// Gets the attenuation factor for the spatialized sounds. A larger attenuation value results in a faster decrease in
+        /// volume for sounds that exceed the <see cref="EngineSettings.SoundMinDistance"/>.
+        /// </summary>
+        public float SoundAttenuation
+        {
+            get { return _soundAttenuation; }
+        }
+
+        /// <summary>
+        /// Gets the depth to set the sound listener at.
+        /// </summary>
+        public float SoundListenerDepth
+        {
+            get { return _soundListenerDepth; }
+        }
+
+        /// <summary>
+        /// Gets the minimum distance the listener must be from a spatialized sound before the gain starts to decrease.
+        /// </summary>
+        public float SoundMinDistance
+        {
+            get { return _soundMinDistance; }
+        }
+
         /// <summary>
         /// Gets the maximum number of pixels an <see cref="Entity"/> can "step up" when walking into a wall. If the top of the
         /// wall that they walk into the side of minus the bottom of the entity is less than or equal to this value, the
@@ -43,6 +73,14 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the frequently, in milliseconds, that spatialized sounds are updated.
+        /// </summary>
+        public uint SoundUpdateRate
+        {
+            get { return _soundUpdateRate; }
+        }
+
+        /// <summary>
         /// Gets the suffix given to general data files. Includes the prefixed period, if one is used. Can be empty, but cannot
         /// be null.
         /// </summary>
@@ -56,8 +94,13 @@ namespace NetGore
         /// </summary>
         /// <param name="gravity">The world gravity. Only valid if not using a top-down perspective.</param>
         /// <param name="maxVelocity">The max velocity for an <see cref="Entity"/>.</param>
-        /// <param name="maxWallStepUpHeight">The <see cref="MaxWallStepUpHeight"/>. Default is 5.</param>
-        public EngineSettings(Vector2 gravity, Vector2 maxVelocity, int maxWallStepUpHeight = 5)
+        /// <param name="soundListenerDepth">The <see cref="SoundListenerDepth"/>.</param>
+        /// <param name="soundMinDistance">The <see cref="SoundMinDistance"/>.</param>
+        /// <param name="soundAttenuation">The <see cref="SoundAttenuation"/>.</param>
+        /// <param name="maxWallStepUpHeight">The <see cref="MaxWallStepUpHeight"/>.</param>
+        /// <param name="soundUpdateRate">The <see cref="SoundUpdateRate"/>.</param>
+        public EngineSettings(Vector2 gravity, Vector2 maxVelocity, float soundListenerDepth = 300f, float soundMinDistance = 600f,
+                              float soundAttenuation = 3f, int maxWallStepUpHeight = 5, uint soundUpdateRate = 1000u)
         {
 #if !TOPDOWN
             _gravity = gravity;
@@ -65,6 +108,11 @@ namespace NetGore
 #endif
 
             _maxVelocity = maxVelocity.Abs();
+
+            _soundAttenuation = soundAttenuation;
+            _soundMinDistance = soundMinDistance;
+            _soundListenerDepth = soundListenerDepth;
+            _soundUpdateRate = soundUpdateRate;
         }
 
         /// <summary>

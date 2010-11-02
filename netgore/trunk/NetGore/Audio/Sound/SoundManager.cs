@@ -16,21 +16,9 @@ namespace NetGore.Audio
     public class SoundManager : ISoundManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// The default <see cref="Sound.Attenuation"/> property value for <see cref="Sound"/>s.
-        /// </summary>
-        const float _attenuation = 20f;
-
-        /// <summary>
-        /// The default <see cref="Sound.MinDistance"/> property value for <see cref="Sound"/>s.
-        /// </summary>
-        const float _minDistance = 424.26f;
-
-        /// <summary>
-        /// How frequently, in milliseconds, the sounds are updated.
-        /// </summary>
-        const int _updateRate = 1000;
+        static readonly float _soundAttenuation = EngineSettings.Instance.SoundAttenuation;
+        static readonly float _soundMinDistance = CalculateSoundMinDistance();
+        static readonly uint _soundUpdateRate = EngineSettings.Instance.SoundUpdateRate;
 
         readonly ISoundInfo[] _infos;
         readonly Dictionary<string, ISoundInfo> _infosByName = new Dictionary<string, ISoundInfo>(StringComparer.OrdinalIgnoreCase);
@@ -80,6 +68,17 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// Calculates to real MinDistance value to use for sounds.
+        /// </summary>
+        /// <returns></returns>
+        static float CalculateSoundMinDistance()
+        {
+            var a = EngineSettings.Instance.SoundListenerDepth;
+            var b = EngineSettings.Instance.SoundMinDistance;
+            return (float)Math.Sqrt(a * a + b * b);
+        }
+
+        /// <summary>
         /// Gets the <see cref="SoundBuffer"/> for the given <see cref="SoundID"/>.
         /// </summary>
         /// <param name="id">The <see cref="SoundID"/> for the <see cref="SoundBuffer"/> to get.</param>
@@ -98,22 +97,26 @@ namespace NetGore.Audio
         /// Attempts to create a <see cref="Sound"/> instance.
         /// </summary>
         /// <param name="id">The <see cref="SoundID"/>.</param>
+        /// <param name="spatialized">True if this is for a spatialized sound; false for a static sound.</param>
         /// <param name="info">When this method returns a non-null object, contains the <see cref="ISoundInfo"/> for the
         /// <paramref name="id"/>.</param>
-        /// <returns>The <see cref="Sound"/> instance, or null if it failed to be created.</returns>
-        Sound InternalCreateSound(SoundID id, out ISoundInfo info)
+        /// <returns>
+        /// The <see cref="Sound"/> instance, or null if it failed to be created.
+        /// </returns>
+        Sound InternalCreateSound(SoundID id, bool spatialized, out ISoundInfo info)
         {
             // Get the sound info
             info = GetSoundInfo(id);
-            return InternalCreateSound(info);
+            return InternalCreateSound(info, spatialized);
         }
 
         /// <summary>
         /// Attempts to create a <see cref="Sound"/> instance.
         /// </summary>
         /// <param name="info">The <see cref="ISoundInfo"/> describing the sound to create.</param>
+        /// <param name="spatialized">True if this is for a spatialized sound; false for a static sound.</param>
         /// <returns>The <see cref="Sound"/> instance, or null if it failed to be created.</returns>
-        Sound InternalCreateSound(ISoundInfo info)
+        Sound InternalCreateSound(ISoundInfo info, bool spatialized)
         {
             // Check for a valid ISoundInfo
             if (info == null)
@@ -163,9 +166,18 @@ namespace NetGore.Audio
 
             snd.Volume = Volume;
             snd.Loop = false;
-            snd.Attenuation = _attenuation;
-            snd.MinDistance = _minDistance;
-            snd.RelativeToListener = false;
+
+            if (spatialized)
+            {
+                snd.Attenuation = _soundAttenuation;
+                snd.MinDistance = _soundMinDistance;
+                snd.RelativeToListener = false;
+            }
+            else
+            {
+                snd.RelativeToListener = true;
+                snd.Position = Vector3.Zero;
+            }
 
             return snd;
         }
@@ -251,7 +263,7 @@ namespace NetGore.Audio
         {
             // Create the sound instance
             ISoundInfo info;
-            var snd = InternalCreateSound(id, out info);
+            var snd = InternalCreateSound(id, false, out info);
             if (snd == null)
                 return false;
 
@@ -259,7 +271,6 @@ namespace NetGore.Audio
             SoundInstance si;
             try
             {
-                snd.RelativeToListener = false;
                 si = new SoundInstance(info, snd, null);
                 snd.Play();
             }
@@ -301,7 +312,7 @@ namespace NetGore.Audio
         {
             // Create the sound instance
             ISoundInfo info;
-            var snd = InternalCreateSound(id, out info);
+            var snd = InternalCreateSound(id, true, out info);
             if (snd == null)
                 return false;
 
@@ -309,8 +320,7 @@ namespace NetGore.Audio
             SoundInstance si;
             try
             {
-                snd.Position = new Vector3(source, 0f);
-                snd.RelativeToListener = true;
+                snd.Position = new Vector3(source.X, 0f, source.Y);
                 si = new SoundInstance(info, snd, null);
                 snd.Play();
             }
@@ -352,7 +362,7 @@ namespace NetGore.Audio
         {
             // Create the sound instance
             ISoundInfo info;
-            var snd = InternalCreateSound(id, out info);
+            var snd = InternalCreateSound(id, true, out info);
             if (snd == null)
                 return false;
 
@@ -361,7 +371,6 @@ namespace NetGore.Audio
             try
             {
                 snd.Position = new Vector3(source.Position, 0f);
-                snd.RelativeToListener = true;
                 si = new SoundInstance(info, snd, source);
                 snd.Play();
             }
@@ -470,7 +479,7 @@ namespace NetGore.Audio
             if (_nextUpdateTime > time)
                 return;
 
-            _nextUpdateTime = time + _updateRate;
+            _nextUpdateTime = time + _soundUpdateRate;
 
             // Loop through all the sounds
             for (var i = 0; i < _soundInstances.Count; i++)

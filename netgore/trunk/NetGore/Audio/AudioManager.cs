@@ -14,6 +14,8 @@ namespace NetGore.Audio
     public class AudioManager : IAudioManager
     {
         static readonly object _instanceSync = new object();
+        static readonly float _listenerDepth = EngineSettings.Instance.SoundListenerDepth;
+
         static AudioManager _instance;
 
         readonly IMusicManager _musicManager;
@@ -27,7 +29,6 @@ namespace NetGore.Audio
         {
             // Create the music and sound managers
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _soundManager = CreateSoundManager(contentManager);
             if (_soundManager == null)
                 throw new Exception("SoundManager is null.");
@@ -35,7 +36,6 @@ namespace NetGore.Audio
             _musicManager = CreateMusicManager(contentManager);
             if (_soundManager == null)
                 throw new Exception("MusicManager is null.");
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace NetGore.Audio
             get { return new Vector2(Listener.Position.X, Listener.Position.Y); }
             set
             {
-                Listener.Position = new Vector3(value, 424.26f);
-                Listener.Direction = new Vector3(0, 0, 1.0f);
+                Listener.Position = new Vector3(value, _listenerDepth);
+                Listener.Direction = new Vector3(0, 0, -1.0f);
             }
         }
 
