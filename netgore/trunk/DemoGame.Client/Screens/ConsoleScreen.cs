@@ -76,9 +76,12 @@ namespace DemoGame.Client
 
             // Draw some extras
             const int yOff = 150;
-            spriteBatch.DrawStringShaded(_txtOutput.Font, "FPS: " + ScreenManager.FPS, new Vector2(_cScreen.ClientSize.X - 100, yOff), Color.White, Color.Black);
-            spriteBatch.DrawStringShaded(_txtOutput.Font, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
-                          new Vector2(_cScreen.ClientSize.X - 150, _txtOutput.Font.GetLineSpacing() + yOff), Color.White, Color.Black);
+            spriteBatch.DrawStringShaded(_txtOutput.Font, "FPS: " + ScreenManager.FPS,
+                                         new Vector2(_cScreen.ClientSize.X - 100, yOff), Color.White, Color.Black);
+            spriteBatch.DrawStringShaded(_txtOutput.Font,
+                                         string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
+                                         new Vector2(_cScreen.ClientSize.X - 150, _txtOutput.Font.GetLineSpacing() + yOff),
+                                         Color.White, Color.Black);
 
             DrawingManager.EndDrawGUI();
         }
