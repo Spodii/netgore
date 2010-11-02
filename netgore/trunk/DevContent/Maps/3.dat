@@ -2,8 +2,8 @@
 <Map>
   <Header>
     <Name>Checkered</Name>
-    <HasMusic>False</HasMusic>
-    <MusicID>0</MusicID>
+    <HasMusic>True</HasMusic>
+    <MusicID>1</MusicID>
     <Size>1600,960</Size>
     <Indoors>False</Indoors>
     <CustomGravity>False</CustomGravity>
