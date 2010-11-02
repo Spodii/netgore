@@ -7,7 +7,6 @@ using DemoGame.Client.Properties;
 using log4net;
 using NetGore;
 using NetGore.Content;
-using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.NPCChat;
