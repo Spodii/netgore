@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using NetGore;
 using NetGore.Features.Quests;
@@ -139,7 +140,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Makes the character show an attack.
         /// </summary>
-        public void Attack()
+        public virtual void Attack()
         {
             CharacterSprite.AddBodyModifier(BodyInfo.Punch);
         }
@@ -148,15 +149,28 @@ namespace DemoGame.Client
         /// Draws the Character's name.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
-        void DrawName(ISpriteBatch sb)
+        /// <param name="font">The <see cref="Font"/> to use for the name text. May be null.</param>
+        protected virtual void DrawName(ISpriteBatch sb, Font font)
         {
-            var font = NameFont;
-            if (font != null && !string.IsNullOrEmpty(Name))
-            {
-                var nameSize = GetNameSize();
-                var namePos = DrawPosition + (new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y)).Round();
-                sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
-            }
+            // Ensure we have a valid font and name first
+            if (font == null || string.IsNullOrEmpty(Name))
+                return;
+
+            // Get the size of the name
+            var nameSize = GetNameSize();
+
+            // Get the character's center
+            var namePos = DrawPosition;
+
+            // Center horizontally
+            namePos.X += Size.X / 2f; // Move the left side of the name to the center of the character
+            namePos.X -= nameSize.X / 2f; // Move the center to the center of the character
+
+            // Move up above the character's head (height of the text, with a little extra offset)
+            namePos.Y -= nameSize.Y + 4;
+
+            // Draw
+            sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
         }
 
         /// <summary>
@@ -166,7 +180,7 @@ namespace DemoGame.Client
         /// <param name="percent">The percent of the SP being drawn.</param>
         /// <param name="index">The 0-based index of the bar being drawn.</param>
         /// <param name="color">The color to draw the bar.</param>
-        void DrawSPBar(ISpriteBatch sb, byte percent, byte index, Color color)
+        protected virtual void DrawSPBar(ISpriteBatch sb, byte percent, byte index, Color color)
         {
             const float spBarWidth = 55;
             const float spBarHeight = 6;
@@ -223,11 +237,18 @@ namespace DemoGame.Client
         /// Gets the size of the Character's name string.
         /// </summary>
         /// <returns>The size of the Character's name string.</returns>
-        Vector2 GetNameSize()
+        protected virtual Vector2 GetNameSize()
         {
             return NameFont.MeasureString(Name);
         }
 
+        /// <summary>
+        /// Creates the <see cref="ICharacterSprite"/> to be used by a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="getTime">The <see cref="IGetTime"/> provider.</param>
+        /// <param name="entity">The <see cref="Entity"/> the sprite is for (usually the <see cref="Character"/>).</param>
+        /// <param name="skeletonManager">The <see cref="SkeletonManager"/> to use (ignored in TopDown builds).</param>
+        /// <returns>The <see cref="ICharacterSprite"/> instance.</returns>
         public static ICharacterSprite CreateCharacterSprite(IGetTime getTime, Entity entity, SkeletonManager skeletonManager)
         {
 #if !TOPDOWN
@@ -242,7 +263,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="map">The Map to place the Character on.</param>
         /// <param name="skelManager">The SkeletonManager to use for the Character's skeletons.</param>
-        public void Initialize(Map map, SkeletonManager skelManager)
+        public virtual void Initialize(Map map, SkeletonManager skelManager)
         {
             // HACK: This is quite a dirty way to do this
             _map = map;
@@ -283,9 +304,7 @@ namespace DemoGame.Client
             // Update the sprite
             _characterSprite.Update(currentTime);
 
-#if !TOPDOWN
             UpdateAnimation();
-#endif
 
             // Update the interpolation
             _interpolator.Update(this, (int)lastDrawnDelta);
@@ -300,11 +319,12 @@ namespace DemoGame.Client
             set { _providedQuests = value ?? _emptyQuestIDs; }
         }
 
-#if !TOPDOWN
         /// <summary>
         /// Updates the character's sprites.
+        /// Only used in sidescroller builds.
         /// </summary>
-        void UpdateAnimation()
+        [Conditional("DEBUG")]
+        protected virtual void UpdateAnimation()
         {
             // Only update if the state has changed
             if (_lastState == State)
@@ -336,7 +356,6 @@ namespace DemoGame.Client
                     break;
             }
         }
-#endif
 
         #region IDrawable Members
 
@@ -345,9 +364,13 @@ namespace DemoGame.Client
         /// layer depth results in the object being drawn on top of (in front of) objects with a lower value.
         /// </summary>
         [Browsable(false)]
-        public int LayerDepth
+        public virtual int LayerDepth
         {
-            get { return 0; }
+            get 
+            { 
+                // Just put all characters on the same depth of 0 and let them be drawn "as they appear"
+                return 0; 
+            }
         }
 
         /// <summary>
@@ -422,7 +445,7 @@ namespace DemoGame.Client
                 DrawSPBar(sb, MPPercent, 1, new Color(0, 0, 255, 175));
 
                 // Draw the name
-                DrawName(sb);
+                DrawName(sb, NameFont);
             }
 
             if (AfterDraw != null)
