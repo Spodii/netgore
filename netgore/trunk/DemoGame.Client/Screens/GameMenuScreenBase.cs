@@ -100,7 +100,7 @@ namespace DemoGame.Client
         /// Performs the default menu background drawing.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        protected void DrawBackground(ISpriteBatch spriteBatch)
+        protected virtual void DrawBackground(ISpriteBatch spriteBatch)
         {
             // Draw the background
             if (_background != null)
