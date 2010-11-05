@@ -26,7 +26,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Background/sky</Name>
-        <Source>0,0,1024,238</Source>
+        <Source>0,0,2,2</Source>
       </Texture>
     </Item2>
     <Item3>
