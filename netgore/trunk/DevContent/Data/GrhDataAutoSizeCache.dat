@@ -949,10 +949,10 @@
     </Item134>
     <Item135>
       <AssetName>Grh/Background/sky</AssetName>
-      <FileSize>506478</FileSize>
+      <FileSize>195</FileSize>
       <GrhIndex>137</GrhIndex>
-      <Height>238</Height>
-      <Width>1024</Width>
+      <Height>2</Height>
+      <Width>2</Width>
     </Item135>
     <Item136>
       <AssetName>Grh/Background/menu</AssetName>
