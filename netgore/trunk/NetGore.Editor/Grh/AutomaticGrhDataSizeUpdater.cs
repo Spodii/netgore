@@ -21,6 +21,7 @@ namespace NetGore.Editor.Grhs
     public class AutomaticGrhDataSizeUpdater
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const string _rootNodeName = "AutoGrhDataSizes";
         static readonly AutomaticGrhDataSizeUpdater _instance;
 
         readonly Dictionary<GrhIndex, CacheItemInfo> _cache = new Dictionary<GrhIndex, CacheItemInfo>();
@@ -91,7 +92,7 @@ namespace NetGore.Editor.Grhs
                 return ret;
 
             // Load the items
-            var r = XmlValueReader.CreateFromFile(CacheFile, "AutoGrhDataSizes");
+            var r = XmlValueReader.CreateFromFile(CacheFile, _rootNodeName);
             var loadedItems = r.ReadManyNodes("Item", x => new CacheItemInfo(x));
 
             ret.AddRange(loadedItems);
@@ -104,13 +105,13 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         public virtual void Save()
         {
-            using (var writer = XmlValueWriter.Create(CacheFile, "AutoGrhDataSizes"))
+            using (var writer = XmlValueWriter.Create(CacheFile, _rootNodeName))
             {
-                writer.WriteManyNodes("Item", _cache.Values.OrderBy(x => x.GrhIndex), (w, x) => x.WriteState(w));
+                writer.WriteManyNodes("Item", _cache.Values.OrderBy(x => x.GrhIndex).ToImmutable(), (w, x) => x.WriteState(w));
             }
         }
 
-        string TryGetAbsoluteFilePath(StationaryGrhData gd, ContentPaths contentPath)
+        static string TryGetAbsoluteFilePath(StationaryGrhData gd, ContentPaths contentPath)
         {
             string ret = null;
             var isValid = true;
