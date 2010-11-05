@@ -45,7 +45,7 @@
                 <Min>-150</Min>
                 <Max>-150</Max>
               </ReleaseSpeed>
-              <Grh>393</Grh>
+              <Grh>73</Grh>
               <CustomValues>
                 <Perimeter>True</Perimeter>
                 <Radiate>True</Radiate>
@@ -127,7 +127,7 @@
       <Min>0</Min>
       <Max>0</Max>
     </ReleaseSpeed>
-    <Grh>397</Grh>
+    <Grh>77</Grh>
     <CustomValues>
       <Closed>True</Closed>
       <Scale>10</Scale>
