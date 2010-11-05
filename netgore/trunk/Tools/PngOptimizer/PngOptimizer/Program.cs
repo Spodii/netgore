@@ -79,6 +79,29 @@ Options:
             Console.WriteLine(msg);
         }
 
+        static void SafeCopy(string src, string dest, bool overwrite  =true)
+        {
+            int i = 0;
+            while (true)
+            {
+                ++i;
+                try
+                {
+                    File.Copy(src, dest, overwrite);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Thread.Sleep(100);
+                    if (i == 9)
+                    {
+                        Console.WriteLine("Failed to copy file from `{0}` to `{1}`. Exception: {2}", src, dest, ex);
+                        return;
+                    }
+                }
+            }
+        }
+
         static void Run(string rootDir, string skip, string filter, bool recursive)
         {
             Regex rSkip = null;
@@ -105,55 +128,70 @@ Options:
             foreach (var f in files)
             {
                 ++current;
-                Console.WriteLine("[{0}%] {1}", Math.Round((current / (float)max) * 100f, 0), f.Substring(rDirLen));
-
-                var fNew = f + ".tmp";
-                var fNewInc = 0;
-                while (File.Exists(fNew))
-                {
-                    fNew = f + ".tmp" + ++fNewInc;
-                }
-
                 try
                 {
-                    Cmd("pngcrush.exe", "-brute \"{0}\" \"{1}\"", f, fNew);
+                    Console.WriteLine("[{0}%] {1}", Math.Round((current / (float)max) * 100f, 0), f.Substring(rDirLen));
 
-                    WaitForFile(f);
-                    WaitForFile(fNew);
-
-                    if (!File.Exists(fNew))
+                    var fNew = f + ".tmp";
+                    var fNewInc = 0;
+                    while (File.Exists(fNew))
                     {
-                        Console.WriteLine("\tFile skipped (probably not a valid PNG...)");
-                        continue;
+                        fNew = f + ".tmp" + ++fNewInc;
                     }
 
-                    File.Copy(fNew, f, true);
+                    try
+                    {
+                        Cmd("pngcrush.exe", "-brute \"{0}\" \"{1}\"", f, fNew);
+
+                        Thread.Sleep(50);
+
+                        WaitForFile(f);
+                        WaitForFile(fNew);
+
+                        if (!File.Exists(fNew))
+                        {
+                            Console.WriteLine("\tFile skipped (probably not a valid PNG...)");
+                            continue;
+                        }
+
+                        SafeCopy(fNew, f);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                    finally
+                    {
+                        WaitForFile(fNew);
+
+                        if (File.Exists(fNew))
+                        {
+                            int i = 0;
+                            while (true)
+                            {
+                                ++i;
+                                try
+                                {
+                                    File.Delete(fNew);
+                                    break;
+                                }
+                                catch (IOException ex)
+                                {
+                                    if (i == 99)
+                                    {
+                                        Console.WriteLine("Failed to delete file `{0}` after `{1}` attempts. Exception: {2}", fNew, i + 1, ex);
+                                        break;
+                                    }
+                                    else
+                                        Thread.Sleep(100);
+                                }
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                }
-                finally
-                {
-                    WaitForFile(fNew);
-
-                    if (File.Exists(fNew))
-                    {
-                        for (int i = 0; i < 100; i++)
-                        {
-                            try
-                            {
-                                File.Delete(fNew);
-                            }
-                            catch (IOException ex)
-                            {
-                                if (i == 99)
-                                    Console.WriteLine("Failed to delete file `{0}` after `{1}` attempts. Exception: {2}", fNew, i+1, ex);
-                                else
-                                    Thread.Sleep(10);
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -173,7 +211,7 @@ Options:
                         break;
                     }
                 }
-                catch (Exception)
+                catch (IOException)
                 {
                     Thread.Sleep(50);
                 }
