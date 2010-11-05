@@ -164,7 +164,7 @@ namespace DemoGame.Client
 
             // Center horizontally
             namePos.X += Size.X / 2f; // Move the left side of the name to the center of the character
-            namePos.X -= nameSize.X / 2f; // Move the center to the center of the character
+            namePos.X -= (float)Math.Round(nameSize.X / 2f); // Move the center to the center of the character
 
             // Move up above the character's head (height of the text, with a little extra offset)
             namePos.Y -= nameSize.Y + 4;
@@ -239,7 +239,8 @@ namespace DemoGame.Client
         /// <returns>The size of the Character's name string.</returns>
         protected virtual Vector2 GetNameSize()
         {
-            return NameFont.MeasureString(Name);
+            var ret = NameFont.MeasureString(Name);
+            return ret;
         }
 
         /// <summary>
