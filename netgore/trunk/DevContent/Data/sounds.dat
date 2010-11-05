@@ -1,14 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Sound>
 	<Items>
-		<Count>2</Count>
+		<Count>1</Count>
 		<Item0>
 			<File>punch</File>
 			<Index>1</Index>
 		</Item0>
-		<Item1>
-			<File>thunder</File>
-			<Index>2</Index>
-		</Item1>
 	</Items>
 </Sound>
