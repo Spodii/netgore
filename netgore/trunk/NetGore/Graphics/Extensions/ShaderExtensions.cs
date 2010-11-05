@@ -5,7 +5,10 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    public static class ShaderHelper
+    /// <summary>
+    /// Extension methods for the <see cref="Shader"/> class.
+    /// </summary>
+    public static class ShaderExtensions
     {
         /// <summary>
         /// Loads a <see cref="Shader"/> using code in memory.

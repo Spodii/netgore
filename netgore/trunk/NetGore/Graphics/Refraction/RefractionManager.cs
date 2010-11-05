@@ -93,7 +93,7 @@ void main (void)
             // Try to create the default shader
             try
             {
-                _defaultShader = ShaderHelper.LoadFromMemory(defaultShaderCode);
+                _defaultShader = ShaderExtensions.LoadFromMemory(defaultShaderCode);
             }
             catch (LoadingFailedException ex)
             {
