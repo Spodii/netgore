@@ -61,14 +61,13 @@ namespace InstallationValidator
             var currentDir = Directory.GetCurrentDirectory();
             if (currentDir.EndsWith("bin", StringComparison.OrdinalIgnoreCase))
             {
-                // ReSharper disable PossibleNullReferenceException
                 // Move two directories down
                 var parent1 = Directory.GetParent(currentDir);
                 var parent2 = Directory.GetParent(parent1.FullName);
+                var parent3 = Directory.GetParent(parent2.FullName);
 
                 // Set the new current directory
-                Directory.SetCurrentDirectory(parent2.FullName);
-                // ReSharper restore PossibleNullReferenceException
+                Directory.SetCurrentDirectory(parent3.FullName);
             }
         }
 

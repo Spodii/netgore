@@ -231,7 +231,7 @@ namespace CopyContent
         /// <param name="value">The value of the switch.</param>
         /// <returns>The values of the <paramref name="value"/>, or null if the <paramref name="value"/> was not a
         /// valid array.</returns>
-        static string[] HandleSwitch_ReadValueArray(string value)
+        static IEnumerable<string> HandleSwitch_ReadValueArray(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return null;

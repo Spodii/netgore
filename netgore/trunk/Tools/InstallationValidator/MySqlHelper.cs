@@ -23,7 +23,7 @@ namespace InstallationValidator
         /// <summary>
         /// The relative path to the database schema file.
         /// </summary>
-        public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema{1}",
+        public static readonly string DbSchemaFile = string.Format("Tools{0}InstallationValidator{0}dbschema{1}",
                                                                    Path.DirectorySeparatorChar, EngineSettings.DataFileSuffix);
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace InstallationValidator
         {
             const string div1 = "=====";
             const string div2 = "===";
-
+            
             string err;
             if (p != null && p.Length > 0)
                 err = string.Format(errmsg, p);

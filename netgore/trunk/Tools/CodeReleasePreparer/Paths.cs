@@ -15,7 +15,7 @@ namespace CodeReleasePreparer
         /// </summary>
         public static string Root
         {
-            get { return _root ?? (_root = Path.GetFullPath(string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar))); }
+            get { return _root ?? (_root = Path.GetFullPath(string.Format("..{0}..{0}..{0}..{0}", Path.DirectorySeparatorChar))); }
         }
     }
 }

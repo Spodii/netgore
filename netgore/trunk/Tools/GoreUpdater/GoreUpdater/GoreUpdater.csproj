@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\_dependencies\log4net.dll</HintPath>
+      <HintPath>..\..\..\_dependencies\log4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
