@@ -733,9 +733,9 @@ namespace NetGore.Graphics
         {
             // Grab the GrhDatas by their type
             var gds = GrhDatas.Where(x => x != null).OrderBy(x => x.Categorization.ToString(), StringComparer.OrdinalIgnoreCase);
-            var stationaryGrhDatas = gds.OfType<StationaryGrhData>().ToArray();
-            var animatedGrhDatas = gds.OfType<AnimatedGrhData>().ToArray();
-            var autoAnimatedGrhDatas = gds.OfType<AutomaticAnimatedGrhData>().ToArray();
+            var stationaryGrhDatas = gds.OfType<StationaryGrhData>().ToImmutable();
+            var animatedGrhDatas = gds.OfType<AnimatedGrhData>().ToImmutable();
+            var autoAnimatedGrhDatas = gds.OfType<AutomaticAnimatedGrhData>().ToImmutable();
 
             // Write
             var path = GetGrhDataFilePath(contentPath);
