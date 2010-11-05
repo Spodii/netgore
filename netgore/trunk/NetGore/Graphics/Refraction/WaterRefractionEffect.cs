@@ -62,7 +62,7 @@ namespace NetGore.Graphics
             try
             {
                 var code = Resources.WaterRefractionEffectShader;
-                _defaultShader = ShaderHelper.LoadFromMemory(code);
+                _defaultShader = ShaderExtensions.LoadFromMemory(code);
             }
             catch (LoadingFailedException ex)
             {

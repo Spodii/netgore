@@ -12,7 +12,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Extension methods for the <see cref="Window"/> class.
     /// </summary>
-    public static class WindowHelper
+    public static class WindowExtensions
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

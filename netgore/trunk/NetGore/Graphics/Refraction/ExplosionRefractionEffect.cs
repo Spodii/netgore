@@ -63,7 +63,7 @@ namespace NetGore.Graphics
             try
             {
                 var code = Resources.ExplosionRefractionEffectShader;
-                _defaultShader = ShaderHelper.LoadFromMemory(code);
+                _defaultShader = ShaderExtensions.LoadFromMemory(code);
             }
             catch (LoadingFailedException ex)
             {
