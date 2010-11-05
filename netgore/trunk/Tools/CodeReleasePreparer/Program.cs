@@ -261,7 +261,7 @@ namespace CodeReleasePreparer
 
             // Move dump file
             Console.WriteLine("Moving dump file to trunk root...");
-            var dbfileRooted = string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar) + dbfile;
+            var dbfileRooted = Paths.Root + dbfile;
             if (File.Exists(dbfileRooted))
                 File.Delete(dbfileRooted);
 

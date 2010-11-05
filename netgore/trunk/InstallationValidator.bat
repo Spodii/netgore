@@ -1,1 +1,1 @@
-START InstallationValidator\bin\InstallationValidator.exe
+START Tools\InstallationValidator\bin\InstallationValidator.exe
