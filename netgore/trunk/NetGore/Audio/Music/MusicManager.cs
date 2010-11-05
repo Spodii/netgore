@@ -248,7 +248,7 @@ namespace NetGore.Audio
                 // Set the values for the music and start playing it
                 _playing.Volume = Volume;
                 _playing.Loop = Loop;
-                _playing.RelativeToListener = false;
+                _playing.RelativeToListener = true;
                 _playing.Play();
             }
             catch (Exception ex)
