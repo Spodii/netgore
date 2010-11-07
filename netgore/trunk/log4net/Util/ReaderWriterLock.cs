@@ -18,8 +18,6 @@
 
 #endregion
 
-#define HAS_READERWRITERLOCK
-
 using System.Linq;
 
 namespace log4net.Util
