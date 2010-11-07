@@ -16,9 +16,6 @@
 //
 #endregion
 
-// SSCLI 1.0 has no support for ADO.NET
-#if !SSCLI
-
 using System;
 using System.Collections;
 using System.Data;
@@ -1168,5 +1165,3 @@ namespace log4net.Appender
 		#endregion // Private Instance Fields
 	}
 }
-
-#endif // !SSCLI

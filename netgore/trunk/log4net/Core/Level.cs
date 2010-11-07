@@ -79,9 +79,7 @@ namespace log4net.Core
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-#if !NETCF
 	[Serializable]
-#endif
 	sealed public class Level : IComparable
 	{
 		#region Public Instance Constructors

@@ -333,10 +333,6 @@ namespace log4net.Appender
 				}
 			}
 
-#if NETCF
-			// Write to the output stream
-			Console.Write(loggingMessage);
-#else
 			if (m_writeToErrorStream)
 			{
 				// Write to the error stream
@@ -347,7 +343,6 @@ namespace log4net.Appender
 				// Write to the output stream
 				Console.Write(loggingMessage);
 			}
-#endif
 		
 		}
 

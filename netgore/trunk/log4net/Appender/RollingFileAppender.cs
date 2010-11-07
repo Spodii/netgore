@@ -26,19 +26,6 @@ using log4net.Core;
 
 namespace log4net.Appender
 {
-#if CONFIRM_WIN32_FILE_SHAREMODES
-	// The following sounds good, and I though it was the case, but after
-	// further testing on Windows I have not been able to confirm it.
-
-	/// On the Windows platform if another process has a write lock on the file 
-	/// that is to be deleted, but allows shared read access to the file then the
-	/// file can be moved, but cannot be deleted. If the other process also allows 
-	/// shared delete access to the file then the file will be deleted once that 
-	/// process closes the file. If it is necessary to open the log file or any
-	/// of the backup files outside of this appender for either read or 
-	/// write access please ensure that read and delete share modes are enabled.
-#endif
-
 	/// <summary>
 	/// Appender that rolls log files based on size or date or both.
 	/// </summary>

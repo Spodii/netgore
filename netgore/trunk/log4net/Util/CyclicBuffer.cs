@@ -202,65 +202,6 @@ namespace log4net.Util
 			}
 		}
 
-#if RESIZABLE_CYCLIC_BUFFER
-		/// <summary>
-		/// Resizes the cyclic buffer to <paramref name="newSize"/>.
-		/// </summary>
-		/// <param name="newSize">The new size of the buffer.</param>
-		/// <remarks>
-		/// <para>
-		/// Resize the cyclic buffer. Events in the buffer are copied into
-		/// the newly sized buffer. If the buffer is shrunk and there are
-		/// more events currently in the buffer than the new size of the
-		/// buffer then the newest events will be dropped from the buffer.
-		/// </para>
-		/// </remarks>
-		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="newSize"/> argument is not a positive integer.</exception>
-		public void Resize(int newSize) 
-		{
-			lock(this)
-			{
-				if (newSize < 0) 
-				{
-					throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("newSize", (object)newSize, "Parameter: newSize, Value: [" + newSize + "] out of range. Non zero positive integer required");
-				}
-				if (newSize == m_numElems)
-				{
-					return; // nothing to do
-				}
-	
-				LoggingEvent[] temp = new  LoggingEvent[newSize];
-
-				int loopLen = (newSize < m_numElems) ? newSize : m_numElems;
-	
-				for(int i = 0; i < loopLen; i++) 
-				{
-					temp[i] = m_events[m_first];
-					m_events[m_first] = null;
-
-					if (++m_first == m_numElems) 
-					{
-						m_first = 0;
-					}
-				}
-
-				m_events = temp;
-				m_first = 0;
-				m_numElems = loopLen;
-				m_maxSize = newSize;
-
-				if (loopLen == newSize) 
-				{
-					m_last = 0;
-				} 
-				else 
-				{
-					m_last = loopLen;
-				}
-			}
-		}
-#endif
-
 		#endregion Public Instance Methods
 
 		#region Public Instance Properties
@@ -309,13 +250,6 @@ namespace log4net.Util
 					return m_maxSize; 
 				}
 			}
-#if RESIZABLE_CYCLIC_BUFFER
-			set 
-			{ 
-				/// Setting the MaxSize will cause the buffer to resize.
-				Resize(value); 
-			}
-#endif
 		}
 
 		/// <summary>

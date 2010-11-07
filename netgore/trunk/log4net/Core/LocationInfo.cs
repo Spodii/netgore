@@ -54,9 +54,7 @@ namespace log4net.Core
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-#if !NETCF
 	[Serializable]
-#endif
 	public class LocationInfo
 	{
 		#region Public Instance Constructors
@@ -81,7 +79,6 @@ namespace log4net.Core
 			m_methodName = NA;
 			m_fullInfo = NA;
 
-#if !NETCF
 			if (callerStackBoundaryDeclaringType != null)
 			{
 				try
@@ -143,7 +140,6 @@ namespace log4net.Core
 					LogLog.Debug("LocationInfo: Security exception while trying to get caller stack frame. Error Ignored. Location Information Not Available.");
 				}
 			}
-#endif
 		}
 
 		/// <summary>

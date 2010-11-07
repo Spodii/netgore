@@ -19,12 +19,10 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-#if (!SSCLI)
 //
 // log4net makes use of static methods which cannot be made com visible
 //
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
-#endif
 
 //
 // log4net is CLS compliant
@@ -38,13 +36,6 @@ using System.Runtime.CompilerServices;
 //
 
 [assembly: AssemblyTitle("log4net for NetGore")]
-
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Retail")]
-#endif
-
 [assembly: AssemblyDescription("The Apache Software Foundation log4net Logging Framework")]
 [assembly: AssemblyProduct("log4net")]
 [assembly: AssemblyDefaultAlias("log4net")]

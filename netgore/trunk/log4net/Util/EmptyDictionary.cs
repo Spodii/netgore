@@ -32,9 +32,7 @@ namespace log4net.Util
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-#if !NETCF
 	[Serializable]
-#endif
 	public sealed class EmptyDictionary : IDictionary
 	{
 		#region Private Instance Constructors

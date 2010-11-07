@@ -286,8 +286,6 @@ namespace log4net.Config
 
 		#region ConfigureAndWatch static methods
 
-#if (!NETCF && !SSCLI)
-
 		/// <summary>
 		/// Configures log4net using the file specified, monitors the file for changes 
 		/// and reloads the configuration if a change is detected.
@@ -349,7 +347,6 @@ namespace log4net.Config
 		{
 			XmlConfigurator.ConfigureAndWatch(repository, configFile);
 		}
-#endif
 
 		#endregion ConfigureAndWatch static methods
 	}

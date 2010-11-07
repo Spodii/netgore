@@ -20,9 +20,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Collections;
 using System.IO;
-#if (!NETCF)
 using System.Security.Principal;
-#endif
 
 using log4net.Util;
 using log4net.Repository;
@@ -286,13 +284,9 @@ namespace log4net.Core
 	/// <author>Gert Driesen</author>
 	/// <author>Douglas de la Torre</author>
 	/// <author>Daniel Cazzulino</author>
-#if !NETCF
 	[Serializable]
-#endif
 	public class LoggingEvent 
-#if !NETCF
 		: ISerializable
-#endif
 	{
 		#region Public Instance Constructors
 
@@ -423,8 +417,6 @@ namespace log4net.Core
 
 		#region Protected Instance Constructors
 
-#if !NETCF
-
 		/// <summary>
 		/// Serialization constructor
 		/// </summary>
@@ -461,8 +453,6 @@ namespace log4net.Core
 			// Set the fix flags otherwise the data values may be overwritten from the current environment.
 			m_fixFlags = FixFlags.All;
 		}
-
-#endif
 
 		#endregion Protected Instance Constructors
 
@@ -742,10 +732,6 @@ namespace log4net.Core
 			{
 				if (m_data.ThreadName == null && this.m_cacheUpdatable)
 				{
-#if NETCF
-					// Get thread ID only
-					m_data.ThreadName = SystemInfo.CurrentThreadId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
-#else
 					m_data.ThreadName = System.Threading.Thread.CurrentThread.Name;
 					if (m_data.ThreadName == null || m_data.ThreadName.Length == 0)
 					{
@@ -766,7 +752,6 @@ namespace log4net.Core
 							m_data.ThreadName = System.Threading.Thread.CurrentThread.GetHashCode().ToString(System.Globalization.CultureInfo.InvariantCulture);
 						}
 					}
-#endif
 				}
 				return m_data.ThreadName;
 			}
@@ -825,10 +810,6 @@ namespace log4net.Core
 			{
 				if (m_data.UserName == null  && this.m_cacheUpdatable) 
 				{
-#if (NETCF || SSCLI)
-					// On compact framework there's no notion of current Windows user
-					m_data.UserName = SystemInfo.NotAvailableText;
-#else
 					try
 					{
 						WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
@@ -849,7 +830,6 @@ namespace log4net.Core
 
 						m_data.UserName = "";
 					}
-#endif
 				}
 				return m_data.UserName;
 			}
@@ -873,10 +853,6 @@ namespace log4net.Core
 			{
 				if (m_data.Identity == null  && this.m_cacheUpdatable)
 				{
-#if (NETCF || SSCLI)
-					// On compact framework there's no notion of current thread principals
-					m_data.Identity = SystemInfo.NotAvailableText;
-#else
 					try
 					{
 						if (System.Threading.Thread.CurrentPrincipal != null && 
@@ -898,7 +874,6 @@ namespace log4net.Core
 
 						m_data.Identity = "";
 					}
-#endif
 				}
 				return m_data.Identity;
 			}
@@ -993,8 +968,6 @@ namespace log4net.Core
 
 		#region Implementation of ISerializable
 
-#if !NETCF
-
 		/// <summary>
 		/// Serializes this object into the <see cref="SerializationInfo" /> provided.
 		/// </summary>
@@ -1028,8 +1001,6 @@ namespace log4net.Core
 			info.AddValue("Domain", m_data.Domain);
 			info.AddValue("Identity", m_data.Identity);
 		}
-
-#endif
 
 		#endregion Implementation of ISerializable
 
@@ -1304,13 +1275,13 @@ namespace log4net.Core
 			{
 				m_compositeProperties.Add(m_eventProperties);
 			}
-#if !NETCF
+
 			PropertiesDictionary logicalThreadProperties = LogicalThreadContext.Properties.GetProperties(false);
 			if (logicalThreadProperties != null)
 			{
 				m_compositeProperties.Add(logicalThreadProperties);
 			}
-#endif
+
 			PropertiesDictionary threadProperties = ThreadContext.Properties.GetProperties(false);
 			if (threadProperties != null)
 			{

@@ -33,9 +33,7 @@ namespace log4net.Core
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-#if !NETCF
 	[Serializable]
-#endif
 	public class LogException : ApplicationException 
 	{
 		#region Public Instance Constructors
@@ -85,7 +83,6 @@ namespace log4net.Core
 
 		#region Protected Instance Constructors
 
-#if !NETCF
 		/// <summary>
 		/// Serialization constructor
 		/// </summary>
@@ -100,7 +97,6 @@ namespace log4net.Core
 		protected LogException(SerializationInfo info, StreamingContext context) : base(info, context) 
 		{
 		}
-#endif
 
 		#endregion Protected Instance Constructors
 	}
