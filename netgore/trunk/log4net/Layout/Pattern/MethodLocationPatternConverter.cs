@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,42 +15,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
-using System;
-using System.Text;
 using System.IO;
-
+using System.Linq;
 using log4net.Core;
 
 namespace log4net.Layout.Pattern
 {
-	/// <summary>
-	/// Write the method name to the output
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Writes the caller location <see cref="LocationInfo.MethodName"/> to
-	/// the output.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	internal sealed class MethodLocationPatternConverter : PatternLayoutConverter 
-	{
-		/// <summary>
-		/// Write the method name to the output
-		/// </summary>
-		/// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-		/// <param name="loggingEvent">the event being logged</param>
-		/// <remarks>
-		/// <para>
-		/// Writes the caller location <see cref="LocationInfo.MethodName"/> to
-		/// the output.
-		/// </para>
-		/// </remarks>
-		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
-		{
-			writer.Write(loggingEvent.LocationInformation.MethodName);
-		}
-	}
+    /// <summary>
+    /// Write the method name to the output
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Writes the caller location <see cref="LocationInfo.MethodName"/> to
+    /// the output.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    sealed class MethodLocationPatternConverter : PatternLayoutConverter
+    {
+        /// <summary>
+        /// Write the method name to the output
+        /// </summary>
+        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+        /// <param name="loggingEvent">the event being logged</param>
+        /// <remarks>
+        /// <para>
+        /// Writes the caller location <see cref="LocationInfo.MethodName"/> to
+        /// the output.
+        /// </para>
+        /// </remarks>
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        {
+            writer.Write(loggingEvent.LocationInformation.MethodName);
+        }
+    }
 }

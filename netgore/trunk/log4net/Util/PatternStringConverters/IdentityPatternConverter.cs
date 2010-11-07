@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,56 +15,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
-using System;
-using System.Text;
 using System.IO;
-
-using log4net.Util;
+using System.Linq;
+using System.Security;
+using System.Threading;
 
 namespace log4net.Util.PatternStringConverters
 {
-	/// <summary>
-	/// Write the current thread identity to the output
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Write the current thread identity to the output writer
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	internal sealed class IdentityPatternConverter : PatternConverter 
-	{
-		/// <summary>
-		/// Write the current thread identity to the output
-		/// </summary>
-		/// <param name="writer">the writer to write to</param>
-		/// <param name="state">null, state is not set</param>
-		/// <remarks>
-		/// <para>
-		/// Writes the current thread identity to the output <paramref name="writer"/>.
-		/// </para>
-		/// </remarks>
-		override protected void Convert(TextWriter writer, object state) 
-		{
-			try
-			{
-				if (System.Threading.Thread.CurrentPrincipal != null && 
-					System.Threading.Thread.CurrentPrincipal.Identity != null &&
-					System.Threading.Thread.CurrentPrincipal.Identity.Name != null)
-				{
-					writer.Write( System.Threading.Thread.CurrentPrincipal.Identity.Name );
-				}
-			}
-			catch(System.Security.SecurityException)
-			{
-				// This security exception will occur if the caller does not have 
-				// some undefined set of SecurityPermission flags.
-				LogLog.Debug("IdentityPatternConverter: Security exception while trying to get current thread principal. Error Ignored.");
+    /// <summary>
+    /// Write the current thread identity to the output
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Write the current thread identity to the output writer
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    sealed class IdentityPatternConverter : PatternConverter
+    {
+        /// <summary>
+        /// Write the current thread identity to the output
+        /// </summary>
+        /// <param name="writer">the writer to write to</param>
+        /// <param name="state">null, state is not set</param>
+        /// <remarks>
+        /// <para>
+        /// Writes the current thread identity to the output <paramref name="writer"/>.
+        /// </para>
+        /// </remarks>
+        protected override void Convert(TextWriter writer, object state)
+        {
+            try
+            {
+                if (Thread.CurrentPrincipal != null && Thread.CurrentPrincipal.Identity != null &&
+                    Thread.CurrentPrincipal.Identity.Name != null)
+                    writer.Write(Thread.CurrentPrincipal.Identity.Name);
+            }
+            catch (SecurityException)
+            {
+                // This security exception will occur if the caller does not have 
+                // some undefined set of SecurityPermission flags.
+                LogLog.Debug(
+                    "IdentityPatternConverter: Security exception while trying to get current thread principal. Error Ignored.");
 
-				writer.Write( SystemInfo.NotAvailableText );
-			}
-		}
-	}
+                writer.Write(SystemInfo.NotAvailableText);
+            }
+        }
+    }
 }

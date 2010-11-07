@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,33 +15,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
-using System;
-using System.Text.RegularExpressions;
-
-using log4net;
-using log4net.Core;
-using log4net.Util;
+using System.Linq;
 
 namespace log4net.Filter
 {
-	/// <summary>
-	/// Simple filter to match a keyed string in the <see cref="MDC"/>
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Simple filter to match a keyed string in the <see cref="MDC"/>
-	/// </para>
-	/// <para>
-	/// As the MDC has been replaced with layered properties the
-	/// <see cref="PropertyFilter"/> should be used instead.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	/*[Obsolete("MdcFilter has been replaced by PropertyFilter")]*/
-	public class MdcFilter : PropertyFilter
-	{
-	}
+    /// <summary>
+    /// Simple filter to match a keyed string in the <see cref="MDC"/>
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Simple filter to match a keyed string in the <see cref="MDC"/>
+    /// </para>
+    /// <para>
+    /// As the MDC has been replaced with layered properties the
+    /// <see cref="PropertyFilter"/> should be used instead.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    /*[Obsolete("MdcFilter has been replaced by PropertyFilter")]*/
+    public class MdcFilter : PropertyFilter
+    {
+    }
 }

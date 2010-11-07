@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,40 +15,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
-using System;
-using System.Text;
 using System.IO;
-
-using log4net.Util;
+using System.Linq;
 
 namespace log4net.Util.PatternStringConverters
 {
-	/// <summary>
-	/// Write the name of the current AppDomain to the output
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Write the name of the current AppDomain to the output writer
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	internal sealed class AppDomainPatternConverter : PatternConverter 
-	{
-		/// <summary>
-		/// Write the name of the current AppDomain to the output
-		/// </summary>
-		/// <param name="writer">the writer to write to</param>
-		/// <param name="state">null, state is not set</param>
-		/// <remarks>
-		/// <para>
-		/// Writes name of the current AppDomain to the output <paramref name="writer"/>.
-		/// </para>
-		/// </remarks>
-		override protected void Convert(TextWriter writer, object state) 
-		{
-			writer.Write( SystemInfo.ApplicationFriendlyName );
-		}
-	}
+    /// <summary>
+    /// Write the name of the current AppDomain to the output
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Write the name of the current AppDomain to the output writer
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    sealed class AppDomainPatternConverter : PatternConverter
+    {
+        /// <summary>
+        /// Write the name of the current AppDomain to the output
+        /// </summary>
+        /// <param name="writer">the writer to write to</param>
+        /// <param name="state">null, state is not set</param>
+        /// <remarks>
+        /// <para>
+        /// Writes name of the current AppDomain to the output <paramref name="writer"/>.
+        /// </para>
+        /// </remarks>
+        protected override void Convert(TextWriter writer, object state)
+        {
+            writer.Write(SystemInfo.ApplicationFriendlyName);
+        }
+    }
 }

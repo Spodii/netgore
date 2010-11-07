@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,115 +15,113 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
-using System;
+using System.Linq;
 
 namespace log4net.Repository.Hierarchy
 {
-	/// <summary>
-	/// Used internally to accelerate hash table searches.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Internal class used to improve performance of 
-	/// string keyed hashtables.
-	/// </para>
-	/// <para>
-	/// The hashcode of the string is cached for reuse.
-	/// The string is stored as an interned value.
-	/// When comparing two <see cref="LoggerKey"/> objects for equality 
-	/// the reference equality of the interned strings is compared.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	internal sealed class LoggerKey
-	{
-		#region Internal Instance Constructors
+    /// <summary>
+    /// Used internally to accelerate hash table searches.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Internal class used to improve performance of 
+    /// string keyed hashtables.
+    /// </para>
+    /// <para>
+    /// The hashcode of the string is cached for reuse.
+    /// The string is stored as an interned value.
+    /// When comparing two <see cref="LoggerKey"/> objects for equality 
+    /// the reference equality of the interned strings is compared.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    sealed class LoggerKey
+    {
+        #region Internal Instance Constructors
 
-		/// <summary>
-		/// Construct key with string name
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Initializes a new instance of the <see cref="LoggerKey" /> class 
-		/// with the specified name.
-		/// </para>
-		/// <para>
-		/// Stores the hashcode of the string and interns
-		/// the string key to optimize comparisons.
-		/// </para>
-		/// <note>
-		/// The Compact Framework 1.0 the <see cref="String.Intern"/>
-		/// method does not work. On the Compact Framework
-		/// the string keys are not interned nor are they
-		/// compared by reference.
-		/// </note>
-		/// </remarks>
-		/// <param name="name">The name of the logger.</param>
-		internal LoggerKey(string name) 
-		{
-			m_name = string.Intern(name);
-			m_hashCache = name.GetHashCode();
-		}
+        /// <summary>
+        /// Construct key with string name
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Initializes a new instance of the <see cref="LoggerKey" /> class 
+        /// with the specified name.
+        /// </para>
+        /// <para>
+        /// Stores the hashcode of the string and interns
+        /// the string key to optimize comparisons.
+        /// </para>
+        /// <note>
+        /// The Compact Framework 1.0 the <see cref="string.Intern"/>
+        /// method does not work. On the Compact Framework
+        /// the string keys are not interned nor are they
+        /// compared by reference.
+        /// </note>
+        /// </remarks>
+        /// <param name="name">The name of the logger.</param>
+        internal LoggerKey(string name)
+        {
+            m_name = string.Intern(name);
+            m_hashCache = name.GetHashCode();
+        }
 
-		#endregion Internal Instance Constructors
+        #endregion Internal Instance Constructors
 
-		#region Override implementation of Object
+        #region Override implementation of Object
 
-		/// <summary>
-		/// Returns a hash code for the current instance.
-		/// </summary>
-		/// <returns>A hash code for the current instance.</returns>
-		/// <remarks>
-		/// <para>
-		/// Returns the cached hashcode.
-		/// </para>
-		/// </remarks>
-		override public int GetHashCode() 
-		{
-			return m_hashCache;
-		}
+        /// <summary>
+        /// Determines whether two <see cref="LoggerKey" /> instances 
+        /// are equal.
+        /// </summary>
+        /// <param name="obj">The <see cref="object" /> to compare with the current <see cref="LoggerKey" />.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="object" /> is equal to the current <see cref="LoggerKey" />; otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Compares the references of the interned strings.
+        /// </para>
+        /// </remarks>
+        public override bool Equals(object obj)
+        {
+            // Compare reference type of this against argument
+            if ((this) == obj)
+                return true;
 
-		/// <summary>
-		/// Determines whether two <see cref="LoggerKey" /> instances 
-		/// are equal.
-		/// </summary>
-		/// <param name="obj">The <see cref="object" /> to compare with the current <see cref="LoggerKey" />.</param>
-		/// <returns>
-		/// <c>true</c> if the specified <see cref="object" /> is equal to the current <see cref="LoggerKey" />; otherwise, <c>false</c>.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// Compares the references of the interned strings.
-		/// </para>
-		/// </remarks>
-		override public bool Equals(object obj) 
-		{
-			// Compare reference type of this against argument
-			if (((object)this) == obj)
-			{
-				return true;
-			}
-			
-			LoggerKey objKey = obj as LoggerKey;
-			if (objKey != null) 
-			{
-				// Compare reference types rather than string's overloaded ==
-				return ( ((object)m_name) == ((object)objKey.m_name) );
-			}
-			return false;
-		}
+            var objKey = obj as LoggerKey;
+            if (objKey != null)
+            {
+                // Compare reference types rather than string's overloaded ==
+                return ((m_name) == ((object)objKey.m_name));
+            }
+            return false;
+        }
 
-		#endregion
+        /// <summary>
+        /// Returns a hash code for the current instance.
+        /// </summary>
+        /// <returns>A hash code for the current instance.</returns>
+        /// <remarks>
+        /// <para>
+        /// Returns the cached hashcode.
+        /// </para>
+        /// </remarks>
+        public override int GetHashCode()
+        {
+            return m_hashCache;
+        }
 
-		#region Private Instance Fields
+        #endregion
 
-		private readonly string m_name;  
-		private readonly int m_hashCache;
+        #region Private Instance Fields
 
-		#endregion Private Instance Fields
-	}	
+        readonly int m_hashCache;
+        readonly string m_name;
+
+        #endregion Private Instance Fields
+    }
 }
-
