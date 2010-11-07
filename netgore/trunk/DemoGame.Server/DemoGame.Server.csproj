@@ -147,6 +147,7 @@
     <Compile Include="DbObjs\WorldStatsCountShopSellTable.cs" />
     <Compile Include="DbObjs\WorldStatsCountUserConsumeItemTable.cs" />
     <Compile Include="DbObjs\WorldStatsCountUserKillNpcTable.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Networking\IIPSocketExtensions.cs" />
     <Compile Include="Networking\INetworkSenderExtensions.cs" />
     <Compile Include="Networking\ServerMessageType.cs" />

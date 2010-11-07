@@ -138,6 +138,7 @@
     <Compile Include="AccountCharacterInfos.cs" />
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\ClientSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -14,6 +14,16 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         #region Unit tests
 
         [Test]
+        public void DeepCopyTest()
+        {
+            var a = new TestModifier { SerializedValue = 10, NonSerializedValue = 20 };
+            var b = (TestModifier)a.DeepCopy();
+
+            Assert.AreEqual(a.SerializedValue, b.SerializedValue);
+            Assert.AreNotEqual(a.NonSerializedValue, b.NonSerializedValue);
+        }
+
+        [Test]
         public void ConstructorTest()
         {
             new TestModifier(true, true);
@@ -33,6 +43,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             public TestModifier() : this(true, true)
             {
             }
+
+            public int SerializedValue { get; set; }
+            public int NonSerializedValue { get; set; }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="TestModifier"/> class.
@@ -74,6 +87,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             /// <param name="reader"><see cref="IValueReader"/> to read the custom values from.</param>
             protected override void ReadCustomValues(IValueReader reader)
             {
+                SerializedValue = reader.ReadInt("SerializedValue");
             }
 
             /// <summary>
@@ -82,6 +96,7 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
             protected override void WriteCustomValues(IValueWriter writer)
             {
+                writer.Write("SerializedValue", SerializedValue);
             }
         }
     }
