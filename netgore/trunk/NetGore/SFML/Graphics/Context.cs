@@ -13,6 +13,7 @@ namespace SFML
         /// This class defines
         /// </summary>
         ////////////////////////////////////////////////////////////
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
         class Context : CriticalFinalizerObject
         {
             ////////////////////////////////////////////////////////////

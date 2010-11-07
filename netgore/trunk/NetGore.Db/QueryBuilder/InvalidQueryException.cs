@@ -6,6 +6,7 @@ namespace NetGore.Db.QueryBuilder
     /// <summary>
     /// An <see cref="Exception"/> for when a query is improperly formatted. Specifically intended for the query builder classes.
     /// </summary>
+    [Serializable]
     public class InvalidQueryException : InvalidOperationException
     {
         /// <summary>

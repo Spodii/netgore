@@ -219,19 +219,20 @@ namespace NetGore.Graphics.GUI
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, this);
                     Debug.Fail(string.Format(errmsg, this));
-                    return;
                 }
-
-                // Remove the bubble from the dictionary
-                lock (_chatBubblesSync)
+                else
                 {
-                    if (!_chatBubbles.Remove(Owner))
+                    // Remove the bubble from the dictionary
+                    lock (_chatBubblesSync)
                     {
-                        const string errmsg =
-                            "Tried to remove ChatBubble `{0}` for entity `{1}`, but it was already gone from the collection...?";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, this, Owner);
-                        Debug.Fail(string.Format(errmsg, this, Owner));
+                        if (!_chatBubbles.Remove(Owner))
+                        {
+                            const string errmsg =
+                                "Tried to remove ChatBubble `{0}` for entity `{1}`, but it was already gone from the collection...?";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, this, Owner);
+                            Debug.Fail(string.Format(errmsg, this, Owner));
+                        }
                     }
                 }
             }

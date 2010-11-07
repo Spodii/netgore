@@ -153,11 +153,12 @@ namespace DemoGame.GUITester
 
         void b_Clicked(object sender, MouseButtonEventArgs e)
         {
-            var inBox = new InputBox(GUIManager, "Input", "Enter some number:", MessageBoxButton.OkCancel);
-            //var msgBox = new MessageBox(GUIManager, ":o", "You clicked the magical button!", MessageBoxButton.YesNoCancel);
-            //msgBox.OptionSelected += msgBox_OptionSelected;
+            //var inBox = new InputBox(GUIManager, "Input", "Enter some number:", MessageBoxButton.OkCancel);
+            var msgBox = new MessageBox(GUIManager, ":o", "You clicked the magical button!", MessageBoxButton.YesNoCancel);
+            msgBox.OptionSelected += msgBox_OptionSelected;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "NetGore.Graphics.GUI.MessageBox")]
         static void msgBox_OptionSelected(Control sender, MessageBoxButton args)
         {
             var senderAsMsgBox = sender as MessageBox;
@@ -185,6 +186,7 @@ namespace DemoGame.GUITester
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "NetGore.Graphics.GUI.MessageBox")]
         void testLabelF4_Clicked(object sender, MouseButtonEventArgs e)
         {
             var source = (Label)sender;

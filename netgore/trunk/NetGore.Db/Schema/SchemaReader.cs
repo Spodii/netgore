@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 using MySql.Data.MySqlClient;
 using NetGore.IO;
 
@@ -76,9 +79,27 @@ namespace NetGore.Db.Schema
         /// <param name="conn">The conn.</param>
         static void CloseConnection(IDbConnection conn)
         {
-            conn.Close();
-            conn.Dispose();
+            try
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                const string errmsg = "Connection `{0}` already disposed.";
+                if (log.IsDebugEnabled)
+                    log.DebugFormat(errmsg, conn);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to dispose `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, conn, ex);
+                Debug.Fail(string.Format(errmsg, conn, ex));
+            }
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static IEnumerable<TableSchema> ExecuteQuery(MySqlConnection conn, DbConnectionSettings dbSettings)
         {
