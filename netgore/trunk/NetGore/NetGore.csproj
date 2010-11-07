@@ -184,6 +184,7 @@
     <Compile Include="Cryptography\ISimpleCryptoProvider.cs" />
     <Compile Include="Cryptography\MachineCrypto.cs" />
     <Compile Include="Cryptography\XorCryptoProvider.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Graphics\Game Container\GameBase.cs" />
     <Compile Include="Graphics\Game Container\GameContainerPropertyChangedEventHandler.cs" />
     <Compile Include="Graphics\Game Container\IGameContainer.cs" />

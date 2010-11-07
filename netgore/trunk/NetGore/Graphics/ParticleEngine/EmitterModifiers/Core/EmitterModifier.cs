@@ -119,6 +119,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// Creates a deep copy of this <see cref="EmitterModifier"/>.
         /// </summary>
         /// <returns>A deep copy of this <see cref="EmitterModifier"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public EmitterModifier DeepCopy()
         {
             // Create the deep copy by serializing to/from an IValueWriter

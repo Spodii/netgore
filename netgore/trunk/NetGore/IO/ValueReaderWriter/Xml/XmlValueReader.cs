@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -39,10 +40,18 @@ namespace NetGore.IO
             if (!File.Exists(filePath))
                 throw new FileNotFoundException(filePath);
 
-            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            // Create the stream
+            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            try
             {
+                // Create the reader
                 using (var r = XmlReader.Create(stream))
                 {
+                    // Set the stream to null to denote we don't need to dispose it since the reader will dispose it when
+                    // dispose is called on that
+                    stream = null;
+
+                    // Read through until we find an element with the root node name
                     while (r.Read())
                     {
                         if (r.NodeType == XmlNodeType.Element &&
@@ -50,10 +59,30 @@ namespace NetGore.IO
                             break;
                     }
 
+                    // If we made it to the end of the file, the node was not found
                     if (r.EOF)
                         throw new XmlException(string.Format("Failed to find the node `{0}` in the file.", rootNodeName));
 
+                    // Read in the node values for the root node
                     _values = ReadNodesIntoDictionary(r, rootNodeName, true);
+                }
+            }
+            finally
+            {
+                // Dispose of the stream if it was not disposed by the reader
+                if (stream != null)
+                {
+                    try
+                    {
+                    stream.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose stream `{0}`. Exception: {1}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, stream, ex);
+                       Debug.Fail(string.Format(errmsg, stream, ex));
+                    }
                 }
             }
         }
@@ -147,11 +176,38 @@ namespace NetGore.IO
             var bytes = Encoding.UTF8.GetBytes(trimmed);
 
             XmlValueReader ret;
-            using (var ms = new MemoryStream(bytes))
+
+            // Create the stream
+            Stream stream = new MemoryStream(bytes);
+            try
             {
-                using (var r = XmlReader.Create(ms, _readNodesReaderSettings))
+                // Create the reader
+                using (var r = XmlReader.Create(stream, _readNodesReaderSettings))
                 {
+                    // Set the stream to null to denote we don't need to dispose it since the reader will dispose it when
+                    // dispose is called on that
+                    stream = null;
+
+                    // Read the values from the stream
                     ret = new XmlValueReader(r, name, true, UseEnumNames);
+                }
+            }
+            finally
+            {
+                // Dispose of the stream if it was not disposed by the reader
+                if (stream != null)
+                {
+                    try
+                    {
+                        stream.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose stream `{0}`. Exception: {1}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, stream, ex);
+                        Debug.Fail(string.Format(errmsg, stream, ex));
+                    }
                 }
             }
 
