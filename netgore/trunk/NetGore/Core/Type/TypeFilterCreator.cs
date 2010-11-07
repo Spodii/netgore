@@ -15,12 +15,14 @@ namespace NetGore
         /// Gets or sets an array of the type of attributes the Type must implement. If null or empty, no attributes
         /// will be required.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public Type[] Attributes { get; set; }
 
         /// <summary>
         /// Gets or sets an array of the parameters needed by the constructor. If null, then no specific constructor
         /// will be searched for. If this is an empty Type array, then an empty constructor will be required.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public Type[] ConstructorParameters { get; set; }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace NetGore
         /// Gets or sets an array of the Type of interfaces that the Type must implement. If null or empty, no interfaces
         /// will be required.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public Type[] Interfaces { get; set; }
 
         /// <summary>
@@ -228,9 +231,9 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the <see cref="Func{T,U}"/> for filtering the types.
+        /// Gets the func for filtering the types.
         /// </summary>
-        /// <returns>The <see cref="Func{T,U}"/> for filtering the types.</returns>
+        /// <returns>The func for filtering the types.</returns>
         public Func<Type, bool> GetFilter()
         {
             return Filter;
