@@ -14,22 +14,25 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class StyledText
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly StyledText[] _emptyArray = new StyledText[0];
+        static readonly StyledText _lineBreak = new StyledText(Environment.NewLine);
+        static readonly StyledText _empty = new StyledText(string.Empty);
 
         /// <summary>
-        /// A <see cref="StyledText"/> with an empty string.
+        /// Gets a <see cref="StyledText"/> with an empty string.
         /// </summary>
-        public static readonly StyledText Empty = new StyledText(string.Empty);
+        public static StyledText Empty { get { return _empty; } }
 
         /// <summary>
-        /// An empty array of <see cref="StyledText"/>s.
+        /// Gets an empty array of <see cref="StyledText"/>s.
         /// </summary>
-        public static readonly StyledText[] EmptyArray = new StyledText[0];
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public static StyledText[] EmptyArray { get { return _emptyArray; } }
 
         /// <summary>
-        /// A <see cref="StyledText"/> that contains just a line break.
+        /// Gets a <see cref="StyledText"/> that contains just a line break.
         /// </summary>
-        public static readonly StyledText LineBreak = new StyledText(Environment.NewLine);
+        public static StyledText LineBreak { get { return _lineBreak; } }
 
         static readonly Color _colorForDefault = new Color(0, 0, 0, 0);
         static readonly char[] _splitChars = new char[] { '-', '_', ' ', '\n', ',', ';', '.', '!', '?' };

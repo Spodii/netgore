@@ -90,57 +90,57 @@ namespace NetGore
                     return false;
                 }
 
-                var unit = match.Groups["Unit"].Value.Trim().ToLowerInvariant();
+                var unit = match.Groups["Unit"].Value.Trim().ToUpperInvariant();
                 switch (unit)
                 {
-                    case "s":
-                    case "sec":
-                    case "secs":
-                    case "second":
-                    case "seconds":
+                    case "S":
+                    case "SEC":
+                    case "SECS":
+                    case "SECOND":
+                    case "SECONDS":
                         ts += TimeSpan.FromSeconds(value);
                         break;
 
-                    case "m":
-                    case "min":
-                    case "mins":
-                    case "minute":
-                    case "minutes":
+                    case "M":
+                    case "MIN":
+                    case "MINS":
+                    case "MINUTE":
+                    case "MINUTES":
                         ts += TimeSpan.FromMinutes(value);
                         break;
 
-                    case "h":
-                    case "hr":
-                    case "hrs":
-                    case "hour":
-                    case "hours":
+                    case "H":
+                    case "HR":
+                    case "HRS":
+                    case "HOUR":
+                    case "HOURS":
                         ts += TimeSpan.FromHours(value);
                         break;
 
-                    case "d":
-                    case "day":
-                    case "days":
+                    case "D":
+                    case "DAY":
+                    case "DAYS":
                         ts += TimeSpan.FromDays(value);
                         break;
 
-                    case "w":
-                    case "wk":
-                    case "week":
-                    case "weeks":
+                    case "W":
+                    case "WK":
+                    case "WEEK":
+                    case "WEEKS":
                         ts += TimeSpan.FromDays(value * 7);
                         break;
 
-                    case "mon":
-                    case "month":
-                    case "months":
+                    case "MON":
+                    case "MONTH":
+                    case "MONTHS":
                         var now = DateTime.Now;
                         ts += now.AddMonths(value) - now;
                         break;
 
-                    case "y":
-                    case "yr":
-                    case "year":
-                    case "years":
+                    case "Y":
+                    case "YR":
+                    case "YEAR":
+                    case "YEARS":
                         var now2 = DateTime.Now;
                         ts += now2.AddYears(value) - now2;
                         break;
