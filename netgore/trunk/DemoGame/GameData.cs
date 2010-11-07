@@ -84,44 +84,60 @@ namespace DemoGame
         /// </summary>
         public const float MaxTargetDistance = 500f;
 
-        /// <summary>
-        /// The rules for the account email addresses.
-        /// </summary>
-        public static readonly StringRules AccountEmail = new StringRules(3, 30,
-                                                                          CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+        static readonly StringRules _accountEmail = new StringRules(3, 30,
+                                                                    CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+
+        static readonly StringRules _accountName = new StringRules(3, 30, CharType.Alpha | CharType.Numeric);
+
+        static readonly StringRules _accountPassword = new StringRules(3, 30,
+                                                                       CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+
+        static readonly StringRules _characterName = new StringRules(1, 30,
+                                                                     CharType.Alpha | CharType.Numeric | CharType.Whitespace);
+
+        static readonly ActionDisplayID _defaultActionDisplayID = new ActionDisplayID(0);
+        static readonly Vector2 _screenSize = new Vector2(1024, 768);
+        static readonly StringRules _userName = new StringRules(3, 15, CharType.Alpha);
 
         /// <summary>
-        /// The rules for the account names.
+        /// Gets the rules for the account email addresses.
         /// </summary>
-        public static readonly StringRules AccountName = new StringRules(3, 30, CharType.Alpha | CharType.Numeric);
+        public static StringRules AccountEmail
+        {
+            get { return _accountEmail; }
+        }
 
         /// <summary>
-        /// The rules for the account passwords.
+        /// Gets the rules for the account names.
         /// </summary>
-        public static readonly StringRules AccountPassword = new StringRules(3, 30,
-                                                                             CharType.Alpha | CharType.Numeric |
-                                                                             CharType.Punctuation);
+        public static StringRules AccountName
+        {
+            get { return _accountName; }
+        }
 
         /// <summary>
-        /// The rules for the character names.
+        /// Gets the rules for the account passwords.
         /// </summary>
-        public static readonly StringRules CharacterName = new StringRules(1, 30,
-                                                                           CharType.Alpha | CharType.Numeric | CharType.Whitespace);
+        public static StringRules AccountPassword
+        {
+            get { return _accountPassword; }
+        }
 
         /// <summary>
-        /// The default <see cref="ActionDisplayID"/> to use when none is specified.
+        /// Gets the rules for the character names.
         /// </summary>
-        public static readonly ActionDisplayID DefaultActionDisplayID = new ActionDisplayID(0);
+        public static StringRules CharacterName
+        {
+            get { return _characterName; }
+        }
 
         /// <summary>
-        /// The rules for the user names.
+        /// Gets the default <see cref="ActionDisplayID"/> to use when none is specified.
         /// </summary>
-        public static readonly StringRules UserName = new StringRules(3, 15, CharType.Alpha);
-
-        /// <summary>
-        /// Size of the screen display.
-        /// </summary>
-        public static Vector2 ScreenSize = new Vector2(1024, 768);
+        public static ActionDisplayID DefaultActionDisplayID
+        {
+            get { return _defaultActionDisplayID; }
+        }
 
         /// <summary>
         /// Gets the maximum delta time between draws for any kind of drawable component. If the delta time between
@@ -130,6 +146,22 @@ namespace DemoGame
         public static int MaxDrawDeltaTime
         {
             get { return 100; }
+        }
+
+        /// <summary>
+        /// Gets the size of the screen display.
+        /// </summary>
+        public static Vector2 ScreenSize
+        {
+            get { return _screenSize; }
+        }
+
+        /// <summary>
+        /// Gets the rules for the user names.
+        /// </summary>
+        public static StringRules UserName
+        {
+            get { return _userName; }
         }
 
         /// <summary>
