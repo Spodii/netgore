@@ -962,7 +962,7 @@ namespace NetGore.Db.ClassCreator
             sb.Append("\"" + column.Comment.Replace("\"", "\\\"") + "\"" + Formatter.ParameterSpacer);
             sb.Append("\"" + column.DatabaseType.Replace("\"", "\\\"") + "\"" + Formatter.ParameterSpacer);
 
-            if (column.DefaultValue == null || (column.DefaultValue.ToString() == "" && !(column.DefaultValue is string)))
+            if (column.DefaultValue == null || (string.IsNullOrEmpty(column.DefaultValue.ToString()) && !(column.DefaultValue is string)))
                 sb.Append("null" + Formatter.ParameterSpacer);
             else if (column.DefaultValue is string)
                 sb.Append("\"" + column.DefaultValue.ToString().Replace("\"", "\\\"") + "\"" + Formatter.ParameterSpacer);

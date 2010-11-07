@@ -69,7 +69,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the list of <see cref="ItemTemplateID"/>s of the items that this <see cref="Shop"/> sells.
         /// </summary>
-        [Browsable(true)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Browsable(true)]
         [Description("The item template IDs of the items this shop sells.")]
         [Category(_category)]
         public List<ItemTemplateID> Items
