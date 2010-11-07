@@ -10,7 +10,7 @@ namespace NetGore.Features.NPCChat
     /// <summary>
     /// A TreeNode for the <see cref="NPCChatDialogView"/>.
     /// </summary>
-    [Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
     public class NPCChatDialogViewNode : TreeNode
     {
         NPCChatDialogViewNodeItemType _chatItemType;
