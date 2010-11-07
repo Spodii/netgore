@@ -33,6 +33,7 @@ namespace NetGore.IO
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         XmlValueReader(string filePath, string rootNodeName, bool useEnumNames = true)
         {
             _useEnumNames = useEnumNames;
@@ -147,6 +148,7 @@ namespace NetGore.IO
         /// <param name="name">The name of the root node.</param>
         /// <param name="s">The node contents.</param>
         /// <returns>A new <see cref="XmlValueReader"/> from a string of a child Xml node.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         XmlValueReader GetXmlValueReaderFromNodeString(string name, string s)
         {
             var trimmed = s.Trim();
