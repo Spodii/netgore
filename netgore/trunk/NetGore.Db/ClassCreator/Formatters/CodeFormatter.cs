@@ -10,8 +10,17 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public abstract class CodeFormatter
     {
-        protected readonly char[] separatorCharacters = new char[] { '_', ' ', '-' };
+        static readonly char[] _separatorCharacters = new char[] { '_', ' ', '-' };
         readonly Dictionary<string, string> _aliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Gets the separator characters.
+        /// </summary>
+        /// <returns>The separator characters.</returns>
+        protected virtual char[] GetSeparatorCharacters()
+        {
+            return _separatorCharacters;
+        }
 
         /// <summary>
         /// Gets a dictionary of aliases to use.
@@ -1083,7 +1092,7 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The unseparated string.</returns>
         protected virtual string RemoveSeparatorCharacters(string str)
         {
-            var parts = str.Split(separatorCharacters);
+            var parts = str.Split(GetSeparatorCharacters());
             var sb = new StringBuilder(parts.Sum(x => x.Length) + 1);
             foreach (var part in parts)
             {

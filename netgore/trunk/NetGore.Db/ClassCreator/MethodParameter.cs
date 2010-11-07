@@ -8,10 +8,7 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public struct MethodParameter
     {
-        /// <summary>
-        /// An empty collection of <see cref="MethodParameter"/>s.
-        /// </summary>
-        public static readonly MethodParameter[] Empty = new MethodParameter[0];
+        static readonly MethodParameter[] _empty = new MethodParameter[0];
 
         /// <summary>
         /// The parameter name.
@@ -44,6 +41,15 @@ namespace NetGore.Db.ClassCreator
         {
             Name = name;
             Type = type;
+        }
+
+        /// <summary>
+        /// Gets an empty collection of <see cref="MethodParameter"/>s.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public static MethodParameter[] Empty
+        {
+            get { return _empty; }
         }
     }
 }
