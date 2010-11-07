@@ -315,6 +315,8 @@ namespace DemoGame.Client
                         log.ErrorFormat(errmsg, Socket, ex);
                 }
             }
+
+            base.Dispose();
         }
 
         /// <summary>

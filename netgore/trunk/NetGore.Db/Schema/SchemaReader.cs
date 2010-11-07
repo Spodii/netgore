@@ -76,9 +76,15 @@ namespace NetGore.Db.Schema
         /// <summary>
         /// Closes the connection.
         /// </summary>
-        /// <param name="conn">The conn.</param>
+        /// <param name="conn">The <see cref="IDbConnection"/>.</param>
         static void CloseConnection(IDbConnection conn)
         {
+            if (conn == null)
+            {
+                Debug.Fail("conn is null.");
+                return;
+            }
+
             try
             {
                 conn.Close();
