@@ -24,6 +24,7 @@ namespace NetGore.Cryptography
         /// Can end up changing when anything from hardware to the operating system and even some
         /// OS-level configuration changes, so do not rely on it to be consistent over time.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public static byte[] MachineKey
         {
             get { return _machineKey; }
