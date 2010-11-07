@@ -41,16 +41,11 @@ namespace NetGore.IO
                 throw new FileNotFoundException(filePath);
 
             // Create the stream
-            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            try
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 // Create the reader
                 using (var r = XmlReader.Create(stream))
                 {
-                    // Set the stream to null to denote we don't need to dispose it since the reader will dispose it when
-                    // dispose is called on that
-                    stream = null;
-
                     // Read through until we find an element with the root node name
                     while (r.Read())
                     {
@@ -65,24 +60,6 @@ namespace NetGore.IO
 
                     // Read in the node values for the root node
                     _values = ReadNodesIntoDictionary(r, rootNodeName, true);
-                }
-            }
-            finally
-            {
-                // Dispose of the stream if it was not disposed by the reader
-                if (stream != null)
-                {
-                    try
-                    {
-                    stream.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        const string errmsg = "Failed to dispose stream `{0}`. Exception: {1}";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, stream, ex);
-                       Debug.Fail(string.Format(errmsg, stream, ex));
-                    }
                 }
             }
         }
@@ -178,36 +155,13 @@ namespace NetGore.IO
             XmlValueReader ret;
 
             // Create the stream
-            Stream stream = new MemoryStream(bytes);
-            try
+            using (var stream = new MemoryStream(bytes))
             {
                 // Create the reader
                 using (var r = XmlReader.Create(stream, _readNodesReaderSettings))
                 {
-                    // Set the stream to null to denote we don't need to dispose it since the reader will dispose it when
-                    // dispose is called on that
-                    stream = null;
-
                     // Read the values from the stream
                     ret = new XmlValueReader(r, name, true, UseEnumNames);
-                }
-            }
-            finally
-            {
-                // Dispose of the stream if it was not disposed by the reader
-                if (stream != null)
-                {
-                    try
-                    {
-                        stream.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        const string errmsg = "Failed to dispose stream `{0}`. Exception: {1}";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, stream, ex);
-                        Debug.Fail(string.Format(errmsg, stream, ex));
-                    }
                 }
             }
 
