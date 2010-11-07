@@ -236,6 +236,7 @@ namespace NetGore.Tests.NetGore.IO
             public double Double { get; set; }
             public float Float { get; set; }
             public int Int { get; set; }
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
             public int[] Ints { get; set; }
             public long Long { get; set; }
             public object Object { get; set; }

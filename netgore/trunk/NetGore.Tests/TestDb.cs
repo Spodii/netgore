@@ -53,8 +53,9 @@ namespace NetGore.Tests
         /// Closes a connection to the test database.
         /// </summary>
         /// <param name="conn">The connection to close.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static void Close(DbConnection conn)
-        {
+        { 
             conn.Close();
             conn.Dispose();
         }

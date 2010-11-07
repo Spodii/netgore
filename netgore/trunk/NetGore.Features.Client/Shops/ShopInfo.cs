@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NetGore.World;
 
@@ -36,7 +37,7 @@ namespace NetGore.Features.Shops
         /// <summary>
         /// Gets the items in the shop.
         /// </summary>
-        public TItemInfo[] Items
+        public ICollection<TItemInfo> Items
         {
             get { return _items; }
         }
