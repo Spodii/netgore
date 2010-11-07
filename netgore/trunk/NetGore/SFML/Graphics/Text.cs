@@ -155,7 +155,7 @@ namespace SFML
             [SuppressUnmanagedCodeSecurity]
             static extern void sfText_SetScale(IntPtr This, float X, float Y);
 
-            [DllImport("csfml2-graphics", CharSet = CharSet.Ansi)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfText_SetString(IntPtr This, string Text);
 
