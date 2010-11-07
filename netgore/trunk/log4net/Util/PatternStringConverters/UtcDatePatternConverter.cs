@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,59 +15,57 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
 using System;
-using System.Text;
 using System.IO;
-
-using log4net.Core;
-using log4net.Util;
+using System.Linq;
 using log4net.DateFormatter;
 
 namespace log4net.Util.PatternStringConverters
 {
-	/// <summary>
-	/// Write the UTC date time to the output
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Date pattern converter, uses a <see cref="IDateFormatter"/> to format 
-	/// the current date and time in Universal time.
-	/// </para>
-	/// <para>
-	/// See the <see cref="DatePatternConverter"/> for details on the date pattern syntax.
-	/// </para>
-	/// </remarks>
-	/// <seealso cref="DatePatternConverter"/>
-	/// <author>Nicko Cadell</author>
-	internal class UtcDatePatternConverter : DatePatternConverter
-	{
-		/// <summary>
-		/// Write the current date and time to the output
-		/// </summary>
-		/// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-		/// <param name="state">null, state is not set</param>
-		/// <remarks>
-		/// <para>
-		/// Pass the current date and time to the <see cref="IDateFormatter"/>
-		/// for it to render it to the writer.
-		/// </para>
-		/// <para>
-		/// The date is in Universal time when it is rendered.
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="DatePatternConverter"/>
-		override protected void Convert(TextWriter writer, object state)
-		{
-			try 
-			{
-				m_dateFormatter.FormatDate(DateTime.UtcNow, writer);
-			}
-			catch (Exception ex) 
-			{
-				LogLog.Error("UtcDatePatternConverter: Error occurred while converting date.", ex);
-			}
-		}
-	}
+    /// <summary>
+    /// Write the UTC date time to the output
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Date pattern converter, uses a <see cref="IDateFormatter"/> to format 
+    /// the current date and time in Universal time.
+    /// </para>
+    /// <para>
+    /// See the <see cref="DatePatternConverter"/> for details on the date pattern syntax.
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="DatePatternConverter"/>
+    /// <author>Nicko Cadell</author>
+    class UtcDatePatternConverter : DatePatternConverter
+    {
+        /// <summary>
+        /// Write the current date and time to the output
+        /// </summary>
+        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+        /// <param name="state">null, state is not set</param>
+        /// <remarks>
+        /// <para>
+        /// Pass the current date and time to the <see cref="IDateFormatter"/>
+        /// for it to render it to the writer.
+        /// </para>
+        /// <para>
+        /// The date is in Universal time when it is rendered.
+        /// </para>
+        /// </remarks>
+        /// <seealso cref="DatePatternConverter"/>
+        protected override void Convert(TextWriter writer, object state)
+        {
+            try
+            {
+                m_dateFormatter.FormatDate(DateTime.UtcNow, writer);
+            }
+            catch (Exception ex)
+            {
+                LogLog.Error("UtcDatePatternConverter: Error occurred while converting date.", ex);
+            }
+        }
+    }
 }

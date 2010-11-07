@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,51 +15,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
-using System;
-using System.Text;
+using System.Diagnostics;
 using System.IO;
-
-using log4net.Util;
+using System.Linq;
+using System.Security;
 
 namespace log4net.Util.PatternStringConverters
 {
-	/// <summary>
-	/// Write the current process ID to the output
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Write the current process ID to the output writer
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	internal sealed class ProcessIdPatternConverter : PatternConverter 
-	{
-		/// <summary>
-		/// Write the current process ID to the output
-		/// </summary>
-		/// <param name="writer">the writer to write to</param>
-		/// <param name="state">null, state is not set</param>
-		/// <remarks>
-		/// <para>
-		/// Write the current process ID to the output <paramref name="writer"/>.
-		/// </para>
-		/// </remarks>
-		override protected void Convert(TextWriter writer, object state) 
-		{
-			try
-			{
-				writer.Write( System.Diagnostics.Process.GetCurrentProcess().Id );
-			}
-			catch(System.Security.SecurityException)
-			{
-				// This security exception will occur if the caller does not have 
-				// some undefined set of SecurityPermission flags.
-				LogLog.Debug("ProcessIdPatternConverter: Security exception while trying to get current process id. Error Ignored.");
+    /// <summary>
+    /// Write the current process ID to the output
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Write the current process ID to the output writer
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    sealed class ProcessIdPatternConverter : PatternConverter
+    {
+        /// <summary>
+        /// Write the current process ID to the output
+        /// </summary>
+        /// <param name="writer">the writer to write to</param>
+        /// <param name="state">null, state is not set</param>
+        /// <remarks>
+        /// <para>
+        /// Write the current process ID to the output <paramref name="writer"/>.
+        /// </para>
+        /// </remarks>
+        protected override void Convert(TextWriter writer, object state)
+        {
+            try
+            {
+                writer.Write(Process.GetCurrentProcess().Id);
+            }
+            catch (SecurityException)
+            {
+                // This security exception will occur if the caller does not have 
+                // some undefined set of SecurityPermission flags.
+                LogLog.Debug(
+                    "ProcessIdPatternConverter: Security exception while trying to get current process id. Error Ignored.");
 
-				writer.Write( SystemInfo.NotAvailableText );
-			}
-		}
-	}
+                writer.Write(SystemInfo.NotAvailableText);
+            }
+        }
+    }
 }

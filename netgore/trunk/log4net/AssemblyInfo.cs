@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2006 The Apache Software Foundation
 //
@@ -14,20 +15,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
+using System;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 //
 // log4net makes use of static methods which cannot be made com visible
 //
-[assembly: System.Runtime.InteropServices.ComVisible(false)]
+
+[assembly: ComVisible(false)]
 
 //
 // log4net is CLS compliant
 //
-[assembly: System.CLSCompliant(true)]
+
+[assembly: CLSCompliant(true)]
 
 //
 // General Information about an assembly is controlled through the following 

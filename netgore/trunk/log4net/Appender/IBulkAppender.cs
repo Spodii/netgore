@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,34 +15,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
+using System.Linq;
 using log4net.Core;
 
 namespace log4net.Appender
 {
-	/// <summary>
-	/// Interface for appenders that support bulk logging.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// This interface extends the <see cref="IAppender"/> interface to
-	/// support bulk logging of <see cref="LoggingEvent"/> objects. Appenders
-	/// should only implement this interface if they can bulk log efficiently.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	public interface IBulkAppender : IAppender
-	{
-		/// <summary>
-		/// Log the array of logging events in Appender specific way.
-		/// </summary>
-		/// <param name="loggingEvents">The events to log</param>
-		/// <remarks>
-		/// <para>
-		/// This method is called to log an array of events into this appender.
-		/// </para>
-		/// </remarks>
-		void DoAppend(LoggingEvent[] loggingEvents);
-	}
+    /// <summary>
+    /// Interface for appenders that support bulk logging.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This interface extends the <see cref="IAppender"/> interface to
+    /// support bulk logging of <see cref="LoggingEvent"/> objects. Appenders
+    /// should only implement this interface if they can bulk log efficiently.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    public interface IBulkAppender : IAppender
+    {
+        /// <summary>
+        /// Log the array of logging events in Appender specific way.
+        /// </summary>
+        /// <param name="loggingEvents">The events to log</param>
+        /// <remarks>
+        /// <para>
+        /// This method is called to log an array of events into this appender.
+        /// </para>
+        /// </remarks>
+        void DoAppend(LoggingEvent[] loggingEvents);
+    }
 }

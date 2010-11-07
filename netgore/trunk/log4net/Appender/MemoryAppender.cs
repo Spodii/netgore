@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2006 The Apache Software Foundation
 //
@@ -14,173 +15,170 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
 using System;
 using System.Collections;
-
+using System.Linq;
 using log4net.Core;
 
 namespace log4net.Appender
 {
-	/// <summary>
-	/// Stores logging events in an array.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// The memory appender stores all the logging events
-	/// that are appended in an in-memory array.
-	/// </para>
-	/// <para>
-	/// Use the <see cref="GetEvents"/> method to get
-	/// the current list of events that have been appended.
-	/// </para>
-	/// <para>
-	/// Use the <see cref="Clear()"/> method to clear the
-	/// current list of events.
-	/// </para>
-	/// </remarks>
-	/// <author>Julian Biddle</author>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	public class MemoryAppender : AppenderSkeleton
-	{
-		#region Public Instance Constructors
+    /// <summary>
+    /// Stores logging events in an array.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The memory appender stores all the logging events
+    /// that are appended in an in-memory array.
+    /// </para>
+    /// <para>
+    /// Use the <see cref="GetEvents"/> method to get
+    /// the current list of events that have been appended.
+    /// </para>
+    /// <para>
+    /// Use the <see cref="Clear()"/> method to clear the
+    /// current list of events.
+    /// </para>
+    /// </remarks>
+    /// <author>Julian Biddle</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    public class MemoryAppender : AppenderSkeleton
+    {
+        #region Public Instance Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MemoryAppender" /> class.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Default constructor.
-		/// </para>
-		/// </remarks>
-		public MemoryAppender() : base()
-		{
-			m_eventsList = new ArrayList();
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemoryAppender" /> class.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Default constructor.
+        /// </para>
+        /// </remarks>
+        public MemoryAppender()
+        {
+            m_eventsList = new ArrayList();
+        }
 
-		#endregion Protected Instance Constructors
+        #endregion Protected Instance Constructors
 
-		#region Public Instance Properties
+        #region Public Instance Properties
 
-		/// <summary>
-		/// Gets the events that have been logged.
-		/// </summary>
-		/// <returns>The events that have been logged</returns>
-		/// <remarks>
-		/// <para>
-		/// Gets the events that have been logged.
-		/// </para>
-		/// </remarks>
-		virtual public LoggingEvent[] GetEvents()
-		{
-			return (LoggingEvent[])m_eventsList.ToArray(typeof(LoggingEvent));
-		}
+        /// <summary>
+        /// Gets or sets the fields that will be fixed in the event
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The logging event needs to have certain thread specific values 
+        /// captured before it can be buffered. See <see cref="LoggingEvent.Fix"/>
+        /// for details.
+        /// </para>
+        /// </remarks>
+        public virtual FixFlags Fix
+        {
+            get { return m_fixFlags; }
+            set { m_fixFlags = value; }
+        }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether only part of the logging event 
-		/// data should be fixed.
-		/// </summary>
-		/// <value>
-		/// <c>true</c> if the appender should only fix part of the logging event 
-		/// data, otherwise <c>false</c>. The default is <c>false</c>.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// Setting this property to <c>true</c> will cause only part of the event 
-		/// data to be fixed and stored in the appender, hereby improving performance. 
-		/// </para>
-		/// <para>
-		/// See <see cref="LoggingEvent.FixVolatileData(bool)"/> for more information.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Use Fix property")]
-		virtual public bool OnlyFixPartialEventData
-		{
-			get { return (Fix == FixFlags.Partial); }
-			set 
-			{ 
-				if (value)
-				{
-					Fix = FixFlags.Partial;
-				}
-				else
-				{
-					Fix = FixFlags.All;
-				}
-			}
-		}
+        /// <summary>
+        /// Gets or sets a value indicating whether only part of the logging event 
+        /// data should be fixed.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the appender should only fix part of the logging event 
+        /// data, otherwise <c>false</c>. The default is <c>false</c>.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// Setting this property to <c>true</c> will cause only part of the event 
+        /// data to be fixed and stored in the appender, hereby improving performance. 
+        /// </para>
+        /// <para>
+        /// See <see cref="LoggingEvent.FixVolatileData(bool)"/> for more information.
+        /// </para>
+        /// </remarks>
+        [Obsolete("Use Fix property")]
+        public virtual bool OnlyFixPartialEventData
+        {
+            get { return (Fix == FixFlags.Partial); }
+            set
+            {
+                if (value)
+                    Fix = FixFlags.Partial;
+                else
+                    Fix = FixFlags.All;
+            }
+        }
 
-		/// <summary>
-		/// Gets or sets the fields that will be fixed in the event
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The logging event needs to have certain thread specific values 
-		/// captured before it can be buffered. See <see cref="LoggingEvent.Fix"/>
-		/// for details.
-		/// </para>
-		/// </remarks>
-		virtual public FixFlags Fix
-		{
-			get { return m_fixFlags; }
-			set { m_fixFlags = value; }
-		}
+        /// <summary>
+        /// Gets the events that have been logged.
+        /// </summary>
+        /// <returns>The events that have been logged</returns>
+        /// <remarks>
+        /// <para>
+        /// Gets the events that have been logged.
+        /// </para>
+        /// </remarks>
+        public virtual LoggingEvent[] GetEvents()
+        {
+            return (LoggingEvent[])m_eventsList.ToArray(typeof(LoggingEvent));
+        }
 
-		#endregion Public Instance Properties
+        #endregion Public Instance Properties
 
-		#region Override implementation of AppenderSkeleton
+        #region Override implementation of AppenderSkeleton
 
-		/// <summary>
-		/// This method is called by the <see cref="AppenderSkeleton.DoAppend(LoggingEvent)"/> method. 
-		/// </summary>
-		/// <param name="loggingEvent">the event to log</param>
-		/// <remarks>
-		/// <para>Stores the <paramref name="loggingEvent"/> in the events list.</para>
-		/// </remarks>
-		override protected void Append(LoggingEvent loggingEvent) 
-		{
-			// Because we are caching the LoggingEvent beyond the
-			// lifetime of the Append() method we must fix any
-			// volatile data in the event.
-			loggingEvent.Fix = this.Fix;
+        /// <summary>
+        /// This method is called by the <see cref="AppenderSkeleton.DoAppend(LoggingEvent)"/> method. 
+        /// </summary>
+        /// <param name="loggingEvent">the event to log</param>
+        /// <remarks>
+        /// <para>Stores the <paramref name="loggingEvent"/> in the events list.</para>
+        /// </remarks>
+        protected override void Append(LoggingEvent loggingEvent)
+        {
+            // Because we are caching the LoggingEvent beyond the
+            // lifetime of the Append() method we must fix any
+            // volatile data in the event.
+            loggingEvent.Fix = Fix;
 
-			m_eventsList.Add(loggingEvent);
-		} 
+            m_eventsList.Add(loggingEvent);
+        }
 
-		#endregion Override implementation of AppenderSkeleton
+        #endregion Override implementation of AppenderSkeleton
 
-		#region Public Instance Methods
+        #region Public Instance Methods
 
-		/// <summary>
-		/// Clear the list of events
-		/// </summary>
-		/// <remarks>
-		/// Clear the list of events
-		/// </remarks>
-		virtual public void Clear()
-		{
-			m_eventsList.Clear();
-		}
+        /// <summary>
+        /// Clear the list of events
+        /// </summary>
+        /// <remarks>
+        /// Clear the list of events
+        /// </remarks>
+        public virtual void Clear()
+        {
+            m_eventsList.Clear();
+        }
 
-		#endregion Public Instance Methods
+        #endregion Public Instance Methods
 
-		#region Protected Instance Fields
+        #region Protected Instance Fields
 
-		/// <summary>
-		/// The list of events that have been appended.
-		/// </summary>
-		protected ArrayList m_eventsList;
+        /// <summary>
+        /// The list of events that have been appended.
+        /// </summary>
+        protected ArrayList m_eventsList;
 
-		/// <summary>
-		/// Value indicating which fields in the event should be fixed
-		/// </summary>
-		/// <remarks>
-		/// By default all fields are fixed
-		/// </remarks>
-		protected FixFlags m_fixFlags = FixFlags.All;
+        /// <summary>
+        /// Value indicating which fields in the event should be fixed
+        /// </summary>
+        /// <remarks>
+        /// By default all fields are fixed
+        /// </remarks>
+        protected FixFlags m_fixFlags = FixFlags.All;
 
-		#endregion Protected Instance Fields
-	}
+        #endregion Protected Instance Fields
+    }
 }

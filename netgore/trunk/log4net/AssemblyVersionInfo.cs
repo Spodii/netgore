@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2006 The Apache Software Foundation
 //
@@ -14,6 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
 //
@@ -27,14 +29,17 @@
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: System.Reflection.AssemblyVersion("1.2.10.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2")]
-[assembly: System.Reflection.AssemblyFileVersion("1.2.10.0")]
+using System.Linq;
+using System.Reflection;
+
+[assembly: AssemblyVersion("1.2.10.0")]
+[assembly: AssemblyInformationalVersion("1.2")]
+[assembly: AssemblyFileVersion("1.2.10.0")]
 
 //
 // Shared assembly settings
 //
 
-[assembly: System.Reflection.AssemblyCompany("The Apache Software Foundation")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright 2001-2006 The Apache Software Foundation.")]
-[assembly: System.Reflection.AssemblyTrademark("Copyright 2001-2006 The Apache Software Foundation.")]
+[assembly: AssemblyCompany("The Apache Software Foundation")]
+[assembly: AssemblyCopyright("Copyright 2001-2006 The Apache Software Foundation.")]
+[assembly: AssemblyTrademark("Copyright 2001-2006 The Apache Software Foundation.")]

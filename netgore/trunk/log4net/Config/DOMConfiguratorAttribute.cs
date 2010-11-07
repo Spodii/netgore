@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,41 +15,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
 using System;
-using System.Reflection;
-using System.IO;
-
-using log4net.Util;
-using log4net.Repository;
-using log4net.Repository.Hierarchy;
+using System.Linq;
 
 namespace log4net.Config
 {
-	/// <summary>
-	/// Assembly level attribute to configure the <see cref="XmlConfigurator"/>.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// <b>AliasDomainAttribute is obsolete. Use AliasRepositoryAttribute instead of AliasDomainAttribute.</b>
-	/// </para>
-	/// <para>
-	/// This attribute may only be used at the assembly scope and can only
-	/// be used once per assembly.
-	/// </para>
-	/// <para>
-	/// Use this attribute to configure the <see cref="XmlConfigurator"/>
-	/// without calling one of the <see cref="XmlConfigurator.Configure()"/>
-	/// methods.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	[AttributeUsage(AttributeTargets.Assembly)]
-	[Serializable]
-	[Obsolete("Use XmlConfiguratorAttribute instead of DOMConfiguratorAttribute")]
-	public sealed class DOMConfiguratorAttribute : XmlConfiguratorAttribute
-	{
-	}
+    /// <summary>
+    /// Assembly level attribute to configure the <see cref="XmlConfigurator"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// <b>AliasDomainAttribute is obsolete. Use AliasRepositoryAttribute instead of AliasDomainAttribute.</b>
+    /// </para>
+    /// <para>
+    /// This attribute may only be used at the assembly scope and can only
+    /// be used once per assembly.
+    /// </para>
+    /// <para>
+    /// Use this attribute to configure the <see cref="XmlConfigurator"/>
+    /// without calling one of the <see cref="XmlConfigurator.Configure()"/>
+    /// methods.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    [AttributeUsage(AttributeTargets.Assembly)]
+    [Serializable]
+    [Obsolete("Use XmlConfiguratorAttribute instead of DOMConfiguratorAttribute")]
+    public sealed class DOMConfiguratorAttribute : XmlConfiguratorAttribute
+    {
+    }
 }

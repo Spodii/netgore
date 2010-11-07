@@ -1,4 +1,5 @@
 #region Copyright & License
+
 //
 // Copyright 2001-2005 The Apache Software Foundation
 //
@@ -14,56 +15,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #endregion
 
 using System;
+using System.Linq;
 
 namespace log4net.Core
 {
-	/// <summary>
-	/// Defined error codes that can be passed to the <see cref="IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Values passed to the <see cref="IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	public enum ErrorCode : int
-	{
-		/// <summary>
-		/// A general error
-		/// </summary>
-		GenericFailure = 0,
+    /// <summary>
+    /// Defined error codes that can be passed to the <see cref="IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Values passed to the <see cref="IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    public enum ErrorCode
+    {
+        /// <summary>
+        /// A general error
+        /// </summary>
+        GenericFailure = 0,
 
-		/// <summary>
-		/// Error while writing output
-		/// </summary>
-		WriteFailure,
+        /// <summary>
+        /// Error while writing output
+        /// </summary>
+        WriteFailure,
 
-		/// <summary>
-		/// Failed to flush file
-		/// </summary>
-		FlushFailure,
+        /// <summary>
+        /// Failed to flush file
+        /// </summary>
+        FlushFailure,
 
-		/// <summary>
-		/// Failed to close file
-		/// </summary>
-		CloseFailure,
+        /// <summary>
+        /// Failed to close file
+        /// </summary>
+        CloseFailure,
 
-		/// <summary>
-		/// Unable to open output file
-		/// </summary>
-		FileOpenFailure,
+        /// <summary>
+        /// Unable to open output file
+        /// </summary>
+        FileOpenFailure,
 
-		/// <summary>
-		/// No layout specified
-		/// </summary>
-		MissingLayout,
+        /// <summary>
+        /// No layout specified
+        /// </summary>
+        MissingLayout,
 
-		/// <summary>
-		/// Failed to parse address
-		/// </summary>
-		AddressParseFailure
-	}
+        /// <summary>
+        /// Failed to parse address
+        /// </summary>
+        AddressParseFailure
+    }
 }
