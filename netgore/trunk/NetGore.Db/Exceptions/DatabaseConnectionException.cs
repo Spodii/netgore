@@ -6,6 +6,7 @@ namespace NetGore.Db
     /// <summary>
     /// Exception for when a database connection failed.
     /// </summary>
+    [Serializable]
     public sealed class DatabaseConnectionException : DatabaseException
     {
         /// <summary>

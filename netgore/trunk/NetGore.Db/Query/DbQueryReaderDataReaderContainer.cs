@@ -35,12 +35,19 @@ namespace NetGore.Db
         /// <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManaged)
         {
-            if (!disposeManaged)
-                return;
+            if (disposeManaged)
+            {
+                if (DataReader != null)
+                    DataReader.Dispose();
 
-            DataReader.Dispose();
-            _dbQueryBase.ReleaseCommand((DbCommand)Command);
-            _poolableConn.Dispose();
+                if (_dbQueryBase != null && Command != null)
+                    _dbQueryBase.ReleaseCommand((DbCommand)Command);
+
+                if (_poolableConn != null)
+                    _poolableConn.Dispose();
+            }
+
+            base.Dispose(disposeManaged);
         }
     }
 }

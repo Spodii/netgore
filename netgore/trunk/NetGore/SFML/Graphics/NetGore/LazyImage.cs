@@ -92,6 +92,7 @@ namespace SFML.Graphics
         /// <summary>
         /// Explicitely dispose the object
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2215:Dispose methods should call base class dispose")]
         public override void Dispose()
         {
             Dispose(true);
