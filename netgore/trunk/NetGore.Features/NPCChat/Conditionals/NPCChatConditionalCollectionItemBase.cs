@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 
@@ -26,7 +27,7 @@ namespace NetGore.Features.NPCChat.Conditionals
         /// When overridden in the derived class, gets the collection of parameters to use when evaluating
         /// the conditional.
         /// </summary>
-        public abstract NPCChatConditionalParameter[] Parameters { get; }
+        public abstract ICollection<NPCChatConditionalParameter> Parameters { get; }
 
         /// <summary>
         /// Evaluates the conditional using the supplied values.
@@ -36,7 +37,7 @@ namespace NetGore.Features.NPCChat.Conditionals
         /// <returns>The result of the conditional's evaluation.</returns>
         public bool Evaluate(object user, object npc)
         {
-            var ret = Conditional.Evaluate(user, npc, Parameters);
+            var ret = Conditional.Evaluate(user, npc, Parameters.ToArray());
 
             if (Not)
                 ret = !ret;

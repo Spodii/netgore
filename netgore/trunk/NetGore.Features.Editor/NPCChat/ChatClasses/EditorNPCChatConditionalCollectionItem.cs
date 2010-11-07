@@ -98,9 +98,9 @@ namespace NetGore.Features.NPCChat
         /// When overridden in the derived class, gets the collection of parameters to use when evaluating
         /// the conditional.
         /// </summary>
-        public override NPCChatConditionalParameter[] Parameters
+        public override ICollection<NPCChatConditionalParameter> Parameters
         {
-            get { return _parameters.ToArray(); }
+            get { return _parameters; }
         }
 
         /// <summary>

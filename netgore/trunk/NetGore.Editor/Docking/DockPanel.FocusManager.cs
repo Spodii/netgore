@@ -186,13 +186,18 @@ namespace NetGore.Editor.Docking
             {
                 lock (this)
                 {
-                    if (!m_disposed && disposing)
+                    try
                     {
-                        m_localWindowsHook.Dispose();
-                        m_disposed = true;
+                        if (!m_disposed && disposing)
+                        {
+                            m_localWindowsHook.Dispose();
+                            m_disposed = true;
+                        }
                     }
-
-                    base.Dispose(disposing);
+                    finally
+                    {
+                        base.Dispose(disposing);
+                    }
                 }
             }
 

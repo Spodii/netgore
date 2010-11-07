@@ -77,6 +77,7 @@ namespace NetGore.Db.Schema
         /// Closes the connection.
         /// </summary>
         /// <param name="conn">The <see cref="IDbConnection"/>.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         static void CloseConnection(IDbConnection conn)
         {
             if (conn == null)

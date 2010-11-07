@@ -56,6 +56,7 @@ namespace NetGore.Editor.EditorTool
         /// Gets or sets a custom string collection to use when the
         /// <see cref="System.Windows.Forms.ToolStripTextBox.AutoCompleteSource"/> property is set to CustomSource.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         AutoCompleteStringCollection AutoCompleteCustomSource { set; get; }
 
         /// <summary>
@@ -95,6 +96,7 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Gets or sets the lines of text in a <see cref="System.Windows.Forms.ToolStripTextBox"/> control.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         string[] Lines { set; get; }
 
         /// <summary>
