@@ -88,11 +88,6 @@
       <HintPath>..\_dependencies\Lidgren.Network.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\log4net.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -135,6 +130,11 @@
     <Compile Include="PeerTrading\ClientPeerTradeInfoHandlerBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\log4net\log4net.csproj">
+      <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
+      <Name>log4net</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
       <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
       <Name>NetGore.Features</Name>

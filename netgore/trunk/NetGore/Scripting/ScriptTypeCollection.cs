@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using log4net;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
 
@@ -20,6 +21,7 @@ namespace NetGore.Scripting
         readonly List<CompilerError> _compilerErrors = new List<CompilerError>();
         readonly string _name;
         readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
+
         bool _compilationFailed = false;
 
         /// <summary>
@@ -150,48 +152,62 @@ namespace NetGore.Scripting
         static Assembly CompileCode(string outputFilePath, IEnumerable<string> files, ScriptLanguage language,
                                     out CompilerErrorCollection errors)
         {
-            Debug.Assert(files.Count() > 0);
+            errors = null;
 
-            // Set the .NET framework version
-            var providerOptions = new Dictionary<string, string> { { "CompilerVersion", "v3.5" } };
-
-            // Get the CodeDomProvider to use
-            CodeDomProvider codeDomProvider;
-            switch (language)
+            try
             {
-                case ScriptLanguage.CS:
-                    codeDomProvider = new CSharpCodeProvider(providerOptions);
-                    break;
+                Debug.Assert(files.Count() > 0);
 
-                case ScriptLanguage.VB:
-                    codeDomProvider = new VBCodeProvider(providerOptions);
-                    break;
+                // Set the .NET framework version
+                var providerOptions = new Dictionary<string, string> { { "CompilerVersion", "v4.0" } };
 
-                default:
-                    throw new ArgumentOutOfRangeException("language");
+                // Get the CodeDomProvider to use
+                CodeDomProvider codeDomProvider;
+                switch (language)
+                {
+                    case ScriptLanguage.CS:
+                        codeDomProvider = new CSharpCodeProvider(providerOptions);
+                        break;
+
+                    case ScriptLanguage.VB:
+                        codeDomProvider = new VBCodeProvider(providerOptions);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException("language");
+                }
+
+                // Compile
+                CompilerResults result;
+                using (codeDomProvider)
+                {
+                    var options = new CompilerParameters { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = outputFilePath };
+
+                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                    options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());
+
+                    result = codeDomProvider.CompileAssemblyFromFile(options, files.ToArray());
+                }
+
+                errors = result.Errors;
+
+                // Check for errors and warnings
+                if (result.Errors.HasErrors)
+                    return null;
+
+                return result.CompiledAssembly;
             }
-
-            // Compile
-            CompilerResults result;
-            using (codeDomProvider)
+            catch (Exception ex)
             {
-                var options = new CompilerParameters
-                { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = outputFilePath };
-
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());
-
-                result = codeDomProvider.CompileAssemblyFromFile(options, files.ToArray());
-            }
-
-            errors = result.Errors;
-
-            // Check for errors and warnings
-            if (result.Errors.HasErrors)
+                const string errmsg = "Failed to compile script. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
                 return null;
-
-            return result.CompiledAssembly;
+            }
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static IEnumerable<string> SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
         {

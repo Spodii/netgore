@@ -35,11 +35,11 @@ namespace DemoGame.Client
         bool _isVisible = true;
         Vector2 _lastScreenPosition;
         bool _isCastingSkill;
+        Map _map;
 
 #if !TOPDOWN
         CharacterState _lastState = CharacterState.Idle;
 #endif
-        Map _map;
 
         /// <summary>
         /// Notifies listeners when the <see cref="Character.IsCastingSkill"/> property has changed.
@@ -327,6 +327,7 @@ namespace DemoGame.Client
         [Conditional("DEBUG")]
         protected virtual void UpdateAnimation()
         {
+#if !TOPDOWN
             // Only update if the state has changed
             if (_lastState == State)
                 return;
@@ -356,6 +357,7 @@ namespace DemoGame.Client
                     CharacterSprite.SetSet(BodyInfo.Walk, BodyInfo.Size);
                     break;
             }
+#endif
         }
 
         #region IDrawable Members

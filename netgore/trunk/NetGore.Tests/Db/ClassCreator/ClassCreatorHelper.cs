@@ -51,7 +51,7 @@ namespace NetGore.Tests.Db.ClassCreator
                     codeItems.Where(
                         x =>
                         x.Table == tableName || x.CodeType == GeneratedCodeType.ColumnMetadata ||
-                        x.CodeType == GeneratedCodeType.ColumnCollectionClass);
+                        x.CodeType == GeneratedCodeType.ColumnCollectionClass).ToImmutable();
             }
 
             // Get the temp files and write the code to them
