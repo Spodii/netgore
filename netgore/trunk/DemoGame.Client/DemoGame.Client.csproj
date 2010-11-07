@@ -123,11 +123,6 @@
     <Reference Include="Lidgren.Network">
       <HintPath>..\_dependencies\Lidgren.Network.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System">
       <Private>False</Private>
@@ -231,6 +226,11 @@
     <Compile Include="World\WorldEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\log4net\log4net.csproj">
+      <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
+      <Name>log4net</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Features.Client\NetGore.Features.Client.csproj">
       <Project>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</Project>
       <Name>NetGore.Features.Client</Name>

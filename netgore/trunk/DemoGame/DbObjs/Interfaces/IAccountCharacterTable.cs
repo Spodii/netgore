@@ -17,36 +17,43 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Linq;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `account_character`.
-    /// </summary>
-    public interface IAccountCharacterTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `account_id`.
-        /// </summary>
-        AccountID AccountID { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `account_character`.
+/// </summary>
+public interface IAccountCharacterTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+IAccountCharacterTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `character_id`.
-        /// </summary>
-        CharacterID CharacterID { get; }
+/// <summary>
+/// Gets the value of the database column `account_id`.
+/// </summary>
+DemoGame.AccountID AccountID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `character_id`.
+/// </summary>
+DemoGame.CharacterID CharacterID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `time_deleted`.
+/// </summary>
+System.Nullable<System.DateTime> TimeDeleted
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `time_deleted`.
-        /// </summary>
-        DateTime? TimeDeleted { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IAccountCharacterTable DeepCopy();
-    }
 }

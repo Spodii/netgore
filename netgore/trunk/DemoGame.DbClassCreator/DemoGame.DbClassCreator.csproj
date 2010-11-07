@@ -84,10 +84,6 @@
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="mysql.data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\mysql.data.dll</HintPath>
@@ -106,6 +102,11 @@
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\log4net\log4net.csproj">
+      <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
+      <Name>log4net</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj">
       <Project>{927E889E-AC38-4549-A717-A4FFCA22ADB6}</Project>

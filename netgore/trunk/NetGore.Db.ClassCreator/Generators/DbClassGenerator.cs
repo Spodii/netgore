@@ -1539,16 +1539,20 @@ namespace NetGore.Db.ClassCreator
             _isDbContentLoaded = true;
 
             DbConnection.Open();
-
-            var tables = GetTables();
-
-            foreach (var table in tables)
+            try
             {
-                var columns = GetColumns(table);
-                _dbTables.Add(table, columns.ToArray());
-            }
+                var tables = GetTables();
 
-            DbConnection.Close();
+                foreach (var table in tables)
+                {
+                    var columns = GetColumns(table);
+                    _dbTables.Add(table, columns.ToArray());
+                }
+            }
+            finally
+            {
+                DbConnection.Close();
+            }
         }
 
         /// <summary>

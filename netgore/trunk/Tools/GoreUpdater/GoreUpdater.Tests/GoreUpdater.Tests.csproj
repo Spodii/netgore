@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\_dependencies\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.4.10098, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -45,6 +42,10 @@
     <Compile Include="WildcardFileFilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\log4net\log4net.csproj">
+      <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
+      <Name>log4net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GoreUpdater\GoreUpdater.csproj">
       <Project>{9AED7C14-A737-4D19-A64B-69B401691862}</Project>
       <Name>GoreUpdater</Name>
