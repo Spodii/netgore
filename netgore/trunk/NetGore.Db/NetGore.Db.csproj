@@ -97,9 +97,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassCreator\ColumnCollection.cs" />
+    <Compile Include="ClassCreator\ColumnCollectionItem.cs" />
+    <Compile Include="ClassCreator\Comments.cs" />
+    <Compile Include="ClassCreator\CustomTypeMapping.cs" />
+    <Compile Include="ClassCreator\DbClassData.cs" />
+    <Compile Include="ClassCreator\DbColumnInfo.cs" />
+    <Compile Include="ClassCreator\DbColumnKeyType.cs" />
+    <Compile Include="ClassCreator\Formatters\CodeFormatter.cs" />
+    <Compile Include="ClassCreator\Formatters\CSharpCodeFormatter.cs" />
+    <Compile Include="ClassCreator\GeneratedCodeType.cs" />
+    <Compile Include="ClassCreator\GeneratedTableCode.cs" />
+    <Compile Include="ClassCreator\Generators\DbClassGenerator.cs" />
+    <Compile Include="ClassCreator\Generators\MySqlClassGenerator.cs" />
+    <Compile Include="ClassCreator\IDbClassGeneratorSettingsProvider.cs" />
+    <Compile Include="ClassCreator\MemberVisibilityLevel.cs" />
+    <Compile Include="ClassCreator\MethodParameter.cs" />
+    <Compile Include="ClassCreator\TypeExtensions.cs" />
     <Compile Include="Connections\IDbConnectionPool.cs" />
     <Compile Include="DbConnectionSettings.cs" />
     <Compile Include="DbConnectionSettingsExtensions.cs" />
+    <Compile Include="DbResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Exceptions\DatabaseConnectionException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="DataReaderContainer.cs" />
@@ -208,6 +230,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_ProjectInfo.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassCreator\_ProjectInfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DbResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DbResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

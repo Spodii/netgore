@@ -9,6 +9,9 @@ This file contains information about this project in general. One is provided fo
 all to get a basic understanding of NetGore's code structure.
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
+NOTE: This was once its own project (NetGore.Db.ClassCreator), but now resides in NetGore.Db. This change was due the projects being
+relatively similar (both database related), because they share the same references, and they often ended up being referenced together.
+
 The NetGore.Db.ClassCreator project is a bit of a strange one. The sole purpose of it is to generate code. It works by
 connecting to the database you specify and generating code for the schema. This is where all the code files that reside in
 a \DbObjs\ folder comes from. What is the point of all of this? Type safety and usability. Microsoft provides some similar technologies,
