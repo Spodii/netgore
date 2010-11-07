@@ -16,9 +16,6 @@
 //
 #endregion
 
-// .NET Compact Framework 1.0 has no support for System.Runtime.Remoting.Messaging.CallContext
-#if !NETCF
-
 using System;
 using System.Collections;
 
@@ -155,5 +152,3 @@ namespace log4net.Util
 		#endregion Internal Instance Methods
 	}
 }
-
-#endif

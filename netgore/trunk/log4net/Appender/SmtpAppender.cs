@@ -16,19 +16,9 @@
 //
 #endregion
 
-// .NET Compact Framework 1.0 has no support for System.Web.Mail
-// SSCLI 1.0 has no support for System.Web.Mail
-#if !NETCF && !SSCLI
-
 using System;
 using System.IO;
-
-#if NET_2_0
 using System.Net.Mail;
-#else
-using System.Web.Mail;
-#endif
-
 using log4net.Layout;
 using log4net.Core;
 using log4net.Util;
@@ -340,7 +330,6 @@ namespace log4net.Appender
 		/// <param name="messageBody">the body text to include in the mail</param>
 		virtual protected void SendEmail(string messageBody)
 		{
-#if NET_2_0
 			// .NET 2.0 has a new API for SMTP email System.Net.Mail
 			// This API supports credentials and multiple hosts correctly.
 			// The old API is deprecated.
@@ -375,71 +364,6 @@ namespace log4net.Appender
 			// TODO: Consider using SendAsync to send the message without blocking. This would be a change in
 			// behaviour compared to .NET 1.x. We would need a SendCompletedCallback to log errors.
 			smtpClient.Send(mailMessage);
-#else
-				// .NET 1.x uses the System.Web.Mail API for sending Mail
-
-				MailMessage mailMessage = new MailMessage();
-				mailMessage.Body = messageBody;
-				mailMessage.From = m_from;
-				mailMessage.To = m_to;
-				mailMessage.Subject = m_subject;
-				mailMessage.Priority = m_mailPriority;
-
-#if NET_1_1
-				// The Fields property on the MailMessage allows the CDO properties to be set directly.
-				// This property is only available on .NET Framework 1.1 and the implementation must understand
-				// the CDO properties. For details of the fields available in CDO see:
-				//
-				// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cdosys/html/_cdosys_configuration_coclass.asp
-				// 
-
-				try
-				{
-					if (m_authentication == SmtpAuthentication.Basic)
-					{
-						// Perform basic authentication
-						mailMessage.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", 1);
-						mailMessage.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendusername", m_username);
-						mailMessage.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendpassword", m_password);
-					}
-					else if (m_authentication == SmtpAuthentication.Ntlm)
-					{
-						// Perform integrated authentication (NTLM)
-						mailMessage.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", 2);
-					}
-
-					// Set the port if not the default value
-					if (m_port != 25) 
-					{
-						mailMessage.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpserverport", m_port);
-					}
-				}
-				catch(MissingMethodException missingMethodException)
-				{
-					// If we were compiled against .NET 1.1 but are running against .NET 1.0 then
-					// we will get a MissingMethodException when accessing the MailMessage.Fields property.
-
-					ErrorHandler.Error("SmtpAppender: Authentication and server Port are only supported when running on the MS .NET 1.1 framework", missingMethodException);
-				}
-#else
-				if (m_authentication != SmtpAuthentication.None)
-				{
-					ErrorHandler.Error("SmtpAppender: Authentication is only supported on the MS .NET 1.1 or MS .NET 2.0 builds of log4net");
-				}
-
-				if (m_port != 25)
-				{
-					ErrorHandler.Error("SmtpAppender: Server Port is only supported on the MS .NET 1.1 or MS .NET 2.0 builds of log4net");
-				}
-#endif // if NET_1_1
-
-				if (m_smtpHost != null && m_smtpHost.Length > 0)
-				{
-					SmtpMail.SmtpServer = m_smtpHost;
-				}
-
-				SmtpMail.Send(mailMessage);
-#endif // if NET_2_0
 		}
 
 		#endregion // Protected Methods
@@ -500,5 +424,3 @@ namespace log4net.Appender
 		#endregion // SmtpAuthentication Enum
 	}
 }
-
-#endif // !NETCF && !SSCLI

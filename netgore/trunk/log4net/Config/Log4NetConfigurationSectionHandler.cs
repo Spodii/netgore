@@ -16,9 +16,6 @@
 //
 #endregion
 
-// .NET Compact Framework 1.0 has no support for application .config files
-#if !NETCF
-
 using System.Configuration;
 using System.Xml;
 
@@ -87,5 +84,3 @@ namespace log4net.Config
 		#endregion Implementation of IConfigurationSectionHandler
 	}
 }
-
-#endif // !NETCF

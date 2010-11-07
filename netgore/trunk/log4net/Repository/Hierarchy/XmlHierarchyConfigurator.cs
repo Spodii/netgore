@@ -613,7 +613,6 @@ namespace log4net.Repository.Hierarchy
 
 				if(propertyValue != null)
 				{
-#if !NETCF	
 					try
 					{
 						// Expand environment variables in the string.
@@ -626,7 +625,6 @@ namespace log4net.Repository.Hierarchy
 						// will be skipped with the following warning message.
 						LogLog.Debug("XmlHierarchyConfigurator: Security exception while trying to expand environment variables. Error Ignored. No Expansion.");
 					}
-#endif
 
 					Type parsedObjectConversionTargetType = null;
 

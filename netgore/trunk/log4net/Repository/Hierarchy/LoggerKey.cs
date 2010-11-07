@@ -63,12 +63,7 @@ namespace log4net.Repository.Hierarchy
 		/// <param name="name">The name of the logger.</param>
 		internal LoggerKey(string name) 
 		{
-#if NETCF
-			// NETCF: String.Intern causes Native Exception
-			m_name = name;
-#else
 			m_name = string.Intern(name);
-#endif
 			m_hashCache = name.GetHashCode();
 		}
 
@@ -114,12 +109,8 @@ namespace log4net.Repository.Hierarchy
 			LoggerKey objKey = obj as LoggerKey;
 			if (objKey != null) 
 			{
-#if NETCF
-				return ( m_name == objKey.m_name );
-#else
 				// Compare reference types rather than string's overloaded ==
 				return ( ((object)m_name) == ((object)objKey.m_name) );
-#endif
 			}
 			return false;
 		}

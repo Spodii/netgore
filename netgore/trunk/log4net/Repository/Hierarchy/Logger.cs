@@ -72,12 +72,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		protected Logger(string name) 
 		{
-#if NETCF
-			// NETCF: String.Intern causes Native Exception
-			m_name = name;
-#else
 			m_name = string.Intern(name);
-#endif
 		}
 
 		#endregion Protected Instance Constructors
@@ -598,10 +593,8 @@ namespace log4net.Repository.Hierarchy
 				{
 					LogLog.Debug("Logger:    Current AppDomain context information: ");
 					LogLog.Debug("Logger:       BaseDirectory   : " + SystemInfo.ApplicationBaseDirectory);
-#if !NETCF
 					LogLog.Debug("Logger:       FriendlyName    : " + AppDomain.CurrentDomain.FriendlyName);
 					LogLog.Debug("Logger:       DynamicDirectory: " + AppDomain.CurrentDomain.DynamicDirectory);
-#endif
 				}
 				catch(System.Security.SecurityException)
 				{

@@ -111,9 +111,6 @@
     <Compile Include="Appender\BufferingForwardingAppender.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Appender\ColoredConsoleAppender.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Appender\ConsoleAppender.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -139,12 +136,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Appender\MemoryAppender.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Appender\NetSendAppender.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Appender\OutputDebugStringAppender.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Appender\RemoteSyslogAppender.cs">
@@ -562,9 +553,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\LogLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Util\NativeError.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\NullDictionaryEnumerator.cs">

@@ -126,22 +126,14 @@ namespace log4net.Appender
 			//
 			// Write the string to the Trace system
 			//
-#if NETCF
-			System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
-#else
 			System.Diagnostics.Trace.Write(RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
-#endif
 	 
 			//
 			// Flush the Trace system if needed
 			//
 			if (m_immediateFlush) 
 			{
-#if NETCF
-				System.Diagnostics.Debug.Flush();
-#else
 				System.Diagnostics.Trace.Flush();
-#endif
 			} 
 		}
 

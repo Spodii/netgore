@@ -16,10 +16,6 @@
  */
 #endregion
 
-// .NET Compact Framework 1.0 has no support for Marshal.StringToHGlobalAnsi
-// SSCLI 1.0 has no support for Marshal.StringToHGlobalAnsi
-#if !NETCF && !SSCLI
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -590,5 +586,3 @@ namespace log4net.Appender
 		#endregion // LevelSeverity LevelMapping Entry
 	}
 }
-
-#endif

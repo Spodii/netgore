@@ -96,11 +96,6 @@ namespace log4net.Core
 			// Dump out our assembly version into the log if debug is enabled
 			LogLog.Debug(GetVersionInfo());
 
-			// Set the default repository selector
-#if NETCF
-			s_repositorySelector = new CompactRepositorySelector(typeof(log4net.Repository.Hierarchy.Hierarchy));
-#else
-
 			// Look for the RepositorySelector type specified in the AppSettings 'log4net.RepositorySelector'
 			string appRepositorySelectorTypeName = SystemInfo.GetAppSetting("log4net.RepositorySelector");
 			if (appRepositorySelectorTypeName != null && appRepositorySelectorTypeName.Length > 0)
@@ -145,7 +140,6 @@ namespace log4net.Core
 			{
 				s_repositorySelector = new DefaultRepositorySelector(typeof(log4net.Repository.Hierarchy.Hierarchy));
 			}
-#endif
 		}
 
 		/// <summary>
@@ -162,13 +156,11 @@ namespace log4net.Core
 		/// </remarks>
 		private static void RegisterAppDomainEvents()
 		{
-#if !NETCF
 			// ProcessExit seems to be fired if we are part of the default domain
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
 			// Otherwise DomainUnload is fired
 			AppDomain.CurrentDomain.DomainUnload += new EventHandler(OnDomainUnload);
-#endif
 		}
 
 		#endregion Static Constructor
@@ -804,14 +796,11 @@ namespace log4net.Core
 			sb.Append("log4net assembly [").Append(myAssembly.FullName).Append("]. ");
 			sb.Append("Loaded from [").Append(SystemInfo.AssemblyLocationInfo(myAssembly)).Append("]. ");
 			sb.Append("(.NET Runtime [").Append(Environment.Version.ToString()).Append("]");
-#if (!SSCLI)
             sb.Append(" on ").Append(Environment.OSVersion.ToString());
-#endif
             sb.Append(")");
 			return sb.ToString();
 		}
 
-#if (!NETCF)
 		/// <summary>
 		/// Called when the <see cref="AppDomain.DomainUnload"/> event fires
 		/// </summary>
@@ -847,7 +836,6 @@ namespace log4net.Core
 		{
 			Shutdown();
 		}
-#endif
 
 		#endregion Private Static Methods
 
