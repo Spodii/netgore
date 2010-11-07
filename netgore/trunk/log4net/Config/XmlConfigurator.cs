@@ -500,7 +500,7 @@ namespace log4net.Config
 				{
 					// Allow the DTD to specify entity includes
 					XmlReaderSettings settings = new XmlReaderSettings();
-					settings.ProhibitDtd = false;
+                    settings.DtdProcessing = DtdProcessing.Parse;
 
 					// Create a reader over the input stream
 					XmlReader xmlReader = XmlReader.Create(configStream, settings);
