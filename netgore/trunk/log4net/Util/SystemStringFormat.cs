@@ -108,11 +108,6 @@ namespace log4net.Util
 				log4net.Util.LogLog.Warn("StringFormat: Exception while rendering format ["+format+"]", ex);
 				return StringFormatError(ex, format, args);
 			}
-			catch
-			{
-				log4net.Util.LogLog.Warn("StringFormat: Exception while rendering format ["+format+"]");
-				return StringFormatError(null, format, args);
-			}
 		}
 
 		/// <summary>
@@ -143,11 +138,6 @@ namespace log4net.Util
 			catch(Exception ex)
 			{
 				log4net.Util.LogLog.Error("StringFormat: INTERNAL ERROR during StringFormat error handling", ex);
-				return "<log4net.Error>Exception during StringFormat. See Internal Log.</log4net.Error>";
-			}
-			catch
-			{
-				log4net.Util.LogLog.Error("StringFormat: INTERNAL ERROR during StringFormat error handling");
 				return "<log4net.Error>Exception during StringFormat. See Internal Log.</log4net.Error>";
 			}
 		}
@@ -204,10 +194,6 @@ namespace log4net.Util
 				catch(Exception ex)
 				{
 					buffer.Append("<Exception: ").Append(ex.Message).Append(">");
-				}
-				catch
-				{
-					buffer.Append("<Exception>");
 				}
 			}
 		}
