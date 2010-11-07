@@ -82,18 +82,18 @@ namespace NetGore.Editor.UI
                 btnOk.TabIndex = 1;
                 btnOk.Text = "OK";
                 btnOk.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
-                btnOk.DialogResult = DialogResult.OK;
+                btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
                 btnOk.Click += btnOK_Click;
                 btnCancel.Location = new Point(0x108, 0x112);
                 btnCancel.Size = new Size(0x4b, 0x17);
                 btnCancel.TabIndex = 2;
                 btnCancel.Text = "Cancel";
                 btnCancel.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
-                btnCancel.DialogResult = DialogResult.Cancel;
+                btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
                 Location = new Point(7, 7);
                 Text = "PolygonPointCollection Editor";
                 AcceptButton = btnOk;
-                AutoScaleMode = AutoScaleMode.Font;
+                AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
                 AutoScaleDimensions = new SizeF(6f, 13f);
                 CancelButton = btnCancel;
                 ClientSize = new Size(0x1ad, 0x133);
@@ -183,7 +183,7 @@ namespace NetGore.Editor.UI
                 }
 
                 if (!flag)
-                    DialogResult = DialogResult.Cancel;
+                    DialogResult = System.Windows.Forms.DialogResult.Cancel;
                 else
                 {
                     var objArray2 = new object[length];
