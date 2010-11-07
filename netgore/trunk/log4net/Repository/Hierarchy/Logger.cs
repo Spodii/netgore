@@ -426,10 +426,6 @@ namespace log4net.Repository.Hierarchy
 			{
 				log4net.Util.LogLog.Error("Log: Exception while logging", ex);
 			}
-			catch
-			{
-				log4net.Util.LogLog.Error("Log: Exception while logging");
-			}
 		}
 
 		/// <summary>
@@ -460,10 +456,6 @@ namespace log4net.Repository.Hierarchy
 			catch (Exception ex)
 			{
 				log4net.Util.LogLog.Error("Log: Exception while logging", ex);
-			}
-			catch
-			{
-				log4net.Util.LogLog.Error("Log: Exception while logging");
 			}
 		}
 
@@ -499,10 +491,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				log4net.Util.LogLog.Error("Log: Exception while logging", ex);
 			}
-			catch
-			{
-				log4net.Util.LogLog.Error("Log: Exception while logging");
-			}
+
 			return false;
 		}
 
