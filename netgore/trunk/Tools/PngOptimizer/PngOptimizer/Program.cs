@@ -69,8 +69,8 @@ namespace PngOptimizer
             const string msg =
                 @"Usage: pngoptimizer [options]
 Options:
-    -skip=\""filter string\""       Skips files matching string (ReGex)
-    -filter=\""filter string\""     Only files matching string (ReGex)
+    -skip=\""filter string\""       Skips files matching string (RegEx)
+    -filter=\""filter string\""     Only files matching string (RegEx)
     -source=\""source root\""       The source directory
     -r                              Use recursion
     /? OR --help                    Displays help
