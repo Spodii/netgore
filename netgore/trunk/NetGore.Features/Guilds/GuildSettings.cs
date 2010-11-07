@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -159,7 +160,7 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Gets the array of names for the guild ranks.
         /// </summary>
-        public string[] RankNames
+        public ICollection<string> RankNames
         {
             get { return _rankNames; }
         }

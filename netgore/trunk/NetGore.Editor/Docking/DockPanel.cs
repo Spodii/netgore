@@ -569,28 +569,34 @@ namespace NetGore.Editor.Docking
                 DockPadding.Bottom = height;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2215:Dispose methods should call base class dispose")]
         protected override void Dispose(bool disposing)
         {
             lock (this)
             {
-                if (!m_disposed && disposing)
+                try
                 {
-                    m_focusManager.Dispose();
-                    if (m_mdiClientController != null)
+                    if (!m_disposed && disposing)
                     {
-                        m_mdiClientController.HandleAssigned -= MdiClientHandleAssigned;
-                        m_mdiClientController.MdiChildActivate -= ParentFormMdiChildActivate;
-                        m_mdiClientController.Layout -= MdiClient_Layout;
-                        m_mdiClientController.Dispose();
+                        m_focusManager.Dispose();
+                        if (m_mdiClientController != null)
+                        {
+                            m_mdiClientController.HandleAssigned -= MdiClientHandleAssigned;
+                            m_mdiClientController.MdiChildActivate -= ParentFormMdiChildActivate;
+                            m_mdiClientController.Layout -= MdiClient_Layout;
+                            m_mdiClientController.Dispose();
+                        }
+                        FloatWindows.Dispose();
+                        Panes.Dispose();
+                        DummyContent.Dispose();
+
+                        m_disposed = true;
                     }
-                    FloatWindows.Dispose();
-                    Panes.Dispose();
-                    DummyContent.Dispose();
-
-                    m_disposed = true;
                 }
-
-                base.Dispose(disposing);
+                finally
+                {
+                    base.Dispose(disposing);
+                }
             }
         }
 

@@ -83,5 +83,27 @@ namespace NetGore.Features.Guilds
         {
             return new GuildRank(value);
         }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are not equal.</returns>
+        public static bool operator !=(GuildRank left, GuildRank right)
+        {
+            return !left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are equal.</returns>
+        public static bool operator ==(GuildRank left, GuildRank right)
+        {
+            return left.Equals(right);
+        }
     }
 }

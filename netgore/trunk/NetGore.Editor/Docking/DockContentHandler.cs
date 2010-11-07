@@ -472,7 +472,7 @@ namespace NetGore.Editor.Docking
 
         public string TabText
         {
-            get { return m_tabText == null || m_tabText == "" ? Form.Text : m_tabText; }
+            get { return string.IsNullOrEmpty(m_tabText) ? Form.Text : m_tabText; }
             set
             {
                 if (m_tabText == value)

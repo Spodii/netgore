@@ -12,7 +12,7 @@ namespace NetGore.Editor.Grhs
     /// A <see cref="TreeNode"/> for the <see cref="GrhTreeView"/> that represents a folder containing one or more
     /// child nodes.
     /// </summary>
-    [Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
     public class GrhTreeViewFolderNode : TreeNode, IGrhTreeViewNode
     {
         /// <summary>
