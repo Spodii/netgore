@@ -285,9 +285,7 @@ namespace log4net.Util
 
 			s_globalRulesRegistry.Add("appdomain", typeof(AppDomainPatternConverter));
 			s_globalRulesRegistry.Add("date", typeof(DatePatternConverter));
-#if !NETCF
 			s_globalRulesRegistry.Add("env", typeof(EnvironmentPatternConverter));
-#endif
 			s_globalRulesRegistry.Add("identity", typeof(IdentityPatternConverter));
 			s_globalRulesRegistry.Add("literal", typeof(LiteralPatternConverter));
 			s_globalRulesRegistry.Add("newline", typeof(NewLinePatternConverter));

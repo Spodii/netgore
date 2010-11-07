@@ -18,10 +18,8 @@
 
 using System;
 using System.Collections;
-#if !NETCF
 using System.Runtime.Serialization;
 using System.Xml;
-#endif
 
 namespace log4net.Util
 {
@@ -40,11 +38,7 @@ namespace log4net.Util
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-#if NETCF
-	public class ReadOnlyPropertiesDictionary : IDictionary
-#else
 	[Serializable] public class ReadOnlyPropertiesDictionary : ISerializable, IDictionary
-#endif
 	{
 		#region Private Instance Fields
 
@@ -90,7 +84,6 @@ namespace log4net.Util
 
 		#region Private Instance Constructors
 
-#if !NETCF
 		/// <summary>
 		/// Deserialization constructor
 		/// </summary>
@@ -110,7 +103,6 @@ namespace log4net.Util
 				InnerHashtable[XmlConvert.DecodeName(entry.Name)] = entry.Value;
 			}
 		}
-#endif
 
 		#endregion Protected Instance Constructors
 
@@ -191,7 +183,6 @@ namespace log4net.Util
 
 		#region Implementation of ISerializable
 
-#if !NETCF
 		/// <summary>
 		/// Serializes this object into the <see cref="SerializationInfo" /> provided.
 		/// </summary>
@@ -221,7 +212,6 @@ namespace log4net.Util
 				}
 			}
 		}
-#endif
 
 		#endregion Implementation of ISerializable
 

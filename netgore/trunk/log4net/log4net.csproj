@@ -684,9 +684,6 @@
     <Compile Include="Util\TypeConverters\TypeConverterAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util\WindowsSecurityContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -594,45 +594,7 @@ namespace log4net.Util
 		/// <returns>An object of type <paramref name="enumType" /> whose value is represented by <paramref name="value" />.</returns>
 		private static object ParseEnum(System.Type enumType, string value, bool ignoreCase) 
 		{
-#if !NETCF
 			return Enum.Parse(enumType, value, ignoreCase);
-#else
-			FieldInfo[] fields = enumType.GetFields(BindingFlags.Public | BindingFlags.Static);
-
-			string[] names = value.Split(new char[] {','});
-			for (int i = 0; i < names.Length; ++i) 
-			{
-				names[i] = names [i].Trim();
-			}
-
-			long retVal = 0;
-
-			try 
-			{
-				// Attempt to convert to numeric type
-				return Enum.ToObject(enumType, Convert.ChangeType(value, typeof(long), CultureInfo.InvariantCulture));
-			} 
-			catch {}
-
-			foreach (string name in names) 
-			{
-				bool found = false;
-				foreach(FieldInfo field in fields) 
-				{
-					if (String.Compare(name, field.Name, ignoreCase) == 0) 
-					{
-						retVal |= ((IConvertible) field.GetValue(null)).ToInt64(CultureInfo.InvariantCulture);
-						found = true;
-						break;
-					}
-				}
-				if (!found) 
-				{
-					throw new ArgumentException("Failed to lookup member [" + name + "] from Enum type [" + enumType.Name + "]");
-				}
-			}
-			return Enum.ToObject(enumType, retVal);
-#endif
 		}		
 
 		#endregion Private Static Methods
