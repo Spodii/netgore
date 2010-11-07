@@ -96,7 +96,7 @@ namespace log4net.Repository.Hierarchy
             if (objKey != null)
             {
                 // Compare reference types rather than string's overloaded ==
-                return ((m_name) == ((object)objKey.m_name));
+                return (ReferenceEquals(m_name, objKey.m_name));
             }
             return false;
         }

@@ -391,7 +391,7 @@ namespace log4net.Core
             if (((object)l) != null && ((object)r) != null)
                 return l.m_levelValue == r.m_levelValue;
             else
-                return (l) == ((object)r);
+                return ReferenceEquals(l, r);
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace log4net.Core
         public static int Compare(Level l, Level r)
         {
             // Reference equals
-            if (l == (object)r)
+            if (ReferenceEquals(l, r))
                 return 0;
 
             if (l == null && r == null)
