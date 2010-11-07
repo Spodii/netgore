@@ -82,7 +82,7 @@ namespace NetGore
             return true;
         }
 
-        static MethodInfo GetMethodInfo(string name, IReflect handledType, Type[] parameters)
+        static MethodInfo GetMethodInfo(string name, Type handledType, Type[] parameters)
         {
             const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod;
             var method = handledType.GetMethod(name, flags, null, parameters, null);
@@ -92,7 +92,7 @@ namespace NetGore
             return method;
         }
 
-        static MethodInfo GetOperatorMethodInfo(IReflect handledType)
+        static MethodInfo GetOperatorMethodInfo(Type handledType)
         {
             const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod;
             var methods = handledType.GetMethods(flags);
