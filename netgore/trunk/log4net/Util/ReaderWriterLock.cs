@@ -16,9 +16,7 @@
 //
 #endregion
 
-#if (!NETCF)
 #define HAS_READERWRITERLOCK
-#endif
 
 using System;
 
@@ -57,9 +55,7 @@ namespace log4net.Util
 		/// </remarks>
 		public ReaderWriterLock()
 		{
-#if HAS_READERWRITERLOCK
 			m_lock = new System.Threading.ReaderWriterLock();
-#endif
 		}
 
 		#endregion Private Instance Constructors
@@ -77,11 +73,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void AcquireReaderLock()
 		{
-#if HAS_READERWRITERLOCK
 			m_lock.AcquireReaderLock(-1);
-#else
-			System.Threading.Monitor.Enter(this);
-#endif
 		}
 
 		/// <summary>
@@ -95,11 +87,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void ReleaseReaderLock()
 		{
-#if HAS_READERWRITERLOCK
 			m_lock.ReleaseReaderLock();
-#else
-			System.Threading.Monitor.Exit(this);
-#endif
 		}
 
 		/// <summary>
@@ -112,11 +100,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void AcquireWriterLock()
 		{
-#if HAS_READERWRITERLOCK
 			m_lock.AcquireWriterLock(-1);
-#else
-			System.Threading.Monitor.Enter(this);
-#endif
 		}
 
 		/// <summary>
@@ -130,20 +114,14 @@ namespace log4net.Util
 		/// </remarks>
 		public void ReleaseWriterLock()
 		{
-#if HAS_READERWRITERLOCK
 			m_lock.ReleaseWriterLock();
-#else
-			System.Threading.Monitor.Exit(this);
-#endif
 		}
 
 		#endregion Public Methods
 
 		#region Private Members
 
-#if HAS_READERWRITERLOCK
 		private System.Threading.ReaderWriterLock m_lock;
-#endif
 
 		#endregion
 	}

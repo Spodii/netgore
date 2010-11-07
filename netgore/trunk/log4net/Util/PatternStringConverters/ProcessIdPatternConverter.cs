@@ -47,10 +47,6 @@ namespace log4net.Util.PatternStringConverters
 		/// </remarks>
 		override protected void Convert(TextWriter writer, object state) 
 		{
-#if (NETCF || SSCLI)
-			// On compact framework there is no System.Diagnostics.Process class
-			writer.Write( SystemInfo.NotAvailableText );
-#else
 			try
 			{
 				writer.Write( System.Diagnostics.Process.GetCurrentProcess().Id );
@@ -63,7 +59,6 @@ namespace log4net.Util.PatternStringConverters
 
 				writer.Write( SystemInfo.NotAvailableText );
 			}
-#endif
 		}
 	}
 }
