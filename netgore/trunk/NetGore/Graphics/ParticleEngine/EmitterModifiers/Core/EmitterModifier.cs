@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
@@ -7,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Base class for a class that modifies a <see cref="ParticleEmitter"/>.
     /// </summary>
-    public abstract class EmitterModifier
+    public abstract class EmitterModifier : IPersistable
     {
         const string _customValuesNodeName = "CustomValues";
         const string _typeKeyName = "ModifierType";
@@ -60,7 +61,7 @@ namespace NetGore.Graphics.ParticleEngine
 
             // Read the custom values
             var customValueReader = reader.ReadNode(_customValuesNodeName);
-            modifier.ReadCustomValues(customValueReader);
+            modifier.ReadState(customValueReader);
 
             return modifier;
         }
@@ -103,7 +104,7 @@ namespace NetGore.Graphics.ParticleEngine
 
             writer.WriteStartNode(_customValuesNodeName);
             {
-                WriteCustomValues(writer);
+                WriteState(writer);
             }
             writer.WriteEndNode(_customValuesNodeName);
         }
@@ -113,5 +114,47 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
         protected abstract void WriteCustomValues(IValueWriter writer);
+
+        /// <summary>
+        /// Creates a deep copy of this <see cref="EmitterModifier"/>.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="EmitterModifier"/>.</returns>
+        public EmitterModifier DeepCopy()
+        {
+            // Create the deep copy by serializing to/from an IValueWriter
+            using (var bs = new BitStream())
+            {
+                // Write
+                using (var writer = BinaryValueWriter.Create(bs, false))
+                {
+                    Write(writer);
+                }
+
+                bs.Position = 0;
+
+                // Read
+                var reader = BinaryValueReader.Create(bs, false);
+                return Read(reader);
+            }
+        }
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            ReadCustomValues(reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            WriteCustomValues(writer);
+        }
     }
 }

@@ -71,11 +71,11 @@ namespace NetGore.Graphics.ParticleEngine
         protected Particle[] particles;
 
         readonly IParticleEffect _owner;
-
         readonly Grh _sprite = new Grh();
+        readonly EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
+        readonly ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
 
         int _budget;
-        EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
         bool _isDisposed = false;
 
         /// <summary>
@@ -88,7 +88,6 @@ namespace NetGore.Graphics.ParticleEngine
         string _name;
         TickCount _nextReleaseTime = TickCount.MinValue;
         Vector2 _origin;
-        ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
         TickCount _timeCreated = TickCount.Now;
         bool _wasKilled;
 
@@ -198,8 +197,12 @@ namespace NetGore.Graphics.ParticleEngine
             d.ReleaseScale = ReleaseScale;
             d.ReleaseSpeed = ReleaseSpeed;
             d.Sprite.SetGrh(Sprite.GrhData, Sprite.AnimType, Sprite.LastUpdated);
-            d.ParticleModifiers = ParticleModifiers.DeepCopy();
-            d.EmitterModifiers = EmitterModifiers.DeepCopy();
+
+            d.ParticleModifiers.Clear();
+            d.ParticleModifiers.AddRange(ParticleModifiers.Select(x => x.DeepCopy()));
+
+            d.EmitterModifiers.Clear();
+            d.EmitterModifiers.AddRange(EmitterModifiers.Select(x => x.DeepCopy()));
         }
 
         /// <summary>
@@ -590,22 +593,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
+        /// Gets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         [Category(_emitterCategoryName)]
         [Description("Collection of modifiers for the actual emitter.")]
         [DisplayName("Emitter Modifiers")]
         public EmitterModifierCollection EmitterModifiers
         {
             get { return _emitterModifiers; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _emitterModifiers = value;
-            }
         }
 
         /// <summary>
@@ -707,23 +702,15 @@ namespace NetGore.Graphics.ParticleEngine
         public VariableInt ParticleLife { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
+        /// Gets the collection of modifiers to use on the <see cref="Particle"/>s from this
         /// <see cref="ParticleEmitter"/>.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         [Category(_emitterCategoryName)]
         [Description("Collection of modifiers for individual particles.")]
         [DisplayName("Particle Modifiers")]
         public ParticleModifierCollection ParticleModifiers
         {
             get { return _particleModifiers; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _particleModifiers = value;
-            }
         }
 
         /// <summary>

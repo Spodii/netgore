@@ -556,6 +556,28 @@ namespace NetGore.Stats
         {
             return new StatValueType(value);
         }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="l">The left- argument.</param>
+        /// <param name="r">The right-side argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(StatValueType l, StatValueType r)
+        {
+            return l.Equals(r);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="l">The left- argument.</param>
+        /// <param name="r">The right-side argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(StatValueType l, StatValueType r)
+        {
+            return !(l == r);
+        }
     }
 
     /// <summary>

@@ -50,7 +50,7 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the collection of points that define the polygon.
+        /// Gets the collection of points that define the polygon.
         /// </summary>
         [Category(_emitterCategoryName)]
         [Description("The collection of points that define the polygon.")]
@@ -58,7 +58,6 @@ namespace NetGore.Graphics.ParticleEngine
         public PolygonPointCollection Points
         {
             get { return _points; }
-            set { _points = value; }
         }
 
         /// <summary>
