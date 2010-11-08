@@ -85,6 +85,7 @@ namespace DemoGame
         /// Gets the raw internal value of this AccountID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public int GetRawValue()
         {
             return _value;
@@ -103,14 +104,14 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an AccountID from an IDataReader.
+        /// Reads an AccountID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The AccountID read from the IDataReader.</returns>
-        public static AccountID Read(IDataReader reader, int i)
+        /// <returns>The AccountID read from the <see cref="IDataRecord"/>.</returns>
+        public static AccountID Read(IDataRecord r, int i)
         {
-            var value = reader.GetValue(i);
+            var value = r.GetValue(i);
             if (value is int)
                 return new AccountID((int)value);
 
@@ -119,18 +120,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an AccountID from an IDataReader.
+        /// Reads an AccountID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The AccountID read from the IDataReader.</returns>
-        public static AccountID Read(IDataReader reader, string name)
+        /// <returns>The AccountID read from the <see cref="IDataRecord"/>.</returns>
+        public static AccountID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an AccountID from an IValueReader.
+        /// Reads an AccountID from an BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The AccountID read from the BitStream.</returns>
@@ -786,25 +787,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the AccountID from an IDataReader.
+        /// Reads the AccountID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the AccountID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the AccountID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The AccountID read from the IDataReader.</returns>
-        public static AccountID GetAccountID(this IDataReader dataReader, int i)
+        /// <returns>The AccountID read from the <see cref="IDataRecord"/>.</returns>
+        public static AccountID GetAccountID(this IDataRecord r, int i)
         {
-            return AccountID.Read(dataReader, i);
+            return AccountID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the AccountID from an IDataReader.
+        /// Reads the AccountID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the AccountID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the AccountID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The AccountID read from the IDataReader.</returns>
-        public static AccountID GetAccountID(this IDataReader dataReader, string name)
+        /// <returns>The AccountID read from the <see cref="IDataRecord"/>.</returns>
+        public static AccountID GetAccountID(this IDataRecord r, string name)
         {
-            return AccountID.Read(dataReader, name);
+            return AccountID.Read(r, name);
         }
 
         /// <summary>

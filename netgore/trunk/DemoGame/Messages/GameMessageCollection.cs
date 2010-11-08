@@ -249,6 +249,7 @@ namespace DemoGame
         /// Gets the names of all of the available languages.
         /// </summary>
         /// <returns>The names of all of the available languages.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static IEnumerable<string> GetLanguages()
         {
             var comp = StringComparer.OrdinalIgnoreCase;

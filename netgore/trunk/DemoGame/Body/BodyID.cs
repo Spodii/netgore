@@ -85,6 +85,7 @@ namespace DemoGame
         /// Gets the raw internal value of this BodyID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public ushort GetRawValue()
         {
             return _value;
@@ -103,12 +104,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an BodyID from an IDataReader.
+        /// Reads an BodyID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The BodyID read from the IDataReader.</returns>
-        public static BodyID Read(IDataReader reader, int i)
+        /// <returns>The BodyID read from the <see cref="IDataRecord"/>.</returns>
+        public static BodyID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is ushort)
@@ -119,18 +120,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an BodyID from an IDataReader.
+        /// Reads an BodyID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The BodyID read from the IDataReader.</returns>
-        public static BodyID Read(IDataReader reader, string name)
+        /// <returns>The BodyID read from the <see cref="IDataRecord"/>.</returns>
+        public static BodyID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an BodyID from an IValueReader.
+        /// Reads an BodyID from an BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The BodyID read from the BitStream.</returns>
@@ -786,25 +787,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the BodyID from an IDataReader.
+        /// Reads the BodyID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the BodyID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the BodyID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The BodyID read from the IDataReader.</returns>
-        public static BodyID GetBodyID(this IDataReader dataReader, int i)
+        /// <returns>The BodyID read from the <see cref="IDataRecord"/>.</returns>
+        public static BodyID GetBodyID(this IDataRecord r, int i)
         {
-            return BodyID.Read(dataReader, i);
+            return BodyID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the BodyID from an IDataReader.
+        /// Reads the BodyID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the BodyID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the BodyID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The BodyID read from the IDataReader.</returns>
-        public static BodyID GetBodyID(this IDataReader dataReader, string name)
+        /// <returns>The BodyID read from the <see cref="IDataRecord"/>.</returns>
+        public static BodyID GetBodyID(this IDataRecord r, string name)
         {
-            return BodyID.Read(dataReader, name);
+            return BodyID.Read(r, name);
         }
 
         /// <summary>

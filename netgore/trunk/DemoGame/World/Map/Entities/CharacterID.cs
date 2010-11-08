@@ -85,6 +85,7 @@ namespace DemoGame
         /// Gets the raw internal value of this CharacterID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public int GetRawValue()
         {
             return _value;
@@ -103,12 +104,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an CharacterID from an IDataReader.
+        /// Reads an CharacterID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID Read(IDataReader reader, int i)
+        /// <returns>The CharacterID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is int)
@@ -119,18 +120,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an CharacterID from an IDataReader.
+        /// Reads an CharacterID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID Read(IDataReader reader, string name)
+        /// <returns>The CharacterID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an CharacterID from an IValueReader.
+        /// Reads an CharacterID from a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The CharacterID read from the BitStream.</returns>
@@ -786,25 +787,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the CharacterID from an IDataReader.
+        /// Reads the CharacterID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CharacterID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the CharacterID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID GetCharacterID(this IDataReader dataReader, int i)
+        /// <returns>The CharacterID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterID GetCharacterID(this IDataRecord r, int i)
         {
-            return CharacterID.Read(dataReader, i);
+            return CharacterID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the CharacterID from an IDataReader.
+        /// Reads the CharacterID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CharacterID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the CharacterID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CharacterID read from the IDataReader.</returns>
-        public static CharacterID GetCharacterID(this IDataReader dataReader, string name)
+        /// <returns>The CharacterID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterID GetCharacterID(this IDataRecord r, string name)
         {
-            return CharacterID.Read(dataReader, name);
+            return CharacterID.Read(r, name);
         }
 
         /// <summary>

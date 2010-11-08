@@ -86,6 +86,7 @@ namespace DemoGame
         /// Gets the raw internal value of this CharacterTemplateID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public int GetRawValue()
         {
             return _value;
@@ -104,12 +105,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an CharacterTemplateID from an IDataReader.
+        /// Reads an CharacterTemplateID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
-        public static CharacterTemplateID Read(IDataReader reader, int i)
+        /// <returns>The CharacterTemplateID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterTemplateID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is int)
@@ -120,18 +121,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an CharacterTemplateID from an IDataReader.
+        /// Reads an CharacterTemplateID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
-        public static CharacterTemplateID Read(IDataReader reader, string name)
+        /// <returns>The CharacterTemplateID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterTemplateID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an CharacterTemplateID from an IValueReader.
+        /// Reads an CharacterTemplateID from a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The CharacterTemplateID read from the BitStream.</returns>
@@ -788,25 +789,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the CharacterTemplateID from an IDataReader.
+        /// Reads the CharacterTemplateID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CharacterTemplateID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the CharacterTemplateID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
-        public static CharacterTemplateID GetCharacterTemplateID(this IDataReader dataReader, int i)
+        /// <returns>The CharacterTemplateID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterTemplateID GetCharacterTemplateID(this IDataRecord r, int i)
         {
-            return CharacterTemplateID.Read(dataReader, i);
+            return CharacterTemplateID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the CharacterTemplateID from an IDataReader.
+        /// Reads the CharacterTemplateID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CharacterTemplateID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the CharacterTemplateID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
-        public static CharacterTemplateID GetCharacterTemplateID(this IDataReader dataReader, string name)
+        /// <returns>The CharacterTemplateID read from the <see cref="IDataRecord"/>.</returns>
+        public static CharacterTemplateID GetCharacterTemplateID(this IDataRecord r, string name)
         {
-            return CharacterTemplateID.Read(dataReader, name);
+            return CharacterTemplateID.Read(r, name);
         }
 
         /// <summary>
