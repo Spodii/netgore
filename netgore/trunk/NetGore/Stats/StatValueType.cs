@@ -86,11 +86,7 @@ namespace NetGore.Stats
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(StatValueType))
-                return false;
-            return Equals((StatValueType)obj);
+            return obj is StatValueType && this == (StatValueType)obj;
         }
 
         /// <summary>

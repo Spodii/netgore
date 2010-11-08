@@ -132,11 +132,7 @@ namespace DemoGame
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(ItemChance))
-                return false;
-            return Equals((ItemChance)obj);
+            return obj is ItemChance && this == (ItemChance)obj;
         }
 
         /// <summary>

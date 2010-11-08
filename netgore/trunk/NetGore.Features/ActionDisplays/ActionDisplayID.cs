@@ -60,11 +60,7 @@ namespace NetGore.Features.ActionDisplays
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(ActionDisplayID))
-                return false;
-            return Equals((ActionDisplayID)obj);
+            return obj is ActionDisplayID && this == (ActionDisplayID)obj;
         }
 
         /// <summary>

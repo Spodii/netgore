@@ -73,11 +73,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(CustomValueTypeName))
-                return false;
-            return Equals((CustomValueTypeName)obj);
+            return obj is CustomValueTypeName && this == (CustomValueTypeName)obj;
         }
 
         /// <summary>

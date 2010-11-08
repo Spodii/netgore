@@ -48,10 +48,7 @@ namespace NetGore.Features.Guilds
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj is GuildMemberNameRank)
-                return Equals((GuildMemberNameRank)obj);
-
-            return base.Equals(obj);
+            return obj is GuildMemberNameRank && this == (GuildMemberNameRank)obj;
         }
 
         /// <summary>

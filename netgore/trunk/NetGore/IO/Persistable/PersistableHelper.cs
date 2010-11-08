@@ -6,7 +6,7 @@ namespace NetGore.IO
     /// <summary>
     /// Provides helper methods for the <see cref="IPersistable"/> interface.
     /// </summary>
-    public sealed class PersistableHelper
+    public static class PersistableHelper
     {
         /// <summary>
         /// Reads all properties for the given <paramref name="obj"/> that have the <see cref="SyncValueAttribute"/>

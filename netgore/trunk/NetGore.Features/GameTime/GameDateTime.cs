@@ -244,13 +244,7 @@ namespace NetGore.Features.GameTime
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            if (obj.GetType() != typeof(GameDateTime))
-                return false;
-
-            return Equals((GameDateTime)obj);
+            return obj is GameDateTime && this == (GameDateTime)obj;
         }
 
         /// <summary>

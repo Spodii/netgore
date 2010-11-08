@@ -11,7 +11,7 @@ namespace DemoGame
     /// Contains the value of a Character's Status Points (i.e. Health Points, Mana Points, etc).
     /// </summary>
     [TypeConverter(typeof(SPValueTypeConverter))]
-    public struct SPValueType
+    public struct SPValueType : IEquatable<SPValueType>
     {
         public const short MaxValue = short.MaxValue;
         public const short MinValue = short.MinValue;
@@ -163,6 +163,13 @@ namespace DemoGame
             return !(left == right);
         }
 
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
         public bool Equals(SPValueType other)
         {
             return this == other;
@@ -188,13 +195,7 @@ namespace DemoGame
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            if (obj.GetType() != typeof(SPValueType))
-                return false;
-
-            return Equals((SPValueType)obj);
+            return obj is SPValueType && this == (SPValueType)obj;
         }
     }
 }

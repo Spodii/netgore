@@ -7,7 +7,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Factory that caches instances of the <see cref="EmitterModifier"/>s.
     /// </summary>
-    public class EmitterModifierFactory : TypeFactory
+    public sealed class EmitterModifierFactory : TypeFactory
     {
         /// <summary>
         /// The only instance of the <see cref="EmitterModifierFactory"/>.

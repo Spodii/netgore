@@ -76,11 +76,7 @@ namespace NetGore.IO
         /// </exception>
         public override bool Equals(object obj)
         {
-            var casted = obj as SpriteCategorization;
-            if (casted != null)
-                return Equals(casted);
-
-            return false;
+            return obj is SpriteCategorization && this == (SpriteCategorization)obj;
         }
 
         /// <summary>

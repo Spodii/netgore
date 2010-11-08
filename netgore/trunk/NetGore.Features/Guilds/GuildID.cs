@@ -62,11 +62,7 @@ namespace NetGore.Features.Guilds
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(GuildID))
-                return false;
-            return Equals((GuildID)obj);
+            return obj is GuildID && this == (GuildID)obj;
         }
 
         /// <summary>

@@ -62,11 +62,7 @@ namespace NetGore.AI
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(AIID))
-                return false;
-            return Equals((AIID)obj);
+            return obj is AIID && this == (AIID)obj;
         }
 
         /// <summary>

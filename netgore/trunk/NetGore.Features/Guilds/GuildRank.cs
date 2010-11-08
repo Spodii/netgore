@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace NetGore.Features.Guilds
 {
     /// <summary>
     /// Represents the rank a <see cref="IGuildMember"/> is in a guild.
     /// </summary>
-    public struct GuildRank
+    public struct GuildRank : IEquatable<GuildRank>
     {
         readonly byte _value;
 
@@ -27,7 +28,7 @@ namespace NetGore.Features.Guilds
         /// </returns>
         public override bool Equals(object obj)
         {
-            return _value.Equals(obj);
+            return obj is GuildRank && this == (GuildRank)obj;
         }
 
         /// <summary>

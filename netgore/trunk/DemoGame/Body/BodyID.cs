@@ -63,11 +63,7 @@ namespace DemoGame
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(BodyID))
-                return false;
-            return Equals((BodyID)obj);
+            return obj is BodyID && this == (BodyID)obj;
         }
 
         /// <summary>

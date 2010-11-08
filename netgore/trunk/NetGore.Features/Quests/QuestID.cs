@@ -62,11 +62,7 @@ namespace NetGore.Features.Quests
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(QuestID))
-                return false;
-            return Equals((QuestID)obj);
+            return obj is QuestID && this == (QuestID)obj;
         }
 
         /// <summary>

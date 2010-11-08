@@ -73,11 +73,7 @@ namespace NetGore
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(GrhIndex))
-                return false;
-            return Equals((GrhIndex)obj);
+            return obj is GrhIndex && this == (GrhIndex)obj;
         }
 
         /// <summary>

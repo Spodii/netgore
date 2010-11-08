@@ -62,11 +62,7 @@ namespace NetGore.Audio
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(MusicID))
-                return false;
-            return Equals((MusicID)obj);
+            return obj is MusicID && this == (MusicID)obj;
         }
 
         /// <summary>

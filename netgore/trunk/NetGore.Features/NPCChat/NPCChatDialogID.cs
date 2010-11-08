@@ -57,11 +57,7 @@ namespace NetGore.Features.NPCChat
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(NPCChatDialogID))
-                return false;
-            return Equals((NPCChatDialogID)obj);
+            return obj is NPCChatDialogID && this == (NPCChatDialogID)obj;
         }
 
         /// <summary>
