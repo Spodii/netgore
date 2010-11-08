@@ -26,6 +26,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="UnsupportedGrhDataTypeException"/> class.
+        /// </summary>
+        public UnsupportedGrhDataTypeException()
+        { }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GrhDataException"/> class.
         /// </summary>
         /// <param name="rawMessage">The raw message.</param>
