@@ -785,25 +785,25 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Reads the SoundID from an IDataReader.
+        /// Reads the SoundID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the SoundID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the SoundID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The SoundID read from the IDataReader.</returns>
-        public static SoundID GetSoundID(this IDataReader dataReader, int i)
+        /// <returns>The SoundID read from the <see cref="IDataRecord"/>.</returns>
+        public static SoundID GetSoundID(this IDataRecord r, int i)
         {
-            return SoundID.Read(dataReader, i);
+            return SoundID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the SoundID from an IDataReader.
+        /// Reads the SoundID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the SoundID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the SoundID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The SoundID read from the IDataReader.</returns>
-        public static SoundID GetSoundID(this IDataReader dataReader, string name)
+        /// <returns>The SoundID read from the <see cref="IDataRecord"/>.</returns>
+        public static SoundID GetSoundID(this IDataRecord r, string name)
         {
-            return SoundID.Read(dataReader, name);
+            return SoundID.Read(r, name);
         }
 
         /// <summary>

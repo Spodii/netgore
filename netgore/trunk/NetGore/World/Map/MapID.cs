@@ -785,25 +785,25 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Reads the MapID from an IDataReader.
+        /// Reads the MapID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the MapID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The MapID read from the IDataReader.</returns>
-        public static MapID GetMapID(this IDataReader dataReader, int i)
+        /// <returns>The MapID read from the <see cref="IDataRecord"/>.</returns>
+        public static MapID GetMapID(this IDataRecord r, int i)
         {
-            return MapID.Read(dataReader, i);
+            return MapID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the MapID from an IDataReader.
+        /// Reads the MapID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the MapID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The MapID read from the IDataReader.</returns>
-        public static MapID GetMapID(this IDataReader dataReader, string name)
+        /// <returns>The MapID read from the <see cref="IDataRecord"/>.</returns>
+        public static MapID GetMapID(this IDataRecord r, string name)
         {
-            return MapID.Read(dataReader, name);
+            return MapID.Read(r, name);
         }
 
         /// <summary>
