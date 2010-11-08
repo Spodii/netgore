@@ -268,7 +268,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="dataReader">IDataReader to load the field names and values from.</param>
         /// <returns>List of Dictionaries with a key of the field's name and value of the field's value.</returns>
-        public static List<Dictionary<string, object>> DataToDictionary(IDataReader dataReader)
+        public static ICollection<Dictionary<string, object>> DataToDictionary(IDataReader dataReader)
         {
             // Get the name for each ordinal
             var ordinalToName = new string[dataReader.FieldCount];
