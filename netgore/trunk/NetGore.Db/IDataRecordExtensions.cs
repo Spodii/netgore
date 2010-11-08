@@ -495,7 +495,7 @@ namespace NetGore.Db
         /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
         /// <returns>The nullable UInt64 of the specified field.</returns>
-        public static ulong? GetNullableUInt64(this IDataReader r, string name)
+        public static ulong? GetNullableUInt64(this IDataRecord r, string name)
         {
             var i = r.GetOrdinal(name);
             return r.GetNullableUInt64(i);
