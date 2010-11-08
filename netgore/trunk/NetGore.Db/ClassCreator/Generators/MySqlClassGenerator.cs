@@ -154,8 +154,7 @@ namespace NetGore.Db.ClassCreator
                 if (type == null)
                 {
                     const string errmsg = "Failed to get the type for column `{0}` on table `{1}`.";
-                    throw new InvalidOperationException(string.Format(errmsg, column.Name,
-                                                      table));
+                    throw new InvalidOperationException(string.Format(errmsg, column.Name, table));
                 }
 
                 column.Type = type;

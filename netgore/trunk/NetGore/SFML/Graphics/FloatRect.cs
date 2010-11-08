@@ -153,7 +153,7 @@ namespace SFML.Graphics
         {
             unchecked
             {
-                int result = Left.GetHashCode();
+                var result = Left.GetHashCode();
                 result = (result * 397) ^ Top.GetHashCode();
                 result = (result * 397) ^ Width.GetHashCode();
                 result = (result * 397) ^ Height.GetHashCode();

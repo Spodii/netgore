@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-
 [assembly: CLSCompliant(false)]
 
 // General Information about an assembly is controlled through the following 

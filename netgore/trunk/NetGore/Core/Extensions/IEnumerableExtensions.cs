@@ -59,7 +59,7 @@ namespace NetGore
             if (comparer == null)
                 throw new ArgumentNullException("comparer");
 
-            HashSet<T> hs = new HashSet<T>();
+            var hs = new HashSet<T>();
 
             foreach (var s in source)
             {

@@ -60,7 +60,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = Advance;
+                    var result = Advance;
                     result = (result * 397) ^ Rectangle.GetHashCode();
                     result = (result * 397) ^ TexCoords.GetHashCode();
                     return result;

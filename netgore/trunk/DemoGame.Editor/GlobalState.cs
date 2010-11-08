@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
@@ -184,7 +185,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Describes the current state related to editing the maps.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class MapState
         {
             readonly Grh _grhToPlace = new Grh();

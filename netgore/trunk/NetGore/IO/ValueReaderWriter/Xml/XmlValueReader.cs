@@ -228,8 +228,7 @@ namespace NetGore.IO
                         else
                         {
                             const string errmsg = "Was expecting end of element `{0}`, but found `{1}`.";
-                            throw new ArgumentException(string.Format(errmsg, rootNodeName,
-                                                              reader.Name));
+                            throw new ArgumentException(string.Format(errmsg, rootNodeName, reader.Name));
                         }
                 }
             }

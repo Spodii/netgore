@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -18,7 +19,8 @@ namespace NetGore
         /// </summary>
         /// <param name="settings">The <see cref="SettingsBase"/>.</param>
         /// <param name="propertyName">The name of the property to check for.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "dummy"), Conditional("DEBUG")]
+        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "dummy")]
+        [Conditional("DEBUG")]
         public static void AssertPropertyExists(this SettingsBase settings, string propertyName)
         {
             try

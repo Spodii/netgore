@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore.Graphics;
@@ -171,7 +172,7 @@ namespace DemoGame.Client
 
         #endregion
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class EquippedItemPB : PictureBox, IDragDropProvider
         {
             static readonly TooltipHandler _tooltipHandler = TooltipCallback;

@@ -1,4 +1,6 @@
-﻿namespace NetGore.Features.Guilds
+﻿using System.Linq;
+
+namespace NetGore.Features.Guilds
 {
     /// <summary>
     /// Delegate for handling events from the <see cref="UserGuildInformation"/>.

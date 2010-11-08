@@ -94,7 +94,9 @@ namespace SFML
             /// </returns>
             public bool Equals(ContextSettings other)
             {
-                return other.DepthBits == DepthBits && other.StencilBits == StencilBits && other.AntialiasingLevel == AntialiasingLevel && other.MajorVersion == MajorVersion && other.MinorVersion == MinorVersion;
+                return other.DepthBits == DepthBits && other.StencilBits == StencilBits &&
+                       other.AntialiasingLevel == AntialiasingLevel && other.MajorVersion == MajorVersion &&
+                       other.MinorVersion == MinorVersion;
             }
 
             /// <summary>
@@ -119,7 +121,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = DepthBits.GetHashCode();
+                    var result = DepthBits.GetHashCode();
                     result = (result * 397) ^ StencilBits.GetHashCode();
                     result = (result * 397) ^ AntialiasingLevel.GetHashCode();
                     result = (result * 397) ^ MajorVersion.GetHashCode();

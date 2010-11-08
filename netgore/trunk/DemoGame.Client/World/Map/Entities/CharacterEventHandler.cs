@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Client
+﻿using System.Linq;
+
+namespace DemoGame.Client
 {
     /// <summary>
     /// Delegate for handling events from the <see cref="Character"/>.

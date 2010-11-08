@@ -19,7 +19,7 @@ namespace NetGore
         /// stat value.</param>
         /// <returns>The modified stat value.</returns>
         public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType,
-                                    params IModStatContainer<TStatType>[] modders) 
+                                               params IModStatContainer<TStatType>[] modders)
             where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             int value = baseStats[statType];
@@ -44,7 +44,9 @@ namespace NetGore
         /// <param name="modder1">The first <see cref="IModStatContainer{TStatType}"/>s to use for calculating
         /// the modified stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType, IModStatContainer<TStatType> modder1)  where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType,
+                                               IModStatContainer<TStatType> modder1)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             int value = baseStats[statType];
 
@@ -64,8 +66,9 @@ namespace NetGore
         /// <param name="modder2">The second <see cref="IModStatContainer{TStatType}"/>s to use for calculating
         /// the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType, IModStatContainer<TStatType> modder1,
-                                    IModStatContainer<TStatType> modder2) where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType,
+                                               IModStatContainer<TStatType> modder1, IModStatContainer<TStatType> modder2)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             int value = baseStats[statType];
 
@@ -88,8 +91,10 @@ namespace NetGore
         /// <param name="modder3">The third <see cref="IModStatContainer{TStatType}"/>s to use for calculating
         /// the modified stat value.</param>
         /// <returns>The modified stat value.</returns>
-        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType, IModStatContainer<TStatType> modder1,
-                                    IModStatContainer<TStatType> modder2, IModStatContainer<TStatType> modder3) where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType,
+                                               IModStatContainer<TStatType> modder1, IModStatContainer<TStatType> modder2,
+                                               IModStatContainer<TStatType> modder3)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             int value = baseStats[statType];
 
@@ -115,9 +120,10 @@ namespace NetGore
         /// <param name="modder4">The fourth <see cref="IModStatContainer{TStatType}"/>s to use for calculating
         /// the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType, IModStatContainer<TStatType> modder1,
-                                    IModStatContainer<TStatType> modder2, IModStatContainer<TStatType> modder3,
-                                    IModStatContainer<TStatType> modder4) where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static int Calculate<TStatType>(IStatCollection<TStatType> baseStats, TStatType statType,
+                                               IModStatContainer<TStatType> modder1, IModStatContainer<TStatType> modder2,
+                                               IModStatContainer<TStatType> modder3, IModStatContainer<TStatType> modder4)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             int value = baseStats[statType];
 

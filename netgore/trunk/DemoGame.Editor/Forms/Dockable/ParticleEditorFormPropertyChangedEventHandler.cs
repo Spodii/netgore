@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Editor
+﻿using System.Linq;
+
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Delegate for handling events for properties changing on the <see cref="ParticleEditorForm"/>.

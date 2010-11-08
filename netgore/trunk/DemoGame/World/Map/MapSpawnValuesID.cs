@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore;
 using NetGore.IO;
@@ -81,7 +82,7 @@ namespace DemoGame
         /// Gets the raw internal value of this MapSpawnValuesID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public int GetRawValue()
         {
             return _value;

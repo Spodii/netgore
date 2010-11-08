@@ -8,4 +8,9 @@
 // "In Project Suppression File".
 // You do not need to add suppressions to this file manually.
 
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "NetGore.Features.PeerTrading.PeerTradeFormBase`3+PeerTradeSidePanel.#_cashLabel")]
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member",
+        Target = "NetGore.Features.PeerTrading.PeerTradeFormBase`3+PeerTradeSidePanel.#_cashLabel")]

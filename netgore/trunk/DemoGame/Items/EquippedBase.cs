@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -45,7 +46,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="slot">Slot to get the item of.</param>
         /// <returns>Item at the specified <paramref name="slot"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers")]
+        [SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers")]
         public T this[EquipmentSlot slot]
         {
             get { return this[slot.GetValue()]; }

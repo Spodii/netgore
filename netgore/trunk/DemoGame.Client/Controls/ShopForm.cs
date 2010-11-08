@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
@@ -199,7 +200,7 @@ namespace DemoGame.Client
         /// <summary>
         /// A <see cref="PictureBox"/> that contains an item in a <see cref="ShopForm"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class ShopItemPB : PictureBox, IDragDropProvider
         {
             static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -18,7 +19,7 @@ namespace NetGore
         /// <param name="types">The class <see cref="Type"/>s to check the methods of.</param>
         /// <returns>The <see cref="MethodInfo"/>s of the instance methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static IEnumerable<MethodInfo> FindInstanceMethodsWithAttribute<T>(IEnumerable<Type> types) where T : Attribute
         {
             return FindInstanceMethodsWithAttribute<T>(types, x => true);
@@ -34,7 +35,7 @@ namespace NetGore
         /// in the returned values.</param>
         /// <returns>The <see cref="MethodInfo"/>s of the instance methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static IEnumerable<MethodInfo> FindInstanceMethodsWithAttribute<T>(IEnumerable<Type> types,
                                                                                   Func<MethodInfo, bool> conditions)
             where T : Attribute
@@ -51,7 +52,7 @@ namespace NetGore
         /// <param name="types">The class <see cref="Type"/>s to check the methods of.</param>
         /// <returns>The <see cref="MethodInfo"/>s of the methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static IEnumerable<MethodInfo> FindMethodsWithAttribute<T>(IEnumerable<Type> types) where T : Attribute
         {
             return FindMethodsWithAttribute<T>(types, x => true);
@@ -67,7 +68,7 @@ namespace NetGore
         /// in the returned values.</param>
         /// <returns>The <see cref="MethodInfo"/>s of the methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static IEnumerable<MethodInfo> FindMethodsWithAttribute<T>(IEnumerable<Type> types,
                                                                           Func<MethodInfo, bool> conditions) where T : Attribute
         {
@@ -83,7 +84,7 @@ namespace NetGore
         /// <param name="types">The class <see cref="Type"/>s to check the methods of.</param>
         /// <returns>The <see cref="MethodInfo"/>s of the static methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static IEnumerable<MethodInfo> FindStaticMethodsWithAttribute<T>(IEnumerable<Type> types) where T : Attribute
         {
             return FindStaticMethodsWithAttribute<T>(types, x => true);
@@ -99,7 +100,7 @@ namespace NetGore
         /// in the returned values.</param>
         /// <returns>The <see cref="MethodInfo"/>s of the static methods from the given <paramref name="types"/>
         /// that contain the <see cref="Attribute"/> defined by <typeparamref name="T"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static IEnumerable<MethodInfo> FindStaticMethodsWithAttribute<T>(IEnumerable<Type> types,
                                                                                 Func<MethodInfo, bool> conditions)
             where T : Attribute

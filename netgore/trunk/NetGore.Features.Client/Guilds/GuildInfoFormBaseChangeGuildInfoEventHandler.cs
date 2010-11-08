@@ -1,4 +1,6 @@
-﻿namespace NetGore.Features.Guilds
+﻿using System.Linq;
+
+namespace NetGore.Features.Guilds
 {
     /// <summary>
     /// Delegate for handling when the <see cref="UserGuildInformation"/> changes.

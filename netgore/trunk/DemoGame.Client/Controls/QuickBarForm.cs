@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore;
 using NetGore.Features.Skills;
@@ -163,7 +164,7 @@ namespace DemoGame.Client
         /// <summary>
         /// A <see cref="PictureBox"/> for a quick bar slot on a <see cref="QuickBarForm"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class QuickBarItemPB : PictureBox, IDragDropProvider, IQuickBarItemProvider
         {
             readonly Grh _grh = new Grh();

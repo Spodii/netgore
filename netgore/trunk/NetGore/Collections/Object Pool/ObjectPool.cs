@@ -22,8 +22,7 @@ namespace NetGore.Collections
         /// <param name="creator">The delegate used to create new object instances.</param>
         /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
         /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
-        public ObjectPool(ObjectPoolObjectCreator<T> creator, bool threadSafe)
-            : this(creator, null, null, threadSafe)
+        public ObjectPool(ObjectPoolObjectCreator<T> creator, bool threadSafe) : this(creator, null, null, threadSafe)
         {
         }
 

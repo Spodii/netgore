@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -14,7 +15,7 @@ namespace NetGore.Features.Skills
     /// <typeparam name="TSkillType">The type of skill type enum.</typeparam>
     /// <typeparam name="TStatType">The type of stat type enum.</typeparam>
     /// <typeparam name="TCharacter">The type of character.</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public class SkillManager<TSkillType, TStatType, TCharacter>
         where TSkillType : struct, IComparable, IConvertible, IFormattable
         where TStatType : struct, IComparable, IConvertible, IFormattable where TCharacter : class

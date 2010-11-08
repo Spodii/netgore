@@ -103,7 +103,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the items required to finish the quest.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The items required to finish the quest.")]
         [Category(_categoryQuestFinishReqs)]
@@ -124,7 +125,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the quests required to be completed to be able to finish the quest.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The quests required to be completed to be able to finish the quest.")]
         [Category(_categoryQuestFinishReqs)]
@@ -145,7 +147,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the characters required to kill, and the amount to kill, to finish the quest.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The characters required to kill, and the amount to kill, to finish the quest.")]
         [Category(_categoryQuestFinishReqs)]
@@ -174,7 +177,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the item templates and amounts given as a reward for finishing this quest.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The item templates and amounts given as a reward for finishing this quest.")]
         [Category(_categoryQuestRewards)]
@@ -195,7 +199,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the item templates and amounts required to start this quest.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The item templates and amounts required to start this quest.")]
         [Category(_categoryQuestStartReqs)]
@@ -216,7 +221,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the quests that must be finished before starting this quest.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The quests that must be finished before starting this quest.")]
         [Category(_categoryQuestStartReqs)]

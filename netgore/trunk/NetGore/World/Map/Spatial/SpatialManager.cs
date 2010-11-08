@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SFML.Graphics;
 
@@ -119,7 +120,7 @@ namespace NetGore.World
         /// <returns>
         /// True if the specified area or location contains any spatials; otherwise false.
         /// </returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool Contains<T>(Vector2 point)
         {
             return GetSpatialCollection(typeof(T)).Contains<T>(point);
@@ -211,7 +212,7 @@ namespace NetGore.World
         /// <returns>
         /// True if the specified area or location contains any spatials; otherwise false.
         /// </returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool Contains<T>(Rectangle rect)
         {
             return GetSpatialCollection(typeof(T)).Contains(rect);

@@ -12,20 +12,17 @@ namespace NetGore.Features.NPCChat
     /// </summary>
     public class ServerNPCChatResponse : NPCChatResponseBase
     {
+        NPCChatResponseActionBase[] _actions;
         NPCChatConditionalCollectionBase _conditionals;
         NPCChatDialogItemID _page;
         byte _value;
-        NPCChatResponseActionBase[] _actions;
 
         /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
-        /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
-        /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
-        /// the same way as if the conditionals evaluated to true.
+        /// NPCChatResponse constructor.
         /// </summary>
-        public override NPCChatConditionalCollectionBase Conditionals
+        /// <param name="r">IValueReader to read the values from.</param>
+        internal ServerNPCChatResponse(IValueReader r) : base(r)
         {
-            get { return _conditionals; }
         }
 
         /// <summary>
@@ -40,6 +37,28 @@ namespace NetGore.Features.NPCChat
                 Debug.Assert(_actions != null);
                 return _actions;
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public override NPCChatConditionalCollectionBase Conditionals
+        {
+            get { return _conditionals; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
+        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
+        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
+        /// actions.
+        /// </summary>
+        protected override bool LoadActions
+        {
+            get { return true; }
         }
 
         /// <summary>
@@ -73,14 +92,6 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// NPCChatResponse constructor.
-        /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
-        internal ServerNPCChatResponse(IValueReader r) : base(r)
-        {
-        }
-
-        /// <summary>
         /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
         /// </summary>
         /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
@@ -88,17 +99,6 @@ namespace NetGore.Features.NPCChat
         protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
         {
             return new ServerNPCChatConditionalCollection();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
-        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
-        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
-        /// actions.
-        /// </summary>
-        protected override bool LoadActions
-        {
-            get { return true; }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.Collections;
 
@@ -226,7 +227,7 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// A struct that contains the values required to create an <see cref="IGuildMember"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct TemporaryGuildMemberPoolValues : IEquatable<TemporaryGuildMemberPoolValues>
         {
             readonly IGuild _guild;
@@ -319,7 +320,7 @@ namespace NetGore.Features.Guilds
             {
                 unchecked
                 {
-                    int result = (_guild != null ? _guild.GetHashCode() : 0);
+                    var result = (_guild != null ? _guild.GetHashCode() : 0);
                     result = (result * 397) ^ _id;
                     result = (result * 397) ^ (_name != null ? _name.GetHashCode() : 0);
                     result = (result * 397) ^ _rank.GetHashCode();

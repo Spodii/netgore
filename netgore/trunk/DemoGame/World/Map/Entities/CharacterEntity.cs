@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore;
 using NetGore.World;
@@ -172,7 +173,7 @@ namespace DemoGame
         /// no map-based collision detection and updating can be used.
         /// </summary>
         /// <returns>Map interface for the CharacterEntity.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         protected abstract IMap GetIMap();
 
         /// <summary>

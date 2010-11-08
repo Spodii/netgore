@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
@@ -19,7 +20,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// The translation <see cref="Matrix"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public Matrix TranslationMatrix = Matrix.Identity;
 

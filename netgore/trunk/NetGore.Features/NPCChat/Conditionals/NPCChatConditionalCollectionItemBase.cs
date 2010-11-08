@@ -59,7 +59,7 @@ namespace NetGore.Features.NPCChat.Conditionals
             if (conditional == null)
             {
                 const string errmsg = "Failed to get conditional `{0}`.";
-                throw new ArgumentException(string.Format(errmsg, conditionalName),"reader");
+                throw new ArgumentException(string.Format(errmsg, conditionalName), "reader");
             }
 
             SetReadValues(conditional, not, parameters);

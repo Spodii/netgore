@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
@@ -27,7 +28,7 @@ namespace DemoGame.Server
         /// Delegate for handling <see cref="ItemEntity"/> events.
         /// </summary>
         /// <param name="itemEntity"><see cref="ItemEntity"/> this event came from.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

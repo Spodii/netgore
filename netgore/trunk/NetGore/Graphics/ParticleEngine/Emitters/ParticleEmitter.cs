@@ -65,14 +65,6 @@ namespace NetGore.Graphics.ParticleEngine
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), new Type[] { typeof(IParticleEffect) }).OrderBy(x => x.Name).
                 ToCompact();
 
-        Particle[] _particles;
-
-        /// <summary>
-        /// Gets the array of <see cref="Particle"/>s in this <see cref="ParticleEmitter"/>.
-        /// </summary>
-        /// <returns>The array of <see cref="Particle"/>s in this <see cref="ParticleEmitter"/>.</returns>
-        protected Particle[] GetParticles() { return _particles; }
-
         readonly EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
         readonly IParticleEffect _owner;
         readonly ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
@@ -91,6 +83,7 @@ namespace NetGore.Graphics.ParticleEngine
         string _name;
         TickCount _nextReleaseTime = TickCount.MinValue;
         Vector2 _origin;
+        Particle[] _particles;
         TickCount _timeCreated = TickCount.Now;
         bool _wasKilled;
 
@@ -284,6 +277,15 @@ namespace NetGore.Graphics.ParticleEngine
         protected static void GetForce(float direction, out Vector2 force)
         {
             force = new Vector2((float)Math.Sin(direction), (float)Math.Cos(direction));
+        }
+
+        /// <summary>
+        /// Gets the array of <see cref="Particle"/>s in this <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <returns>The array of <see cref="Particle"/>s in this <see cref="ParticleEmitter"/>.</returns>
+        protected Particle[] GetParticles()
+        {
+            return _particles;
         }
 
         /// <summary>

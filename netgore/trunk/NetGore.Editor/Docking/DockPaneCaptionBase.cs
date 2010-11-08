@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Linq;
-using System.Security.Permissions;
 using System.Windows.Forms;
 using NetGore.Editor.Docking.Win32;
 

@@ -28,7 +28,7 @@ namespace NetGore.Audio
         AudioManager(IContentManager contentManager)
         {
             // Create the music and sound managers
-            
+
             _soundManager = CreateSoundManager(contentManager);
             if (_soundManager == null)
                 throw new AudioException("SoundManager is somehow null.");

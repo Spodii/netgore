@@ -158,7 +158,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = Width.GetHashCode();
+                    var result = Width.GetHashCode();
                     result = (result * 397) ^ Height.GetHashCode();
                     result = (result * 397) ^ BitsPerPixel.GetHashCode();
                     return result;

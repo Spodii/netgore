@@ -14,24 +14,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterLoadEmitterException"/> class.
         /// </summary>
-        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds
-        /// the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that
-        /// contains contextual information about the source or destination.</param>
-        /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null.</exception>
-        /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null
-        /// or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        ParticleEmitterLoadEmitterException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleEmitterLoadEmitterException"/> class.
-        /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        public ParticleEmitterLoadEmitterException(string message)
-            : base(message)
+        public ParticleEmitterLoadEmitterException(string message) : base(message)
         {
         }
 
@@ -39,7 +23,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// Initializes a new instance of the <see cref="ParticleEmitterLoadEmitterException"/> class.
         /// </summary>
         public ParticleEmitterLoadEmitterException()
-        { }
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterLoadEmitterException"/> class.
@@ -48,6 +33,20 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="innerException">The inner exception.</param>
         public ParticleEmitterLoadEmitterException(string emitterType, Exception innerException)
             : base(GetErrorMessage(emitterType), innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleEmitterLoadEmitterException"/> class.
+        /// </summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds
+        /// the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that
+        /// contains contextual information about the source or destination.</param>
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null.</exception>
+        /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null
+        /// or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        ParticleEmitterLoadEmitterException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 

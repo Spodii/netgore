@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace NetGore.Collections
@@ -17,7 +18,7 @@ namespace NetGore.Collections
         /// <summary>
         /// Gets the underlying List.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         protected List<T> GetUnderlyingList
         {
             get { return _list; }
@@ -399,7 +400,7 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="l">The list.</param>
         /// <returns>The result of the conversion.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static explicit operator List<T>(VirtualList<T> l)
         {
             return l._list;

@@ -26,9 +26,24 @@ using System.Linq;
 [assembly:
     SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity", Scope = "member",
         Target = "NetGore.Editor.Docking.DockPanel+DragHandlerBase.#BeginDrag()")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "pane", Scope = "member", Target = "NetGore.Editor.Docking.DockContentHandler.#DockTo(NetGore.Editor.Docking.DockPanel,System.Windows.Forms.DockStyle)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "pane", Scope = "member", Target = "NetGore.Editor.Docking.DockContentHandler.#FloatAt(System.Drawing.Rectangle)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "activeContent", Scope = "member", Target = "NetGore.Editor.Docking.DockPane.#RestoreToPanel()")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "content", Scope = "member", Target = "NetGore.Editor.Docking.DockPanel.#DocumentsCount")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "lastDocument", Scope = "member", Target = "NetGore.Editor.Docking.DockPanel+Persistor.#LoadFromXml(NetGore.Editor.Docking.DockPanel,System.IO.Stream,NetGore.Editor.Docking.DeserializeDockContent,System.Boolean)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Scope = "type", Target = "NetGore.Editor.Docking.DockPane+AppearanceStyle")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "pane", Scope = "member",
+        Target =
+            "NetGore.Editor.Docking.DockContentHandler.#DockTo(NetGore.Editor.Docking.DockPanel,System.Windows.Forms.DockStyle)")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "pane", Scope = "member",
+        Target = "NetGore.Editor.Docking.DockContentHandler.#FloatAt(System.Drawing.Rectangle)")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "activeContent", Scope = "member",
+        Target = "NetGore.Editor.Docking.DockPane.#RestoreToPanel()")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "content", Scope = "member",
+        Target = "NetGore.Editor.Docking.DockPanel.#DocumentsCount")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "lastDocument", Scope = "member",
+        Target =
+            "NetGore.Editor.Docking.DockPanel+Persistor.#LoadFromXml(NetGore.Editor.Docking.DockPanel,System.IO.Stream,NetGore.Editor.Docking.DeserializeDockContent,System.Boolean)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Scope = "type",
+        Target = "NetGore.Editor.Docking.DockPane+AppearanceStyle")]

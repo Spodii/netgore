@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Linq;
 using System.Reflection;
-using System.Security;
-using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using log4net;
