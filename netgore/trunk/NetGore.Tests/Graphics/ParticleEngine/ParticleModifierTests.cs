@@ -14,16 +14,6 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         #region Unit tests
 
         [Test]
-        public void DeepCopyTest()
-        {
-            var a = new TestModifier { SerializedValue = 10, NonSerializedValue = 20 };
-            var b = (TestModifier)a.DeepCopy();
-
-            Assert.AreEqual(a.SerializedValue, b.SerializedValue);
-            Assert.AreNotEqual(a.NonSerializedValue, b.NonSerializedValue);
-        }
-
-        [Test]
         public void ConstructorTest()
         {
             new TestModifier(true, true);
@@ -31,6 +21,16 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             new TestModifier(false, true);
 
             Assert.Throws<ArgumentException>(() => new TestModifier(false, false));
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            var a = new TestModifier { SerializedValue = 10, NonSerializedValue = 20 };
+            var b = (TestModifier)a.DeepCopy();
+
+            Assert.AreEqual(a.SerializedValue, b.SerializedValue);
+            Assert.AreNotEqual(a.NonSerializedValue, b.NonSerializedValue);
         }
 
         #endregion
@@ -44,9 +44,6 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             {
             }
 
-            public int SerializedValue { get; set; }
-            public int NonSerializedValue { get; set; }
-
             /// <summary>
             /// Initializes a new instance of the <see cref="TestModifier"/> class.
             /// </summary>
@@ -56,6 +53,9 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             public TestModifier(bool processOnRelease, bool processOnUpdate) : base(processOnRelease, processOnUpdate)
             {
             }
+
+            public int NonSerializedValue { get; set; }
+            public int SerializedValue { get; set; }
 
             /// <summary>
             /// When overridden in the derived class, handles processing the <paramref name="particle"/> when

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -39,7 +40,7 @@ namespace NetGore.Editor.EditorTool
         /// Gets or sets the custom string collection to use when the <see cref="System.Windows.Forms.ToolStripComboBox.AutoCompleteSource"/>
         /// property is set to <see cref="System.Windows.Forms.AutoCompleteSource.CustomSource"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         AutoCompleteStringCollection AutoCompleteCustomSource { set; get; }
 
         /// <summary>

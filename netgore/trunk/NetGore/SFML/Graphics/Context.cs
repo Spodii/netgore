@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
@@ -13,7 +14,7 @@ namespace SFML
         /// This class defines
         /// </summary>
         ////////////////////////////////////////////////////////////
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+        [SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
         class Context : CriticalFinalizerObject
         {
             ////////////////////////////////////////////////////////////

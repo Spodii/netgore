@@ -4,6 +4,7 @@
     <Name Resource="BasicCorrectnessRules_Name" />
     <Description Resource="BasicCorrectnessRules_Description" />
   </Localization>
+  <Include Path="basiccorrectnessrules.ruleset" Action="Default" />
   <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="None" />
@@ -15,7 +16,10 @@
     <Rule Id="CA1063" Action="None" />
     <Rule Id="CA1065" Action="None" />
     <Rule Id="CA1301" Action="None" />
+    <Rule Id="CA1303" Action="None" />
     <Rule Id="CA1404" Action="None" />
+    <Rule Id="CA1806" Action="None" />
+    <Rule Id="CA1816" Action="None" />
     <Rule Id="CA1819" Action="Warning" />
     <Rule Id="CA1820" Action="Warning" />
     <Rule Id="CA1900" Action="None" />

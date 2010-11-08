@@ -1,4 +1,5 @@
-﻿using NetGore.Graphics.ParticleEngine;
+﻿using System.Linq;
+using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -7,6 +8,8 @@ namespace NetGore.Tests.Graphics.ParticleEngine
     [TestFixture]
     public class EmitterModifierTests
     {
+        #region Unit tests
+
         [Test]
         public void DeepCopyTest()
         {
@@ -17,10 +20,12 @@ namespace NetGore.Tests.Graphics.ParticleEngine
             Assert.AreNotEqual(a.NonSerializedValue, b.NonSerializedValue);
         }
 
+        #endregion
+
         class TestModifier : EmitterModifier
         {
-            public int SerializedValue { get; set; }
             public int NonSerializedValue { get; set; }
+            public int SerializedValue { get; set; }
 
             /// <summary>
             /// When overridden in the derived class, handles reverting changes made to the <see cref="ParticleEmitter"/>

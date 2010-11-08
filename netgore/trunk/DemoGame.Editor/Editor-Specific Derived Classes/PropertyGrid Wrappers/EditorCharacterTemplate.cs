@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
@@ -62,7 +63,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the equipped items that a character can spawn with.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Browsable(true)]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Browsable(true)]
         [Description("The equipped items that a character can spawn with.")]
         [Category(_category)]
         public List<CharacterTemplateEquippedItem> Equipped
@@ -82,7 +84,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the quests that the character may give.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Browsable(true)]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Browsable(true)]
         [Description("The quests that the character may give.")]
         [Category(_category)]
         public List<QuestID> GiveQuests
@@ -102,7 +105,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the inventory items that a character can spawn with.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Browsable(true)]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Browsable(true)]
         [Description("The inventory items that a character can spawn with.")]
         [Category(_category)]
         public List<CharacterTemplateInventoryItem> Inventory

@@ -39,11 +39,11 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the tables to use this mapping on.
+        /// Gets the columns to use this mapping on.
         /// </summary>
-        public IEnumerable<string> Tables
+        public IEnumerable<string> Columns
         {
-            get { return _tables; }
+            get { return _columns; }
         }
 
         /// <summary>
@@ -55,11 +55,11 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the columns to use this mapping on.
+        /// Gets the tables to use this mapping on.
         /// </summary>
-        public IEnumerable<string> Columns
+        public IEnumerable<string> Tables
         {
-            get { return _columns; }
+            get { return _tables; }
         }
     }
 }

@@ -22,8 +22,8 @@ namespace NetGore.Graphics.ParticleEngine
         const string _rotationKeyName = "Rotation";
         const string _scaleKeyName = "Scale";
 
+        readonly PolygonPointCollection _points = new PolygonPointCollection();
         bool _closed = _defaultClosed;
-        PolygonPointCollection _points = new PolygonPointCollection();
         Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultRotation);
         Matrix _scaleMatrix = Matrix.CreateScale(_defaultScale);
 

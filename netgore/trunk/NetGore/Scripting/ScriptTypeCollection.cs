@@ -17,6 +17,7 @@ namespace NetGore.Scripting
     /// </summary>
     public class ScriptTypeCollection : IEnumerable<Type>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
         readonly List<CompilerError> _compilerErrors = new List<CompilerError>();
         readonly string _name;
@@ -181,7 +182,8 @@ namespace NetGore.Scripting
                 CompilerResults result;
                 using (codeDomProvider)
                 {
-                    var options = new CompilerParameters { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = outputFilePath };
+                    var options = new CompilerParameters
+                    { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = outputFilePath };
 
                     var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                     options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());
@@ -206,8 +208,6 @@ namespace NetGore.Scripting
                 return null;
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static IEnumerable<string> SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
         {

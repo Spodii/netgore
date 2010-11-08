@@ -795,7 +795,7 @@ namespace NetGore.Editor.Docking
                 PerformLayout();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity")]
+        [SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity")]
         void RefreshStateChange(INestedPanesContainer oldContainer, DockState oldDockState)
         {
             lock (this)

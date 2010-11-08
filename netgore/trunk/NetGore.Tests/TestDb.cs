@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using NetGore.Db.ClassCreator;
@@ -53,9 +54,9 @@ namespace NetGore.Tests
         /// Closes a connection to the test database.
         /// </summary>
         /// <param name="conn">The connection to close.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static void Close(DbConnection conn)
-        { 
+        {
             conn.Close();
             conn.Dispose();
         }
