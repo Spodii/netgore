@@ -19,6 +19,7 @@ namespace NetGore.Tests.Db.ClassCreator
     [TestFixture]
     public class AliasingTests
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public enum TestCollNestedEnum : byte
         {
             A,

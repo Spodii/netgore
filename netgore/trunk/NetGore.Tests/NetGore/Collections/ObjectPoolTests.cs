@@ -141,6 +141,7 @@ namespace NetGore.Tests.Collections
 
         #endregion
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class MyTestObj : IPoolable
         {
             #region IPoolable Members
