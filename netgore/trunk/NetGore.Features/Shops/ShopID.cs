@@ -787,25 +787,25 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Reads the ShopID from an IDataReader.
+        /// Reads the ShopID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ShopID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the ShopID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The ShopID read from the IDataReader.</returns>
-        public static ShopID GetShopID(this IDataReader dataReader, int i)
+        /// <returns>The ShopID read from the <see cref="IDataRecord"/>.</returns>
+        public static ShopID GetShopID(this IDataRecord r, int i)
         {
-            return ShopID.Read(dataReader, i);
+            return ShopID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the ShopID from an IDataReader.
+        /// Reads the ShopID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ShopID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the ShopID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The ShopID read from the IDataReader.</returns>
-        public static ShopID GetShopID(this IDataReader dataReader, string name)
+        /// <returns>The ShopID read from the <see cref="IDataRecord"/>.</returns>
+        public static ShopID GetShopID(this IDataRecord r, string name)
         {
-            return ShopID.Read(dataReader, name);
+            return ShopID.Read(r, name);
         }
 
         /// <summary>

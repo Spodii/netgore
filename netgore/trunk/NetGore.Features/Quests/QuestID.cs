@@ -810,25 +810,25 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Reads the <see cref="QuestID"/> from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="QuestID"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="QuestID"/> from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the <see cref="QuestID"/> from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataReader"/>.</returns>
-        public static QuestID GetQuestID(this IDataReader dataReader, int i)
+        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static QuestID GetQuestID(this IDataRecord r, int i)
         {
-            return QuestID.Read(dataReader, i);
+            return QuestID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the <see cref="QuestID"/> from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="QuestID"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="QuestID"/> from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the <see cref="QuestID"/> from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataReader"/>.</returns>
-        public static QuestID GetQuestID(this IDataReader dataReader, string name)
+        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static QuestID GetQuestID(this IDataRecord r, string name)
         {
-            return QuestID.Read(dataReader, name);
+            return QuestID.Read(r, name);
         }
 
         /// <summary>

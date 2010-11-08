@@ -799,14 +799,14 @@ namespace NetGore.Features.ActionDisplays
         }
 
         /// <summary>
-        /// Reads the <see cref="ActionDisplayID"/> from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="ActionDisplayID"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="ActionDisplayID"/> from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the <see cref="ActionDisplayID"/> from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The <see cref="ActionDisplayID"/> read from the <see cref="IDataReader"/>.</returns>
-        public static ActionDisplayID GetActionDisplayID(this IDataReader dataReader, string name)
+        /// <returns>The <see cref="ActionDisplayID"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static ActionDisplayID GetActionDisplayID(this IDataRecord r, string name)
         {
-            return ActionDisplayID.Read(dataReader, name);
+            return ActionDisplayID.Read(r, name);
         }
 
         /// <summary>
