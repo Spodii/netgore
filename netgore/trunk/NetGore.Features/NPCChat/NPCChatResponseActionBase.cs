@@ -16,10 +16,7 @@ namespace NetGore.Features.NPCChat
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// An empty array of <see cref="NPCChatResponseActionBase"/>s.
-        /// </summary>
-        public static readonly NPCChatResponseActionBase[] EmptyActions;
+        static readonly NPCChatResponseActionBase[] _emptyActions;
 
         /// <summary>
         /// Dictionary that contains the <see cref="NPCChatResponseActionBase"/> instance
@@ -35,7 +32,7 @@ namespace NetGore.Features.NPCChat
         /// </summary>
         static NPCChatResponseActionBase()
         {
-            EmptyActions = new NPCChatResponseActionBase[0];
+            _emptyActions = new NPCChatResponseActionBase[0];
 
             var filter = new TypeFilterCreator
             {
@@ -76,6 +73,14 @@ namespace NetGore.Features.NPCChat
         public string Name
         {
             get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets an empty array of <see cref="NPCChatResponseActionBase"/>s.
+        /// </summary>
+        public static NPCChatResponseActionBase[] EmptyActions
+        {
+            get { return _emptyActions; }
         }
 
         /// <summary>
