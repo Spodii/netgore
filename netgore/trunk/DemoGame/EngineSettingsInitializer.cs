@@ -16,7 +16,7 @@ namespace DemoGame
     /// Provides a clean way to initialize the <see cref="EngineSettings"/>, along with any of the other game
     /// settings that need to be initialized.
     /// </summary>
-    public class EngineSettingsInitializer : EngineSettings
+    public sealed class EngineSettingsInitializer : EngineSettings
     {
         /// <summary>
         /// Initializes the <see cref="EngineSettingsInitializer"/> class.
