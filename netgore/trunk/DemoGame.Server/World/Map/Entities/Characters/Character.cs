@@ -21,95 +21,95 @@ using SFML.Graphics;
 namespace DemoGame.Server
 {
     /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="attacker">The <see cref="Character"/> that did the attacking.</param>
+    /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
+    /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
+    /// the <paramref name="attacker"/>.</param>
+    public delegate void CharacterAttackCharacterEventHandler(Character attacker, Character attacked, int damage);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="oldCash">The old amount of cash.</param>
+    /// <param name="cash">The new amount of cash.</param>
+    public delegate void CharacterCashEventHandler(Character character, int oldCash, int cash);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="oldMap">The old map.</param>
+    /// <param name="newMap">The new map.</param>
+    public delegate void CharacterChangeMapEventHandler(Character character, Map oldMap, Map newMap);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="oldValue">The old value.</param>
+    /// <param name="newValue">The new value.</param>
+    public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    public delegate void CharacterEventHandler(Character character);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="oldExp">The old amount of experience.</param>
+    /// <param name="exp">The new amount of experience.</param>
+    public delegate void CharacterExpEventHandler(Character character, int oldExp, int exp);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="item">The <see cref="ItemEntity"/> related to the event.</param>
+    public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="killed">The <see cref="Character"/> that was killed.</param>
+    /// <param name="killer">The <see cref="Character"/> that killed the <paramref name="killed"/>.</param>
+    public delegate void CharacterKillEventHandler(Character killed, Character killer);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="oldLevel">The old level.</param>
+    /// <param name="level">The new level.</param>
+    public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="map">The map related to the event.</param>
+    public delegate void CharacterMapEventHandler(Character character, Map map);
+
+    /// <summary>
+    /// Delegate for handling an event from a <see cref="Character"/>.
+    /// </summary>
+    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+    /// <param name="oldValue">The old value.</param>
+    /// <param name="newValue">The new value.</param>
+    public delegate void CharacterStatPointsEventHandler(Character character, int oldValue, int newValue);
+
+    /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
     public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference,
                                       IServerSaveable
     {
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="attacker">The <see cref="Character"/> that did the attacking.</param>
-        /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
-        /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
-        /// the <paramref name="attacker"/>.</param>
-        public delegate void CharacterAttackCharacterEventHandler(Character attacker, Character attacked, int damage);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldCash">The old amount of cash.</param>
-        /// <param name="cash">The new amount of cash.</param>
-        public delegate void CharacterCashEventHandler(Character character, int oldCash, int cash);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldMap">The old map.</param>
-        /// <param name="newMap">The new map.</param>
-        public delegate void CharacterChangeMapEventHandler(Character character, Map oldMap, Map newMap);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        public delegate void CharacterEventHandler(Character character);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldExp">The old amount of experience.</param>
-        /// <param name="exp">The new amount of experience.</param>
-        public delegate void CharacterExpEventHandler(Character character, int oldExp, int exp);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="item">The <see cref="ItemEntity"/> related to the event.</param>
-        public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="killed">The <see cref="Character"/> that was killed.</param>
-        /// <param name="killer">The <see cref="Character"/> that killed the <paramref name="killed"/>.</param>
-        public delegate void CharacterKillEventHandler(Character killed, Character killer);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldLevel">The old level.</param>
-        /// <param name="level">The new level.</param>
-        public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="map">The map related to the event.</param>
-        public delegate void CharacterMapEventHandler(Character character, Map map);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        public delegate void CharacterStatPointsEventHandler(Character character, int oldValue, int newValue);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -1757,7 +1757,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="newMap">The new map to teleport to.</param>
         /// <param name="position">Position to teleport to.</param>
-        public void Teleport(Map newMap, Vector2 position)
+        public void Teleport(MapBase newMap, Vector2 position)
         {
             if (newMap != Map)
             {

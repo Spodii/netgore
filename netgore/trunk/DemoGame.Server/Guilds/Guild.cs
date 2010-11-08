@@ -7,6 +7,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Features.Guilds;
+using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server.Guilds
@@ -296,12 +297,12 @@ namespace DemoGame.Server.Guilds
         /// <summary>
         /// Sends a message to all guild members.
         /// </summary>
-        /// <param name="pw">The <see cref="PacketWriter"/> containing the data to send.</param>
-        public void Send(PacketWriter pw)
+        /// <param name="data">The <see cref="BitStream"/> containing the data to send.</param>
+        public void Send(BitStream data)
         {
             foreach (var member in OnlineMembers.OfType<INetworkSender>())
             {
-                member.Send(pw, ServerMessageType.GUIChat);
+                member.Send(data, ServerMessageType.GUIChat);
             }
         }
 

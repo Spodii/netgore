@@ -10,7 +10,9 @@ namespace DemoGame.Server
     /// </summary>
     public static class ServerMessageTypeExtensions
     {
+#if false
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+#endif
 
         /// <summary>
         /// Gets the <see cref="NetDeliveryMethod"/> and sequence channel to use for a given <see cref="ServerMessageType"/>.

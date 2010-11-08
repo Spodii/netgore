@@ -138,6 +138,7 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// The arguments for the <see cref="CreateAccountQuery"/> query.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class QueryArgs
         {
             /// <summary>

@@ -64,7 +64,7 @@ namespace DemoGame.Server.Queries
                     default:
                         const string errmsg = "How the hell did we update more than one account!? Account ID: `{0}`.";
                         var err = string.Format(errmsg, accountID);
-                        throw new Exception(err);
+                        throw new DatabaseException(err);
                 }
             }
 
@@ -96,6 +96,7 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// The arguments for the <see cref="TrySetAccountIPIfNullQuery"/> query.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct QueryArgs
         {
             /// <summary>

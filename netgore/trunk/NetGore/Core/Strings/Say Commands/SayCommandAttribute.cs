@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace NetGore
@@ -5,6 +6,7 @@ namespace NetGore
     /// <summary>
     /// Attribute for a Say command.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class SayCommandAttribute : StringCommandBaseAttribute
     {
         /// <summary>

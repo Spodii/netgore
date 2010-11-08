@@ -84,6 +84,7 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// Arguments for the <see cref="InsertAccountBanQuery"/>.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct QueryArgs
         {
             readonly AccountID _accountID;

@@ -264,6 +264,7 @@ namespace DemoGame.Server
         /// <summary>
         /// A struct of a <see cref="ActiveStatusEffect"/> and corresponding <see cref="ActiveStatusEffectID"/>.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct ASEWithID
         {
             readonly ActiveStatusEffectID _id;

@@ -52,7 +52,7 @@ namespace DemoGame.Server
             {
                 const string errmsg = "NetGore does not support systems that are not in Little Endian mode!";
                 log.Fatal(errmsg);
-                throw new SystemException(errmsg);
+                throw new NotSupportedException(errmsg);
             }
 
             // Initialize the engine settings

@@ -229,7 +229,7 @@ namespace DemoGame.Server
             }
 
             // Unknown added character type - not actually an error, but it is likely an oversight
-            throw new Exception("Unknown Character type - not a NPC or User...?");
+            throw new TypeException("Unknown Character type - not a NPC or User...?");
         }
 
         /// <summary>

@@ -32,11 +32,6 @@ namespace DemoGame.Server.PeerTrading
         static readonly PeerTradingInsertItemQuery _insertItemQuery;
 
         /// <summary>
-        /// The <see cref="PeerTradingRemoveCashQuery"/> instance to use.
-        /// </summary>
-        static readonly PeerTradingRemoveCashQuery _removeCashQuery;
-
-        /// <summary>
         /// The <see cref="PeerTradingRemoveItemQuery"/> instance to use.
         /// </summary>
         static readonly PeerTradingRemoveItemQuery _removeItemQuery;
@@ -52,7 +47,6 @@ namespace DemoGame.Server.PeerTrading
             _insertItemQuery = dbController.GetQuery<PeerTradingInsertItemQuery>();
             _removeItemQuery = dbController.GetQuery<PeerTradingRemoveItemQuery>();
             _getLostCashQuery = dbController.GetQuery<PeerTradingGetLostCashQuery>();
-            _removeCashQuery = dbController.GetQuery<PeerTradingRemoveCashQuery>();
         }
 
         /// <summary>
