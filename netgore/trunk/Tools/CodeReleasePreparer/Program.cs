@@ -251,7 +251,7 @@ namespace CodeReleasePreparer
                 File.Delete(dbfile);
 
             RunBatchFile(false,
-                         "mysqldump demogame --user=root --password= --host=localhost --all-tables --routines --create-options --compatible=mysql40 > db.sql");
+                         "mysqldump demogame --user=root --password= --host=localhost --all-tables --routines --create-options > db.sql");
 
             if (!File.Exists(dbfile) || new FileInfo(dbfile).Length < 1000)
             {

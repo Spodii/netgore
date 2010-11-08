@@ -5,4 +5,4 @@ echo -
 SET /P B= Type your port number (Note 3306 is default mysql port). 
 echo -
 @echo on
-mysqldump demogame --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options --compatible=mysql40 > db.sql
+mysqldump demogame --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options > db.sql
