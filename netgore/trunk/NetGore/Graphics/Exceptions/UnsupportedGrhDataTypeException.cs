@@ -26,7 +26,27 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Exception"/> class with a specified error message.
+        /// Initializes a new instance of the <see cref="GrhDataException"/> class.
+        /// </summary>
+        /// <param name="rawMessage">The raw message.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception,
+        /// or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
+        public UnsupportedGrhDataTypeException(string rawMessage, Exception innerException)
+            : base(rawMessage, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnsupportedGrhDataTypeException"/> class.
+        /// </summary>
+        /// <param name="rawMessage">The raw message.</param>
+        public UnsupportedGrhDataTypeException(string rawMessage)
+            : base(rawMessage)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnsupportedGrhDataTypeException"/> class.
         /// </summary>
         /// <param name="grhData">The <see cref="GrhData"/> related to the <see cref="Exception"/>.</param>
         public UnsupportedGrhDataTypeException(GrhData grhData)
