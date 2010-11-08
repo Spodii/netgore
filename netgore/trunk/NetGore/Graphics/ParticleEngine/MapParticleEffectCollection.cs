@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NetGore.Collections;
 using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
@@ -7,7 +8,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A collection of <see cref="ParticleEffectReference"/>s.
     /// </summary>
-    public class MapParticleEffectCollection : List<ParticleEffectReference>
+    public class MapParticleEffectCollection : VirtualList<ParticleEffectReference>
     {
         /// <summary>
         /// Reads the <see cref="MapParticleEffectCollection"/>'s items.
@@ -28,7 +29,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="nodeName">The name of the collection node.</param>
         public void Write(IValueWriter writer, string nodeName)
         {
-            writer.WriteManyNodes(nodeName, ToArray(), (w, v) => v.WriteState(w));
+            writer.WriteManyNodes(nodeName, this.ToArray(), (w, v) => v.WriteState(w));
         }
     }
 }
