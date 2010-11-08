@@ -171,6 +171,7 @@ namespace DemoGame.Client
 
         #endregion
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class EquippedItemPB : PictureBox, IDragDropProvider
         {
             static readonly TooltipHandler _tooltipHandler = TooltipCallback;

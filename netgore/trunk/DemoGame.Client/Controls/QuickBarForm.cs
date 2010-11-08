@@ -163,6 +163,7 @@ namespace DemoGame.Client
         /// <summary>
         /// A <see cref="PictureBox"/> for a quick bar slot on a <see cref="QuickBarForm"/>.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class QuickBarItemPB : PictureBox, IDragDropProvider, IQuickBarItemProvider
         {
             readonly Grh _grh = new Grh();
