@@ -12,8 +12,6 @@ namespace NetGore.Features.Guilds
     /// </summary>
     public class GuildForm : GuildInfoFormBase
     {
-        public delegate void EventHandler(GuildForm sender);
-
         Button _btnJoinLeave;
         Button _btnMembers;
         Button _btnOnline;
@@ -49,12 +47,12 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when a request to join a guild has been created from this <see cref="GuildForm"/>.
         /// </summary>
-        public event EventHandler JoinRequested;
+        public event GuildFormEventHandler JoinRequested;
 
         /// <summary>
         /// Notifies listeners when a request to leave a guild has been created from this <see cref="GuildForm"/>.
         /// </summary>
-        public event EventHandler LeaveRequested;
+        public event GuildFormEventHandler LeaveRequested;
 
         void CreateControls()
         {
