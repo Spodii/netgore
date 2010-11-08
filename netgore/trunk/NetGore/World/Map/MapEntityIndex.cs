@@ -789,25 +789,25 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Reads the MapEntityIndex from an IDataReader.
+        /// Reads the MapEntityIndex from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapEntityIndex from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the MapEntityIndex from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
-        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, int i)
+        /// <returns>The MapEntityIndex read from the <see cref="IDataRecord"/>.</returns>
+        public static MapEntityIndex GetMapEntityIndex(this IDataRecord r, int i)
         {
-            return MapEntityIndex.Read(dataReader, i);
+            return MapEntityIndex.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the MapEntityIndex from an IDataReader.
+        /// Reads the MapEntityIndex from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MapEntityIndex from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the MapEntityIndex from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
-        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, string name)
+        /// <returns>The MapEntityIndex read from the <see cref="IDataRecord"/>.</returns>
+        public static MapEntityIndex GetMapEntityIndex(this IDataRecord r, string name)
         {
-            return MapEntityIndex.Read(dataReader, name);
+            return MapEntityIndex.Read(r, name);
         }
 
         /// <summary>

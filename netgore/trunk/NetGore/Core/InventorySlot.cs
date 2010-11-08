@@ -785,25 +785,25 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads the InventorySlot from an IDataReader.
+        /// Reads the InventorySlot from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the InventorySlot from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the InventorySlot from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The InventorySlot read from the IDataReader.</returns>
-        public static InventorySlot GetInventorySlot(this IDataReader dataReader, int i)
+        /// <returns>The InventorySlot read from the <see cref="IDataRecord"/>.</returns>
+        public static InventorySlot GetInventorySlot(this IDataRecord r, int i)
         {
-            return InventorySlot.Read(dataReader, i);
+            return InventorySlot.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the InventorySlot from an IDataReader.
+        /// Reads the InventorySlot from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the InventorySlot from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the InventorySlot from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The InventorySlot read from the IDataReader.</returns>
-        public static InventorySlot GetInventorySlot(this IDataReader dataReader, string name)
+        /// <returns>The InventorySlot read from the <see cref="IDataRecord"/>.</returns>
+        public static InventorySlot GetInventorySlot(this IDataRecord r, string name)
         {
-            return InventorySlot.Read(dataReader, name);
+            return InventorySlot.Read(r, name);
         }
 
         /// <summary>

@@ -129,12 +129,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads an GrhIndex from an IDataReader.
+        /// Reads an GrhIndex from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The GrhIndex read from the IDataReader.</returns>
-        public static GrhIndex Read(IDataReader reader, string name)
+        /// <returns>The GrhIndex read from the <see cref="IDataRecord"/>.</returns>
+        public static GrhIndex Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
@@ -796,25 +796,25 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads the GrhIndex from an IDataReader.
+        /// Reads the GrhIndex from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the GrhIndex from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the GrhIndex from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The GrhIndex read from the IDataReader.</returns>
-        public static GrhIndex GetGrhIndex(this IDataReader dataReader, int i)
+        /// <returns>The GrhIndex read from the <see cref="IDataRecord"/>.</returns>
+        public static GrhIndex GetGrhIndex(this IDataRecord r, int i)
         {
-            return GrhIndex.Read(dataReader, i);
+            return GrhIndex.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the GrhIndex from an IDataReader.
+        /// Reads the GrhIndex from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the GrhIndex from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the GrhIndex from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The GrhIndex read from the IDataReader.</returns>
-        public static GrhIndex GetGrhIndex(this IDataReader dataReader, string name)
+        /// <returns>The GrhIndex read from the <see cref="IDataRecord"/>.</returns>
+        public static GrhIndex GetGrhIndex(this IDataRecord r, string name)
         {
-            return GrhIndex.Read(dataReader, name);
+            return GrhIndex.Read(r, name);
         }
 
         /// <summary>

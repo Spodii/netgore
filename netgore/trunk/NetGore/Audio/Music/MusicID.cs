@@ -785,25 +785,25 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Reads the MusicID from an IDataReader.
+        /// Reads the MusicID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MusicID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the MusicID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The MusicID read from the IDataReader.</returns>
-        public static MusicID GetMusicID(this IDataReader dataReader, int i)
+        /// <returns>The MusicID read from the <see cref="IDataRecord"/>.</returns>
+        public static MusicID GetMusicID(this IDataRecord r, int i)
         {
-            return MusicID.Read(dataReader, i);
+            return MusicID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the MusicID from an IDataReader.
+        /// Reads the MusicID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the MusicID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the MusicID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The MusicID read from the IDataReader.</returns>
-        public static MusicID GetMusicID(this IDataReader dataReader, string name)
+        /// <returns>The MusicID read from the <see cref="IDataRecord"/>.</returns>
+        public static MusicID GetMusicID(this IDataRecord r, string name)
         {
-            return MusicID.Read(dataReader, name);
+            return MusicID.Read(r, name);
         }
 
         /// <summary>
