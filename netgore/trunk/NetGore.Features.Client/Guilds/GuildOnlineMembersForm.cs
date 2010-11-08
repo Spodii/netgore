@@ -8,7 +8,7 @@ namespace NetGore.Features.Guilds
 {
     public class GuildOnlineMembersForm : GuildMembersFormBase
     {
-        readonly UserGuildInformation.UserGuildInformationEventHandler<string> _updateHandler;
+        readonly UserGuildInformationEventHandler<string> _updateHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildOnlineMembersForm"/> class.

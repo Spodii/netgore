@@ -98,12 +98,12 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Reads a <see cref="QuestID"/> from an <see cref="IDataReader"/>.
+        /// Reads a <see cref="QuestID"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader"><see cref="IDataReader"/> to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataReader"/>.</returns>
-        public static QuestID Read(IDataReader reader, int i)
+        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static QuestID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is ushort)
@@ -114,18 +114,18 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Reads a <see cref="QuestID"/> from an <see cref="IDataReader"/>.
+        /// Reads a <see cref="QuestID"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader"><see cref="IDataReader"/> to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataReader"/>.</returns>
-        public static QuestID Read(IDataReader reader, string name)
+        /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static QuestID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads a <see cref="QuestID"/> from an IValueReader.
+        /// Reads a <see cref="QuestID"/> from an BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The <see cref="QuestID"/> read from the <see cref="BitStream"/>.</returns>

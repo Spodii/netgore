@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 
@@ -173,7 +174,10 @@ namespace NetGore.Features.NPCChat.Conditionals
             var valueType = (NPCChatConditionalParameterType)valueTypeValue;
 
             if (!EnumHelper<NPCChatConditionalParameterType>.IsDefined(valueType))
-                throw new Exception(string.Format("Invalid NPCChatConditionalParameterType `{0}`.", valueType));
+            {
+                const string errmsg = "Invalid NPCChatConditionalParameterType `{0}`.";
+                throw new InvalidEnumArgumentException(string.Format(errmsg, valueType));
+            }
 
             // Create the parameter and read the value
             var parameter = CreateParameter(valueType);

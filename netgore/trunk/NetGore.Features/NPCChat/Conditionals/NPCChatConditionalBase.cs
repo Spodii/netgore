@@ -224,7 +224,7 @@ namespace NetGore.Features.NPCChat.Conditionals
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
                 Debug.Fail(err);
-                throw new Exception(err);
+                throw new ArgumentException(err);
             }
 
             // Add the value to the Dictionary

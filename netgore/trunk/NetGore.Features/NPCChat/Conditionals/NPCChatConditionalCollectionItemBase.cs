@@ -57,7 +57,10 @@ namespace NetGore.Features.NPCChat.Conditionals
 
             var conditional = NPCChatConditionalBase.GetConditional(conditionalName);
             if (conditional == null)
-                throw new Exception(string.Format("Failed to get conditional `{0}`.", conditionalName));
+            {
+                const string errmsg = "Failed to get conditional `{0}`.";
+                throw new NullReferenceException(string.Format(errmsg, conditionalName));
+            }
 
             SetReadValues(conditional, not, parameters);
         }

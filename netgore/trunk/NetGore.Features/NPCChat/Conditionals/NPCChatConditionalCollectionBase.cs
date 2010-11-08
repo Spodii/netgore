@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 
@@ -53,7 +54,8 @@ namespace NetGore.Features.NPCChat.Conditionals
                     return true;
 
                 default:
-                    throw new Exception(string.Format("Invalid EvaluateType value `{0}`.", EvaluationType));
+                    const string errmsg = "Invalid EvaluateType value `{0}`.";
+                    throw new InvalidOperationException(string.Format(errmsg, EvaluationType));
             }
         }
 
@@ -68,7 +70,10 @@ namespace NetGore.Features.NPCChat.Conditionals
 
             var evaluationType = (NPCChatConditionalEvaluationType)evaluationTypeValue;
             if (!EnumHelper<NPCChatConditionalEvaluationType>.IsDefined(evaluationType))
-                throw new Exception(string.Format("Invalid NPCChatConditionalEvaluationType `{0}`.", evaluationTypeValue));
+            {
+                const string errmsg = "Invalid NPCChatConditionalEvaluationType `{0}`.";
+                throw new InvalidEnumArgumentException(string.Format(errmsg, evaluationTypeValue));
+            }
 
             SetReadValues(evaluationType, items);
         }

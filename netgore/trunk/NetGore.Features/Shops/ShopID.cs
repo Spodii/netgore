@@ -98,12 +98,12 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Reads an ShopID from an IDataReader.
+        /// Reads an ShopID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The ShopID read from the IDataReader.</returns>
-        public static ShopID Read(IDataReader reader, int i)
+        /// <returns>The ShopID read from the <see cref="IDataRecord"/>.</returns>
+        public static ShopID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is ushort)
@@ -114,12 +114,12 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Reads an ShopID from an IDataReader.
+        /// Reads an ShopID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The ShopID read from the IDataReader.</returns>
-        public static ShopID Read(IDataReader reader, string name)
+        /// <returns>The ShopID read from the <see cref="IDataRecord"/>.</returns>
+        public static ShopID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }

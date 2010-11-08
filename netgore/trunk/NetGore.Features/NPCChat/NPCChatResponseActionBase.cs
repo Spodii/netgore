@@ -134,7 +134,7 @@ namespace NetGore.Features.NPCChat
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
                 Debug.Fail(err);
-                throw new Exception(err);
+                throw new DuplicateKeyException(err);
             }
 
             // Add the value to the Dictionary

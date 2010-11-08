@@ -10,19 +10,6 @@ namespace NetGore.Features.Groups
 {
     public class UserGroupInformation
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="UserGroupInformation"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="UserGroupInformation"/> the event came from.</param>
-        /// <param name="arg">The argument related to the event.</param>
-        public delegate void UserGroupInformationEventHandler<in T>(UserGroupInformation sender, T arg);
-
-        /// <summary>
-        /// Delegate for handling events from the <see cref="UserGroupInformation"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="UserGroupInformation"/> the event came from.</param>
-        public delegate void UserGroupInformationEventHandler(UserGroupInformation sender);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly StringComparer _membersListComparer = StringComparer.OrdinalIgnoreCase;
 

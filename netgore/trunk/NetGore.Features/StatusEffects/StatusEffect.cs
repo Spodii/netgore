@@ -79,7 +79,7 @@ namespace NetGore.Features.StatusEffects
                         if (log.IsFatalEnabled)
                             log.Fatal(err);
                         Debug.Fail(err);
-                        throw new Exception(err);
+                        throw new InvalidOperationException(err);
                     }
                 }
             }
