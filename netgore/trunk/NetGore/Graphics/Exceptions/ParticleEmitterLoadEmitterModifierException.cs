@@ -29,6 +29,15 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterLoadEmitterModifierException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        public ParticleEmitterLoadEmitterModifierException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleEmitterLoadEmitterModifierException"/> class.
+        /// </summary>
         public ParticleEmitterLoadEmitterModifierException()
         { }
 
