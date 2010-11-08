@@ -54,12 +54,13 @@ namespace NetGore.AI
         /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
+        /// <exception cref="ArgumentException"><paramref name="loadedType"/> does not contain the <see cref="AIAttribute"/>.</exception>
         protected virtual void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
         {
             var aiAttributes = loadedType.GetCustomAttributes(typeof(AIAttribute), false).Cast<AIAttribute>();
 
             if (aiAttributes.Count() == 0)
-                throw new Exception(string.Format("Expected loaded AI Type {0} to have one or more AIAttributes.", loadedType));
+                throw new ArgumentException(string.Format("Expected loaded AI Type {0} to have one or more AIAttributes.", loadedType), "loadedType");
 
             foreach (var aiAttribute in aiAttributes)
             {
@@ -73,7 +74,7 @@ namespace NetGore.AI
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     Debug.Fail(err);
-                    throw new Exception(err);
+                    throw new DuplicateKeyException(err);
                 }
 
                 _aiByID.Add(id, loadedType);
