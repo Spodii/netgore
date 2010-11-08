@@ -71,6 +71,7 @@ For more information on the DbClassCreator, please see:
             return columnItems;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "x")]
         static void Main()
         {
             Console.WriteLine("This program will generate the code files to match the database." +
@@ -83,6 +84,7 @@ For more information on the DbClassCreator, please see:
             Console.WriteLine();
 
             // Force the NetGore.Features.Server assembly to load up
+            // TODO: !! Is this line below still needed?
 #pragma warning disable 168
             var x = new DbClassGeneratorSettings();
 #pragma warning restore 168
