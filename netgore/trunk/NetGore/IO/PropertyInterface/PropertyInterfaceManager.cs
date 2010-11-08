@@ -37,7 +37,10 @@ namespace NetGore.IO
                                               BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
                                               BindingFlags.Static);
             if (pi == null)
-                throw new ArgumentException("propertyName");
+            {
+                const string errmsg = "Unable to find the property with name `{0}` for `{1}`.";
+                throw new ArgumentException(string.Format(errmsg, propertyName, this),"propertyName");
+            }
 
             return this[pi];
         }

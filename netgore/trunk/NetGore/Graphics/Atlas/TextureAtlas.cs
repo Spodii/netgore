@@ -245,7 +245,10 @@ namespace NetGore.Graphics
 
             // Check that the maxSize is able to fit the textures
             if (maxWidth > maxSize || maxHeight > maxSize)
-                throw new Exception("One or more ITextureAtlases can not fit into the atlas with the given maximum texture size");
+            {
+                const string errmsg = "One or more ITextureAtlases can not fit into the atlas with the given maximum texture size";
+                throw new ArgumentException(errmsg, "items");
+            }
 
             // Use the higher of the two values and round to the next power of 2
             width = BitOps.NextPowerOf2(Math.Max(guessedSize, maxWidth));

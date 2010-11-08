@@ -44,12 +44,17 @@ namespace NetGore.Graphics
             _delay = delay;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonFrame"/> class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to load from.</param>
         public SkeletonFrame(IValueReader reader, ContentPaths contentPath)
         {
             Read(reader, contentPath);
 
             if (Skeleton == null)
-                throw new Exception("Skeleton is null.");
+                throw new InvalidOperationException("Skeleton failed to load.");
         }
 
         /// <summary>

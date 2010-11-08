@@ -70,7 +70,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the array of <see cref="Particle"/>s in this <see cref="ParticleEmitter"/>.
         /// </summary>
-        protected Particle[] Particles { get { return _particles; } }
+        /// <returns>The array of <see cref="Particle"/>s in this <see cref="ParticleEmitter"/>.</returns>
+        protected Particle[] GetParticles() { return _particles; }
 
         readonly EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
         readonly IParticleEffect _owner;

@@ -172,7 +172,7 @@ namespace NetGore
                         if (log.IsFatalEnabled)
                             log.Error(err);
                         Debug.Fail(err);
-                        throw new Exception(err);
+                        throw new DuplicateKeyException(err);
                     }
                 }
             }

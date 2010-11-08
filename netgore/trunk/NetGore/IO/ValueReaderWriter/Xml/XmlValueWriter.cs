@@ -53,7 +53,10 @@ namespace NetGore.IO
             _writer = XmlWriter.Create(_tempFile.FilePath, new XmlWriterSettings { Indent = true });
 
             if (_writer == null)
-                throw new ArgumentException("filePath");
+            {
+                const string errmsg = "Failed to create XmlWriter for file path `{0}`.";
+                throw new ArgumentException(string.Format(errmsg, filePath), "filePath");
+            }
 
             _writer.WriteStartDocument();
             _writer.WriteStartElement(nodeName);

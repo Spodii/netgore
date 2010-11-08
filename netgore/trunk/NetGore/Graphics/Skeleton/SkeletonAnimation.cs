@@ -80,7 +80,7 @@ namespace NetGore.Graphics
             if (skeletonSet == null)
                 throw new ArgumentNullException("skeletonSet");
             if (skeletonSet.KeyFrames.Length == 0)
-                throw new Exception("skeletonSet contains no KeyFrames.");
+                throw new ArgumentException("skeletonSet contains no KeyFrames.", "skeletonSet");
 
             _lastTime = currentTime;
             _skelSet = skeletonSet;

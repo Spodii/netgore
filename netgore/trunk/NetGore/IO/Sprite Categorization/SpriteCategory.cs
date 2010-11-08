@@ -24,7 +24,10 @@ namespace NetGore.IO
             value = Sanitize(value);
 
             if (!IsValid(value))
-                throw new ArgumentException("value");
+            {
+                const string errmsg = "The argument `{0}` is not valid.";
+                throw new ArgumentException(string.Format(errmsg, value), "value");
+            }
 
             _value = value;
         }

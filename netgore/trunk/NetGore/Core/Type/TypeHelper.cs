@@ -90,9 +90,13 @@ namespace NetGore
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
         /// Default is false.</param>
         /// <returns>IEnumerable of all Types that inherit the specified <paramref name="baseType"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="baseType"/> is null.</exception>
         public static IEnumerable<Type> FindTypesThatInherit(Type baseType, Type[] constructorParams,
                                                              bool includeGAC = _gacDefault)
         {
+            if (baseType == null)
+                throw new ArgumentNullException("baseType");
+
             return FindTypes(x => x.IsSubclassOf(baseType), constructorParams, includeGAC);
         }
 
@@ -109,9 +113,13 @@ namespace NetGore
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
         /// Default is false.</param>
         /// <returns>IEnumerable of all Types that have the specified <paramref name="attributeType"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="attributeType"/> is null.</exception>
         public static IEnumerable<Type> FindTypesWithAttribute(Type attributeType, Type[] constructorParams,
                                                                bool includeGAC = _gacDefault)
         {
+            if (attributeType == null)
+                throw new ArgumentNullException("attributeType");
+
             Func<Type, bool> func = (x => x.GetCustomAttributes(attributeType, true).Count() > 0);
             return FindTypes(func, constructorParams, includeGAC);
         }
@@ -163,9 +171,16 @@ namespace NetGore
         /// <param name="type">Type of the class to search for the PropertyInfos in.</param>
         /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
         /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="propInfo"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
         static IEnumerable<T> InternalGetAllCustomAttributes<T>(PropertyInfo propInfo, Type type, BindingFlags flags)
             where T : Attribute
         {
+            if (propInfo == null)
+                throw new ArgumentNullException("propInfo");
+            if (type == null)
+                throw new ArgumentNullException("type");
+
             // Get the attributes for this type
             var customAttributes = propInfo.GetCustomAttributes(typeof(T), false).OfType<T>();
             foreach (var attrib in customAttributes)
@@ -196,9 +211,15 @@ namespace NetGore
         /// type in the hierarchy will result in a false value.
         /// </summary>
         /// <param name="type">The type to check.</param>
-        /// <returns>True if the <paramref name="type"/> is a class and public through the whole declaration tree.</returns>
+        /// <returns>
+        /// True if the <paramref name="type"/> is a class and public through the whole declaration tree.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
         public static bool IsClassTypeTreePublic(Type type)
         {
+            if (type == null)
+                throw new ArgumentNullException("type");
+
             if (!type.IsClass)
                 return false;
 
@@ -218,11 +239,18 @@ namespace NetGore
         /// </summary>
         /// <param name="type">The non-nullable type. If already a nullable type, the same type will be returned.</param>
         /// <returns>The nullable type.</returns>
-        /// <exception cref="ArgumentException"><paramref name="type"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="type"/> is not a value type.</exception>
         public static Type NonNullableToNullable(Type type)
         {
+            if (type == null)
+                throw new ArgumentNullException("type");
+
             if (!type.IsValueType)
-                throw new ArgumentException("type");
+            {
+                const string errmsg = "Type `{0}` is not a value type.";
+                throw new ArgumentException(string.Format(errmsg, type), "type");
+            }
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return type;
@@ -235,15 +263,25 @@ namespace NetGore
         /// </summary>
         /// <param name="nullableType">The nullable type.</param>
         /// <returns>The underlying non-nullable type.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="nullableType"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="nullableType"/> is not a nullable type.</exception>
         public static Type NullableToNonNullable(Type nullableType)
         {
+            if (nullableType == null)
+                throw new ArgumentNullException("nullableType");
+
             if (!nullableType.IsValueType || !nullableType.IsGenericType)
-                throw new ArgumentException("nullableType");
+            {
+                const string errmsg = "Type `{0}` is either not a value type or not a generic type.";
+                throw new ArgumentException(string.Format(errmsg, nullableType), "nullableType");
+            }
 
             var ret = nullableType.GetGenericArguments().FirstOrDefault();
             if (ret == null)
-                throw new ArgumentException("nullableType");
+            {
+                const string errmsg = "Could not find generic arguments for type `{0}`.";
+                throw new ArgumentException(string.Format(errmsg, nullableType), "nullableType");
+            }
 
             return ret;
         }
