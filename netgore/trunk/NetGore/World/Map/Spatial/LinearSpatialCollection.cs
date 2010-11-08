@@ -166,6 +166,7 @@ namespace NetGore.World
         /// <returns>
         /// True if the specified area or location contains any spatials; otherwise false.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool Contains<T>(Rectangle rect)
         {
             return Contains<T>(rect, x => true);

@@ -329,6 +329,7 @@ namespace NetGore.World
         /// <returns>
         /// True if the specified area or location contains any spatials; otherwise false.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool Contains<T>(Vector2 point)
         {
             var segment = TryGetSegment(point);
@@ -495,6 +496,7 @@ namespace NetGore.World
         /// <returns>
         /// True if the specified area or location contains any spatials; otherwise false.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool Contains<T>(Rectangle rect)
         {
             var segments = GetSegments(rect);
