@@ -78,6 +78,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Gets an empty array of <see cref="NPCChatResponseActionBase"/>s.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public static NPCChatResponseActionBase[] EmptyActions
         {
             get { return _emptyActions; }
