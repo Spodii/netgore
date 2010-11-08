@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DemoGame.Client;
 using NetGore;
@@ -158,7 +159,7 @@ namespace DemoGame.GUITester
             msgBox.OptionSelected += msgBox_OptionSelected;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "NetGore.Graphics.GUI.MessageBox")]
+        [SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "NetGore.Graphics.GUI.MessageBox")]
         static void msgBox_OptionSelected(Control sender, MessageBoxButton args)
         {
             var senderAsMsgBox = sender as MessageBox;
@@ -186,7 +187,7 @@ namespace DemoGame.GUITester
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "NetGore.Graphics.GUI.MessageBox")]
+        [SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "NetGore.Graphics.GUI.MessageBox")]
         void testLabelF4_Clicked(object sender, MouseButtonEventArgs e)
         {
             var source = (Label)sender;

@@ -70,10 +70,10 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         protected Particle[] particles;
 
-        readonly IParticleEffect _owner;
-        readonly Grh _sprite = new Grh();
         readonly EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
+        readonly IParticleEffect _owner;
         readonly ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
+        readonly Grh _sprite = new Grh();
 
         int _budget;
         bool _isDisposed = false;

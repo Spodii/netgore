@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -17,6 +18,7 @@ namespace NetGore.Db.Schema
     [Serializable]
     public class SchemaReader
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _columnsAlias = "c";
 
         const string _queryStr =
@@ -77,7 +79,7 @@ namespace NetGore.Db.Schema
         /// Closes the connection.
         /// </summary>
         /// <param name="conn">The <see cref="IDbConnection"/>.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         static void CloseConnection(IDbConnection conn)
         {
             if (conn == null)
@@ -105,8 +107,6 @@ namespace NetGore.Db.Schema
                 Debug.Fail(string.Format(errmsg, conn, ex));
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static IEnumerable<TableSchema> ExecuteQuery(MySqlConnection conn, DbConnectionSettings dbSettings)
         {

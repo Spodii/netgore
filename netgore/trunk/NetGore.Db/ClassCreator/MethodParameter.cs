@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace NetGore.Db.ClassCreator
@@ -46,7 +47,7 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Gets an empty collection of <see cref="MethodParameter"/>s.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public static MethodParameter[] Empty
         {
             get { return _empty; }

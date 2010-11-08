@@ -569,7 +569,8 @@ namespace NetGore.Editor.Docking
                 DockPadding.Bottom = height;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2215:Dispose methods should call base class dispose")]
+        [SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity")]
+        [SuppressMessage("Microsoft.Usage", "CA2215:Dispose methods should call base class dispose")]
         protected override void Dispose(bool disposing)
         {
             lock (this)

@@ -369,10 +369,10 @@ namespace DemoGame.Client
         [Browsable(false)]
         public virtual int LayerDepth
         {
-            get 
-            { 
+            get
+            {
                 // Just put all characters on the same depth of 0 and let them be drawn "as they appear"
-                return 0; 
+                return 0;
             }
         }
 

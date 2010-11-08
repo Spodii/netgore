@@ -14,15 +14,6 @@ namespace NetGore.Db.ClassCreator
         readonly Dictionary<string, string> _aliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Gets the separator characters.
-        /// </summary>
-        /// <returns>The separator characters.</returns>
-        protected virtual char[] GetSeparatorCharacters()
-        {
-            return _separatorCharacters;
-        }
-
-        /// <summary>
         /// Gets a dictionary of aliases to use.
         /// </summary>
         public IDictionary<string, string> Aliases
@@ -901,6 +892,15 @@ namespace NetGore.Db.ClassCreator
             sb.Append(CloseBrace);
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Gets the separator characters.
+        /// </summary>
+        /// <returns>The separator characters.</returns>
+        protected virtual char[] GetSeparatorCharacters()
+        {
+            return _separatorCharacters;
         }
 
         /// <summary>

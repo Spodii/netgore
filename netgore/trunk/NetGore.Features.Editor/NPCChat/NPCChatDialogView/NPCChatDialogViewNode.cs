@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,7 +11,7 @@ namespace NetGore.Features.NPCChat
     /// <summary>
     /// A TreeNode for the <see cref="NPCChatDialogView"/>.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
+    [SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable")]
     public class NPCChatDialogViewNode : TreeNode
     {
         NPCChatDialogViewNodeItemType _chatItemType;

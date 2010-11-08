@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using log4net;
 using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
@@ -14,27 +13,10 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class StyledText
     {
+        static readonly Color _colorForDefault = new Color(0, 0, 0, 0);
+        static readonly StyledText _empty = new StyledText(string.Empty);
         static readonly StyledText[] _emptyArray = new StyledText[0];
         static readonly StyledText _lineBreak = new StyledText(Environment.NewLine);
-        static readonly StyledText _empty = new StyledText(string.Empty);
-
-        /// <summary>
-        /// Gets a <see cref="StyledText"/> with an empty string.
-        /// </summary>
-        public static StyledText Empty { get { return _empty; } }
-
-        /// <summary>
-        /// Gets an empty array of <see cref="StyledText"/>s.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public static StyledText[] EmptyArray { get { return _emptyArray; } }
-
-        /// <summary>
-        /// Gets a <see cref="StyledText"/> that contains just a line break.
-        /// </summary>
-        public static StyledText LineBreak { get { return _lineBreak; } }
-
-        static readonly Color _colorForDefault = new Color(0, 0, 0, 0);
         static readonly char[] _splitChars = new char[] { '-', '_', ' ', '\n', ',', ';', '.', '!', '?' };
 
         readonly Color _color;
@@ -94,6 +76,31 @@ namespace NetGore.Graphics.GUI
         public static Color ColorForDefault
         {
             get { return _colorForDefault; }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="StyledText"/> with an empty string.
+        /// </summary>
+        public static StyledText Empty
+        {
+            get { return _empty; }
+        }
+
+        /// <summary>
+        /// Gets an empty array of <see cref="StyledText"/>s.
+        /// </summary>
+        [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public static StyledText[] EmptyArray
+        {
+            get { return _emptyArray; }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="StyledText"/> that contains just a line break.
+        /// </summary>
+        public static StyledText LineBreak
+        {
+            get { return _lineBreak; }
         }
 
         /// <summary>

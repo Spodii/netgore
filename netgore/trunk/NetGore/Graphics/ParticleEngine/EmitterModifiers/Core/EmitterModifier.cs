@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.IO;
 
@@ -21,6 +21,30 @@ namespace NetGore.Graphics.ParticleEngine
         static EmitterModifier()
         {
             _typeFactory = EmitterModifierFactory.Instance;
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this <see cref="EmitterModifier"/>.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="EmitterModifier"/>.</returns>
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
+        public EmitterModifier DeepCopy()
+        {
+            // Create the deep copy by serializing to/from an IValueWriter
+            using (var bs = new BitStream())
+            {
+                // Write
+                using (var writer = BinaryValueWriter.Create(bs, false))
+                {
+                    Write(writer);
+                }
+
+                bs.Position = 0;
+
+                // Read
+                var reader = BinaryValueReader.Create(bs, false);
+                return Read(reader);
+            }
         }
 
         /// <summary>
@@ -115,29 +139,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
         protected abstract void WriteCustomValues(IValueWriter writer);
 
-        /// <summary>
-        /// Creates a deep copy of this <see cref="EmitterModifier"/>.
-        /// </summary>
-        /// <returns>A deep copy of this <see cref="EmitterModifier"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
-        public EmitterModifier DeepCopy()
-        {
-            // Create the deep copy by serializing to/from an IValueWriter
-            using (var bs = new BitStream())
-            {
-                // Write
-                using (var writer = BinaryValueWriter.Create(bs, false))
-                {
-                    Write(writer);
-                }
-
-                bs.Position = 0;
-
-                // Read
-                var reader = BinaryValueReader.Create(bs, false);
-                return Read(reader);
-            }
-        }
+        #region IPersistable Members
 
         /// <summary>
         /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
@@ -157,5 +159,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             WriteCustomValues(writer);
         }
+
+        #endregion
     }
 }

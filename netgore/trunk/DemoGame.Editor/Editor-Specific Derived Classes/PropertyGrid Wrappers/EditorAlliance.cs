@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
@@ -52,7 +53,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the list of <see cref="AllianceID"/>s that this <see cref="Alliance"/> can attack.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Browsable(true)]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Browsable(true)]
         [Description("The alliances that this alliance is allowed to attack.")]
         [Category(_category)]
         public List<AllianceID> Attackable
@@ -72,7 +74,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the list of <see cref="AllianceID"/>s that this <see cref="Alliance"/> is hostile towards.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Browsable(true)]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Browsable(true)]
         [Description("The alliances that this alliance is hostile towards.")]
         [Category(_category)]
         public List<AllianceID> Hostile
