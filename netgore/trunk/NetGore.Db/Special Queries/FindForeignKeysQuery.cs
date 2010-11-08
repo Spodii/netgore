@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -91,7 +92,7 @@ namespace NetGore.Db
         /// Contains the arguments for executing the <see cref="FindForeignKeysQuery"/> query.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public struct QueryArgs
+        public struct QueryArgs : IEquatable<QueryArgs>
         {
             readonly string _column;
             readonly string _database;
@@ -132,6 +133,69 @@ namespace NetGore.Db
             public string Table
             {
                 get { return _table; }
+            }
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <param name="other">An object to compare with this object.</param>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            public bool Equals(QueryArgs other)
+            {
+                return Equals(other._column, _column) && Equals(other._database, _database) && Equals(other._table, _table);
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is QueryArgs && this == (QueryArgs)obj;
+            }
+
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A 32-bit signed integer that is the hash code for this instance.
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = (_column != null ? _column.GetHashCode() : 0);
+                    result = (result * 397) ^ (_database != null ? _database.GetHashCode() : 0);
+                    result = (result * 397) ^ (_table != null ? _table.GetHashCode() : 0);
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(QueryArgs left, QueryArgs right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(QueryArgs left, QueryArgs right)
+            {
+                return !left.Equals(right);
             }
         }
     }
