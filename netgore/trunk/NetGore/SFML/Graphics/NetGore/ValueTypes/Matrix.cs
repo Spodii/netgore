@@ -219,6 +219,7 @@ namespace SFML.Graphics
         /// <param name="m42">Value to initialize m42 to.</param>
         /// <param name="m43">Value to initialize m43 to.</param>
         /// <param name="m44">Value to initialize m44 to.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1025:ReplaceRepetitiveArgumentsWithParamsArray")]
         public Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32,
                       float m33, float m34, float m41, float m42, float m43, float m44)
         {

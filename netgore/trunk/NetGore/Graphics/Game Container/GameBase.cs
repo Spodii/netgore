@@ -17,8 +17,8 @@ namespace NetGore.Graphics
 
         readonly Point _fullscreenRes;
         readonly Point _windowedRes;
-        bool _callEnterAppRun = false;
 
+        bool _callEnterAppRun = false;
         bool? _changeIsFullscreenValue;
         object _displayContainer;
         bool _isDisposed;
@@ -92,6 +92,7 @@ namespace NetGore.Graphics
         /// and dispose the container at the appropriate times.</param>
         /// <returns>The handle to the custom control to display the game on, or <see cref="IntPtr.Zero"/> to create the window
         /// to display the game on internally.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
         protected virtual IntPtr CreateWindowedDisplayHandle(out object displayContainer)
         {
             displayContainer = null;
