@@ -797,25 +797,25 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Reads the <see cref="NPCChatDialogItemID"/> from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="NPCChatDialogItemID"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="NPCChatDialogItemID"/> from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the <see cref="NPCChatDialogItemID"/> from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="IDataReader"/>.</returns>
-        public static NPCChatDialogItemID GetNPCChatDialogItemID(this IDataReader dataReader, int i)
+        /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static NPCChatDialogItemID GetNPCChatDialogItemID(this IDataRecord r, int i)
         {
-            return NPCChatDialogItemID.Read(dataReader, i);
+            return NPCChatDialogItemID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the <see cref="NPCChatDialogItemID"/> from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="NPCChatDialogItemID"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="NPCChatDialogItemID"/> from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the <see cref="NPCChatDialogItemID"/> from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="IDataReader"/>.</returns>
-        public static NPCChatDialogItemID GetNPCChatDialogItemID(this IDataReader dataReader, string name)
+        /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static NPCChatDialogItemID GetNPCChatDialogItemID(this IDataRecord r, string name)
         {
-            return NPCChatDialogItemID.Read(dataReader, name);
+            return NPCChatDialogItemID.Read(r, name);
         }
 
         /// <summary>
