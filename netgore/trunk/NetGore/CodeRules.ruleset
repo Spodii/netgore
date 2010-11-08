@@ -6,6 +6,7 @@
   </Localization>
   <Include Path="basiccorrectnessrules.ruleset" Action="Default" />
   <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
+  <Include Path="securityrules.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="None" />
     <Rule Id="CA1009" Action="None" />
@@ -30,6 +31,7 @@
     <Rule Id="CA2100" Action="None" />
     <Rule Id="CA2101" Action="None" />
     <Rule Id="CA2106" Action="Warning" />
+    <Rule Id="CA2109" Action="None" />
     <Rule Id="CA2115" Action="Warning" />
     <Rule Id="CA2119" Action="Warning" />
     <Rule Id="CA2120" Action="Warning" />
@@ -38,6 +40,7 @@
     <Rule Id="CA2130" Action="Warning" />
     <Rule Id="CA2205" Action="Warning" />
     <Rule Id="CA2207" Action="None" />
+    <Rule Id="CA2210" Action="None" />
     <Rule Id="CA2213" Action="None" />
     <Rule Id="CA2214" Action="None" />
     <Rule Id="CA2215" Action="Warning" />
