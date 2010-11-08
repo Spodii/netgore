@@ -154,6 +154,7 @@ namespace DemoGame
         /// Gets the raw internal value of this ItemChance.
         /// </summary>
         /// <returns>The raw internal value.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public ushort GetRawValue()
         {
             return _value;
@@ -172,12 +173,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an ItemChance from an IDataReader.
+        /// Reads an ItemChance from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance Read(IDataReader reader, int i)
+        /// <returns>The ItemChance read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemChance Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is ushort)
@@ -188,18 +189,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an ItemChance from an IDataReader.
+        /// Reads an ItemChance from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance Read(IDataReader reader, string name)
+        /// <returns>The ItemChance read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemChance Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an ItemChance from an IValueReader.
+        /// Reads an ItemChance from a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The ItemChance read from the BitStream.</returns>
@@ -855,25 +856,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the ItemChance from an IDataReader.
+        /// Reads the ItemChance from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemChance from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the ItemChance from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance GetItemChance(this IDataReader dataReader, int i)
+        /// <returns>The ItemChance read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemChance GetItemChance(this IDataRecord r, int i)
         {
-            return ItemChance.Read(dataReader, i);
+            return ItemChance.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the ItemChance from an IDataReader.
+        /// Reads the ItemChance from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemChance from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the ItemChance from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The ItemChance read from the IDataReader.</returns>
-        public static ItemChance GetItemChance(this IDataReader dataReader, string name)
+        /// <returns>The ItemChance read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemChance GetItemChance(this IDataRecord r, string name)
         {
-            return ItemChance.Read(dataReader, name);
+            return ItemChance.Read(r, name);
         }
 
         /// <summary>

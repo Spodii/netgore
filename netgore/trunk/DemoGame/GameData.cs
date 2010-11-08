@@ -212,11 +212,11 @@ namespace DemoGame
         /// Gets a <see cref="Rectangle"/> that describes all of the potential area that
         /// a ranged attack can reach.
         /// </summary>
-        /// <param name="c">The <see cref="CharacterEntity"/> that is attacking.</param>
+        /// <param name="c">The <see cref="Entity"/> that is attacking.</param>
         /// <param name="range">The range of the attack.</param>
         /// <returns>A <see cref="Rectangle"/> that describes all of the potential area that
         /// a ranged attack can reach.</returns>
-        public static Rectangle GetRangedAttackArea(CharacterEntity c, ushort range)
+        public static Rectangle GetRangedAttackArea(Entity c, ushort range)
         {
             var vrange = new Vector2(range);
             var min = c.Position - vrange;
@@ -232,7 +232,7 @@ namespace DemoGame
         /// <param name="shopper">The <see cref="Entity"/> doing the shopping.</param>
         /// <returns>A <see cref="Rectangle"/> containing the area that the <paramref name="shopper"/> may use to
         /// shop.</returns>
-        public static Rectangle GetValidShopArea(Entity shopper)
+        public static Rectangle GetValidShopArea(ISpatial shopper)
         {
             return shopper.ToRectangle();
         }
@@ -240,11 +240,11 @@ namespace DemoGame
         /// <summary>
         /// Gets if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to shop.
         /// </summary>
-        /// <param name="shopper">The Entity doing the shopping.</param>
-        /// <param name="shopOwner">The Entity that owns the shop.</param>
+        /// <param name="shopper">The <see cref="Entity"/> doing the shopping.</param>
+        /// <param name="shopOwner">The <see cref="Entity"/> that owns the shop.</param>
         /// <returns>True if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to
         /// shop; otherwise false.</returns>
-        public static bool IsValidDistanceToShop(Entity shopper, Entity shopOwner)
+        public static bool IsValidDistanceToShop(ISpatial shopper, ISpatial shopOwner)
         {
             var area = GetValidShopArea(shopper);
             return shopOwner.Intersects(area);

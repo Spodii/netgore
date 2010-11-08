@@ -533,6 +533,7 @@ namespace DemoGame
         /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
         /// </summary>
         /// <returns>An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         protected virtual IEnumerable<Type> GetSpatialTypes()
         {
             return new Type[]
@@ -738,7 +739,7 @@ namespace DemoGame
                 const string errmsg = "Map file `{0}` does not exist - unable to load map.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, filePath);
-                throw new ArgumentException("filePath");
+                throw new ArgumentException(string.Format(errmsg, filePath), "filePath");
             }
 
             var r = XmlValueReader.CreateFromFile(filePath, _rootNodeName);

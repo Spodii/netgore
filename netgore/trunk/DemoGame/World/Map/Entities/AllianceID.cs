@@ -85,6 +85,7 @@ namespace DemoGame
         /// Gets the raw internal value of this AllianceID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public byte GetRawValue()
         {
             return _value;
@@ -103,12 +104,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an AllianceID from an IDataReader.
+        /// Reads an AllianceID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID Read(IDataReader reader, int i)
+        /// <returns>The AllianceID read from the <see cref="IDataRecord"/>.</returns>
+        public static AllianceID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is byte)
@@ -119,18 +120,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an AllianceID from an IDataReader.
+        /// Reads an AllianceID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID Read(IDataReader reader, string name)
+        /// <returns>The AllianceID read from the <see cref="IDataRecord"/>.</returns>
+        public static AllianceID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an AllianceID from an IValueReader.
+        /// Reads an AllianceID from an BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The AllianceID read from the BitStream.</returns>
@@ -786,25 +787,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the AllianceID from an IDataReader.
+        /// Reads the AllianceID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the AllianceID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the AllianceID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID GetAllianceID(this IDataReader dataReader, int i)
+        /// <returns>The AllianceID read from the <see cref="IDataRecord"/>.</returns>
+        public static AllianceID GetAllianceID(this IDataRecord r, int i)
         {
-            return AllianceID.Read(dataReader, i);
+            return AllianceID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the AllianceID from an IDataReader.
+        /// Reads the AllianceID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the AllianceID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the AllianceID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The AllianceID read from the IDataReader.</returns>
-        public static AllianceID GetAllianceID(this IDataReader dataReader, string name)
+        /// <returns>The AllianceID read from the <see cref="IDataRecord"/>.</returns>
+        public static AllianceID GetAllianceID(this IDataRecord r, string name)
         {
-            return AllianceID.Read(dataReader, name);
+            return AllianceID.Read(r, name);
         }
 
         /// <summary>

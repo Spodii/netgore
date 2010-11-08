@@ -85,6 +85,7 @@ namespace DemoGame
         /// Gets the raw internal value of this ItemID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public int GetRawValue()
         {
             return _value;
@@ -103,12 +104,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an ItemID from an IDataReader.
+        /// Reads an ItemID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID Read(IDataReader reader, int i)
+        /// <returns>The ItemID read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is int)
@@ -119,12 +120,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an ItemID from an IDataReader.
+        /// Reads an ItemID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID Read(IDataReader reader, string name)
+        /// <returns>The ItemID read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
@@ -786,25 +787,25 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads the ItemID from an IDataReader.
+        /// Reads the ItemID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the ItemID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID GetItemID(this IDataReader dataReader, int i)
+        /// <returns>The ItemID read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemID GetItemID(this IDataRecord r, int i)
         {
-            return ItemID.Read(dataReader, i);
+            return ItemID.Read(r, i);
         }
 
         /// <summary>
-        /// Reads the ItemID from an IDataReader.
+        /// Reads the ItemID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the ItemID from.</param>
+        /// <param name="r"><see cref="IDataRecord"/> to read the ItemID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The ItemID read from the IDataReader.</returns>
-        public static ItemID GetItemID(this IDataReader dataReader, string name)
+        /// <returns>The ItemID read from the <see cref="IDataRecord"/>.</returns>
+        public static ItemID GetItemID(this IDataRecord r, string name)
         {
-            return ItemID.Read(dataReader, name);
+            return ItemID.Read(r, name);
         }
 
         /// <summary>

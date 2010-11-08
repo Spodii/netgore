@@ -33,9 +33,9 @@ namespace DemoGame
             _gameMessageIDBits = EnumHelper<GameMessage>.BitsRequired;
 
             if (_clientPacketIDBits <= 0)
-                throw new Exception("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
+                throw new TypeLoadException("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
             if (_serverPacketIDBits <= 0)
-                throw new Exception("Invalid required bit amount on ServerPacketIDBits: " + _serverPacketIDBits);
+                throw new TypeLoadException("Invalid required bit amount on ServerPacketIDBits: " + _serverPacketIDBits);
         }
 
         /// <summary>
@@ -74,6 +74,7 @@ namespace DemoGame
         /// Reads a MapEntityIndex from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
         {
             return bitStream.ReadMapEntityIndex(null);
@@ -83,6 +84,7 @@ namespace DemoGame
         /// Reads a <see cref="MapID"/> from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static MapID ReadMapID(this BitStream bitStream)
         {
             return bitStream.ReadMapID(null);
@@ -102,6 +104,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>Vector2 read from the BitStream.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static Vector2 ReadVector2(this BitStream bitStream)
         {
             return bitStream.ReadVector2(null);
@@ -112,6 +115,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="vector2">Vector2 to write.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void Write(this BitStream bitStream, Vector2 vector2)
         {
             bitStream.Write(null, vector2);
@@ -183,6 +187,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="shopItemIndex">ShopItemIndex to write.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void Write(this BitStream bitStream, ShopItemIndex shopItemIndex)
         {
             ((IValueWriter)bitStream).Write(null, shopItemIndex);
@@ -193,6 +198,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="mapEntityIndex">MapEntityIndex to write.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void Write(this BitStream bitStream, MapEntityIndex mapEntityIndex)
         {
             bitStream.Write(null, mapEntityIndex);
@@ -223,6 +229,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="mapID">MapID to write.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void Write(this BitStream bitStream, MapID mapID)
         {
             bitStream.Write(null, mapID);

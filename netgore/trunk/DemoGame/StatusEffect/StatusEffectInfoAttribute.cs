@@ -7,6 +7,7 @@ namespace DemoGame
     /// <summary>
     /// An attribute that describes some additional information for status effects.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"), AttributeUsage(AttributeTargets.Field)]
     public sealed class StatusEffectInfoAttribute : Attribute
     {
         readonly string _description;

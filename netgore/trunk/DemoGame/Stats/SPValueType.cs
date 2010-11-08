@@ -40,12 +40,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an SPValueType from an IDataReader.
+        /// Reads an SPValueType from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The SPValueType read from the IDataReader.</returns>
-        public static SPValueType Read(IDataReader reader, int i)
+        /// <returns>The SPValueType read from the <see cref="IDataRecord"/>.</returns>
+        public static SPValueType Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is short)
@@ -56,12 +56,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an SPValueType from an IDataReader.
+        /// Reads an SPValueType from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The SPValueType read from the IDataReader.</returns>
-        public static SPValueType Read(IDataReader reader, string name)
+        /// <returns>The SPValueType read from the <see cref="IDataRecord"/>.</returns>
+        public static SPValueType Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
