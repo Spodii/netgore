@@ -10,7 +10,7 @@ namespace NetGore.World
     /// for storing an <see cref="Entity"/> in a map file.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class MapFileEntityAttribute : Attribute
+    public sealed class MapFileEntityAttribute : Attribute
     {
         /// <summary>
         /// Cache of the Types found in GetTypes().

@@ -332,6 +332,8 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="index">Index of the item.</param>
         /// <returns>Item at the given index.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index. Use
+        /// <see cref="CanGet"/> to make sure the index is valid.</exception>
         public T this[int index]
         {
             get
