@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NetGore.Collections;
 using NetGore.IO;
 
 namespace NetGore.Graphics.ParticleEngine
 {
-    public sealed class EmitterModifierCollection : List<EmitterModifier>
+    public sealed class EmitterModifierCollection : VirtualList<EmitterModifier>
     {
         /// <summary>
         /// Creates a deep copy of the <see cref="EmitterModifierCollection"/>.
@@ -51,7 +52,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to revert the changes on.</param>
         public void RestoreEmitter(ParticleEmitter emitter)
         {
-            foreach (var modifier in this.Reverse<EmitterModifier>())
+            foreach (var modifier in this.Reverse())
             {
                 modifier.Restore(emitter);
             }
@@ -64,7 +65,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         public void Write(string nodeName, IValueWriter writer)
         {
-            writer.WriteManyNodes(nodeName, ToArray(), (w, mod) => mod.Write(w));
+            writer.WriteManyNodes(nodeName, this.ToArray(), (w, mod) => mod.Write(w));
         }
     }
 }

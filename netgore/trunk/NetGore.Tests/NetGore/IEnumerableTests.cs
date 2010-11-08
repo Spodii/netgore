@@ -13,6 +13,104 @@ namespace NetGore.Tests.NetGore
         #region Unit tests
 
         [Test]
+        public void HasDuplicatesTest01()
+        {
+            var a = new int[] { 0, 1, 2, 3 };
+            Assert.IsFalse(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest02()
+        {
+            var a = new int[] { 0 };
+            Assert.IsFalse(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest03()
+        {
+            var a = new int[] { 0, 0 };
+            Assert.IsTrue(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest04()
+        {
+            var a = new int[] { 0, 0, 1 };
+            Assert.IsTrue(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest05()
+        {
+            var a = new int[] { 0, 1, 2, 0 };
+            Assert.IsTrue(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest06()
+        {
+            var a = new int[] { 0, 1, 2, 0, 2, 2 };
+            Assert.IsTrue(a.HasDuplicates());
+        }
+
+        [Test]
+        public void ContainsSameElementsTest01()
+        {
+            var a = new int[] { };
+            var b = new int[] { };
+            Assert.IsTrue(a.ContainSameElements(b));
+        }
+
+        [Test]
+        public void ContainsSameElementsTest02()
+        {
+            var a = new int[] { 0 };
+            var b = new int[] { };
+            Assert.IsFalse(a.ContainSameElements(b));
+        }
+
+        [Test]
+        public void ContainsSameElementsTest03()
+        {
+            var a = new int[] { };
+            var b = new int[] { 0 };
+            Assert.IsFalse(a.ContainSameElements(b));
+        }
+
+        [Test]
+        public void ContainsSameElementsTest04()
+        {
+            var a = new int[] { 0 };
+            var b = new int[] { 0 };
+            Assert.IsTrue(a.ContainSameElements(b));
+        }
+
+        [Test]
+        public void ContainsSameElementsTest05()
+        {
+            var a = new int[] { 4, 3, 2, 1 };
+            var b = new int[] { 1, 3, 2, 4 };
+            Assert.IsTrue(a.ContainSameElements(b));
+        }
+
+        [Test]
+        public void ContainsSameElementsTest06()
+        {
+            var a = new int[] { 4, 3, 2, 1, 4 };
+            var b = new int[] { 1, 3, 2, 4 };
+            Assert.IsFalse(a.ContainSameElements(b));
+        }
+
+        [Test]
+        public void ContainsSameElementsTest07()
+        {
+            var a = new int[] { 4, 4,3, 3 };
+            var b = new int[] { 4,4,4,3 };
+            Assert.IsFalse(a.ContainSameElements(b));
+        }
+
+        [Test]
         public void ImplodeSplitWithCharTest()
         {
             var l = new List<int>(50);

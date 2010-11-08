@@ -17,7 +17,7 @@ namespace NetGore
         const string _defaultImplodeDelimiter = ", ";
 
         /// <summary>
-        /// Checks if two IEnumerables contain the exact same elements. Order does not matter.
+        /// Checks if two IEnumerables contain the exact same elements and same number of elements. Order does not matter.
         /// </summary>
         /// <typeparam name="T">The Type of object.</typeparam>
         /// <param name="a">The first collection.</param>
@@ -41,23 +41,45 @@ namespace NetGore
             return true;
         }
 
-        public static bool HasDuplicates<T>(this IEnumerable<T> source)
+        /// <summary>
+        /// Checks if there are one or more duplicate elements in the collection.
+        /// </summary>
+        /// <typeparam name="T">The type of element.</typeparam>
+        /// <param name="source">The collection to check for duplicates in.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> to use to compare elements.</param>
+        /// <returns>
+        /// True if the <paramref name="source"/> contains duplicate elements; otherwise false.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        public static bool HasDuplicates<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer)
         {
-            if (source.Count() <= 1)
-                return false;
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (comparer == null)
+                throw new ArgumentNullException("comparer");
 
-            var a = source.ToArray();
+            HashSet<T> hs = new HashSet<T>();
 
-            for (var outer = 0; outer < a.Length - 1; outer++)
+            foreach (var s in source)
             {
-                for (var inner = outer + 1; inner < a.Length; inner++)
-                {
-                    if (a[inner].Equals(a[outer]))
-                        return true;
-                }
+                if (!hs.Add(s))
+                    return true;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Checks if there are one or more duplicate elements in the collection.
+        /// </summary>
+        /// <typeparam name="T">The type of element.</typeparam>
+        /// <param name="source">The collection to check for duplicates in.</param>
+        /// <returns>True if the <paramref name="source"/> contains duplicate elements; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        public static bool HasDuplicates<T>(this IEnumerable<T> source)
+        {
+            return HasDuplicates(source, EqualityComparer<T>.Default);
         }
 
         /// <summary>

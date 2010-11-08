@@ -494,6 +494,7 @@ namespace NetGore.Graphics.GUI
             return new StyledText(s, Color);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static List<List<StyledText>> ToMultiline(IEnumerable<StyledText> texts, bool putInputOnNewLines, Font font,
                                                          int maxLineLength)
         {
@@ -586,6 +587,7 @@ namespace NetGore.Graphics.GUI
             return ret;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static List<List<StyledText>> ToMultiline(IEnumerable<StyledText> texts, bool putInputOnNewLines)
         {
             var ret = new List<List<StyledText>>();

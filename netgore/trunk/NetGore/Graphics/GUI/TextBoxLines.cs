@@ -223,6 +223,7 @@ namespace NetGore.Graphics.GUI
         /// broken from being too long will be concatenated back into a single line.
         /// </summary>
         /// <returns>A List containing a List of the <see cref="StyledText"/>s that each line is composed of.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public List<List<StyledText>> GetText()
         {
             var retLines = new List<List<StyledText>>();

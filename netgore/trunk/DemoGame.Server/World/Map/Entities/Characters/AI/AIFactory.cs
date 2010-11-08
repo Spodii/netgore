@@ -6,7 +6,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Factory for the AI.
     /// </summary>
-    public class AIFactory : AIFactoryBase<Character>
+    public sealed class AIFactory : AIFactoryBase<Character>
     {
         static readonly AIFactory _instance;
 

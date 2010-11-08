@@ -257,14 +257,8 @@ namespace NetGore.Graphics
             var nodes = RootNode.GetAllNodes();
 
             // Check for duplicate names
-            for (var i = 0; i < nodes.Count - 1; i++)
-            {
-                for (var j = i + 1; j < nodes.Count; j++)
-                {
-                    if (nodes[i].Name == nodes[j].Name)
-                        return false;
-                }
-            }
+            if (nodes.Select(x => x.Name).HasDuplicates(StringComparer.Ordinal))
+                return false;
 
             return true;
         }
