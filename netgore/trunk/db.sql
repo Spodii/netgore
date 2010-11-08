@@ -35,7 +35,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com',255,'2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-01 22:09:36',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com',255,'2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com',255,'2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-08 13:11:43',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com',255,'2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +147,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=131;
+) TYPE=InnoDB AUTO_INCREMENT=57;
 
 --
 -- Dumping data for table `account_ips`
@@ -155,6 +155,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-02 08:51:09'),(2,1,16777343,'2010-11-02 08:51:12'),(3,1,16777343,'2010-11-02 08:51:13'),(4,1,16777343,'2010-11-02 08:51:14'),(5,1,16777343,'2010-11-02 09:00:59'),(6,1,16777343,'2010-11-02 09:03:46'),(7,1,16777343,'2010-11-02 09:05:41'),(8,1,16777343,'2010-11-02 10:18:14'),(9,1,16777343,'2010-11-02 10:29:54'),(10,1,16777343,'2010-11-02 18:03:54'),(11,1,16777343,'2010-11-02 18:06:41'),(12,1,16777343,'2010-11-02 18:07:47'),(13,1,16777343,'2010-11-02 18:08:25'),(14,1,16777343,'2010-11-02 18:09:03'),(15,1,16777343,'2010-11-02 18:10:07'),(16,1,16777343,'2010-11-02 18:10:58'),(17,1,16777343,'2010-11-02 18:11:29'),(18,1,16777343,'2010-11-02 18:12:27'),(19,1,16777343,'2010-11-02 18:13:11'),(20,1,16777343,'2010-11-02 18:13:37'),(21,1,16777343,'2010-11-02 18:13:58'),(22,1,16777343,'2010-11-02 18:16:28'),(23,1,16777343,'2010-11-02 18:16:52'),(24,1,16777343,'2010-11-02 18:51:09'),(25,1,16777343,'2010-11-04 19:25:23'),(26,1,16777343,'2010-11-04 19:27:28'),(27,1,16777343,'2010-11-04 19:28:01'),(28,1,16777343,'2010-11-04 19:28:54'),(29,1,16777343,'2010-11-04 19:32:08'),(30,1,16777343,'2010-11-04 19:32:32'),(31,1,16777343,'2010-11-04 19:34:24'),(32,1,16777343,'2010-11-04 19:34:36'),(33,1,16777343,'2010-11-04 19:35:04'),(34,1,16777343,'2010-11-04 19:35:35'),(35,1,16777343,'2010-11-04 19:44:05'),(36,1,16777343,'2010-11-04 19:45:06'),(37,1,16777343,'2010-11-04 19:46:41'),(38,1,16777343,'2010-11-04 20:03:30'),(39,1,16777343,'2010-11-04 20:04:44'),(40,1,16777343,'2010-11-04 20:07:34'),(41,1,16777343,'2010-11-04 20:09:17'),(42,1,16777343,'2010-11-04 20:09:21'),(43,1,16777343,'2010-11-04 20:09:45'),(44,1,16777343,'2010-11-04 20:09:54'),(45,1,16777343,'2010-11-04 20:10:23'),(46,1,16777343,'2010-11-04 20:10:30'),(47,1,16777343,'2010-11-04 20:10:49'),(48,1,16777343,'2010-11-04 20:17:37'),(49,1,16777343,'2010-11-07 11:16:32'),(50,1,16777343,'2010-11-07 11:33:29'),(51,1,16777343,'2010-11-07 11:38:33'),(52,1,16777343,'2010-11-07 12:44:36'),(53,1,16777343,'2010-11-07 19:52:17'),(54,1,16777343,'2010-11-08 13:11:43');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,7 +326,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,NULL,'Test',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202020,51,1515,248,100,100,100,100,1,1,1,1,3,1),(2,1,'Test A',NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,1,'Test B',NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,'testchar',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
+INSERT INTO `character` VALUES (0,NULL,'Test',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202020,51,1515,247,100,100,100,100,1,1,1,1,3,2),(2,1,'Test A',NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,1,'Test B',NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,'testchar',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -983,7 +984,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-11-01 22:09:58');
+INSERT INTO `server_time` VALUES ('2010-11-08 13:38:48');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1362,7 +1363,7 @@ CREATE TABLE `world_stats_network` (
   `sent_packets` mediumint(8) unsigned NOT NULL COMMENT 'The average packets sent per second since the last snapshot.',
   `sent_messages` mediumint(8) unsigned NOT NULL COMMENT 'The average messages sent per second since the last snapshot.',
   PRIMARY KEY (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=884;
+) TYPE=MyISAM AUTO_INCREMENT=262;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1396,7 +1397,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=23;
+) TYPE=InnoDB AUTO_INCREMENT=4;
 
 --
 -- Dumping data for table `world_stats_npc_kill_user`
@@ -1554,7 +1555,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_kill_npc`
@@ -1579,7 +1580,7 @@ CREATE TABLE `world_stats_user_level` (
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   PRIMARY KEY (`id`)
-) TYPE=InnoDB AUTO_INCREMENT=2;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_level`
@@ -1640,7 +1641,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 FUNCTION `create_user_on_account`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `create_user_on_account`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
 BEGIN
 		
 		DECLARE character_count INT DEFAULT 0;
@@ -1731,7 +1732,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `delete_user_on_account`(characterID INT)
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `delete_user_on_account`(characterID INT)
 BEGIN
 
 	UPDATE `account_character`
@@ -1845,7 +1846,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `rebuild_views`()
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_views`()
 BEGIN
 	
 	CALL rebuild_view_npc_character();
@@ -1867,7 +1868,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `rebuild_view_npc_character`()
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_view_npc_character`()
 BEGIN
 	
 	DROP VIEW IF EXISTS `view_npc_character`;
@@ -1889,7 +1890,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`%`*/ /*!50003 PROCEDURE `rebuild_view_user_character`()
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_view_user_character`()
 BEGIN
 	
 	DROP VIEW IF EXISTS `view_user_character`;
@@ -1946,4 +1947,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-01 22:34:26
+-- Dump completed on 2010-11-08 13:42:33
