@@ -530,7 +530,7 @@ namespace NetGore.IO
                         break;
 
                     default: // Compiler complains if we don't assign ret...
-                        throw new Exception("Huh... how did this happen?");
+                        throw new ArithmeticException("Huh... how did this happen?");
                 }
 
                 // Update the stream position
@@ -791,7 +791,7 @@ namespace NetGore.IO
                         break;
 
                     default:
-                        throw new Exception("Huh... how did this happen?");
+                        throw new ArithmeticException("Huh... how did this happen?");
                 }
 
                 // Update the stream position

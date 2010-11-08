@@ -504,3 +504,4 @@ using System.Linq;
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1053:StaticHolderTypesShouldNotHaveConstructors", Scope = "type", Target = "SFML.Audio.Listener")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Scope = "member", Target = "SFML.Graphics.Shader.#sfShader_Create()")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Event", Scope = "type", Target = "SFML.Window.Event")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Scope = "member", Target = "SFML.Graphics.BoundingBox.#CreateFromPoints(System.Collections.Generic.IEnumerable`1<SFML.Graphics.Vector3>)")]

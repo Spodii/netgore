@@ -115,11 +115,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\PropertySyncAIID.cs" />
+    <Compile Include="Audio\Exceptions\AudioException.cs" />
     <Compile Include="Audio\AudioManager.cs" />
     <Compile Include="Audio\IAudioManager.cs" />
+    <Compile Include="Audio\Exceptions\MusicException.cs" />
     <Compile Include="Audio\Music\IMusicInfo.cs" />
     <Compile Include="Audio\Music\IMusicManager.cs" />
     <Compile Include="Audio\Music\IMusicManagerExtensions.cs" />
+    <Compile Include="Audio\Exceptions\SoundException.cs" />
     <Compile Include="Audio\Sound\ISoundInfo.cs" />
     <Compile Include="Audio\Sound\ISoundManager.cs" />
     <Compile Include="Audio\Sound\ISoundManagerExtensions.cs" />

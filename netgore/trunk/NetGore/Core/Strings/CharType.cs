@@ -6,7 +6,7 @@ namespace NetGore
     /// <summary>
     /// Describes the different types of characters in a string.
     /// </summary>
-    [Flags]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags"), Flags]
     public enum CharType : short
     {
         /// <summary>

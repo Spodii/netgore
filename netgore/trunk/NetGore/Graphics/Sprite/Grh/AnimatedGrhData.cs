@@ -94,7 +94,7 @@ namespace NetGore.Graphics
                     const string errmsg =
                         "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
                     var err = string.Format(errmsg, frames[i], this, i, frameIndices.Count);
-                    throw new Exception(err);
+                    throw new GrhDataException(this, err);
                 }
             }
 
