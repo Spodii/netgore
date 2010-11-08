@@ -126,20 +126,30 @@ namespace NetGore.Db.Schema
         }
 
         /// <summary>
-        /// Reads the <see cref="ColumnSchema"/> values from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="ColumnSchema"/> values from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="r">The <see cref="IDataReader"/> to read the values from.</param>
+        /// <param name="r">The <see cref="IDataRecord"/> to read the values from.</param>
         /// <returns>The read values.</returns>
-        public static IDictionary<string, string> ReadValues(IDataReader r)
+        public static IDictionary<string, string> ReadValues(IDataRecord r)
         {
             var d = new Dictionary<string, string>(_valueNames.Length);
             foreach (var v in ValueNames)
             {
                 var ordinal = r.GetOrdinal(v);
                 if (r.IsDBNull(ordinal))
+                {
+                    // Value is null
+
+                    // ReSharper disable AssignNullToNotNullAttribute
                     d.Add(v, null);
+                    // ReSharper restore AssignNullToNotNullAttribute
+                }
                 else
-                    d.Add(v, r.GetString(ordinal));
+                {
+                    // Value is not null
+                    var i = r.GetString(ordinal);
+                    d.Add(v, i);
+                }
             }
 
             return d;
