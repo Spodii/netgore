@@ -16,19 +16,6 @@ namespace NetGore.Editor.EditorTool
     /// </summary>
     public sealed class ToolManager : IDisposable
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="ToolManager"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ToolManager"/> the event came from.</param>
-        public delegate void EventHandler(ToolManager sender);
-
-        /// <summary>
-        /// Delegate for handling events from the <see cref="ToolManager"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ToolManager"/> the event came from.</param>
-        /// <param name="tool">The <see cref="Tool"/> that the event relates to.</param>
-        public delegate void ToolEventHandler(ToolManager sender, Tool tool);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -94,12 +81,12 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Notifies listeners when a <see cref="Tool"/> instance has been added to this <see cref="ToolManager"/>.
         /// </summary>
-        public event ToolEventHandler ToolAdded;
+        public event ToolManagerToolEventHandler ToolAdded;
 
         /// <summary>
         /// Notifies listeners when a <see cref="Tool"/> instance has been removed from this <see cref="ToolManager"/>.
         /// </summary>
-        public event ToolEventHandler ToolRemoved;
+        public event ToolManagerToolEventHandler ToolRemoved;
 
         /// <summary>
         /// Gets all of the enabled <see cref="Tool"/>s.

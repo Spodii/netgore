@@ -233,11 +233,16 @@
     <Compile Include="Docking\Win32\Enums\WindowExStyles.cs" />
     <Compile Include="Docking\Win32\Enums\WindowStyles.cs" />
     <Compile Include="Docking\Win32\NativeMethods.cs" />
+    <Compile Include="EditorTool\EventHandlers\ToolEventHandler.cs" />
+    <Compile Include="EditorTool\EventHandlers\ToolManagerEventHandler.cs" />
+    <Compile Include="EditorTool\EventHandlers\ToolManagerToolEventHandler.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\IToolTargetContainer.cs" />
     <Compile Include="EditorTool\ToolSettings.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\IToolTargetContainerExtensions.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\IToolTargetMapContainer.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\ToolTargetContainerCollection.cs" />
+    <Compile Include="EditorTool\EventHandlers\ToolValueChangedEventHandler.cs" />
+    <Compile Include="EditorTool\ToolTargetContainer\ToolTargetContainerCollectionEventHandler.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\MouseEventArgsExtensions.cs" />
@@ -254,6 +259,7 @@
     <Compile Include="Grh\Controls\GrhTreeView\GrhPreviewScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewEditGrhDataEventHandler.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
     <Compile Include="GridAlignerBase.cs" />
     <Compile Include="Input.cs" />
@@ -396,10 +402,6 @@
       <DependentUpon>EditGrhForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ListBoxExtensions.cs" />
-    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeNodeMouseClickEvent.cs" />
-    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewCancelEvent.cs" />
-    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewContextMenuItemClickEvent.cs" />
-    <Compile Include="Grh\Controls\GrhTreeView\Events\GrhTreeViewEvent.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewFolderNode.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewNode.cs" />
     <Compile Include="Grh\MapGrhWalls.cs" />

@@ -342,10 +342,10 @@ namespace NetGore.Editor.Docking
                     return;
 
                 if (!Enum.IsDefined(typeof(DocumentStyle), value))
-                    throw new InvalidEnumArgumentException();
+                    throw new InvalidEnumArgumentException("value", (int)value, typeof(DocumentStyle));
 
                 if (value == DocumentStyle.SystemMdi && DockWindows[DockState.Document].VisibleNestedPanes.Count > 0)
-                    throw new InvalidEnumArgumentException();
+                    throw new InvalidEnumArgumentException("value", (int)value, typeof(DocumentStyle));
 
                 m_documentStyle = value;
 
@@ -528,7 +528,7 @@ namespace NetGore.Editor.Docking
         internal void AddContent(IDockContent content)
         {
             if (content == null)
-                throw (new ArgumentNullException());
+                throw new ArgumentNullException("content");
 
             if (!Contents.Contains(content))
             {
@@ -839,7 +839,7 @@ namespace NetGore.Editor.Docking
         internal void RemoveContent(IDockContent content)
         {
             if (content == null)
-                throw (new ArgumentNullException());
+                throw new ArgumentNullException("content");
 
             if (Contents.Contains(content))
             {

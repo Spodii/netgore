@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Editor
+﻿using NetGore.Editor.Grhs;
+
+namespace DemoGame.Editor
 {
     partial class GrhTreeViewForm
     {
@@ -41,7 +43,7 @@
             this.gtv.SelectedImageIndex = 0;
             this.gtv.Size = new System.Drawing.Size(284, 262);
             this.gtv.TabIndex = 0;
-            this.gtv.GrhAfterSelect += new NetGore.Editor.Grhs.GrhTreeViewEvent(this.gtv_GrhAfterSelect);
+            this.gtv.GrhAfterSelect += new System.EventHandler<GrhTreeViewEventArgs>(this.gtv_GrhAfterSelect);
             // 
             // GrhTreeViewForm
             // 

@@ -12,13 +12,6 @@ namespace NetGore.Editor.EditorTool
     /// </summary>
     public class ToolTargetContainerCollection : IEnumerable<IToolTargetContainer>
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="ToolTargetContainerCollection"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ToolTargetContainerCollection"/> the event came from.</param>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> related to the event.</param>
-        public delegate void EventHandler(ToolTargetContainerCollection sender, IToolTargetContainer c);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<IToolTargetContainer> _buffer = new List<IToolTargetContainer>();
@@ -26,12 +19,12 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Notifies listeners when a <see cref="IToolTargetContainer"/> is successfully added to this collection.
         /// </summary>
-        public event EventHandler Added;
+        public event ToolTargetContainerCollectionEventHandler Added;
 
         /// <summary>
         /// Notifies listeners when a <see cref="IToolTargetContainer"/> is successfully removed from this collection.
         /// </summary>
-        public event EventHandler Removed;
+        public event ToolTargetContainerCollectionEventHandler Removed;
 
         /// <summary>
         /// Adds a <see cref="IToolTargetContainer"/> to this collection.

@@ -143,7 +143,8 @@ namespace NetGore.Editor.Docking
                 if (currentIndex == index)
                     return content;
             }
-            throw (new ArgumentOutOfRangeException());
+
+            throw new ArgumentOutOfRangeException("index");
         }
 
         public new int IndexOf(IDockContent content)

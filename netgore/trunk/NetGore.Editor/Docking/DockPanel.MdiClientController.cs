@@ -146,7 +146,7 @@ namespace NetGore.Editor.Docking
                 {
                     // Error-check the enum.
                     if (!Enum.IsDefined(typeof(BorderStyle), value))
-                        throw new InvalidEnumArgumentException();
+                        throw new InvalidEnumArgumentException("value", (int)value, typeof(BorderStyle));
 
                     m_borderStyle = value;
 

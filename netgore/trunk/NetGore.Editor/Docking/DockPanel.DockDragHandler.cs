@@ -262,7 +262,7 @@ namespace NetGore.Editor.Docking
                         set
                         {
                             if (value != DockStyle && value != DockStyle.None)
-                                throw new InvalidEnumArgumentException();
+                                throw new InvalidEnumArgumentException("value", (int)value, typeof(DockStyle));
 
                             if (m_status == value)
                                 return;
