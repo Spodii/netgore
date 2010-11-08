@@ -22,7 +22,6 @@ using NetGore.Stats;
 using NetGore.World;
 using SFML.Graphics;
 
-#pragma warning disable 168
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local
 
@@ -33,15 +32,6 @@ namespace DemoGame.Client
     /// </summary>
     public partial class ClientPacketHandler : IGetTime
     {
-        /// <summary>
-        /// Handles when a CreateAccount message is received.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="successful">If the account was successfully created.</param>
-        /// <param name="errorMessage">If <paramref name="successful"/> is false, contains the reason
-        /// why the account failed to be created.</param>
-        public delegate void CreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly IQuestDescriptionCollection _questDescriptions = QuestDescriptionCollection.Create(ContentPaths.Build);
 
@@ -227,7 +217,9 @@ namespace DemoGame.Client
         {
             var questID = r.ReadQuestID();
             var successful = r.ReadBool();
+#pragma warning disable 168
             var accepted = r.ReadBool();
+#pragma warning restore 168
 
             if (successful)
             {
@@ -869,7 +861,9 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.StartChatDialog)]
         void RecvStartChatDialog(IIPSocket conn, BitStream r)
         {
+#pragma warning disable 168
             var npcIndex = r.ReadMapEntityIndex();
+#pragma warning restore 168
             var dialogIndex = r.ReadNPCChatDialogID();
 
             var dialog = ClientNPCChatManager.Instance[dialogIndex];
@@ -1005,7 +999,7 @@ namespace DemoGame.Client
                 return;
 
             // Grab the one who used this DynamicEntity (we can still use it, we'll just pass null)
-            var usedBy = Map.GetDynamicEntity(usedEntityIndex);
+            var usedBy = Map.GetDynamicEntity(usedByIndex);
             if (usedBy == null)
                 return;
 
