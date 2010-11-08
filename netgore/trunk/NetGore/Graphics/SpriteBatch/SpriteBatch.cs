@@ -39,6 +39,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="asset">The asset to check if valid.</param>
         /// <returns>True if the <paramref name="asset"/> is in a valid state to be used; otherwise false.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         protected static bool IsAssetValid(Image asset)
         {
             if (asset == null || asset.IsDisposed)
@@ -52,6 +53,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="asset">The asset to check if valid.</param>
         /// <returns>True if the <paramref name="asset"/> is in a valid state to be used; otherwise false.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         protected static bool IsAssetValid(Font asset)
         {
             if (asset == null || asset.IsDisposed)

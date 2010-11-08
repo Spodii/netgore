@@ -6,7 +6,7 @@ namespace NetGore.AI
     /// <summary>
     /// Attribute used to denote a class as being for handling AI. This must be attached to all classes handling AI.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"), AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public sealed class AIAttribute : Attribute
     {
         readonly AIID _id;

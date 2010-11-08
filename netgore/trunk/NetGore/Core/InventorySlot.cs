@@ -102,12 +102,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads an InventorySlot from an IDataReader.
+        /// Reads an InventorySlot from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The InventorySlot read from the IDataReader.</returns>
-        public static InventorySlot Read(IDataReader reader, int i)
+        /// <returns>The InventorySlot read from the <see cref="IDataRecord"/>.</returns>
+        public static InventorySlot Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is byte)
@@ -118,12 +118,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads an InventorySlot from an IDataReader.
+        /// Reads an InventorySlot from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The InventorySlot read from the IDataReader.</returns>
-        public static InventorySlot Read(IDataReader reader, string name)
+        /// <returns>The InventorySlot read from the <see cref="IDataRecord"/>.</returns>
+        public static InventorySlot Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }

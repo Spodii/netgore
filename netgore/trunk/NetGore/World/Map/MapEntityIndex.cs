@@ -106,12 +106,12 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Reads an MapEntityIndex from an IDataReader.
+        /// Reads an MapEntityIndex from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
-        public static MapEntityIndex Read(IDataReader reader, int i)
+        /// <returns>The MapEntityIndex read from the <see cref="IDataRecord"/>.</returns>
+        public static MapEntityIndex Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is ushort)
@@ -122,12 +122,12 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Reads an MapEntityIndex from an IDataReader.
+        /// Reads an MapEntityIndex from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
-        public static MapEntityIndex Read(IDataReader reader, string name)
+        /// <returns>The MapEntityIndex read from the <see cref="IDataRecord"/>.</returns>
+        public static MapEntityIndex Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }

@@ -102,12 +102,12 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Reads an SoundID from an IDataReader.
+        /// Reads an SoundID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The SoundID read from the IDataReader.</returns>
-        public static SoundID Read(IDataReader reader, int i)
+        /// <returns>The SoundID read from the <see cref="IDataRecord"/>.</returns>
+        public static SoundID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is ushort)
@@ -118,12 +118,12 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Reads an SoundID from an IDataReader.
+        /// Reads an SoundID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The SoundID read from the IDataReader.</returns>
-        public static SoundID Read(IDataReader reader, string name)
+        /// <returns>The SoundID read from the <see cref="IDataRecord"/>.</returns>
+        public static SoundID Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }

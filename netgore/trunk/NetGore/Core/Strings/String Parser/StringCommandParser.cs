@@ -19,7 +19,7 @@ namespace NetGore
         /// </summary>
         /// <param name="method">Method to get the parameter information for.</param>
         /// <returns>The parameter information for the <paramref name="method"/>.</returns>
-        public static string GetParameterInfo(MethodInfo method)
+        public static string GetParameterInfo(MethodBase method)
         {
             var parameters = method.GetParameters();
             if (parameters.Length == 0)

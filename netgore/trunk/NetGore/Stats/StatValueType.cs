@@ -142,18 +142,18 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Reads a <see cref="StatValueType"/> from an <see cref="IDataReader"/>.
+        /// Reads a <see cref="StatValueType"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader"><see cref="IDataReader"/> to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The <see cref="StatValueType"/> read from the <see cref="IDataReader"/>.</returns>
-        public static StatValueType Read(IDataReader reader, string name)
+        /// <returns>The <see cref="StatValueType"/> read from the <see cref="IDataRecord"/>.</returns>
+        public static StatValueType Read(IDataRecord reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads a <see cref="StatValueType"/> from an IValueReader.
+        /// Reads a <see cref="StatValueType"/> from a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
         /// <returns>The <see cref="StatValueType"/> read from the <see cref="BitStream"/>.</returns>

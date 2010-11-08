@@ -102,12 +102,12 @@ namespace NetGore.AI
         }
 
         /// <summary>
-        /// Reads an AIID from an IDataReader.
+        /// Reads an AIID from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The AIID read from the IDataReader.</returns>
-        public static AIID Read(IDataReader reader, int i)
+        /// <returns>The AIID read from the <see cref="IDataRecord"/>.</returns>
+        public static AIID Read(IDataRecord reader, int i)
         {
             var value = reader.GetValue(i);
             if (value is ushort)
