@@ -291,8 +291,7 @@
     <Compile Include="Graphics\GUI\Controls\TextBox.cs" />
     <Compile Include="Graphics\GUI\DragDropProviderHelper.cs" />
     <Compile Include="Graphics\GUI\EditableTextHandler.cs" />
-    <Compile Include="Graphics\GUI\EventArgs\ControlEventHandler.cs" />
-    <Compile Include="Graphics\GUI\EventArgs\TextEnteredEventHandler.cs" />
+    <Compile Include="Graphics\GUI\Control Bases\ControlEventHandler.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControl.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControlCollection.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControlEventHandler.cs" />
