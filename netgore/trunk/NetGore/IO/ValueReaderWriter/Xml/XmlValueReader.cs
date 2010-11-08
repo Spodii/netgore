@@ -95,14 +95,13 @@ namespace NetGore.IO
             return new XmlValueReader(reader, rootNodeName, false, useEnumNames);
         }
 
-        static ArgumentException CreateDuplicateKeysException(string key)
+        static DuplicateKeyException CreateDuplicateKeysException(string key)
         {
-            const string parameterName = "name";
             const string errmsg =
                 "Cannot read the value of key `{0}` since multiple values were found with that key." +
                 " This method requires that the key's name is unique.";
 
-            return new ArgumentException(string.Format(errmsg, key), parameterName);
+            return new DuplicateKeyException(string.Format(errmsg, key));
         }
 
         /// <summary>
@@ -134,12 +133,11 @@ namespace NetGore.IO
             return new XmlValueReader(xmlReader, rootNodeName, true, useEnumNames);
         }
 
-        static ArgumentException CreateKeyNotFoundException(string key)
+        static KeyNotFoundException CreateKeyNotFoundException(string key)
         {
-            const string parameterName = "parameterName";
             const string errmsg = "Cannot read the value of key `{0}` since no key with that name was found.";
 
-            return new ArgumentException(string.Format(errmsg, key), parameterName);
+            return new KeyNotFoundException(string.Format(errmsg, key));
         }
 
         /// <summary>
@@ -228,13 +226,19 @@ namespace NetGore.IO
                         if (string.Equals(reader.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
                             return ret;
                         else
-                            throw new Exception(string.Format("Was expecting end of element `{0}`, but found `{1}`.", rootNodeName,
+                        {
+                            const string errmsg = "Was expecting end of element `{0}`, but found `{1}`.";
+                            throw new ArgumentException(string.Format(errmsg, rootNodeName,
                                                               reader.Name));
+                        }
                 }
             }
 
             if (!readAllContent)
-                throw new Exception("XmlReader was read to the end, but this was not expected to happen.");
+            {
+                const string errmsg = "XmlReader was read to the end, but this was not expected to happen.";
+                throw new ArgumentException(errmsg);
+            }
 
             return ret;
         }

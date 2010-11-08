@@ -73,7 +73,7 @@ namespace NetGore.Network
                     {
                         const string errmsg = "Multiple MessageHandlerAttributes found for method `{0}`.";
                         Debug.Fail(string.Format(errmsg, method.Name));
-                        throw new Exception(string.Format(errmsg, method.Name));
+                        throw new ArgumentException(string.Format(errmsg, method.Name), "source");
                     }
 
                     // Create the message processor for the method
@@ -84,7 +84,7 @@ namespace NetGore.Network
                             const string errmsg =
                                 "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
                             Debug.Fail(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method, method));
-                            throw new Exception(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method, method));
+                            throw new DuplicateKeyException(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method, method));
                         }
 
                         var del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);

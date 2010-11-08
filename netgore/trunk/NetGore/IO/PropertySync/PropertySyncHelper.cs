@@ -55,8 +55,10 @@ namespace NetGore.IO.PropertySync
                 if (attribs.Length > 1)
                 {
                     const string errmsg = "Multiple PropertySyncHandlerAttributes found on type `{0}`";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, type);
                     Debug.Fail(string.Format(errmsg, type));
-                    throw new Exception(string.Format(errmsg, type));
+                    throw new TypeLoadException(string.Format(errmsg, type));
                 }
 
                 // Grab the attribute so we can find out what type this class handles
@@ -245,7 +247,7 @@ namespace NetGore.IO.PropertySync
                         var err = string.Format(errmsg, property);
                         log.FatalFormat(err);
                         Debug.Fail(err);
-                        throw new Exception(err);
+                        throw new TypeLoadException(err);
                     }
 
                     // Get the attribute attached to this Property
@@ -262,7 +264,7 @@ namespace NetGore.IO.PropertySync
                         var err = string.Format(errmsg, key, svai.Name);
                         log.FatalFormat(err);
                         Debug.Fail(err);
-                        throw new Exception(err);
+                        throw new TypeLoadException(err);
                     }
 
                     // Add the property the list

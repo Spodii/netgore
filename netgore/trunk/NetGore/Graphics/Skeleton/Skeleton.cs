@@ -275,7 +275,7 @@ namespace NetGore.Graphics
             // Add the root node (which should be the only one without a parent)
             var nodesWithoutParents = loadedNodes.Except(nodesWithParents.Select(x => x.Key));
             if (nodesWithoutParents.Count() != 1)
-                throw new Exception("Invalid number of parentless nodes. Was only expected one!");
+                throw new InvalidOperationException("Invalid number of parentless nodes. Was only expected one!");
 
             _rootNode = nodesWithoutParents.First();
 
@@ -291,7 +291,7 @@ namespace NetGore.Graphics
                 {
                     const string errmsg = "Unable to find parent node `{0}` for node `{1}`.";
                     var err = string.Format(errmsg, parentName, node.Name);
-                    throw new Exception(err);
+                    throw new InvalidOperationException(err);
                 }
 
                 node.Parent = parentNode;
@@ -321,7 +321,7 @@ namespace NetGore.Graphics
 
             // Validate the skeleton
             if (!IsValid())
-                throw new Exception("Skeleton returned false for IsValid() - unable to save!");
+                throw new InvalidOperationException("Skeleton returned false for IsValid() - unable to save!");
 
             // Write the file
             using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))

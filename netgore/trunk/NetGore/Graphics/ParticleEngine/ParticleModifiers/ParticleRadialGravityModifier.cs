@@ -58,7 +58,7 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
             set
             {
                 if (value <= float.Epsilon)
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("value");
 
                 _radius = value;
                 _radiusSquared = _radius * _radius;

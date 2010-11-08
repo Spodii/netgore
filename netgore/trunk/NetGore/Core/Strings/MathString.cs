@@ -178,44 +178,47 @@ namespace NetGore
         /// <returns>Resulting value of the function as a double</returns>
         static double ParseFunction(double value, string function)
         {
+            function = function.ToUpperInvariant();
+
             switch (function)
             {
-                case "abs":
+                case "ABS":
                     return Math.Abs(value);
-                case "acos":
+                case "ACOS":
                     return Math.Acos(value);
-                case "asin":
+                case "ASIN":
                     return Math.Asin(value);
-                case "atan":
+                case "ATAN":
                     return Math.Atan(value);
-                case "ceiling":
+                case "CEIL":
+                case "CEILING":
                     return Math.Ceiling(value);
-                case "cos":
+                case "COS":
                     return Math.Cos(value);
-                case "cosh":
+                case "COSH":
                     return Math.Cosh(value);
-                case "exp":
+                case "EXP":
                     return Math.Exp(value);
-                case "floor":
+                case "FLOOR":
                     return Math.Floor(value);
-                case "log":
+                case "LOG":
                     return Math.Log10(value);
-                case "round":
+                case "ROUND":
                     return Math.Round(value, 0);
-                case "sign":
+                case "SIGN":
                     return Math.Sign(value);
-                case "sin":
+                case "SIN":
                     return Math.Sin(value);
-                case "sinh":
+                case "SINH":
                     return Math.Sinh(value);
-                case "sqrt":
+                case "SQRT":
                     return Math.Sqrt(value);
-                case "tan":
+                case "TAN":
                     return Math.Tan(value);
-                case "tanh":
+                case "TANH":
                     return Math.Tanh(value);
                 default:
-                    throw new Exception(string.Format("Unrecognized function '{0}'", function));
+                    throw new ArgumentException(string.Format("Unrecognized function '{0}'", function), function);
             }
         }
 
@@ -230,13 +233,14 @@ namespace NetGore
             // Find the operator used in the problem
             var match = _opFinder.Match(text);
             if (!match.Success)
-                throw new Exception(string.Format("Failed to find operator in the text '{0}'", text));
+                throw new ArgumentException(string.Format("Failed to find operator in the text '{0}'", text), "text");
+
             var op = match.Value;
 
             // Find the values (should only be 2 - left and right side of the operator)
             var values = text.Split(new[] { op }, StringSplitOptions.RemoveEmptyEntries);
             if (values.Length != 2)
-                throw new Exception(string.Format("Failed to acquire values in the text '{0}'", text));
+                throw new ArgumentException(string.Format("Failed to acquire values in the text '{0}'", text), "text");
 
             var v1 = double.Parse(values[0]);
             var v2 = double.Parse(values[1]);
@@ -255,7 +259,7 @@ namespace NetGore
                 case "^":
                     return Math.Pow(v1, v2);
                 default:
-                    throw new Exception(string.Format("Unrecognized operator '{0}'", op));
+                    throw new ArgumentException(string.Format("Unrecognized operator '{0}'", op), "text");
             }
         }
 

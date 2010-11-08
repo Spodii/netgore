@@ -43,18 +43,29 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
         /// </summary>
-        /// <param name="key">The key that caused the <see cref="DuplicateKeyException"/>.</param>
+        /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public DuplicateKeyException(string key, Exception innerException) : base(GetMessage(key), innerException)
+        public DuplicateKeyException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
         /// </summary>
-        /// <param name="key">The key that caused the <see cref="DuplicateKeyException"/>.</param>
-        public DuplicateKeyException(string key) : base(GetMessage(key))
+        /// <param name="message">The message.</param>
+        public DuplicateKeyException(string message) : base(message)
         {
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DuplicateKeyException"/> with the message internally generated.
+        /// </summary>
+        /// <param name="key">The value of the key.</param>
+        /// <returns>The <see cref="DuplicateKeyException"/> instance.</returns>
+        public static DuplicateKeyException CreateForKey(string key)
+        {
+            return new DuplicateKeyException(GetMessage(key));
         }
 
         /// <summary>
