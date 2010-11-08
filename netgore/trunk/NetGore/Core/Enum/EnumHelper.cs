@@ -67,6 +67,7 @@ namespace NetGore
         /// Gets the number of bits required to write the enums values.
         /// </summary>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static int BitsRequired
         {
             get
@@ -82,6 +83,7 @@ namespace NetGore
         /// Gets the maximum defined enum value.
         /// </summary>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static int MaxValue
         {
             get
@@ -97,6 +99,7 @@ namespace NetGore
         /// Gets the minimum defined enum value.
         /// </summary>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static int MinValue
         {
             get
@@ -113,6 +116,7 @@ namespace NetGore
         /// some operations may not be available. Whether or not the operations are supported depends on the underlying
         /// type of the enum.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static bool SupportsCastOperations
         {
             get { return _toInt != null; }
@@ -121,6 +125,7 @@ namespace NetGore
         /// <summary>
         /// Gets the defined values in the Enum.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static IEnumerable<T> Values
         {
             get { return _values; }
@@ -175,6 +180,7 @@ namespace NetGore
         /// <param name="value">The int value.</param>
         /// <returns>The <paramref name="value"/> casted to type <typeparamref name="T"/>.</returns>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T FromInt(int value)
         {
             if (!SupportsCastOperations)
@@ -193,6 +199,7 @@ namespace NetGore
         /// <exception cref="ArgumentException"><typeparamref name="T"/> is not an <see cref="Enum"/> -or-
         /// <paramref name="value"/> is an valid enum name -or-
         /// <paramref name="value"/> is a name, but not one of the named constants defined for the enumeration.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T FromName(string value)
         {
             return (T)Enum.Parse(typeof(T), value);
@@ -203,6 +210,7 @@ namespace NetGore
         /// </summary>
         /// <returns>A Func that will cast an int to <typeparamref name="T"/>.</returns>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static Func<int, T> GetFromIntFunc()
         {
             if (!SupportsCastOperations)
@@ -216,6 +224,7 @@ namespace NetGore
         /// </summary>
         /// <returns>A Func that will cast <typeparamref name="T"/> to an int.</returns>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static Func<T, int> GetToIntFunc()
         {
             if (!SupportsCastOperations)
@@ -231,6 +240,7 @@ namespace NetGore
         /// <param name="value">The value.</param>
         /// <returns>True if the <paramref name="value"/> exists in the Enum of type
         /// <typeparamref name="T"/>; otherwise false.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static bool IsDefined(T value)
         {
             return Enum.IsDefined(typeof(T), value);
@@ -244,6 +254,7 @@ namespace NetGore
         /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
         /// <exception cref="ArgumentException"><paramref name="value"/> is not equal to the name of any of
         /// the defined enum values.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T Parse(string value)
         {
             return (T)Enum.Parse(typeof(T), value);
@@ -259,6 +270,7 @@ namespace NetGore
         /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
         /// <exception cref="ArgumentException"><paramref name="value"/> is not equal to the name of any of
         /// the defined enum values.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T Parse(string value, bool ignoreCase)
         {
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
@@ -269,6 +281,7 @@ namespace NetGore
         /// </summary>
         /// <param name="bitStream">The BitStream to read the value from.</param>
         /// <returns>The value read from the <paramref name="bitStream"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T ReadName(BitStream bitStream)
         {
             var str = bitStream.ReadString();
@@ -282,6 +295,7 @@ namespace NetGore
         /// <param name="reader">The IValueReader to read the value from.</param>
         /// <param name="name">The name of the value to read.</param>
         /// <returns>The value read from the <paramref name="reader"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T ReadName(IValueReader reader, string name)
         {
             var str = reader.ReadString(name);
@@ -295,6 +309,7 @@ namespace NetGore
         /// <param name="bitStream">The <see cref="BitStream"/> to read from.</param>
         /// <returns>The value read from the <see cref="bitStream"/>.</returns>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T ReadValue(BitStream bitStream)
         {
             var v = (int)(bitStream.ReadUInt(_bitsRequired) + _minValue);
@@ -308,6 +323,7 @@ namespace NetGore
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>The value read from the <paramref name="reader"/>.</returns>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static T ReadValue(IValueReader reader, string name)
         {
             var v = (int)(reader.ReadUInt(name, _bitsRequired) + _minValue);
@@ -320,6 +336,7 @@ namespace NetGore
         /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> casted to an int.</returns>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static int ToInt(T value)
         {
             if (!SupportsCastOperations)
@@ -334,6 +351,7 @@ namespace NetGore
         /// <typeparam name="T">The Type of <see cref="Enum"/>.</typeparam>
         /// <param name="value">The enum value.</param>
         /// <returns>The string name of the <paramref name="value"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static string ToName(T value)
         {
             return value.ToString();
@@ -347,6 +365,7 @@ namespace NetGore
         /// <param name="value">A string containing the name or value to convert.</param>
         /// <param name="outValue">When this method returns true, contains the parsed enum value.</param>
         /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static bool TryParse(string value, out T outValue)
         {
             try
@@ -371,6 +390,7 @@ namespace NetGore
         /// <param name="ignoreCase">If true, ignore case; otherwise, regard case.</param>
         /// <param name="outValue">When this method returns true, contains the parsed enum value.</param>
         /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static bool TryParse(string value, bool ignoreCase, out T outValue)
         {
             try
@@ -391,6 +411,7 @@ namespace NetGore
         /// </summary>
         /// <param name="bitStream">The BitStream to write the value to.</param>
         /// <param name="value">The value to write.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static void WriteName(BitStream bitStream, T value)
         {
             var str = ToName(value);
@@ -403,6 +424,7 @@ namespace NetGore
         /// <param name="writer">The IValueWriter to write the value to.</param>
         /// <param name="name">The name of the value to write.</param>
         /// <param name="value">The value to write.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static void WriteName(IValueWriter writer, string name, T value)
         {
             var str = ToName(value);
@@ -415,6 +437,7 @@ namespace NetGore
         /// <param name="bitStream">The <see cref="BitStream"/> to write to.</param>
         /// <param name="value">The value to write.</param>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static void WriteValue(BitStream bitStream, T value)
         {
             var signedV = ToInt(value) - _minValue;
@@ -431,6 +454,7 @@ namespace NetGore
         /// from other values when reading.</param>
         /// <param name="value">The value to write.</param>
         /// <exception cref="MethodAccessException"><see cref="SupportsCastOperations"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static void WriteValue(IValueWriter writer, string name, T value)
         {
             var signedV = ToInt(value) - _minValue;

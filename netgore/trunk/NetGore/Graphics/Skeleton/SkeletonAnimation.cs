@@ -104,10 +104,10 @@ namespace NetGore.Graphics
         public event EventHandler Looped;
 
         /// <summary>
-        /// Gets a List of the additional layers that can be stacked on top of the original.
+        /// Gets the collection of additional layers that can be stacked on top of the original.
         /// <see cref="SkeletonBody"/>.
         /// </summary>
-        public List<SkeletonBody> BodyLayers
+        public ICollection<SkeletonBody> BodyLayers
         {
             get { return _bodyLayers; }
         }

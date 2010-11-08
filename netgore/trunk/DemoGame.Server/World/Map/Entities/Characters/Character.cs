@@ -1857,7 +1857,7 @@ namespace DemoGame.Server
             for (var i = 0; i <= EnumHelper<StatType>.MaxValue; i++)
             {
                 var statType = (StatType)i;
-                ModStats[statType] = ModStatHelper<StatType>.Calculate(BaseStats, statType, Equipped, StatusEffects);
+                ModStats[statType] = ModStatHelper.Calculate(BaseStats, statType, Equipped, StatusEffects);
             }
 
             if (log.IsDebugEnabled)

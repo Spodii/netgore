@@ -9,13 +9,45 @@ using log4net;
 namespace NetGore
 {
     /// <summary>
-    /// A class that finds methods marked with an Attribute of Type <typeparamref name="T"/>, and allows them to be
+    /// Non-generic base class for <see cref="StringCommandParser{T}"/>. See <see cref="StringCommandParser{T}"/>
+    /// for more information.
+    /// </summary>
+    public class StringCommandParser
+    {
+        /// <summary>
+        /// Gets the parameter information for a method.
+        /// </summary>
+        /// <param name="method">Method to get the parameter information for.</param>
+        /// <returns>The parameter information for the <paramref name="method"/>.</returns>
+        public static string GetParameterInfo(MethodInfo method)
+        {
+            var parameters = method.GetParameters();
+            if (parameters.Length == 0)
+                return string.Empty;
+
+            var sb = new StringBuilder(128);
+            foreach (var p in parameters)
+            {
+                sb.Append(p.ParameterType.Name);
+                sb.Append(" ");
+                sb.Append(p.Name);
+                sb.Append(", ");
+            }
+
+            sb.Length -= 2;
+
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    /// A class that finds methods marked with an <see cref="Attribute"/> of type <typeparamref name="T"/>, and allows them to be
     /// invoked by a string. The parameters for the method are respected, and a method will only be invoked if all
     /// of the arguments are valid for the method's parameters.
     /// </summary>
-    /// <typeparam name="T">The type of Attribute to search for on the methods to handle. Only methods that
-    /// contain an Attribute of this type will be handled.</typeparam>
-    public class StringCommandParser<T> where T : StringCommandBaseAttribute
+    /// <typeparam name="T">The type of <see cref="Attribute"/> to search for on the methods to handle. Only methods that
+    /// contain an <see cref="Attribute"/> of this type will be handled.</typeparam>
+    public class StringCommandParser<T> : StringCommandParser where T : StringCommandBaseAttribute
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -218,31 +250,6 @@ namespace NetGore
         public IEnumerable<KeyValuePair<string, IEnumerable<CommandData>>> GetCommands()
         {
             return _commands;
-        }
-
-        /// <summary>
-        /// Gets the parameter information for a method.
-        /// </summary>
-        /// <param name="method">Method to get the parameter information for.</param>
-        /// <returns>The parameter information for the <paramref name="method"/>.</returns>
-        public static string GetParameterInfo(MethodInfo method)
-        {
-            var parameters = method.GetParameters();
-            if (parameters.Length == 0)
-                return string.Empty;
-
-            var sb = new StringBuilder(128);
-            foreach (var p in parameters)
-            {
-                sb.Append(p.ParameterType.Name);
-                sb.Append(" ");
-                sb.Append(p.Name);
-                sb.Append(", ");
-            }
-
-            sb.Length -= 2;
-
-            return sb.ToString();
         }
 
         /// <summary>

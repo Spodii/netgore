@@ -7,7 +7,7 @@ namespace DemoGame.Server
     /// Manages all of the individual SkillBases for the corresponding SkillType. Skill instances should be acquired
     /// through this manager instead of creating new instances of the class.
     /// </summary>
-    public class SkillManager : SkillManager<SkillType, StatType, Character>
+    public sealed class SkillManager : SkillManager<SkillType, StatType, Character>
     {
         static readonly SkillManager _instance;
 

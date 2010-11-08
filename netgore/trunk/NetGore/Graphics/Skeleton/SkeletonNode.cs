@@ -204,7 +204,7 @@ namespace NetGore.Graphics
         /// Recursively acquires all children nodes from a given root node
         /// </summary>
         /// <returns>A list containing this node and all of its children</returns>
-        public List<SkeletonNode> GetAllNodes()
+        public ICollection<SkeletonNode> GetAllNodes()
         {
             var ret = GetNodes(this);
             ret.Add(this);

@@ -25,6 +25,7 @@ namespace NetGore.IO
         {
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static PropertyInterface<TObj, T> Instance
         {
             get { return _instance; }
