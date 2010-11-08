@@ -13,18 +13,9 @@ namespace DemoGame.Editor
     public partial class ParticleEditorForm : DockContent
     {
         /// <summary>
-        /// Delegate for handling events for properties changing on the <see cref="ParticleEditorForm"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the property.</typeparam>
-        /// <param name="sender">The sender.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        public delegate void PropertyChangedEventHandler<in T>(ParticleEditorForm sender, T oldValue, T newValue);
-
-        /// <summary>
         /// Notifies listeners when the <see cref="ParticleEditorForm.ParticleEffect"/> property has changed.
         /// </summary>
-        public PropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
+        public event ParticleEditorFormPropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
 
         GrhData _defaultEmitterSprite;
         IParticleEffect _particleEffect;

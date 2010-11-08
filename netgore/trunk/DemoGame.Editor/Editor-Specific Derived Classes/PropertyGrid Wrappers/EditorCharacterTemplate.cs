@@ -63,7 +63,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the equipped items that a character can spawn with.
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The equipped items that a character can spawn with.")]
         [Category(_category)]
@@ -84,7 +84,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the quests that the character may give.
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The quests that the character may give.")]
         [Category(_category)]
@@ -105,7 +105,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the inventory items that a character can spawn with.
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The inventory items that a character can spawn with.")]
         [Category(_category)]

@@ -25,12 +25,6 @@ namespace DemoGame.Editor
     /// </summary>
     public class GlobalState
     {
-        /// <summary>
-        /// Delegate for handling the <see cref="GlobalState.Tick"/> event.
-        /// </summary>
-        /// <param name="currentTime">The current <see cref="TickCount"/>.</param>
-        public delegate void TickEventHandler(TickCount currentTime);
-
         static readonly GlobalState _instance;
 
         readonly IContentManager _contentManager;
@@ -92,7 +86,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// An event that is raised once every time updates and draws should take place.
         /// </summary>
-        public event TickEventHandler Tick;
+        public event GlobalStateTickEventHandler Tick;
 
         /// <summary>
         /// Gets the <see cref="IContentManager"/> used by all parts of the editor.
@@ -190,6 +184,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Describes the current state related to editing the maps.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class MapState
         {
             readonly Grh _grhToPlace = new Grh();
