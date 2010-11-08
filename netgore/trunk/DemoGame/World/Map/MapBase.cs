@@ -21,12 +21,6 @@ namespace DemoGame
     /// </summary>
     public abstract class MapBase : IMap, IMapTable
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="MapBase"/>.
-        /// </summary>
-        /// <param name="map"><see cref="MapBase"/> that the event came from.</param>
-        public delegate void EventHandler(MapBase map);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         const string _dynamicEntitiesNodeName = "DynamicEntities";
@@ -104,7 +98,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that the Map has been saved.
         /// </summary>
-        public event EventHandler Saved;
+        public event MapBaseEventHandler Saved;
 
         /// <summary>
         /// Gets an IEnumerable of all the DynamicEntities on the Map.

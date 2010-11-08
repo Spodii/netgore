@@ -25,7 +25,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> instance.</param>
         /// <exception cref="MethodAccessException">An instance of this object has already been created.</exception>
-        ClientSockets(IScreenManager screenManager) : base(CommonConfig.Network.NetworkAppIdentifier)
+        ClientSockets(IScreenManager screenManager) : base(CommonConfig.NetworkAppIdentifier)
         {
             if (_instance != null)
                 throw new MethodAccessException("ClientSockets instance was already created. Use that instead.");
@@ -72,7 +72,7 @@ namespace DemoGame.Client
         /// just that it can be attempted. Will return false if a connection is already established or being established.</returns>
         public bool Connect()
         {
-            return Connect(ClientSettings.Default.ServerIP, CommonConfig.Network.ServerPort);
+            return Connect(ClientSettings.Default.ServerIP, CommonConfig.ServerPort);
         }
 
         /// <summary>
@@ -83,12 +83,12 @@ namespace DemoGame.Client
         {
             base.InitNetPeerConfig(config);
 
-            config.PingFrequency = CommonConfig.Network.PingFrequency;
+            config.PingFrequency = CommonConfig.PingFrequency;
 
-            config.SimulatedDuplicatesChance = CommonConfig.Network.SimulatedDuplicatesChance;
-            config.SimulatedLoss = CommonConfig.Network.SimulatedLoss;
-            config.SimulatedMinimumLatency = CommonConfig.Network.SimulatedMinimumLatency;
-            config.SimulatedRandomLatency = CommonConfig.Network.SimulatedRandomLatency;
+            config.SimulatedDuplicatesChance = CommonConfig.SimulatedDuplicatesChance;
+            config.SimulatedLoss = CommonConfig.SimulatedLoss;
+            config.SimulatedMinimumLatency = CommonConfig.SimulatedMinimumLatency;
+            config.SimulatedRandomLatency = CommonConfig.SimulatedRandomLatency;
         }
 
         /// <summary>

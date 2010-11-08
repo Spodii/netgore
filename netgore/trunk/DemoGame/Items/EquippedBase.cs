@@ -45,6 +45,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="slot">Slot to get the item of.</param>
         /// <returns>Item at the specified <paramref name="slot"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers")]
         public T this[EquipmentSlot slot]
         {
             get { return this[slot.GetValue()]; }
