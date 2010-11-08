@@ -212,7 +212,7 @@ namespace DemoGame.Client
                 GameplayScreen.AppendToChatOutput(msg);
         }
 
-        [MessageHandler((uint)ServerPacketID.AcceptOrTurnInQuestReply)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "accepted"), MessageHandler((uint)ServerPacketID.AcceptOrTurnInQuestReply)]
         void RecvAcceptOrTurnInQuestReply(IIPSocket conn, BitStream r)
         {
             var questID = r.ReadQuestID();
@@ -858,7 +858,7 @@ namespace DemoGame.Client
             }
         }
 
-        [MessageHandler((uint)ServerPacketID.StartChatDialog)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "npcIndex"), MessageHandler((uint)ServerPacketID.StartChatDialog)]
         void RecvStartChatDialog(IIPSocket conn, BitStream r)
         {
 #pragma warning disable 168
