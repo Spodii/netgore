@@ -18,12 +18,6 @@ namespace DemoGame.Client
     {
         static readonly IEnumerable<QuestID> _emptyQuestIDs = new QuestID[0];
 
-        /// <summary>
-        /// Delegate for handling events from the <see cref="Character"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="Character"/> the event came from.</param>
-        public delegate void CharacterEventHandler(Character sender);
-
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
 
         IEnumerable<QuestID> _providedQuests = _emptyQuestIDs;

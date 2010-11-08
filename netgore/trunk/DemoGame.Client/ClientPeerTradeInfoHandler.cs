@@ -7,16 +7,16 @@ using NetGore.Network;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// Delegate for handling the <see cref="ClientPeerTradeInfoHandler.GameMessageCallback"/> event.
+    /// </summary>
+    /// <param name="sender">The <see cref="ClientPeerTradeInfoHandler"/> this event came from.</param>
+    /// <param name="gameMessage">The <see cref="GameMessage"/>.</param>
+    /// <param name="args">The arguments for the message.</param>
+    public delegate void GameMessageCallbackHandler(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args);
+
     public class ClientPeerTradeInfoHandler : ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable>
     {
-        /// <summary>
-        /// Delegate for handling the <see cref="GameMessageCallback"/> event.
-        /// </summary>
-        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandler"/> this event came from.</param>
-        /// <param name="gameMessage">The <see cref="GameMessage"/>.</param>
-        /// <param name="args">The arguments for the message.</param>
-        public delegate void GameMessageCallbackHandler(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args);
-
         INetworkSender _networkSender;
 
         /// <summary>

@@ -136,9 +136,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountCharacterInfos.cs" />
+    <Compile Include="AccountCharactersLoadedHandler.cs" />
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Networking\CreateAccountEventHandler.cs" />
     <Compile Include="Properties\ClientSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -212,6 +214,7 @@
     <Compile Include="UserEquipped.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="World\Map\Entities\Character.cs" />
+    <Compile Include="World\Map\Entities\CharacterEventHandler.cs" />
     <Compile Include="World\Map\Entities\EntityDrawer.cs" />
     <Compile Include="World\Map\Entities\ItemEntity.cs" />
     <Compile Include="World\Map\Entities\NPC.cs" />

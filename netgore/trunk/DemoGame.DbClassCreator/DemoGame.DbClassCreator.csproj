@@ -88,6 +88,7 @@
       <HintPath>..\_dependencies\mysql.data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

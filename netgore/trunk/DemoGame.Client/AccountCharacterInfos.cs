@@ -5,8 +5,6 @@ namespace DemoGame.Client
 {
     public class AccountCharacterInfos
     {
-        public delegate void AccountCharactersLoadedHandler(AccountCharacterInfos sender);
-
         AccountCharacterInfo[] _charInfos;
         bool _isLoaded;
 
