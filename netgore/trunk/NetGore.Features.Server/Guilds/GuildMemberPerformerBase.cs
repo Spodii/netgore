@@ -226,7 +226,8 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// A struct that contains the values required to create an <see cref="IGuildMember"/>.
         /// </summary>
-        public struct TemporaryGuildMemberPoolValues
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        public struct TemporaryGuildMemberPoolValues : IEquatable<TemporaryGuildMemberPoolValues>
         {
             readonly IGuild _guild;
             readonly int _id;
@@ -282,6 +283,70 @@ namespace NetGore.Features.Guilds
             public GuildRank Rank
             {
                 get { return _rank; }
+            }
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <param name="other">An object to compare with this object.</param>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            public bool Equals(TemporaryGuildMemberPoolValues other)
+            {
+                return Equals(other._guild, _guild) && other._id == _id && Equals(other._name, _name) && other._rank.Equals(_rank);
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is TemporaryGuildMemberPoolValues && this == (TemporaryGuildMemberPoolValues)obj;
+            }
+
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A 32-bit signed integer that is the hash code for this instance.
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = (_guild != null ? _guild.GetHashCode() : 0);
+                    result = (result * 397) ^ _id;
+                    result = (result * 397) ^ (_name != null ? _name.GetHashCode() : 0);
+                    result = (result * 397) ^ _rank.GetHashCode();
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(TemporaryGuildMemberPoolValues left, TemporaryGuildMemberPoolValues right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(TemporaryGuildMemberPoolValues left, TemporaryGuildMemberPoolValues right)
+            {
+                return !left.Equals(right);
             }
         }
     }

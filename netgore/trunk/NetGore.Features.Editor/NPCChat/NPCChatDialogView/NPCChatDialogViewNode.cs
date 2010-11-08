@@ -302,7 +302,8 @@ namespace NetGore.Features.NPCChat
                     break;
 
                 default:
-                    throw new Exception("Invalid ChatItemType.");
+                    const string errmsg = "Invalid ChatItemType `{0}`.";
+                    throw new ArgumentException(string.Format(errmsg, ChatItemType));
             }
 
             // Remove the marked nodes to be removed
@@ -355,7 +356,10 @@ namespace NetGore.Features.NPCChat
             else if (Tag is TreeNode)
                 _chatItemType = NPCChatDialogViewNodeItemType.Redirect;
             else
-                throw new Exception("Invalid ChatItem type.");
+            {
+                const string errmsg = "Invalid ChatItem type `{0}` (object: {1}).";
+                throw new ArgumentException(string.Format(errmsg, Tag.GetType(), Tag));
+            }
         }
 
         /// <summary>
@@ -390,7 +394,8 @@ namespace NetGore.Features.NPCChat
                     break;
 
                 default:
-                    throw new Exception("Invalid ChatItemType.");
+                    const string errmsg = "Invalid ChatItemType `{0}`.";
+                    throw new InvalidOperationException(string.Format(errmsg, ChatItemType));
             }
 
             Text = text;

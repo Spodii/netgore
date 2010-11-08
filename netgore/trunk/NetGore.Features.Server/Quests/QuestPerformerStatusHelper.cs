@@ -11,6 +11,7 @@ namespace NetGore.Features.Quests
     /// that can perform the quest.</typeparam>
     public abstract class QuestPerformerStatusHelper<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public delegate void QuestEventHandler(QuestPerformerStatusHelper<TCharacter> sender, IQuest<TCharacter> quest);
 
         static readonly QuestSettings _questSettings = QuestSettings.Instance;

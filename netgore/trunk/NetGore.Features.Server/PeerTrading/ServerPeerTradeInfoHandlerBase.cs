@@ -15,6 +15,7 @@ namespace NetGore.Features.PeerTrading
     /// <typeparam name="TChar">The type of character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
     /// <typeparam name="TItemInfo">The type describing item information.</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public abstract class ServerPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> where TChar : Entity where TItem : Entity
                                                                                   where TItemInfo : class
     {

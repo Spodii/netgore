@@ -68,7 +68,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Gets a list of the <see cref="NPCChatResponseActionBase"/>s in this <see cref="EditorNPCChatResponse"/>.
         /// </summary>
-        public List<NPCChatResponseActionBase> ActionsList
+        public IList<NPCChatResponseActionBase> ActionsList
         {
             get { return _actions; }
         }

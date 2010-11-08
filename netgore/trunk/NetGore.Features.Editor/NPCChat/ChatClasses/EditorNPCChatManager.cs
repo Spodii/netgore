@@ -88,6 +88,7 @@ namespace NetGore.Features.NPCChat
         /// Deletes a <see cref="EditorNPCChatDialog"/>.
         /// </summary>
         /// <param name="dialog">The <see cref="EditorNPCChatDialog"/> to delete.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void DeleteDialog(EditorNPCChatDialog dialog)
         {
             _instance.Reorganize();

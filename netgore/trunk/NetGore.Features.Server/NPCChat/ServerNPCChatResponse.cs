@@ -17,17 +17,6 @@ namespace NetGore.Features.NPCChat
         byte _value;
         NPCChatResponseActionBase[] _actions;
 
-#if DEBUG
-        // ReSharper disable UnaccessedField.Local  
-
-        /// <summary>
-        /// The text. Only available in debug builds.
-        /// </summary>
-        string _text;
-
-        // ReSharper restore UnaccessedField.Local  
-#endif
-
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
         /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
@@ -128,9 +117,6 @@ namespace NetGore.Features.NPCChat
             _value = value;
             _page = page;
             _conditionals = conditionals;
-#if DEBUG
-            _text = text;
-#endif
             _actions = actions;
         }
 

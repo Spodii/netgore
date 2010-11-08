@@ -10,6 +10,7 @@ namespace NetGore.Features.Shops
     /// <typeparam name="TShopper">The type of shopper.</typeparam>
     /// <typeparam name="TShopOwner">The type of shop owner.</typeparam>
     /// <typeparam name="TShopItem">The type of shop item.</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public abstract class CharacterShoppingState<TShopper, TShopOwner, TShopItem> where TShopper : DynamicEntity
                                                                                   where TShopOwner : DynamicEntity
     {
