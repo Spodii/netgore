@@ -10,22 +10,9 @@ namespace NetGore.Collections
     /// <typeparam name="T">The type of object to pool.</typeparam>
     public class ObjectPool<T> : IObjectPool<T> where T : class, IPoolable
     {
-        /// <summary>
-        /// Delegate describing how to create an object for the object pool.
-        /// </summary>
-        /// <param name="objectPool">The object pool that created the object.</param>
-        /// <returns>The object instance.</returns>
-        public delegate T ObjectPoolObjectCreator(ObjectPool<T> objectPool);
-
-        /// <summary>
-        /// Delegate for handling events on the objects in the pool.
-        /// </summary>
-        /// <param name="poolObject">The object the event is related to.</param>
-        public delegate void ObjectPoolObjectHandler(T poolObject);
-
         readonly object _threadSync;
-        ObjectPoolObjectCreator _creator;
 
+        ObjectPoolObjectCreator<T> _creator;
         int _liveObjects;
         T[] _poolObjects;
 
@@ -35,7 +22,8 @@ namespace NetGore.Collections
         /// <param name="creator">The delegate used to create new object instances.</param>
         /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
         /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
-        public ObjectPool(ObjectPoolObjectCreator creator, bool threadSafe) : this(creator, null, null, threadSafe)
+        public ObjectPool(ObjectPoolObjectCreator<T> creator, bool threadSafe)
+            : this(creator, null, null, threadSafe)
         {
         }
 
@@ -49,8 +37,8 @@ namespace NetGore.Collections
         /// is called). Can be null.</param>
         /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
         /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
-        public ObjectPool(ObjectPoolObjectCreator creator, ObjectPoolObjectHandler initializer,
-                          ObjectPoolObjectHandler deinitializer, bool threadSafe)
+        public ObjectPool(ObjectPoolObjectCreator<T> creator, ObjectPoolObjectHandler<T> initializer,
+                          ObjectPoolObjectHandler<T> deinitializer, bool threadSafe)
             : this(16, creator, initializer, deinitializer, threadSafe)
         {
         }
@@ -66,8 +54,8 @@ namespace NetGore.Collections
         /// is called). Can be null.</param>
         /// <param name="threadSafe">If true, this collection will be thread safe at a slight performance cost.
         /// Set this value to true if you plan on ever accessing this collection from more than one thread.</param>
-        public ObjectPool(int initialSize, ObjectPoolObjectCreator creator, ObjectPoolObjectHandler initializer,
-                          ObjectPoolObjectHandler deinitializer, bool threadSafe)
+        public ObjectPool(int initialSize, ObjectPoolObjectCreator<T> creator, ObjectPoolObjectHandler<T> initializer,
+                          ObjectPoolObjectHandler<T> deinitializer, bool threadSafe)
         {
             if (threadSafe)
                 _threadSync = new object();
@@ -91,7 +79,7 @@ namespace NetGore.Collections
         /// Gets or sets the delegate used to create new object instances. Cannot be null.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public ObjectPoolObjectCreator Creator
+        public ObjectPoolObjectCreator<T> Creator
         {
             get { return _creator; }
             set
@@ -107,13 +95,13 @@ namespace NetGore.Collections
         /// Gets or sets the delegate used to deinitialize an object as it is freed (when Free()
         /// is called). Can be null.
         /// </summary>
-        public ObjectPoolObjectHandler Deinitializer { get; set; }
+        public ObjectPoolObjectHandler<T> Deinitializer { get; set; }
 
         /// <summary>
         /// Gets or sets the delegate used to initialize an object as it is acquired from the pool
         /// (when Acquire() is called). Can be null.
         /// </summary>
-        public ObjectPoolObjectHandler Initializer { get; set; }
+        public ObjectPoolObjectHandler<T> Initializer { get; set; }
 
         /// <summary>
         /// Gets the index of the last live object.
