@@ -20,7 +20,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="ServerSockets"/> class.
         /// </summary>
         /// <param name="server">The <see cref="Server"/> instance.</param>
-        public ServerSockets(Server server) : base(CommonConfig.Network.NetworkAppIdentifier, CommonConfig.Network.ServerPort)
+        public ServerSockets(Server server) : base(CommonConfig.NetworkAppIdentifier, CommonConfig.ServerPort)
         {
             _packetHandler = new ServerPacketHandler(server);
 
@@ -66,12 +66,12 @@ namespace DemoGame.Server
         {
             base.InitNetPeerConfig(config);
 
-            config.PingFrequency = CommonConfig.Network.PingFrequency;
+            config.PingFrequency = CommonConfig.PingFrequency;
 
-            config.SimulatedDuplicatesChance = CommonConfig.Network.SimulatedDuplicatesChance;
-            config.SimulatedLoss = CommonConfig.Network.SimulatedLoss;
-            config.SimulatedMinimumLatency = CommonConfig.Network.SimulatedMinimumLatency;
-            config.SimulatedRandomLatency = CommonConfig.Network.SimulatedRandomLatency;
+            config.SimulatedDuplicatesChance = CommonConfig.SimulatedDuplicatesChance;
+            config.SimulatedLoss = CommonConfig.SimulatedLoss;
+            config.SimulatedMinimumLatency = CommonConfig.SimulatedMinimumLatency;
+            config.SimulatedRandomLatency = CommonConfig.SimulatedRandomLatency;
 
             // Settings unique to the server (not set on the client)
             config.MaximumConnections = ServerSettings.Default.MaxConnections;

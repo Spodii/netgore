@@ -24,3 +24,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "When", Scope = "member", Target = "DemoGame.DbObjs.IWorldStatsUserKillNpcTable.#When")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "When", Scope = "member", Target = "DemoGame.DbObjs.IWorldStatsUserLevelTable.#When")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "When", Scope = "member", Target = "DemoGame.DbObjs.IWorldStatsUserShoppingTable.#When")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers", Scope = "member", Target = "DemoGame.DbObjs.StatTypeConstDictionary.#Item[DemoGame.StatType]")]
