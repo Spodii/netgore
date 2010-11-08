@@ -9,7 +9,7 @@ namespace NetGore.Db
     /// to invoke it with the <see cref="DbControllerBase"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class DbControllerQueryAttribute : Attribute
+    public sealed class DbControllerQueryAttribute : Attribute
     {
     }
 }

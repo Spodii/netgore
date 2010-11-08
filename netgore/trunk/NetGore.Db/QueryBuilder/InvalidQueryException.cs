@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace NetGore.Db.QueryBuilder
 {
@@ -25,9 +26,20 @@ namespace NetGore.Db.QueryBuilder
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidQueryException"/> class.
+        /// </summary>
+        /// <param name="info">The object that holds the serialized object data.</param>
+        /// <param name="context">The contextual information about the source or destination.</param>
+        protected InvalidQueryException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+
+        /// <summary>
         /// Creates an <see cref="InvalidQueryException"/> for when a column list is empty when it shouldn't be.
         /// </summary>
-        /// <returns>An <see cref="InvalidQueryException"/> for when a column list is empty when it shouldn't be.</returns>
+        /// <returns>
+        /// An <see cref="InvalidQueryException"/> for when a column list is empty when it shouldn't be.
+        /// </returns>
         public static InvalidQueryException CreateEmptyColumnList()
         {
             return new InvalidQueryException("The column list cannot be empty.");

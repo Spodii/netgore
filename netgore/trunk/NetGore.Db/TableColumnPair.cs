@@ -7,15 +7,8 @@ namespace NetGore.Db
     /// </summary>
     public struct TableColumnPair
     {
-        /// <summary>
-        /// The name of the database column.
-        /// </summary>
-        public readonly string Column;
-
-        /// <summary>
-        /// The name of the table the <see cref="Column"/> belongs to.
-        /// </summary>
-        public readonly string Table;
+        readonly string _column;
+        readonly string _table;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableColumnPair"/> struct.
@@ -24,8 +17,24 @@ namespace NetGore.Db
         /// <param name="column">The name of the database column.</param>
         public TableColumnPair(string table, string column)
         {
-            Table = table;
-            Column = column;
+            _table = table;
+            _column = column;
+        }
+
+        /// <summary>
+        /// Gets the name of the table the <see cref="_column"/> belongs to.
+        /// </summary>
+        public string Table
+        {
+            get { return _table; }
+        }
+
+        /// <summary>
+        /// Gets the name of the database column.
+        /// </summary>
+        public string Column
+        {
+            get { return _column; }
         }
     }
 }
