@@ -62,11 +62,7 @@ namespace NetGore.World
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(MapID))
-                return false;
-            return Equals((MapID)obj);
+            return obj is MapID && this == (MapID)obj;
         }
 
         /// <summary>

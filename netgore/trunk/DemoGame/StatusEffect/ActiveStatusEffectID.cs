@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.Features.StatusEffects;
@@ -7,7 +8,7 @@ namespace DemoGame
     /// <summary>
     /// Represents the unique ID of an active <see cref="StatusEffect{TStatType,TStatusEffectType}"/>.
     /// </summary>
-    public struct ActiveStatusEffectID
+    public struct ActiveStatusEffectID : IEquatable<ActiveStatusEffectID>
     {
         readonly int _value;
 
@@ -42,10 +43,7 @@ namespace DemoGame
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is ActiveStatusEffectID))
-                return false;
-
-            return this == (ActiveStatusEffectID)obj;
+            return obj is ActiveStatusEffectID && this == (ActiveStatusEffectID)obj;
         }
 
         /// <summary>
@@ -77,6 +75,13 @@ namespace DemoGame
             return new ActiveStatusEffectID(value);
         }
 
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
         public bool Equals(ActiveStatusEffectID other)
         {
             return this == other;

@@ -9,7 +9,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// A factory for creating <see cref="ParticleEmitter"/>s for particle effects.
     /// </summary>
-    public class ParticleEmitterFactory : TypeFactory
+    public sealed class ParticleEmitterFactory : TypeFactory
     {
         const string _emitterNodeName = "Emitter";
         const string _emitterTypeKeyName = "EmitterType";

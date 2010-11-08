@@ -16,6 +16,11 @@ namespace NetGore.Graphics.ParticleEngine
     {
         const string _categoryName = "Polygon Points";
 
+        /// <summary>
+        /// The translation <see cref="Matrix"/>.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+            Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public Matrix TranslationMatrix = Matrix.Identity;
 
         PolygonOrigin _origin = PolygonEmitter.DefaultPolygonOrigin;

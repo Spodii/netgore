@@ -62,11 +62,7 @@ namespace NetGore.Features.Shops
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(ShopID))
-                return false;
-            return Equals((ShopID)obj);
+            return obj is ShopID && this == (ShopID)obj;
         }
 
         /// <summary>

@@ -28,8 +28,8 @@ namespace NetGore.Network
 
             _parsers = new ExternalIPParser[]
             {
-                new ExternalIPParser("http://whatismyip.org/", null), new ExternalIPParser("http://www.faqs.org/ip.php", rFaqs),
-                new ExternalIPParser("http://www.checkmyip.com/", rCheckMyIP), new ExternalIPParser("http://icanhazip.com/", null)
+                new ExternalIPParser(new Uri("http://whatismyip.org/"), null), new ExternalIPParser(new Uri("http://www.faqs.org/ip.php"), rFaqs),
+                new ExternalIPParser(new Uri("http://www.checkmyip.com/"), rCheckMyIP), new ExternalIPParser(new Uri("http://icanhazip.com/"), null)
             };
         }
 
@@ -65,7 +65,7 @@ namespace NetGore.Network
                 {
                     try
                     {
-                        var data = wc.DownloadString(p.Url);
+                        var data = wc.DownloadString(p.Uri);
                         try
                         {
                             if (p.Parser == null)

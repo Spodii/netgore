@@ -56,11 +56,7 @@ namespace NetGore.Content
         /// <returns>True if the two are equal; otherwise false.</returns>
         public override bool Equals(object obj)
         {
-            var casted = obj as ContentAssetName;
-            if (casted != null)
-                return Equals(casted);
-
-            return false;
+            return obj is ContentAssetName && this == (ContentAssetName)obj;
         }
 
         /// <summary>

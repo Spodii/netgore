@@ -36,11 +36,7 @@ namespace NetGore.IO
         /// <returns>True if the two are equal; otherwise false.</returns>
         public override bool Equals(object obj)
         {
-            var casted = obj as SpriteTitle;
-            if (casted != null)
-                return Equals(casted);
-
-            return false;
+            return obj is SpriteTitle && this == (SpriteTitle)obj;
         }
 
         /// <summary>

@@ -63,11 +63,7 @@ namespace DemoGame
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(MapSpawnValuesID))
-                return false;
-            return Equals((MapSpawnValuesID)obj);
+            return obj is MapSpawnValuesID && this == (MapSpawnValuesID)obj;
         }
 
         /// <summary>

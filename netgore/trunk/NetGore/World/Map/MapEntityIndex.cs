@@ -66,11 +66,7 @@ namespace NetGore.World
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(MapEntityIndex))
-                return false;
-            return Equals((MapEntityIndex)obj);
+            return obj is MapEntityIndex && this == (MapEntityIndex)obj;
         }
 
         /// <summary>

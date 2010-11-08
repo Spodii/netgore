@@ -122,11 +122,7 @@ namespace DemoGame.Editor
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (obj.GetType() != typeof(CharacterTemplateInventoryItem))
-                return false;
-            return Equals((CharacterTemplateInventoryItem)obj);
+            return obj is CharacterTemplateInventoryItem && this == (CharacterTemplateInventoryItem)obj;
         }
 
         /// <summary>

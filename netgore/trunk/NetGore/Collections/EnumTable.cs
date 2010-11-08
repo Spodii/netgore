@@ -11,7 +11,7 @@ namespace NetGore.Collections
     /// <summary>
     /// An implementation of the <see cref="IEnumTable{TKey, TValue}"/>.
     /// </summary>
-    public class EnumTable
+    public static class EnumTable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

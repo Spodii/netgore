@@ -12,7 +12,7 @@ namespace NetGore
     /// Non-generic base class for <see cref="StringCommandParser{T}"/>. See <see cref="StringCommandParser{T}"/>
     /// for more information.
     /// </summary>
-    public class StringCommandParser
+    public abstract class StringCommandParser
     {
         /// <summary>
         /// Gets the parameter information for a method.

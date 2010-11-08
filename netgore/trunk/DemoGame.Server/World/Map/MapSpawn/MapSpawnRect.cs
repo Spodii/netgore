@@ -119,13 +119,7 @@ namespace DemoGame.Server
         /// <param name="obj">Another object to compare to.</param>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            if (obj.GetType() != typeof(MapSpawnRect))
-                return false;
-
-            return Equals((MapSpawnRect)obj);
+            return obj is MapSpawnRect && this == (MapSpawnRect)obj;
         }
 
         /// <summary>

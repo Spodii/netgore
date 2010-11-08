@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -229,7 +230,7 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct KeyEvent
+        public struct KeyEvent : IEquatable<KeyEvent>
         {
             /// <summary>Code of the key (see KeyCode enum)</summary>
             public KeyCode Code;
@@ -242,6 +243,70 @@ namespace SFML
 
             /// <summary>Is the Shift modifier pressed?</summary>
             public int Shift;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <param name="other">An object to compare with this object.</param>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            public bool Equals(KeyEvent other)
+            {
+                return Equals(other.Code, Code) && other.Alt == Alt && other.Control == Control && other.Shift == Shift;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = Code.GetHashCode();
+                    result = (result * 397) ^ Alt;
+                    result = (result * 397) ^ Control;
+                    result = (result * 397) ^ Shift;
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(KeyEvent left, KeyEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(KeyEvent left, KeyEvent right)
+            {
+                return !left.Equals(right);
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is KeyEvent && this == (KeyEvent)obj;
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -250,10 +315,67 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct TextEvent
+        public struct TextEvent : IEquatable<TextEvent>
         {
             /// <summary>UTF-32 value of the character</summary>
             public uint Unicode;
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is TextEvent && this == (TextEvent)obj;
+            }
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <param name="other">An object to compare with this object.</param>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            public bool Equals(TextEvent other)
+            {
+                return other.Unicode == Unicode;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                return Unicode.GetHashCode();
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(TextEvent left, TextEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(TextEvent left, TextEvent right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -262,13 +384,73 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct MouseMoveEvent
+        public struct MouseMoveEvent : IEquatable<MouseMoveEvent>
         {
             /// <summary>X coordinate of the mouse cursor</summary>
             public int X;
 
             /// <summary>Y coordinate of the mouse cursor</summary>
             public int Y;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            /// <param name="other">An object to compare with this object.</param>
+            public bool Equals(MouseMoveEvent other)
+            {
+                return other.X == X && other.Y == Y;
+            }
+
+            /// <summary>
+            /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+            /// </summary>
+            /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+            /// <returns>
+            /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is MouseMoveEvent && this == (MouseMoveEvent)obj;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (X * 397) ^ Y;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(MouseMoveEvent left, MouseMoveEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(MouseMoveEvent left, MouseMoveEvent right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -277,7 +459,7 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct MouseButtonEvent
+        public struct MouseButtonEvent : IEquatable<MouseButtonEvent>
         {
             /// <summary>Code of the button (see MouseButton enum)</summary>
             public MouseButton Button;
@@ -287,6 +469,69 @@ namespace SFML
 
             /// <summary>Y coordinate of the mouse cursor</summary>
             public int Y;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <param name="other">An object to compare with this object.</param>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            public bool Equals(MouseButtonEvent other)
+            {
+                return Equals(other.Button, Button) && other.X == X && other.Y == Y;
+            }
+
+            /// <summary>
+            /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+            /// </summary>
+            /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+            /// <returns>
+            /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is MouseButtonEvent && this == (MouseButtonEvent)obj;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = Button.GetHashCode();
+                    result = (result * 397) ^ X;
+                    result = (result * 397) ^ Y;
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(MouseButtonEvent left, MouseButtonEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(MouseButtonEvent left, MouseButtonEvent right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -295,7 +540,7 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct MouseWheelEvent
+        public struct MouseWheelEvent : IEquatable<MouseWheelEvent>
         {
             /// <summary>Scroll amount</summary>
             public int Delta;
@@ -305,6 +550,69 @@ namespace SFML
 
             /// <summary>Y coordinate of the mouse cursor</summary>
             public int Y;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            /// <param name="other">An object to compare with this object.</param>
+            public bool Equals(MouseWheelEvent other)
+            {
+                return other.Delta == Delta && other.X == X && other.Y == Y;
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is MouseWheelEvent && this == (MouseWheelEvent)obj;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = Delta;
+                    result = (result * 397) ^ X;
+                    result = (result * 397) ^ Y;
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(MouseWheelEvent left, MouseWheelEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(MouseWheelEvent left, MouseWheelEvent right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -313,7 +621,7 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct JoyMoveEvent
+        public struct JoyMoveEvent : IEquatable<JoyMoveEvent>
         {
             /// <summary>Index of the joystick which triggered the event</summary>
             public uint JoystickId;
@@ -323,6 +631,69 @@ namespace SFML
 
             /// <summary>Current position of the axis</summary>
             public float Position;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            /// <param name="other">An object to compare with this object.</param>
+            public bool Equals(JoyMoveEvent other)
+            {
+                return other.JoystickId == JoystickId && Equals(other.Axis, Axis) && other.Position.Equals(Position);
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is JoyMoveEvent && this == (JoyMoveEvent)obj;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = JoystickId.GetHashCode();
+                    result = (result * 397) ^ Axis.GetHashCode();
+                    result = (result * 397) ^ Position.GetHashCode();
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(JoyMoveEvent left, JoyMoveEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(JoyMoveEvent left, JoyMoveEvent right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -331,13 +702,73 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct JoyButtonEvent
+        public struct JoyButtonEvent : IEquatable<JoyButtonEvent>
         {
             /// <summary>Index of the joystick which triggered the event</summary>
             public uint JoystickId;
 
             /// <summary>Index of the button</summary>
             public uint Button;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            /// <param name="other">An object to compare with this object.</param>
+            public bool Equals(JoyButtonEvent other)
+            {
+                return other.JoystickId == JoystickId && other.Button == Button;
+            }
+
+            /// <summary>
+            /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+            /// </summary>
+            /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+            /// <returns>
+            /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is JoyButtonEvent && this == (JoyButtonEvent)obj;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (JoystickId.GetHashCode() * 397) ^ Button.GetHashCode();
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(JoyButtonEvent left, JoyButtonEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(JoyButtonEvent left, JoyButtonEvent right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -346,13 +777,73 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct SizeEvent
+        public struct SizeEvent : IEquatable<SizeEvent>
         {
             /// <summary>New width of the window</summary>
             public uint Width;
 
             /// <summary>New height of the window</summary>
             public uint Height;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            /// <param name="other">An object to compare with this object.</param>
+            public bool Equals(SizeEvent other)
+            {
+                return other.Width == Width && other.Height == Height;
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is SizeEvent && this == (SizeEvent)obj;
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (Width.GetHashCode() * 397) ^ Height.GetHashCode();
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(SizeEvent left, SizeEvent right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(SizeEvent left, SizeEvent right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////
@@ -361,7 +852,7 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Explicit, Size = 20)]
-        public struct Event
+        public struct Event : IEquatable<Event>
         {
             /// <summary>Type of event (see EventType enum)</summary>
             [FieldOffset(0)]
@@ -398,6 +889,75 @@ namespace SFML
             /// <summary>Arguments for size events (Resized)</summary>
             [FieldOffset(4)]
             public SizeEvent Size;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <param name="other">An object to compare with this object.</param>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            public bool Equals(Event other)
+            {
+                return Equals(other.Type, Type) && other.Key.Equals(Key) && other.Text.Equals(Text) && other.MouseMove.Equals(MouseMove) && other.MouseButton.Equals(MouseButton) && other.MouseWheel.Equals(MouseWheel) && other.JoyMove.Equals(JoyMove) && other.JoyButton.Equals(JoyButton) && other.Size.Equals(Size);
+            }
+
+            /// <summary>
+            /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+            /// </summary>
+            /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+            /// <returns>
+            /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is Event && this == (Event)obj;
+            }
+
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A 32-bit signed integer that is the hash code for this instance.
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = Type.GetHashCode();
+                    result = (result * 397) ^ Key.GetHashCode();
+                    result = (result * 397) ^ Text.GetHashCode();
+                    result = (result * 397) ^ MouseMove.GetHashCode();
+                    result = (result * 397) ^ MouseButton.GetHashCode();
+                    result = (result * 397) ^ MouseWheel.GetHashCode();
+                    result = (result * 397) ^ JoyMove.GetHashCode();
+                    result = (result * 397) ^ JoyButton.GetHashCode();
+                    result = (result * 397) ^ Size.GetHashCode();
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(Event left, Event right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(Event left, Event right)
+            {
+                return !left.Equals(right);
+            }
         }
     }
 }

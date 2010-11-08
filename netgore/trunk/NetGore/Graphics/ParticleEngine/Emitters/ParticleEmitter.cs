@@ -65,10 +65,12 @@ namespace NetGore.Graphics.ParticleEngine
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), new Type[] { typeof(IParticleEffect) }).OrderBy(x => x.Name).
                 ToCompact();
 
+        Particle[] _particles;
+
         /// <summary>
-        /// The array of <see cref="Particle"/>s.
+        /// Gets the array of <see cref="Particle"/>s in this <see cref="ParticleEmitter"/>.
         /// </summary>
-        protected Particle[] particles;
+        protected Particle[] Particles { get { return _particles; } }
 
         readonly EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
         readonly IParticleEffect _owner;
@@ -79,7 +81,7 @@ namespace NetGore.Graphics.ParticleEngine
         bool _isDisposed = false;
 
         /// <summary>
-        /// The index for the <see cref="particles"/> array of the last particle that is alive.
+        /// The index for the <see cref="_particles"/> array of the last particle that is alive.
         /// </summary>
         int _lastAliveIndex = -1;
 
@@ -114,7 +116,7 @@ namespace NetGore.Graphics.ParticleEngine
             ((ParticleEffect)owner).AddParticleEmitter(this);
 
             _budget = DefaultBudget;
-            particles = new Particle[_initialParticleArraySize];
+            _particles = new Particle[_initialParticleArraySize];
 
             // Set some default values
             BlendMode = _defaultBlendMode;
@@ -236,7 +238,7 @@ namespace NetGore.Graphics.ParticleEngine
             // Draw the live particles
             for (var i = 0; i < ActiveParticles; i++)
             {
-                var p = particles[i];
+                var p = _particles[i];
                 Sprite.Draw(sb, Owner.Position + p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
             }
 
@@ -245,7 +247,7 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Expires a <see cref="Particle"/> in the <see cref="particles"/> array, replacing the <paramref name="index"/>
+        /// Expires a <see cref="Particle"/> in the <see cref="_particles"/> array, replacing the <paramref name="index"/>
         /// with a living particle, unless the <paramref name="index"/> is the last living particle.
         /// </summary>
         /// <param name="index">Index of the <see cref="Particle"/> to expire.</param>
@@ -289,7 +291,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>An array of the <see cref="Particle"/>s handled by this <see cref="ParticleEmitter"/>.</returns>
         public Particle[] GetParticlesArray()
         {
-            return particles;
+            return _particles;
         }
 
         /// <summary>
@@ -330,24 +332,24 @@ namespace NetGore.Graphics.ParticleEngine
             // When we resize the array, we use the "next power of two" sizing concept to reduce the
             // memory fragmentation (.NET internally does the same with most collections). To speed things up,
             // we just find the next power of two instead of looping until we have a large enough value.
-            if (particles.Length - 1 < lastIndex)
+            if (_particles.Length - 1 < lastIndex)
             {
                 var newSize = BitOps.NextPowerOf2(lastIndex + 1);
                 Debug.Assert(BitOps.IsPowerOf2(newSize),
                              "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
                 Debug.Assert(newSize >= lastIndex + 1);
-                Array.Resize(ref particles, newSize);
+                Array.Resize(ref _particles, newSize);
             }
 
             // Start releasing the particles
             var hasReleaseModifiers = ParticleModifiers.HasReleaseModifiers;
             for (var i = _lastAliveIndex + 1; i <= lastIndex; i++)
             {
-                var particle = particles[i];
+                var particle = _particles[i];
                 if (particle == null)
                 {
                     particle = Particle.Create();
-                    particles[i] = particle;
+                    _particles[i] = particle;
                 }
 
                 // Set up the particle
@@ -397,9 +399,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="bIndex">The second index.</param>
         void SwapParticles(int aIndex, int bIndex)
         {
-            var tmp = particles[aIndex];
-            particles[aIndex] = particles[bIndex];
-            particles[bIndex] = tmp;
+            var tmp = _particles[aIndex];
+            _particles[aIndex] = _particles[bIndex];
+            _particles[bIndex] = tmp;
         }
 
         /// <summary>
@@ -487,7 +489,7 @@ namespace NetGore.Graphics.ParticleEngine
             var i = 0;
             while (i <= _lastAliveIndex)
             {
-                var particle = particles[i];
+                var particle = _particles[i];
 
                 // Check if the particle has expired
                 if (particle.LifeEnd <= currentTime)
@@ -565,10 +567,10 @@ namespace NetGore.Graphics.ParticleEngine
 
                 _budget = value;
 
-                Array.Resize(ref particles, _budget);
+                Array.Resize(ref _particles, _budget);
 
-                if (_lastAliveIndex >= particles.Length - 1)
-                    _lastAliveIndex = particles.Length - 1;
+                if (_lastAliveIndex >= _particles.Length - 1)
+                    _lastAliveIndex = _particles.Length - 1;
             }
         }
 
@@ -814,7 +816,7 @@ namespace NetGore.Graphics.ParticleEngine
             _isDisposed = true;
 
             // Dispose the particles so they can be used again
-            foreach (var particle in particles)
+            foreach (var particle in _particles)
             {
                 if (particle != null && !particle.IsDisposed)
                     particle.Dispose();
