@@ -12,22 +12,6 @@ namespace DemoGame.Editor
     /// </summary>
     public class MapDrawFilterHelperCollection : IPersistable
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="MapDrawFilterHelperCollection"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="MapDrawFilterHelperCollection"/> the event came from.</param>
-        /// <param name="filter">The name of the filter and the filter that the event is related to.</param>
-        public delegate void EventHandler(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter);
-
-        /// <summary>
-        /// Delegate for handling events from the <see cref="MapDrawFilterHelperCollection"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="MapDrawFilterHelperCollection"/> the event came from.</param>
-        /// <param name="filter">The name of the filter and the filter that the event is related to.</param>
-        /// <param name="oldName">The old name of the filter.</param>
-        public delegate void RenamedEventHandler(
-            MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter, string oldName);
-
         const string _filterKeyValueName = "Name";
         const string _filterValueValueName = "Value";
         const string _filtersNodeName = "DisplayFilters";
@@ -43,17 +27,17 @@ namespace DemoGame.Editor
         /// <summary>
         /// Notifies listeners when a filter has been added to this collection.
         /// </summary>
-        public event EventHandler Added;
+        public event MapDrawFilterHelperCollectionEventHandler Added;
 
         /// <summary>
         /// Notifies listeners when a filter has been removed from this collection.
         /// </summary>
-        public event EventHandler Removed;
+        public event MapDrawFilterHelperCollectionEventHandler Removed;
 
         /// <summary>
         /// Notifies listeners when a filter in this collection has been renamed.
         /// </summary>
-        public event RenamedEventHandler Renamed;
+        public event MapDrawFilterHelperCollectionRenamedEventHandler Renamed;
 
         /// <summary>
         /// Gets the filters in this collection, where the key is the name and the value is the filter itself.

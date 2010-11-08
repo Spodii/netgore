@@ -9,8 +9,6 @@ namespace DemoGame.Editor.Tools
 {
     public class MapSaveAsTool : Tool
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MapSaveAsTool"/> class.
         /// </summary>

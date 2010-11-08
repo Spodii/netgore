@@ -537,7 +537,10 @@ namespace DemoGame.Editor
             {
                 var newSet = SkeletonLoader.LoadSkeletonSetFromString(txtFrames.Text, _skeletonSetFromStringDelimiter);
                 if (newSet == null)
-                    throw new Exception();
+                {
+                    txtFrames.BackColor = EditorColors.Error;
+                    return;
+                }
 
                 _skeletonAnim.ChangeSet(newSet);
                 txtFrames.BackColor = EditorColors.Normal;

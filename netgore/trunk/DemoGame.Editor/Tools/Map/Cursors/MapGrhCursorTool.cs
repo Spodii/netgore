@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using log4net;
 using NetGore;
@@ -292,7 +293,7 @@ namespace DemoGame.Editor.Tools
         /// currently selected in the <see cref="GlobalState"/>.</param>
         /// <returns>The <see cref="MapGrh"/> instance that was added, or null if the the <see cref="MapGrh"/> could not be
         /// added for any reason.</returns>
-        public static MapGrh PlaceMapGrh(EditorMap map, ICamera2D camera, Vector2 screenPos, bool useTileMode, GrhData gd = null)
+        public static MapGrh PlaceMapGrh(Map map, ICamera2D camera, Vector2 screenPos, bool useTileMode, GrhData gd = null)
         {
             // Get the GrhData to place from the global state
             if (gd == null)

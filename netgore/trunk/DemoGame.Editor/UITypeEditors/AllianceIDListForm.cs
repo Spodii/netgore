@@ -18,6 +18,7 @@ namespace DemoGame.Editor.UITypeEditors
         /// </summary>
         /// <param name="list">The list of <see cref="AllianceID"/>s and amounts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="list"/> is null.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public AllianceIDListForm(List<AllianceID> list)
         {
             if (DesignMode)

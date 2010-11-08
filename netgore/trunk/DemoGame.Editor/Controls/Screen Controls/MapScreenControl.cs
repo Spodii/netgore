@@ -20,14 +20,6 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="MapScreenControl"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="MapScreenControl"/> the event came from.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        public delegate void MapChangedEventHandler(MapScreenControl sender, EditorMap oldValue, EditorMap newValue);
-
         readonly ICamera2D _camera;
         readonly DrawingManager _drawingManager = new DrawingManager();
         readonly TransBoxManager _transBoxManager = new TransBoxManager();
@@ -60,7 +52,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Notifies listeners when the map has changed.
         /// </summary>
-        public event MapChangedEventHandler MapChanged;
+        public event MapScreenControlMapChangedEventHandler MapChanged;
 
         /// <summary>
         /// Gets the camera used to view the map.

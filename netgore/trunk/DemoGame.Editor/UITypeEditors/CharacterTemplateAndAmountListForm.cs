@@ -19,6 +19,7 @@ namespace DemoGame.Editor.UITypeEditors
         /// </summary>
         /// <param name="list">The list of <see cref="CharacterTemplateID"/>s and amounts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="list"/> is null.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public CharacterTemplateAndAmountListForm(List<MutablePair<CharacterTemplateID, ushort>> list)
         {
             if (DesignMode)

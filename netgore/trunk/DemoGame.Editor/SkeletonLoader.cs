@@ -145,10 +145,11 @@ namespace DemoGame.Editor
         /// <param name="framesTxt">Array containing the text for each frame in the format name/time, where
         /// name is the name of the skeleton model and time is the delay time of the frame.</param>
         /// <returns>The loaded SkeletonSet.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="framesTxt"/> is null or empty.</exception>
         public static SkeletonSet LoadSkeletonSetFromString(string[] framesTxt)
         {
-            if (framesTxt.Length == 0)
-                throw new ArgumentException("framesTxt");
+            if (framesTxt == null || framesTxt.Length == 0)
+                throw new ArgumentException("framesTxt cannot be null or empty.", "framesTxt");
 
             var sep = new[] { "/" };
 
