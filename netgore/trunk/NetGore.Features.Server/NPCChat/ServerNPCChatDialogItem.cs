@@ -21,26 +21,6 @@ namespace NetGore.Features.NPCChat
         bool _isBranch;
         NPCChatResponseBase[] _responses;
 
-#if DEBUG
-        // ReSharper disable UnaccessedField.Local
-        /// <summary>
-        /// The text. Only available in debug builds.
-        /// </summary>
-        string _text;
-
-        // ReSharper restore UnaccessedField.Local
-#endif
-
-#if DEBUG
-        // ReSharper disable UnaccessedField.Local
-        /// <summary>
-        /// The title. Only available in debug builds.
-        /// </summary>
-        string _title;
-
-        // ReSharper restore UnaccessedField.Local
-#endif
-
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
         /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
@@ -172,11 +152,6 @@ namespace NetGore.Features.NPCChat
             _isBranch = isBranch;
             _responses = responses.ToArray();
             _conditionals = conditionals;
-
-#if DEBUG
-            _text = text;
-            _title = title;
-#endif
         }
 
         /// <summary>

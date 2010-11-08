@@ -104,9 +104,11 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Copies the values of this EditorNPCChatConditionalCollectionItem to another EditorNPCChatConditionalCollectionItem.
+        /// Copies the values of this <see cref="EditorNPCChatConditionalCollectionItem"/> to another
+        /// <see cref="EditorNPCChatConditionalCollectionItem"/>.
         /// </summary>
-        /// <param name="dest">The EditorNPCChatConditionalCollectionItem to copy the values into.</param>
+        /// <param name="dest">The <see cref="EditorNPCChatConditionalCollectionItem"/> to copy the values into.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public void CopyValuesTo(EditorNPCChatConditionalCollectionItem dest)
         {
             var stream = new BitStream(256);

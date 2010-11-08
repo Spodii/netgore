@@ -100,7 +100,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Gets the response list.
         /// </summary>
-        public List<EditorNPCChatResponse> ResponseList
+        public IList<EditorNPCChatResponse> ResponseList
         {
             get { return _responses; }
         }
@@ -111,7 +111,7 @@ namespace NetGore.Features.NPCChat
         /// </summary>
         public override IEnumerable<NPCChatResponseBase> Responses
         {
-            get { return ResponseList.Cast<NPCChatResponseBase>(); }
+            get { return ResponseList; }
         }
 
         /// <summary>

@@ -16,16 +16,6 @@ namespace NetGore.Features.NPCChat
         NPCChatDialogID _id;
         NPCChatDialogItemBase[] _items;
 
-#if DEBUG
-        // ReSharper disable UnaccessedField.Local  
-        /// <summary>
-        /// The title. Only available in debug builds.
-        /// </summary>
-        string _title;
-
-        // ReSharper restore UnaccessedField.Local
-#endif
-
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
@@ -127,10 +117,6 @@ namespace NetGore.Features.NPCChat
 
             _id = id;
             _items = items.ToArray();
-
-#if DEBUG
-            _title = title;
-#endif
         }
 
         /// <summary>
