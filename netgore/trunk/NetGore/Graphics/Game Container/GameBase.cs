@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -92,7 +93,7 @@ namespace NetGore.Graphics
         /// and dispose the container at the appropriate times.</param>
         /// <returns>The handle to the custom control to display the game on, or <see cref="IntPtr.Zero"/> to create the window
         /// to display the game on internally.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
         protected virtual IntPtr CreateWindowedDisplayHandle(out object displayContainer)
         {
             displayContainer = null;

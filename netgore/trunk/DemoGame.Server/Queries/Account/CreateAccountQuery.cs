@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
@@ -138,7 +139,7 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// The arguments for the <see cref="CreateAccountQuery"/> query.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class QueryArgs
         {
             /// <summary>

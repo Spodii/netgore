@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.Audio;
 using NetGore.Content;
@@ -492,7 +493,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <typeparam name="T">The type of <see cref="IGameScreen"/>.</typeparam>
         /// <exception cref="ArgumentException">No screen of the given type was found.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void SetScreen<T>() where T : IGameScreen
         {
             ActiveScreen = GetScreen<T>();

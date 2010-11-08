@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
@@ -52,7 +53,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the collection of points that define the polygon.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), Category(_emitterCategoryName)]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [Category(_emitterCategoryName)]
         [Description("The collection of points that define the polygon.")]
         [DisplayName("Points")]
         public PolygonPointCollection Points

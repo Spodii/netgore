@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using NetGore.Collections;
@@ -114,7 +115,7 @@ namespace NetGore
         /// <param name="value">If the parsing was successful, this will contain the parsed string <paramref name="s"/>
         /// as Type <paramref name="type"/>. If parsing was unsuccessful, this will be null.</param>
         /// <returns>True if the parsing was successful; otherwise false.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate")]
         public static bool TryParse(string s, Type type, out object value)
         {
             // Check for a System type

@@ -277,7 +277,7 @@ namespace DemoGame.Server
 
                 var first = cmd.Value.Select(x => x.Method).FirstOrDefault();
                 if (first != null)
-                    sb.Append(StringCommandParser<ConsoleCommandAttribute>.GetParameterInfo(first));
+                    sb.Append(StringCommandParser.GetParameterInfo(first));
 
                 sb.Append(")");
 

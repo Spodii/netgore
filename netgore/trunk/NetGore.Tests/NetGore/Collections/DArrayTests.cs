@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.Collections;
 using NUnit.Framework;
@@ -43,7 +44,8 @@ namespace NetGore.Tests.Collections
             var o = d[0];
 
             Assert.IsFalse(d.CanGet(-1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1], "Failed to generate ArgumentOutOfRangeException for d[-1].");
+            Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1],
+                                                       "Failed to generate ArgumentOutOfRangeException for d[-1].");
 
             Assert.IsFalse(d.CanGet(1));
             Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1], "Failed to generate ArgumentOutOfRangeException for d[1].");
@@ -187,7 +189,7 @@ namespace NetGore.Tests.Collections
                             "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "obj")]
+        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "obj")]
         static void EnumerateVersionTestSub(bool trackFree)
         {
             var d = new DArray<object>(50, trackFree) { new object(), new object() };

@@ -1,4 +1,5 @@
-﻿using NetGore.Network;
+﻿using System.Linq;
+using NetGore.Network;
 
 namespace DemoGame.Client
 {

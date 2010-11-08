@@ -83,7 +83,7 @@ namespace NetGore.Db
         {
             unchecked
             {
-                int result = (_schema != null ? _schema.GetHashCode() : 0);
+                var result = (_schema != null ? _schema.GetHashCode() : 0);
                 result = (result * 397) ^ (_column != null ? _column.GetHashCode() : 0);
                 result = (result * 397) ^ (_table != null ? _table.GetHashCode() : 0);
                 return result;

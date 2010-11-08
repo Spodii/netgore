@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace NetGore.Features.Guilds
@@ -7,7 +8,7 @@ namespace NetGore.Features.Guilds
     /// <summary>
     /// A struct containing a guild member's name and rank.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1036:OverrideMethodsOnComparableTypes")]
+    [SuppressMessage("Microsoft.Design", "CA1036:OverrideMethodsOnComparableTypes")]
     public struct GuildMemberNameRank : IEquatable<GuildMemberNameRank>, IComparable<GuildMemberNameRank>
     {
         readonly string _name;

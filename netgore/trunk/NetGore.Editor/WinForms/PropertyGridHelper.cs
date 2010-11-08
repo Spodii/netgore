@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -81,7 +82,7 @@ namespace NetGore.Editor.WinForms
         /// no context menu already on the <see cref="PropertyGrid"/>.
         /// </summary>
         /// <param name="pg">The <see cref="PropertyGrid"/> to attach the menu to.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void SetContextMenuIfNone(PropertyGrid pg)
         {
             if (pg == null)

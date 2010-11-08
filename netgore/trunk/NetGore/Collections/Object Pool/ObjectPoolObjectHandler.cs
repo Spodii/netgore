@@ -1,4 +1,6 @@
-﻿namespace NetGore.Collections
+﻿using System.Linq;
+
+namespace NetGore.Collections
 {
     /// <summary>
     /// Delegate for handling events on the objects in the pool.

@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using System.Reflection;
 using Lidgren.Network;
-using log4net;
 
 namespace DemoGame.Client
 {

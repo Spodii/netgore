@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Editor.Properties;
-using log4net;
 using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor.Tools

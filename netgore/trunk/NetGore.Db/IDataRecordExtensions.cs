@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 
 namespace NetGore.Db
 {
@@ -8,6 +9,52 @@ namespace NetGore.Db
     /// </summary>
     public static class IDataRecordExtensions
     {
+        /// <summary>
+        /// Checks if the current row of the <see cref="IDataRecord"/> contains a field of the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to check.</param>
+        /// <param name="name">Name of the field to check if exists.</param>
+        /// <returns>True if a field of the specified <paramref name="name"/> exists, else false.</returns>
+        public static bool ContainsField(this IDataRecord r, string name)
+        {
+            try
+            {
+                r.GetOrdinal(name);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // If the field name does not exist, GetOrdinal() should throw a IndexOutOfRangeException
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if the current row of the <see cref="IDataRecord"/> contains a field of the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to check.</param>
+        /// <param name="name">Name of the field to check if exists.</param>
+        /// <param name="ordinal">If the field exists, contains the ordinal of the field. Otherwise this value
+        /// is -1.</param>
+        /// <returns>True if a field of the specified <paramref name="name"/> exists, else false.</returns>
+        public static bool ContainsField(this IDataRecord r, string name, out int ordinal)
+        {
+            ordinal = -1;
+
+            try
+            {
+                ordinal = r.GetOrdinal(name);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // If the field name does not exist, GetOrdinal() should throw a IndexOutOfRangeException
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Gets the boolean value of the specified field.
         /// </summary>
@@ -43,8 +90,7 @@ namespace NetGore.Db
         /// <param name="bufferOffset">The index for buffer to start the read operation.</param>
         /// <param name="length">The number of bytes to read.</param>
         /// <returns>The actual number of bytes read.</returns>
-        public static long GetBytes(this IDataRecord r, string name, long fieldOffset, byte[] buffer, int bufferOffset,
-                                    int length)
+        public static long GetBytes(this IDataRecord r, string name, long fieldOffset, byte[] buffer, int bufferOffset, int length)
         {
             var i = r.GetOrdinal(name);
             return r.GetBytes(i, fieldOffset, buffer, bufferOffset, length);
@@ -73,8 +119,7 @@ namespace NetGore.Db
         /// <param name="bufferOffset">The index for buffer to start the read operation.</param>
         /// <param name="length">The number of bytes to read.</param>
         /// <returns>The actual number of characters read.</returns>
-        public static long GetChars(this IDataRecord r, string name, long fieldOffset, char[] buffer, int bufferOffset,
-                                    int length)
+        public static long GetChars(this IDataRecord r, string name, long fieldOffset, char[] buffer, int bufferOffset, int length)
         {
             var i = r.GetOrdinal(name);
             return r.GetChars(i, fieldOffset, buffer, bufferOffset, length);
@@ -323,6 +368,32 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the nullable SByte of the specified field.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable SByte of the specified field.</returns>
+        public static sbyte? GetNullableSByte(this IDataRecord r, string name)
+        {
+            var i = r.GetOrdinal(name);
+            return r.GetNullableSByte(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable SByte of the specified field.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable SByte of the specified field.</returns>
+        public static sbyte? GetNullableSByte(this IDataRecord r, int i)
+        {
+            if (r.IsDBNull(i))
+                return null;
+
+            return r.GetSByte(i);
+        }
+
+        /// <summary>
         /// Gets the nullable UInt16 of the specified field.
         /// </summary>
         /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
@@ -334,6 +405,44 @@ namespace NetGore.Db
                 return null;
 
             return r.GetUInt16(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt16 of the specified field.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable UInt16 of the specified field.</returns>
+        public static ushort? GetNullableUInt16(this IDataRecord r, string name)
+        {
+            var i = r.GetOrdinal(name);
+            return r.GetNullableUInt16(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt32 of the specified field.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable UInt32 of the specified field.</returns>
+        public static ulong? GetNullableUInt32(this IDataRecord r, string name)
+        {
+            var i = r.GetOrdinal(name);
+            return r.GetNullableUInt32(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt32 of the specified field.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable UInt32 of the specified field.</returns>
+        public static ulong? GetNullableUInt32(this IDataRecord r, int i)
+        {
+            if (r.IsDBNull(i))
+                return null;
+
+            return r.GetUInt32(i);
         }
 
         /// <summary>
@@ -349,6 +458,19 @@ namespace NetGore.Db
 
             return r.GetUInt64(i);
         }
+
+        /// <summary>
+        /// Gets the nullable UInt64 of the specified field.
+        /// </summary>
+        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable UInt64 of the specified field.</returns>
+        public static ulong? GetNullableUInt64(this IDataRecord r, string name)
+        {
+            var i = r.GetOrdinal(name);
+            return r.GetNullableUInt64(i);
+        }
+
         /// <summary>
         /// Gets the 8-bit unsigned integer value of the specified field.
         /// </summary>
@@ -453,53 +575,6 @@ namespace NetGore.Db
             var i = r.GetOrdinal(name);
             return r.GetUInt64(i);
         }
-        /// <summary>
-        /// Gets the nullable SByte of the specified field.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
-        /// <param name="name">The name of the field to find.</param>
-        /// <returns>The nullable SByte of the specified field.</returns>
-        public static sbyte? GetNullableSByte(this IDataRecord r, string name)
-        {
-            var i = r.GetOrdinal(name);
-            return r.GetNullableSByte(i);
-        }
-
-        /// <summary>
-        /// Gets the nullable UInt16 of the specified field.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
-        /// <param name="name">The name of the field to find.</param>
-        /// <returns>The nullable UInt16 of the specified field.</returns>
-        public static ushort? GetNullableUInt16(this IDataRecord r, string name)
-        {
-            var i = r.GetOrdinal(name);
-            return r.GetNullableUInt16(i);
-        }
-
-        /// <summary>
-        /// Gets the nullable UInt32 of the specified field.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
-        /// <param name="name">The name of the field to find.</param>
-        /// <returns>The nullable UInt32 of the specified field.</returns>
-        public static ulong? GetNullableUInt32(this IDataRecord r, string name)
-        {
-            var i = r.GetOrdinal(name);
-            return r.GetNullableUInt32(i);
-        }
-
-        /// <summary>
-        /// Gets the nullable UInt64 of the specified field.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
-        /// <param name="name">The name of the field to find.</param>
-        /// <returns>The nullable UInt64 of the specified field.</returns>
-        public static ulong? GetNullableUInt64(this IDataRecord r, string name)
-        {
-            var i = r.GetOrdinal(name);
-            return r.GetNullableUInt64(i);
-        }
 
         /// <summary>
         /// Gets the 64-bit unsigned integer value of the specified field.
@@ -526,80 +601,6 @@ namespace NetGore.Db
         {
             var i = r.GetOrdinal(name);
             return r.GetValue(i);
-        }
-
-        /// <summary>
-        /// Gets the nullable UInt32 of the specified field.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
-        /// <param name="i">The index of the field to find.</param>
-        /// <returns>The nullable UInt32 of the specified field.</returns>
-        public static ulong? GetNullableUInt32(this IDataRecord r, int i)
-        {
-            if (r.IsDBNull(i))
-                return null;
-
-            return r.GetUInt32(i);
-        }
-
-        /// <summary>
-        /// Gets the nullable SByte of the specified field.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to get the value from.</param>
-        /// <param name="i">The index of the field to find.</param>
-        /// <returns>The nullable SByte of the specified field.</returns>
-        public static sbyte? GetNullableSByte(this IDataRecord r, int i)
-        {
-            if (r.IsDBNull(i))
-                return null;
-
-            return r.GetSByte(i);
-        }
-
-        /// <summary>
-        /// Checks if the current row of the <see cref="IDataRecord"/> contains a field of the specified <paramref name="name"/>.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to check.</param>
-        /// <param name="name">Name of the field to check if exists.</param>
-        /// <returns>True if a field of the specified <paramref name="name"/> exists, else false.</returns>
-        public static bool ContainsField(this IDataRecord r, string name)
-        {
-            try
-            {
-                r.GetOrdinal(name);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // If the field name does not exist, GetOrdinal() should throw a IndexOutOfRangeException
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Checks if the current row of the <see cref="IDataRecord"/> contains a field of the specified <paramref name="name"/>.
-        /// </summary>
-        /// <param name="r"><see cref="IDataRecord"/> to check.</param>
-        /// <param name="name">Name of the field to check if exists.</param>
-        /// <param name="ordinal">If the field exists, contains the ordinal of the field. Otherwise this value
-        /// is -1.</param>
-        /// <returns>True if a field of the specified <paramref name="name"/> exists, else false.</returns>
-        public static bool ContainsField(this IDataRecord r, string name, out int ordinal)
-        {
-            ordinal = -1;
-
-            try
-            {
-                ordinal = r.GetOrdinal(name);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // If the field name does not exist, GetOrdinal() should throw a IndexOutOfRangeException
-                return false;
-            }
-
-            return true;
         }
     }
 }

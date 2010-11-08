@@ -11,11 +11,6 @@ namespace DemoGame
     public static class CommonConfig
     {
         /// <summary>
-        /// Holds the string to pass to <see cref="ContentPaths.TryCopyContent"/>.
-        /// </summary>
-        public const string TryCopyContentArgs = "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\"";
-
-        /// <summary>
         /// The string used to identify this application over the network. The actual string isn't too important, but it is recommended
         /// you keep it relatively short. Only applications with the same identifier string will be able to connect to one
         /// another.
@@ -51,5 +46,10 @@ namespace DemoGame
         /// The simulated added random amount of one way latency, in seconds, for sent packets.
         /// </summary>
         public const float SimulatedRandomLatency = 0;
+
+        /// <summary>
+        /// Holds the string to pass to <see cref="ContentPaths.TryCopyContent"/>.
+        /// </summary>
+        public const string TryCopyContentArgs = "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\"";
     }
 }

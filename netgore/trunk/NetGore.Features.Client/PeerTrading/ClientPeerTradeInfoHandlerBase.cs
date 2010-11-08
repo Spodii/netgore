@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -15,7 +16,7 @@ namespace NetGore.Features.PeerTrading
     /// <typeparam name="TChar">The type of character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
     /// <typeparam name="TItemInfo">The type describing item information.</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public abstract class ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> where TChar : Entity where TItem : Entity
                                                                                   where TItemInfo : class
     {
@@ -26,7 +27,7 @@ namespace NetGore.Features.PeerTrading
         /// <param name="isSourceSide">If true, the changed was on the source character's side.
         /// Otherwise, it was on the target character's side.</param>
         /// <param name="hasAccepted">If true, the status changed to accepted. If false, the status changed to not accepted.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public delegate void AcceptStatusChangedEventHandler(
             ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, bool isSourceSide, bool hasAccepted);
 
@@ -37,7 +38,7 @@ namespace NetGore.Features.PeerTrading
         /// <param name="cash">The new cash value.</param>
         /// <param name="isSourceSide">If true, the changed cash amount was on the source character's side.
         /// If false, it was on the target character's side.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public delegate void CashUpdatedEventHandler(
             ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, int cash, bool isSourceSide);
 
@@ -45,7 +46,7 @@ namespace NetGore.Features.PeerTrading
         /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
         /// </summary>
         /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public delegate void EventHandler(ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender);
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace NetGore.Features.PeerTrading
         /// <param name="slot">The slot that changed.</param>
         /// <param name="isSourceSide">If true, the changed slot was on the source character's side.
         /// If false, it was on the target character's side.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public delegate void SlotUpdatedEventHandler(
             ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, InventorySlot slot, bool isSourceSide);
 
@@ -64,7 +65,7 @@ namespace NetGore.Features.PeerTrading
         /// </summary>
         /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
         /// <param name="sourceCanceled">If it was the source character who canceled the trade.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public delegate void TradeCanceledEventHandler(
             ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, bool sourceCanceled);
 

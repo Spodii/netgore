@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace NetGore
@@ -6,7 +7,8 @@ namespace NetGore
     /// <summary>
     /// Attribute for a Say command.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes"), AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes")]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class SayCommandAttribute : StringCommandBaseAttribute
     {
         /// <summary>

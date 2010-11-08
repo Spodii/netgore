@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using NetGore.Db.ClassCreator;
@@ -19,7 +20,7 @@ namespace NetGore.Tests.Db.ClassCreator
     [TestFixture]
     public class AliasingTests
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public enum TestCollNestedEnum : byte
         {
             A,

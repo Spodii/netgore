@@ -17,43 +17,37 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Linq;
+using NetGore.Features.Shops;
+
 namespace DemoGame.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `world_stats_count_shop_sell`.
-/// </summary>
-public interface IWorldStatsCountShopSellTable
-{
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-IWorldStatsCountShopSellTable DeepCopy();
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `world_stats_count_shop_sell`.
+    /// </summary>
+    public interface IWorldStatsCountShopSellTable
+    {
+        /// <summary>
+        /// Gets the value of the database column `count`.
+        /// </summary>
+        Int32 Count { get; }
 
-/// <summary>
-/// Gets the value of the database column `count`.
-/// </summary>
-System.Int32 Count
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `last_update`.
-/// </summary>
-System.DateTime LastUpdate
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `shop_id`.
-/// </summary>
-NetGore.Features.Shops.ShopID ShopID
-{
-get;
-}
-}
+        /// <summary>
+        /// Gets the value of the database column `last_update`.
+        /// </summary>
+        DateTime LastUpdate { get; }
 
+        /// <summary>
+        /// Gets the value of the database column `shop_id`.
+        /// </summary>
+        ShopID ShopID { get; }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IWorldStatsCountShopSellTable DeepCopy();
+    }
 }

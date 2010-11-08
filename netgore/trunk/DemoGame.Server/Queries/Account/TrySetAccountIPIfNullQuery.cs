@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -96,7 +96,8 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// The arguments for the <see cref="TrySetAccountIPIfNullQuery"/> query.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct QueryArgs
         {
             /// <summary>

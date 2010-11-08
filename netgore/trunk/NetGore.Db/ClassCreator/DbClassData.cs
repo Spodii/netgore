@@ -203,9 +203,7 @@ namespace NetGore.Db.ClassCreator
                 else if (count > 1)
                 {
                     const string errmsg = "DbColumnInfo for column `{0}` in table `{1}` matched more than one ColumnCollection!";
-                    throw new ArgumentException(
-                        string.Format(errmsg,
-                                      dbColumn.Name, TableName));
+                    throw new ArgumentException(string.Format(errmsg, dbColumn.Name, TableName));
                 }
             }
 

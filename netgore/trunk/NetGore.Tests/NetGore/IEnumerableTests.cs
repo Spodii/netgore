@@ -13,48 +13,6 @@ namespace NetGore.Tests.NetGore
         #region Unit tests
 
         [Test]
-        public void HasDuplicatesTest01()
-        {
-            var a = new int[] { 0, 1, 2, 3 };
-            Assert.IsFalse(a.HasDuplicates());
-        }
-
-        [Test]
-        public void HasDuplicatesTest02()
-        {
-            var a = new int[] { 0 };
-            Assert.IsFalse(a.HasDuplicates());
-        }
-
-        [Test]
-        public void HasDuplicatesTest03()
-        {
-            var a = new int[] { 0, 0 };
-            Assert.IsTrue(a.HasDuplicates());
-        }
-
-        [Test]
-        public void HasDuplicatesTest04()
-        {
-            var a = new int[] { 0, 0, 1 };
-            Assert.IsTrue(a.HasDuplicates());
-        }
-
-        [Test]
-        public void HasDuplicatesTest05()
-        {
-            var a = new int[] { 0, 1, 2, 0 };
-            Assert.IsTrue(a.HasDuplicates());
-        }
-
-        [Test]
-        public void HasDuplicatesTest06()
-        {
-            var a = new int[] { 0, 1, 2, 0, 2, 2 };
-            Assert.IsTrue(a.HasDuplicates());
-        }
-
-        [Test]
         public void ContainsSameElementsTest01()
         {
             var a = new int[] { };
@@ -105,9 +63,51 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ContainsSameElementsTest07()
         {
-            var a = new int[] { 4, 4,3, 3 };
-            var b = new int[] { 4,4,4,3 };
+            var a = new int[] { 4, 4, 3, 3 };
+            var b = new int[] { 4, 4, 4, 3 };
             Assert.IsFalse(a.ContainSameElements(b));
+        }
+
+        [Test]
+        public void HasDuplicatesTest01()
+        {
+            var a = new int[] { 0, 1, 2, 3 };
+            Assert.IsFalse(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest02()
+        {
+            var a = new int[] { 0 };
+            Assert.IsFalse(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest03()
+        {
+            var a = new int[] { 0, 0 };
+            Assert.IsTrue(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest04()
+        {
+            var a = new int[] { 0, 0, 1 };
+            Assert.IsTrue(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest05()
+        {
+            var a = new int[] { 0, 1, 2, 0 };
+            Assert.IsTrue(a.HasDuplicates());
+        }
+
+        [Test]
+        public void HasDuplicatesTest06()
+        {
+            var a = new int[] { 0, 1, 2, 0, 2, 2 };
+            Assert.IsTrue(a.HasDuplicates());
         }
 
         [Test]

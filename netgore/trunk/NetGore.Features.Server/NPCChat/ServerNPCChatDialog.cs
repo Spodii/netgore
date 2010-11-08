@@ -13,8 +13,17 @@ namespace NetGore.Features.NPCChat
     /// </summary>
     public class ServerNPCChatDialog : NPCChatDialogBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         NPCChatDialogID _id;
         NPCChatDialogItemBase[] _items;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerNPCChatDialog"/> class.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        internal ServerNPCChatDialog(IValueReader reader) : base(reader)
+        {
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
@@ -38,14 +47,6 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerNPCChatDialog"/> class.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        internal ServerNPCChatDialog(IValueReader reader) : base(reader)
-        {
-        }
-
-        /// <summary>
         /// When overridden in the derived class, creates an NPCChatDialogItemBase using the given IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -54,8 +55,6 @@ namespace NetGore.Features.NPCChat
         {
             return new ServerNPCChatDialogItem(reader);
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.

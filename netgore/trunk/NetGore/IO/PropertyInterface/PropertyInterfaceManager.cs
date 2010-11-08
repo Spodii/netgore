@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -25,7 +26,7 @@ namespace NetGore.IO
         {
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static PropertyInterface<TObj, T> Instance
         {
             get { return _instance; }
@@ -39,7 +40,7 @@ namespace NetGore.IO
             if (pi == null)
             {
                 const string errmsg = "Unable to find the property with name `{0}` for `{1}`.";
-                throw new ArgumentException(string.Format(errmsg, propertyName, this),"propertyName");
+                throw new ArgumentException(string.Format(errmsg, propertyName, this), "propertyName");
             }
 
             return this[pi];

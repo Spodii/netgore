@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace NetGore.Db
@@ -91,7 +92,7 @@ namespace NetGore.Db
         /// <summary>
         /// Contains the arguments for executing the <see cref="FindForeignKeysQuery"/> query.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct QueryArgs : IEquatable<QueryArgs>
         {
             readonly string _column;
@@ -169,7 +170,7 @@ namespace NetGore.Db
             {
                 unchecked
                 {
-                    int result = (_column != null ? _column.GetHashCode() : 0);
+                    var result = (_column != null ? _column.GetHashCode() : 0);
                     result = (result * 397) ^ (_database != null ? _database.GetHashCode() : 0);
                     result = (result * 397) ^ (_table != null ? _table.GetHashCode() : 0);
                     return result;

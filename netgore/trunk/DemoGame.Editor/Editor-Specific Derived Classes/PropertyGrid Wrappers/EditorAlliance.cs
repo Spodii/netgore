@@ -53,7 +53,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the list of <see cref="AllianceID"/>s that this <see cref="Alliance"/> can attack.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The alliances that this alliance is allowed to attack.")]
         [Category(_category)]
@@ -74,7 +75,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets or sets the list of <see cref="AllianceID"/>s that this <see cref="Alliance"/> is hostile towards.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Browsable(true)]
         [Description("The alliances that this alliance is hostile towards.")]
         [Category(_category)]

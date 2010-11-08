@@ -12,11 +12,6 @@ namespace DemoGame.Editor
 {
     public partial class ParticleEditorForm : DockContent
     {
-        /// <summary>
-        /// Notifies listeners when the <see cref="ParticleEditorForm.ParticleEffect"/> property has changed.
-        /// </summary>
-        public event ParticleEditorFormPropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
-
         GrhData _defaultEmitterSprite;
         IParticleEffect _particleEffect;
 
@@ -27,6 +22,11 @@ namespace DemoGame.Editor
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="ParticleEditorForm.ParticleEffect"/> property has changed.
+        /// </summary>
+        public event ParticleEditorFormPropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
 
         /// <summary>
         /// Gets or sets the <see cref="IParticleEffect"/> to edit.

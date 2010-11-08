@@ -1,4 +1,6 @@
-﻿namespace NetGore.Features.Quests
+﻿using System.Linq;
+
+namespace NetGore.Features.Quests
 {
     /// <summary>
     /// Delegate for handling events from the <see cref="UserQuestInformation"/>.

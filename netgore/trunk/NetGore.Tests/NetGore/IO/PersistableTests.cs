@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -45,7 +46,7 @@ namespace NetGore.Tests.NetGore.IO
 
         #endregion
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class ClassA : IPersistable
         {
             public string A { get; set; }
@@ -78,7 +79,7 @@ namespace NetGore.Tests.NetGore.IO
             #endregion
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class ClassB : IPersistable
         {
             [SyncValue]

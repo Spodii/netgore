@@ -266,7 +266,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = Code.GetHashCode();
+                    var result = Code.GetHashCode();
                     result = (result * 397) ^ Alt;
                     result = (result * 397) ^ Control;
                     result = (result * 397) ^ Shift;
@@ -504,7 +504,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = Button.GetHashCode();
+                    var result = Button.GetHashCode();
                     result = (result * 397) ^ X;
                     result = (result * 397) ^ Y;
                     return result;
@@ -585,7 +585,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = Delta;
+                    var result = Delta;
                     result = (result * 397) ^ X;
                     result = (result * 397) ^ Y;
                     return result;
@@ -666,7 +666,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = JoystickId.GetHashCode();
+                    var result = JoystickId.GetHashCode();
                     result = (result * 397) ^ Axis.GetHashCode();
                     result = (result * 397) ^ Position.GetHashCode();
                     return result;
@@ -899,7 +899,10 @@ namespace SFML
             /// </returns>
             public bool Equals(Event other)
             {
-                return Equals(other.Type, Type) && other.Key.Equals(Key) && other.Text.Equals(Text) && other.MouseMove.Equals(MouseMove) && other.MouseButton.Equals(MouseButton) && other.MouseWheel.Equals(MouseWheel) && other.JoyMove.Equals(JoyMove) && other.JoyButton.Equals(JoyButton) && other.Size.Equals(Size);
+                return Equals(other.Type, Type) && other.Key.Equals(Key) && other.Text.Equals(Text) &&
+                       other.MouseMove.Equals(MouseMove) && other.MouseButton.Equals(MouseButton) &&
+                       other.MouseWheel.Equals(MouseWheel) && other.JoyMove.Equals(JoyMove) && other.JoyButton.Equals(JoyButton) &&
+                       other.Size.Equals(Size);
             }
 
             /// <summary>
@@ -924,7 +927,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = Type.GetHashCode();
+                    var result = Type.GetHashCode();
                     result = (result * 397) ^ Key.GetHashCode();
                     result = (result * 397) ^ Text.GetHashCode();
                     result = (result * 397) ^ MouseMove.GetHashCode();

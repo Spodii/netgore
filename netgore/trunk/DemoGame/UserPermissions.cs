@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace DemoGame
@@ -6,7 +7,8 @@ namespace DemoGame
     /// <summary>
     /// Contains the flags of the different permissions a user can have.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags"), Flags]
+    [SuppressMessage("Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags")]
+    [Flags]
     public enum UserPermissions : byte
     {
         /* The actual values of the permission levels do not matter. The default should be 0, but that is about the

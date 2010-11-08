@@ -124,7 +124,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="input">The <see cref="StyledText"/>s to concatenate.</param>
         /// <returns>The concatenated <see cref="StyledText"/>s that have the same style.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static List<StyledText> Concat(StyledText[] input)
         {
             var ret = new List<StyledText>(input.Length);
@@ -148,7 +148,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="input">The <see cref="StyledText"/>s to concatenate.</param>
         /// <returns>The concatenated <see cref="StyledText"/>s that have the same style.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static IEnumerable<StyledText> Concat(List<StyledText> input)
         {
             var ret = new List<StyledText>(input.Count);
@@ -496,7 +496,7 @@ namespace NetGore.Graphics.GUI
             return new StyledText(s, Color);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static List<List<StyledText>> ToMultiline(IEnumerable<StyledText> texts, bool putInputOnNewLines, Font font,
                                                          int maxLineLength)
         {
@@ -575,7 +575,7 @@ namespace NetGore.Graphics.GUI
             return ret;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static List<StyledText> ToMultiline(StyledText text)
         {
             var ret = new List<StyledText>();
@@ -590,7 +590,7 @@ namespace NetGore.Graphics.GUI
             return ret;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static List<List<StyledText>> ToMultiline(IEnumerable<StyledText> texts, bool putInputOnNewLines)
         {
             var ret = new List<List<StyledText>>();

@@ -143,7 +143,8 @@ namespace NetGore
         /// <param name="commandName">Name of the command.</param>
         /// <param name="methodInfo">Method for handling hte command.</param>
         /// <param name="attrib">The attribute bound to the method.</param>
-        static void Add(IDictionary<string, List<StringCommandParserCommandData<T>>> dict, string commandName, MethodInfo methodInfo, T attrib)
+        static void Add(IDictionary<string, List<StringCommandParserCommandData<T>>> dict, string commandName,
+                        MethodInfo methodInfo, T attrib)
         {
             if (string.IsNullOrEmpty(commandName))
                 throw new ArgumentNullException("commandName");
@@ -538,7 +539,7 @@ namespace NetGore
                 return p.ParameterType != typeof(string) && p.ParameterType != typeof(object);
             }
 
-            #region IComparer<StringCommandParser<T>.CommandData> Members
+            #region IComparer<StringCommandParserCommandData<T>> Members
 
             /// <summary>
             /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.

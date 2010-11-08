@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -24,56 +25,56 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// The color of the <see cref="Particle"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public Color Color;
 
         /// <summary>
         /// The time at which the <see cref="Particle"/> will die.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public TickCount LifeEnd;
 
         /// <summary>
         /// The time at which the <see cref="Particle"/> was created.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public TickCount LifeStart;
 
         /// <summary>
         /// The direction the <see cref="Particle"/> is moving.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public Vector2 Momentum;
 
         /// <summary>
         /// The current world position of the <see cref="Particle"/>.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public Vector2 Position;
 
         /// <summary>
         /// The amount the <see cref="Particle"/> is rotated in radians.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public float Rotation;
 
         /// <summary>
         /// The magnification scale to draw the <see cref="Particle"/>s at, where 1.0 is normal size.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public float Scale;
 
         /// <summary>
         /// The speed and direction the <see cref="Particle"/> is increasing <see cref="Momentum"/> at.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields",
             Justification = "Allows us to pass this field by reference, which can increase performance due to less copying.")]
         public Vector2 Velocity;
 

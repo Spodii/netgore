@@ -8,10 +8,27 @@
 // "In Project Suppression File".
 // You do not need to add suppressions to this file manually.
 
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member", Target = "DemoGame.DbObjs.ItemTemplateTable.#SetValue(System.String,System.Object)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member", Target = "DemoGame.DbObjs.ItemTemplateTable.#GetValue(System.String)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member", Target = "DemoGame.DbObjs.ItemTemplateTable.#GetColumnData(System.String)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member", Target = "DemoGame.DbObjs.ItemTable.#SetValue(System.String,System.Object)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member", Target = "DemoGame.DbObjs.ItemTable.#GetValue(System.String)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member", Target = "DemoGame.DbObjs.ItemTable.#GetColumnData(System.String)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers", Scope = "member", Target = "DemoGame.DbObjs.StatTypeConstDictionary.#Item[DemoGame.StatType]")]
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+[assembly:
+    SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member",
+        Target = "DemoGame.DbObjs.ItemTemplateTable.#SetValue(System.String,System.Object)")]
+[assembly:
+    SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member",
+        Target = "DemoGame.DbObjs.ItemTemplateTable.#GetValue(System.String)")]
+[assembly:
+    SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member",
+        Target = "DemoGame.DbObjs.ItemTemplateTable.#GetColumnData(System.String)")]
+[assembly:
+    SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member",
+        Target = "DemoGame.DbObjs.ItemTable.#SetValue(System.String,System.Object)")]
+[assembly:
+    SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member",
+        Target = "DemoGame.DbObjs.ItemTable.#GetValue(System.String)")]
+[assembly:
+    SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member",
+        Target = "DemoGame.DbObjs.ItemTable.#GetColumnData(System.String)")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers", Scope = "member",
+        Target = "DemoGame.DbObjs.StatTypeConstDictionary.#Item[DemoGame.StatType]")]

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
@@ -212,7 +213,8 @@ namespace DemoGame.Client
                 GameplayScreen.AppendToChatOutput(msg);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "accepted"), MessageHandler((uint)ServerPacketID.AcceptOrTurnInQuestReply)]
+        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "accepted")]
+        [MessageHandler((uint)ServerPacketID.AcceptOrTurnInQuestReply)]
         void RecvAcceptOrTurnInQuestReply(IIPSocket conn, BitStream r)
         {
             var questID = r.ReadQuestID();
@@ -858,7 +860,8 @@ namespace DemoGame.Client
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "npcIndex"), MessageHandler((uint)ServerPacketID.StartChatDialog)]
+        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "npcIndex")]
+        [MessageHandler((uint)ServerPacketID.StartChatDialog)]
         void RecvStartChatDialog(IIPSocket conn, BitStream r)
         {
 #pragma warning disable 168

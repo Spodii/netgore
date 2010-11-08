@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -191,7 +192,7 @@ namespace NetGore.Features.NPCChat
         /// </summary>
         /// <param name="dialogItem">EditorNPCChatDialogItem to remove.</param>
         /// <returns>True if the <paramref name="dialogItem"/> was successfully removed; otherwise false.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public bool RemoveDialogItem(EditorNPCChatDialogItem dialogItem)
         {
             // Find the responses that reference this dialog

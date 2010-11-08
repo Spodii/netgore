@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -527,7 +528,7 @@ namespace DemoGame
         /// all the <see cref="Type"/>s that are used frequently when querying the map's spatial collection.
         /// </summary>
         /// <returns>An IEnumerable of the <see cref="Type"/>s to build <see cref="ISpatialCollection"/>s for.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         protected virtual IEnumerable<Type> GetSpatialTypes()
         {
             return new Type[]

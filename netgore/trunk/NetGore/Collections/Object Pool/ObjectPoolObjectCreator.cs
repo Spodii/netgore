@@ -1,4 +1,6 @@
-﻿namespace NetGore.Collections
+﻿using System.Linq;
+
+namespace NetGore.Collections
 {
     /// <summary>
     /// Delegate describing how to create an object for the object pool.

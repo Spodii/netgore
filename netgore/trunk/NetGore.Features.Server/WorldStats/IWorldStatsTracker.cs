@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Lidgren.Network;
 using NetGore.Features.Guilds;
@@ -12,7 +13,7 @@ namespace NetGore.Features.WorldStats
     /// <typeparam name="TUser">The type of user character.</typeparam>
     /// <typeparam name="TNPC">The type of NPC character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public interface IWorldStatsTracker<in TUser, in TNPC, in TItem> where TUser : class where TNPC : class where TItem : class
     {
         /// <summary>

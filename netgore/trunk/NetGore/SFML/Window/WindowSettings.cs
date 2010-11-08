@@ -49,7 +49,8 @@ namespace SFML
             /// </returns>
             public bool Equals(WindowSettings other)
             {
-                return other.DepthBits == DepthBits && other.StencilBits == StencilBits && other.AntialiasingLevel == AntialiasingLevel;
+                return other.DepthBits == DepthBits && other.StencilBits == StencilBits &&
+                       other.AntialiasingLevel == AntialiasingLevel;
             }
 
             /// <summary>
@@ -74,7 +75,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = DepthBits.GetHashCode();
+                    var result = DepthBits.GetHashCode();
                     result = (result * 397) ^ StencilBits.GetHashCode();
                     result = (result * 397) ^ AntialiasingLevel.GetHashCode();
                     return result;

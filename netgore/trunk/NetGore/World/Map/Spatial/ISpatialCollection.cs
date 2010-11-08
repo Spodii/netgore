@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SFML.Graphics;
 
@@ -45,7 +46,7 @@ namespace NetGore.World
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         bool Contains<T>(Vector2 point);
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace NetGore.World
         /// <typeparam name="T">The type of <see cref="ISpatial"/> to check against. All other types of
         /// <see cref="ISpatial"/> will be ignored.</typeparam>
         /// <returns>True if the specified area or location contains any spatials; otherwise false.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         bool Contains<T>(Rectangle rect);
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
@@ -18,7 +19,7 @@ namespace DemoGame.Editor.UITypeEditors
         /// </summary>
         /// <param name="list">The list of <see cref="ItemTemplateID"/>s and amounts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="list"/> is null.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public ItemTemplateIDListForm(List<ItemTemplateID> list)
         {
             if (DesignMode)

@@ -224,7 +224,7 @@ namespace NetGore.Tests.NetGore.IO
             public int Int { get; set; }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class TestClass
         {
             public TestClass()

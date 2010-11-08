@@ -22,6 +22,14 @@ namespace NetGore.Features.NPCChat
         NPCChatResponseBase[] _responses;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ServerNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        internal ServerNPCChatDialogItem(IValueReader r) : base(r)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
         /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
         /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
@@ -82,14 +90,6 @@ namespace NetGore.Features.NPCChat
                 Debug.Fail("This property is not supported by the Server.");
                 return string.Empty;
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerNPCChatDialogItem"/> class.
-        /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
-        internal ServerNPCChatDialogItem(IValueReader r) : base(r)
-        {
         }
 
         /// <summary>

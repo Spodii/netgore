@@ -28,8 +28,10 @@ namespace NetGore.Network
 
             _parsers = new ExternalIPParser[]
             {
-                new ExternalIPParser(new Uri("http://whatismyip.org/"), null), new ExternalIPParser(new Uri("http://www.faqs.org/ip.php"), rFaqs),
-                new ExternalIPParser(new Uri("http://www.checkmyip.com/"), rCheckMyIP), new ExternalIPParser(new Uri("http://icanhazip.com/"), null)
+                new ExternalIPParser(new Uri("http://whatismyip.org/"), null),
+                new ExternalIPParser(new Uri("http://www.faqs.org/ip.php"), rFaqs),
+                new ExternalIPParser(new Uri("http://www.checkmyip.com/"), rCheckMyIP),
+                new ExternalIPParser(new Uri("http://icanhazip.com/"), null)
             };
         }
 

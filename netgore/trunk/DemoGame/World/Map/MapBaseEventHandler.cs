@@ -1,4 +1,6 @@
-﻿namespace DemoGame
+﻿using System.Linq;
+
+namespace DemoGame
 {
     /// <summary>
     /// Delegate for handling events from the <see cref="MapBase"/>.

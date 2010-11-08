@@ -1324,8 +1324,8 @@ namespace NetGore.Db.ClassCreator
         protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
         {
             var sb = new StringBuilder();
-            string valueName = cd.GetDataReaderAccessor(column, "i", DataRecordName);
-            string s = cd.GetColumnValueMutator(column, valueName, _extensionParamName);
+            var valueName = cd.GetDataReaderAccessor(column, "i", DataRecordName);
+            var s = cd.GetColumnValueMutator(column, valueName, _extensionParamName);
             sb.AppendLine(s);
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();

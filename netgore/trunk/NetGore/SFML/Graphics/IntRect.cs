@@ -156,7 +156,7 @@ namespace SFML
             {
                 unchecked
                 {
-                    int result = Left;
+                    var result = Left;
                     result = (result * 397) ^ Top;
                     result = (result * 397) ^ Width;
                     result = (result * 397) ^ Height;

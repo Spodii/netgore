@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using NetGore.Features.NPCChat.Conditionals;
@@ -108,7 +109,7 @@ namespace NetGore.Features.NPCChat
         /// <see cref="EditorNPCChatConditionalCollectionItem"/>.
         /// </summary>
         /// <param name="dest">The <see cref="EditorNPCChatConditionalCollectionItem"/> to copy the values into.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public void CopyValuesTo(EditorNPCChatConditionalCollectionItem dest)
         {
             var stream = new BitStream(256);

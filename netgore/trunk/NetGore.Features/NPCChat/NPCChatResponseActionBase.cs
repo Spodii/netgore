@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -68,20 +69,20 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
+        /// Gets an empty array of <see cref="NPCChatResponseActionBase"/>s.
+        /// </summary>
+        [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
+        public static NPCChatResponseActionBase[] EmptyActions
+        {
+            get { return _emptyActions; }
+        }
+
+        /// <summary>
         /// Gets the unique name for this <see cref="NPCChatResponseActionBase"/>. This string is case-sensitive.
         /// </summary>
         public string Name
         {
             get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets an empty array of <see cref="NPCChatResponseActionBase"/>s.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public static NPCChatResponseActionBase[] EmptyActions
-        {
-            get { return _emptyActions; }
         }
 
         /// <summary>

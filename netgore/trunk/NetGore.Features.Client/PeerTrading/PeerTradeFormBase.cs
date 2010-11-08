@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -15,7 +16,7 @@ namespace NetGore.Features.PeerTrading
     /// <typeparam name="TChar">The type of character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
     /// <typeparam name="TItemInfo">The type describing item information.</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public abstract class PeerTradeFormBase<TChar, TItem, TItemInfo> : Form where TChar : Entity where TItem : Entity
                                                                             where TItemInfo : class
     {
@@ -297,7 +298,7 @@ namespace NetGore.Features.PeerTrading
             AcceptButton.IsEnabled = !ptih.HasUserAccepted;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class PeerTradeSidePanel : Panel
         {
             readonly Label _acceptedLabel;
@@ -393,21 +394,21 @@ namespace NetGore.Features.PeerTrading
             /// Gets or sets the size of the item slot's client area. Changes to not apply to existing object
             /// instances, so this value should be set early on. Default is {32, 32}.
             /// </summary>
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+            [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
             public static Vector2 ItemSlotClientSize { get; set; }
 
             /// <summary>
             /// Gets or sets the number of columns used for the item slots. Changes to not apply to existing object
             /// instances, so this value should be set early on. Default is 6.
             /// </summary>
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+            [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
             public static int ItemSlotColumns { get; set; }
 
             /// <summary>
             /// Gets or sets the amount of padding between item slots. Changes to not apply to existing object
             /// instances, so this value should be set early on. Default is {2, 2}.
             /// </summary>
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+            [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
             public static Vector2 ItemSlotPadding { get; set; }
 
             /// <summary>
@@ -524,7 +525,7 @@ namespace NetGore.Features.PeerTrading
                     ChangeAcceptLabelStatus(IsSourceSide ? ptih.HasSourceAccepted : ptih.HasTargetAccepted);
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+            [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
             public class CashLabel : Label
             {
                 readonly PeerTradeSidePanel _itemsCollection;
@@ -638,7 +639,7 @@ namespace NetGore.Features.PeerTrading
             /// <summary>
             /// A control that handles a single item slot for a <see cref="PeerTradeFormBase{TChar, TItem, TItemInfo}.PeerTradeSidePanel"/>.
             /// </summary>
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
+            [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
             public class PeerTradeItemsCollectionSlot : PictureBox
             {
                 readonly PeerTradeSidePanel _itemsCollection;
