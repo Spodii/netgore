@@ -52,7 +52,7 @@ namespace NetGore
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Sorter used for the <see cref="CommandData"/>s.
+        /// Sorter used for the <see cref="StringCommandParserCommandData{T}"/>s.
         /// </summary>
         static readonly CommandDataSorter _commandDataSorter = new CommandDataSorter();
 
@@ -60,8 +60,8 @@ namespace NetGore
         /// Dictionary containing the command name as the key, and a list of the MethodInfos for the methods
         /// that handle that command as the value.
         /// </summary>
-        readonly IDictionary<string, IEnumerable<CommandData>> _commands =
-            new Dictionary<string, IEnumerable<CommandData>>(StringComparer.OrdinalIgnoreCase);
+        readonly IDictionary<string, IEnumerable<StringCommandParserCommandData<T>>> _commands =
+            new Dictionary<string, IEnumerable<StringCommandParserCommandData<T>>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;"/> class.
@@ -85,7 +85,7 @@ namespace NetGore
             var methods = MethodInfoHelper.FindMethodsWithAttribute<T>(types);
 
             // Create the dictionary for building the commands
-            var tmpDict = new Dictionary<string, List<CommandData>>(StringComparer.OrdinalIgnoreCase);
+            var tmpDict = new Dictionary<string, List<StringCommandParserCommandData<T>>>(StringComparer.OrdinalIgnoreCase);
 
             // Set up the methods
             foreach (var method in methods)
@@ -143,7 +143,7 @@ namespace NetGore
         /// <param name="commandName">Name of the command.</param>
         /// <param name="methodInfo">Method for handling hte command.</param>
         /// <param name="attrib">The attribute bound to the method.</param>
-        static void Add(IDictionary<string, List<CommandData>> dict, string commandName, MethodInfo methodInfo, T attrib)
+        static void Add(IDictionary<string, List<StringCommandParserCommandData<T>>> dict, string commandName, MethodInfo methodInfo, T attrib)
         {
             if (string.IsNullOrEmpty(commandName))
                 throw new ArgumentNullException("commandName");
@@ -153,10 +153,10 @@ namespace NetGore
                 throw new ArgumentNullException("dict");
 
             // Grab the List for this commandName
-            List<CommandData> cmdDatas;
+            List<StringCommandParserCommandData<T>> cmdDatas;
             if (!dict.TryGetValue(commandName, out cmdDatas))
             {
-                cmdDatas = new List<CommandData>(2);
+                cmdDatas = new List<StringCommandParserCommandData<T>>(2);
                 dict.Add(commandName, cmdDatas);
             }
             else
@@ -178,7 +178,7 @@ namespace NetGore
             }
 
             // Add the method
-            cmdDatas.Add(new CommandData(methodInfo, attrib));
+            cmdDatas.Add(new StringCommandParserCommandData<T>(methodInfo, attrib));
 
             // Sort the methods so the ones with the most non-string parameters are first
             cmdDatas.Sort(_commandDataSorter);
@@ -186,15 +186,15 @@ namespace NetGore
 
         /// <summary>
         /// When overridden in the derived class, gets if the <paramref name="binder"/> is allowed to invoke the method
-        /// defined by the given <see cref="CommandData"/> using the given set of <paramref name="args"/>.
+        /// defined by the given <see cref="StringCommandParserCommandData{T}"/> using the given set of <paramref name="args"/>.
         /// </summary>
         /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
         /// this is ignored and can be null.</param>
-        /// <param name="cmdData">The <see cref="CommandData"/> containing the method to invoke and the corresponding attribute
+        /// <param name="cmdData">The <see cref="StringCommandParserCommandData{T}"/> containing the method to invoke and the corresponding attribute
         /// that is attached to it.</param>
         /// <param name="args">The casted arguments to use to invoke the method.</param>
         /// <returns></returns>
-        protected virtual bool AllowInvokeMethod(object binder, CommandData cmdData, object[] args)
+        protected virtual bool AllowInvokeMethod(object binder, StringCommandParserCommandData<T> cmdData, object[] args)
         {
             return true;
         }
@@ -247,7 +247,7 @@ namespace NetGore
         /// Gets a dictionary of each command and the method or methods that handle the command.
         /// </summary>
         /// <returns>A dictionary of each command and the method or methods that handle the command.</returns>
-        public IEnumerable<KeyValuePair<string, IEnumerable<CommandData>>> GetCommands()
+        public IEnumerable<KeyValuePair<string, IEnumerable<StringCommandParserCommandData<T>>>> GetCommands()
         {
             return _commands;
         }
@@ -258,11 +258,11 @@ namespace NetGore
         /// </summary>
         /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
         /// this is ignored and can be null.</param>
-        /// <param name="cd">The <see cref="CommandData"/> for the command that the <paramref name="binder"/> was rejected from
+        /// <param name="cd">The <see cref="StringCommandParserCommandData{T}"/> for the command that the <paramref name="binder"/> was rejected from
         /// invoking.</param>
         /// <param name="args">Arguments used to invoke the command. Can be null.</param>
         /// <returns>A string containing a message about why the command failed to be handled.</returns>
-        protected virtual string HandleCommandInvokeDenied(object binder, CommandData cd, string[] args)
+        protected virtual string HandleCommandInvokeDenied(object binder, StringCommandParserCommandData<T> cd, string[] args)
         {
             return string.Format("Object `{0}` was not allowed to invoke command `{1}`.",
                                  binder != null ? binder.ToString() : "NULL", cd.Attribute.Command);
@@ -281,7 +281,7 @@ namespace NetGore
             if (string.IsNullOrEmpty(commandName))
                 return "No command specified.";
 
-            IEnumerable<CommandData> cmdDatas;
+            IEnumerable<StringCommandParserCommandData<T>> cmdDatas;
             if (!_commands.TryGetValue(commandName, out cmdDatas))
                 return "Unknown command specified.";
 
@@ -472,7 +472,7 @@ namespace NetGore
             ParseCommandString(commandString, out command, out args);
 
             // Check for a valid command
-            IEnumerable<CommandData> cmdDatas;
+            IEnumerable<StringCommandParserCommandData<T>> cmdDatas;
             if (string.IsNullOrEmpty(command) || !_commands.TryGetValue(command, out cmdDatas))
             {
                 result = HandleInvalidCommand(binder, command, args);
@@ -481,7 +481,7 @@ namespace NetGore
 
             // Try invoking all of the methods handling this command in order, stopping on the first
             // one that was invoked successfully
-            CommandData commandExistsCD = null;
+            StringCommandParserCommandData<T> commandExistsCD = null;
 
             foreach (var cd in cmdDatas)
             {
@@ -518,46 +518,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Describes a command in the <see cref="StringCommandParser{T}"/>.
-        /// </summary>
-        public class CommandData
-        {
-            readonly T _attribute;
-            readonly MethodInfo _method;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;.CommandData"/> class.
-            /// </summary>
-            /// <param name="method">The <see cref="MethodInfo"/>.</param>
-            /// <param name="attribute">The attribute.</param>
-            public CommandData(MethodInfo method, T attribute)
-            {
-                _attribute = attribute;
-                _method = method;
-            }
-
-            /// <summary>
-            /// Gets the attribute that resulted in this method being binded to the command.
-            /// </summary>
-            public T Attribute
-            {
-                get { return _attribute; }
-            }
-
-            /// <summary>
-            /// Gets the <see cref="MethodInfo"/> for the method to be invoked.
-            /// </summary>
-            public MethodInfo Method
-            {
-                get { return _method; }
-            }
-        }
-
-        /// <summary>
-        /// Provides sorting for the <see cref="CommandData"/>s based on which <see cref="MethodInfo"/> has the least number
+        /// Provides sorting for the <see cref="StringCommandParserCommandData{T}"/>s based on which <see cref="MethodInfo"/> has the least number
         /// of parameters of type string or object.
         /// </summary>
-        class CommandDataSorter : IComparer<CommandData>
+        class CommandDataSorter : IComparer<StringCommandParserCommandData<T>>
         {
             static readonly Func<ParameterInfo, bool> _countFuncDelegate;
 
@@ -591,7 +555,7 @@ namespace NetGore
             /// Greater than zero
             /// <paramref name="x"/> is greater than <paramref name="y"/>.
             /// </returns>
-            public int Compare(CommandData x, CommandData y)
+            public int Compare(StringCommandParserCommandData<T> x, StringCommandParserCommandData<T> y)
             {
                 var a = x.Method;
                 var b = y.Method;
@@ -603,6 +567,42 @@ namespace NetGore
             }
 
             #endregion
+        }
+    }
+
+    /// <summary>
+    /// Describes a command in the <see cref="StringCommandParser{T}"/>.
+    /// </summary>
+    public class StringCommandParserCommandData<T> where T : StringCommandBaseAttribute
+    {
+        readonly T _attribute;
+        readonly MethodInfo _method;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringCommandParserCommandData{T}"/> class.
+        /// </summary>
+        /// <param name="method">The <see cref="MethodInfo"/>.</param>
+        /// <param name="attribute">The attribute.</param>
+        public StringCommandParserCommandData(MethodInfo method, T attribute)
+        {
+            _attribute = attribute;
+            _method = method;
+        }
+
+        /// <summary>
+        /// Gets the attribute that resulted in this method being binded to the command.
+        /// </summary>
+        public T Attribute
+        {
+            get { return _attribute; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MethodInfo"/> for the method to be invoked.
+        /// </summary>
+        public MethodInfo Method
+        {
+            get { return _method; }
         }
     }
 }

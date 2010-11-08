@@ -35,7 +35,7 @@ namespace NetGore
         /// <param name="user">The user invoking the command.</param>
         /// <param name="commandData">The information about the command to be invoked.</param>
         /// <returns>True if the command can be invoked; otherwise false.</returns>
-        protected virtual bool AllowInvokeCommand(T user, StringCommandParser<U>.CommandData commandData)
+        protected virtual bool AllowInvokeCommand(T user, StringCommandParserCommandData<U> commandData)
         {
             return true;
         }
@@ -46,7 +46,7 @@ namespace NetGore
         /// <param name="user">The user invoking the command.</param>
         /// <param name="commandData">The information about the command to be invoked.</param>
         /// <returns>The message to display to the <paramref name="user"/>, or null or empty to display nothing.</returns>
-        protected virtual string GetCommandNotAllowedMessage(T user, StringCommandParser<U>.CommandData commandData)
+        protected virtual string GetCommandNotAllowedMessage(T user, StringCommandParserCommandData<U> commandData)
         {
             return "You are not allowed to do that.";
         }
@@ -189,16 +189,16 @@ namespace NetGore
 
             /// <summary>
             /// When overridden in the derived class, gets if the <paramref name="binder"/> is allowed to invoke the method
-            /// defined by the given <see cref="StringCommandParser{T}.CommandData"/> using the given set of <paramref name="args"/>.
+            /// defined by the given <see cref="StringCommandParserCommandData{T}"/> using the given set of <paramref name="args"/>.
             /// </summary>
             /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
             /// this is ignored and can be null.</param>
-            /// <param name="cmdData">The <see cref="StringCommandParser{T}.CommandData"/>
+            /// <param name="cmdData">The <see cref="StringCommandParserCommandData{T}"/>
             /// containing the method to invoke and the corresponding attribute
             /// that is attached to it.</param>
             /// <param name="args">The casted arguments to use to invoke the method.</param>
             /// <returns></returns>
-            protected override bool AllowInvokeMethod(object binder, CommandData cmdData, object[] args)
+            protected override bool AllowInvokeMethod(object binder, StringCommandParserCommandData<U> cmdData, object[] args)
             {
                 var sayCommands = binder as ISayCommands<T>;
                 if (sayCommands == null)
@@ -219,12 +219,12 @@ namespace NetGore
             /// </summary>
             /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
             /// this is ignored and can be null.</param>
-            /// <param name="cd">The <see cref="StringCommandParser{T}.CommandData"/> for the command that the
+            /// <param name="cd">The <see cref="StringCommandParserCommandData{T}"/> for the command that the
             /// <paramref name="binder"/> was rejected from
             /// invoking.</param>
             /// <param name="args">Arguments used to invoke the command. Can be null.</param>
             /// <returns>A string containing a message about why the command failed to be handled.</returns>
-            protected override string HandleCommandInvokeDenied(object binder, CommandData cd, string[] args)
+            protected override string HandleCommandInvokeDenied(object binder, StringCommandParserCommandData<U> cd, string[] args)
             {
                 var sayCommands = binder as ISayCommands<T>;
                 if (sayCommands == null)

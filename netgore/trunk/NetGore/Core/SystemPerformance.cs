@@ -14,6 +14,7 @@ namespace NetGore
         /// <summary>
         /// Provides information about the system's CPU usage and availability.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public static class CPU
         {
             static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -123,6 +124,7 @@ namespace NetGore
         /// <summary>
         /// Provides information about the system's memory usage and availability.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public static class Memory
         {
             static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
