@@ -187,6 +187,7 @@ namespace NetGore.Tests.Collections
                             "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "obj")]
         static void EnumerateVersionTestSub(bool trackFree)
         {
             var d = new DArray<object>(50, trackFree) { new object(), new object() };

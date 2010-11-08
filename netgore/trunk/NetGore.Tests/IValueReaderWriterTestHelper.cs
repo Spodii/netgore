@@ -51,7 +51,7 @@ namespace NetGore.Tests
                 // Do a garbage collection to see if there is crap still out there, but waiting to be destructed
                 GC.Collect();
                 if (_createdTempFiles.Count > 3)
-                    throw new Exception("Too many temp files are out. Make sure they are being released!");
+                    throw new InvalidOperationException("Too many temp files are out. Make sure they are being released!");
                 else
                     Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
             }

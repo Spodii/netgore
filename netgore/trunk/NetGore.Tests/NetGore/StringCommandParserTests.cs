@@ -82,7 +82,7 @@ namespace NetGore.Tests.NetGore
 
         #endregion
 
-        class TestCommandAttribute : StringCommandBaseAttribute
+        sealed class TestCommandAttribute : StringCommandBaseAttribute
         {
             public TestCommandAttribute(string command) : base(command)
             {

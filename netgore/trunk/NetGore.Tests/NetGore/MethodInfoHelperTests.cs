@@ -129,6 +129,7 @@ namespace NetGore.Tests.NetGore
         {
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class TestA
         {
             [Att]
@@ -176,6 +177,7 @@ namespace NetGore.Tests.NetGore
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public static class TestB
         {
             [Att]

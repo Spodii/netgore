@@ -234,11 +234,11 @@ namespace NetGore.Tests.NetGore
             }
         }
 
-        class AttribA : Attribute
+        sealed class AttribA : Attribute
         {
         }
 
-        class AttribB : Attribute
+        sealed class AttribB : Attribute
         {
         }
 
