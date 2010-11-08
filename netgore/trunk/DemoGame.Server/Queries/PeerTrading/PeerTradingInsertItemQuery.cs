@@ -74,6 +74,7 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// The arguments for the <see cref="PeerTradingInsertItemQuery"/>.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct QueryArgs
         {
             /// <summary>

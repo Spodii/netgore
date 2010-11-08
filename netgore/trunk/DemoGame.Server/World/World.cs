@@ -73,7 +73,7 @@ namespace DemoGame.Server
                 const string errmsg = "Unable to create unarmed weapon - couldn't find item template with ID `{0}`.";
                 if (log.IsFatalEnabled)
                     log.FatalFormat(errmsg, unarmedWeaponID);
-                throw new Exception(string.Format(errmsg, unarmedWeaponID));
+                throw new ArgumentException(string.Format(errmsg, unarmedWeaponID));
             }
 
             _unarmedWeapon = new ItemEntity(unarmedWeaponTemplate, 1);
@@ -89,7 +89,7 @@ namespace DemoGame.Server
                     const string errmsg = "Failed to get the ID of map file `{0}`.";
                     if (log.IsFatalEnabled)
                         log.FatalFormat(errmsg, mapFile);
-                    throw new Exception(string.Format(errmsg, mapFile));
+                    throw new ArgumentException(string.Format(errmsg, mapFile));
                 }
 
                 var m = new Map(mapID, this);

@@ -184,7 +184,8 @@ namespace DemoGame.Server
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    const string errmsg = "Unknown StatusEffectMergeType `{0}`.";
+                    throw new ArgumentOutOfRangeException(string.Format(errmsg, StatusEffect.StatusEffectType), (Exception)null);
             }
 
             if (oldPower != _power || oldDisableTime != _disableTime)

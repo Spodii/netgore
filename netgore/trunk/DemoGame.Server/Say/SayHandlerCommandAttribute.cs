@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore;
 
 namespace DemoGame.Server
@@ -6,7 +7,8 @@ namespace DemoGame.Server
     /// <summary>
     /// A specialized <see cref="SayCommandAttribute"/> for the <see cref="SayHandler"/>.
     /// </summary>
-    public class SayHandlerCommandAttribute : SayCommandAttribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public sealed class SayHandlerCommandAttribute : SayCommandAttribute
     {
         readonly UserPermissions _permissions;
 

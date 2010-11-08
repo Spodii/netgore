@@ -49,7 +49,7 @@ namespace DemoGame.Server
                 var err = string.Format(errmsg, _responseConditionalFailureType);
                 log.Fatal(err);
                 Debug.Fail(err);
-                throw new Exception(err);
+                throw new ArgumentException(err);
             }
         }
 

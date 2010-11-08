@@ -57,7 +57,7 @@ namespace DemoGame.Server
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
                 Debug.Fail(err);
-                throw new Exception(err);
+                throw new ArgumentException(err);
             }
 
             SpawnNPCs();

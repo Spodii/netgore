@@ -48,7 +48,7 @@ namespace DemoGame.Server.Queries
             using (var r = ExecuteReader(accountID))
             {
                 if (!r.Read())
-                    throw new Exception("Failed to read");
+                    throw new DatabaseException("Failed to read");
 
                 return r.GetInt32(0);
             }
