@@ -46,27 +46,27 @@ paramValues["time_deleted"] = (System.Nullable<System.DateTime>)source.TimeDelet
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this AccountCharacterTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this AccountCharacterTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("account_id");
+i = dataRecord.GetOrdinal("account_id");
 
-source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("character_id");
+i = dataRecord.GetOrdinal("character_id");
 
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("time_deleted");
+i = dataRecord.GetOrdinal("time_deleted");
 
-source.TimeDeleted = (System.Nullable<System.DateTime>)(System.Nullable<System.DateTime>)(dataReader.IsDBNull(i) ? (System.Nullable<System.DateTime>)null : dataReader.GetDateTime(i));
+source.TimeDeleted = (System.Nullable<System.DateTime>)(System.Nullable<System.DateTime>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.DateTime>)null : dataRecord.GetDateTime(i));
 }
 
 /// <summary>
@@ -78,25 +78,25 @@ source.TimeDeleted = (System.Nullable<System.DateTime>)(System.Nullable<System.D
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this AccountCharacterTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this AccountCharacterTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "account_id":
-source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 break;
 
 
 case "character_id":
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 break;
 
 
 case "time_deleted":
-source.TimeDeleted = (System.Nullable<System.DateTime>)(System.Nullable<System.DateTime>)(dataReader.IsDBNull(i) ? (System.Nullable<System.DateTime>)null : dataReader.GetDateTime(i));
+source.TimeDeleted = (System.Nullable<System.DateTime>)(System.Nullable<System.DateTime>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.DateTime>)null : dataRecord.GetDateTime(i));
 break;
 
 

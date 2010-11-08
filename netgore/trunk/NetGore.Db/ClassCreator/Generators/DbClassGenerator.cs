@@ -35,9 +35,14 @@ namespace NetGore.Db.ClassCreator
         public const string CopyValuesMethodName = "CopyValues";
 
         /// <summary>
-        /// Name of the dataReader when used in arguments in the generated code.
+        /// Name of the <see cref="IDataReader"/> when used in arguments in the generated code.
         /// </summary>
         public const string DataReaderName = "dataReader";
+
+        /// <summary>
+        /// Name of the <see cref="IDataRecord"/> when used in arguments in the generated code.
+        /// </summary>
+        public const string DataRecordName = "dataRecord";
 
         /// <summary>
         /// Name of the _dbColumns field in the generated code.
@@ -1130,13 +1135,13 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetXmlComment(Comments.ReadValues.Summary, null,
                                                   new KeyValuePair<string, string>(_extensionParamName,
                                                                                    Comments.Extensions.ExtensionParameter),
-                                                  new KeyValuePair<string, string>(DataReaderName,
-                                                                                   Comments.ReadValues.ParameterDataReader)));
+                                                  new KeyValuePair<string, string>(DataRecordName,
+                                                                                   Comments.ReadValues.ParameterDataRecord)));
 
             sb.AppendLine(Formatter.GetExtensionMethodHeader("ReadValues", new MethodParameter(_extensionParamName, cd.ClassName),
                                                              new MethodParameter[]
                                                              {
-                                                                 new MethodParameter(DataReaderName, typeof(IDataReader), Formatter)
+                                                                 new MethodParameter(DataRecordName, typeof(IDataRecord), Formatter)
                                                              }, typeof(void)));
 
             // Body
@@ -1146,10 +1151,10 @@ namespace NetGore.Db.ClassCreator
             foreach (var column in cd.Columns)
             {
                 bodySB.AppendLine(Formatter.GetSetValue("i",
-                                                        Formatter.GetCallObjMethod(DataReaderName, "GetOrdinal",
+                                                        Formatter.GetCallObjMethod(DataRecordName, "GetOrdinal",
                                                                                    "\"" + column.Name + "\""), false, false));
 
-                var right = cd.GetDataReaderAccessor(column, "i");
+                var right = cd.GetDataReaderAccessor(column, "i", DataRecordName);
                 bodySB.AppendLine(cd.GetColumnValueMutator(column, right, _extensionParamName));
                 bodySB.AppendLine();
             }
@@ -1281,22 +1286,22 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null,
                                                   new KeyValuePair<string, string>(_extensionParamName,
                                                                                    Comments.Extensions.ExtensionParameter),
-                                                  new KeyValuePair<string, string>(DataReaderName,
+                                                  new KeyValuePair<string, string>(DataRecordName,
                                                                                    Comments.TryReadValues.ParameterDataReader)));
 
             sb.AppendLine(Formatter.GetExtensionMethodHeader("TryReadValues",
                                                              new MethodParameter(_extensionParamName, cd.ClassName),
                                                              new MethodParameter[]
                                                              {
-                                                                 new MethodParameter(DataReaderName, typeof(IDataReader), Formatter)
+                                                                 new MethodParameter(DataRecordName, typeof(IDataRecord), Formatter)
                                                              }, typeof(void)));
 
             // Body
             var bodySB = new StringBuilder(2048);
-            bodySB.AppendLine("for (int i = 0; i < " + DataReaderName + ".FieldCount; i++)");
+            bodySB.AppendLine("for (int i = 0; i < " + DataRecordName + ".FieldCount; i++)");
             bodySB.AppendLine(Formatter.OpenBrace);
             {
-                bodySB.AppendLine(Formatter.GetSwitch(DataReaderName + ".GetName(i)",
+                bodySB.AppendLine(Formatter.GetSwitch(DataRecordName + ".GetName(i)",
                                                       cd.Columns.Select(
                                                           x =>
                                                           new KeyValuePair<string, string>("\"" + x.Name + "\"",
@@ -1319,7 +1324,9 @@ namespace NetGore.Db.ClassCreator
         protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
         {
             var sb = new StringBuilder();
-            sb.AppendLine(cd.GetColumnValueMutator(column, cd.GetDataReaderAccessor(column, "i"), _extensionParamName));
+            string valueName = cd.GetDataReaderAccessor(column, "i", DataRecordName);
+            string s = cd.GetColumnValueMutator(column, valueName, _extensionParamName);
+            sb.AppendLine(s);
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
         }

@@ -53,55 +53,55 @@ paramValues["when"] = (System.DateTime)source.When;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this WorldStatsUserKillNpcTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this WorldStatsUserKillNpcTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("map_id");
+i = dataRecord.GetOrdinal("map_id");
 
-source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("npc_template_id");
+i = dataRecord.GetOrdinal("npc_template_id");
 
-source.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("npc_x");
+i = dataRecord.GetOrdinal("npc_x");
 
-source.NpcX = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.NpcX = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("npc_y");
+i = dataRecord.GetOrdinal("npc_y");
 
-source.NpcY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.NpcY = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("user_id");
+i = dataRecord.GetOrdinal("user_id");
 
-source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("user_level");
+i = dataRecord.GetOrdinal("user_level");
 
-source.UserLevel = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.UserLevel = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("user_x");
+i = dataRecord.GetOrdinal("user_x");
 
-source.UserX = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.UserX = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("user_y");
+i = dataRecord.GetOrdinal("user_y");
 
-source.UserY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.UserY = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("when");
+i = dataRecord.GetOrdinal("when");
 
-source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.When = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 }
 
 /// <summary>
@@ -113,60 +113,60 @@ source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this WorldStatsUserKillNpcTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this WorldStatsUserKillNpcTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "id":
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "map_id":
-source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "npc_template_id":
-source.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "npc_x":
-source.NpcX = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.NpcX = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "npc_y":
-source.NpcY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.NpcY = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "user_id":
-source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 break;
 
 
 case "user_level":
-source.UserLevel = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.UserLevel = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 
 case "user_x":
-source.UserX = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.UserX = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "user_y":
-source.UserY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.UserY = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "when":
-source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.When = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 

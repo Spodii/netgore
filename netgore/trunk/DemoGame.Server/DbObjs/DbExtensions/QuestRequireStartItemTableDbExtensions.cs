@@ -46,27 +46,27 @@ paramValues["quest_id"] = (System.UInt16)source.QuestID;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this QuestRequireStartItemTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this QuestRequireStartItemTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("amount");
+i = dataRecord.GetOrdinal("amount");
 
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Amount = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("item_template_id");
+i = dataRecord.GetOrdinal("item_template_id");
 
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("quest_id");
+i = dataRecord.GetOrdinal("quest_id");
 
-source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataRecord.GetUInt16(i);
 }
 
 /// <summary>
@@ -78,25 +78,25 @@ source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.Quest
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this QuestRequireStartItemTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this QuestRequireStartItemTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "amount":
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Amount = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 
 case "item_template_id":
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataRecord.GetUInt16(i);
 break;
 
 
 case "quest_id":
-source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataRecord.GetUInt16(i);
 break;
 
 

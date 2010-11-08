@@ -54,59 +54,59 @@ paramValues["y"] = (System.UInt16)source.Y;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this WorldStatsUserShoppingTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this WorldStatsUserShoppingTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("amount");
+i = dataRecord.GetOrdinal("amount");
 
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Amount = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("character_id");
+i = dataRecord.GetOrdinal("character_id");
 
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("cost");
+i = dataRecord.GetOrdinal("cost");
 
-source.Cost = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Cost = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("item_template_id");
+i = dataRecord.GetOrdinal("item_template_id");
 
-source.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)(System.Nullable<DemoGame.ItemTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)(System.Nullable<DemoGame.ItemTemplateID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("map_id");
+i = dataRecord.GetOrdinal("map_id");
 
-source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("sale_type");
+i = dataRecord.GetOrdinal("sale_type");
 
-source.SaleType = (System.SByte)(System.SByte)dataReader.GetSByte(i);
+source.SaleType = (System.SByte)(System.SByte)dataRecord.GetSByte(i);
 
-i = dataReader.GetOrdinal("shop_id");
+i = dataRecord.GetOrdinal("shop_id");
 
-source.ShopID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataReader.GetUInt16(i);
+source.ShopID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("when");
+i = dataRecord.GetOrdinal("when");
 
-source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.When = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 
-i = dataReader.GetOrdinal("x");
+i = dataRecord.GetOrdinal("x");
 
-source.X = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.X = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("y");
+i = dataRecord.GetOrdinal("y");
 
-source.Y = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Y = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 }
 
 /// <summary>
@@ -118,65 +118,65 @@ source.Y = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this WorldStatsUserShoppingTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this WorldStatsUserShoppingTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "amount":
-source.Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Amount = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 
 case "character_id":
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 break;
 
 
 case "cost":
-source.Cost = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Cost = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "id":
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "item_template_id":
-source.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)(System.Nullable<DemoGame.ItemTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)(System.Nullable<DemoGame.ItemTemplateID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "map_id":
-source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.MapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "sale_type":
-source.SaleType = (System.SByte)(System.SByte)dataReader.GetSByte(i);
+source.SaleType = (System.SByte)(System.SByte)dataRecord.GetSByte(i);
 break;
 
 
 case "shop_id":
-source.ShopID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataReader.GetUInt16(i);
+source.ShopID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataRecord.GetUInt16(i);
 break;
 
 
 case "when":
-source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.When = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 
 case "x":
-source.X = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.X = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "y":
-source.Y = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Y = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 

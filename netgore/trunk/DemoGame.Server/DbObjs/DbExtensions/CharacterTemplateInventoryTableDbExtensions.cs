@@ -49,39 +49,39 @@ paramValues["min"] = (System.Byte)source.Min;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this CharacterTemplateInventoryTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this CharacterTemplateInventoryTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("chance");
+i = dataRecord.GetOrdinal("chance");
 
-source.Chance = (DemoGame.ItemChance)(DemoGame.ItemChance)dataReader.GetUInt16(i);
+source.Chance = (DemoGame.ItemChance)(DemoGame.ItemChance)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("character_template_id");
+i = dataRecord.GetOrdinal("character_template_id");
 
-source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
+source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("item_template_id");
+i = dataRecord.GetOrdinal("item_template_id");
 
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("max");
+i = dataRecord.GetOrdinal("max");
 
-source.Max = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Max = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("min");
+i = dataRecord.GetOrdinal("min");
 
-source.Min = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Min = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 }
 
 /// <summary>
@@ -93,40 +93,40 @@ source.Min = (System.Byte)(System.Byte)dataReader.GetByte(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this CharacterTemplateInventoryTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this CharacterTemplateInventoryTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "chance":
-source.Chance = (DemoGame.ItemChance)(DemoGame.ItemChance)dataReader.GetUInt16(i);
+source.Chance = (DemoGame.ItemChance)(DemoGame.ItemChance)dataRecord.GetUInt16(i);
 break;
 
 
 case "character_template_id":
-source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReader.GetUInt16(i);
+source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataRecord.GetUInt16(i);
 break;
 
 
 case "id":
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "item_template_id":
-source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataRecord.GetUInt16(i);
 break;
 
 
 case "max":
-source.Max = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Max = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 
 case "min":
-source.Min = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Min = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 

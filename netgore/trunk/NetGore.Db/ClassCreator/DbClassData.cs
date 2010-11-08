@@ -293,8 +293,11 @@ namespace NetGore.Db.ClassCreator
         /// <param name="column">The DbColumnInfo to get the value from.</param>
         /// <param name="ordinalFieldName">Name of the local field used to store the ordinal. The ordinal
         /// must already be assigned to this field.</param>
-        /// <returns>The code string used for accessing a database DbColumnInfo's value.</returns>
-        public string GetDataReaderAccessor(DbColumnInfo column, string ordinalFieldName)
+        /// <param name="variableName">Name of the variable.</param>
+        /// <returns>
+        /// The code string used for accessing a database DbColumnInfo's value.
+        /// </returns>
+        public string GetDataReaderAccessor(DbColumnInfo column, string ordinalFieldName, string variableName)
         {
             var callMethod = GetDataReaderReadMethodName(column.Type);
 
@@ -308,7 +311,7 @@ namespace NetGore.Db.ClassCreator
             if (column.IsNullable)
             {
                 sb.Append(Formatter.OpenParameterString);
-                sb.Append(DbClassGenerator.DataReaderName);
+                sb.Append(variableName);
                 sb.Append(".IsDBNull");
                 sb.Append(Formatter.OpenParameterString);
                 sb.Append(ordinalFieldName);
@@ -317,7 +320,7 @@ namespace NetGore.Db.ClassCreator
                 sb.Append(Formatter.GetCast(column.Type));
                 sb.Append("null : ");
             }
-            sb.Append(DbClassGenerator.DataReaderName);
+            sb.Append(variableName);
             sb.Append(".");
             sb.Append(callMethod);
             sb.Append(Formatter.OpenParameterString);

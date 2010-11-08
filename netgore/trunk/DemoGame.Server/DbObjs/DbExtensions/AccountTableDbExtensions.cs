@@ -52,51 +52,51 @@ paramValues["time_last_login"] = (System.DateTime)source.TimeLastLogin;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this AccountTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this AccountTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("creator_ip");
+i = dataRecord.GetOrdinal("creator_ip");
 
-source.CreatorIp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.CreatorIp = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("current_ip");
+i = dataRecord.GetOrdinal("current_ip");
 
-source.CurrentIp = (System.Nullable<System.UInt32>)(System.Nullable<System.UInt32>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt32>)null : dataReader.GetUInt32(i));
+source.CurrentIp = (System.Nullable<System.UInt32>)(System.Nullable<System.UInt32>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt32>)null : dataRecord.GetUInt32(i));
 
-i = dataReader.GetOrdinal("email");
+i = dataRecord.GetOrdinal("email");
 
-source.Email = (System.String)(System.String)dataReader.GetString(i);
+source.Email = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.ID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("name");
+i = dataRecord.GetOrdinal("name");
 
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("password");
+i = dataRecord.GetOrdinal("password");
 
-source.Password = (System.String)(System.String)dataReader.GetString(i);
+source.Password = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("permissions");
+i = dataRecord.GetOrdinal("permissions");
 
-source.Permissions = (DemoGame.UserPermissions)(DemoGame.UserPermissions)dataReader.GetByte(i);
+source.Permissions = (DemoGame.UserPermissions)(DemoGame.UserPermissions)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("time_created");
+i = dataRecord.GetOrdinal("time_created");
 
-source.TimeCreated = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.TimeCreated = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 
-i = dataReader.GetOrdinal("time_last_login");
+i = dataRecord.GetOrdinal("time_last_login");
 
-source.TimeLastLogin = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.TimeLastLogin = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 }
 
 /// <summary>
@@ -108,55 +108,55 @@ source.TimeLastLogin = (System.DateTime)(System.DateTime)dataReader.GetDateTime(
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this AccountTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this AccountTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "creator_ip":
-source.CreatorIp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.CreatorIp = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "current_ip":
-source.CurrentIp = (System.Nullable<System.UInt32>)(System.Nullable<System.UInt32>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt32>)null : dataReader.GetUInt32(i));
+source.CurrentIp = (System.Nullable<System.UInt32>)(System.Nullable<System.UInt32>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt32>)null : dataRecord.GetUInt32(i));
 break;
 
 
 case "email":
-source.Email = (System.String)(System.String)dataReader.GetString(i);
+source.Email = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "id":
-source.ID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.ID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 break;
 
 
 case "name":
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "password":
-source.Password = (System.String)(System.String)dataReader.GetString(i);
+source.Password = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "permissions":
-source.Permissions = (DemoGame.UserPermissions)(DemoGame.UserPermissions)dataReader.GetByte(i);
+source.Permissions = (DemoGame.UserPermissions)(DemoGame.UserPermissions)dataRecord.GetByte(i);
 break;
 
 
 case "time_created":
-source.TimeCreated = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.TimeCreated = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 
 case "time_last_login":
-source.TimeLastLogin = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.TimeLastLogin = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 

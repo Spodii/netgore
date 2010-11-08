@@ -68,115 +68,115 @@ paramValues["width"] = (System.Byte)source.Width;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this ItemTemplateTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this ItemTemplateTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("action_display_id");
+i = dataRecord.GetOrdinal("action_display_id");
 
-source.ActionDisplayID = (System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ActionDisplayID = (System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("description");
+i = dataRecord.GetOrdinal("description");
 
-source.Description = (System.String)(System.String)dataReader.GetString(i);
+source.Description = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("equipped_body");
+i = dataRecord.GetOrdinal("equipped_body");
 
-source.EquippedBody = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.EquippedBody = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 
-i = dataReader.GetOrdinal("graphic");
+i = dataRecord.GetOrdinal("graphic");
 
-source.Graphic = (NetGore.GrhIndex)(NetGore.GrhIndex)dataReader.GetUInt16(i);
+source.Graphic = (NetGore.GrhIndex)(NetGore.GrhIndex)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("height");
+i = dataRecord.GetOrdinal("height");
 
-source.Height = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Height = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("hp");
+i = dataRecord.GetOrdinal("hp");
 
-source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+source.ID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("mp");
+i = dataRecord.GetOrdinal("mp");
 
-source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("name");
+i = dataRecord.GetOrdinal("name");
 
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("range");
+i = dataRecord.GetOrdinal("range");
 
-source.Range = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Range = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("stat_agi");
+i = dataRecord.GetOrdinal("stat_agi");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_defence");
+i = dataRecord.GetOrdinal("stat_defence");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_int");
+i = dataRecord.GetOrdinal("stat_int");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_maxhit");
+i = dataRecord.GetOrdinal("stat_maxhit");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_maxhp");
+i = dataRecord.GetOrdinal("stat_maxhp");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_maxmp");
+i = dataRecord.GetOrdinal("stat_maxmp");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_minhit");
+i = dataRecord.GetOrdinal("stat_minhit");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_req_agi");
+i = dataRecord.GetOrdinal("stat_req_agi");
 
-source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_req_int");
+i = dataRecord.GetOrdinal("stat_req_int");
 
-source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_req_str");
+i = dataRecord.GetOrdinal("stat_req_str");
 
-source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("stat_str");
+i = dataRecord.GetOrdinal("stat_str");
 
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 
-i = dataReader.GetOrdinal("type");
+i = dataRecord.GetOrdinal("type");
 
-source.Type = (DemoGame.ItemType)(DemoGame.ItemType)dataReader.GetByte(i);
+source.Type = (DemoGame.ItemType)(DemoGame.ItemType)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("value");
+i = dataRecord.GetOrdinal("value");
 
-source.Value = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Value = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("weapon_type");
+i = dataRecord.GetOrdinal("weapon_type");
 
-source.WeaponType = (DemoGame.WeaponType)(DemoGame.WeaponType)dataReader.GetByte(i);
+source.WeaponType = (DemoGame.WeaponType)(DemoGame.WeaponType)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("width");
+i = dataRecord.GetOrdinal("width");
 
-source.Width = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Width = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 }
 
 /// <summary>
@@ -188,135 +188,135 @@ source.Width = (System.Byte)(System.Byte)dataReader.GetByte(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this ItemTemplateTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this ItemTemplateTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "action_display_id":
-source.ActionDisplayID = (System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ActionDisplayID = (System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "description":
-source.Description = (System.String)(System.String)dataReader.GetString(i);
+source.Description = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "equipped_body":
-source.EquippedBody = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.EquippedBody = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 break;
 
 
 case "graphic":
-source.Graphic = (NetGore.GrhIndex)(NetGore.GrhIndex)dataReader.GetUInt16(i);
+source.Graphic = (NetGore.GrhIndex)(NetGore.GrhIndex)dataRecord.GetUInt16(i);
 break;
 
 
 case "height":
-source.Height = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Height = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 
 case "hp":
-source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 break;
 
 
 case "id":
-source.ID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataReader.GetUInt16(i);
+source.ID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataRecord.GetUInt16(i);
 break;
 
 
 case "mp":
-source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 break;
 
 
 case "name":
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "range":
-source.Range = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Range = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "stat_agi":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_defence":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_int":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_maxhit":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_maxhp":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_maxmp":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_minhit":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_req_agi":
-source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_req_int":
-source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_req_str":
-source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetReqStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "stat_str":
-source.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataReader.GetInt16(i));
+source.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Int16)dataRecord.GetInt16(i));
 break;
 
 
 case "type":
-source.Type = (DemoGame.ItemType)(DemoGame.ItemType)dataReader.GetByte(i);
+source.Type = (DemoGame.ItemType)(DemoGame.ItemType)dataRecord.GetByte(i);
 break;
 
 
 case "value":
-source.Value = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Value = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "weapon_type":
-source.WeaponType = (DemoGame.WeaponType)(DemoGame.WeaponType)dataReader.GetByte(i);
+source.WeaponType = (DemoGame.WeaponType)(DemoGame.WeaponType)dataRecord.GetByte(i);
 break;
 
 
 case "width":
-source.Width = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Width = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 

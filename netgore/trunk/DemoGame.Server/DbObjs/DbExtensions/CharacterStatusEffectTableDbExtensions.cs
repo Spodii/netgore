@@ -48,35 +48,35 @@ paramValues["time_left_secs"] = (System.UInt16)source.TimeLeftSecs;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this CharacterStatusEffectTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this CharacterStatusEffectTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("character_id");
+i = dataRecord.GetOrdinal("character_id");
 
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (DemoGame.ActiveStatusEffectID)(DemoGame.ActiveStatusEffectID)dataReader.GetInt32(i);
+source.ID = (DemoGame.ActiveStatusEffectID)(DemoGame.ActiveStatusEffectID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("power");
+i = dataRecord.GetOrdinal("power");
 
-source.Power = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Power = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("status_effect_id");
+i = dataRecord.GetOrdinal("status_effect_id");
 
-source.StatusEffect = (DemoGame.StatusEffectType)(DemoGame.StatusEffectType)dataReader.GetByte(i);
+source.StatusEffect = (DemoGame.StatusEffectType)(DemoGame.StatusEffectType)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("time_left_secs");
+i = dataRecord.GetOrdinal("time_left_secs");
 
-source.TimeLeftSecs = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.TimeLeftSecs = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 }
 
 /// <summary>
@@ -88,35 +88,35 @@ source.TimeLeftSecs = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this CharacterStatusEffectTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this CharacterStatusEffectTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "character_id":
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 break;
 
 
 case "id":
-source.ID = (DemoGame.ActiveStatusEffectID)(DemoGame.ActiveStatusEffectID)dataReader.GetInt32(i);
+source.ID = (DemoGame.ActiveStatusEffectID)(DemoGame.ActiveStatusEffectID)dataRecord.GetInt32(i);
 break;
 
 
 case "power":
-source.Power = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Power = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "status_effect_id":
-source.StatusEffect = (DemoGame.StatusEffectType)(DemoGame.StatusEffectType)dataReader.GetByte(i);
+source.StatusEffect = (DemoGame.StatusEffectType)(DemoGame.StatusEffectType)dataRecord.GetByte(i);
 break;
 
 
 case "time_left_secs":
-source.TimeLeftSecs = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.TimeLeftSecs = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 

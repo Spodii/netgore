@@ -47,31 +47,31 @@ paramValues["reward_exp"] = (System.Int32)source.RewardExp;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this QuestTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this QuestTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("repeatable");
+i = dataRecord.GetOrdinal("repeatable");
 
-source.Repeatable = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+source.Repeatable = (System.Boolean)(System.Boolean)dataRecord.GetBoolean(i);
 
-i = dataReader.GetOrdinal("reward_cash");
+i = dataRecord.GetOrdinal("reward_cash");
 
-source.RewardCash = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.RewardCash = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("reward_exp");
+i = dataRecord.GetOrdinal("reward_exp");
 
-source.RewardExp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.RewardExp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 }
 
 /// <summary>
@@ -83,30 +83,30 @@ source.RewardExp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this QuestTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this QuestTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "id":
-source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataRecord.GetUInt16(i);
 break;
 
 
 case "repeatable":
-source.Repeatable = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+source.Repeatable = (System.Boolean)(System.Boolean)dataRecord.GetBoolean(i);
 break;
 
 
 case "reward_cash":
-source.RewardCash = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.RewardCash = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "reward_exp":
-source.RewardExp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.RewardExp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 

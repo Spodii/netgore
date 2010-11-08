@@ -46,27 +46,27 @@ paramValues["name"] = (System.String)source.Name;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this ShopTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this ShopTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("can_buy");
+i = dataRecord.GetOrdinal("can_buy");
 
-source.CanBuy = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+source.CanBuy = (System.Boolean)(System.Boolean)dataRecord.GetBoolean(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("name");
+i = dataRecord.GetOrdinal("name");
 
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 }
 
 /// <summary>
@@ -78,25 +78,25 @@ source.Name = (System.String)(System.String)dataReader.GetString(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this ShopTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this ShopTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "can_buy":
-source.CanBuy = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+source.CanBuy = (System.Boolean)(System.Boolean)dataRecord.GetBoolean(i);
 break;
 
 
 case "id":
-source.ID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Shops.ShopID)(NetGore.Features.Shops.ShopID)dataRecord.GetUInt16(i);
 break;
 
 
 case "name":
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 

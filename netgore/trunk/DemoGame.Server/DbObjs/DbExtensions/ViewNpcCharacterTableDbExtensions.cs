@@ -71,127 +71,127 @@ paramValues["stat_str"] = (System.Int16)source.StatStr;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this ViewNpcCharacterTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this ViewNpcCharacterTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("ai_id");
+i = dataRecord.GetOrdinal("ai_id");
 
-source.AIID = (System.Nullable<NetGore.AI.AIID>)(System.Nullable<NetGore.AI.AIID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.AIID = (System.Nullable<NetGore.AI.AIID>)(System.Nullable<NetGore.AI.AIID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("body_id");
+i = dataRecord.GetOrdinal("body_id");
 
-source.BodyID = (DemoGame.BodyID)(DemoGame.BodyID)dataReader.GetUInt16(i);
+source.BodyID = (DemoGame.BodyID)(DemoGame.BodyID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("cash");
+i = dataRecord.GetOrdinal("cash");
 
-source.Cash = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Cash = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("character_template_id");
+i = dataRecord.GetOrdinal("character_template_id");
 
-source.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("chat_dialog");
+i = dataRecord.GetOrdinal("chat_dialog");
 
-source.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("exp");
+i = dataRecord.GetOrdinal("exp");
 
-source.Exp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Exp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("hp");
+i = dataRecord.GetOrdinal("hp");
 
-source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("level");
+i = dataRecord.GetOrdinal("level");
 
-source.Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("load_map_id");
+i = dataRecord.GetOrdinal("load_map_id");
 
-source.LoadMapID = (NetGore.World.MapID)(NetGore.World.MapID)dataReader.GetUInt16(i);
+source.LoadMapID = (NetGore.World.MapID)(NetGore.World.MapID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("load_x");
+i = dataRecord.GetOrdinal("load_x");
 
-source.LoadX = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.LoadX = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("load_y");
+i = dataRecord.GetOrdinal("load_y");
 
-source.LoadY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.LoadY = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("move_speed");
+i = dataRecord.GetOrdinal("move_speed");
 
-source.MoveSpeed = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.MoveSpeed = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("mp");
+i = dataRecord.GetOrdinal("mp");
 
-source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("name");
+i = dataRecord.GetOrdinal("name");
 
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("respawn_map_id");
+i = dataRecord.GetOrdinal("respawn_map_id");
 
-source.RespawnMapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.RespawnMapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("respawn_x");
+i = dataRecord.GetOrdinal("respawn_x");
 
-source.RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
+source.RespawnX = (System.Single)(System.Single)dataRecord.GetFloat(i);
 
-i = dataReader.GetOrdinal("respawn_y");
+i = dataRecord.GetOrdinal("respawn_y");
 
-source.RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
+source.RespawnY = (System.Single)(System.Single)dataRecord.GetFloat(i);
 
-i = dataReader.GetOrdinal("shop_id");
+i = dataRecord.GetOrdinal("shop_id");
 
-source.ShopID = (System.Nullable<NetGore.Features.Shops.ShopID>)(System.Nullable<NetGore.Features.Shops.ShopID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ShopID = (System.Nullable<NetGore.Features.Shops.ShopID>)(System.Nullable<NetGore.Features.Shops.ShopID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 
-i = dataReader.GetOrdinal("statpoints");
+i = dataRecord.GetOrdinal("statpoints");
 
-source.StatPoints = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.StatPoints = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("stat_agi");
+i = dataRecord.GetOrdinal("stat_agi");
 
-source.StatAgi = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatAgi = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("stat_defence");
+i = dataRecord.GetOrdinal("stat_defence");
 
-source.StatDefence = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatDefence = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("stat_int");
+i = dataRecord.GetOrdinal("stat_int");
 
-source.StatInt = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatInt = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("stat_maxhit");
+i = dataRecord.GetOrdinal("stat_maxhit");
 
-source.StatMaxhit = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMaxhit = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("stat_maxhp");
+i = dataRecord.GetOrdinal("stat_maxhp");
 
-source.StatMaxhp = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMaxhp = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("stat_maxmp");
+i = dataRecord.GetOrdinal("stat_maxmp");
 
-source.StatMaxmp = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMaxmp = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("stat_minhit");
+i = dataRecord.GetOrdinal("stat_minhit");
 
-source.StatMinhit = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMinhit = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
-i = dataReader.GetOrdinal("stat_str");
+i = dataRecord.GetOrdinal("stat_str");
 
-source.StatStr = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatStr = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 }
 
 /// <summary>
@@ -203,150 +203,150 @@ source.StatStr = (System.Int16)(System.Int16)dataReader.GetInt16(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this ViewNpcCharacterTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this ViewNpcCharacterTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "ai_id":
-source.AIID = (System.Nullable<NetGore.AI.AIID>)(System.Nullable<NetGore.AI.AIID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.AIID = (System.Nullable<NetGore.AI.AIID>)(System.Nullable<NetGore.AI.AIID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "body_id":
-source.BodyID = (DemoGame.BodyID)(DemoGame.BodyID)dataReader.GetUInt16(i);
+source.BodyID = (DemoGame.BodyID)(DemoGame.BodyID)dataRecord.GetUInt16(i);
 break;
 
 
 case "cash":
-source.Cash = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Cash = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "character_template_id":
-source.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "chat_dialog":
-source.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "exp":
-source.Exp = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.Exp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "hp":
-source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 break;
 
 
 case "id":
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "level":
-source.Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 
 case "load_map_id":
-source.LoadMapID = (NetGore.World.MapID)(NetGore.World.MapID)dataReader.GetUInt16(i);
+source.LoadMapID = (NetGore.World.MapID)(NetGore.World.MapID)dataRecord.GetUInt16(i);
 break;
 
 
 case "load_x":
-source.LoadX = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.LoadX = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "load_y":
-source.LoadY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.LoadY = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "move_speed":
-source.MoveSpeed = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.MoveSpeed = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "mp":
-source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
+source.MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataRecord.GetInt16(i);
 break;
 
 
 case "name":
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "respawn_map_id":
-source.RespawnMapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.RespawnMapID = (System.Nullable<NetGore.World.MapID>)(System.Nullable<NetGore.World.MapID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "respawn_x":
-source.RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
+source.RespawnX = (System.Single)(System.Single)dataRecord.GetFloat(i);
 break;
 
 
 case "respawn_y":
-source.RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
+source.RespawnY = (System.Single)(System.Single)dataRecord.GetFloat(i);
 break;
 
 
 case "shop_id":
-source.ShopID = (System.Nullable<NetGore.Features.Shops.ShopID>)(System.Nullable<NetGore.Features.Shops.ShopID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.ShopID = (System.Nullable<NetGore.Features.Shops.ShopID>)(System.Nullable<NetGore.Features.Shops.ShopID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataRecord.GetUInt16(i));
 break;
 
 
 case "statpoints":
-source.StatPoints = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.StatPoints = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "stat_agi":
-source.StatAgi = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatAgi = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
 case "stat_defence":
-source.StatDefence = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatDefence = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
 case "stat_int":
-source.StatInt = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatInt = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
 case "stat_maxhit":
-source.StatMaxhit = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMaxhit = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
 case "stat_maxhp":
-source.StatMaxhp = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMaxhp = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
 case "stat_maxmp":
-source.StatMaxmp = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMaxmp = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
 case "stat_minhit":
-source.StatMinhit = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatMinhit = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
 case "stat_str":
-source.StatStr = (System.Int16)(System.Int16)dataReader.GetInt16(i);
+source.StatStr = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 

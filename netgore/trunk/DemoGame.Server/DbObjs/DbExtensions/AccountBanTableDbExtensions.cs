@@ -50,43 +50,43 @@ paramValues["start_time"] = (System.DateTime)source.StartTime;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this AccountBanTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this AccountBanTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("account_id");
+i = dataRecord.GetOrdinal("account_id");
 
-source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("end_time");
+i = dataRecord.GetOrdinal("end_time");
 
-source.EndTime = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.EndTime = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 
-i = dataReader.GetOrdinal("expired");
+i = dataRecord.GetOrdinal("expired");
 
-source.Expired = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+source.Expired = (System.Boolean)(System.Boolean)dataRecord.GetBoolean(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("issued_by");
+i = dataRecord.GetOrdinal("issued_by");
 
-source.IssuedBy = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.IssuedBy = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 
-i = dataReader.GetOrdinal("reason");
+i = dataRecord.GetOrdinal("reason");
 
-source.Reason = (System.String)(System.String)dataReader.GetString(i);
+source.Reason = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("start_time");
+i = dataRecord.GetOrdinal("start_time");
 
-source.StartTime = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.StartTime = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 }
 
 /// <summary>
@@ -98,45 +98,45 @@ source.StartTime = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this AccountBanTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this AccountBanTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "account_id":
-source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 break;
 
 
 case "end_time":
-source.EndTime = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.EndTime = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 
 case "expired":
-source.Expired = (System.Boolean)(System.Boolean)dataReader.GetBoolean(i);
+source.Expired = (System.Boolean)(System.Boolean)dataRecord.GetBoolean(i);
 break;
 
 
 case "id":
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "issued_by":
-source.IssuedBy = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.IssuedBy = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 break;
 
 
 case "reason":
-source.Reason = (System.String)(System.String)dataReader.GetString(i);
+source.Reason = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "start_time":
-source.StartTime = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.StartTime = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 

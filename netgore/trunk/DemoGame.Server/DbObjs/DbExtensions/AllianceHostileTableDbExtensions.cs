@@ -45,23 +45,23 @@ paramValues["hostile_id"] = (System.Byte)source.HostileID;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this AllianceHostileTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this AllianceHostileTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("alliance_id");
+i = dataRecord.GetOrdinal("alliance_id");
 
-source.AllianceID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
+source.AllianceID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("hostile_id");
+i = dataRecord.GetOrdinal("hostile_id");
 
-source.HostileID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
+source.HostileID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataRecord.GetByte(i);
 }
 
 /// <summary>
@@ -73,20 +73,20 @@ source.HostileID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this AllianceHostileTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this AllianceHostileTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "alliance_id":
-source.AllianceID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
+source.AllianceID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataRecord.GetByte(i);
 break;
 
 
 case "hostile_id":
-source.HostileID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataReader.GetByte(i);
+source.HostileID = (DemoGame.AllianceID)(DemoGame.AllianceID)dataRecord.GetByte(i);
 break;
 
 

@@ -52,51 +52,51 @@ paramValues["when"] = (System.DateTime)source.When;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this WorldStatsNetworkTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this WorldStatsNetworkTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("connections");
+i = dataRecord.GetOrdinal("connections");
 
-source.Connections = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Connections = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("recv_bytes");
+i = dataRecord.GetOrdinal("recv_bytes");
 
-source.RecvBytes = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.RecvBytes = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("recv_messages");
+i = dataRecord.GetOrdinal("recv_messages");
 
-source.RecvMessages = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.RecvMessages = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("recv_packets");
+i = dataRecord.GetOrdinal("recv_packets");
 
-source.RecvPackets = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.RecvPackets = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("sent_bytes");
+i = dataRecord.GetOrdinal("sent_bytes");
 
-source.SentBytes = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.SentBytes = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("sent_messages");
+i = dataRecord.GetOrdinal("sent_messages");
 
-source.SentMessages = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.SentMessages = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("sent_packets");
+i = dataRecord.GetOrdinal("sent_packets");
 
-source.SentPackets = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.SentPackets = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("when");
+i = dataRecord.GetOrdinal("when");
 
-source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.When = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 }
 
 /// <summary>
@@ -108,55 +108,55 @@ source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this WorldStatsNetworkTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this WorldStatsNetworkTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "connections":
-source.Connections = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.Connections = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
 case "id":
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "recv_bytes":
-source.RecvBytes = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.RecvBytes = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "recv_messages":
-source.RecvMessages = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.RecvMessages = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "recv_packets":
-source.RecvPackets = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.RecvPackets = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "sent_bytes":
-source.SentBytes = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.SentBytes = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "sent_messages":
-source.SentMessages = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.SentMessages = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "sent_packets":
-source.SentPackets = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.SentPackets = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "when":
-source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.When = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 

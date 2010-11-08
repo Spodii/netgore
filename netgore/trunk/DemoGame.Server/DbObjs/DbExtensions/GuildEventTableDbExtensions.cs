@@ -52,51 +52,51 @@ paramValues["target_character_id"] = (System.Nullable<System.Int32>)source.Targe
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this GuildEventTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this GuildEventTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("arg0");
+i = dataRecord.GetOrdinal("arg0");
 
-source.Arg0 = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.Arg0 = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 
-i = dataReader.GetOrdinal("arg1");
+i = dataRecord.GetOrdinal("arg1");
 
-source.Arg1 = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.Arg1 = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 
-i = dataReader.GetOrdinal("arg2");
+i = dataRecord.GetOrdinal("arg2");
 
-source.Arg2 = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.Arg2 = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 
-i = dataReader.GetOrdinal("character_id");
+i = dataRecord.GetOrdinal("character_id");
 
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("created");
+i = dataRecord.GetOrdinal("created");
 
-source.Created = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.Created = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 
-i = dataReader.GetOrdinal("event_id");
+i = dataRecord.GetOrdinal("event_id");
 
-source.EventID = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.EventID = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 
-i = dataReader.GetOrdinal("guild_id");
+i = dataRecord.GetOrdinal("guild_id");
 
-source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
+source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("target_character_id");
+i = dataRecord.GetOrdinal("target_character_id");
 
-source.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)(System.Nullable<DemoGame.CharacterID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
+source.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)(System.Nullable<DemoGame.CharacterID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataRecord.GetInt32(i));
 }
 
 /// <summary>
@@ -108,55 +108,55 @@ source.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)(System.Nullab
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this GuildEventTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this GuildEventTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "arg0":
-source.Arg0 = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.Arg0 = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 break;
 
 
 case "arg1":
-source.Arg1 = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.Arg1 = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 break;
 
 
 case "arg2":
-source.Arg2 = (System.String)(System.String)(dataReader.IsDBNull(i) ? (System.String)null : dataReader.GetString(i));
+source.Arg2 = (System.String)(System.String)(dataRecord.IsDBNull(i) ? (System.String)null : dataRecord.GetString(i));
 break;
 
 
 case "character_id":
-source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
+source.CharacterID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(i);
 break;
 
 
 case "created":
-source.Created = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.Created = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 
 case "event_id":
-source.EventID = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.EventID = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 break;
 
 
 case "guild_id":
-source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
+source.GuildID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataRecord.GetUInt16(i);
 break;
 
 
 case "id":
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "target_character_id":
-source.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)(System.Nullable<DemoGame.CharacterID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
+source.TargetCharacterID = (System.Nullable<DemoGame.CharacterID>)(System.Nullable<DemoGame.CharacterID>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataRecord.GetInt32(i));
 break;
 
 
