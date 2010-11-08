@@ -19,7 +19,7 @@ namespace NetGore.Editor.Grhs
     {
         delegate void SetNodeImageHandler(GrhTreeViewNode node, Image img);
 
-        static readonly GrhImageList.GrhImageListAsyncCallback _asyncCallback;
+        static readonly GrhImageListAsyncCallback _asyncCallback;
         static readonly GrhImageList _grhImageList;
         static readonly SetNodeImageHandler _setNodeImage;
 

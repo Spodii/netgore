@@ -18,20 +18,6 @@ namespace NetGore.Editor.EditorTool
     /// </summary>
     public abstract class Tool : IDisposable, IPersistable
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="Tool"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
-        public delegate void EventHandler(Tool sender);
-
-        /// <summary>
-        /// Delegate for handling events from the <see cref="Tool"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
-        /// <param name="oldValue">The old (previous) value.</param>
-        /// <param name="newValue">The new (current) value.</param>
-        public delegate void ValueChangedEventHandler<in T>(Tool sender, T oldValue, T newValue);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         internal const bool defaultIsEnabled = true;
@@ -79,17 +65,17 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Notifies listeners when this object has been disposed.
         /// </summary>
-        public event EventHandler Disposed;
+        public event ToolEventHandler Disposed;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IsEnabled"/> property has changed.
         /// </summary>
-        public event ValueChangedEventHandler<bool> IsEnabledChanged;
+        public event ToolValueChangedEventHandler<bool> IsEnabledChanged;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IsOnToolBar"/> property has changed.
         /// </summary>
-        public event ValueChangedEventHandler<bool> IsOnToolBarChanged;
+        public event ToolValueChangedEventHandler<bool> IsOnToolBarChanged;
 
         /// <summary>
         /// Gets if this tool can be shown in the <see cref="ToolBar"/>. This does not mean that the tool will be shown in the

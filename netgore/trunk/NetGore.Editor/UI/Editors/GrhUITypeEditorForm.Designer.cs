@@ -40,8 +40,8 @@ namespace NetGore.Editor.UI
             this.gtv.Name = "gtv";
             this.gtv.Size = new System.Drawing.Size(308, 494);
             this.gtv.TabIndex = 0;
-            this.gtv.GrhMouseClick += new NetGore.Editor.Grhs.GrhTreeNodeMouseClickEvent(this.gtv_GrhMouseClick);
-            this.gtv.GrhMouseDoubleClick += new NetGore.Editor.Grhs.GrhTreeNodeMouseClickEvent(this.gtv_GrhMouseDoubleClick);
+            this.gtv.GrhMouseClick += new System.EventHandler<GrhTreeNodeMouseClickEventArgs>(this.gtv_GrhMouseClick);
+            this.gtv.GrhMouseDoubleClick += new System.EventHandler<GrhTreeNodeMouseClickEventArgs>(this.gtv_GrhMouseDoubleClick);
             // 
             // GrhUITypeEditorForm
             // 

@@ -77,16 +77,16 @@ namespace NetGore.Editor.Grhs
         /// <summary>
         /// Creates a <see cref="GrhTreeViewFolderNode"/>.
         /// </summary>
-        /// <param name="grhTreeView">The <see cref="GrhTreeView"/> to add the node to.</param>
+        /// <param name="treeView">The <see cref="TreeView"/> to add the node to.</param>
         /// <param name="category">The category for the node.</param>
         /// <returns>The <see cref="GrhTreeViewFolderNode"/> instance.</returns>
-        public static GrhTreeViewFolderNode Create(GrhTreeView grhTreeView, string category)
+        public static GrhTreeViewFolderNode Create(TreeView treeView, string category)
         {
             var delimiters = new string[] { SpriteCategorization.Delimiter };
             var categoryParts = category.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
             GrhTreeViewFolderNode current = null;
-            var currentColl = grhTreeView.Nodes;
+            var currentColl = treeView.Nodes;
 
             for (var i = 0; i < categoryParts.Length; i++)
             {
@@ -107,7 +107,8 @@ namespace NetGore.Editor.Grhs
                 else
                 {
                     // Uhm... too many matches?
-                    throw new Exception("Somehow we have more than one node for a single category!");
+                    const string errmsg = "Somehow we have more than one node for a single category (`{0}`).";
+                    throw new ArgumentException(string.Format(errmsg, category), "category");
                 }
 
                 currentColl = current.Nodes;

@@ -16,8 +16,6 @@ namespace NetGore.Editor.Grhs
     /// </summary>
     public class GrhTreeView : TreeView, IComparer, IComparer<TreeNode>
     {
-        public delegate void EditGrhDataEventHandler(GrhTreeView sender, TreeNode node, GrhData gd, bool deleteOnCancel);
-
         const int _drawImageOffset = 2;
 
         static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
@@ -41,27 +39,27 @@ namespace NetGore.Editor.Grhs
             DrawMode = TreeViewDrawMode.OwnerDrawAll;
         }
 
-        public event EditGrhDataEventHandler EditGrhDataRequested;
+        public event GrhTreeViewEditGrhDataEventHandler EditGrhDataRequested;
 
         /// <summary>
         /// Notofies listeners after a new <see cref="GrhData"/> node is selected.
         /// </summary>
-        public event GrhTreeViewEvent GrhAfterSelect;
+        public event EventHandler<GrhTreeViewEventArgs> GrhAfterSelect;
 
         /// <summary>
         /// Notifies listeners before a new <see cref="GrhData"/> node is selected.
         /// </summary>
-        public event GrhTreeViewCancelEvent GrhBeforeSelect;
+        public event EventHandler<GrhTreeViewCancelEventArgs> GrhBeforeSelect;
 
         /// <summary>
         /// Notifies listeners when a <see cref="GrhData"/> node is clicked.
         /// </summary>
-        public event GrhTreeNodeMouseClickEvent GrhMouseClick;
+        public event EventHandler<GrhTreeNodeMouseClickEventArgs> GrhMouseClick;
 
         /// <summary>
         /// Notifies listeners when a <see cref="GrhData"/> node is double-clicked.
         /// </summary>
-        public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
+        public event EventHandler<GrhTreeNodeMouseClickEventArgs> GrhMouseDoubleClick;
 
         /// <summary>
         /// Adds a <see cref="GrhData"/> to the tree or updates it if it already exists.
@@ -143,7 +141,7 @@ namespace NetGore.Editor.Grhs
             // Display a form showing which textures need to be fixed
             // The GrhTreeView will be disabled until the MissingTexturesForm is closed
             Enabled = false;
-            var frm = new MissingTexturesForm(hashCollection, missing.Cast<GrhData>(), _contentManager);
+            var frm = new MissingTexturesForm(hashCollection, missing, _contentManager);
             frm.FormClosed += delegate
             {
                 RebuildTree();
@@ -469,7 +467,7 @@ namespace NetGore.Editor.Grhs
         {
             var cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
             if (cm == null)
-                throw new Exception("Failed to find a ContentManager to use.");
+                throw new InvalidOperationException("Failed to find a ContentManager to use.");
 
             var newGDs = AutomaticGrhDataUpdater.Update(cm, ContentPaths.Dev.Grhs, this);
             var newCount = newGDs.Count();

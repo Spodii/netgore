@@ -43,6 +43,7 @@ namespace NetGore.Editor.Grhs
         /// <param name="index">Index of the GrhData to get/set the walls for</param>
         /// <returns>List of the WallEntities for the given GrhData, or null if the GrhData is
         /// invalid or no bound walls exist for it</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public List<WallEntityBase> this[GrhIndex index]
         {
             get
@@ -60,6 +61,7 @@ namespace NetGore.Editor.Grhs
         /// <param name="gd">GrhData to get/set the walls for</param>
         /// <returns>List of the WallEntities for the given GrhData, or null if the GrhData is
         /// invalid or does not exist</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public List<WallEntityBase> this[GrhData gd]
         {
             get { return this[gd.GrhIndex]; }
