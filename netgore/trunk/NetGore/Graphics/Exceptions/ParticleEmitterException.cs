@@ -23,14 +23,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Exception"/> class.
+        /// Initializes a new instance of the <see cref="ParticleEmitterException"/> class.
         /// </summary>
         public ParticleEmitterException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Exception"/> class with a specified error message.
+        /// Initializes a new instance of the <see cref="ParticleEmitterException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         public ParticleEmitterException(string message) : base(message)
@@ -38,8 +38,7 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Exception"/> class with a specified
-        /// error message and a reference to the inner exception that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="ParticleEmitterException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="innerException">The exception that is the cause of the current exception,
