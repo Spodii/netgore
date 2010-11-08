@@ -193,6 +193,7 @@ namespace NetGore.Db.ClassCreator
             {
                 var matches =
                     columnCollection.Columns.Where(x => x.ColumnName.Equals(dbColumn.Name, StringComparison.OrdinalIgnoreCase));
+
                 var count = matches.Count();
                 if (count == 1)
                 {
@@ -201,8 +202,9 @@ namespace NetGore.Db.ClassCreator
                 }
                 else if (count > 1)
                 {
-                    throw new Exception(
-                        string.Format("DbColumnInfo for column `{0}` in table `{1}` matched more than one ColumnCollection!",
+                    const string errmsg = "DbColumnInfo for column `{0}` in table `{1}` matched more than one ColumnCollection!";
+                    throw new ArgumentException(
+                        string.Format(errmsg,
                                       dbColumn.Name, TableName));
                 }
             }
