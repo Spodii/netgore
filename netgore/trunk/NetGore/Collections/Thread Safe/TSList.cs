@@ -176,6 +176,7 @@ namespace NetGore.Collections
         /// search for.</param>
         /// <returns>A <see cref="List{T}"/> containing all the elements that match the conditions defined by the
         /// specified predicate, if found; otherwise, an empty <see cref="List{T}"/>.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public List<T> FindAll(Predicate<T> match)
         {
             lock (_threadSync)
