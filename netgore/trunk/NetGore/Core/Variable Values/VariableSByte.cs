@@ -1,10 +1,11 @@
+using System;
 using System.ComponentModel;
 using System.Linq;
 
 namespace NetGore
 {
     [TypeConverter(typeof(VariableSByteConverter))]
-    public struct VariableSByte : IVariableValue<sbyte>
+    public struct VariableSByte : IVariableValue<sbyte>, IEquatable<VariableSByte>
     {
         sbyte _max;
         sbyte _min;
@@ -95,6 +96,66 @@ namespace NetGore
         public static implicit operator VariableSByte(sbyte value)
         {
             return new VariableSByte(value);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(VariableSByte other)
+        {
+            return other._max == _max && other._min == _min;
+        }
+
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <param name="obj">Another object to compare to.</param>
+        /// <returns>
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return obj is VariableSByte && this == (VariableSByte)obj;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_max.GetHashCode() * 397) ^ _min.GetHashCode();
+            }
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(VariableSByte left, VariableSByte right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(VariableSByte left, VariableSByte right)
+        {
+            return !left.Equals(right);
         }
     }
 }

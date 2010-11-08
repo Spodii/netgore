@@ -6,7 +6,7 @@ namespace NetGore
     /// <summary>
     /// Represents how long the application has been running in milliseconds.
     /// </summary>
-    public struct TickCount
+    public struct TickCount : IEquatable<TickCount>
     {
         /// <summary>
         /// Stores the time that the application started. Or, more precisely, the time that this class was first called.
@@ -125,6 +125,64 @@ namespace NetGore
         public static explicit operator TickCount(long value)
         {
             return new TickCount((uint)value);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(TickCount other)
+        {
+            return other._value == _value;
+        }
+
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <param name="obj">Another object to compare to.</param>
+        /// <returns>
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return obj is TickCount && this == (TickCount)obj;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(TickCount left, TickCount right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(TickCount left, TickCount right)
+        {
+            return !left.Equals(right);
         }
     }
 }

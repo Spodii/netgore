@@ -6,7 +6,7 @@ namespace NetGore
     /// <summary>
     /// Attribute for a Say command.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes"), AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class SayCommandAttribute : StringCommandBaseAttribute
     {
         /// <summary>

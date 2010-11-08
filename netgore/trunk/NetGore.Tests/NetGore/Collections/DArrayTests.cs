@@ -42,25 +42,11 @@ namespace NetGore.Tests.Collections
 
             var o = d[0];
 
-            try
-            {
-                o = d[-1];
-                Assert.Fail("Failed to generate IndexOutOfRangeException for d[-1].");
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Assert.IsFalse(d.CanGet(-1));
-            }
+            Assert.IsFalse(d.CanGet(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1], "Failed to generate ArgumentOutOfRangeException for d[-1].");
 
-            try
-            {
-                o = d[1];
-                Assert.Fail("Failed to generate IndexOutOfRangeException for d[1].");
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Assert.IsFalse(d.CanGet(1));
-            }
+            Assert.IsFalse(d.CanGet(1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1], "Failed to generate ArgumentOutOfRangeException for d[1].");
         }
 
         static void ClearTestSub(bool trackFree)
@@ -78,15 +64,9 @@ namespace NetGore.Tests.Collections
             Assert.AreEqual(0, d.Length);
             Assert.AreEqual(0, d.Count);
 
-            try
-            {
-                var o = d[0];
-                Assert.Fail("Failed to generate IndexOutOfRangeException for d[-1].");
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Assert.IsFalse(d.CanGet(0));
-            }
+            object o;
+            Assert.Throws<ArgumentOutOfRangeException>(() => o = d[0], "Failed to generate IndexOutOfRangeException for d[0].");
+            Assert.IsFalse(d.CanGet(0));
         }
 
         static void ContainsTestSub(bool trackFree)

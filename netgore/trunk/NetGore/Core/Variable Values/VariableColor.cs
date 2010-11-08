@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Linq;
 using SFML.Graphics;
@@ -5,7 +6,7 @@ using SFML.Graphics;
 namespace NetGore
 {
     [TypeConverter(typeof(VariableColorConverter))]
-    public struct VariableColor : IVariableValue<Color>
+    public struct VariableColor : IVariableValue<Color>, IEquatable<VariableColor>
     {
         Color _max;
         Color _min;
@@ -154,5 +155,65 @@ namespace NetGore
         }
 
         #endregion
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(VariableColor other)
+        {
+            return other._max.Equals(_max) && other._min.Equals(_min);
+        }
+
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <param name="obj">Another object to compare to.</param>
+        /// <returns>
+        /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return obj is VariableColor && this == (VariableColor)obj;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_max.GetHashCode() * 397) ^ _min.GetHashCode();
+            }
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(VariableColor left, VariableColor right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left argument.</param>
+        /// <param name="right">The right argument.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(VariableColor left, VariableColor right)
+        {
+            return !left.Equals(right);
+        }
     }
 }
