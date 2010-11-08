@@ -128,19 +128,19 @@ namespace NetGore.Scripting
         /// <summary>
         /// Compiles the source code.
         /// </summary>
-        /// <param name="asm">The created <see cref="Assembly"/>.</param>
+        /// <param name="assembly">The created <see cref="Assembly"/>.</param>
         /// <returns>A <see cref="AssemblyClassInvoker"/> to invoke the compiled <see cref="Assembly"/>, or
         /// null if the compilation failed.</returns>
-        public virtual AssemblyClassInvoker Compile(out Assembly asm)
+        public virtual AssemblyClassInvoker Compile(out Assembly assembly)
         {
             var sourceCode = GetSourceCode(_members);
 
-            asm = _scriptAssemblyCache.CreateInCache(sourceCode, x => CompileSourceToAssembly(sourceCode, x));
+            assembly = _scriptAssemblyCache.CreateInCache(sourceCode, x => CompileSourceToAssembly(sourceCode, x));
 
-            if (asm == null)
+            if (assembly == null)
                 return null;
 
-            return CreateAssemblyClassInvoker(asm, ClassName);
+            return CreateAssemblyClassInvoker(assembly, ClassName);
         }
 
         /// <summary>

@@ -338,12 +338,11 @@ namespace NetGore.Collections
             {
                 // Check for if out of range
                 if (index > _highestIndex || index < 0)
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("index");
 
                 // Return the item at the index
                 return _buffer[index];
             }
-
             set
             {
                 // Check if desired value exceeds the current buffer size - if so, resize

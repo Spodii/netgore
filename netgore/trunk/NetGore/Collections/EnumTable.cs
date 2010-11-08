@@ -63,7 +63,7 @@ namespace NetGore.Collections
                     if (log.IsFatalEnabled)
                         log.FatalFormat(errmsg, type);
                     Debug.Fail(string.Format(errmsg, type));
-                    throw new Exception("Encountered an unexpected internal error - EnumTable could not be created.");
+                    throw new ArgumentException(string.Format(errmsg, type), "type");
             }
         }
 

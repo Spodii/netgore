@@ -213,8 +213,8 @@ namespace NetGore.Graphics
         public void Write(IValueWriter w)
         {
             // Check for valid data
-            if (GrhIndex <= 0)
-                throw new Exception("GrhIndex invalid.");
+            if (GrhIndex.IsInvalid)
+                throw new GrhDataException("The GrhIndex invalid.");
             if (w == null)
                 throw new ArgumentNullException("w");
 

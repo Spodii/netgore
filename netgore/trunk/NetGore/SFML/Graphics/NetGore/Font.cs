@@ -15,7 +15,7 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct Glyph
+        public struct Glyph : IEquatable<Glyph>
         {
             /// <summary>Offset to move horizontically to the next character</summary>
             public int Advance;
@@ -25,6 +25,69 @@ namespace SFML
 
             /// <summary>Texture coordinates of the glyph inside the font's image</summary>
             public FloatRect TexCoords;
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <param name="other">An object to compare with this object.</param>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            public bool Equals(Glyph other)
+            {
+                return other.Advance == Advance && other.Rectangle.Equals(Rectangle) && other.TexCoords.Equals(TexCoords);
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                return obj is Glyph && this == (Glyph)obj;
+            }
+
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A 32-bit signed integer that is the hash code for this instance.
+            /// </returns>
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = Advance;
+                    result = (result * 397) ^ Rectangle.GetHashCode();
+                    result = (result * 397) ^ TexCoords.GetHashCode();
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Implements the operator ==.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator ==(Glyph left, Glyph right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Implements the operator !=.
+            /// </summary>
+            /// <param name="left">The left argument.</param>
+            /// <param name="right">The right argument.</param>
+            /// <returns>The result of the operator.</returns>
+            public static bool operator !=(Glyph left, Glyph right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         ////////////////////////////////////////////////////////////

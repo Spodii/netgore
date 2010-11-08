@@ -39,7 +39,7 @@ namespace NetGore
             TimeSpan ret;
             string failReason;
             if (!TryParse(str, out ret, out failReason))
-                throw new ArgumentException("str", failReason);
+                throw new ArgumentException(failReason, "str");
 
             return ret;
         }
