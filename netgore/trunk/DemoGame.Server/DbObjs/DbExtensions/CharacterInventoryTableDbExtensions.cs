@@ -64,8 +64,8 @@ namespace DemoGame.Server.DbObjs
         /// will not be found if any aliases are used or not all columns were selected.
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this CharacterInventoryTable source, IDataReader dataReader)
+        /// <param name="dataReader">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+        public static void ReadValues(this CharacterInventoryTable source, IDataRecord dataReader)
         {
             Int32 i;
 
@@ -122,8 +122,8 @@ namespace DemoGame.Server.DbObjs
         /// can easily be skipped without any indication.
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this CharacterInventoryTable source, IDataReader dataReader)
+        /// <param name="dataReader">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+        public static void TryReadValues(this CharacterInventoryTable source, IDataRecord dataReader)
         {
             for (var i = 0; i < dataReader.FieldCount; i++)
             {

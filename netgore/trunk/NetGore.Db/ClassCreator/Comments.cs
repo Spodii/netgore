@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace NetGore.Db.ClassCreator
@@ -26,10 +25,10 @@ namespace NetGore.Db.ClassCreator
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
-            public static readonly string Summary =
-                "Copies the column values into the given DbParameterValues using the database column name" + Environment.NewLine +
-                "with a prefixed @ as the key. The keys must already exist in the DbParameterValues;" + Environment.NewLine +
-                " this method will not create them if they are missing.";
+            public const string Summary =
+                @"Copies the column values into the given DbParameterValues using the database column name
+with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+ this method will not create them if they are missing.";
         }
 
         /// <summary>
@@ -50,10 +49,10 @@ namespace NetGore.Db.ClassCreator
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
-            public static readonly string Summary =
-                "Copies the column values into the given Dictionary using the database column name" + Environment.NewLine +
-                "with a prefixed @ as the key. The keys must already exist in the Dictionary;" + Environment.NewLine +
-                "this method will not create them if they are missing.";
+            public const string Summary =
+                @"Copies the column values into the given Dictionary using the database column name
+with a prefixed @ as the key. The keys must already exist in the Dictionary;
+this method will not create them if they are missing.";
         }
 
         /// <summary>
@@ -93,6 +92,20 @@ namespace NetGore.Db.ClassCreator
             public const string ColumnCollectionField = "The fields that are used in the column collection `{0}`.";
 
             /// <summary>
+            /// The Xml documentation to use for a column colection property.
+            /// </summary>
+            public const string ColumnCollectionProperty =
+                @"Gets an IEnumerable of strings containing the name of the database
+columns used in the column collection `{0}`.";
+
+            /// <summary>
+            /// The Xml documentation to use for a column colection value property.
+            /// </summary>
+            public const string ColumnCollectionValueProperty =
+                @"Gets an IEnumerable of KeyValuePairs containing the values in the `{0}` collection. The
+key is the collection's key and the value is the value for that corresponding key.";
+
+            /// <summary>
             /// The Xml documentation to use for the column count.
             /// </summary>
             public const string ColumnCount = "The number of columns in the database table that this class represents.";
@@ -125,6 +138,27 @@ namespace NetGore.Db.ClassCreator
             public const string DeepCopyReturn = "A deep copy of this table.";
 
             /// <summary>
+            /// The Xml documentation to use for the DeepCopy method.
+            /// </summary>
+            public const string DeepCopySummary =
+                @"Creates a deep copy of this table. All the values will be the same
+but they will be contained in a different object instance.";
+
+            /// <summary>
+            /// The Xml documentation to use for an extension class.
+            /// </summary>
+            public const string ExtensionClassSummary =
+                @"Contains extension methods for class {0} that assist in performing
+reads and writes to and from a database.";
+
+            /// <summary>
+            /// The Xml documentation to use on an interface for a collection getter.
+            /// </summary>
+            public const string InterfaceCollectionGetter =
+                @"Gets the value of the database column in the column collection `{0}`
+that corresponds to the given key.";
+
+            /// <summary>
             /// The Xml documentation to use for the `key` parameter on a collection on an interface.
             /// </summary>
             public const string InterfaceCollectionParamKey = "The key that represents the column in this column collection.";
@@ -138,6 +172,13 @@ namespace NetGore.Db.ClassCreator
             /// The Xml documentation to use for the return on a collection on an interface.
             /// </summary>
             public const string InterfaceCollectionReturns = "The value of the database column with the corresponding key.";
+
+            /// <summary>
+            /// The Xml documentation to use on an interface for a collection setter.
+            /// </summary>
+            public const string InterfaceCollectionSetter =
+                @"Sets the value of the database column in the column collection `{0}`
+that corresponds to the given key.";
 
             /// <summary>
             /// The Xml documentation to use for the getter on an interface.
@@ -177,48 +218,6 @@ namespace NetGore.Db.ClassCreator
             /// The Xml documentation to use for the TableName const string.
             /// </summary>
             public const string TableName = "The name of the database table that this class represents.";
-
-            /// <summary>
-            /// The Xml documentation to use for a column colection property.
-            /// </summary>
-            public static readonly string ColumnCollectionProperty =
-                "Gets an IEnumerable of strings containing the name of the database" + Environment.NewLine +
-                "columns used in the column collection `{0}`.";
-
-            /// <summary>
-            /// The Xml documentation to use for a column colection value property.
-            /// </summary>
-            public static readonly string ColumnCollectionValueProperty =
-                "Gets an IEnumerable of KeyValuePairs containing the values in the `{0}` collection. The" + Environment.NewLine +
-                "key is the collection's key and the value is the value for that corresponding key.";
-
-            /// <summary>
-            /// The Xml documentation to use for the DeepCopy method.
-            /// </summary>
-            public static readonly string DeepCopySummary = "Creates a deep copy of this table. All the values will be the same" +
-                                                            Environment.NewLine +
-                                                            "but they will be contained in a different object instance.";
-
-            /// <summary>
-            /// The Xml documentation to use for an extension class.
-            /// </summary>
-            public static readonly string ExtensionClassSummary =
-                "Contains extension methods for class {0} that assist in performing" + Environment.NewLine +
-                "reads and writes to and from a database.";
-
-            /// <summary>
-            /// The Xml documentation to use on an interface for a collection getter.
-            /// </summary>
-            public static readonly string InterfaceCollectionGetter =
-                "Gets the value of the database column in the column collection `{0}`" + Environment.NewLine +
-                "that corresponds to the given key.";
-
-            /// <summary>
-            /// The Xml documentation to use on an interface for a collection setter.
-            /// </summary>
-            public static readonly string InterfaceCollectionSetter =
-                "Sets the value of the database column in the column collection `{0}`" + Environment.NewLine +
-                "that corresponds to the given key.";
         }
 
         /// <summary>
@@ -246,6 +245,19 @@ namespace NetGore.Db.ClassCreator
             /// The Xml documentation to use for a regular field.
             /// </summary>
             public const string Field = "The field that maps onto the database column `{0}`.";
+
+            /// <summary>
+            /// The Xml documentation to use on a property.
+            /// </summary>
+            public const string Property =
+                @"Gets or sets the value for the field that maps onto the database column `{0}`.
+The underlying database type is `{1}`";
+
+            /// <summary>
+            /// The Xml documentation to use on a property that contains a comment.
+            /// </summary>
+            public const string PropertyDbComment = @"The database column contains the comment: 
+""{0}"".";
 
             /// <summary>
             /// The Xml documentation to use for a property with a default value.
@@ -283,19 +295,6 @@ namespace NetGore.Db.ClassCreator
             /// The Xml documentation to use for a `value` parameter on a method used to set the value for a column.
             /// </summary>
             public const string PublicMethodValueParameter = "The value to assign to the column for the corresponding key.";
-
-            /// <summary>
-            /// The Xml documentation to use on a property.
-            /// </summary>
-            public static readonly string Property =
-                "Gets or sets the value for the field that maps onto the database column `{0}`." + Environment.NewLine +
-                "The underlying database type is `{1}`";
-
-            /// <summary>
-            /// The Xml documentation to use on a property that contains a comment.
-            /// </summary>
-            public static readonly string PropertyDbComment = " The database column contains the comment: " + Environment.NewLine +
-                                                              "\"{0}\".";
         }
 
         /// <summary>
@@ -400,17 +399,16 @@ namespace NetGore.Db.ClassCreator
             /// <summary>
             /// The Xml documentation to use for parameter `dataReader`.
             /// </summary>
-            public const string ParameterDataReader =
-                "The IDataReader to read the values from. Must already be ready to be read from.";
+            public const string ParameterDataRecord =
+                @"The <see cref=""IDataRecord""/> to read the values from. Must already be ready to be read from.";
 
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
-            public static readonly string Summary = "Reads the values from an IDataReader and assigns the read values to this" +
-                                                    Environment.NewLine +
-                                                    "object's properties. The database column's name is used to as the key, so the value" +
-                                                    Environment.NewLine +
-                                                    "will not be found if any aliases are used or not all columns were selected.";
+            public const string Summary =
+                @"Reads the values from an IDataReader and assigns the read values to this
+object's properties. The database column's name is used to as the key, so the value
+will not be found if any aliases are used or not all columns were selected.";
         }
 
         /// <summary>
@@ -452,13 +450,13 @@ namespace NetGore.Db.ClassCreator
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
-            public static readonly string Summary =
-                "Copies the column values into the given DbParameterValues using the database column name" + Environment.NewLine +
-                "with a prefixed @ as the key. The key must already exist in the DbParameterValues" + Environment.NewLine +
-                "for the value to be copied over. If any of the keys in the DbParameterValues do not" + Environment.NewLine +
-                "match one of the column names, or if there is no field for a key, then it will be" + Environment.NewLine +
-                "ignored. Because of this, it is important to be careful when using this method" + Environment.NewLine +
-                "since columns or keys can be skipped without any indication.";
+            public const string Summary =
+                @"Copies the column values into the given DbParameterValues using the database column name
+with a prefixed @ as the key. The key must already exist in the DbParameterValues
+for the value to be copied over. If any of the keys in the DbParameterValues do not
+match one of the column names, or if there is no field for a key, then it will be
+ignored. Because of this, it is important to be careful when using this method
+since columns or keys can be skipped without any indication.";
         }
 
         /// <summary>
@@ -469,22 +467,19 @@ namespace NetGore.Db.ClassCreator
             /// <summary>
             /// The Xml documentation to use for parameter `dataReader`.
             /// </summary>
-            public const string ParameterDataReader =
-                "The IDataReader to read the values from. Must already be ready to be read from.";
+            public const string ParameterDataRecord =
+                @"The <see cref=""IDataRecord""/> to read the values from. Must already be ready to be read from.";
 
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
-            public static readonly string Summary = "Reads the values from an IDataReader and assigns the read values to this" +
-                                                    Environment.NewLine +
-                                                    "object's properties. Unlike ReadValues(), this method not only doesn't require" +
-                                                    Environment.NewLine +
-                                                    "all values to be in the IDataReader, but also does not require the values in" +
-                                                    Environment.NewLine +
-                                                    "the IDataReader to be a defined field for the table this class represents." +
-                                                    Environment.NewLine +
-                                                    "Because of this, you need to be careful when using this method because values" +
-                                                    Environment.NewLine + "can easily be skipped without any indication.";
+            public const string Summary =
+                @"Reads the values from an <see cref=""IDataRecord""/> and assigns the read values to this
+object's properties. Unlike ReadValues(), this method not only doesn't require
+all values to be in the <see cref=""IDataRecord""/>, but also does not require the values in
+the <see cref=""IDataRecord""/> to be a defined field for the table this class represents.
+Because of this, you need to be careful when using this method because values
+can easily be skipped without any indication.";
         }
 
         /// <summary>
