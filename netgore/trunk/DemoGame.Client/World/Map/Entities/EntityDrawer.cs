@@ -104,6 +104,7 @@ namespace DemoGame.Client
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the current view.</param>
         /// <param name="wall">WallEntity to draw</param>
         /// <param name="offset">Offset to draw the WallEntity at from the original position</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void Draw(ISpriteBatch sb, ICamera2D camera, WallEntityBase wall, Vector2 offset)
         {
             // Find the positon to draw to
