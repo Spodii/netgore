@@ -11,15 +11,8 @@ namespace NetGore.Db.ClassCreator
     {
         static readonly MethodParameter[] _empty = new MethodParameter[0];
 
-        /// <summary>
-        /// The parameter name.
-        /// </summary>
-        public readonly string Name;
-
-        /// <summary>
-        /// The parameter type.
-        /// </summary>
-        public readonly string Type;
+        readonly string _name;
+        readonly string _type;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MethodParameter"/> struct.
@@ -29,8 +22,8 @@ namespace NetGore.Db.ClassCreator
         /// <param name="formatter">The formatter.</param>
         public MethodParameter(string name, Type type, CodeFormatter formatter)
         {
-            Name = name;
-            Type = formatter.GetTypeString(type);
+            _name = name;
+            _type = formatter.GetTypeString(type);
         }
 
         /// <summary>
@@ -40,8 +33,8 @@ namespace NetGore.Db.ClassCreator
         /// <param name="type">The type.</param>
         public MethodParameter(string name, string type)
         {
-            Name = name;
-            Type = type;
+            _name = name;
+            _type = type;
         }
 
         /// <summary>
@@ -51,6 +44,22 @@ namespace NetGore.Db.ClassCreator
         public static MethodParameter[] Empty
         {
             get { return _empty; }
+        }
+
+        /// <summary>
+        /// Gets the parameter type.
+        /// </summary>
+        public string Type
+        {
+            get { return _type; }
+        }
+
+        /// <summary>
+        /// Gets the parameter name.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
         }
     }
 }

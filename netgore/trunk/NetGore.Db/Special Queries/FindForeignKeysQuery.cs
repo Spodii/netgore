@@ -90,22 +90,12 @@ namespace NetGore.Db
         /// <summary>
         /// Contains the arguments for executing the <see cref="FindForeignKeysQuery"/> query.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public struct QueryArgs
         {
-            /// <summary>
-            /// The column.
-            /// </summary>
-            public readonly string Column;
-
-            /// <summary>
-            /// The database.
-            /// </summary>
-            public readonly string Database;
-
-            /// <summary>
-            /// The table.
-            /// </summary>
-            public readonly string Table;
+            readonly string _column;
+            readonly string _database;
+            readonly string _table;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
@@ -115,9 +105,33 @@ namespace NetGore.Db
             /// <param name="column">The column.</param>
             public QueryArgs(string database, string table, string column)
             {
-                Database = database;
-                Table = table;
-                Column = column;
+                _database = database;
+                _table = table;
+                _column = column;
+            }
+
+            /// <summary>
+            /// Gets the column.
+            /// </summary>
+            public string Column
+            {
+                get { return _column; }
+            }
+
+            /// <summary>
+            /// Gets the database.
+            /// </summary>
+            public string Database
+            {
+                get { return _database; }
+            }
+
+            /// <summary>
+            /// Gets the table.
+            /// </summary>
+            public string Table
+            {
+                get { return _table; }
             }
         }
     }
