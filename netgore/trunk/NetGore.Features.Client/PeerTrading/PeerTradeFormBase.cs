@@ -15,29 +15,10 @@ namespace NetGore.Features.PeerTrading
     /// <typeparam name="TChar">The type of character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
     /// <typeparam name="TItemInfo">The type describing item information.</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public abstract class PeerTradeFormBase<TChar, TItem, TItemInfo> : Form where TChar : Entity where TItem : Entity
                                                                             where TItemInfo : class
     {
-        /// <summary>
-        /// Delegate for handling the <see cref="ItemSlotClicked"/> event.
-        /// </summary>
-        /// <param name="sender">The control the event too place on.</param>
-        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
-        /// <param name="isSourceSide">If the item slot clicked is on the source side.</param>
-        /// <param name="slot">The slot that was clicked.</param>
-        public delegate void ItemSlotClickedEventHandler(
-            PeerTradeFormBase<TChar, TItem, TItemInfo> sender, MouseButtonEventArgs e, bool isSourceSide, InventorySlot slot);
-
-        /// <summary>
-        /// Delegate for handling the <see cref="PeerTradeInfoHandlerChanged"/> event.
-        /// </summary>
-        /// <param name="sender">The <see cref="PeerTradeFormBase{TChar, TItem, TItemInfo}"/> that this event came from.</param>
-        /// <param name="oldHandler">The old (last) peer trade information handler. Can be null.</param>
-        /// <param name="newHandler">The new (current) peer trade information handler. Can be null.</param>
-        public delegate void PeerTradeInfoHandlerChangedEventHandler(
-            PeerTradeFormBase<TChar, TItem, TItemInfo> sender, ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> oldHandler,
-            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> newHandler);
-
         readonly Button _acceptButton;
 
         readonly PeerTradeSidePanel _sourceSide;
@@ -79,12 +60,12 @@ namespace NetGore.Features.PeerTrading
         /// <summary>
         /// Notifies listeners when an item slot was clicked.
         /// </summary>
-        public event ItemSlotClickedEventHandler ItemSlotClicked;
+        public event ItemSlotClickedEventHandler<TChar, TItem, TItemInfo> ItemSlotClicked;
 
         /// <summary>
         /// Notifies listeners when the <see cref="PeerTradeInfoHandler"/> property has changed.
         /// </summary>
-        public event PeerTradeInfoHandlerChangedEventHandler PeerTradeInfoHandlerChanged;
+        public event PeerTradeInfoHandlerChangedEventHandler<TChar, TItem, TItemInfo> PeerTradeInfoHandlerChanged;
 
         /// <summary>
         /// Gets the <see cref="Button"/> used to accept the trade.
@@ -316,10 +297,10 @@ namespace NetGore.Features.PeerTrading
             AcceptButton.IsEnabled = !ptih.HasUserAccepted;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class PeerTradeSidePanel : Panel
         {
             readonly Label _acceptedLabel;
-            readonly CashLabel _cashLabel;
             readonly Grh _grh = new Grh();
             readonly bool _isSourceSide;
             readonly PeerTradeFormBase<TChar, TItem, TItemInfo> _peerTradeForm;
@@ -387,7 +368,7 @@ namespace NetGore.Features.PeerTrading
                 AcceptedLabel.Position = new Vector2(ClientSize.X - AcceptedLabel.ClientSize.X, ClientSize.Y);
 
                 // Create the cash label
-                _cashLabel = CreateCashLabel(new Vector2(0, AcceptedLabel.Position.Y));
+                CreateCashLabel(new Vector2(0, AcceptedLabel.Position.Y));
 
                 PeerTradeForm.SetupTradePanelControl(this);
             }
@@ -412,18 +393,21 @@ namespace NetGore.Features.PeerTrading
             /// Gets or sets the size of the item slot's client area. Changes to not apply to existing object
             /// instances, so this value should be set early on. Default is {32, 32}.
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
             public static Vector2 ItemSlotClientSize { get; set; }
 
             /// <summary>
             /// Gets or sets the number of columns used for the item slots. Changes to not apply to existing object
             /// instances, so this value should be set early on. Default is 6.
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
             public static int ItemSlotColumns { get; set; }
 
             /// <summary>
             /// Gets or sets the amount of padding between item slots. Changes to not apply to existing object
             /// instances, so this value should be set early on. Default is {2, 2}.
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
             public static Vector2 ItemSlotPadding { get; set; }
 
             /// <summary>
@@ -540,6 +524,7 @@ namespace NetGore.Features.PeerTrading
                     ChangeAcceptLabelStatus(IsSourceSide ? ptih.HasSourceAccepted : ptih.HasTargetAccepted);
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
             public class CashLabel : Label
             {
                 readonly PeerTradeSidePanel _itemsCollection;
@@ -653,6 +638,7 @@ namespace NetGore.Features.PeerTrading
             /// <summary>
             /// A control that handles a single item slot for a <see cref="PeerTradeFormBase{TChar, TItem, TItemInfo}.PeerTradeSidePanel"/>.
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
             public class PeerTradeItemsCollectionSlot : PictureBox
             {
                 readonly PeerTradeSidePanel _itemsCollection;

@@ -65,7 +65,7 @@ namespace NetGore.Features.ActionDisplays
                 {
                     const string errmsg = "Multiple ActionDisplayScriptAttributes found for method `{0}`.";
                     Debug.Fail(string.Format(errmsg, method.Name));
-                    throw new Exception(string.Format(errmsg, method.Name));
+                    throw new TypeException(string.Format(errmsg, method.Name));
                 }
 
                 // Create the delegates for the methods
@@ -76,7 +76,10 @@ namespace NetGore.Features.ActionDisplays
                     {
                         del = (ActionDisplayScriptHandler)Delegate.CreateDelegate(mpdType, null, method, true);
                         if (del == null)
-                            throw new Exception("Failed to create ActionDisplayScriptHandler delegate.");
+                        {
+                            const string errmsg = "Failed to create ActionDisplayScriptHandler delegate for `{0}`.";
+                            throw new TypeException(string.Format(errmsg, atb));
+                        }
                     }
                     catch (Exception ex)
                     {

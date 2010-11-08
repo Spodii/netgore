@@ -103,10 +103,13 @@
     <Compile Include="ActionDisplays\ActionDisplayScriptManager.cs" />
     <Compile Include="Emoticons\EmoticonDisplayManager.cs" />
     <Compile Include="Emoticons\EmoticonMapDrawingExtension.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Groups\GroupForm.cs" />
     <Compile Include="Groups\GroupMemberListControl.cs" />
     <Compile Include="Guilds\GuildForm.cs" />
+    <Compile Include="Guilds\GuildFormEventHandler.cs" />
     <Compile Include="Guilds\GuildInfoFormBase.cs" />
+    <Compile Include="Guilds\GuildInfoFormBaseChangeGuildInfoEventHandler.cs" />
     <Compile Include="Guilds\GuildMemberListControl.cs" />
     <Compile Include="Guilds\GuildMembersForm.cs" />
     <Compile Include="Guilds\GuildMembersFormBase.cs" />
@@ -115,7 +118,9 @@
     <Compile Include="NPCChat\ClientNPCChatDialogItem.cs" />
     <Compile Include="NPCChat\ClientNPCChatManager.cs" />
     <Compile Include="NPCChat\ClientNPCChatResponse.cs" />
+    <Compile Include="PeerTrading\ItemSlotClickedEventHandler.cs" />
     <Compile Include="PeerTrading\PeerTradeFormBase.cs" />
+    <Compile Include="PeerTrading\PeerTradeInfoHandlerChangedEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quests\HasQuestRequirementsTracker.cs" />
     <Compile Include="Quests\IQuestDescription.cs" />
