@@ -98,7 +98,7 @@ namespace NetGore.Features.StatusEffects
                 Debug.Fail(string.Format(errmsg, instance.StatusEffectType));
                 if (log.IsFatalEnabled)
                     log.FatalFormat(errmsg, instance.StatusEffectType);
-                throw new Exception(string.Format(errmsg, instance.StatusEffectType));
+                throw new DuplicateKeyException(string.Format(errmsg, instance.StatusEffectType));
             }
 
             // Add the instance

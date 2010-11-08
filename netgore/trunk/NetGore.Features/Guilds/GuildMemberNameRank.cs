@@ -7,6 +7,7 @@ namespace NetGore.Features.Guilds
     /// <summary>
     /// A struct containing a guild member's name and rank.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1036:OverrideMethodsOnComparableTypes")]
     public struct GuildMemberNameRank : IEquatable<GuildMemberNameRank>, IComparable<GuildMemberNameRank>
     {
         readonly string _name;

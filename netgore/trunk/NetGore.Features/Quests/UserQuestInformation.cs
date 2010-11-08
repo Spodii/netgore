@@ -9,19 +9,6 @@ namespace NetGore.Features.Quests
 {
     public class UserQuestInformation
     {
-        /// <summary>
-        /// Delegate for handling events from the <see cref="UserQuestInformation"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="UserQuestInformation"/> the event came from.</param>
-        public delegate void UserQuestInformationEventHandler(UserQuestInformation sender);
-
-        /// <summary>
-        /// Delegate for handling events from the <see cref="UserQuestInformation"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="UserQuestInformation"/> the event came from.</param>
-        /// <param name="quest">The <see cref="QuestID"/> for the quest related to the event.</param>
-        public delegate void UserQuestInformationQuestEventHandler(UserQuestInformation sender, QuestID quest);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<QuestID> _activeQuests = new List<QuestID>();

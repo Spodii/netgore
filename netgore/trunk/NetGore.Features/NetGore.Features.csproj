@@ -108,6 +108,7 @@
     <Compile Include="Groups\Event Handlers\IGroupMemberEventHandler.cs" />
     <Compile Include="Groups\Event Handlers\IGroupableEventHandler.cs" />
     <Compile Include="Groups\UserGroupInformation.cs" />
+    <Compile Include="Groups\UserGroupInformationEventHandler.cs" />
     <Compile Include="Guilds\Event Handlers\GuildEventHandler.cs" />
     <Compile Include="Guilds\GuildEvents.cs" />
     <Compile Include="Guilds\GuildID.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Guilds\UserGuildInformation.cs" />
     <Compile Include="Guilds\GuildRank.cs" />
     <Compile Include="Guilds\GuildSettings.cs" />
+    <Compile Include="Guilds\UserGuildInformationEventHandler.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
@@ -149,6 +151,8 @@
     <Compile Include="Quests\QuestIDTypeConverter.cs" />
     <Compile Include="Quests\QuestSettings.cs" />
     <Compile Include="Quests\UserQuestInformation.cs" />
+    <Compile Include="Quests\UserQuestInformationEventHandler.cs" />
+    <Compile Include="Quests\UserQuestInformationQuestEventHandler.cs" />
     <Compile Include="Shops\PropertySyncShopID.cs" />
     <Compile Include="Shops\ShopID.cs" />
     <Compile Include="Shops\ShopIDTypeConverter.cs" />
