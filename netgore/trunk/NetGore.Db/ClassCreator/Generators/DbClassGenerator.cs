@@ -40,11 +40,6 @@ namespace NetGore.Db.ClassCreator
         public const string DataReaderName = "dataReader";
 
         /// <summary>
-        /// Name of the dataRecord when used in arguments in the generated code.
-        /// </summary>
-        public const string DataRecordName = "dataRecord";
-
-        /// <summary>
         /// Name of the _dbColumns field in the generated code.
         /// </summary>
         public const string DbColumnsField = "_dbColumns";
@@ -1135,13 +1130,13 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetXmlComment(Comments.ReadValues.Summary, null,
                                                   new KeyValuePair<string, string>(_extensionParamName,
                                                                                    Comments.Extensions.ExtensionParameter),
-                                                  new KeyValuePair<string, string>(DataRecordName,
-                                                                                   Comments.ReadValues.ParameterDataRecord)));
+                                                  new KeyValuePair<string, string>(DataReaderName,
+                                                                                   Comments.ReadValues.ParameterDataReader)));
 
             sb.AppendLine(Formatter.GetExtensionMethodHeader("ReadValues", new MethodParameter(_extensionParamName, cd.ClassName),
                                                              new MethodParameter[]
                                                              {
-                                                                 new MethodParameter(DataRecordName, typeof(IDataRecord), Formatter)
+                                                                 new MethodParameter(DataReaderName, typeof(IDataReader), Formatter)
                                                              }, typeof(void)));
 
             // Body
@@ -1286,14 +1281,14 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null,
                                                   new KeyValuePair<string, string>(_extensionParamName,
                                                                                    Comments.Extensions.ExtensionParameter),
-                                                  new KeyValuePair<string, string>(DataRecordName,
-                                                                                   Comments.TryReadValues.ParameterDataRecord)));
+                                                  new KeyValuePair<string, string>(DataReaderName,
+                                                                                   Comments.TryReadValues.ParameterDataReader)));
 
             sb.AppendLine(Formatter.GetExtensionMethodHeader("TryReadValues",
                                                              new MethodParameter(_extensionParamName, cd.ClassName),
                                                              new MethodParameter[]
                                                              {
-                                                                 new MethodParameter(DataRecordName, typeof(IDataRecord), Formatter)
+                                                                 new MethodParameter(DataReaderName, typeof(IDataReader), Formatter)
                                                              }, typeof(void)));
 
             // Body

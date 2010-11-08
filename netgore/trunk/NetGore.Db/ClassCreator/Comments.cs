@@ -125,7 +125,7 @@ key is the collection's key and the value is the value for that corresponding ke
             /// The Xml documentation to use for the IDataReader parameter on a constructor.
             /// </summary>
             public const string ConstructorParameterIDataReader =
-                "The IDataReader to read the values from. See method ReadValues() for details.";
+                @"The <see cref=""IDataReader""/> to read the values from. See method ReadValues() for details.";
 
             /// <summary>
             /// The Xml documentation to use for a constructor.
@@ -399,14 +399,14 @@ The underlying database type is `{1}`";
             /// <summary>
             /// The Xml documentation to use for parameter `dataReader`.
             /// </summary>
-            public const string ParameterDataRecord =
-                @"The <see cref=""IDataRecord""/> to read the values from. Must already be ready to be read from.";
+            public const string ParameterDataReader =
+                @"The <see cref=""IDataReader""/> to read the values from. Must already be ready to be read from.";
 
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
             public const string Summary =
-                @"Reads the values from an IDataReader and assigns the read values to this
+                @"Reads the values from an <see cref=""IDataReader""/> and assigns the read values to this
 object's properties. The database column's name is used to as the key, so the value
 will not be found if any aliases are used or not all columns were selected.";
         }
@@ -467,17 +467,17 @@ since columns or keys can be skipped without any indication.";
             /// <summary>
             /// The Xml documentation to use for parameter `dataReader`.
             /// </summary>
-            public const string ParameterDataRecord =
-                @"The <see cref=""IDataRecord""/> to read the values from. Must already be ready to be read from.";
+            public const string ParameterDataReader =
+                @"The <see cref=""IDataReader""/> to read the values from. Must already be ready to be read from.";
 
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
             public const string Summary =
-                @"Reads the values from an <see cref=""IDataRecord""/> and assigns the read values to this
+                @"Reads the values from an <see cref=""IDataReader""/> and assigns the read values to this
 object's properties. Unlike ReadValues(), this method not only doesn't require
-all values to be in the <see cref=""IDataRecord""/>, but also does not require the values in
-the <see cref=""IDataRecord""/> to be a defined field for the table this class represents.
+all values to be in the <see cref=""IDataReader""/>, but also does not require the values in
+the <see cref=""IDataReader""/> to be a defined field for the table this class represents.
 Because of this, you need to be careful when using this method because values
 can easily be skipped without any indication.";
         }

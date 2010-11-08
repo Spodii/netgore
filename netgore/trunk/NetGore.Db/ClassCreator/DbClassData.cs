@@ -306,7 +306,7 @@ namespace NetGore.Db.ClassCreator
             if (column.IsNullable)
             {
                 sb.Append(Formatter.OpenParameterString);
-                sb.Append(DbClassGenerator.DataRecordName);
+                sb.Append(DbClassGenerator.DataReaderName);
                 sb.Append(".IsDBNull");
                 sb.Append(Formatter.OpenParameterString);
                 sb.Append(ordinalFieldName);
@@ -315,7 +315,7 @@ namespace NetGore.Db.ClassCreator
                 sb.Append(Formatter.GetCast(column.Type));
                 sb.Append("null : ");
             }
-            sb.Append(DbClassGenerator.DataRecordName);
+            sb.Append(DbClassGenerator.DataReaderName);
             sb.Append(".");
             sb.Append(callMethod);
             sb.Append(Formatter.OpenParameterString);
