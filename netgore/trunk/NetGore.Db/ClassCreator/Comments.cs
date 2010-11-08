@@ -397,16 +397,16 @@ The underlying database type is `{1}`";
         public static class ReadValues
         {
             /// <summary>
-            /// The Xml documentation to use for parameter `dataReader`.
+            /// The Xml documentation to use for parameter `dataRecord`.
             /// </summary>
-            public const string ParameterDataReader =
-                @"The <see cref=""IDataReader""/> to read the values from. Must already be ready to be read from.";
+            public const string ParameterDataRecord =
+                @"The <see cref=""IDataRecord""/> to read the values from. Must already be ready to be read from.";
 
             /// <summary>
             /// The Xml documentation to use for the summary block.
             /// </summary>
             public const string Summary =
-                @"Reads the values from an <see cref=""IDataReader""/> and assigns the read values to this
+                @"Reads the values from an <see cref=""IDataRecord""/> and assigns the read values to this
 object's properties. The database column's name is used to as the key, so the value
 will not be found if any aliases are used or not all columns were selected.";
         }

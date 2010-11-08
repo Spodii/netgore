@@ -47,31 +47,31 @@ paramValues["time"] = (System.DateTime)source.Time;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this AccountIpsTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this AccountIpsTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("account_id");
+i = dataRecord.GetOrdinal("account_id");
 
-source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("ip");
+i = dataRecord.GetOrdinal("ip");
 
-source.Ip = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.Ip = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
-i = dataReader.GetOrdinal("time");
+i = dataRecord.GetOrdinal("time");
 
-source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.Time = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 }
 
 /// <summary>
@@ -83,30 +83,30 @@ source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this AccountIpsTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this AccountIpsTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "account_id":
-source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataReader.GetInt32(i);
+source.AccountID = (DemoGame.AccountID)(DemoGame.AccountID)dataRecord.GetInt32(i);
 break;
 
 
 case "id":
-source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "ip":
-source.Ip = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+source.Ip = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 break;
 
 
 case "time":
-source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.Time = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 

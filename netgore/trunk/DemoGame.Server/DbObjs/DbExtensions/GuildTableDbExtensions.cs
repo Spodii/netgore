@@ -47,31 +47,31 @@ paramValues["tag"] = (System.String)source.Tag;
 }
 
 /// <summary>
-/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
 /// will not be found if any aliases are used or not all columns were selected.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void ReadValues(this GuildTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this GuildTable source, System.Data.IDataRecord dataRecord)
 {
 System.Int32 i;
 
-i = dataReader.GetOrdinal("created");
+i = dataRecord.GetOrdinal("created");
 
-source.Created = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.Created = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 
-i = dataReader.GetOrdinal("id");
+i = dataRecord.GetOrdinal("id");
 
-source.ID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataRecord.GetUInt16(i);
 
-i = dataReader.GetOrdinal("name");
+i = dataRecord.GetOrdinal("name");
 
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 
-i = dataReader.GetOrdinal("tag");
+i = dataRecord.GetOrdinal("tag");
 
-source.Tag = (System.String)(System.String)dataReader.GetString(i);
+source.Tag = (System.String)(System.String)dataRecord.GetString(i);
 }
 
 /// <summary>
@@ -83,30 +83,30 @@ source.Tag = (System.String)(System.String)dataReader.GetString(i);
 /// can easily be skipped without any indication.
 /// </summary>
 /// <param name="source">The object to add the extension method to.</param>
-/// <param name="dataReader">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-public static void TryReadValues(this GuildTable source, System.Data.IDataReader dataReader)
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this GuildTable source, System.Data.IDataRecord dataRecord)
 {
-for (int i = 0; i < dataReader.FieldCount; i++)
+for (int i = 0; i < dataRecord.FieldCount; i++)
 {
-switch (dataReader.GetName(i))
+switch (dataRecord.GetName(i))
 {
 case "created":
-source.Created = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+source.Created = (System.DateTime)(System.DateTime)dataRecord.GetDateTime(i);
 break;
 
 
 case "id":
-source.ID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
+source.ID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataRecord.GetUInt16(i);
 break;
 
 
 case "name":
-source.Name = (System.String)(System.String)dataReader.GetString(i);
+source.Name = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
 case "tag":
-source.Tag = (System.String)(System.String)dataReader.GetString(i);
+source.Tag = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
