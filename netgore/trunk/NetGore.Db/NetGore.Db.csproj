@@ -136,7 +136,6 @@
     <Compile Include="Connections\PooledDbConnection.cs" />
     <Compile Include="DbParameterValues.cs" />
     <Compile Include="DbTableDataManager\DbTableDataManager.cs" />
-    <Compile Include="IDataReaderExtensions.cs" />
     <Compile Include="IDataRecordExtensions.cs" />
     <Compile Include="IDCreatorBase.cs" />
     <Compile Include="IDCreatorHelper.cs" />
