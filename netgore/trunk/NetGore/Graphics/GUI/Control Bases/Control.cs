@@ -192,7 +192,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> was clicked.
         /// </summary>
-        public event MouseClickEventHandler Clicked
+        public event EventHandler<MouseButtonEventArgs> Clicked
         {
             add { Events.AddHandler(_eventClicked, value); }
             remove { Events.RemoveHandler(_eventClicked, value); }
@@ -247,7 +247,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a key is being pressed while the <see cref="Control"/> has focus.
         /// </summary>
-        public event KeyboardEventHandler KeyPressed
+        public event EventHandler<KeyEventArgs> KeyPressed
         {
             add { Events.AddHandler(_eventKeyPressed, value); }
             remove { Events.RemoveHandler(_eventKeyPressed, value); }
@@ -256,7 +256,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a key has been released while the <see cref="Control"/> has focus.
         /// </summary>
-        public event KeyboardEventHandler KeyReleased
+        public event EventHandler<KeyEventArgs> KeyReleased
         {
             add { Events.AddHandler(_eventKeyReleased, value); }
             remove { Events.RemoveHandler(_eventKeyReleased, value); }
@@ -274,7 +274,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a mouse button has been pressed down on this <see cref="Control"/>.
         /// </summary>
-        public event MouseClickEventHandler MouseDown
+        public event EventHandler<MouseButtonEventArgs> MouseDown
         {
             add { Events.AddHandler(_eventMouseDown, value); }
             remove { Events.RemoveHandler(_eventMouseDown, value); }
@@ -283,7 +283,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the mouse has entered the area of the <see cref="Control"/>.
         /// </summary>
-        public event MouseEventHandler MouseEnter
+        public event EventHandler<MouseMoveEventArgs> MouseEnter
         {
             add { Events.AddHandler(_eventMouseEnter, value); }
             remove { Events.RemoveHandler(_eventMouseEnter, value); }
@@ -292,7 +292,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the mouse has left the area of the <see cref="Control"/>.
         /// </summary>
-        public event MouseEventHandler MouseLeave
+        public event EventHandler<MouseMoveEventArgs> MouseLeave
         {
             add { Events.AddHandler(_eventMouseLeave, value); }
             remove { Events.RemoveHandler(_eventMouseLeave, value); }
@@ -301,7 +301,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the mouse has moved over the <see cref="Control"/>.
         /// </summary>
-        public event MouseEventHandler MouseMoved
+        public event EventHandler<MouseMoveEventArgs> MouseMoved
         {
             add { Events.AddHandler(_eventMouseMoved, value); }
             remove { Events.RemoveHandler(_eventMouseMoved, value); }
@@ -310,7 +310,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a mouse button has been raised on the <see cref="Control"/>.
         /// </summary>
-        public event MouseClickEventHandler MouseUp
+        public event EventHandler<MouseButtonEventArgs> MouseUp
         {
             add { Events.AddHandler(_eventMouseUp, value); }
             remove { Events.RemoveHandler(_eventMouseUp, value); }
@@ -355,7 +355,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners text has been entered into this <see cref="Control"/>.
         /// </summary>
-        public event TextEnteredEventHandler TextEntered
+        public event EventHandler<TextEventArgs> TextEntered
         {
             add { Events.AddHandler(_eventTextEntered, value); }
             remove { Events.RemoveHandler(_eventTextEntered, value); }
@@ -1130,7 +1130,7 @@ namespace NetGore.Graphics.GUI
         void InvokeClicked(MouseButtonEventArgs e)
         {
             OnClick(e);
-            var handler = Events[_eventClicked] as MouseClickEventHandler;
+            var handler = Events[_eventClicked] as EventHandler<MouseButtonEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1191,7 +1191,7 @@ namespace NetGore.Graphics.GUI
         void InvokeKeyPressed(KeyEventArgs e)
         {
             OnKeyPressed(e);
-            var handler = Events[_eventKeyPressed] as KeyboardEventHandler;
+            var handler = Events[_eventKeyPressed] as EventHandler<KeyEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1204,7 +1204,7 @@ namespace NetGore.Graphics.GUI
         void InvokeKeyReleased(KeyEventArgs e)
         {
             OnKeyReleased(e);
-            var handler = Events[_eventKeyReleased] as KeyboardEventHandler;
+            var handler = Events[_eventKeyReleased] as EventHandler<KeyEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1229,7 +1229,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseDown(MouseButtonEventArgs e)
         {
             OnMouseDown(e);
-            var handler = Events[_eventMouseDown] as MouseClickEventHandler;
+            var handler = Events[_eventMouseDown] as EventHandler<MouseButtonEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1242,7 +1242,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseEnter(MouseMoveEventArgs e)
         {
             OnMouseEnter(e);
-            var handler = Events[_eventMouseEnter] as MouseEventHandler;
+            var handler = Events[_eventMouseEnter] as EventHandler<MouseMoveEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1255,7 +1255,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseLeave(MouseMoveEventArgs e)
         {
             OnMouseLeave(e);
-            var handler = Events[_eventMouseLeave] as MouseEventHandler;
+            var handler = Events[_eventMouseLeave] as EventHandler<MouseMoveEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1268,7 +1268,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseMoved(MouseMoveEventArgs e)
         {
             OnMouseMoved(e);
-            var handler = Events[_eventMouseMoved] as MouseEventHandler;
+            var handler = Events[_eventMouseMoved] as EventHandler<MouseMoveEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1281,7 +1281,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseUp(MouseButtonEventArgs e)
         {
             OnMouseUp(e);
-            var handler = Events[_eventMouseUp] as MouseClickEventHandler;
+            var handler = Events[_eventMouseUp] as EventHandler<MouseButtonEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1342,7 +1342,7 @@ namespace NetGore.Graphics.GUI
         void InvokeTextEntered(TextEventArgs e)
         {
             OnTextEntered(e);
-            var handler = Events[_eventTextEntered] as TextEnteredEventHandler;
+            var handler = Events[_eventTextEntered] as EventHandler<TextEventArgs>;
             if (handler != null)
                 handler(this, e);
         }

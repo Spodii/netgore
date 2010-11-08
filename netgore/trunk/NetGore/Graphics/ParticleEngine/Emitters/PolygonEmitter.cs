@@ -52,7 +52,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the collection of points that define the polygon.
         /// </summary>
-        [Category(_emitterCategoryName)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists"), Category(_emitterCategoryName)]
         [Description("The collection of points that define the polygon.")]
         [DisplayName("Points")]
         public PolygonPointCollection Points

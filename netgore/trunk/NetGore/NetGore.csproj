@@ -292,9 +292,6 @@
     <Compile Include="Graphics\GUI\DragDropProviderHelper.cs" />
     <Compile Include="Graphics\GUI\EditableTextHandler.cs" />
     <Compile Include="Graphics\GUI\EventArgs\ControlEventHandler.cs" />
-    <Compile Include="Graphics\GUI\EventArgs\KeyboardEventHandler.cs" />
-    <Compile Include="Graphics\GUI\EventArgs\MouseClickEventHandler.cs" />
-    <Compile Include="Graphics\GUI\EventArgs\MouseEventHandler.cs" />
     <Compile Include="Graphics\GUI\EventArgs\TextEnteredEventHandler.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControl.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControlCollection.cs" />
