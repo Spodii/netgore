@@ -33,6 +33,11 @@ namespace DemoGame
         public const float SimulatedDuplicatesChance = 0;
 
         /// <summary>
+        /// The number of seconds of non-response before disconnecting because of time out.
+        /// </summary>
+        public const float ConnectionTimeout = 20;
+
+        /// <summary>
         /// The simulated percentage of sent packets lost (range: 0.0f to 1.0f).
         /// </summary>
         public const float SimulatedLoss = 0;
