@@ -224,7 +224,7 @@ namespace NetGore.Collections
                 // Ensure the name isn't already in use
                 if (_nameToType.ContainsKey(typeName))
                 {
-                    const string errmsg = "Type name `{0}` is alredy used by Type `{1}` - cannot add new Type `{2}`.";
+                    const string errmsg = "Type name `{0}` is already used by Type `{1}` - cannot add new Type `{2}`.";
                     var err = string.Format(errmsg, typeName, _nameToType[typeName], type);
                     log.Fatal(err);
                     throw new TypeException(err);

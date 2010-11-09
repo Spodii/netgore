@@ -425,6 +425,7 @@ namespace NetGore.Graphics
         /// need to be called by editors, and never the client.
         /// </summary>
         /// <param name="newSize">The new, correct size of the texture used by the <see cref="StationaryGrhData"/>.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomaticSize")]
         public void UpdateAutomaticSize(Vector2 newSize)
         {
             if (!AutomaticSize)
