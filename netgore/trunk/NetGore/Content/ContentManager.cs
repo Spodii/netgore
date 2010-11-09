@@ -367,6 +367,7 @@ namespace NetGore.Content
         /// Starts tracking items that are loaded by this <see cref="IContentManager"/>.
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IContentManager.IsTrackingLoads"/> is true.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IsTrackingLoads")]
         public void BeginTrackingLoads()
         {
             if (IsTrackingLoads)
@@ -398,6 +399,7 @@ namespace NetGore.Content
         /// was called.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="IContentManager.IsTrackingLoads"/> is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IsTrackingLoads")]
         public IEnumerable<KeyValuePair<string, object>> EndTrackingLoads()
         {
             if (!IsTrackingLoads)

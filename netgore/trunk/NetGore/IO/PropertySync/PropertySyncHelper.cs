@@ -35,6 +35,7 @@ namespace NetGore.IO.PropertySync
         /// <summary>
         /// Initializes the <see cref="PropertySyncHelper"/> class.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "PropertySyncHandlerAttributes")]
         static PropertySyncHelper()
         {
             // Create the dictionary cache that maps a PropertySyncHandler's handled type
@@ -114,6 +115,7 @@ namespace NetGore.IO.PropertySync
         /// <exception cref="ArgumentException">The <paramref name="attribInfo"/> is for a type that does not have a 
         /// <see cref="PropertySyncHandlerAttribute"/> defined for it.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="attribInfo"/> is null.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IPropertySync")]
         internal static IPropertySync GetPropertySync(SyncValueAttributeInfo attribInfo)
         {
             if (attribInfo == null)
@@ -225,6 +227,7 @@ namespace NetGore.IO.PropertySync
             /// Creates the <see cref="SyncValueAttributeInfo"/>s for the given <paramref name="key"/>.
             /// </summary>
             /// <param name="key">The key to create the value for.</param>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SyncValueAttribute")]
             static SyncValueAttributeInfo[] CreateValue(Type key)
             {
                 const BindingFlags flags =

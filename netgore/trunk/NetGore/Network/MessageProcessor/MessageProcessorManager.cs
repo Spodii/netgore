@@ -44,6 +44,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static).</param>
         /// <returns>The array of <see cref="IMessageProcessor"/>s.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MessageHandlerAttribute")]
         IMessageProcessor[] BuildMessageProcessors(object source)
         {
             const BindingFlags bindFlags =

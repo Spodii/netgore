@@ -613,7 +613,7 @@ namespace NetGore.Collections
             /// </summary>
             /// <returns>True if the enumerator was successfully advanced to the next element; 
             /// False if the enumerator has passed the end of the collection.</returns>
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DArray")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DArray's"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DArray")]
             public bool MoveNext()
             {
                 // Moved past the highest index

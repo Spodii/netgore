@@ -39,6 +39,7 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="UnsupportedGrhDataTypeException"/> class.
         /// </summary>
         /// <param name="grhData">The <see cref="GrhData"/> related to the <see cref="Exception"/>.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         public UnsupportedGrhDataTypeException(GrhData grhData)
             : base(
                 grhData,
