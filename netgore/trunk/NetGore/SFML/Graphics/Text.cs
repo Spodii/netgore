@@ -107,7 +107,7 @@ namespace SFML
             [SuppressUnmanagedCodeSecurity]
             static extern float sfText_GetScaleY(IntPtr This);
 
-            [DllImport("csfml2-graphics", CharSet = CharSet.Ansi)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
             [SuppressUnmanagedCodeSecurity]
             static extern string sfText_GetString(IntPtr This);
 
