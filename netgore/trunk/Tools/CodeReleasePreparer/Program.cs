@@ -19,13 +19,11 @@ namespace CodeReleasePreparer
         const bool _buildSchemaOnly = false;
 
         static readonly string[] _deleteFilePatterns = new string[]
-        { @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
+        { @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
 
         static readonly string[] _deleteFolderPatterns = new string[]
-        { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$" };
+        { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$", @"\\Tools\\PngOptimizer$" };
 
-        static readonly string _mysqlPath = MySqlHelper.FindMySqlFile("mysql.exe");
-        static readonly string _mysqldumpPath = MySqlHelper.FindMySqlFile("mysqldump.exe");
         static RegexCollection _fileRegexes;
         static RegexCollection _folderRegexes;
 
@@ -191,21 +189,6 @@ namespace CodeReleasePreparer
 
             Console.WriteLine("Root clean directory: " + Paths.Root);
 
-            // Check for the mysql files
-            if (string.IsNullOrEmpty(_mysqlPath))
-            {
-                Console.WriteLine("Failed to find mysql.exe");
-                Console.WriteLine("Press any key to exit...");
-                return;
-            }
-
-            if (string.IsNullOrEmpty(_mysqldumpPath))
-            {
-                Console.WriteLine("Failed to find mysqldump.exe");
-                Console.WriteLine("Press any key to exit...");
-                return;
-            }
-
             // Validate run dir
             if (!IsValidRootDir())
             {
@@ -285,41 +268,6 @@ namespace CodeReleasePreparer
         }
 
         /// <summary>
-        /// Runs the mysql.exe process.
-        /// </summary>
-        /// <param name="command">The parameters to use when running the mysql.exe process.</param>
-        /// <param name="output">A string of the text mysql.exe sent to the Standard Out stream.</param>
-        /// <param name="error">A string of the text mysql.exe sent ot the Standard Error stream.</param>
-        /// <param name="cmds">The additional commands to input when running the process.</param>
-        static void MySqlCommand(string command, out string output, out string error, params string[] cmds)
-        {
-            var psi = new ProcessStartInfo(_mysqlPath, command)
-            {
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            var p = new Process { StartInfo = psi };
-            p.Start();
-
-            if (cmds != null)
-            {
-                for (var i = 0; i < cmds.Length; i++)
-                {
-                    p.StandardInput.WriteLine(cmds[i]);
-                }
-            }
-            p.WaitForExit();
-
-            output = p.StandardOutput.ReadToEnd();
-            error = p.StandardError.ReadToEnd();
-        }
-
-        /// <summary>
         /// Runs a batch file.
         /// </summary>
         /// <param name="async">If false, this method will stall until the batch file finishes.</param>
@@ -332,7 +280,7 @@ namespace CodeReleasePreparer
             { CreateNoWindow = true, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden };
 
             var p = Process.Start(psi);
-
+    
             if (p == null)
             {
                 Console.WriteLine("Failed to run batch file!");
