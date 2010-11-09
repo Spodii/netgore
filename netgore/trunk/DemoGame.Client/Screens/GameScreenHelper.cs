@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -14,6 +16,8 @@ namespace DemoGame.Client
     /// </summary>
     public static class GameScreenHelper
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly Font _defaultChatFont;
         static readonly Font _defaultGameGUIFont;
         static readonly Font _defaultMenuButtonFont;
@@ -120,6 +124,9 @@ namespace DemoGame.Client
 
                 // Add to the return collection
                 ret.Add(names[i], c);
+
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Created menu button `{0}`.", c.Text);
             }
 
             return ret;
@@ -134,7 +141,12 @@ namespace DemoGame.Client
         /// <returns>The <see cref="Label"/> instance.</returns>
         public static Label CreateMenuLabel(Control parent, Vector2 position, string text)
         {
-            return new MenuLabel(parent, position) { Text = text };
+            var ret = new MenuLabel(parent, position) { Text = text };
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Created menu label `{0}`.", text);
+
+            return ret;
         }
 
         /// <summary>

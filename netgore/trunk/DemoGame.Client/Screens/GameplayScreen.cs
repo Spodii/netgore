@@ -608,7 +608,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void LoadContent()
         {
-            _damageFont = ScreenManager.Content.LoadFont("Font/Arial", 14, ContentLevel.Global);
+            _damageFont = GameScreenHelper.DefaultChatFont;
         }
 
         void ShopForm_RequestPurchase(ShopForm shopForm, ShopItemIndex slot)
