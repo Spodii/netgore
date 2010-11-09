@@ -58,6 +58,7 @@ namespace NetGore.Editor.UI
             /// <summary>
             /// Initializes the component.
             /// </summary>
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "PolygonPointCollection")]
             void InitializeComponent()
             {
                 lblInstruction.Location = new Point(4, 7);

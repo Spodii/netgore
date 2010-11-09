@@ -155,6 +155,7 @@ namespace NetGore.Features.NPCChat.Conditionals
             return new ArgumentException(string.Format(errmsg, value, value.GetType(), valueType), paramName);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ValueAs")]
         static MethodAccessException GetInvalidValueAsException()
         {
             const string errmsg =

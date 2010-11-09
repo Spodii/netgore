@@ -28,6 +28,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "OrderByType")]
         public override string ToString()
         {
             var sb = new StringBuilder();

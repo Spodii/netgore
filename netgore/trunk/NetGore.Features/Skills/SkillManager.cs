@@ -77,6 +77,7 @@ namespace NetGore.Features.Skills
         /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SkillType")]
         void TypeFactoryLoadedHandler(TypeFactory typeFactory, Type loadedType, string name)
         {
             var instance = (ISkill<TSkillType, TStatType, TCharacter>)TypeFactory.GetTypeInstance(loadedType);
