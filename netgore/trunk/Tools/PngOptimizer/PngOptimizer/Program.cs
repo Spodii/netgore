@@ -10,28 +10,39 @@ namespace PngOptimizer
 {
     class Program
     {
-        static void Cmd(string app, string args, params string[] p)
+        static readonly object _printSync = new object();
+
+        static bool DirectoryExists(string d)
         {
-            if (p != null && p.Length > 0)
-                args = string.Format(args, p);
-
-            var psi = new ProcessStartInfo(app, args) { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
-
-            var proc = Process.Start(psi);
-            proc.Start();
-            proc.WaitForExit();
+            try
+            {
+                return Directory.Exists(d);
+            }
+            catch (IOException)
+            {
+                return false;
+            }
         }
 
         static void Main(string[] args)
         {
             var recursive = false;
-            var rootDir = Path.GetPathRoot(".");
             var skip = string.Empty;
             var filter = string.Empty;
 
-            if (args == null || args.Length < 1 || args.Contains("/?") || args.Contains("--help"))
+            var rootDir = args.LastOrDefault(x => !string.IsNullOrEmpty(x) && x.Trim().Length > 0);
+            if (!string.IsNullOrEmpty(rootDir))
+                rootDir = rootDir.Trim(' ', '"');
+
+            if (args == null || args.Length < 1 || args.Contains("/?") || args.Contains("--help") || string.IsNullOrEmpty(rootDir))
             {
                 PrintUsage();
+                return;
+            }
+
+            if (!DirectoryExists(rootDir))
+            {
+                Print("Target directory does not exist: {0}", rootDir);
                 return;
             }
 
@@ -54,52 +65,34 @@ namespace PngOptimizer
             if (args.Any(x => StringComparer.OrdinalIgnoreCase.Equals("-r", x)))
                 recursive = true;
 
-            foreach (var a in args.Where(x => x.StartsWith("-source=", StringComparison.OrdinalIgnoreCase)))
-            {
-                var o = "-source=".Length;
-                rootDir = a.Substring(o, a.Length - o);
-                rootDir = rootDir.Trim('"', ' ');
-            }
+            SetThreadPriority(ThreadPriority.Lowest);
 
             Run(rootDir, skip, filter, recursive);
+        }
+
+        public static void Print(string s, params object[] args)
+        {
+            lock (_printSync)
+            {
+                Console.WriteLine(s, args);
+            }
         }
 
         static void PrintUsage()
         {
             const string msg =
-                @"Usage: pngoptimizer [options]
+                @"Usage: pngoptimizer [options] ""<target path>""
 Options:
-    -skip=""filter string""       Skips files matching string (RegEx)
-    -filter=\""filter string""     Only files matching string (RegEx)
-    -source=""source root""       The source directory
-    -r                              Use recursion
-    /? OR --help                    Displays help
-";
+    -skip=""filter""      Skips files matching string (RegEx)
+    -filter=""filter""    Only files matching string (RegEx)
+    -r                  Recursive (search sub-directories)
+    /? OR --help        Displays the help (this)
 
-            Console.WriteLine(msg);
-        }
+Examples:
+    pngoptimizer -r ""C:\My\PNGs""
+    pngoptimizer -skip=""\.svn"" -filter=""\.png"" -r ""C:\My\PNGs""";
 
-        static void SafeCopy(string src, string dest, bool overwrite  =true)
-        {
-            int i = 0;
-            while (true)
-            {
-                ++i;
-                try
-                {
-                    File.Copy(src, dest, overwrite);
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    Thread.Sleep(100);
-                    if (i == 9)
-                    {
-                        Console.WriteLine("Failed to copy file from `{0}` to `{1}`. Exception: {2}", src, dest, ex);
-                        return;
-                    }
-                }
-            }
+            Print(msg);
         }
 
         static void Run(string rootDir, string skip, string filter, bool recursive)
@@ -113,108 +106,27 @@ Options:
                 rFilter = new Regex(filter, RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.CultureInvariant);
 
             var searchOpt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            IEnumerable<string> allFilesX = Directory.GetFiles(rootDir, "*", searchOpt);
+
+            IEnumerable<string> files = Directory.GetFiles(rootDir, "*", searchOpt);
             if (rSkip != null)
-                allFilesX = allFilesX.Where(x => !rSkip.IsMatch(x));
+                files = files.Where(x => !rSkip.IsMatch(x));
             if (rFilter != null)
-                allFilesX = allFilesX.Where(x => rFilter.IsMatch(x));
+                files = files.Where(x => rFilter.IsMatch(x));
 
-            var files = allFilesX.ToArray();
+            var opt = new Optimizer(files, rootDir.Length);
 
-            var current = 0;
-            var max = files.Length;
-            var rDirLen = rootDir.Length;
-
-            foreach (var f in files)
-            {
-                ++current;
-                try
-                {
-                    Console.WriteLine("[{0}%] {1}", Math.Round((current / (float)max) * 100f, 0), f.Substring(rDirLen));
-
-                    var fNew = f + ".tmp";
-                    var fNewInc = 0;
-                    while (File.Exists(fNew))
-                    {
-                        fNew = f + ".tmp" + ++fNewInc;
-                    }
-
-                    try
-                    {
-                        Cmd("pngcrush.exe", "-brute \"{0}\" \"{1}\"", f, fNew);
-
-                        Thread.Sleep(50);
-
-                        WaitForFile(f);
-                        WaitForFile(fNew);
-
-                        if (!File.Exists(fNew))
-                        {
-                            Console.WriteLine("\tFile skipped (probably not a valid PNG...)");
-                            continue;
-                        }
-
-                        SafeCopy(fNew, f);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
-                    finally
-                    {
-                        WaitForFile(fNew);
-
-                        if (File.Exists(fNew))
-                        {
-                            int i = 0;
-                            while (true)
-                            {
-                                ++i;
-                                try
-                                {
-                                    File.Delete(fNew);
-                                    break;
-                                }
-                                catch (IOException ex)
-                                {
-                                    if (i == 99)
-                                    {
-                                        Console.WriteLine("Failed to delete file `{0}` after `{1}` attempts. Exception: {2}", fNew, i + 1, ex);
-                                        break;
-                                    }
-                                    else
-                                        Thread.Sleep(100);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            }
+            opt.Run();
         }
 
-        static void WaitForFile(string fullPath)
+        static void SetThreadPriority(ThreadPriority l)
         {
-            if (!File.Exists(fullPath))
-                return;
-
-            while (true)
+            try
             {
-                try
-                {
-                    using (var fs = new FileStream(fullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100))
-                    {
-                        fs.ReadByte();
-                        break;
-                    }
-                }
-                catch (IOException)
-                {
-                    Thread.Sleep(50);
-                }
+                Thread.CurrentThread.Priority = l;
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(string.Format("Failed to change thread priority. Exception: {0}", ex));
             }
         }
     }
