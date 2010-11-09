@@ -14,6 +14,7 @@ namespace NetGore.Tests.Collections
     [TestFixture]
     public class DArrayTests
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TrackFree")]
         static void AddTestSub(bool trackFree)
         {
             var o1 = new object();
@@ -25,6 +26,7 @@ namespace NetGore.Tests.Collections
             Assert.AreEqual(2, d.Length, "TrackFree = " + trackFree);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TrackFree")]
         static void AddValueTypeTestSub(bool trackFree)
         {
             const int o1 = new int();
@@ -36,6 +38,7 @@ namespace NetGore.Tests.Collections
             Assert.AreEqual(2, d.Length, "TrackFree = " + trackFree);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ArgumentOutOfRangeException")]
         static void CanGetAndIndexRangeTestSub(bool trackFree)
         {
             var d = new DArray<object>(trackFree);
@@ -51,6 +54,7 @@ namespace NetGore.Tests.Collections
             Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1], "Failed to generate ArgumentOutOfRangeException for d[1].");
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IndexOutOfRangeException")]
         static void ClearTestSub(bool trackFree)
         {
             const int size = 50;
@@ -87,6 +91,7 @@ namespace NetGore.Tests.Collections
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TrackFree")]
         static void CountTestSub(bool trackFree)
         {
             var expectedCount = 0;
@@ -123,6 +128,7 @@ namespace NetGore.Tests.Collections
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "objs")]
         static void EnumerateTestSub(bool trackFree)
         {
             const int size = 100;
@@ -189,7 +195,7 @@ namespace NetGore.Tests.Collections
                             "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "obj")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "InvalidOperationException"), SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "obj")]
         static void EnumerateVersionTestSub(bool trackFree)
         {
             var d = new DArray<object>(50, trackFree) { new object(), new object() };
@@ -286,6 +292,7 @@ namespace NetGore.Tests.Collections
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TrackFree")]
         static void LengthTestSub(bool trackFree)
         {
             var d = new DArray<object>(trackFree);
@@ -296,6 +303,7 @@ namespace NetGore.Tests.Collections
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TrackFree")]
         static void RemoveInsertTestSub(bool trackFree)
         {
             var d = new DArray<object>(trackFree);
@@ -340,6 +348,7 @@ namespace NetGore.Tests.Collections
             Assert.IsFalse(d.Contains(o));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TrackFree")]
         static void TrimTestSub(bool trackFree)
         {
             const int size = 1000;

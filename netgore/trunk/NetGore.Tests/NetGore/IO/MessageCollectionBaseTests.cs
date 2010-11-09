@@ -103,7 +103,7 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual("Spodi hates you. >:|", msg);
         }
 
-        [Test]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "Spodi"), Test]
         public void GetMessageTest3()
         {
             const string fileContents =
