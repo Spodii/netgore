@@ -27,6 +27,7 @@ namespace NetGore.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="MusicManager"/> class.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MusicInfos")]
         public MusicManager()
         {
             // Load the values from file

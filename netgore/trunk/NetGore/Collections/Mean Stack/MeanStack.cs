@@ -19,6 +19,7 @@ namespace NetGore.Collections
         /// </summary>
         /// <typeparam name="T">Type to handle the mean for.</typeparam>
         /// <returns>MeanFinderHandler for the specified type.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MeanFinderHandler")]
         public static MeanFinderHandler<T> GetMeanFinder<T>()
         {
             // Try to get the method from the dictionary cache first

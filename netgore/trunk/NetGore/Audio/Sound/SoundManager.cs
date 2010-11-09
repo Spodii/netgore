@@ -35,6 +35,7 @@ namespace NetGore.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundManager"/> class.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SoundInfos")]
         public SoundManager(IContentManager contentManager)
         {
             // Load the values from file

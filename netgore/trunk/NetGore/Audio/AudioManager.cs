@@ -25,6 +25,7 @@ namespace NetGore.Audio
         /// Initializes a new instance of the <see cref="AudioManager"/> class.
         /// </summary>
         /// <param name="contentManager">The <see cref="IContentManager"/> to use to load the audio content.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MusicManager"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SoundManager")]
         AudioManager(IContentManager contentManager)
         {
             // Create the music and sound managers

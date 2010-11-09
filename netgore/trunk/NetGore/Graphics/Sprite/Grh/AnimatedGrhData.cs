@@ -83,6 +83,7 @@ namespace NetGore.Graphics
             get { return _speed; }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         StationaryGrhData[] CreateFrames(IList<GrhIndex> frameIndices)
         {
             var frames = new StationaryGrhData[frameIndices.Count];
