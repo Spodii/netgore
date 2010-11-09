@@ -130,7 +130,7 @@ namespace NetGore.Features.NPCChat
             // Make sure the name is not already in use
             if (ContainsResponseAction(instance.Name))
             {
-                const string errmsg = "Could not add Type `{0}` - a resposne action named `{1}` already exists as Type `{2}`.";
+                const string errmsg = "Could not add Type `{0}` - a response action named `{1}` already exists as Type `{2}`.";
                 var err = string.Format(errmsg, loadedType, instance.Name, _instances[instance.Name].GetType());
                 if (log.IsFatalEnabled)
                     log.Fatal(err);

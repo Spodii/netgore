@@ -161,6 +161,7 @@ namespace NetGore.Features.NPCChat
         /// <returns>The NPCChatResponseBase to use by evaluating the conditionals of this
         /// EditorNPCChatDialogItem.</returns>
         /// <exception cref="MethodAccessException">IsBranch is false.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IsBranch")]
         public NPCChatResponseBase EvaluateBranch(object user, object npc)
         {
             if (!IsBranch)

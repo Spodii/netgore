@@ -1579,6 +1579,7 @@ namespace NetGore.Db.ClassCreator
         /// Sets the database connection.
         /// </summary>
         /// <param name="dbConnection">The database connection.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DbConnection")]
         protected void SetDbConnection(DbConnection dbConnection)
         {
             if (_dbConnction != null)

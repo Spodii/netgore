@@ -257,6 +257,7 @@ namespace NetGore.Editor.EditorTool
         /// <param name="propertyName">The name of the property that was attempted to be changed.</param>
         /// <returns>The <see cref="InvalidOperationException"/> to throw when trying to change a property while
         /// <see cref="IsLocked"/> is set.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IsLocked")]
         InvalidOperationException GetIsLockedException(string propertyName)
         {
             const string errmsg = "Cannot alter property `{0}` on `{1}` since IsLocked is set.";

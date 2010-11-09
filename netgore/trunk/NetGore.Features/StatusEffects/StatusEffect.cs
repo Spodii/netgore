@@ -45,7 +45,7 @@ namespace NetGore.Features.StatusEffects
         /// Performs a quick check that this <see cref="StatusEffect{TStatType, TStatusEffectType}"/>
         /// is returning the same value for each <typeparamref name="TStatType"/> and power pair.
         /// </summary>
-        [Conditional("DEBUG")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffectType"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffect"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatType"), Conditional("DEBUG")]
         void AssertReturnValuesAreConsistent()
         {
             var r = new Random();

@@ -119,6 +119,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="source">DbParameter to clone.</param>
         /// <returns>Clone of the <paramref name="source"/> DbParameter.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ICloneable"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DbParameters")]
         static DbParameter CloneDbParameter(DbParameter source)
         {
             var cloneable = source as ICloneable;

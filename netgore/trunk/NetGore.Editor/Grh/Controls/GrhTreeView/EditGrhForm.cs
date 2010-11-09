@@ -201,6 +201,7 @@ namespace NetGore.Editor.Grhs
             txtTexture.ChangeTextToDefault(grhData.TextureName.ToString(), true);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         bool ValidateCategorization(bool showMessage)
         {
             var gd = GrhInfo.GetData(txtCategory.GetSanitizedText(), txtTitle.Text);
@@ -221,6 +222,7 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StationaryGrhData"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhIndex"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AnimatedGrhData")]
         void btnAccept_Click(object sender, EventArgs e)
         {
             var gdStationary = _gd as StationaryGrhData;
@@ -453,6 +455,7 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         void radioAnimated_CheckedChanged(object sender, EventArgs e)
         {
             if (!radioAnimated.Checked)
@@ -485,6 +488,7 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         void radioStationary_CheckedChanged(object sender, EventArgs e)
         {
             if (!radioStationary.Checked)
