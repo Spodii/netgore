@@ -120,8 +120,7 @@ namespace DemoGame.Client
 
             // Create the new account fields. Use a different font since our default TextBox font doesn't support some characters
             // needed for email, and it'd look funny to only change it for the email textbox.
-            var textBoxFont = ScreenManager.Content.LoadFont("Font/Arial", (int)GameScreenHelper.DefaultScreenFont.DefaultSize,
-                                                             ContentLevel.GameScreen);
+            var textBoxFont = GameScreenHelper.DefaultChatFont;
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 180), "Name:");
             _cNameText = new TextBox(cScreen, new Vector2(220, 180), new Vector2(200, 40))
