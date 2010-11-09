@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -415,7 +416,7 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         /// <param name="cm">The <see cref="IContentManager"/> used for loading content needed by the
         /// <see cref="GrhTreeView"/>.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "Grh")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "Grh")]
         public void Initialize(IContentManager cm)
         {
             if (DesignMode)
@@ -464,7 +465,8 @@ namespace NetGore.Editor.Grhs
             return node is GrhTreeViewNode;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhDatas"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ContentManager")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhDatas")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ContentManager")]
         void MenuClickAutomaticUpdate(object sender, EventArgs e)
         {
             var cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
@@ -792,7 +794,7 @@ namespace NetGore.Editor.Grhs
         /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (_compactMode)

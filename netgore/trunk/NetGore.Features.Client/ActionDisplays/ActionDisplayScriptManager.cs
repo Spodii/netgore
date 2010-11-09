@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using NetGore.Collections;
@@ -48,7 +49,12 @@ namespace NetGore.Features.ActionDisplays
         /// <param name="factory">The <see cref="TypeFactory"/>.</param>
         /// <param name="type">The class type.</param>
         /// <param name="typeName">The class type name.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ActionDisplayScriptHandlers"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ActionDisplayScriptHandler"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ActionDisplayScriptAttributes")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
+            MessageId = "ActionDisplayScriptHandlers")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
+            MessageId = "ActionDisplayScriptHandler")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
+            MessageId = "ActionDisplayScriptAttributes")]
         static void TypeLoadedHandler(TypeFactory factory, Type type, string typeName)
         {
             var atbType = typeof(ActionDisplayScriptAttribute);

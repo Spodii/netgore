@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -157,7 +158,8 @@ namespace NetGore.Graphics
         /// <param name="newGrhIndex">The <see cref="GrhData.GrhIndex"/> to give to the new
         /// <see cref="GrhData"/>.</param>
         /// <returns>A deep copy of this <see cref="GrhData"/>.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomaticAnimatedGrhData")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomaticAnimatedGrhData"
+            )]
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
         {
             throw new NotSupportedException("Cannot make a copy of an AutomaticAnimatedGrhData.");
@@ -213,7 +215,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <returns>The directory that contains the frames for this <see cref="AutomaticAnimatedGrhData"/>, or null
         /// if the directory could not be found.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomatedGrhData")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomatedGrhData")]
         string GetFramesDirectory()
         {
             var category = Categorization.Category.ToString();

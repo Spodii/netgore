@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -142,7 +143,7 @@ namespace NetGore.IO
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
         /// <exception cref="FileLoadException"><paramref name="filePath"/> contains an unsupported format.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "FindFileFormat")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "FindFileFormat")]
         static IValueReader CreateReaderFromFile(string filePath, string rootNodeName, bool? useEnumNames = null)
         {
             // Discover the format
@@ -177,7 +178,7 @@ namespace NetGore.IO
         /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "FindFileFormat")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "FindFileFormat")]
         static IValueReader CreateReaderFromString(string data, string rootNodeName, bool? useEnumNames = null)
         {
             // Discover the format

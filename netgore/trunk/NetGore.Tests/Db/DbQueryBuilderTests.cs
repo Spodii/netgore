@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.Db.MySql.QueryBuilder;
 using NetGore.Db.QueryBuilder;
@@ -35,7 +36,8 @@ namespace NetGore.Tests.Db
 
         #region Unit tests
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void InsertOnDuplicateKeyQueryEmptyTest()
         {
             foreach (var qb in QBs)
@@ -45,7 +47,8 @@ namespace NetGore.Tests.Db
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void InsertOnDuplicateKeyQueryTest05()
         {
             foreach (var qb in QBs)
@@ -56,7 +59,8 @@ namespace NetGore.Tests.Db
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void InvalidColumnNameTest01()
         {
             foreach (var qb in QBs)
@@ -65,7 +69,8 @@ namespace NetGore.Tests.Db
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void InvalidColumnNameTest02()
         {
             foreach (var qb in QBs)
@@ -74,7 +79,8 @@ namespace NetGore.Tests.Db
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void InvalidColumnNameTest03()
         {
             foreach (var qb in QBs)
@@ -83,7 +89,8 @@ namespace NetGore.Tests.Db
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void InvalidColumnNameTest04()
         {
             foreach (var qb in QBs)
@@ -92,7 +99,8 @@ namespace NetGore.Tests.Db
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void SelectQueryEmptyTest()
         {
             foreach (var qb in QBs)
@@ -101,7 +109,8 @@ namespace NetGore.Tests.Db
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "QueryBuilder")]
+        [Test]
         public void UpdateQueryEmptyTest()
         {
             foreach (var qb in QBs)

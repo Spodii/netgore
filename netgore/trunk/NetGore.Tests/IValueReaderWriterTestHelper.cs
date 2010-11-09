@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using NetGore.IO;
@@ -44,7 +45,7 @@ namespace NetGore.Tests
         /// Gets the path for a temp file.
         /// </summary>
         /// <returns>The path for a temp file.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect")]
+        [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect")]
         static string GetTempFile()
         {
             if (_createdTempFiles.Count > 3)

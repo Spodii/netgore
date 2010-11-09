@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
@@ -83,7 +84,7 @@ namespace NetGore.Graphics
             get { return _speed; }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         StationaryGrhData[] CreateFrames(IList<GrhIndex> frameIndices)
         {
             var frames = new StationaryGrhData[frameIndices.Count];

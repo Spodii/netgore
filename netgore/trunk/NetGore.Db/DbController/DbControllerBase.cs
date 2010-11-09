@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -99,7 +100,7 @@ namespace NetGore.Db
         /// <returns>An available instance of the <see cref="DbControllerBase"/>.</returns>
         /// <exception cref="MemberAccessException">No <see cref="DbControllerBase"/>s have been created yet, or
         /// all created <see cref="DbControllerBase"/>s have already been disposed.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DbController")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DbController")]
         public static DbControllerBase GetInstance()
         {
             lock (_instances)

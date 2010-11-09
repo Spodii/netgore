@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using NetGore.IO;
@@ -103,7 +104,8 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual("Spodi hates you. >:|", msg);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "Spodi"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "Spodi")]
+        [Test]
         public void GetMessageTest3()
         {
             const string fileContents =
