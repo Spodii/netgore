@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -425,7 +426,7 @@ namespace NetGore.Graphics
         /// need to be called by editors, and never the client.
         /// </summary>
         /// <param name="newSize">The new, correct size of the texture used by the <see cref="StationaryGrhData"/>.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomaticSize")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomaticSize")]
         public void UpdateAutomaticSize(Vector2 newSize)
         {
             if (!AutomaticSize)

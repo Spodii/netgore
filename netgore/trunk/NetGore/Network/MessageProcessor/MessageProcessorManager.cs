@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -44,7 +45,8 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static).</param>
         /// <returns>The array of <see cref="IMessageProcessor"/>s.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MessageHandlerAttribute")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MessageHandlerAttribute")
+        ]
         IMessageProcessor[] BuildMessageProcessors(object source)
         {
             const BindingFlags bindFlags =

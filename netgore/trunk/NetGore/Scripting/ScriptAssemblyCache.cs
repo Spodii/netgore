@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -365,7 +366,8 @@ namespace NetGore.Scripting
         /// </summary>
         /// <param name="filePath">The file path of the <see cref="Assembly"/> to load.</param>
         /// <returns>The loaded <see cref="Assembly"/>, or null if it failed to load.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile")]
+        [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods",
+            MessageId = "System.Reflection.Assembly.LoadFile")]
         static Assembly LoadAssembly(string filePath)
         {
             Assembly ret = null;

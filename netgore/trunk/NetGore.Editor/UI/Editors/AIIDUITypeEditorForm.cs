@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.AI;
@@ -15,7 +16,8 @@ namespace NetGore.Editor.UI
         /// </summary>
         /// <param name="selected">The currently selected AI.
         /// Multiple different types are supported. Can be null.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UITypeEditor"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AIFactory")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UITypeEditor")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AIFactory")]
         public AIIDUITypeEditorForm(object selected)
         {
             _selected = selected;

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace NetGore
@@ -16,7 +17,7 @@ namespace NetGore
         /// <param name="dataRecord"><see cref="IDataRecord"/> to load the ordinal from.</param>
         /// <param name="name">The name of the field to find.</param>
         /// <returns>Index of the named field.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IDataRecordSet")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IDataRecordSet")]
         public static byte GetOrdinalAsByte(this IDataRecord dataRecord, string name)
         {
             var ordinal = dataRecord.GetOrdinal(name);

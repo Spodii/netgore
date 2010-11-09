@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -91,7 +92,7 @@ namespace NetGore.Features.NPCChat
         /// </summary>
         /// <returns>A MethodAccessException to use for when trying to access a method that is cannot be
         /// access when read-only.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NPCChatManagerBase")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NPCChatManagerBase")]
         protected static MethodAccessException CreateReadonlyException()
         {
             return new MethodAccessException("Cannot access this method when the NPCChatManagerBase is set to Read-Only.");

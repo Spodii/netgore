@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -38,7 +39,7 @@ namespace NetGore
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="type">The type that caused the exception.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TypeException")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TypeException")]
         public TypeException(string message, Type type) : base("TypeException from `" + type + "`. " + message ?? string.Empty)
         {
         }

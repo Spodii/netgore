@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Features.NPCChat;
@@ -15,7 +16,8 @@ namespace NetGore.Editor.UI
         /// </summary>
         /// <param name="selected">The currently selected <see cref="NPCChatDialogBase"/>.
         /// Multiple different types are supported. Can be null.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UITypeEditor"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NPCChatManager")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UITypeEditor")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NPCChatManager")]
         public NPCChatDialogUITypeEditorForm(object selected)
         {
             _selected = selected;

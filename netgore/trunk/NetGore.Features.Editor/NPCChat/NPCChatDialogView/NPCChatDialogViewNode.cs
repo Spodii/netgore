@@ -68,7 +68,7 @@ namespace NetGore.Features.NPCChat
         /// return the <see cref="EditorNPCChatDialogItem"/> that the node redirects to.
         /// </summary>
         /// <exception cref="MethodAccessException">Unsupported ChatItemType for this operation.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
         public EditorNPCChatDialogItem ChatItemAsDialogItem
         {
             get
@@ -87,7 +87,7 @@ namespace NetGore.Features.NPCChat
         /// NPCChatDialogViewNode redirects to.
         /// </summary>
         /// <exception cref="MethodAccessException">Unsupported ChatItemType for this operation.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
         public NPCChatDialogViewNode ChatItemAsRedirect
         {
             get
@@ -103,7 +103,7 @@ namespace NetGore.Features.NPCChat
         /// Gets the ChatItem as a EditorNPCChatResponse.
         /// </summary>
         /// <exception cref="MethodAccessException">Unsupported ChatItemType for this operation.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
         public EditorNPCChatResponse ChatItemAsResponse
         {
             get
@@ -368,7 +368,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Updates the text for this NPCChatDialogViewNode.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
         internal void UpdateText()
         {
             EditorNPCChatDialogItem asDialogItem;

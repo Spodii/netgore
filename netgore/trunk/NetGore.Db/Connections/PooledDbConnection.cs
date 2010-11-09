@@ -1,5 +1,6 @@
 using System;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.Collections;
 using NetGore.Db.QueryBuilder;
@@ -37,7 +38,7 @@ namespace NetGore.Db
         /// This should only be called by the <see cref="DbConnectionPool"/>, and can only be called once.
         /// </summary>
         /// <param name="connection">Connection to be used by the <see cref="IPoolableDbConnection"/>.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "PooledDbConnection")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "PooledDbConnection")]
         internal void SetConnection(DbConnection connection)
         {
             if (_connection != null)

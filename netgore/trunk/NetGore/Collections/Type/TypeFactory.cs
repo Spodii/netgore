@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -160,7 +161,7 @@ namespace NetGore.Collections
         /// <returns>An instance of the Type.</returns>
         /// <exception cref="KeyNotFoundException">No Type with the given <paramref name="typeName"/> exists
         /// in this <see cref="TypeFactory"/>.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TypeFactory")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TypeFactory")]
         public object GetTypeInstance(string typeName)
         {
             var type = this[typeName];
@@ -178,7 +179,7 @@ namespace NetGore.Collections
         /// <returns>An instance of the Type.</returns>
         /// <exception cref="KeyNotFoundException">No Type with the given <paramref name="typeName"/> exists
         /// in this <see cref="TypeFactory"/>.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TypeFactory")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TypeFactory")]
         public object GetTypeInstance(string typeName, params object[] arguments)
         {
             var type = this[typeName];

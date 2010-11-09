@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.IO;
 
@@ -33,7 +34,7 @@ namespace NetGore.Features.NPCChat.Conditionals
         /// <param name="user">The User.</param>
         /// <param name="npc">The NPC.</param>
         /// <returns>True if the conditionals passed; otherwise false.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "EvaluateType")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "EvaluateType")]
         public bool Evaluate(object user, object npc)
         {
             switch (EvaluationType)

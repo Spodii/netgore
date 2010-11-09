@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NetGore.Collections;
 using NUnit.Framework;
@@ -12,7 +13,8 @@ namespace NetGore.Tests.NetGore.Collections
     {
         #region Unit tests
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "RawTableBool"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "RawTableBool")]
+        [Test]
         public void CreateSeqBoolTest()
         {
             var t = EnumTable.Create<ESeq, bool>();
@@ -21,7 +23,8 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.IsTrue(typeName.Contains("RawTableBool"), "Expected RawTableBool, but was " + typeName);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "RawTable"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "RawTable")]
+        [Test]
         public void CreateSeqTest()
         {
             var t = EnumTable.Create<ESeq, object>();
@@ -30,7 +33,8 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.IsTrue(typeName.Contains("RawTable"), "Expected RawTable, but was " + typeName);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DictionaryTable"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DictionaryTable")]
+        [Test]
         public void CreateSparseBoolTest()
         {
             var t = EnumTable.Create<ESparse, bool>();
@@ -39,7 +43,8 @@ namespace NetGore.Tests.NetGore.Collections
             Assert.IsTrue(typeName.Contains("DictionaryTable"), "Expected DictionaryTable, but was " + typeName);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DictionaryTable"), Test]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DictionaryTable")]
+        [Test]
         public void CreateSparseTest()
         {
             var t = EnumTable.Create<ESparse, object>();
