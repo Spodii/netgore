@@ -84,6 +84,7 @@ namespace DemoGame.Client
             base.InitNetPeerConfig(config);
 
             config.PingFrequency = CommonConfig.PingFrequency;
+            config.ConnectionTimeout = CommonConfig.ConnectionTimeout;
 
             config.SimulatedDuplicatesChance = CommonConfig.SimulatedDuplicatesChance;
             config.SimulatedLoss = CommonConfig.SimulatedLoss;

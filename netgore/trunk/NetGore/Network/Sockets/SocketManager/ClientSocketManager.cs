@@ -34,12 +34,6 @@ namespace NetGore.Network
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = false };
 
-#if DEBUG
-            // When in debug mode, set the connection timeout to an insanely high value so we can halt the code and debug without
-            // the connection dropping
-            config.ConnectionTimeout = 60 * 60; // 1 hour
-#endif
-
             // Disable some message types that will not be used by the client
             config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);
             config.DisableMessageType(NetIncomingMessageType.Receipt);
