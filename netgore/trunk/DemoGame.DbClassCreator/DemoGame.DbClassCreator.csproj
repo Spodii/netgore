@@ -40,7 +40,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>..\NetGore\CodeRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\DemoGame\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\</OutputPath>
