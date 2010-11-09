@@ -247,29 +247,43 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the area surrounding a point.
+        /// Gets a <see cref="Rectangle"/> that describes the area around a <see cref="Vector2"/>.
         /// </summary>
-        /// <param name="source">The <see cref="Vector2"/> containing the point to surround.</param>
-        /// <param name="width">The width of the surrounding area on each side (that is, half the total width).</param>
-        /// <param name="height">The height of the surrounding area on each side (that is, half the total height).</param>
-        /// <returns>A <see cref="Rectangle"/> that surrounds the given <paramref name="source"/>.</returns>
-        public static Rectangle ToArea(this Vector2 source, int width, int height)
+        /// <param name="source">The source <see cref="Vector2"/>.</param>
+        /// <param name="size">The size of the <see cref="Rectangle"/>.</param>
+        /// <param name="center">If true, the <paramref name="source"/> will be at the center of the returned
+        /// <see cref="Rectangle"/>. If false, the <paramref name="source"/> will be the top-left corner (min)
+        /// of the <see cref="Rectangle"/>.</param>
+        /// <returns>The <see cref="Rectangle"/>.</returns>
+        public static Rectangle ToRectangle(this Vector2 source, Vector2 size, bool center)
         {
-            return ToArea(source, new Vector2(width, height));
+            return ToRectangle(source, size.X, size.Y, center);
         }
 
         /// <summary>
-        /// Gets the area surrounding a point.
+        /// Gets a <see cref="Rectangle"/> that describes the area around a <see cref="Vector2"/>.
         /// </summary>
-        /// <param name="source">The <see cref="Vector2"/> containing the point to surround.</param>
-        /// <param name="size">The width and height of the surrounding area on each side (that is, half the total width/height).</param>
-        /// <returns>A <see cref="Rectangle"/> that surrounds the given <paramref name="source"/>.</returns>
-        public static Rectangle ToArea(this Vector2 source, Vector2 size)
+        /// <param name="source">The source <see cref="Vector2"/>.</param>
+        /// <param name="width">The width of the <see cref="Rectangle"/>.</param>
+        /// <param name="height">The height of the <see cref="Rectangle"/>.</param>
+        /// <param name="center">If true, the <paramref name="source"/> will be at the center of the returned
+        /// <see cref="Rectangle"/>. If false, the <paramref name="source"/> will be the top-left corner (min)
+        /// of the <see cref="Rectangle"/>.</param>
+        /// <returns>The <see cref="Rectangle"/>.</returns>
+        public static Rectangle ToRectangle(this Vector2 source, float width, float height, bool center)
         {
-            var min = (source - size).Floor();
-            var max = (source + size).Ceiling();
+            Vector2 min;
 
-            return new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
+            if (center)
+            {
+                min = source - new Vector2(width / 2f, height / 2f);
+            }
+            else
+            {
+                min = source;
+            }
+
+            return new Rectangle((int)Math.Round(min.X), (int)Math.Round(min.Y), (int)Math.Round(width), (int)Math.Round(height));
         }
     }
 }

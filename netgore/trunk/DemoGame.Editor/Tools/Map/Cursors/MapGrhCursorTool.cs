@@ -230,7 +230,7 @@ namespace DemoGame.Editor.Tools
                         // Drag delete
                         var worldPos = camera.ToWorld(e.Position());
                         worldPos = GridAligner.Instance.Align(worldPos, true);
-                        var worldPosArea = worldPos.ToArea(1, 1);
+                        var worldPosArea = worldPos.ToRectangle(Vector2.One, false);
                         var toDelete = map.Spatial.GetMany<MapGrh>(worldPosArea, x => IsObjectVisible(map, x));
 
                         foreach (var x in toDelete)
@@ -311,7 +311,7 @@ namespace DemoGame.Editor.Tools
             var selGrhGrhIndex = gd.GrhIndex;
             var isForeground = EditorSettings.Default.MapGrh_DefaultIsForeground;
             var depth = EditorSettings.Default.MapGrh_DefaultDepth;
-            var drawPosArea = drawPos.ToArea(1, 1);
+            var drawPosArea = drawPos.ToRectangle(Vector2.One, false);
 
             if (!useTileMode)
             {
