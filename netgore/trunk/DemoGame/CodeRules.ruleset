@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="NetGore Rules" Description="General code rules to be used in all NetGore projects to check for more common and critical issues." ToolsVersion="10.0">
+<RuleSet Name="DemoGame Rules" Description="General code rules to be used in all of NetGore's DemoGame projects to check for more common and critical issues. This is a more lenient set of rules than the NetGore rules." ToolsVersion="10.0">
   <Localization ResourceAssembly="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.dll" ResourceBaseName="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.Localized">
     <Name Resource="BasicCorrectnessRules_Name" />
     <Description Resource="BasicCorrectnessRules_Description" />
   </Localization>
   <Include Path="basiccorrectnessrules.ruleset" Action="Default" />
   <Include Path="basicdesignguidelinerules.ruleset" Action="Default" />
-  <Include Path="extendedcorrectnessrules.ruleset" Action="Default" />
   <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
   <Include Path="securityrules.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
@@ -28,7 +27,6 @@
     <Rule Id="CA1301" Action="None" />
     <Rule Id="CA1303" Action="None" />
     <Rule Id="CA1404" Action="None" />
-    <Rule Id="CA1414" Action="None" />
     <Rule Id="CA1502" Action="None" />
     <Rule Id="CA1716" Action="None" />
     <Rule Id="CA1801" Action="None" />

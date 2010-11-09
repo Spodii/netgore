@@ -434,6 +434,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.DrawingGUI"/>.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "BeginDrawGUI")]
         public void EndDrawGUI()
         {
             if (State != DrawingManagerState.DrawingGUI)
@@ -489,6 +490,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.DrawingWorld"/>.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "BeginDrawWorld")]
         public void EndDrawWorld()
         {
             if (State != DrawingManagerState.DrawingWorld)
