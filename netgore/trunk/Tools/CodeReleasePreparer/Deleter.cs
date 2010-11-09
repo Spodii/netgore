@@ -16,13 +16,9 @@ namespace CodeReleasePreparer
         /// <param name="path">The path to the file to delete.</param>
         static void DeleteFile(string path)
         {
-            Thread.Sleep(1);
-
             // Skip the dbdump.bat file, always
             if (path.EndsWith("dbdump.bat"))
                 return;
-
-            Console.WriteLine("Delete: " + path);
 
             try
             {
@@ -45,14 +41,10 @@ namespace CodeReleasePreparer
         /// <param name="path">The path to the folder to delete.</param>
         static void DeleteFolder(string path)
         {
-            Thread.Sleep(5);
-
             // Skip the CodeReleasePreparer's bin folder
             if (path.EndsWith(string.Format(@"CodeReleasePreparer{0}bin", Path.DirectorySeparatorChar),
                               StringComparison.InvariantCultureIgnoreCase))
                 return;
-
-            Console.WriteLine("Delete: " + path);
 
             // Delete the files in the folder
             foreach (var file in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
