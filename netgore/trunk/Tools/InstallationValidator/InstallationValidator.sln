@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallationValidator", "In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore", "..\..\NetGore\NetGore.csproj", "{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db", "..\..\NetGore.Db\NetGore.Db.csproj", "{EF4B471E-C101-4AAC-882E-BBDE9A54D212}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net", "..\..\log4net\log4net.csproj", "{F6A02431-167E-4347-BC43-65532C31CDB7}"
 EndProject
 Global
@@ -43,18 +41,6 @@ Global
 		{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}.Release|x86.Build.0 = Release|x86
 		{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|x86.ActiveCfg = Debug|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|x86.Build.0 = Debug|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.DebugTopDown|x86.Build.0 = DebugTopDown|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Mono|x86.ActiveCfg = Mono|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Mono|x86.Build.0 = Mono|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.MonoTopDown|x86.ActiveCfg = MonoTopDown|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.MonoTopDown|x86.Build.0 = MonoTopDown|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|x86.ActiveCfg = Release|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|x86.Build.0 = Release|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
-		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 		{F6A02431-167E-4347-BC43-65532C31CDB7}.Debug|x86.ActiveCfg = Debug|x86
 		{F6A02431-167E-4347-BC43-65532C31CDB7}.Debug|x86.Build.0 = Debug|x86
 		{F6A02431-167E-4347-BC43-65532C31CDB7}.DebugTopDown|x86.ActiveCfg = Debug|x86
