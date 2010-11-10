@@ -23,5 +23,11 @@ namespace NetGore.Db
         /// <param name="parameterName">Reference name of the parameter.</param>
         /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
         DbParameter CreateParameter(string parameterName);
+
+        /// <summary>
+        /// Gets or sets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by
+        /// this object. If null, statistics will not be tracked.
+        /// </summary>
+        IQueryStatsTracker QueryStats { get; set; }
     }
 }

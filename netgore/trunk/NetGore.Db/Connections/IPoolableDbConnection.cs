@@ -14,5 +14,11 @@ namespace NetGore.Db
         /// Never dispose of this <see cref="DbConnection"/> directly.
         /// </summary>
         DbConnection Connection { get; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by
+        /// this object. If null, statistics will not be tracked.
+        /// </summary>
+        IQueryStatsTracker QueryStats { get; set; }
     }
 }
