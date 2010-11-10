@@ -21,11 +21,15 @@ namespace CodeReleasePreparer
         static readonly string[] _deleteFilePatterns = new string[]
         { @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
 
+        static readonly string[] _preserveFilePatterns = new string[] { @"\.cs", @"\.bat", @"InstallationValidator\.exe$"
+        , @"InstallationValidator\.exe\.config$"};
+
         static readonly string[] _deleteFolderPatterns = new string[]
         { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$", @"\\Tools\\PngOptimizer$" };
 
-        static RegexCollection _fileRegexes;
-        static RegexCollection _folderRegexes;
+        static RegexCollection _delFileRegexes;
+        static RegexCollection _delFolderRegexes;
+        static RegexCollection _preFileRegexes;
 
         /// <summary>
         /// Performs the database cleaning.
@@ -137,8 +141,9 @@ namespace CodeReleasePreparer
 
         static void Main()
         {
-            _fileRegexes = new RegexCollection(_deleteFilePatterns);
-            _folderRegexes = new RegexCollection(_deleteFolderPatterns);
+            _delFileRegexes = new RegexCollection(_deleteFilePatterns);
+            _delFolderRegexes = new RegexCollection(_deleteFolderPatterns);
+            _preFileRegexes = new RegexCollection(_preserveFilePatterns);
 
             // Hmm, spend my time programming, or making ASCII art...
             Console.WriteLine(@"             __          __     _____  _   _ _____ _   _  _____");
@@ -310,10 +315,10 @@ namespace CodeReleasePreparer
         /// <returns>True if the file should be deleted; otherwise false.</returns>
         static bool WillDeleteFile(string fileName)
         {
-            if (fileName.ToLower().Contains(string.Format("installationvalidator{0}bin", Path.DirectorySeparatorChar)))
+            if (_preFileRegexes.Matches(fileName))
                 return false;
 
-            return _fileRegexes.Matches(fileName);
+            return _delFileRegexes.Matches(fileName);
         }
 
         /// <summary>
@@ -323,10 +328,7 @@ namespace CodeReleasePreparer
         /// <returns>True if the folder should be deleted; otherwise false.</returns>
         static bool WillDeleteFolder(string folderName)
         {
-            if (folderName.ToLower().Contains(string.Format("installationvalidator{0}bin", Path.DirectorySeparatorChar)))
-                return false;
-
-            return _folderRegexes.Matches(folderName);
+            return _delFolderRegexes.Matches(folderName);
         }
     }
 }
