@@ -39,9 +39,7 @@ namespace NetGore.Db
             // Create the connection pool
             try
             {
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 _connectionPool = CreateConnectionPool(connectionString);
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             catch (DbException ex)
             {
