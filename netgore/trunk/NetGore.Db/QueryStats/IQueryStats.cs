@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace NetGore.Db
 {
@@ -21,5 +22,11 @@ namespace NetGore.Db
         /// Gets the <see cref="DateTime"/> that this query was last executed.
         /// </summary>
         DateTime TimeLastExecuted { get; }
+
+        /// <summary>
+        /// Appends the detailed statistics of the <see cref="IQueryStats"/> to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/> to write the details to.</param>
+        void AppendStatsLine(StringBuilder sb);
     }
 }

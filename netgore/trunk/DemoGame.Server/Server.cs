@@ -67,6 +67,11 @@ namespace DemoGame.Server
             if (_dbController == null)
                 return;
 
+            // Add the query stats tracker
+            var queryStats = new BasicQueryStatsTracker { LogFilePath = ContentPaths.Build.Root.Join("querystats.txt") };
+            queryStats.LogFileFrequency = 1000 * 5;
+            _dbController.ConnectionPool.QueryStats = queryStats;
+
             // Validate the database
             DbTableValidator.ValidateTables(_dbController);
             ValidateDbControllerQueryAttributes();

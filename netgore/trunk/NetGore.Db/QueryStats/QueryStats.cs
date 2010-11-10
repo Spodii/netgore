@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace NetGore.Db
 {
@@ -38,6 +39,18 @@ namespace NetGore.Db
         public DateTime TimeLastExecuted
         {
             get { return _lastExecuted; }
+        }
+
+        /// <summary>
+        /// Appends the detailed statistics of the <see cref="IQueryStats"/> to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/> to write the details to.</param>
+        public void AppendStatsLine(StringBuilder sb)
+        {
+            sb.Append(Query);
+            sb.Append(": ");
+            sb.Append(TimesExecuted);
+            sb.AppendLine();
         }
 
         /// <summary>
