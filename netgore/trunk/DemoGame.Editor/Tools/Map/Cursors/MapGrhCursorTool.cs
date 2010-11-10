@@ -341,7 +341,8 @@ namespace DemoGame.Editor.Tools
                     map.RemoveMapGrh(toDelete);
                 }
 
-                Debug.Assert(!map.Spatial.Contains<MapGrh>(drawPosArea, x => x.LayerDepth == depth && x.IsForeground == isForeground));
+                Debug.Assert(!map.Spatial.Contains<MapGrh>(drawPosArea, x => x.LayerDepth == depth && x.IsForeground == isForeground
+                    && Math.Round(x.Position.QuickDistance(drawPos)) <= 1));
             }
 
             // Create the new MapGrh and add it to the map
