@@ -76,6 +76,16 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by
+        /// this object. If null, statistics will not be tracked.
+        /// </summary>
+        public IQueryStatsTracker QueryStats
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Performs the deinitialization of a <see cref="PooledDbConnection"/> as it is released back into the object pool.
         /// </summary>
         /// <param name="conn">The <see cref="PooledDbConnection"/> to deinitialize.</param>

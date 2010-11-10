@@ -183,6 +183,11 @@
     <Compile Include="MySql\QueryBuilder\MySqlQueryResultFilter.cs" />
     <Compile Include="MySql\QueryBuilder\MySqlSelectQuery.cs" />
     <Compile Include="MySql\QueryBuilder\MySqlUpdateQuery.cs" />
+    <Compile Include="QueryStats\BasicQueryStatsTracker.cs" />
+    <Compile Include="QueryStats\IQueryStats.cs" />
+    <Compile Include="QueryStats\IQueryStatsMutator.cs" />
+    <Compile Include="QueryStats\IQueryStatsTracker.cs" />
+    <Compile Include="QueryStats\QueryStats.cs" />
     <Compile Include="Query\DbQueryBase.cs" />
     <Compile Include="Query\DbQueryNonReader.cs" />
     <Compile Include="Query\DbQueryReader.cs" />

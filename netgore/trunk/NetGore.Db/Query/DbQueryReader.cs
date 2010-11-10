@@ -53,13 +53,15 @@ namespace NetGore.Db
         /// <returns>IDataReader used to read the results of the query.</returns>
         IDataReader IDbQueryReader.ExecuteReader()
         {
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Running query: {0}", GetType().Name);
-
             // Get the connection to use
             var pooledConn = GetPoolableConnection();
             var conn = pooledConn.Connection;
 
+            // Update the query stats
+            var stats = pooledConn.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
+        
             // Get and set up the command
             var cmd = GetCommand(conn);
 
@@ -72,8 +74,6 @@ namespace NetGore.Db
         }
 
         #endregion
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
     }
 
     /// <summary>
@@ -82,8 +82,6 @@ namespace NetGore.Db
     /// <typeparam name="T">Type of the object or struct used to hold the query's arguments.</typeparam>
     public abstract class DbQueryReader<T> : DbQueryBase, IDbQueryReader<T>
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryReader{T}"/> class.
         /// </summary>
@@ -123,12 +121,14 @@ namespace NetGore.Db
         /// <returns>IDataReader used to read the results of the query.</returns>
         IDataReader IDbQueryReader<T>.ExecuteReader(T item)
         {
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Running query: {0}", GetType().Name);
-
             // Get the connection to use
             var pooledConn = GetPoolableConnection();
             var conn = pooledConn.Connection;
+
+            // Update the query stats
+            var stats = pooledConn.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
 
             // Get and set up the command
             var cmd = GetCommand(conn);
