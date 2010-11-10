@@ -475,7 +475,7 @@ namespace NetGore.Db
         /// Gets the <see cref="DbConnectionPool"/> used to manage the database connections.
         /// </summary>
         /// <value></value>
-        public DbConnectionPool ConnectionPool
+        public IDbConnectionPool ConnectionPool
         {
             get
             {

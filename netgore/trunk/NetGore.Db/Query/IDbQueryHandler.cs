@@ -17,9 +17,9 @@ namespace NetGore.Db
         string CommandText { get; }
 
         /// <summary>
-        /// Gets the <see cref="DbConnectionPool"/> used to manage the database connections.
+        /// Gets the <see cref="IDbConnectionPool"/> used to manage the database connections.
         /// </summary>
-        DbConnectionPool ConnectionPool { get; }
+        IDbConnectionPool ConnectionPool { get; }
 
         /// <summary>
         /// Gets the parameters used in this <see cref="IDbQueryHandler"/>.

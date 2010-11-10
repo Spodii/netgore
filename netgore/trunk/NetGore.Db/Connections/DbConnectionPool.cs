@@ -57,12 +57,23 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates and returns a DbParameter that is compatible with
-        /// the type of database used by connections in this pool.
+        /// When overridden in the derived class, creates and returns a <see cref="DbParameter"/>
+        /// that is compatible with the type of database used by connections in this pool.
         /// </summary>
         /// <param name="parameterName">Reference name of the parameter.</param>
-        /// <returns>DbParameter that is compatible with the connections in this DbConnectionPool.</returns>
-        public abstract DbParameter CreateParameter(string parameterName);
+        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
+        protected abstract DbParameter HandleCreateParameter(string parameterName);
+
+        /// <summary>
+        /// Creates and returns a <see cref="DbParameter"/> that is compatible with the type of database
+        /// used by connections in this pool.
+        /// </summary>
+        /// <param name="parameterName">Reference name of the parameter.</param>
+        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
+        public DbParameter CreateParameter(string parameterName)
+        {
+            return HandleCreateParameter(parameterName);
+        }
 
         /// <summary>
         /// Performs the deinitialization of a <see cref="PooledDbConnection"/> as it is released back into the object pool.
