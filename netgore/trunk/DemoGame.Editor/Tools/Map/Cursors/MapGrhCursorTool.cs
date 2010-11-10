@@ -316,7 +316,8 @@ namespace DemoGame.Editor.Tools
             if (!useTileMode)
             {
                 // Make sure the same MapGrh doesn't already exist at that position
-                if (map.Spatial.Contains<MapGrh>(drawPosArea, x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
+                if (map.Spatial.Contains<MapGrh>(drawPosArea, x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground
+                                                 && Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
                     return null;
             }
             else
