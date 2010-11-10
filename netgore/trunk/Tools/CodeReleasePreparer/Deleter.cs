@@ -32,36 +32,23 @@ namespace CodeReleasePreparer
         }
 
         /// <summary>
-        /// Deletes a folder and all the files in it.
-        /// </summary>
-        /// <param name="path">The path to the folder to delete.</param>
-        static void DeleteFolder(string path)
-        {
-            // Delete the files in the folder
-            foreach (var file in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
-            {
-                DeleteFile(file);
-            }
-
-            // Delete the subdirectories
-            foreach (var subDirectory in Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly))
-            {
-                DeleteFolder(subDirectory);
-            }
-
-            // Delete the now-empty directory
-            Directory.Delete(path, true);
-        }
-
-        /// <summary>
         /// Recursively deletes everything from a path.
         /// </summary>
         /// <param name="path">The path containing the items to delete.</param>
-        /// <param name="folderFilter">The filter used to determine what folders to delete.</param>
         /// <param name="fileFilter">The filter used to determine what files to delete.</param>
-        public static void RecursiveDelete(string path, Func<string, bool> folderFilter, Func<string, bool> fileFilter)
+        public static void RecursiveDelete(string path, Func<string, bool> fileFilter)
         {
-            Thread.Sleep(5);
+            // Delete all the child directories recursively
+            // If the folder isn't one to be deleted, still recurse to see if any child items are to be deleted
+            var folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
+            foreach (var f in folders)
+            {
+                var fu = f.ToUpperInvariant();
+                if (fu.Contains("\\_RESHARPER") || fu.Contains("\\.svn"))
+                    Directory.Delete(f, true);
+                else
+                    RecursiveDelete(f, fileFilter);
+            }
 
             // Delete all files in the directory that match the filter
             var files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
@@ -70,16 +57,11 @@ namespace CodeReleasePreparer
                 DeleteFile(f);
             }
 
-            // Delete all the child directories recursively
-            // If the folder isn't one to be deleted, still recurse to see if any child items are to be deleted
-            var folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
-            foreach (var f in folders)
-            {
-                if (folderFilter(f))
-                    DeleteFolder(f);
-                else
-                    RecursiveDelete(f, folderFilter, fileFilter);
-            }
+            Thread.Sleep(5);
+
+            // Delete empty directories
+            if (Directory.GetFiles(path).Count() == 0 && Directory.GetDirectories(path).Count() == 0)
+                Directory.Delete(path);
         }
     }
 }

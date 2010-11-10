@@ -16,25 +16,33 @@ namespace CodeReleasePreparer
         const bool _buildSchemaOnly = false;
 
         static readonly string[] _deleteFilePatterns = new string[]
-        { @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe", @"\.pdb$",
-        
-        @"InstallationValidator[\\/]bin[\\/]csfml.+\.dll$",
-        @"InstallationValidator[\\/]bin[\\/]libsndfile.*\.dll$",
-        @"InstallationValidator[\\/]bin[\\/]openal.*\.dll$",
+        {
+            @"\.csproj\.user$",
+            @"\.resharper\.user$", 
+            @"\.suo$",
+            @"\.cachefile$", 
+            @"\.vshost\.exe", 
+            @"\.pdb$", 
+            @"[\\/]bin[\\/]",
+            @"[\\/]obj[\\/]", 
+            @"[\\/]\.svn[\\/]", 
+            @"[\\/]_ReSharper\.", 
+            @"[\\/]PngOptimizer[\\/]", 
+            @"[\\/]InstallationValidator[\\/]bin[\\/]csfml.+\.dll$",
+            @"[\\/]InstallationValidator[\\/]bin[\\/]libsndfile.*\.dll$", 
+            @"[\\/]InstallationValidator[\\/]bin[\\/]openal.*\.dll$",
+            @"[\\/]InstallationValidator[\\/]bin[\\/]Lidgren\.Network\.dll$",
         };
 
-        static readonly string[] _preserveFilePatterns = new string[] { @"\.cs$", @"\.bat$", 
-
-        @"InstallationValidator\.exe$",
-        @"InstallationValidator\.exe\.config$",
-        @"InstallationValidator\.exe\.config$",
+        static readonly string[] _preserveFilePatterns = new string[]
+        {
+            @"\.bat$", 
+            @"[\\/]InstallationValidator[\\/]bin[\\/]\.exe",
+            @"[\\/]InstallationValidator[\\/]bin[\\/]\.dll",
+            @"[\\/]CodeReleasePreparer[\\/]bin[\\/]",
         };
-
-        static readonly string[] _deleteFolderPatterns = new string[]
-        { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$", @"\\Tools\\PngOptimizer$" };
 
         static RegexCollection _delFileRegexes;
-        static RegexCollection _delFolderRegexes;
         static RegexCollection _preFileRegexes;
 
         /// <summary>
@@ -148,7 +156,6 @@ namespace CodeReleasePreparer
         static void Main()
         {
             _delFileRegexes = new RegexCollection(_deleteFilePatterns);
-            _delFolderRegexes = new RegexCollection(_deleteFolderPatterns);
             _preFileRegexes = new RegexCollection(_preserveFilePatterns);
 
             // Hmm, spend my time programming, or making ASCII art...
@@ -267,7 +274,7 @@ namespace CodeReleasePreparer
 
             // Delete crap
             Console.WriteLine("Deleting unneeded files/folders...");
-            Deleter.RecursiveDelete(Paths.Root, WillDeleteFolder, WillDeleteFile);
+            Deleter.RecursiveDelete(Paths.Root, WillDeleteFile);
 
             // Create self-destroying batch file that will delete this program's binaries
             Console.WriteLine("Creating self-destruct batch file...");
@@ -291,11 +298,12 @@ namespace CodeReleasePreparer
             { CreateNoWindow = true, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden };
 
             var p = Process.Start(psi);
-    
+
             if (p == null)
             {
                 Console.WriteLine("Failed to run batch file!");
                 Console.WriteLine("Batch file content:");
+
                 if (lines == null || lines.Length == 0)
                     Console.WriteLine("(empty)");
                 else
@@ -321,20 +329,7 @@ namespace CodeReleasePreparer
         /// <returns>True if the file should be deleted; otherwise false.</returns>
         static bool WillDeleteFile(string fileName)
         {
-            if (_preFileRegexes.Matches(fileName))
-                return false;
-
-            return _delFileRegexes.Matches(fileName);
-        }
-
-        /// <summary>
-        /// Checks if a folder will be deleted.
-        /// </summary>
-        /// <param name="folderName">The path to the folder to check.</param>
-        /// <returns>True if the folder should be deleted; otherwise false.</returns>
-        static bool WillDeleteFolder(string folderName)
-        {
-            return _delFolderRegexes.Matches(folderName);
+            return _delFileRegexes.Matches(fileName) && !_preFileRegexes.Matches(fileName);
         }
     }
 }
