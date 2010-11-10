@@ -33,14 +33,18 @@ namespace DemoGame.Server.Queries
             //  INNER JOIN `character_equipped` e
             //      ON i.id = e.item_id
             //	WHERE e.character_id = 1;
+            //      AND i.equipped_body IS NOT NULL
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
                 qb.Select(ItemTable.TableName, "i").Add("i.equipped_body").InnerJoinOnColumn(CharacterEquippedTable.TableName, "e",
                                                                                              "item_id", "i", "id").Where(
-                                                                                                 f.Equals("e.character_id",
-                                                                                                          s.Parameterize("charID")));
+                                                                                                 f.And(
+                                                                                                     f.Equals("e.character_id",
+                                                                                                              s.Parameterize(
+                                                                                                                  "charID")),
+                                                                                                     f.IsNotNull("i.equipped_body")));
 
             return q.ToString();
         }
