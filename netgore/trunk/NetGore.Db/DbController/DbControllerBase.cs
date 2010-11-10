@@ -18,6 +18,12 @@ namespace NetGore.Db
     public abstract class DbControllerBase : IDbController
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// The time, in milliseconds, to make the thread sleep when trying to grab a query while <see cref="_isLoading"/> is true.
+        /// </summary>
+        const int _loadSleepTime = 50;
+
         static readonly List<DbControllerBase> _instances = new List<DbControllerBase>();
 
         readonly DbConnectionPool _connectionPool;
@@ -232,7 +238,7 @@ namespace NetGore.Db
             // If still loading, make sure to wait until loading finishes
             while (_isLoading)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(_loadSleepTime);
             }
 
             if (_disposed)
@@ -265,7 +271,7 @@ namespace NetGore.Db
             // If still loading, make sure to wait until loading finishes
             while (_isLoading)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(_loadSleepTime);
             }
 
             var query = GetFindForeignKeysQuery(_connectionPool);
@@ -285,7 +291,7 @@ namespace NetGore.Db
             // If still loading, make sure to wait until loading finishes
             while (_isLoading)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(_loadSleepTime);
             }
 
             object value;
@@ -312,7 +318,7 @@ namespace NetGore.Db
             // If still loading, make sure to wait until loading finishes
             while (_isLoading)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(_loadSleepTime);
             }
 
             var ret = new List<string>();
