@@ -27,18 +27,16 @@ namespace CodeReleasePreparer
             @"[\\/]obj[\\/]", 
             @"[\\/]\.svn[\\/]", 
             @"[\\/]_ReSharper\.", 
-            @"[\\/]PngOptimizer[\\/]", 
             @"[\\/]InstallationValidator[\\/]bin[\\/]csfml.+\.dll$",
             @"[\\/]InstallationValidator[\\/]bin[\\/]libsndfile.*\.dll$", 
             @"[\\/]InstallationValidator[\\/]bin[\\/]openal.*\.dll$",
-            @"[\\/]InstallationValidator[\\/]bin[\\/]Lidgren\.Network\.dll$",
         };
 
         static readonly string[] _preserveFilePatterns = new string[]
         {
             @"\.bat$", 
-            @"[\\/]InstallationValidator[\\/]bin[\\/]\.exe",
-            @"[\\/]InstallationValidator[\\/]bin[\\/]\.dll",
+            @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.exe",
+            @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.dll",
             @"[\\/]CodeReleasePreparer[\\/]bin[\\/]",
         };
 
@@ -275,6 +273,9 @@ namespace CodeReleasePreparer
             // Delete crap
             Console.WriteLine("Deleting unneeded files/folders...");
             Deleter.RecursiveDelete(Paths.Root, WillDeleteFile);
+
+            var p = Path.Combine(Paths.Root, "Tools", "PngOptimizer");
+            Directory.Delete(p, true);
 
             // Create self-destroying batch file that will delete this program's binaries
             Console.WriteLine("Creating self-destruct batch file...");
