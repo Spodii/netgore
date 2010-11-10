@@ -19,10 +19,19 @@ namespace CodeReleasePreparer
         const bool _buildSchemaOnly = false;
 
         static readonly string[] _deleteFilePatterns = new string[]
-        { @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
+        { @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe", @"\.pdb$",
+        
+        @"InstallationValidator[\\/]bin[\\/]csfml.+\.dll$",
+        @"InstallationValidator[\\/]bin[\\/]libsndfile.*\.dll$",
+        @"InstallationValidator[\\/]bin[\\/]openal.*\.dll$",
+        };
 
-        static readonly string[] _preserveFilePatterns = new string[] { @"\.cs", @"\.bat", @"InstallationValidator\.exe$"
-        , @"InstallationValidator\.exe\.config$"};
+        static readonly string[] _preserveFilePatterns = new string[] { @"\.cs$", @"\.bat$", 
+
+        @"InstallationValidator\.exe$",
+        @"InstallationValidator\.exe\.config$",
+        @"InstallationValidator\.exe\.config$",
+        };
 
         static readonly string[] _deleteFolderPatterns = new string[]
         { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$", @"\\Tools\\PngOptimizer$" };
