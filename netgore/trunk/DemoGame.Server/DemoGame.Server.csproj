@@ -12,7 +12,7 @@
     <AssemblyName>DemoGame.Server</AssemblyName>
     <StartupObject>
     </StartupObject>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
