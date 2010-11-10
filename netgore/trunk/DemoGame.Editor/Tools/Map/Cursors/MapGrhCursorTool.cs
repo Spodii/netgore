@@ -305,13 +305,13 @@ namespace DemoGame.Editor.Tools
 
             // Get the world position to place it
             var drawPos = camera.ToWorld(screenPos);
-            drawPos = GridAligner.Instance.Align(drawPos, useTileMode);
+            drawPos = GridAligner.Instance.Align(drawPos, useTileMode).Round();
 
             // Cache some other values
             var selGrhGrhIndex = gd.GrhIndex;
             var isForeground = EditorSettings.Default.MapGrh_DefaultIsForeground;
             var depth = EditorSettings.Default.MapGrh_DefaultDepth;
-            var drawPosArea = drawPos.ToRectangle(Vector2.One, false);
+            var drawPosArea = drawPos.ToRectangle(new Vector2(2), true);
 
             if (!useTileMode)
             {
