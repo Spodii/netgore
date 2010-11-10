@@ -70,6 +70,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\log4net.Dummy\Main.cs">
+      <Link>External - log4net\Main.cs</Link>
+    </Compile>
     <Compile Include="..\..\NetGore.Db\DbConnectionSettings.cs">
       <Link>External - NetGore.Db\DbConnectionSettings.cs</Link>
     </Compile>
@@ -360,12 +363,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\log4net\log4net.csproj">
-      <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
-      <Name>log4net</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
