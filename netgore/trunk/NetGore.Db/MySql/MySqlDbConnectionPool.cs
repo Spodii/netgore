@@ -38,12 +38,12 @@ namespace NetGore.Db.MySql
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates and returns a DbParameter that is compatible with
-        /// the type of database used by connections in this pool.
+        /// When overridden in the derived class, creates and returns a <see cref="DbParameter"/>
+        /// that is compatible with the type of database used by connections in this pool.
         /// </summary>
         /// <param name="parameterName">Reference name of the parameter.</param>
-        /// <returns>DbParameter that is compatible with the connections in this DbConnectionPool.</returns>
-        public override DbParameter CreateParameter(string parameterName)
+        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
+        protected override DbParameter HandleCreateParameter(string parameterName)
         {
             return new MySqlParameter(parameterName, null);
         }
