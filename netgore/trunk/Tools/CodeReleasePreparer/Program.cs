@@ -8,9 +8,6 @@ using MySqlHelper = InstallationValidator.MySqlHelper;
 
 namespace CodeReleasePreparer
 {
-    /// <summary>
-    /// The main program.s
-    /// </summary>
     class Program
     {
         /// <summary>
