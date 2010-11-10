@@ -39,12 +39,8 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(ItemTable.TableName, "i").Add("i.equipped_body").InnerJoinOnColumn(CharacterEquippedTable.TableName, "e",
-                                                                                             "item_id", "i", "id").Where(
-                                                                                                 f.And(
-                                                                                                     f.Equals("e.character_id",
-                                                                                                              s.Parameterize(
-                                                                                                                  "charID")),
-                                                                                                     f.IsNotNull("i.equipped_body")));
+                    "item_id", "i", "id").Where(f.And(f.Equals("e.character_id", s.Parameterize("charID")),
+                        f.IsNotNull("i.equipped_body")));
 
             return q.ToString();
         }

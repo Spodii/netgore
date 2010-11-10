@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using MySql.Data.MySqlClient;
 
 namespace NetGore.Db
@@ -11,6 +13,8 @@ namespace NetGore.Db
     /// </summary>
     public abstract class DbQueryNonReader : DbQueryBase, IDbQueryNonReader
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryNonReader"/> class.
         /// </summary>
@@ -40,6 +44,9 @@ namespace NetGore.Db
         /// <returns>Number of rows affected by the query.</returns>
         public virtual int Execute()
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Running query: {0}", GetType().Name);
+
             int returnValue;
 
             // Get the connection to use
@@ -70,6 +77,8 @@ namespace NetGore.Db
     /// <typeparam name="T">Type of the object used for executing the query.</typeparam>
     public abstract class DbQueryNonReader<T> : DbQueryBase, IDbQueryNonReader<T>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryNonReader{T}"/> class.
         /// </summary>
@@ -99,6 +108,9 @@ namespace NetGore.Db
         /// <exception cref="DuplicateKeyException">Tried to perform an insert query for a key that already exists.</exception>
         public virtual int Execute(T item)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Running query: {0}", GetType().Name);
+
             int returnValue;
 
             // Get the connection to use
