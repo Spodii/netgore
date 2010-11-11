@@ -139,10 +139,7 @@ namespace NetGore.Graphics
         /// <returns>True if the <paramref name="drawable"/> will be drawn; otherwise false.</returns>
         protected virtual bool DrawFilter(IDrawable drawable)
         {
-            if (drawable.MapRenderLayer == MapRenderLayer.SpriteBackground)
-                return true;
-
-            if (drawable.MapRenderLayer == MapRenderLayer.SpriteForeground)
+            if (drawable.MapRenderLayer != MapRenderLayer.Chararacter && drawable.MapRenderLayer != MapRenderLayer.Item)
                 return true;
 
             return false;
