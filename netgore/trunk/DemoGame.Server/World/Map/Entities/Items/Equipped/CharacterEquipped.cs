@@ -22,7 +22,6 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Character _character;
-        readonly bool _isPersistent;
         readonly EquippedPaperDoll _paperDoll;
 
         /// <summary>
@@ -40,7 +39,6 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("character");
 
             _character = character;
-            _isPersistent = character.IsPersistent;
             _paperDoll = new EquippedPaperDoll(Character);
         }
 
@@ -91,15 +89,9 @@ namespace DemoGame.Server
         {
             base.Dispose(disposeManaged);
 
-            // If the Character is not persistent, we want to destroy every ItemEntity so it doesn't sit in the
-            // database as garbage
-            if (!_isPersistent)
-            {
-                foreach (var item in this.Select(x => x.Value))
-                {
-                    item.Destroy();
-                }
-            }
+            // If not persistent, destroy every item in the collection
+            if (!IsPersistent)
+                RemoveAll(true);
         }
 
         /// <summary>
@@ -166,12 +158,20 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets if the state of this <see cref="CharacterEquipped"/> is persistent.
+        /// </summary>
+        public bool IsPersistent
+        {
+            get { return Character.IsPersistent; }
+        }
+
+        /// <summary>
         /// Loads the Character's equipped items. The Character that this CharacterEquipped belongs to
         /// must be persistent since there is nothing for a non-persistent Character to load.
         /// </summary>
         public void Load()
         {
-            if (!_isPersistent)
+            if (!IsPersistent)
             {
                 const string errmsg = "Don't call Load() when the Character's state is not persistent!";
                 if (log.IsErrorEnabled)
@@ -213,7 +213,9 @@ namespace DemoGame.Server
 
             Debug.Assert(item != null);
 
-            if (_isPersistent)
+            item.IsPersistent = IsPersistent;
+
+            if (IsPersistent)
             {
                 var values = new CharacterEquippedTable(Character.ID, item.ID, slot);
                 DbController.GetQuery<InsertCharacterEquippedItemQuery>().Execute(values);
@@ -236,7 +238,7 @@ namespace DemoGame.Server
 
             Debug.Assert(item != null);
 
-            if (_isPersistent)
+            if (IsPersistent)
                 DbController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(Character.ID, slot);
 
             SendSlotUpdate(slot, null);
