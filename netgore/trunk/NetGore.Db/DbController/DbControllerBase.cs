@@ -18,12 +18,6 @@ namespace NetGore.Db
     public abstract class DbControllerBase : IDbController
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// The time, in milliseconds, to make the thread sleep when trying to grab a query while <see cref="_isLoading"/> is true.
-        /// </summary>
-        const int _loadSleepTime = 50;
-
         static readonly List<DbControllerBase> _instances = new List<DbControllerBase>();
 
         readonly DbConnectionPool _connectionPool;
@@ -31,7 +25,6 @@ namespace NetGore.Db
         readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
 
         bool _disposed;
-        bool _isLoading = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbControllerBase"/> class.
@@ -58,8 +51,8 @@ namespace NetGore.Db
             // Test the connection
             _database = TestConnectionPoolAndGetDatabase(connectionString, _connectionPool);
 
-            // Create the query objects (in a separate thread)
-            ThreadPool.QueueUserWorkItem(ThreadPoolCallback);
+            // Create the query objects
+            PopulateQueryObjects();
 
             // Add this connection to the list of instances
             lock (_instances)
@@ -129,42 +122,35 @@ namespace NetGore.Db
         /// </summary>
         void PopulateQueryObjects()
         {
-            try
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Creating query objects for database connection.");
+
+            // Find the classes marked with our attribute
+            var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
+            var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams);
+
+            // Create an instance of each of the types
+            foreach (var type in types)
             {
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Creating query objects for database connection.");
-
-                // Find the classes marked with our attribute
-                var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
-                var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams);
-
-                // Create an instance of each of the types
-                foreach (var type in types)
+                var instance = Activator.CreateInstance(type, _connectionPool);
+                if (instance == null)
                 {
-                    var instance = Activator.CreateInstance(type, _connectionPool);
-                    if (instance == null)
-                    {
-                        const string errmsg = "Failed to create instance of Type `{0}`.";
-                        if (log.IsFatalEnabled)
-                            log.Fatal(string.Format(errmsg, type));
-                        Debug.Fail(string.Format(errmsg, type));
-                        throw new InstantiateTypeException(type);
-                    }
-
-                    // Add the instance to the collection
-                    _queryObjects.Add(type, instance);
-
-                    if (log.IsDebugEnabled)
-                        log.DebugFormat("Created instance of query class Type `{0}`.", type.Name);
+                    const string errmsg = "Failed to create instance of Type `{0}`.";
+                    if (log.IsFatalEnabled)
+                        log.Fatal(string.Format(errmsg, type));
+                    Debug.Fail(string.Format(errmsg, type));
+                    throw new InstantiateTypeException(type);
                 }
 
-                if (log.IsInfoEnabled)
-                    log.Info("DbController successfully initialized all queries.");
+                // Add the instance to the collection
+                _queryObjects.Add(type, instance);
+
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Created instance of query class Type `{0}`.", type.Name);
             }
-            finally
-            {
-                _isLoading = false;
-            }
+
+            if (log.IsInfoEnabled)
+                log.Info("DbController successfully initialized all queries.");
         }
 
         /// <summary>
@@ -198,15 +184,6 @@ namespace NetGore.Db
             return database;
         }
 
-        /// <summary>
-        /// The callback for the call to the <see cref="ThreadPool"/>.
-        /// </summary>
-        /// <param name="dummy">Dummy parameter.</param>
-        void ThreadPoolCallback(object dummy)
-        {
-            PopulateQueryObjects();
-        }
-
         #region IDbController Members
 
         /// <summary>
@@ -235,12 +212,6 @@ namespace NetGore.Db
         /// </summary>
         public virtual void Dispose()
         {
-            // If still loading, make sure to wait until loading finishes
-            while (_isLoading)
-            {
-                Thread.Sleep(_loadSleepTime);
-            }
-
             if (_disposed)
                 return;
 
@@ -268,12 +239,6 @@ namespace NetGore.Db
         /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
         public IEnumerable<SchemaTableColumn> GetPrimaryKeyReferences(string database, string table, string column)
         {
-            // If still loading, make sure to wait until loading finishes
-            while (_isLoading)
-            {
-                Thread.Sleep(_loadSleepTime);
-            }
-
             var query = GetFindForeignKeysQuery(_connectionPool);
             var results = query.Execute(database, table, column);
 
@@ -288,12 +253,6 @@ namespace NetGore.Db
         /// <exception cref="ArgumentException">Type <typeparamref name="T"/> was not found in the query cache.</exception>
         public T GetQuery<T>()
         {
-            // If still loading, make sure to wait until loading finishes
-            while (_isLoading)
-            {
-                Thread.Sleep(_loadSleepTime);
-            }
-
             object value;
             if (!_queryObjects.TryGetValue(typeof(T), out value))
             {
@@ -315,12 +274,6 @@ namespace NetGore.Db
         /// <returns>All of the column names in the given <paramref name="table"/>.</returns>
         public IEnumerable<string> GetTableColumns(string table)
         {
-            // If still loading, make sure to wait until loading finishes
-            while (_isLoading)
-            {
-                Thread.Sleep(_loadSleepTime);
-            }
-
             var ret = new List<string>();
 
             using (var conn = _connectionPool.Acquire())
