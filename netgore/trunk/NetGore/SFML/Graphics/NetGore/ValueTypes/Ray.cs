@@ -57,7 +57,7 @@ namespace SFML.Graphics
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "{{Position:{0} Direction:{1}}}",
-                                 new object[] { Position.ToString(), Direction.ToString() });
+                new object[] { Position.ToString(), Direction.ToString() });
         }
 
         /// <summary>Checks whether the Ray intersects a specified BoundingBox.</summary>

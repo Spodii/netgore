@@ -25,8 +25,7 @@ namespace NetGore
     public static class DurationParser
     {
         static readonly Regex _regex = new Regex("(?<Value>[\\-0-9]+)\\s*(?<Unit>[a-z]+)",
-                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture |
-                                                 RegexOptions.CultureInvariant);
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Parses a duration of time from a string.

@@ -112,7 +112,7 @@ namespace NetGore.Features.NPCChat
         protected override void SetReadValues(NPCChatDialogID id, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
             Debug.Assert(_id == default(NPCChatDialogID) && _items == default(IEnumerable<NPCChatDialogItemBase>),
-                         "Values were already set?");
+                "Values were already set?");
 
             _id = id;
             _items = items.ToArray();

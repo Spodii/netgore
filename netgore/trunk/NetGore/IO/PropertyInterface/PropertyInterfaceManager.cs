@@ -35,8 +35,7 @@ namespace NetGore.IO
         public IPropertyInterface<TObj, T> GetByName(string propertyName)
         {
             var pi = typeof(TObj).GetProperty(propertyName,
-                                              BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
-                                              BindingFlags.Static);
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             if (pi == null)
             {
                 const string errmsg = "Unable to find the property with name `{0}` for `{1}`.";

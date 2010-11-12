@@ -81,9 +81,8 @@ namespace log4net.Core
             if (! (typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)))
             {
                 throw SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", defaultRepositoryType,
-                                                                   "Parameter: defaultRepositoryType, Value: [" +
-                                                                   defaultRepositoryType +
-                                                                   "] out of range. Argument must implement the ILoggerRepository interface");
+                    "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType +
+                    "] out of range. Argument must implement the ILoggerRepository interface");
             }
 
             m_defaultRepositoryType = defaultRepositoryType;

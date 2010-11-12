@@ -213,7 +213,7 @@ namespace DemoGame.Editor
                     if (!chkCanAlter.Checked)
                     {
                         MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.",
-                                        "Invalid operation", MessageBoxButtons.OK);
+                            "Invalid operation", MessageBoxButtons.OK);
                         return;
                     }
 
@@ -453,7 +453,7 @@ namespace DemoGame.Editor
                     if (!chkCanAlter.Checked)
                     {
                         MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.",
-                                        "Invalid operation", MessageBoxButtons.OK);
+                            "Invalid operation", MessageBoxButtons.OK);
                         return;
                     }
 
@@ -621,7 +621,7 @@ namespace DemoGame.Editor
             var spriteCategorization = new SpriteCategorization("Character.Naked", "Body");
             var grhData = GrhInfo.GetData(spriteCategorization);
             var bodyItemInfo = new SkeletonBodyItemInfo(grhData.GrhIndex, _skeleton.RootNode.Name, string.Empty, Vector2.Zero,
-                                                        Vector2.Zero);
+                Vector2.Zero);
             var bodyItem = new SkeletonBodyItem(bodyItemInfo);
             SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
             UpdateBodyList();

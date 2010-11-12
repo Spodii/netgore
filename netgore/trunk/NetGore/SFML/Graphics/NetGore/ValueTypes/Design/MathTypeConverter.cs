@@ -74,14 +74,13 @@ namespace SFML.Graphics.Design
                 {
                     throw new ArgumentException(
                         string.Format(CultureInfo.CurrentCulture, FrameworkMessages.InvalidStringFormat,
-                                      new object[] { string.Join(culture.TextInfo.ListSeparator, expectedParams) }), exception);
+                            new object[] { string.Join(culture.TextInfo.ListSeparator, expectedParams) }), exception);
                 }
             }
             if (localArray.Length != arrayCount)
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, FrameworkMessages.InvalidStringFormat,
-                                                          new object[]
-                                                          { string.Join(culture.TextInfo.ListSeparator, expectedParams) }));
+                    new object[] { string.Join(culture.TextInfo.ListSeparator, expectedParams) }));
             }
             return localArray;
         }

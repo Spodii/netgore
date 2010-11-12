@@ -45,7 +45,7 @@ namespace NetGore.Graphics
             : base(
                 grhData,
                 string.Format("GrhData `{0}` is of derived type `{1}`, which is not supported by this operation.", grhData,
-                              grhData.GetType()))
+                    grhData.GetType()))
         {
         }
 

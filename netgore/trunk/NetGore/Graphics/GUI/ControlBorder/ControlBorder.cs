@@ -287,7 +287,7 @@ namespace NetGore.Graphics.GUI
                 if (_bg != null)
                 {
                     r = new Rectangle(cX + lSrc.Width, cY + tSrc.Height, cW - lSrc.Width - rSrc.Width,
-                                      cH - tSrc.Height - bSrc.Height);
+                        cH - tSrc.Height - bSrc.Height);
 
                     switch (GetDrawStyle(ControlBorderSpriteType.Background))
                     {

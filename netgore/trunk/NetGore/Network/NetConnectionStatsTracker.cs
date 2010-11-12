@@ -94,8 +94,8 @@ namespace NetGore.Network
         public static NetPeerStatisticsSnapshot Diff(NetPeerStatistics a, NetPeerStatisticsSnapshot b)
         {
             var ret = new NetPeerStatisticsSnapshot(a.ReceivedBytes - b.ReceivedBytes, a.ReceivedPackets - b.ReceivedPackets,
-                                                    a.ReceivedMessages - b.ReceivedMessages, a.SentBytes - b.SentBytes,
-                                                    a.SentPackets - b.SentPackets, a.SentMessages - b.SentMessages);
+                a.ReceivedMessages - b.ReceivedMessages, a.SentBytes - b.SentBytes, a.SentPackets - b.SentPackets,
+                a.SentMessages - b.SentMessages);
             return ret;
         }
     }

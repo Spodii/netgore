@@ -436,8 +436,7 @@ namespace DemoGame.Client
             if (UserInfo != null && cash > UserInfo.Cash)
             {
                 var msgBox = new MessageBox(GUIManager, "Invalid value",
-                                            "You cannot take back more money than you have put down in the trade!",
-                                            MessageBoxButton.Ok);
+                    "You cannot take back more money than you have put down in the trade!", MessageBoxButton.Ok);
                 var inBox = CreateRemoveCashInputBox();
                 inBox.InputText = c.InputText;
                 msgBox.SetFocus();

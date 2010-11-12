@@ -242,7 +242,7 @@ namespace NetGore.Features.Groups
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Failed to add `{0}` to group `{1}` - they were already in a group (`{2}`).", groupable, this,
-                                   groupable.Group);
+                        groupable.Group);
                 return false;
             }
 
@@ -251,7 +251,7 @@ namespace NetGore.Features.Groups
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Failed to add `{0}` to group `{1}` - GroupSettings.CanJoinGroupHandler returned false.",
-                                   groupable, this);
+                        groupable, this);
                 return false;
             }
 

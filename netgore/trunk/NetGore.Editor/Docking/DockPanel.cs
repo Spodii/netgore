@@ -166,8 +166,8 @@ namespace NetGore.Editor.Docking
             get
             {
                 return new Rectangle(DockPadding.Left, DockPadding.Top,
-                                     ClientRectangle.Width - DockPadding.Left - DockPadding.Right,
-                                     ClientRectangle.Height - DockPadding.Top - DockPadding.Bottom);
+                    ClientRectangle.Width - DockPadding.Left - DockPadding.Right,
+                    ClientRectangle.Height - DockPadding.Top - DockPadding.Bottom);
             }
         }
 

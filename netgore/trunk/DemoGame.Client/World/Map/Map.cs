@@ -458,7 +458,7 @@ namespace DemoGame.Client
 
                 // MapGrhs
                 w.WriteManyNodes(_mapGrhsNodeName, Spatial.GetMany<MapGrh>().Distinct(),
-                                 ((writer, item) => item.WriteState(writer)));
+                    ((writer, item) => item.WriteState(writer)));
             }
             w.WriteEndNode(_mapGrhsNodeName);
         }

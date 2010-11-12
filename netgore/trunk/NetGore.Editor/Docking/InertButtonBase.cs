@@ -81,7 +81,7 @@ namespace NetGore.Editor.Docking
                 imageAttributes.SetRemapTable(colorMap);
 
                 e.Graphics.DrawImage(Image, new Rectangle(0, 0, Image.Width, Image.Height), 0, 0, Image.Width, Image.Height,
-                                     GraphicsUnit.Pixel, imageAttributes);
+                    GraphicsUnit.Pixel, imageAttributes);
             }
 
             base.OnPaint(e);

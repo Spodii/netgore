@@ -40,9 +40,8 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Select(GuildMemberTable.TableName, "t1").AddFunc("t2.name", "name").AddFunc("t1.rank", "rank").
                     InnerJoinOnColumn(CharacterTable.TableName, "t2", "id", "t1", "character_id").Where(f.Equals("t1.guild_id",
-                                                                                                                 s.Parameterize(
-                                                                                                                     "guildID"))).
-                    OrderBy("t1.rank", OrderByType.Descending).OrderBy("t2.name", OrderByType.Ascending);
+                        s.Parameterize("guildID"))).OrderBy("t1.rank", OrderByType.Descending).OrderBy("t2.name",
+                            OrderByType.Ascending);
             return q.ToString();
         }
 

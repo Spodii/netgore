@@ -262,7 +262,7 @@ namespace log4net.Config
                     if (applicationBaseDirectory != null)
                     {
                         fullPath2ConfigFile = Path.Combine(applicationBaseDirectory,
-                                                           SystemInfo.AssemblyFileName(sourceAssembly) + m_configFileExtension);
+                            SystemInfo.AssemblyFileName(sourceAssembly) + m_configFileExtension);
                     }
                 }
             }

@@ -115,6 +115,16 @@ namespace DemoGame
         {
         }
 
+        void InternalDispose(bool disposeManaged)
+        {
+            foreach (var item in _buffer.Where(x => x != null))
+            {
+                item.Disposed -= ItemDisposeHandler;
+            }
+
+            Dispose(disposeManaged);
+        }
+
         /// <summary>
         /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
         /// </summary>
@@ -197,16 +207,6 @@ namespace DemoGame
             Debug.Assert(newItemAmount > 0 && newItemAmount <= byte.MaxValue);
             item.Amount = (byte)newItemAmount;
             return item;
-        }
-
-        void InternalDispose(bool disposeManaged)
-        {
-            foreach (var item in _buffer.Where(x => x != null))
-            {
-                item.Disposed -= ItemDisposeHandler;
-            }
-
-            Dispose(disposeManaged);
         }
 
         /// <summary>
@@ -426,33 +426,6 @@ namespace DemoGame
         public int TotalSlots
         {
             get { return _buffer.Length; }
-        }
-
-        /// <summary>
-        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
-        /// </summary>
-        /// <param name="item">Item that will be added to the Inventory.</param>
-        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
-        /// was added to the inventory. Otherwise, this will return an object instance with the amount
-        /// equal to the portion that failed to be added.</returns>
-        public T TryAdd(T item)
-        {
-            return InternalTryAdd(item, null);
-        }
-
-        /// <summary>
-        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
-        /// </summary>
-        /// <param name="item">Item that will be added to the Inventory.</param>
-        /// <param name="changedSlots">Contains the <see cref="InventorySlot"/>s that the <paramref name="item"/> was added to.</param>
-        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
-        /// was added to the inventory. Otherwise, this will return an object instance with the amount
-        /// equal to the portion that failed to be added.</returns>
-        public T TryAdd(T item, out IEnumerable<InventorySlot> changedSlots)
-        {
-            var changeList = new List<InventorySlot>();
-            changedSlots = changeList;
-            return InternalTryAdd(item, changeList);
         }
 
         /// <summary>
@@ -679,6 +652,33 @@ namespace DemoGame
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
+        /// </summary>
+        /// <param name="item">Item that will be added to the Inventory.</param>
+        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
+        /// was added to the inventory. Otherwise, this will return an object instance with the amount
+        /// equal to the portion that failed to be added.</returns>
+        public T TryAdd(T item)
+        {
+            return InternalTryAdd(item, null);
+        }
+
+        /// <summary>
+        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
+        /// </summary>
+        /// <param name="item">Item that will be added to the Inventory.</param>
+        /// <param name="changedSlots">Contains the <see cref="InventorySlot"/>s that the <paramref name="item"/> was added to.</param>
+        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
+        /// was added to the inventory. Otherwise, this will return an object instance with the amount
+        /// equal to the portion that failed to be added.</returns>
+        public T TryAdd(T item, out IEnumerable<InventorySlot> changedSlots)
+        {
+            var changeList = new List<InventorySlot>();
+            changedSlots = changeList;
+            return InternalTryAdd(item, changeList);
         }
 
         /// <summary>

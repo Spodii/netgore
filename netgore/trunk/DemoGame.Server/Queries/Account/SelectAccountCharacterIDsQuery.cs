@@ -39,7 +39,7 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Select(AccountCharacterTable.TableName).Add("character_id").Where(
                     f.And(f.Equals(s.EscapeColumn("account_id"), s.Parameterize("accountID")),
-                          f.IsNull(s.EscapeColumn("time_deleted"))));
+                        f.IsNull(s.EscapeColumn("time_deleted"))));
             return q.ToString();
         }
 

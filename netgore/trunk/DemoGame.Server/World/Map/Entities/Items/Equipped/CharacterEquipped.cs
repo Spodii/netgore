@@ -56,6 +56,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets if the state of this <see cref="CharacterEquipped"/> is persistent.
+        /// </summary>
+        public bool IsPersistent
+        {
+            get { return Character.IsPersistent; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, checks if the given <paramref name="item"/> can be 
         /// equipped at all by the owner of this EquippedBase.
         /// </summary>
@@ -155,14 +163,6 @@ namespace DemoGame.Server
         protected virtual IEnumerable<EquipmentSlot> GetPossibleSlots(ItemEntity item)
         {
             return item.Type.GetPossibleSlots();
-        }
-
-        /// <summary>
-        /// Gets if the state of this <see cref="CharacterEquipped"/> is persistent.
-        /// </summary>
-        public bool IsPersistent
-        {
-            get { return Character.IsPersistent; }
         }
 
         /// <summary>

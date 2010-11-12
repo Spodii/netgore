@@ -35,7 +35,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Update(GuildTable.TableName).AddAutoParam("name", "tag").Where(f.Equals(s.EscapeColumn("id"),
-                                                                                           s.Parameterize("id")));
+                    s.Parameterize("id")));
             return q.ToString();
         }
 

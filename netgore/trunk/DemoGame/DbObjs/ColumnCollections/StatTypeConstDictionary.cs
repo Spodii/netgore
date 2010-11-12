@@ -109,8 +109,7 @@ namespace DemoGame.DbObjs
             {
                 if (value > Int16.MaxValue || value < Int16.MinValue)
                     throw new ArgumentOutOfRangeException("value",
-                                                          "Value must be between " + Int16.MinValue + " and " + Int16.MaxValue +
-                                                          ".");
+                        "Value must be between " + Int16.MinValue + " and " + Int16.MaxValue + ".");
 
                 _values[_enumToValueIndex[(int)key]] = (Int16)value;
             }

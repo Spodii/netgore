@@ -77,11 +77,10 @@ namespace DemoGame.Client
             // Draw some extras
             const int yOff = 150;
             spriteBatch.DrawStringShaded(_txtOutput.Font, "FPS: " + ScreenManager.FPS,
-                                         new Vector2(_cScreen.ClientSize.X - 100, yOff), Color.White, Color.Black);
+                new Vector2(_cScreen.ClientSize.X - 100, yOff), Color.White, Color.Black);
             spriteBatch.DrawStringShaded(_txtOutput.Font,
-                                         string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
-                                         new Vector2(_cScreen.ClientSize.X - 150, _txtOutput.Font.GetLineSpacing() + yOff),
-                                         Color.White, Color.Black);
+                string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
+                new Vector2(_cScreen.ClientSize.X - 150, _txtOutput.Font.GetLineSpacing() + yOff), Color.White, Color.Black);
 
             DrawingManager.EndDrawGUI();
         }
@@ -125,9 +124,8 @@ namespace DemoGame.Client
 
             var settingsPanelSize = new Vector2(400, 400);
             _cSettingsPanel = new Panel(_cScreen,
-                                        new Vector2(_cScreen.Size.X - settingsPanelSize.X - 4,
-                                                    _btnShowSettings.Position.Y + _btnShowSettings.Size.Y + 8), settingsPanelSize)
-            { IsVisible = true, CanDrag = false };
+                new Vector2(_cScreen.Size.X - settingsPanelSize.X - 4, _btnShowSettings.Position.Y + _btnShowSettings.Size.Y + 8),
+                settingsPanelSize) { IsVisible = true, CanDrag = false };
 
             // Create the logging level checkboxes
             _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Fatal, 0));

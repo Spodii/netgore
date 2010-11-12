@@ -130,7 +130,7 @@ namespace NetGore.Graphics
 
             var index = GrhInfo.NextFreeIndex();
             Debug.Assert(GrhInfo.GetData(index) == null,
-                         "Slot to use is already in use! How the hell did this happen!? GrhInfo.NextFreeIndex() must be broken.");
+                "Slot to use is already in use! How the hell did this happen!? GrhInfo.NextFreeIndex() must be broken.");
 
             var dc = DeepCopy(newCategorization, index);
 

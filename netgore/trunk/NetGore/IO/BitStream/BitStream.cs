@@ -465,7 +465,7 @@ namespace NetGore.IO
         {
             if (numBits > maxBits)
                 throw new ArgumentOutOfRangeException("numBits",
-                                                      string.Format("numBits ({0}) must be <= maxBits ({1}).", numBits, maxBits));
+                    string.Format("numBits ({0}) must be <= maxBits ({1}).", numBits, maxBits));
 
             if (numBits == 1)
                 return ReadBitAsInt();

@@ -128,8 +128,7 @@ namespace log4net.Core
             if (name.Length == 0)
             {
                 throw SystemInfo.CreateArgumentOutOfRangeException("name", name,
-                                                                   "Parameter: name, Value: [" + name +
-                                                                   "] out of range. Level name must not be empty");
+                    "Parameter: name, Value: [" + name + "] out of range. Level name must not be empty");
             }
 
             if (displayName == null || displayName.Length == 0)

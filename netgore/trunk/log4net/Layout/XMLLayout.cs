@@ -221,7 +221,7 @@ namespace log4net.Layout
             writer.WriteAttributeString(ATTR_LOGGER, loggingEvent.LoggerName);
 
             writer.WriteAttributeString(ATTR_TIMESTAMP,
-                                        XmlConvert.ToString(loggingEvent.TimeStamp, XmlDateTimeSerializationMode.Local));
+                XmlConvert.ToString(loggingEvent.TimeStamp, XmlDateTimeSerializationMode.Local));
 
             writer.WriteAttributeString(ATTR_LEVEL, loggingEvent.Level.DisplayName);
             writer.WriteAttributeString(ATTR_THREAD, loggingEvent.ThreadName);
@@ -255,7 +255,7 @@ namespace log4net.Layout
                 {
                     writer.WriteStartElement(m_elmData);
                     writer.WriteAttributeString(ATTR_NAME,
-                                                Transform.MaskXmlInvalidCharacters((string)entry.Key, InvalidCharReplacement));
+                        Transform.MaskXmlInvalidCharacters((string)entry.Key, InvalidCharReplacement));
 
                     // Use an ObjectRenderer to convert the object to a string
                     string valueStr = null;
@@ -263,7 +263,7 @@ namespace log4net.Layout
                     {
                         valueStr =
                             Transform.MaskXmlInvalidCharacters(loggingEvent.Repository.RendererMap.FindAndRender(entry.Value),
-                                                               InvalidCharReplacement);
+                                InvalidCharReplacement);
                     }
                     else
                     {

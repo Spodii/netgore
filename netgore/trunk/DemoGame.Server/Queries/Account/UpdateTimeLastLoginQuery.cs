@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Update(AccountTable.TableName).Add("time_last_login", f.Now()).Where(f.Equals(s.EscapeColumn("id"),
-                                                                                                 s.Parameterize("id")));
+                    s.Parameterize("id")));
             return q.ToString();
         }
 

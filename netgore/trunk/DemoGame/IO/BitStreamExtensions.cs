@@ -250,7 +250,7 @@ namespace DemoGame
             // Get the number of stats
             var numStats = (byte)nonZeroStats.Count();
             Debug.Assert(numStats == nonZeroStats.Count(),
-                         "Too many stats in the collection - byte overflow! numStats may need to be raised to a ushort.");
+                "Too many stats in the collection - byte overflow! numStats may need to be raised to a ushort.");
 
             // Write the number of stats so the reader knows how many stats to read
             bitStream.Write(numStats);

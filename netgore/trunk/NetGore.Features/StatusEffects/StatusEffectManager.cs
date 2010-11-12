@@ -109,7 +109,7 @@ namespace NetGore.Features.StatusEffects
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created status effect object `{0}` for StatusEffectType `{1}`.", instance,
-                               instance.StatusEffectType);
+                    instance.StatusEffectType);
         }
     }
 }

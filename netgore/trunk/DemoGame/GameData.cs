@@ -85,15 +85,15 @@ namespace DemoGame
         public const float MaxTargetDistance = 500f;
 
         static readonly StringRules _accountEmail = new StringRules(3, 30,
-                                                                    CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+            CharType.Alpha | CharType.Numeric | CharType.Punctuation);
 
         static readonly StringRules _accountName = new StringRules(3, 30, CharType.Alpha | CharType.Numeric);
 
         static readonly StringRules _accountPassword = new StringRules(3, 30,
-                                                                       CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+            CharType.Alpha | CharType.Numeric | CharType.Punctuation);
 
         static readonly StringRules _characterName = new StringRules(1, 30,
-                                                                     CharType.Alpha | CharType.Numeric | CharType.Whitespace);
+            CharType.Alpha | CharType.Numeric | CharType.Whitespace);
 
         static readonly ActionDisplayID _defaultActionDisplayID = new ActionDisplayID(0);
         static readonly Vector2 _screenSize = new Vector2(1024, 768);

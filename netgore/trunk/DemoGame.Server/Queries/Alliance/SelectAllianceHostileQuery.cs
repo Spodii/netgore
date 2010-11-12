@@ -32,7 +32,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(AllianceHostileTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("alliance_id"),
-                                                                                      s.Parameterize("id")));
+                    s.Parameterize("id")));
             return q.ToString();
         }
 

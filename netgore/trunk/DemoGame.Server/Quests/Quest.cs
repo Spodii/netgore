@@ -49,7 +49,7 @@ namespace DemoGame.Server.Quests
             Debug.Assert(reqItems.All(x => x.QuestID == QuestID));
             if (!reqItems.IsEmpty())
                 l.Add(new ItemsQuestRequirement(this,
-                                                reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
+                    reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
             // Kills
             var reqKills = dbController.GetQuery<SelectQuestRequireKillQuery>().Execute(QuestID);
@@ -57,9 +57,7 @@ namespace DemoGame.Server.Quests
             if (!reqKills.IsEmpty())
             {
                 l.Add(new KillQuestRequirement(this,
-                                               reqKills.Select(
-                                                   x =>
-                                                   new KeyValuePair<CharacterTemplateID, ushort>(x.CharacterTemplateID, x.Amount))));
+                    reqKills.Select(x => new KeyValuePair<CharacterTemplateID, ushort>(x.CharacterTemplateID, x.Amount))));
             }
 
             // Complete quests
@@ -103,7 +101,7 @@ namespace DemoGame.Server.Quests
             var reqItems = dbController.GetQuery<SelectQuestRequireStartItemQuery>().Execute(QuestID);
             if (!reqItems.IsEmpty())
                 l.Add(new ItemsQuestRequirement(this,
-                                                reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
+                    reqItems.Select(x => new QuestItemTemplateAmount(x.ItemTemplateID, x.Amount))));
 
             // Complete quests
             var reqCompleteQuests = dbController.GetQuery<SelectQuestRequireStartCompleteQuestsQuery>().Execute(QuestID);

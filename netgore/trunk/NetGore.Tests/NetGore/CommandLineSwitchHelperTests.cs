@@ -15,7 +15,7 @@ namespace NetGore.Tests.NetGore
         public void EnumDefinedKeysExtraPrefixesTest()
         {
             var values = CommandLineSwitchHelper.GetCommandsUsingEnum<TestEnum>(_defaultTestArgs).ToDictionary(x => x.Key,
-                                                                                                               x => x.Value);
+                x => x.Value);
             Assert.AreEqual("asdfa", values[TestEnum.c].First());
         }
 
@@ -23,7 +23,7 @@ namespace NetGore.Tests.NetGore
         public void EnumDefinedKeysNoValueTest()
         {
             var values = CommandLineSwitchHelper.GetCommandsUsingEnum<TestEnum>(_defaultTestArgs).ToDictionary(x => x.Key,
-                                                                                                               x => x.Value);
+                x => x.Value);
             Assert.IsEmpty(values[TestEnum.d]);
         }
 
@@ -31,7 +31,7 @@ namespace NetGore.Tests.NetGore
         public void EnumDefinedKeysUnknownKeyTest()
         {
             var values = CommandLineSwitchHelper.GetCommandsUsingEnum<TestEnum>(_defaultTestArgs).ToDictionary(x => x.Key,
-                                                                                                               x => x.Value);
+                x => x.Value);
             Assert.AreEqual(3, values.Count);
         }
 
@@ -39,7 +39,7 @@ namespace NetGore.Tests.NetGore
         public void EnumDefinedKeysValueTest()
         {
             var values = CommandLineSwitchHelper.GetCommandsUsingEnum<TestEnum>(_defaultTestArgs).ToDictionary(x => x.Key,
-                                                                                                               x => x.Value);
+                x => x.Value);
             Assert.AreEqual("50", values[TestEnum.a].First());
         }
 

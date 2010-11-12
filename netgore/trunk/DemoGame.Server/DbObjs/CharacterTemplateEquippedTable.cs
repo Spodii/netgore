@@ -184,14 +184,14 @@ namespace DemoGame.Server.DbObjs
 
                 case "character_template_id":
                     return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false,
-                                              false, true);
+                        false, true);
 
                 case "id":
                     return new ColumnMetadata("id", "", "int(11)", null, typeof(Int32), false, true, false);
 
                 case "item_template_id":
                     return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, false,
-                                              true);
+                        true);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

@@ -46,7 +46,7 @@ namespace DemoGame.Server.Quests
         protected override IEnumerable<KeyValuePair<CharacterTemplateID, ushort>> GetRequiredKills(IQuest<User> quest)
         {
             Debug.Assert(quest.FinishRequirements.OfType<KillQuestRequirement>().Count() <= 1,
-                         "There should only be ONE KillQuestRequirement per quest!");
+                "There should only be ONE KillQuestRequirement per quest!");
 
             var reqs = quest.FinishRequirements.OfType<KillQuestRequirement>().FirstOrDefault();
             if (reqs == null)

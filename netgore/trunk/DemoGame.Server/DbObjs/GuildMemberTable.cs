@@ -182,19 +182,19 @@ namespace DemoGame.Server.DbObjs
             {
                 case "character_id":
                     return new ColumnMetadata("character_id", "The character that is a member of the guild.", "int(11)", null,
-                                              typeof(Int32), false, true, false);
+                        typeof(Int32), false, true, false);
 
                 case "guild_id":
                     return new ColumnMetadata("guild_id", "The guild the member is a part of.", "smallint(5) unsigned", null,
-                                              typeof(UInt16), false, false, true);
+                        typeof(UInt16), false, false, true);
 
                 case "joined":
                     return new ColumnMetadata("joined", "When the member joined the guild.", "datetime", null, typeof(DateTime),
-                                              false, false, false);
+                        false, false, false);
 
                 case "rank":
                     return new ColumnMetadata("rank", "The member's ranking in the guild.", "tinyint(3) unsigned", null,
-                                              typeof(Byte), false, false, false);
+                        typeof(Byte), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

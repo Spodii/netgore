@@ -236,7 +236,7 @@ namespace NetGore.Graphics
             _sprite.FlipX((effects & SpriteEffects.FlipHorizontally) != 0);
             _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
             _sprite.Scale = new Vector2((float)destinationRectangle.Width / _sprite.SubRect.Width,
-                                        (float)destinationRectangle.Height / _sprite.SubRect.Height);
+                (float)destinationRectangle.Height / _sprite.SubRect.Height);
 
             _rt.Draw(_sprite, shader);
         }

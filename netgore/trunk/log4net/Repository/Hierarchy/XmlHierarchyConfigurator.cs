@@ -748,8 +748,7 @@ namespace log4net.Repository.Hierarchy
 
             // Try to find a writable property
             propInfo = targetType.GetProperty(name,
-                                              BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
-                                              BindingFlags.IgnoreCase);
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase);
             if (propInfo != null && propInfo.CanWrite)
             {
                 // found a property
@@ -876,7 +875,7 @@ namespace log4net.Repository.Hierarchy
                             {
                                 // Pass to the property
                                 propInfo.SetValue(target, convertedValue, BindingFlags.SetProperty, null, null,
-                                                  CultureInfo.InvariantCulture);
+                                    CultureInfo.InvariantCulture);
                             }
                             catch (TargetInvocationException targetInvocationEx)
                             {
@@ -895,7 +894,7 @@ namespace log4net.Repository.Hierarchy
                             {
                                 // Pass to the property
                                 methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] { convertedValue },
-                                                CultureInfo.InvariantCulture);
+                                    CultureInfo.InvariantCulture);
                             }
                             catch (TargetInvocationException targetInvocationEx)
                             {
@@ -948,7 +947,7 @@ namespace log4net.Repository.Hierarchy
                             {
                                 // Pass to the property
                                 propInfo.SetValue(target, createdObject, BindingFlags.SetProperty, null, null,
-                                                  CultureInfo.InvariantCulture);
+                                    CultureInfo.InvariantCulture);
                             }
                             catch (TargetInvocationException targetInvocationEx)
                             {
@@ -967,7 +966,7 @@ namespace log4net.Repository.Hierarchy
                             {
                                 // Pass to the property
                                 methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] { createdObject },
-                                                CultureInfo.InvariantCulture);
+                                    CultureInfo.InvariantCulture);
                             }
                             catch (TargetInvocationException targetInvocationEx)
                             {

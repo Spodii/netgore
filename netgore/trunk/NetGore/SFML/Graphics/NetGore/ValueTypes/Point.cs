@@ -64,7 +64,7 @@ namespace SFML.Graphics
         {
             var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1}}}",
-                                 new object[] { X.ToString(currentCulture), Y.ToString(currentCulture) });
+                new object[] { X.ToString(currentCulture), Y.ToString(currentCulture) });
         }
 
         /// <summary>Determines whether two Point instances are equal.</summary>

@@ -502,7 +502,7 @@ namespace NetGore.IO
                 {
                     if (log.IsErrorEnabled)
                         log.ErrorFormat("Failed to run CopyContent: Could not find the CopyContent program at `{0}`",
-                                        copyContentFile);
+                            copyContentFile);
                     return false;
                 }
 

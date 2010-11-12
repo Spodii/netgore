@@ -87,7 +87,7 @@ namespace DemoGame.Client
                 return StyledText.EmptyArray;
 
             return GetStyledText(itemInfo.Name, itemInfo.Description, itemInfo.Value, itemInfo.HP, itemInfo.MP, itemInfo.Stats,
-                                 itemInfo.ReqStats);
+                itemInfo.ReqStats);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace DemoGame.Client
                 return StyledText.EmptyArray;
 
             return GetStyledText(itemInfo.Name, itemInfo.Description, itemInfo.Value, itemInfo.HP, itemInfo.MP, itemInfo.Stats,
-                                 itemInfo.ReqStats);
+                itemInfo.ReqStats);
         }
 
         /// <summary>

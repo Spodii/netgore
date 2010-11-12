@@ -209,7 +209,7 @@ namespace DemoGame.Editor
             const string confirmMsg = "Are you sure you wish to change the emitter type from {0} to {1}?";
             if (
                 MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, newType.Name), "Change emitter type?",
-                                MessageBoxButtons.YesNo) == DialogResult.No)
+                    MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             var newEmitter = (IParticleEmitter)TypeFactory.GetTypeInstance(newType, emitter.Owner);

@@ -214,29 +214,29 @@ namespace DemoGame.Server.DbObjs
 
                 case "map_id":
                     return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned",
-                                              null, typeof(ushort?), true, false, true);
+                        null, typeof(ushort?), true, false, true);
 
                 case "quest_id":
                     return new ColumnMetadata("quest_id", "The quest that was accepted.", "smallint(5) unsigned", null,
-                                              typeof(UInt16), false, false, true);
+                        typeof(UInt16), false, false, true);
 
                 case "user_id":
                     return new ColumnMetadata("user_id", "The ID of the user that accepted the quest.", "int(11)", null,
-                                              typeof(Int32), false, false, true);
+                        typeof(Int32), false, false, true);
 
                 case "when":
                     return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP",
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 case "x":
                     return new ColumnMetadata("x",
-                                              "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "y":
                     return new ColumnMetadata("y",
-                                              "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

@@ -21,7 +21,7 @@ namespace NetGore.Scripting
         readonly List<string> _members = new List<string>();
 
         readonly Regex _regexGetSafeFunction = new Regex(@"function\s+GetSafe\s*\([^,]+,[^,]+\)\s*:\s*String",
-                                                         RegexOptions.IgnoreCase);
+            RegexOptions.IgnoreCase);
 
         IEnumerable<CompilerError> _compilationErrors = _emptyCompilerErrors;
 

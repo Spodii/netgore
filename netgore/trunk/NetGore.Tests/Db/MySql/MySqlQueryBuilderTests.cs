@@ -448,7 +448,7 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "SELECT DISTINCT t.a,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a";
             var q = MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoinOnColumn("t2", "u",
-                                                                                                                     "a", "t", "a");
+                "a", "t", "a");
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -459,8 +459,7 @@ namespace NetGore.Tests.Db.MySql
                 "SELECT DISTINCT t.a,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
             var q =
                 MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().Add("t.a", "u.a").InnerJoinOnColumn("t2", "u", "a",
-                                                                                                                 "t", "a").OrderBy
-                    ("t.a").Limit(1);
+                    "t", "a").OrderBy("t.a").Limit(1);
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -471,9 +470,7 @@ namespace NetGore.Tests.Db.MySql
                 "SELECT DISTINCT t.*,u.a FROM `myTable` AS t INNER JOIN `t2` u ON u.a=t.a ORDER BY t.a LIMIT 1";
             var q =
                 MySqlQueryBuilder.Instance.Select("myTable", "t").Distinct().AllColumns("t").Add("u.a").InnerJoinOnColumn("t2",
-                                                                                                                          "u", "a",
-                                                                                                                          "t", "a")
-                    .OrderBy("t.a").Limit(1);
+                    "u", "a", "t", "a").OrderBy("t.a").Limit(1);
             Assert.AreEqual(expected, q.ToString());
         }
 
@@ -514,8 +511,7 @@ namespace NetGore.Tests.Db.MySql
         {
             const string expected = "SELECT `a`,`b`,`c` FROM `myTable` ORDER BY `a`, `b` DESC";
             var q = MySqlQueryBuilder.Instance.Select("myTable").Add("a", "b", "c").OrderByColumn("a").OrderByColumn("b",
-                                                                                                                     OrderByType.
-                                                                                                                         Descending);
+                OrderByType.Descending);
             Assert.AreEqual(expected, q.ToString());
         }
 

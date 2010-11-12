@@ -257,7 +257,7 @@ namespace NetGore.Tests.IO
         public void ByteIO()
         {
             BatchIOTester(from value in TRange<byte>()
-                          select (byte)value, x => x.ReadByte(), (x, v) => x.Write(v));
+                select (byte)value, x => x.ReadByte(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -415,7 +415,7 @@ namespace NetGore.Tests.IO
         public void IntIO()
         {
             BatchIOTester(from value in TRange<int>()
-                          select (int)value, x => x.ReadInt(), (x, v) => x.Write(v));
+                select (int)value, x => x.ReadInt(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -865,7 +865,7 @@ namespace NetGore.Tests.IO
         public void SByteIO()
         {
             BatchIOTester(from value in TRange<sbyte>()
-                          select (sbyte)value, x => x.ReadSByte(), (x, v) => x.Write(v));
+                select (sbyte)value, x => x.ReadSByte(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -1013,7 +1013,7 @@ namespace NetGore.Tests.IO
         public void ShortIO()
         {
             BatchIOTester(from value in TRange<short>()
-                          select (short)value, x => x.ReadShort(), (x, v) => x.Write(v));
+                select (short)value, x => x.ReadShort(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -1246,7 +1246,7 @@ namespace NetGore.Tests.IO
         public void UIntIO()
         {
             BatchIOTester(from value in TRange<uint>()
-                          select (uint)value, x => x.ReadUInt(), (x, v) => x.Write(v));
+                select (uint)value, x => x.ReadUInt(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -1318,7 +1318,7 @@ namespace NetGore.Tests.IO
         public void UShortIO()
         {
             BatchIOTester(from value in TRange<ushort>()
-                          select (ushort)value, x => x.ReadUShort(), (x, v) => x.Write(v));
+                select (ushort)value, x => x.ReadUShort(), (x, v) => x.Write(v));
         }
 
         [Test]

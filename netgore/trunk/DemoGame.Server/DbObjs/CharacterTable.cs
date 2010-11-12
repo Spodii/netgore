@@ -405,7 +405,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "character_template_id":
                     return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(ushort?), true,
-                                              false, true);
+                        false, true);
 
                 case "chat_dialog":
                     return new ColumnMetadata("chat_dialog", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
@@ -433,19 +433,19 @@ namespace DemoGame.Server.DbObjs
 
                 case "move_speed":
                     return new ColumnMetadata("move_speed", "", "smallint(5) unsigned", "1800", typeof(UInt16), false, false,
-                                              false);
+                        false);
 
                 case "mp":
                     return new ColumnMetadata("mp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
 
                 case "name":
                     return new ColumnMetadata("name",
-                                              "The character's name. Prefixed with `~<ID>_` when its a deleted user. The ~ denotes deleted, and the <ID> ensures a unique value.",
-                                              "varchar(60)", "", typeof(String), false, false, true);
+                        "The character's name. Prefixed with `~<ID>_` when its a deleted user. The ~ denotes deleted, and the <ID> ensures a unique value.",
+                        "varchar(60)", "", typeof(String), false, false, true);
 
                 case "respawn_map_id":
                     return new ColumnMetadata("respawn_map_id", "", "smallint(5) unsigned", "3", typeof(ushort?), true, false,
-                                              true);
+                        true);
 
                 case "respawn_x":
                     return new ColumnMetadata("respawn_x", "", "float", "1024", typeof(Single), false, false, false);

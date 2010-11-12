@@ -138,7 +138,7 @@ namespace DemoGame.Editor
             public override string ToString()
             {
                 return string.Format("Char ID: {0}  Count: {1}  Region: {2}", Value.CharacterTemplateID, Value.SpawnAmount,
-                                     Value.SpawnArea);
+                    Value.SpawnArea);
             }
 
             public static implicit operator MapSpawnValues(NPCSpawnsListBoxItem v)

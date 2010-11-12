@@ -112,7 +112,7 @@ namespace DemoGame.Client
             // Draw the title
             if (!string.IsNullOrEmpty(_title))
                 spriteBatch.DrawStringShaded(GameScreenHelper.DefaultMenuTitleFont, Title, _titlePosition, _titleColor,
-                                             _titleBorderColor);
+                    _titleBorderColor);
         }
 
         /// <summary>

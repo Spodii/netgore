@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(ViewUserCharacterTable.TableName).Add("name", "body_id").Where(f.Equals(s.EscapeColumn("id"),
-                                                                                                  s.Parameterize("id")));
+                    s.Parameterize("id")));
             return q.ToString();
         }
 

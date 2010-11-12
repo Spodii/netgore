@@ -45,7 +45,7 @@ namespace NetGore
         {
             _parserCurrent = new Parser(CultureInfo.CurrentCulture, NumberFormatInfo.CurrentInfo, DateTimeFormatInfo.CurrentInfo);
             _parserInvariant = new Parser(CultureInfo.InvariantCulture, NumberFormatInfo.InvariantInfo,
-                                          DateTimeFormatInfo.InvariantInfo);
+                DateTimeFormatInfo.InvariantInfo);
         }
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace SFML.Graphics.Design
             if (propertyValues == null)
                 throw new ArgumentNullException("propertyValues");
             return new Color((byte)propertyValues["R"], (byte)propertyValues["G"], (byte)propertyValues["B"],
-                             (byte)propertyValues["A"]);
+                (byte)propertyValues["A"]);
         }
     }
 }

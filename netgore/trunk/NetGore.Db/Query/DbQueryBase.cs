@@ -129,7 +129,7 @@ namespace NetGore.Db
             {
                 var ret = (DbParameter)cloneable.Clone();
                 Debug.Assert(ret != source,
-                             "Object was cloned, but this implement of ICloneable returns the same object! That is not what we want!");
+                    "Object was cloned, but this implement of ICloneable returns the same object! That is not what we want!");
                 return ret;
             }
 
@@ -436,24 +436,21 @@ namespace NetGore.Db
                 var n = p.ParameterName;
 
                 Debug.Assert(n.Length >= 2,
-                             string.Format(errmsg, p, this, Environment.NewLine,
-                                           "Parameters should always be 2 or more characters (one for the prefix, one or more for the name)."));
+                    string.Format(errmsg, p, this, Environment.NewLine,
+                        "Parameters should always be 2 or more characters (one for the prefix, one or more for the name)."));
 
                 Debug.Assert(n[0] == ParameterPrefixChar,
-                             string.Format(errmsg, p, this, Environment.NewLine,
-                                           "Parameters should begin with the ParameterPrefix."));
+                    string.Format(errmsg, p, this, Environment.NewLine, "Parameters should begin with the ParameterPrefix."));
 
                 Debug.Assert(n[1] != ParameterPrefixChar,
-                             string.Format(errmsg, p, this, Environment.NewLine,
-                                           "The second character should not be the ParameterPrefix."));
+                    string.Format(errmsg, p, this, Environment.NewLine, "The second character should not be the ParameterPrefix."));
 
                 Debug.Assert(CommandText.Contains(p.ParameterName),
-                             string.Format(errmsg, p, this, Environment.NewLine,
-                                           "The parameter could not be found in the CommandText..."));
+                    string.Format(errmsg, p, this, Environment.NewLine, "The parameter could not be found in the CommandText..."));
             }
         }
 
-        #region IDbQueryHandler Members
+        #region IDbQuery Members
 
         /// <summary>
         /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this <see cref="IDbQuery"/>

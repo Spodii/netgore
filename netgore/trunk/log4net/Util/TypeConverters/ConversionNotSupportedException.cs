@@ -137,7 +137,7 @@ namespace log4net.Util.TypeConverters
         {
             if (sourceValue == null)
                 return new ConversionNotSupportedException("Cannot convert value [null] to type [" + destinationType + "]",
-                                                           innerException);
+                    innerException);
             else
             {
                 return

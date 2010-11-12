@@ -57,14 +57,12 @@ namespace DemoGame.Client
             var pos = new Vector2(60, 180);
             var lblSound = GameScreenHelper.CreateMenuLabel(cScreen, pos, "Sound (0 to 100):");
             _txtSound = new TextBox(cScreen, pos + new Vector2(lblSound.Size.X + 10, -6),
-                                    new Vector2(128, lblSound.ClientSize.Y + 4))
-            { AllowKeysHandler = TextEventArgsFilters.IsDigitFunc };
+                new Vector2(128, lblSound.ClientSize.Y + 4)) { AllowKeysHandler = TextEventArgsFilters.IsDigitFunc };
 
             pos.Y += _txtSound.Size.Y + 16;
             var lblMusic = GameScreenHelper.CreateMenuLabel(cScreen, pos, "Music (0 to 100):");
             _txtMusic = new TextBox(cScreen, pos + new Vector2(lblMusic.Size.X + 10, -6),
-                                    new Vector2(128, lblMusic.ClientSize.Y + 4))
-            { AllowKeysHandler = TextEventArgsFilters.IsDigitFunc };
+                new Vector2(128, lblMusic.ClientSize.Y + 4)) { AllowKeysHandler = TextEventArgsFilters.IsDigitFunc };
         }
 
         void ShowErrorMsgBox(string property)

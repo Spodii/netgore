@@ -64,7 +64,7 @@ namespace NetGore.Graphics
             {
                 yield return
                     new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i,
-                                                                             _layers[i].OrderBy(x => x.LayerDepth));
+                        _layers[i].OrderBy(x => x.LayerDepth));
             }
         }
     }

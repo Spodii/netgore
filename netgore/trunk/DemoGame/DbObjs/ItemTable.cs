@@ -387,7 +387,7 @@ namespace DemoGame.DbObjs
             {
                 case "action_display_id":
                     return new ColumnMetadata("action_display_id", "The ActionDisplayID to use when using this item.",
-                                              "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
+                        "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
 
                 case "amount":
                     return new ColumnMetadata("amount", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
@@ -412,7 +412,7 @@ namespace DemoGame.DbObjs
 
                 case "item_template_id":
                     return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(ushort?), true, false,
-                                              true);
+                        true);
 
                 case "mp":
                     return new ColumnMetadata("mp", "", "smallint(6)", "0", typeof(Int16), false, false, false);

@@ -59,7 +59,7 @@ namespace SFML.Graphics
         {
             var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{Center:{0} Radius:{1}}}",
-                                 new object[] { Center.ToString(), Radius.ToString(currentCulture) });
+                new object[] { Center.ToString(), Radius.ToString(currentCulture) });
         }
 
         /// <summary>Creates a BoundingSphere that contains the two specified BoundingSphere instances.</summary>

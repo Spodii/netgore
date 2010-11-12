@@ -481,7 +481,7 @@ namespace SFML
             {
                 return
                     new Shape(sfShape_CreateRectangle(rectangle.Left, rectangle.Top, rectangle.Width, rectangle.Height, color,
-                                                      outline, outlineColor));
+                        outline, outlineColor));
             }
 
             ////////////////////////////////////////////////////////////

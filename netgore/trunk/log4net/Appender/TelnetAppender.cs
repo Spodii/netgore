@@ -78,11 +78,8 @@ namespace log4net.Appender
                 if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
                 {
                     throw SystemInfo.CreateArgumentOutOfRangeException("value", value,
-                                                                       "The value specified for Port is less than " +
-                                                                       IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                       " or greater than " +
-                                                                       IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                       ".");
+                        "The value specified for Port is less than " + IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
+                        " or greater than " + IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) + ".");
                 }
                 else
                     m_listeningPort = value;

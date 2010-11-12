@@ -31,9 +31,7 @@ namespace DemoGame.Editor
         {
             if (DesignMode ||
                 !ControlHelper.DrawListItem<KeyValuePair<GameMessage, string>>(Items, e,
-                                                                               x =>
-                                                                               new KeyValuePair<string, string>(x.Key.ToString(),
-                                                                                                                x.Value)))
+                    x => new KeyValuePair<string, string>(x.Key.ToString(), x.Value)))
                 base.OnDrawItem(e);
         }
     }

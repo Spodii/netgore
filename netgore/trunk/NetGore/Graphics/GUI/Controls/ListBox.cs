@@ -330,7 +330,7 @@ namespace NetGore.Graphics.GUI
             {
                 var cs = ClientSize;
                 var pagePos = new Vector2((cs.X / 2) - (_pageText.GetWidth(Font) / 2),
-                                          cs.Y - ToolbarDisplayHeight + (_toolbarPadding * 2));
+                    cs.Y - ToolbarDisplayHeight + (_toolbarPadding * 2));
                 _pageText.Draw(spriteBatch, Font, sp + pagePos, ForeColor);
             }
         }
@@ -614,7 +614,7 @@ namespace NetGore.Graphics.GUI
 
                 _sprite = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory, _spriteName);
                 _spriteMouseOver = skinManager.GetControlSprite(_controlSkinName, _toolbarCategory,
-                                                                _spriteName + _mouseOverSpriteSuffix);
+                    _spriteName + _mouseOverSpriteSuffix);
 
                 if (IsMouseEntered)
                     Sprite = _spriteMouseOver;

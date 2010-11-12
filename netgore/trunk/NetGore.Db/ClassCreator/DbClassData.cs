@@ -83,9 +83,9 @@ namespace NetGore.Db.ClassCreator
             foreach (var column in columns)
             {
                 _privateNames.Add(column,
-                                  formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
+                    formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
                 _publicNames.Add(column,
-                                 formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
+                    formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
                 _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
             }
         }

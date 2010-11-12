@@ -191,24 +191,24 @@ namespace DemoGame.Server.DbObjs
             {
                 case "character_id":
                     return new ColumnMetadata("character_id", "ID of the Character that the status effect is on.", "int(11)", null,
-                                              typeof(Int32), false, false, true);
+                        typeof(Int32), false, false, true);
 
                 case "id":
                     return new ColumnMetadata("id", "Unique ID of the status effect instance.", "int(11)", null, typeof(Int32),
-                                              false, true, false);
+                        false, true, false);
 
                 case "power":
                     return new ColumnMetadata("power", "The power of this status effect instance.", "smallint(5) unsigned", null,
-                                              typeof(UInt16), false, false, false);
+                        typeof(UInt16), false, false, false);
 
                 case "status_effect_id":
                     return new ColumnMetadata("status_effect_id",
-                                              "ID of the status effect that this effect is for. This corresponds to the StatusEffectType enum's value.",
-                                              "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
+                        "ID of the status effect that this effect is for. This corresponds to the StatusEffectType enum's value.",
+                        "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
 
                 case "time_left_secs":
                     return new ColumnMetadata("time_left_secs", "The amount of time remaining for this status effect in seconds.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

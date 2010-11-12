@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace NetGore.Db
@@ -14,14 +15,14 @@ namespace NetGore.Db
         object Query { get; }
 
         /// <summary>
-        /// Gets the number of times that the query has been executed.
-        /// </summary>
-        int TimesExecuted { get; }
-
-        /// <summary>
         /// Gets the <see cref="DateTime"/> that this query was last executed.
         /// </summary>
         DateTime TimeLastExecuted { get; }
+
+        /// <summary>
+        /// Gets the number of times that the query has been executed.
+        /// </summary>
+        int TimesExecuted { get; }
 
         /// <summary>
         /// Appends the detailed statistics of the <see cref="IQueryStats"/> to a <see cref="StringBuilder"/>.

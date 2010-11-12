@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Delete(CharacterQuestStatusKillsTable.TableName).Where(
                     f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("charID")),
-                          f.Equals(s.EscapeColumn("quest_id"), s.Parameterize("questID"))));
+                        f.Equals(s.EscapeColumn("quest_id"), s.Parameterize("questID"))));
             return q.ToString();
         }
 

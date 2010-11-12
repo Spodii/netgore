@@ -38,7 +38,7 @@ namespace NetGore.Features.NPCChat
 
             e.DrawBackground();
             e.Graphics.DrawString(string.Format("{0}: {1}", dialog.ID, dialog.Title), e.Font, new SolidBrush(e.ForeColor),
-                                  e.Bounds);
+                e.Bounds);
             e.DrawFocusRectangle();
 
             // TODO: Fix the display for the selected item; do not let the text be edited

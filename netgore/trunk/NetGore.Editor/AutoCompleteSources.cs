@@ -98,7 +98,7 @@ namespace NetGore.Editor
         {
             // Get all the content files
             var files = Directory.GetFiles(ContentPaths.Build.Grhs, "*" + ContentPaths.ContentFileSuffix,
-                                           SearchOption.AllDirectories);
+                SearchOption.AllDirectories);
 
             // Cache the amount we need to remove from the start and end of each string
             var start = ContentPaths.Build.Grhs.ToString().Length + 1;

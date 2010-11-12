@@ -36,7 +36,7 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id").Where(
                     f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("id")),
-                          f.IsNotNull(s.EscapeColumn("completed_on"))));
+                        f.IsNotNull(s.EscapeColumn("completed_on"))));
             return q.ToString();
         }
 

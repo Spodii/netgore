@@ -34,8 +34,8 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Select(AccountTable.TableName).AddFunc(f.Count()).Where(
                     f.And(f.Equals(s.EscapeColumn("creator_ip"), s.Parameterize("ip")),
-                          f.GreaterThan(s.EscapeColumn("time_created"),
-                                        f.DateSubtractInterval(f.Now(), QueryIntervalType.Minute, 30))));
+                        f.GreaterThan(s.EscapeColumn("time_created"),
+                            f.DateSubtractInterval(f.Now(), QueryIntervalType.Minute, 30))));
             return q.ToString();
         }
 

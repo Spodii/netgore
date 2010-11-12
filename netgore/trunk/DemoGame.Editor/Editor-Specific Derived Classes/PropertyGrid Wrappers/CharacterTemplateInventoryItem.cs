@@ -25,7 +25,7 @@ namespace DemoGame.Editor
         public ICharacterTemplateInventoryTable ToTableRow(CharacterTemplateID charID, int rowID)
         {
             return new CharacterTemplateInventoryTable(iD: rowID, chance: Chance, characterTemplateID: charID, itemTemplateID: ID,
-                                                       min: (byte)Min, max: (byte)Max);
+                min: (byte)Min, max: (byte)Max);
         }
 
         /// <summary>

@@ -73,7 +73,10 @@ namespace NetGore.Db
         /// Gets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by
         /// this object. If null, statistics will not be tracked.
         /// </summary>
-        public IQueryStatsTracker QueryStats { get { return _pool.QueryStats; } }
+        public IQueryStatsTracker QueryStats
+        {
+            get { return _pool.QueryStats; }
+        }
 
         /// <summary>
         /// Disposes of the <see cref="IPoolableDbConnection"/>, closing the connection and sending it back to the

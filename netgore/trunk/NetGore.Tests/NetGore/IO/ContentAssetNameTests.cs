@@ -15,7 +15,7 @@ namespace NetGore.Tests.NetGore.IO
         public void FromAbsoluteFilePathAlternateSeparatorDeepTest()
         {
             var n = ContentAssetName.FromAbsoluteFilePath(@"C:/whatever/path/to/mycontent/is/super/awesome",
-                                                          @"C:/whatever/path/to");
+                @"C:/whatever/path/to");
             Assert.AreEqual(@"mycontent/is/super/awesome".Replace("/", ContentAssetName.PathSeparator), n.Value);
         }
 
@@ -37,7 +37,7 @@ namespace NetGore.Tests.NetGore.IO
         public void FromAbsoluteFilePathDeepTest()
         {
             var n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent\is\super\awesome",
-                                                          @"C:\whatever\path\to");
+                @"C:\whatever\path\to");
             Assert.AreEqual(@"mycontent\is\super\awesome".Replace("\\", ContentAssetName.PathSeparator), n.Value);
         }
 
@@ -68,7 +68,7 @@ namespace NetGore.Tests.NetGore.IO
         public void FromAbsoluteFilePathWithSuffixTest()
         {
             var n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent" + ContentPaths.ContentFileSuffix,
-                                                          @"C:\whatever\path\to");
+                @"C:\whatever\path\to");
             Assert.AreEqual("mycontent", n.Value);
         }
 

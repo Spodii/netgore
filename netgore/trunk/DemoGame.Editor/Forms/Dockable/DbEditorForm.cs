@@ -56,7 +56,7 @@ namespace DemoGame.Editor
             {
                 // Existing messages
                 var existing = GameMessageCollection.LoadRawMessages(newLanguage).OrderBy(x => x.Key.ToString(),
-                                                                                          NaturalStringComparer.Instance);
+                    NaturalStringComparer.Instance);
                 lstMessages.Items.AddRange(existing.Cast<object>().ToArray());
 
                 // Missing messages
@@ -175,7 +175,7 @@ namespace DemoGame.Editor
             var settings = new DbConnectionSettings();
             _dbController =
                 settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                                                                 x => settings.PromptEditFileMessageBox(x));
+                    x => settings.PromptEditFileMessageBox(x));
 
             // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
             // pretty little pictures. :(
@@ -215,7 +215,7 @@ namespace DemoGame.Editor
             var insertByIDQuery = dbController.GetQuery<InsertAllianceQuery>();
 
             return GetFreeID(dbController, true, t => new AllianceID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
-                             x => insertByIDQuery.Execute(new AllianceTable { ID = x, Name = string.Empty }));
+                x => insertByIDQuery.Execute(new AllianceTable { ID = x, Name = string.Empty }));
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace DemoGame.Editor
             var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
 
             return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
+                selectQuery.Execute, x => insertByIDQuery.Execute(x));
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace DemoGame.Editor
             var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
 
             return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
+                selectQuery.Execute, x => insertByIDQuery.Execute(x));
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace DemoGame.Editor
             var insertByIDQuery = dbController.GetQuery<InsertQuestQuery>();
 
             return GetFreeID(dbController, true, t => new QuestID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
-                             x => insertByIDQuery.Execute(new QuestTable { ID = x }));
+                x => insertByIDQuery.Execute(new QuestTable { ID = x }));
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace DemoGame.Editor
             var insertByIDQuery = dbController.GetQuery<InsertShopQuery>();
 
             return GetFreeID(dbController, true, t => new ShopID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
-                             x => insertByIDQuery.Execute(new ShopTable { ID = x, Name = string.Empty }));
+                x => insertByIDQuery.Execute(new ShopTable { ID = x, Name = string.Empty }));
         }
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace DemoGame.Editor
             foreach (var item in v.Equipped)
             {
                 var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool, CharacterTemplateEquippedTable.TableName,
-                                                            "id");
+                    "id");
                 var queryArg = item.ToTableRow(v.ID, freeRow);
                 equippedQuery.Execute(queryArg);
             }
@@ -493,7 +493,7 @@ namespace DemoGame.Editor
             foreach (var item in v.Inventory)
             {
                 var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool,
-                                                            CharacterTemplateInventoryTable.TableName, "id");
+                    CharacterTemplateInventoryTable.TableName, "id");
                 var queryArg = item.ToTableRow(v.ID, freeRow);
                 inventoryQuery.Execute(queryArg);
             }
@@ -759,7 +759,7 @@ namespace DemoGame.Editor
 
             string msg;
             var success = GameMessageCollection.TestCompilation(lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>(),
-                                                                out msg);
+                out msg);
 
             if (!success)
                 MessageBox.Show(msg);
@@ -871,11 +871,9 @@ namespace DemoGame.Editor
 
             // Required items to start/finish
             _dbController.GetQuery<InsertQuestRequireStartItemQuery>().Execute(v.ID,
-                                                                               v.StartItems.Select(
-                                                                                   x => (KeyValuePair<ItemTemplateID, byte>)x));
+                v.StartItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
             _dbController.GetQuery<InsertQuestRequireFinishItemQuery>().Execute(v.ID,
-                                                                                v.FinishItems.Select(
-                                                                                    x => (KeyValuePair<ItemTemplateID, byte>)x));
+                v.FinishItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             // Required quests to start/finish
             _dbController.GetQuery<InsertQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
@@ -883,13 +881,11 @@ namespace DemoGame.Editor
 
             // Other requirements
             _dbController.GetQuery<InsertQuestRequireKillQuery>().Execute(v.ID,
-                                                                          v.Kills.Select(
-                                                                              x => (KeyValuePair<CharacterTemplateID, ushort>)x));
+                v.Kills.Select(x => (KeyValuePair<CharacterTemplateID, ushort>)x));
 
             // Rewards
             _dbController.GetQuery<InsertQuestRewardItemQuery>().Execute(v.ID,
-                                                                         v.RewardItems.Select(
-                                                                             x => (KeyValuePair<ItemTemplateID, byte>)x));
+                v.RewardItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             SetQuest(v.ID, false);
 

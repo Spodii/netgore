@@ -13,8 +13,8 @@ namespace NetGore.Features.PeerTrading
     /// </summary>
     /// <typeparam name="TChar">The type of character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
-    public abstract class PeerTradeSessionBase<TChar, TItem> : IPeerTradeSession<TChar, TItem> where TChar : Entity
-                                                                                               where TItem : Entity
+    public abstract class PeerTradeSessionBase<TChar, TItem> : IPeerTradeSession<TChar, TItem>
+        where TChar : Entity where TItem : Entity
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly PeerTradingSettings _settings = PeerTradingSettings.Instance;

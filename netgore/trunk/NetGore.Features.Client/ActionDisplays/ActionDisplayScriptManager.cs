@@ -25,7 +25,7 @@ namespace NetGore.Features.ActionDisplays
         static ActionDisplayScriptManager()
         {
             new TypeFactory(x => !x.GetCustomAttributes(typeof(ActionDisplayScriptCollectionAttribute), true).IsEmpty(),
-                            TypeLoadedHandler);
+                TypeLoadedHandler);
         }
 
         /// <summary>

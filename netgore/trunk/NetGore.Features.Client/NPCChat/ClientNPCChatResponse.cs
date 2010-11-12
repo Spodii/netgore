@@ -99,7 +99,7 @@ namespace NetGore.Features.NPCChat
                                               NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string),
-                         "Values were already set?");
+                "Values were already set?");
 
             _value = value;
             _page = page;

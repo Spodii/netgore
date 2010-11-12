@@ -29,7 +29,7 @@ namespace NetGore
         public static Vector4 Ceiling(this Vector4 source)
         {
             return new Vector4((float)Math.Ceiling(source.X), (float)Math.Ceiling(source.Y), (float)Math.Ceiling(source.Z),
-                               (float)Math.Ceiling(source.W));
+                (float)Math.Ceiling(source.W));
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace NetGore
         public static Vector4 Floor(this Vector4 source)
         {
             return new Vector4((float)Math.Floor(source.X), (float)Math.Floor(source.Y), (float)Math.Floor(source.Z),
-                               (float)Math.Floor(source.W));
+                (float)Math.Floor(source.W));
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace NetGore
         public static Vector4 Round(this Vector4 source)
         {
             return new Vector4((float)Math.Round(source.X), (float)Math.Round(source.Y), (float)Math.Round(source.Z),
-                               (float)Math.Round(source.W));
+                (float)Math.Round(source.W));
         }
 
         /// <summary>

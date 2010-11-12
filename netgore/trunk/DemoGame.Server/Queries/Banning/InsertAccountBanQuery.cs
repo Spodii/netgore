@@ -21,7 +21,7 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(AccountBanTable.DbColumns, "account_id", "start_time", "end_time", "issued_by", "reason",
-                                         "expired");
+                "expired");
         }
 
         /// <summary>

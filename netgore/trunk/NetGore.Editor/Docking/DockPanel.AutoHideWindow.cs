@@ -254,7 +254,7 @@ namespace NetGore.Editor.Docking
                 {
                     Bounds =
                         DockPanel.GetAutoHideWindowBounds(new Rectangle(-rectTarget.Width, -rectTarget.Height, rectTarget.Width,
-                                                                        rectTarget.Height));
+                            rectTarget.Height));
                     if (Visible == false)
                         Visible = true;
                     PerformLayout();
@@ -359,10 +359,10 @@ namespace NetGore.Editor.Docking
 
                 if (DockState == DockState.DockLeftAutoHide)
                     ActivePane.Location = new Point(rectClient.Right - 2 - Measures.SplitterSize - ActivePane.Width,
-                                                    ActivePane.Location.Y);
+                        ActivePane.Location.Y);
                 else if (DockState == DockState.DockTopAutoHide)
                     ActivePane.Location = new Point(ActivePane.Location.X,
-                                                    rectClient.Bottom - 2 - Measures.SplitterSize - ActivePane.Height);
+                        rectClient.Bottom - 2 - Measures.SplitterSize - ActivePane.Height);
             }
 
             protected override void OnLayout(LayoutEventArgs levent)
@@ -391,7 +391,7 @@ namespace NetGore.Editor.Docking
 
                 var rectDisplaying = DisplayingRectangle;
                 var rectHidden = new Rectangle(-rectDisplaying.Width, rectDisplaying.Y, rectDisplaying.Width,
-                                               rectDisplaying.Height);
+                    rectDisplaying.Height);
                 foreach (Control c in Controls)
                 {
                     var pane = c as DockPane;
@@ -419,16 +419,16 @@ namespace NetGore.Editor.Docking
                 else if (DockState == DockState.DockTopAutoHide)
                 {
                     g.DrawLine(SystemPens.ControlDark, 0, ClientRectangle.Height - 2, ClientRectangle.Right,
-                               ClientRectangle.Height - 2);
+                        ClientRectangle.Height - 2);
                     g.DrawLine(SystemPens.ControlDarkDark, 0, ClientRectangle.Height - 1, ClientRectangle.Right,
-                               ClientRectangle.Height - 1);
+                        ClientRectangle.Height - 1);
                 }
                 else if (DockState == DockState.DockLeftAutoHide)
                 {
                     g.DrawLine(SystemPens.ControlDark, ClientRectangle.Width - 2, 0, ClientRectangle.Width - 2,
-                               ClientRectangle.Bottom);
+                        ClientRectangle.Bottom);
                     g.DrawLine(SystemPens.ControlDarkDark, ClientRectangle.Width - 1, 0, ClientRectangle.Width - 1,
-                               ClientRectangle.Bottom);
+                        ClientRectangle.Bottom);
                 }
 
                 base.OnPaint(e);

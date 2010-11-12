@@ -316,7 +316,7 @@ namespace NetGore.World
 
             // In debug mode, make sure our check we performed above returned the correct result
             Debug.Assert(!_gridSegments.Any(x => x.Contains(spatial)),
-                         "CollectionContains() returned false when the spatial really was in the collection. May be a position updating issue...");
+                "CollectionContains() returned false when the spatial really was in the collection. May be a position updating issue...");
 
             return false;
         }
@@ -1078,8 +1078,8 @@ namespace NetGore.World
 
             // In debug mode, make sure we got all instances of the object
             Debug.Assert(!CollectionContains(spatial),
-                         "Didn't fully and completely remove the spatial from all segments." +
-                         " It most likely failed to be removed from segments at some other time...");
+                "Didn't fully and completely remove the spatial from all segments." +
+                " It most likely failed to be removed from segments at some other time...");
         }
 
         /// <summary>

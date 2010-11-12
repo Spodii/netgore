@@ -230,38 +230,38 @@ namespace DemoGame.Server.DbObjs
             {
                 case "arg0":
                     return new ColumnMetadata("arg0", "The first optional event argument.", "varchar(0)", null, typeof(String),
-                                              true, false, false);
+                        true, false, false);
 
                 case "arg1":
                     return new ColumnMetadata("arg1", "The second optional event argument.", "varchar(0)", null, typeof(String),
-                                              true, false, false);
+                        true, false, false);
 
                 case "arg2":
                     return new ColumnMetadata("arg2", "The third optional event argument.", "varchar(0)", null, typeof(String),
-                                              true, false, false);
+                        true, false, false);
 
                 case "character_id":
                     return new ColumnMetadata("character_id", "The character that invoked the event.", "int(11)", null,
-                                              typeof(Int32), false, false, true);
+                        typeof(Int32), false, false, true);
 
                 case "created":
                     return new ColumnMetadata("created", "When the event was created.", "datetime", null, typeof(DateTime), false,
-                                              false, false);
+                        false, false);
 
                 case "event_id":
                     return new ColumnMetadata("event_id", "The ID of the event that took place.", "tinyint(3) unsigned", null,
-                                              typeof(Byte), false, false, false);
+                        typeof(Byte), false, false, false);
 
                 case "guild_id":
                     return new ColumnMetadata("guild_id", "The guild the event took place on.", "smallint(5) unsigned", null,
-                                              typeof(UInt16), false, false, true);
+                        typeof(UInt16), false, false, true);
 
                 case "id":
                     return new ColumnMetadata("id", "The ID of the event.", "int(11)", null, typeof(Int32), false, true, false);
 
                 case "target_character_id":
                     return new ColumnMetadata("target_character_id", "The optional character that the event involves.", "int(11)",
-                                              null, typeof(int?), true, false, true);
+                        null, typeof(int?), true, false, true);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

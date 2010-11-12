@@ -62,7 +62,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Delete(ActiveTradeCashTable.TableName).Where(f.Equals(s.EscapeColumn("character_id"),
-                                                                         s.Parameterize("characterID")));
+                    s.Parameterize("characterID")));
             return q.ToString();
         }
     }

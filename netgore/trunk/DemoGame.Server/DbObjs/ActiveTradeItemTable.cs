@@ -163,11 +163,11 @@ namespace DemoGame.Server.DbObjs
             {
                 case "character_id":
                     return new ColumnMetadata("character_id", "The ID of the character that added the item.", "int(11)", null,
-                                              typeof(Int32), false, false, true);
+                        typeof(Int32), false, false, true);
 
                 case "item_id":
                     return new ColumnMetadata("item_id", "The unique ID of the row.", "int(11)", null, typeof(Int32), false, true,
-                                              false);
+                        false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

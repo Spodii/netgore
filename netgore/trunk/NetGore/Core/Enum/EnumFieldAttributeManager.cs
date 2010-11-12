@@ -12,8 +12,8 @@ namespace NetGore
     /// </summary>
     /// <typeparam name="TEnum">The type of enum.</typeparam>
     /// <typeparam name="TAttribute">The type of attribute.</typeparam>
-    public class EnumFieldAttributeManager<TEnum, TAttribute> where TEnum : struct, IComparable, IConvertible, IFormattable
-                                                              where TAttribute : Attribute
+    public class EnumFieldAttributeManager<TEnum, TAttribute>
+        where TEnum : struct, IComparable, IConvertible, IFormattable where TAttribute : Attribute
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

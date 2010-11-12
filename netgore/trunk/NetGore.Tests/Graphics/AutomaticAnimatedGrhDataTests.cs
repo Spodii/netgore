@@ -31,7 +31,7 @@ namespace NetGore.Tests.Graphics
             foreach (var pathSep in _pathSeps)
             {
                 var path = string.Format("{0}{4}{1}{2}{1}frames{1}{3}", prefix, AutomaticAnimatedGrhData.DirectoryNameDelimiter,
-                                         title, speed, pathSep);
+                    title, speed, pathSep);
 
                 var v = AutomaticAnimatedGrhData.GetAutomaticAnimationInfo(path);
                 Assert.IsNotNull(v);

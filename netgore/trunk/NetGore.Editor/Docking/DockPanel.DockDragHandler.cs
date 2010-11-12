@@ -558,7 +558,7 @@ namespace NetGore.Editor.Docking
                     if (ShouldPanelIndicatorVisible(DockState.DockLeft))
                     {
                         PanelLeft.Location = new Point(rectDockArea.X + _PanelIndicatorMargin,
-                                                       rectDockArea.Y + (rectDockArea.Height - PanelRight.Height) / 2);
+                            rectDockArea.Y + (rectDockArea.Height - PanelRight.Height) / 2);
                         PanelLeft.Visible = true;
                         region.Union(PanelLeft.Bounds);
                     }
@@ -569,7 +569,7 @@ namespace NetGore.Editor.Docking
                     {
                         PanelRight.Location =
                             new Point(rectDockArea.X + rectDockArea.Width - PanelRight.Width - _PanelIndicatorMargin,
-                                      rectDockArea.Y + (rectDockArea.Height - PanelRight.Height) / 2);
+                                rectDockArea.Y + (rectDockArea.Height - PanelRight.Height) / 2);
                         PanelRight.Visible = true;
                         region.Union(PanelRight.Bounds);
                     }
@@ -579,7 +579,7 @@ namespace NetGore.Editor.Docking
                     if (ShouldPanelIndicatorVisible(DockState.DockTop))
                     {
                         PanelTop.Location = new Point(rectDockArea.X + (rectDockArea.Width - PanelTop.Width) / 2,
-                                                      rectDockArea.Y + _PanelIndicatorMargin);
+                            rectDockArea.Y + _PanelIndicatorMargin);
                         PanelTop.Visible = true;
                         region.Union(PanelTop.Bounds);
                     }
@@ -589,8 +589,7 @@ namespace NetGore.Editor.Docking
                     if (ShouldPanelIndicatorVisible(DockState.DockBottom))
                     {
                         PanelBottom.Location = new Point(rectDockArea.X + (rectDockArea.Width - PanelBottom.Width) / 2,
-                                                         rectDockArea.Y + rectDockArea.Height - PanelBottom.Height -
-                                                         _PanelIndicatorMargin);
+                            rectDockArea.Y + rectDockArea.Height - PanelBottom.Height - _PanelIndicatorMargin);
                         PanelBottom.Visible = true;
                         region.Union(PanelBottom.Bounds);
                     }
@@ -601,7 +600,7 @@ namespace NetGore.Editor.Docking
                     {
                         var rectDocumentWindow = RectangleToClient(DockPanel.RectangleToScreen(DockPanel.DocumentWindowBounds));
                         PanelFill.Location = new Point(rectDocumentWindow.X + (rectDocumentWindow.Width - PanelFill.Width) / 2,
-                                                       rectDocumentWindow.Y + (rectDocumentWindow.Height - PanelFill.Height) / 2);
+                            rectDocumentWindow.Y + (rectDocumentWindow.Height - PanelFill.Height) / 2);
                         PanelFill.Visible = true;
                         region.Union(PanelFill.Bounds);
                     }
@@ -612,7 +611,7 @@ namespace NetGore.Editor.Docking
                     {
                         var rect = RectangleToClient(DockPane.RectangleToScreen(DockPane.ClientRectangle));
                         PaneDiamond.Location = new Point(rect.Left + (rect.Width - PaneDiamond.Width) / 2,
-                                                         rect.Top + (rect.Height - PaneDiamond.Height) / 2);
+                            rect.Top + (rect.Height - PaneDiamond.Height) / 2);
                         PaneDiamond.Visible = true;
                         using (var graphicsPath = PaneIndicator.DisplayingGraphicsPath.Clone() as GraphicsPath)
                         {
@@ -830,8 +829,7 @@ namespace NetGore.Editor.Docking
                             var rect = new Rectangle((int)rectF.X, (int)rectF.Y, (int)rectF.Width, (int)rectF.Height);
                             using (
                                 var matrix = new Matrix(rect,
-                                                        new Point[]
-                                                        { new Point(0, 0), new Point(rect.Width, 0), new Point(0, rect.Height) }))
+                                    new Point[] { new Point(0, 0), new Point(rect.Width, 0), new Point(0, rect.Height) }))
                             {
                                 path.Transform(matrix);
                             }

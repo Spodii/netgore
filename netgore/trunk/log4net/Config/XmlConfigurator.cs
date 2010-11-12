@@ -139,7 +139,7 @@ namespace log4net.Config
                 {
                     // Looks like the XML file is not valid
                     LogLog.Error("XmlConfigurator: Failed to parse config file. Check your .config file is well formed XML.",
-                                 confEx);
+                        confEx);
                 }
                 else
                 {

@@ -13,7 +13,7 @@ namespace NetGore
     public abstract class SimpleExpandableTypeConverter<T> : ExpandableObjectConverter
     {
         static readonly Regex _groupingRegex = new Regex(@"\{(?<value>.+?)\}",
-                                                         RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+            RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         /// <summary>
         /// Returns whether this converter can convert an object of the given type to the type of this converter,

@@ -174,11 +174,11 @@ namespace DemoGame.Server.DbObjs
 
                 case "item_template_id":
                     return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true,
-                                              false);
+                        false);
 
                 case "last_update":
                     return new ColumnMetadata("last_update", "", "timestamp", "0000-00-00 00:00:00", typeof(DateTime), false,
-                                              false, false);
+                        false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

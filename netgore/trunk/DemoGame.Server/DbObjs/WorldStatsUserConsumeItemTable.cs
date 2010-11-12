@@ -213,28 +213,28 @@ namespace DemoGame.Server.DbObjs
 
                 case "item_template_id":
                     return new ColumnMetadata("item_template_id",
-                                              "The template ID of the item that was consumed. Only valid when the item has a set template ID.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, true);
+                        "The template ID of the item that was consumed. Only valid when the item has a set template ID.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, true);
 
                 case "map_id":
                     return new ColumnMetadata("map_id", "The map the user was on when this event took place.",
-                                              "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
+                        "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
 
                 case "user_id":
                     return new ColumnMetadata("user_id", "The user that this event is related to.", "int(11)", null, typeof(Int32),
-                                              false, false, true);
+                        false, false, true);
 
                 case "when":
                     return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP",
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 case "x":
                     return new ColumnMetadata("x", "The map x coordinate of the user when this event took place.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "y":
                     return new ColumnMetadata("y", "The map y coordinate of the user when this event took place.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

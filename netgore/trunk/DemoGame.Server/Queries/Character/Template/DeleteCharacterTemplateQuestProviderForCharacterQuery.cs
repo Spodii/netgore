@@ -32,7 +32,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Delete(CharacterTemplateQuestProviderTable.TableName).Where(f.Equals(s.EscapeColumn("character_template_id"),
-                                                                                        s.Parameterize("id")));
+                    s.Parameterize("id")));
             return q.ToString();
         }
 

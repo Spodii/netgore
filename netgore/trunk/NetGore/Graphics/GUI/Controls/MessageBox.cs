@@ -270,7 +270,7 @@ namespace NetGore.Graphics.GUI
 
             // Create the text
             var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(Message) }, true, Font,
-                                               _maxWidth - (Padding * 2) - Border.Width);
+                _maxWidth - (Padding * 2) - Border.Width);
 
             foreach (var line in lines)
             {

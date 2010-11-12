@@ -40,7 +40,7 @@ namespace SFML.Graphics.Design
                     typeof(Rectangle).GetConstructor(new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor,
-                                                  new object[] { rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height });
+                        new object[] { rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height });
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
@@ -53,7 +53,7 @@ namespace SFML.Graphics.Design
             if (propertyValues == null)
                 throw new ArgumentNullException("propertyValues", FrameworkMessages.NullNotAllowed);
             return new Rectangle((int)propertyValues["X"], (int)propertyValues["Y"], (int)propertyValues["Width"],
-                                 (int)propertyValues["Height"]);
+                (int)propertyValues["Height"]);
         }
     }
 }

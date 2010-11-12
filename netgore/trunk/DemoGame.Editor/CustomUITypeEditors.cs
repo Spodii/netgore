@@ -67,8 +67,8 @@ namespace DemoGame.Editor
             // really matter what you add here. In general, you should just add to this when you notice that
             // a PropertyGrid isn't using the AdvancedClassTypeConverter.
             AdvancedClassTypeConverter.AddTypes(typeof(MutablePair<ItemTemplateID, byte>),
-                                                typeof(MutablePair<CharacterTemplateID, ushort>), typeof(EditorQuest),
-                                                typeof(EditorAlliance), typeof(EditorShop), typeof(EditorCharacterTemplate));
+                typeof(MutablePair<CharacterTemplateID, ushort>), typeof(EditorQuest), typeof(EditorAlliance), typeof(EditorShop),
+                typeof(EditorCharacterTemplate));
 
             // Set the properties we want to force being readonly in the PropertyGrid
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");
@@ -76,8 +76,7 @@ namespace DemoGame.Editor
 
             // Set the UITypeEditor for specific properties on classes instead of every property with a certain type
             AdvancedClassTypeConverter.SetForceEditor(typeof(ItemTemplateTable),
-                                                      new KeyValuePair<string, UITypeEditor>("EquippedBody",
-                                                                                             new BodyPaperDollTypeEditor()));
+                new KeyValuePair<string, UITypeEditor>("EquippedBody", new BodyPaperDollTypeEditor()));
         }
 
         /// <summary>
@@ -125,29 +124,29 @@ namespace DemoGame.Editor
             // We just assume that this type will be for a StatTypeConstDictionary. This is what lets us actually
             // display the stats text. The editing of the valeus is done in the chunk above with the AddEditorsHelper().
             TypeDescriptor.AddAttributes(typeof(IEnumerable<KeyValuePair<StatType, int>>),
-                                         new TypeConverterAttribute(typeof(StatTypeConstDictionaryTypeConverter)));
+                new TypeConverterAttribute(typeof(StatTypeConstDictionaryTypeConverter)));
 
             // Add some other custom TypeConverters
             TypeDescriptor.AddAttributes(typeof(IEnumerable<MutablePair<CharacterTemplateID, ushort>>),
-                                         new TypeConverterAttribute(typeof(CharacterTemplateAndAmountListTypeConverter)));
+                new TypeConverterAttribute(typeof(CharacterTemplateAndAmountListTypeConverter)));
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<MutablePair<ItemTemplateID, byte>>),
-                                         new TypeConverterAttribute(typeof(ItemTemplateAndAmountListTypeConverter)));
+                new TypeConverterAttribute(typeof(ItemTemplateAndAmountListTypeConverter)));
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<ItemTemplateID>),
-                                         new TypeConverterAttribute(typeof(ItemTemplateListTypeConverter)));
+                new TypeConverterAttribute(typeof(ItemTemplateListTypeConverter)));
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<CharacterTemplateEquippedItem>),
-                                         new TypeConverterAttribute(typeof(CharacterTemplateEquippedItemListTypeConverter)));
+                new TypeConverterAttribute(typeof(CharacterTemplateEquippedItemListTypeConverter)));
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<CharacterTemplateInventoryItem>),
-                                         new TypeConverterAttribute(typeof(CharacterTemplateInventoryItemListTypeConverter)));
+                new TypeConverterAttribute(typeof(CharacterTemplateInventoryItemListTypeConverter)));
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<QuestID>),
-                                         new TypeConverterAttribute(typeof(QuestIDListTypeConverter)));
+                new TypeConverterAttribute(typeof(QuestIDListTypeConverter)));
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<AllianceID>),
-                                         new TypeConverterAttribute(typeof(AllianceIDListTypeConverter)));
+                new TypeConverterAttribute(typeof(AllianceIDListTypeConverter)));
 
             // Add the custom UITypeEditors defined by the base engine
             NetGore.Editor.UI.CustomUITypeEditors.AddEditors();

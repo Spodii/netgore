@@ -175,7 +175,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "last_update":
                     return new ColumnMetadata("last_update", "", "timestamp", "0000-00-00 00:00:00", typeof(DateTime), false,
-                                              false, false);
+                        false, false);
 
                 case "shop_id":
                     return new ColumnMetadata("shop_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true, false);

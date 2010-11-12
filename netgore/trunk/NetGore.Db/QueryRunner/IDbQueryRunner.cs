@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Common;
+using System.Linq;
 
 namespace NetGore.Db
 {
@@ -10,20 +11,9 @@ namespace NetGore.Db
     public interface IDbQueryRunner : IDisposable
     {
         /// <summary>
-        /// Executes a query that has no return value.
-        /// This runs in non-blocking mode.
+        /// Gets the <see cref="DbConnection"/> used by this <see cref="IDbQueryRunner"/>.
         /// </summary>
-        /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
-        /// <param name="queryBase">The <see cref="DbQueryBase"/> that is executing this command.</param>
-        void ExecuteNonReader(DbCommand cmd, DbQueryBase queryBase);
-
-        /// <summary>
-        /// Executes a query that returns the number of rows affected.
-        /// This runs in blocking mode.
-        /// </summary>
-        /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
-        /// <returns>The number of rows affected.</returns>
-        int ExecuteNonReaderWithResult(DbCommand cmd);
+        DbConnection Connection { get; }
 
         /// <summary>
         /// Executes a query that returns a <see cref="DbDataReader"/> to read the results.
@@ -42,8 +32,19 @@ namespace NetGore.Db
         void EndExecuteReader();
 
         /// <summary>
-        /// Gets the <see cref="DbConnection"/> used by this <see cref="IDbQueryRunner"/>.
+        /// Executes a query that has no return value.
+        /// This runs in non-blocking mode.
         /// </summary>
-        DbConnection Connection { get; }
+        /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
+        /// <param name="queryBase">The <see cref="DbQueryBase"/> that is executing this command.</param>
+        void ExecuteNonReader(DbCommand cmd, DbQueryBase queryBase);
+
+        /// <summary>
+        /// Executes a query that returns the number of rows affected.
+        /// This runs in blocking mode.
+        /// </summary>
+        /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
+        /// <returns>The number of rows affected.</returns>
+        int ExecuteNonReaderWithResult(DbCommand cmd);
     }
 }

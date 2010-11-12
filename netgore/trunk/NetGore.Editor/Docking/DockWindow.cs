@@ -88,7 +88,7 @@ namespace NetGore.Editor.Docking
             if (DockState == DockState.Document)
             {
                 e.Graphics.DrawRectangle(SystemPens.ControlDark, ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1,
-                                         ClientRectangle.Height - 1);
+                    ClientRectangle.Height - 1);
             }
 
             base.OnPaint(e);

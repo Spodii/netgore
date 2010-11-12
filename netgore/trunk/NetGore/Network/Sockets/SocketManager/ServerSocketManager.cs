@@ -179,7 +179,7 @@ namespace NetGore.Network
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket,
-                                            string.IsNullOrEmpty(rejectMessage));
+                                string.IsNullOrEmpty(rejectMessage));
 
                         // Approve or deny the connection accordingly
                         if (string.IsNullOrEmpty(rejectMessage))

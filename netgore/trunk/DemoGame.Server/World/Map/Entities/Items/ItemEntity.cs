@@ -540,7 +540,7 @@ namespace DemoGame.Server
 
             // Create a deep copy of the item to give to the character instead of giving them this item (its easier this way)
             var itemCopy = (ItemEntity)DeepCopy();
-            int amountGiven = character.GiveItem(itemCopy);
+            var amountGiven = character.GiveItem(itemCopy);
 
             // If nothing was given, then nothing happens... move on
             if (amountGiven <= 0)

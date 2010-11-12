@@ -168,7 +168,7 @@ namespace NetGore.Features.NPCChat
             }
 
             Debug.Assert(ret.Count(x => x.ChatItemType == NPCChatDialogViewNodeItemType.DialogItem) <= 1,
-                         "Was only expected 0 or 1 TreeNodes to be directly for this dialogItem.");
+                "Was only expected 0 or 1 TreeNodes to be directly for this dialogItem.");
 
             var r = ret.FirstOrDefault(x => x.ChatItemType == NPCChatDialogViewNodeItemType.DialogItem);
 
