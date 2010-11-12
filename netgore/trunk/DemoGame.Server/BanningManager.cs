@@ -100,7 +100,7 @@ namespace DemoGame.Server
                                                   out BanManagerFailReason failReason)
         {
             var q = DbController.GetQuery<InsertAccountBanQuery>();
-            var rowsAffected = q.Execute(accountID, length, reason, issuedBy);
+            var rowsAffected = q.ExecuteWithResult(accountID, length, reason, issuedBy);
 
             if (rowsAffected == 0)
             {

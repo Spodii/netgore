@@ -1,7 +1,11 @@
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
+using log4net;
 
 namespace NetGore.Db
 {
@@ -11,21 +15,19 @@ namespace NetGore.Db
     /// </summary>
     sealed class DbQueryReaderDataReaderContainer : DataReaderContainer
     {
+        // TODO: !! Pool
         readonly DbQueryBase _dbQueryBase;
-        readonly IPoolableDbConnection _poolableConn;
+        readonly DbCommand _command;
 
-        internal DbQueryReaderDataReaderContainer(DbQueryBase dbQueryBase, IPoolableDbConnection poolableConn, IDbCommand command,
-                                                  IDataReader dataReader) : base(command, dataReader)
+        public DbQueryReaderDataReaderContainer(DbQueryBase dbQueryBase, DbCommand command, IDataReader dataReader) : base(dataReader)
         {
-            // We must use a DbCommand on the parameter, not IDbCommand, because Dispose explicitly casts to a DbCommand
-
             if (dbQueryBase == null)
                 throw new ArgumentNullException("dbQueryBase");
-            if (poolableConn == null)
-                throw new ArgumentNullException("poolableConn");
+            if (command == null)
+                throw new ArgumentNullException("command");
 
             _dbQueryBase = dbQueryBase;
-            _poolableConn = poolableConn;
+            _command = command;
         }
 
         /// <summary>
@@ -35,19 +37,34 @@ namespace NetGore.Db
         /// <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
+            try
             {
-                if (DataReader != null)
-                    DataReader.Dispose();
+                if (disposeManaged)
+                {
+                    if (DataReader != null)
+                        DataReader.Dispose();
 
-                if (_dbQueryBase != null && Command != null)
-                    _dbQueryBase.ReleaseCommand((DbCommand)Command);
+                    _dbQueryBase.ReleaseCommand(_command);
+                }
 
-                if (_poolableConn != null)
-                    _poolableConn.Dispose();
+                base.Dispose(disposeManaged);
             }
-
-            base.Dispose(disposeManaged);
+            finally
+            {
+                try
+                {
+                    _dbQueryBase.ConnectionPool.QueryRunner.EndExecuteReader();
+                }
+                catch (SynchronizationLockException ex)
+                {
+                    const string errmsg = "Failed to release reader on `{0}` for query `{1}`. Exception: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, _command, ex);
+                    Debug.Fail(string.Format(errmsg, this, _command, ex));
+                }
+            }
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
     }
 }

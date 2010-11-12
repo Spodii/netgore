@@ -52,10 +52,10 @@ namespace DemoGame.Server.Queries
         /// <param name="issuedBy">The name of the person or system that issued the ban.</param>
         /// <returns>Number of rows affected by the query.</returns>
         /// <exception cref="DuplicateKeyException">Tried to perform an insert query for a key that already exists.</exception>
-        public int Execute(AccountID accountID, TimeSpan length, string reason, string issuedBy)
+        public int ExecuteWithResult(AccountID accountID, TimeSpan length, string reason, string issuedBy)
         {
             var args = new QueryArgs(accountID, (int)length.TotalSeconds, reason, issuedBy);
-            return Execute(args);
+            return ExecuteWithResult(args);
         }
 
         /// <summary>

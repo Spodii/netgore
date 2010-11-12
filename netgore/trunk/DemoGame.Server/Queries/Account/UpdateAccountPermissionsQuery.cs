@@ -42,10 +42,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="id">The <see cref="AccountID"/>.</param>
         /// <param name="permissions">The new <see cref="UserPermissions"/> value.</param>
-        /// <returns>Number of rows affected by the query.</returns>
-        public int Execute(AccountID id, UserPermissions permissions)
+        public void Execute(AccountID id, UserPermissions permissions)
         {
-            return Execute(new KeyValuePair<AccountID, UserPermissions>(id, permissions));
+            Execute(new KeyValuePair<AccountID, UserPermissions>(id, permissions));
         }
 
         /// <summary>

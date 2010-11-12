@@ -29,5 +29,10 @@ namespace NetGore.Db
         /// this object. If null, statistics will not be tracked.
         /// </summary>
         IQueryStatsTracker QueryStats { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="IDbQueryRunner"/> to use for this pool of database connections.
+        /// </summary>
+        IDbQueryRunner QueryRunner { get; }
     }
 }

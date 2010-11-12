@@ -13,7 +13,7 @@ namespace NetGore.Db
     /// <summary>
     /// Base class for all database query classes. This class is thread-safe, and all derived classes should be thread-safe as well.
     /// </summary>
-    public abstract class DbQueryBase : IDbQueryHandler
+    public abstract class DbQueryBase : IDbQuery
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -384,7 +384,7 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets an available <see cref="IPoolableDbConnection"/> from the <see cref="IDbQueryHandler.ConnectionPool"/>.
+        /// Gets an available <see cref="IPoolableDbConnection"/> from the <see cref="IDbQuery.ConnectionPool"/>.
         /// </summary>
         /// <returns>A free <see cref="IPoolableDbConnection"/>.</returns>
         protected IPoolableDbConnection GetPoolableConnection()
@@ -410,7 +410,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="cmd"><see cref="DbCommand"/> to release.</param>
         /// <seealso cref="DbQueryBase.GetCommand"/>
-        protected internal void ReleaseCommand(DbCommand cmd)
+        internal void ReleaseCommand(DbCommand cmd)
         {
             if (_disposed)
                 throw new MethodAccessException(_disposedErrorMessage);
@@ -456,7 +456,7 @@ namespace NetGore.Db
         #region IDbQueryHandler Members
 
         /// <summary>
-        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this <see cref="IDbQueryHandler"/>
+        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this <see cref="IDbQuery"/>
         /// will use this same CommandText.
         /// </summary>
         /// <value></value>
@@ -487,7 +487,7 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the parameters used in this <see cref="IDbQueryHandler"/>.
+        /// Gets the parameters used in this <see cref="IDbQuery"/>.
         /// </summary>
         /// <value></value>
         public IEnumerable<DbParameter> Parameters

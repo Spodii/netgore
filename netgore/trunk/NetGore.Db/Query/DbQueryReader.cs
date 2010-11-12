@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using MySql.Data.MySqlClient;
 
@@ -53,27 +54,41 @@ namespace NetGore.Db
         /// <returns>IDataReader used to read the results of the query.</returns>
         IDataReader IDbQueryReader.ExecuteReader()
         {
-            // Get the connection to use
-            var pooledConn = GetPoolableConnection();
-            var conn = pooledConn.Connection;
-
             // Update the query stats
-            var stats = pooledConn.QueryStats;
+            var stats = ConnectionPool.QueryStats;
             if (stats != null)
                 stats.QueryExecuted(this);
-        
-            // Get and set up the command
-            var cmd = GetCommand(conn);
 
-            // Execute the query
-            var retReader = cmd.ExecuteReader();
+            var r = ConnectionPool.QueryRunner;
+
+            // Get and set up the command
+            IDataReader retReader;
+            var cmd = GetCommand(r.Connection);
+            try
+            {
+                retReader = r.BeginExecuteReader(cmd);
+            }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
+
+                // Everything else, just throw the default exception
+                throw;
+            }
 
             // Return the DbDataReader wrapped in a custom container that will allow us to
             // properly free the command and close the connection when the DbDataReader is disposed
-            return new DbQueryReaderDataReaderContainer(this, pooledConn, cmd, retReader);
+            return new DbQueryReaderDataReaderContainer(this, cmd, retReader);
         }
 
         #endregion
+    }
+
+    sealed class DbQueryReaderContainer
+    {
+
     }
 
     /// <summary>
@@ -121,33 +136,38 @@ namespace NetGore.Db
         /// <returns>IDataReader used to read the results of the query.</returns>
         IDataReader IDbQueryReader<T>.ExecuteReader(T item)
         {
-            // Get the connection to use
-            var pooledConn = GetPoolableConnection();
-            var conn = pooledConn.Connection;
-
             // Update the query stats
-            var stats = pooledConn.QueryStats;
+            var stats = ConnectionPool.QueryStats;
             if (stats != null)
                 stats.QueryExecuted(this);
 
-            // Get and set up the command
-            var cmd = GetCommand(conn);
-            if (HasParameters)
-            {
-                using (var p = DbParameterValues.Create(cmd.Parameters))
-                {
-                    SetParameters(p, item);
-                }
-            }
+            var r = ConnectionPool.QueryRunner;
 
-            // Execute the query
-            DbDataReader retReader;
+            // Get and set up the command
+            IDataReader retReader;
+            var cmd = GetCommand(r.Connection);
             try
             {
-                retReader = cmd.ExecuteReader();
+                if (HasParameters)
+                {
+                    using (var p = DbParameterValues.Create(cmd.Parameters))
+                    {
+                        SetParameters(p, item);
+                    }
+                }
+
+                retReader = r.BeginExecuteReader(cmd);
             }
             catch (MySqlException ex)
             {
+                try
+                {
+                    r.EndExecuteReader();
+                }
+                catch (SynchronizationLockException)
+                {
+                }
+
                 // Throw a custom exception for common errors
                 if (ex.Number == 1062)
                     throw new DuplicateKeyException(ex);
@@ -158,7 +178,7 @@ namespace NetGore.Db
 
             // Return the DbDataReader wrapped in a custom container that will allow us to
             // properly free the command and close the connection when the DbDataReader is disposed
-            return new DbQueryReaderDataReaderContainer(this, pooledConn, cmd, retReader);
+            return new DbQueryReaderDataReaderContainer(this, cmd, retReader);
         }
 
         #endregion

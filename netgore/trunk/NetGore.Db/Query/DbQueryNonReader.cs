@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using MySql.Data.MySqlClient;
 
 namespace NetGore.Db
@@ -39,33 +37,68 @@ namespace NetGore.Db
         /// <summary>
         /// Executes the query on the database.
         /// </summary>
-        /// <returns>Number of rows affected by the query.</returns>
-        public virtual int Execute()
+        public void Execute()
         {
-            int returnValue;
+            // Update the query stats
+            var stats = ConnectionPool.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
 
-            // Get the connection to use
-            using (var pooledConn = GetPoolableConnection())
+            var r = ConnectionPool.QueryRunner;
+
+            // Get and set up the command
+            var cmd = GetCommand(r.Connection);
+            try
             {
-                var conn = pooledConn.Connection;
+                r.ExecuteNonReader(cmd, this);
+            }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
 
-                // Update the query stats
-                var stats = pooledConn.QueryStats;
-                if (stats != null)
-                    stats.QueryExecuted(this);
-
-                // Get and set up the command
-                var cmd = GetCommand(conn);
-
-                // Execute the command
-                returnValue = cmd.ExecuteNonQuery();
-
-                // Release the command so it can be used again later
+                // Everything else, just throw the default exception
+                throw;
+            }
+            finally
+            {
                 ReleaseCommand(cmd);
             }
+        }
 
-            // Return the value from ExecuteNonQuery
-            return returnValue;
+        /// <summary>
+        /// Executes the query on the database.
+        /// </summary>
+        /// <returns>Number of rows affected by the query.</returns>
+        public virtual int ExecuteWithResult()
+        {
+            // Update the query stats
+            var stats = ConnectionPool.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
+
+            var r = ConnectionPool.QueryRunner;
+
+            // Get and set up the command
+            var cmd = GetCommand(r.Connection);
+            try
+            {
+                return r.ExecuteNonReaderWithResult(cmd);
+            }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
+
+                // Everything else, just throw the default exception
+                throw;
+            }
+            finally
+            {
+                ReleaseCommand(cmd);
+            }
         }
 
         #endregion
@@ -102,24 +135,19 @@ namespace NetGore.Db
         /// Executes the query on the database using the specified <paramref name="item"/>.
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
-        /// <returns>Number of rows affected by the query.</returns>
-        /// <exception cref="DuplicateKeyException">Tried to perform an insert query for a key that already exists.</exception>
-        public virtual int Execute(T item)
+        public void Execute(T item)
         {
-            int returnValue;
+            // Update the query stats
+            var stats = ConnectionPool.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
 
-            // Get the connection to use
-            using (var pooledConn = GetPoolableConnection())
+            var r = ConnectionPool.QueryRunner;
+
+            // Get and set up the command
+            var cmd = GetCommand(r.Connection);
+            try
             {
-                var conn = pooledConn.Connection;
-
-                // Update the query stats
-                var stats = pooledConn.QueryStats;
-                if (stats != null)
-                    stats.QueryExecuted(this);
-
-                // Get and set up the command
-                var cmd = GetCommand(conn);
                 if (HasParameters)
                 {
                     using (var p = DbParameterValues.Create(cmd.Parameters))
@@ -128,29 +156,65 @@ namespace NetGore.Db
                     }
                 }
 
-                // Execute the command
-                try
-                {
-                    returnValue = cmd.ExecuteNonQuery();
-                }
-                catch (MySqlException ex)
-                {
-                    // Throw a custom exception for common errors
-                    if (ex.Number == 1062)
-                        throw new DuplicateKeyException(ex);
-
-                    // Everything else, just throw the default exception
-                    throw;
-                }
-                finally
-                {
-                    // Release the command so it can be used again later
-                    ReleaseCommand(cmd);
-                }
+                r.ExecuteNonReader(cmd, this);
             }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
 
-            // Return the value from ExecuteNonQuery
-            return returnValue;
+                // Everything else, just throw the default exception
+                throw;
+            }
+            finally
+            {
+                ReleaseCommand(cmd);
+            }
+        }
+
+        /// <summary>
+        /// Executes the query on the database using the specified <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">Item containing the value or values used for executing the query.</param>
+        /// <returns>Number of rows affected by the query.</returns>
+        /// <exception cref="DuplicateKeyException">Tried to perform an insert query for a key that already exists.</exception>
+        public virtual int ExecuteWithResult(T item)
+        {
+            // Update the query stats
+            var stats = ConnectionPool.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
+
+            var r = ConnectionPool.QueryRunner;
+
+            // Get and set up the command
+            var cmd = GetCommand(r.Connection);
+            try
+            {
+                if (HasParameters)
+                {
+                    using (var p = DbParameterValues.Create(cmd.Parameters))
+                    {
+                        SetParameters(p, item);
+                    }
+                }
+
+                return r.ExecuteNonReaderWithResult(cmd);
+            }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
+
+                // Everything else, just throw the default exception
+                throw;
+            }
+            finally
+            {
+                ReleaseCommand(cmd);
+            }
         }
 
         #endregion

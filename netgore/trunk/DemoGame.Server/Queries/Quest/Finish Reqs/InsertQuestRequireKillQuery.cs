@@ -38,19 +38,17 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
-        public int Execute(QuestID questID, CharacterTemplateID reqCharID, ushort amount)
+        public void Execute(QuestID questID, CharacterTemplateID reqCharID, ushort amount)
         {
-            return Execute(new QuestRequireKillTable(amount, reqCharID, questID));
+            Execute(new QuestRequireKillTable(amount, reqCharID, questID));
         }
 
-        public int Execute(QuestID questID, IEnumerable<KeyValuePair<CharacterTemplateID, ushort>> reqChars)
+        public void Execute(QuestID questID, IEnumerable<KeyValuePair<CharacterTemplateID, ushort>> reqChars)
         {
-            var sum = 0;
             foreach (var item in reqChars)
             {
-                sum += Execute(questID, item.Key, item.Value);
+                Execute(questID, item.Key, item.Value);
             }
-            return sum;
         }
 
         /// <summary>

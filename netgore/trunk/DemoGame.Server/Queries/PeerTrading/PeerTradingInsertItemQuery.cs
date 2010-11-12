@@ -41,11 +41,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="characterID">The character ID.</param>
         /// <param name="itemID">The item ID.</param>
-        /// <returns>Number of rows affected by the query.</returns>
-        /// <exception cref="DuplicateKeyException">Trying to insert a value who's primary key already exists.</exception>
-        public int Execute(ItemID itemID, CharacterID characterID)
+        public void Execute(ItemID itemID, CharacterID characterID)
         {
-            return Execute(new QueryArgs(itemID, characterID));
+            Execute(new QueryArgs(itemID, characterID));
         }
 
         /// <summary>

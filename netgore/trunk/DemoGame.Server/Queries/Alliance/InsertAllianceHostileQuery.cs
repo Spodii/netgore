@@ -34,19 +34,17 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
-        public int Execute(AllianceID allianceID, AllianceID hostileID)
+        public void Execute(AllianceID allianceID, AllianceID hostileID)
         {
-            return Execute(new AllianceHostileTable(allianceID, hostileID));
+            Execute(new AllianceHostileTable(allianceID, hostileID));
         }
 
-        public int Execute(AllianceID allianceID, IEnumerable<AllianceID> hostileIDs)
+        public void Execute(AllianceID allianceID, IEnumerable<AllianceID> hostileIDs)
         {
-            var sum = 0;
             foreach (var hostileID in hostileIDs)
             {
-                sum += Execute(allianceID, hostileID);
+                Execute(allianceID, hostileID);
             }
-            return sum;
         }
 
         /// <summary>

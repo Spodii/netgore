@@ -45,10 +45,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="itemTemplateID">The item template ID.</param>
         /// <param name="amount">The amount.</param>
-        /// <returns>Number of rows affected by the query.</returns>
-        public int Execute(int itemTemplateID, int amount)
+        public void Execute(int itemTemplateID, int amount)
         {
-            return Execute(new KeyValuePair<int, int>(itemTemplateID, amount));
+            Execute(new KeyValuePair<int, int>(itemTemplateID, amount));
         }
 
         #region Overrides of DbQueryBase

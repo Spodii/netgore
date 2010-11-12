@@ -5,7 +5,7 @@ using NetGore.Collections;
 namespace NetGore.Db
 {
     /// <summary>
-    /// Checks that all instantiable classes that inherit from <see cref="IDbQueryHandler"/> implement the
+    /// Checks that all instantiable classes that inherit from <see cref="IDbQuery"/> implement the
     /// attribute <see cref="DbControllerQueryAttribute"/>.
     /// </summary>
     public class DbControllerQueryAttributeChecker
@@ -36,7 +36,7 @@ namespace NetGore.Db
                 IsAbstract = false,
                 IsInterface = false,
                 RequireAttributes = false,
-                Interfaces = new Type[] { typeof(IDbQueryHandler) },
+                Interfaces = new Type[] { typeof(IDbQuery) },
                 MatchAllInterfaces = true,
                 RequireInterfaces = false,
                 RequireConstructor = false,
