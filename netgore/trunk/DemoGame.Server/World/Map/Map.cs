@@ -323,7 +323,12 @@ namespace DemoGame.Server
             // Add items to the MapItemsCleaner
             var item = entity as ItemEntityBase;
             if (item != null)
+            {
+                if (item is ItemEntity)
+                    ((ItemEntity)item).IsPersistent = false;
+
                 _mapItemsCleaner.Add(item, GetTime());
+            }
 
             // Handle the different types of entities
             var character = entity as Character;

@@ -35,7 +35,7 @@ namespace DemoGame
         /// <summary>
         /// The number of seconds of non-response before disconnecting because of time out.
         /// </summary>
-        public const float ConnectionTimeout = 20;
+        public const float ConnectionTimeout = 20000;
 
         /// <summary>
         /// The simulated percentage of sent packets lost (range: 0.0f to 1.0f).

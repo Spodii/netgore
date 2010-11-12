@@ -17,7 +17,6 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Character _character;
-        readonly bool _isPersistent;
 
         bool _isLoading;
 
@@ -31,7 +30,14 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("character");
 
             _character = character;
-            _isPersistent = character.IsPersistent;
+        }
+
+        /// <summary>
+        /// Gets if the state of this <see cref="CharacterInventory"/> is persistent.
+        /// </summary>
+        public bool IsPersistent
+        {
+            get { return Character.IsPersistent; }
         }
 
         /// <summary>
@@ -98,9 +104,8 @@ namespace DemoGame.Server
         {
             base.Dispose(disposeManaged);
 
-            // If the Character is not persistent, we want to dispose of every item so it doesn't sit in the
-            // database as garbage
-            if (!_isPersistent)
+            // If not persistent, destroy every item in the collection
+            if (!IsPersistent)
                 RemoveAll(true);
         }
 
@@ -188,9 +193,11 @@ namespace DemoGame.Server
             Debug.Assert(oldItem != newItem);
             Debug.Assert((oldItem != null && newItem == null) || (oldItem == null && newItem != null));
 
-            // If we are loading the Inventory, we do not want to do database updates since that would be redundant
-            // and likely cause problems
-            if (!_isPersistent)
+            if (newItem != null)
+                newItem.IsPersistent = IsPersistent;
+
+            // Slot change logic is only needed for when persistent
+            if (!IsPersistent)
                 return;
 
             // Stop listening for changes on the item that was removed
@@ -201,16 +208,18 @@ namespace DemoGame.Server
             if (newItem != null)
                 newItem.GraphicOrAmountChanged += ItemGraphicOrAmountChangeHandler;
 
-            // Update the inventory slot in the database
-            if (newItem == null)
+            // Do not update the database when we are loading the collection
+            if (!_isLoading)
             {
-                if (!_isLoading)
+                // Update the inventory slot in the database
+                if (newItem == null)
+                {
                     DbController.GetQuery<DeleteCharacterInventoryItemQuery>().Execute(Character.ID, slot);
-            }
-            else
-            {
-                if (!_isLoading)
+                }
+                else
+                {
                     DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
+                }
             }
 
             // Prepare the slot for updating
@@ -224,7 +233,7 @@ namespace DemoGame.Server
         /// <param name="item">Item that has changed.</param>
         void ItemGraphicOrAmountChangeHandler(ItemEntity item)
         {
-            Debug.Assert(_isPersistent, "This should NEVER be called when IsPersistent == false!");
+            Debug.Assert(IsPersistent, "This should NEVER be called when IsPersistent == false!");
 
             InventorySlot slot;
 

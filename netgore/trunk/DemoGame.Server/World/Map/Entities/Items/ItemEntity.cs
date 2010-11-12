@@ -61,13 +61,14 @@ namespace DemoGame.Server
         readonly StatCollection<StatType> _baseStats;
         readonly ItemID _id;
         readonly StatCollection<StatType> _reqStats;
-        ActionDisplayID? _actionDisplayID;
 
+        ActionDisplayID? _actionDisplayID;
         byte _amount = 1;
         string _description;
         string _equippedBody;
         GrhIndex _graphicIndex;
         SPValueType _hp;
+        bool _isPersistent;
         SPValueType _mp;
         string _name;
         ushort _range;
@@ -209,9 +210,6 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
-            var itemValues = DeepCopyValues();
-            _queryInsertItem.Execute(itemValues);
-
             Resized += ItemEntity_Resized;
         }
 
@@ -261,6 +259,38 @@ namespace DemoGame.Server
                     GraphicOrAmountChanged(this);
 
                 SynchronizeField("graphic", _graphicIndex);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets if the <see cref="ItemEntity"/> is persistent. Whether or not an <see cref="ItemEntity"/> is persistent
+        /// depends completely on where it is currently contained. Whenever the <see cref="ItemEntity"/> is added to a container
+        /// for a persistent object, this must be set to true to ensure that it persists. When added to a non-persistent container,
+        /// this should be set to false. It is vital that this property is set to true at the appropriate times, but not vital
+        /// it is set to false. As such, this property should only be set by a container when it is added to the container, and not
+        /// set to false by a container when removed.
+        /// </summary>
+        /// <example>
+        /// Good practices:
+        ///     * Set to true when adding to the Inventory or Equipped of a persistent character
+        ///     * Set to false when adding to a map or non-persistent character
+        /// Bad practices (DO NOT DO!):
+        ///     * Set to false when removing from the Inventory or Equipped of a persistent character
+        /// </example>
+        public bool IsPersistent
+        {
+            get { return _isPersistent; }
+            set
+            {
+                if (_isPersistent == value)
+                    return;
+
+                _isPersistent = value;
+
+                if (IsPersistent)
+                    _queryInsertItem.Execute(this);
+                else
+                    _queryDeleteItem.Execute(ID);
             }
         }
 
@@ -398,8 +428,11 @@ namespace DemoGame.Server
 
             if (Amount == 0)
             {
-                // Delete the ItemEntity from the database
-                _queryDeleteItem.Execute(ID);
+                if (IsPersistent)
+                {
+                    // Delete the ItemEntity from the database
+                    _queryDeleteItem.Execute(ID);
+                }
 
                 // Free the ItemEntity's ID
                 _queryIDCreator.FreeID(ID);
@@ -563,7 +596,7 @@ namespace DemoGame.Server
                                         StatValueType newValue)
         {
             Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified,
-                         "ItemEntity does not use StatCollectionType.Modified.");
+                "ItemEntity does not use StatCollectionType.Modified.");
 
             var field = statType.GetDatabaseField(statCollection.StatCollectionType);
             SynchronizeField(field, newValue);
@@ -576,6 +609,9 @@ namespace DemoGame.Server
         /// <param name="value">New value for the field.</param>
         void SynchronizeField(string field, object value)
         {
+            if (!IsPersistent)
+                return;
+
             _queryUpdateItemField.Execute(_id, field, value);
         }
 
