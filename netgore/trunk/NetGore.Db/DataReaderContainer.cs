@@ -6,11 +6,13 @@ namespace NetGore.Db
 {
     public class DataReaderContainer : IDataReader
     {
-        readonly IDataReader _dataReader;
+        IDataReader _dataReader;
 
-        bool _isDisposed = false;
-
-        internal DataReaderContainer(IDataReader dataReader)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataReaderContainer"/> class.
+        /// </summary>
+        /// <param name="dataReader">The <see cref="IDataReader"/> to use.</param>
+        public DataReaderContainer(IDataReader dataReader)
         {
             if (dataReader == null)
                 throw new ArgumentNullException("dataReader");
@@ -18,9 +20,20 @@ namespace NetGore.Db
             _dataReader = dataReader;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataReaderContainer"/> class.
+        /// </summary>
+        protected DataReaderContainer()
+        {
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IDataReader"/> to use.
+        /// </summary>
         protected IDataReader DataReader
         {
             get { return _dataReader; }
+            set { _dataReader = value; }
         }
 
         /// <summary>
@@ -32,8 +45,8 @@ namespace NetGore.Db
         {
             if (disposeManaged)
             {
-                if (_dataReader != null)
-                    _dataReader.Dispose();
+                if (DataReader != null)
+                    DataReader.Dispose();
             }
         }
 
@@ -122,13 +135,8 @@ namespace NetGore.Db
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
-            if (_isDisposed)
-                return;
-
-            _isDisposed = true;
-
             Dispose(true);
         }
 

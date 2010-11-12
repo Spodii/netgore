@@ -80,7 +80,7 @@ namespace NetGore.Db
 
             // Return the DbDataReader wrapped in a custom container that will allow us to
             // properly free the command and close the connection when the DbDataReader is disposed
-            return new DbQueryReaderDataReaderContainer(this, cmd, retReader);
+            return DbQueryReaderDataReaderContainer.Create(this, cmd, retReader);
         }
 
         #endregion
@@ -178,7 +178,7 @@ namespace NetGore.Db
 
             // Return the DbDataReader wrapped in a custom container that will allow us to
             // properly free the command and close the connection when the DbDataReader is disposed
-            return new DbQueryReaderDataReaderContainer(this, cmd, retReader);
+            return DbQueryReaderDataReaderContainer.Create(this, cmd, retReader);
         }
 
         #endregion

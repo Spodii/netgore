@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
@@ -15,19 +16,50 @@ namespace NetGore.Db
     /// </summary>
     sealed class DbQueryReaderDataReaderContainer : DataReaderContainer
     {
-        // TODO: !! Pool
-        readonly DbQueryBase _dbQueryBase;
-        readonly DbCommand _command;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly Stack<DbQueryReaderDataReaderContainer> _pool = new Stack<DbQueryReaderDataReaderContainer>();
+        static readonly object _poolSync = new object();
 
-        public DbQueryReaderDataReaderContainer(DbQueryBase dbQueryBase, DbCommand command, IDataReader dataReader) : base(dataReader)
+        DbCommand _command;
+        DbQueryBase _dbQueryBase;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbQueryReaderDataReaderContainer"/> class.
+        /// </summary>
+        DbQueryReaderDataReaderContainer()
+        {
+        }
+
+        public static DbQueryReaderDataReaderContainer Create(DbQueryBase dbQueryBase, DbCommand command, IDataReader dataReader)
         {
             if (dbQueryBase == null)
                 throw new ArgumentNullException("dbQueryBase");
             if (command == null)
                 throw new ArgumentNullException("command");
 
-            _dbQueryBase = dbQueryBase;
-            _command = command;
+            DbQueryReaderDataReaderContainer r = null;
+
+            // Try to grab from the pool first
+            lock (_poolSync)
+            {
+                if (_pool.Count > 0)
+                    r = _pool.Pop();
+            }
+
+            // Couldn't grab from pool - create new instance
+            if (r == null)
+                r = new DbQueryReaderDataReaderContainer();
+
+            Debug.Assert(r._dbQueryBase == null);
+            Debug.Assert(r._command == null);
+            Debug.Assert(r.DataReader == null);
+
+            // Initialize
+            r._dbQueryBase = dbQueryBase;
+            r._command = command;
+            r.DataReader = dataReader;
+
+            return r;
         }
 
         /// <summary>
@@ -39,15 +71,8 @@ namespace NetGore.Db
         {
             try
             {
-                if (disposeManaged)
-                {
-                    if (DataReader != null)
-                        DataReader.Dispose();
-
-                    _dbQueryBase.ReleaseCommand(_command);
-                }
-
-                base.Dispose(disposeManaged);
+                if (DataReader != null)
+                    DataReader.Dispose();
             }
             finally
             {
@@ -62,9 +87,28 @@ namespace NetGore.Db
                         log.ErrorFormat(errmsg, this, _command, ex);
                     Debug.Fail(string.Format(errmsg, this, _command, ex));
                 }
+                finally
+                {
+                    try
+                    {
+                        _dbQueryBase.ReleaseCommand(_command);
+                    }
+                    finally
+                    {
+                        // Release the object references
+                        _command = null;
+                        _dbQueryBase = null;
+                        DataReader = null;
+
+                        // Throw back into the pool
+                        lock (_poolSync)
+                        {
+                            Debug.Assert(!_pool.Contains(this));
+                            _pool.Push(this);
+                        }
+                    }
+                }
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
     }
 }
