@@ -33,27 +33,46 @@ namespace NetGore.World
         int TotalSlots { get; }
 
         /// <summary>
-        /// Adds as much of the item, if not all, to the inventory as possible. The actual 
-        /// item object is not given to the Inventory, but rather a deep copy of it. 
-        /// The passed item's amount will be reduced either to 0 if the Inventory took all
-        /// of the item, or reduced if only some of the item could be taken.
+        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
         /// </summary>
         /// <param name="item">Item that will be added to the Inventory.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        T Add(T item);
+        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
+        /// was added to the inventory. Otherwise, this will return an object instance with the amount
+        /// equal to the portion that failed to be added.</returns>
+        T TryAdd(T item);
 
         /// <summary>
-        /// Adds as much of the item, if not all, to the inventory as possible. The actual 
-        /// item object is not given to the Inventory, but rather a deep copy of it. 
-        /// The passed item's amount will be reduced either to 0 if the Inventory took all
-        /// of the item, or reduced if only some of the item could be taken.
+        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
         /// </summary>
         /// <param name="item">Item that will be added to the Inventory.</param>
         /// <param name="changedSlots">Contains the <see cref="InventorySlot"/>s that the <paramref name="item"/> was added to.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        T Add(T item, out IEnumerable<InventorySlot> changedSlots);
+        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
+        /// was added to the inventory. Otherwise, this will return an object instance with the amount
+        /// equal to the portion that failed to be added.</returns>
+        T TryAdd(T item, out IEnumerable<InventorySlot> changedSlots);
+
+        /// <summary>
+        /// Tries to add an item to the inventory, returning the amount of the item that was successfully added. Any remainder
+        /// of the <paramref name="item"/> that fails to be added will be destroyed instead of being returned like with
+        /// TryAdd.
+        /// </summary>
+        /// <param name="item">Item that will be added to the Inventory.</param>
+        /// <returns>The amount of the <paramref name="item"/> that was successfully added to the inventory. If this value is
+        /// 0, none of the <paramref name="item"/> was added. If it is equal to the <paramref name="item"/>'s amount, then
+        /// all of the item was successfully added.</returns>
+        int Add(T item);
+
+        /// <summary>
+        /// Tries to add an item to the inventory, returning the amount of the item that was successfully added. Any remainder
+        /// of the <paramref name="item"/> that fails to be added will be destroyed instead of being returned like with
+        /// TryAdd.
+        /// </summary>
+        /// <param name="item">Item that will be added to the Inventory.</param>
+        /// <param name="changedSlots">Contains the <see cref="InventorySlot"/>s that the <paramref name="item"/> was added to.</param>
+        /// <returns>The amount of the <paramref name="item"/> that was successfully added to the inventory. If this value is
+        /// 0, none of the <paramref name="item"/> was added. If it is equal to the <paramref name="item"/>'s amount, then
+        /// all of the item was successfully added.</returns>
+        int Add(T item, out IEnumerable<InventorySlot> changedSlots);
 
         /// <summary>
         /// Checks if the specified <paramref name="item"/> can be added to the inventory completely

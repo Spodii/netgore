@@ -116,17 +116,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Internal handler for handling adding items.
+        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
         /// </summary>
         /// <param name="item">Item that will be added to the Inventory.</param>
-        /// <param name="changedSlots">A <see cref="ICollection{InventorySlot}"/> to use to build up the list of slots that
-        /// were changed to add the <paramref name="item"/>. If null, changed slots will not be tracked, so its up to
-        /// the caller to supply the empty list.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        T InternalAdd(T item, ICollection<InventorySlot> changedSlots)
+        /// <param name="changedSlots">Contains the <see cref="InventorySlot"/>s that the <paramref name="item"/> was added to.</param>
+        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
+        /// was added to the inventory. If this returns the same object as <paramref name="item"/>, then none of the
+        /// item could be added to the inventory. Otherwise, this will return a new object instance with the amount
+        /// equal to the portion that failed to be added.</returns>
+        T InternalTryAdd(T item, ICollection<InventorySlot> changedSlots)
         {
             Debug.Assert(changedSlots == null || changedSlots.IsEmpty());
+            int newItemAmount = item.Amount;
 
             // Try to stack the item in as many slots as possible until it runs out or we run out of slots
             InventorySlot slot;
@@ -143,18 +144,24 @@ namespace DemoGame
                 else
                 {
                     // Stack as much of the item into the existing inventory item
-                    var stackAmount = (byte)Math.Min(ItemEntityBase.MaxStackSize - invItem.Amount, item.Amount);
-                    invItem.Amount += stackAmount;
-                    item.Amount -= stackAmount;
+                    var stackAmount = (byte)Math.Min(ItemEntityBase.MaxStackSize - invItem.Amount, newItemAmount);
+                    Debug.Assert(stackAmount > 0);
 
-                    if (changedSlots != null && !changedSlots.Contains(slot))
-                        changedSlots.Add(slot);
-
-                    // If we stacked all of the item, we're done
-                    if (item.Amount == 0)
+                    if (stackAmount > 0)
                     {
-                        item.Destroy();
-                        return null;
+                        invItem.Amount += stackAmount;
+                        newItemAmount -= stackAmount;
+
+                        if (changedSlots != null && !changedSlots.Contains(slot))
+                            changedSlots.Add(slot);
+
+                        // If we stacked all of the item, we're done
+                        if (newItemAmount <= 0)
+                        {
+                            Debug.Assert(newItemAmount == 0);
+                            item.Destroy();
+                            return null;
+                        }
                     }
                 }
             }
@@ -162,28 +169,33 @@ namespace DemoGame
             // Could not stack, or only some of the item was stacked, so add item to empty slots
             while (TryFindEmptySlot(out slot))
             {
-                // Deep-copy the item and set it in the inventory
-                var copy = (T)item.DeepCopy();
-                this[slot] = copy;
-
-                // Reduce the amount of the item by the amount we took
-                var amountTaken = Math.Min(ItemEntityBase.MaxStackSize, item.Amount);
-                Debug.Assert(amountTaken > 0);
-                copy.Amount = amountTaken;
-                item.Amount -= amountTaken;
-
-                if (changedSlots != null && !changedSlots.Contains(slot))
-                    changedSlots.Add(slot);
-
-                // If we took all of the item, we are done
-                if (item.Amount == 0)
+                if (newItemAmount <= ItemEntityBase.MaxStackSize)
                 {
-                    item.Destroy();
+                    // Place the whole item into the slot and we're done
+                    Debug.Assert(newItemAmount > 0 && newItemAmount <= byte.MaxValue);
+
+                    item.Amount = (byte)newItemAmount;
+                    this[slot] = item;
+
                     return null;
+                }
+                else
+                {
+                    // There is too much of the item to fit into a single slot, so place a copy of the item into the slot
+                    // with the amount equal to the max stack size and repeat this until we run out of slots or all of the
+                    // item is added
+                    var copy = (T)item.DeepCopy();
+                    copy.Amount = ItemEntityBase.MaxStackSize;
+                    this[slot] = copy;
+
+                    newItemAmount -= copy.Amount;
+                    Debug.Assert(newItemAmount > 0);
                 }
             }
 
-            // Failed to add all of the item
+            // Failed to add all of the item, so update the amount property and return the remainder
+            Debug.Assert(newItemAmount > 0 && newItemAmount <= byte.MaxValue);
+            item.Amount = (byte)newItemAmount;
             return item;
         }
 
@@ -417,34 +429,87 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Adds as much of the item, if not all, to the inventory as possible. The actual 
-        /// item object is not given to the Inventory, but rather a deep copy of it. 
-        /// The passed item's amount will be reduced either to 0 if the Inventory took all
-        /// of the item, or reduced if only some of the item could be taken.
+        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
         /// </summary>
         /// <param name="item">Item that will be added to the Inventory.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        public T Add(T item)
+        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
+        /// was added to the inventory. Otherwise, this will return an object instance with the amount
+        /// equal to the portion that failed to be added.</returns>
+        public T TryAdd(T item)
         {
-            return InternalAdd(item, null);
+            return InternalTryAdd(item, null);
         }
 
         /// <summary>
-        /// Adds as much of the item, if not all, to the inventory as possible. The actual 
-        /// item object is not given to the Inventory, but rather a deep copy of it. 
-        /// The passed item's amount will be reduced either to 0 if the Inventory took all
-        /// of the item, or reduced if only some of the item could be taken.
+        /// Tries to add an item to the inventory, returning the remainder of the item that was not added.
         /// </summary>
         /// <param name="item">Item that will be added to the Inventory.</param>
         /// <param name="changedSlots">Contains the <see cref="InventorySlot"/>s that the <paramref name="item"/> was added to.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        public T Add(T item, out IEnumerable<InventorySlot> changedSlots)
+        /// <returns>The remainder of the item that was not added to the inventory. If this returns null, all of the item
+        /// was added to the inventory. Otherwise, this will return an object instance with the amount
+        /// equal to the portion that failed to be added.</returns>
+        public T TryAdd(T item, out IEnumerable<InventorySlot> changedSlots)
         {
             var changeList = new List<InventorySlot>();
             changedSlots = changeList;
-            return InternalAdd(item, changeList);
+            return InternalTryAdd(item, changeList);
+        }
+
+        /// <summary>
+        /// Tries to add an item to the inventory, returning the amount of the item that was successfully added. Any remainder
+        /// of the <paramref name="item"/> that fails to be added will be destroyed instead of being returned like with
+        /// TryAdd.
+        /// </summary>
+        /// <param name="item">Item that will be added to the Inventory.</param>
+        /// <returns>The amount of the <paramref name="item"/> that was successfully added to the inventory. If this value is
+        /// 0, none of the <paramref name="item"/> was added. If it is equal to the <paramref name="item"/>'s amount, then
+        /// all of the item was successfully added.</returns>
+        public int Add(T item)
+        {
+            // Store what the original amount of the item was
+            int originalAmount = item.Amount;
+
+            // Add the item
+            var remainder = TryAdd(item);
+
+            // Find how much of the item was added
+            var ret = originalAmount - (remainder != null ? remainder.Amount : 0);
+
+            // If we had a remainder, destroy it
+            if (remainder != null)
+                remainder.Destroy();
+
+            Debug.Assert(ret >= 0 && ret <= originalAmount);
+            return ret;
+        }
+
+        /// <summary>
+        /// Tries to add an item to the inventory, returning the amount of the item that was successfully added. Any remainder
+        /// of the <paramref name="item"/> that fails to be added will be destroyed instead of being returned like with
+        /// TryAdd.
+        /// </summary>
+        /// <param name="item">Item that will be added to the Inventory.</param>
+        /// <param name="changedSlots">Contains the <see cref="InventorySlot"/>s that the <paramref name="item"/> was added to.</param>
+        /// <returns>The amount of the <paramref name="item"/> that was successfully added to the inventory. If this value is
+        /// 0, none of the <paramref name="item"/> was added. If it is equal to the <paramref name="item"/>'s amount, then
+        /// all of the item was successfully added.</returns>
+        public int Add(T item, out IEnumerable<InventorySlot> changedSlots)
+        {
+            // Store what the original amount of the item was
+            int originalAmount = item.Amount;
+
+            // Add the item
+            var remainder = TryAdd(item, out changedSlots);
+
+            // Find how much of the item was added
+            var ret = originalAmount - (remainder != null ? remainder.Amount : 0);
+
+            // If we had a remainder, destroy it
+            if (remainder != null)
+                remainder.Destroy();
+
+            Debug.Assert(ret >= 0 && ret <= originalAmount);
+            return ret;
         }
 
         /// <summary>

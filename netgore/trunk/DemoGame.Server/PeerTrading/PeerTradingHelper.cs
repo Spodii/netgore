@@ -161,7 +161,7 @@ namespace DemoGame.Server.PeerTrading
                 recovered++;
 
                 // Try to give the item to the character
-                var lostItemRemainder = character.GiveItem(lostItem);
+                var lostItemRemainder = character.TryGiveItem(lostItem);
 
                 // If there was a remainder when we tried to give the character the item, then we will have to put it back into the
                 // database table so we can try to give it to them again another time.

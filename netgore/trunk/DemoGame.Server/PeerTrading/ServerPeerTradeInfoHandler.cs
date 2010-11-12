@@ -112,7 +112,7 @@ namespace DemoGame.Server.PeerTrading
         protected override void GiveItemTo(User c, ItemEntity item)
         {
             // Give the character the item
-            var remainder = c.GiveItem(item);
+            var remainder = c.TryGiveItem(item);
 
             // Throw any remainder on the ground (not much else we can do with it)
             c.DropItem(remainder);

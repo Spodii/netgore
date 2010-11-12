@@ -958,8 +958,11 @@ namespace DemoGame.Server
                 return false;
             }
 
+            // Store some info about the item
+            var itemValue = itemEntity.Value;
+
             // Add to the inventory
-            var remainderItem = Inventory.Add(itemEntity);
+            var remainderItem = Inventory.TryAdd(itemEntity);
 
             // Find the number of remaining items (in case something went wrong and not all was added)
             var remainderAmount = 0;
@@ -987,7 +990,7 @@ namespace DemoGame.Server
             }
 
             // Charge them
-            var chargeAmount = Math.Max(0, amountPurchased * itemEntity.Value);
+            var chargeAmount = Math.Max(0, amountPurchased * itemValue);
             Cash -= chargeAmount;
 
             // Send purchase message

@@ -606,7 +606,7 @@ namespace NetGore.Features.PeerTrading
 
             // Try to add the item
             IEnumerable<InventorySlot> changedSlots;
-            var remaining = tradeTable.Add(item, out changedSlots);
+            var remaining = tradeTable.TryAdd(item, out changedSlots);
 
             // Update the slots that were changed
             foreach (var changedSlot in changedSlots)

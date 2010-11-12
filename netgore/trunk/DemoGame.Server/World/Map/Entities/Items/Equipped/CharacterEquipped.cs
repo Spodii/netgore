@@ -247,7 +247,7 @@ namespace DemoGame.Server
             if (item.IsDisposed)
                 return;
 
-            var remainder = Character.Inventory.Add(item);
+            var remainder = Character.Inventory.TryAdd(item);
 
             if (remainder != null)
             {

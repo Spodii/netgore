@@ -38,7 +38,7 @@ namespace DemoGame.Server
             var item = new ItemEntity(template, amount);
 
             // Give to user
-            var remainder = User.Inventory.Add(item);
+            var remainder = User.Inventory.TryAdd(item);
 
             // Delete any that failed to be added
             if (remainder != null)
