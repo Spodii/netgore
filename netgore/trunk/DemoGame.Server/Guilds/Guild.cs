@@ -93,7 +93,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the name was successfully changed; otherwise false.</returns>
         protected override bool InternalTryChangeName(string newName)
         {
-            return _updateGuildNameQuery.Execute(new UpdateGuildNameQuery.QueryArgs(ID, newName)) > 0;
+            return _updateGuildNameQuery.ExecuteWithResult(new UpdateGuildNameQuery.QueryArgs(ID, newName)) > 0;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the tag was successfully changed; otherwise false.</returns>
         protected override bool InternalTryChangeTag(string newTag)
         {
-            return _updateGuildTagQuery.Execute(new UpdateGuildTagQuery.QueryArgs(ID, newTag)) > 0;
+            return _updateGuildTagQuery.ExecuteWithResult(new UpdateGuildTagQuery.QueryArgs(ID, newTag)) > 0;
         }
 
         /// <summary>

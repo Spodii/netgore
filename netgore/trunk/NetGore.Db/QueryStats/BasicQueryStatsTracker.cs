@@ -159,8 +159,6 @@ namespace NetGore.Db
             stats.NotifyExecuted();
 
             WriteLog();
-
-            Trace.WriteLine("Query: " + query.GetType().Name);
         }
 
         #endregion

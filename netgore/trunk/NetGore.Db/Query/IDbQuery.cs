@@ -8,10 +8,10 @@ namespace NetGore.Db
     /// <summary>
     /// Interface for a class that is used to perform queries on a database.
     /// </summary>
-    public interface IDbQueryHandler : IDisposable
+    public interface IDbQuery : IDisposable
     {
         /// <summary>
-        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this <see cref="IDbQueryHandler"/>
+        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this <see cref="IDbQuery"/>
         /// will use this same CommandText.
         /// </summary>
         string CommandText { get; }
@@ -22,7 +22,7 @@ namespace NetGore.Db
         IDbConnectionPool ConnectionPool { get; }
 
         /// <summary>
-        /// Gets the parameters used in this <see cref="IDbQueryHandler"/>.
+        /// Gets the parameters used in this <see cref="IDbQuery"/>.
         /// </summary>
         IEnumerable<DbParameter> Parameters { get; }
     }

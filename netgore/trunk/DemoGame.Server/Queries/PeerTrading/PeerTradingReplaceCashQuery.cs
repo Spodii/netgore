@@ -42,10 +42,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="characterID">The character ID.</param>
         /// <param name="cash">The cash.</param>
-        /// <returns>Number of rows affected by the query.</returns>
-        public int Execute(CharacterID characterID, int cash)
+        public void Execute(CharacterID characterID, int cash)
         {
-            return Execute(new QueryArgs(characterID, cash));
+            Execute(new QueryArgs(characterID, cash));
         }
 
         #region Overrides of DbQueryBase

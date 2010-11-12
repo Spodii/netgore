@@ -34,19 +34,17 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
-        public int Execute(ShopID shopID, ItemTemplateID itemID)
+        public void Execute(ShopID shopID, ItemTemplateID itemID)
         {
-            return Execute(new ShopItemTable(itemID, shopID));
+            Execute(new ShopItemTable(itemID, shopID));
         }
 
-        public int Execute(ShopID shopID, IEnumerable<ItemTemplateID> itemIDs)
+        public void Execute(ShopID shopID, IEnumerable<ItemTemplateID> itemIDs)
         {
-            var sum = 0;
             foreach (var itemID in itemIDs)
             {
-                sum += Execute(shopID, itemID);
+                Execute(shopID, itemID);
             }
-            return sum;
         }
 
         /// <summary>

@@ -55,24 +55,24 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="commandText">Command text to execute.</param>
         /// <param name="behavior">Command behavior to use when executing the command.</param>
-        /// <returns>DataReader used to read the results of the query.</returns>
-        public DataReaderContainer ExecuteReader(string commandText, CommandBehavior behavior)
+        /// <returns><see cref="IDataReader"/> used to read the results of the query.</returns>
+        public IDataReader ExecuteReader(string commandText, CommandBehavior behavior)
         {
             var cmd = GetCommand(commandText);
             var reader = cmd.ExecuteReader(behavior);
-            return new DataReaderContainer(cmd, reader);
+            return reader;
         }
 
         /// <summary>
         /// Executes a command that returns a reader.
         /// </summary>
         /// <param name="commandText">Command text to execute.</param>
-        /// <returns>DataReader used to read the results of the query.</returns>
-        public DataReaderContainer ExecuteReader(string commandText)
+        /// <returns><see cref="IDataReader"/> used to read the results of the query.</returns>
+        public IDataReader ExecuteReader(string commandText)
         {
             var cmd = GetCommand(commandText);
             var reader = cmd.ExecuteReader();
-            return new DataReaderContainer(cmd, reader);
+            return reader;
         }
 
         /// <summary>

@@ -46,10 +46,9 @@ namespace DemoGame.Server.Queries
         /// <param name="questID">The quest ID.</param>
         /// <param name="characterTemplateID">The character template ID.</param>
         /// <param name="count">The count.</param>
-        /// <returns>Number of rows affected by the query.</returns>
-        public int Execute(CharacterID characterID, QuestID questID, CharacterTemplateID characterTemplateID, ushort count)
+        public void Execute(CharacterID characterID, QuestID questID, CharacterTemplateID characterTemplateID, ushort count)
         {
-            return Execute(new QueryArgs(characterID, questID, characterTemplateID, count));
+            Execute(new QueryArgs(characterID, questID, characterTemplateID, count));
         }
 
         /// <summary>

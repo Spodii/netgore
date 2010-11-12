@@ -35,9 +35,9 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
-        public int Execute(AccountID accountID, uint ip)
+        public void Execute(AccountID accountID, uint ip)
         {
-            return Execute(new QueryArgs(accountID, ip));
+            Execute(new QueryArgs(accountID, ip));
         }
 
         /// <summary>

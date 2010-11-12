@@ -38,19 +38,17 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
-        public int Execute(QuestID questID, ItemTemplateID itemID, byte amount)
+        public void Execute(QuestID questID, ItemTemplateID itemID, byte amount)
         {
-            return Execute(new QuestRequireStartItemTable(amount, itemID, questID));
+            Execute(new QuestRequireStartItemTable(amount, itemID, questID));
         }
 
-        public int Execute(QuestID questID, IEnumerable<KeyValuePair<ItemTemplateID, byte>> items)
+        public void Execute(QuestID questID, IEnumerable<KeyValuePair<ItemTemplateID, byte>> items)
         {
-            var sum = 0;
             foreach (var item in items)
             {
-                sum += Execute(questID, item.Key, item.Value);
+                Execute(questID, item.Key, item.Value);
             }
-            return sum;
         }
 
         /// <summary>

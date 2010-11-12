@@ -14,6 +14,7 @@ namespace NetGore.Db
     {
         readonly string _connectionString;
         readonly ObjectPool<PooledDbConnection> _pool;
+        readonly IDbQueryRunner _queryRunner;
 
         bool _disposed;
 
@@ -26,6 +27,10 @@ namespace NetGore.Db
             _connectionString = connectionString;
             _pool = new ObjectPool<PooledDbConnection>(CreateNewObj, InitializePooledConnection, DeinitializePooledConnection,
                                                        true);
+
+            // Create our DbQueryRunner using a connection NOT in the pool (since the connection will remain opened)
+            var conn = CreateConnection(ConnectionString);
+            _queryRunner = new DbQueryRunner(conn);
         }
 
         /// <summary>
@@ -83,6 +88,14 @@ namespace NetGore.Db
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDbQueryRunner"/> to use for this pool of database connections.
+        /// </summary>
+        IDbQueryRunner IDbConnectionPool.QueryRunner
+        {
+            get { return _queryRunner; }
         }
 
         /// <summary>
@@ -145,6 +158,8 @@ namespace NetGore.Db
                 return;
 
             _disposed = true;
+
+            _queryRunner.Dispose();
         }
 
         /// <summary>

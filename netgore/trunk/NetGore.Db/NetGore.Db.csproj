@@ -192,10 +192,12 @@
     <Compile Include="Query\DbQueryNonReader.cs" />
     <Compile Include="Query\DbQueryReader.cs" />
     <Compile Include="Query\DbQueryReaderDataReaderContainer.cs" />
-    <Compile Include="Query\IDbQueryHandler.cs" />
+    <Compile Include="QueryRunner\DbQueryRunner.cs" />
+    <Compile Include="Query\IDbQuery.cs" />
     <Compile Include="Query\IDbQueryNonReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\IDbQueryReader.cs" />
+    <Compile Include="QueryRunner\IDbQueryRunner.cs" />
     <Compile Include="SchemaTableColumn.cs" />
     <Compile Include="Schema\ColumnSchema.cs" />
     <Compile Include="Schema\SchemaComparer.cs" />

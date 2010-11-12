@@ -6,24 +6,16 @@ namespace NetGore.Db
 {
     public class DataReaderContainer : IDataReader
     {
-        readonly IDbCommand _command;
         readonly IDataReader _dataReader;
+
         bool _isDisposed = false;
 
-        internal DataReaderContainer(IDbCommand command, IDataReader dataReader)
+        internal DataReaderContainer(IDataReader dataReader)
         {
-            if (command == null)
-                throw new ArgumentNullException("command");
             if (dataReader == null)
                 throw new ArgumentNullException("dataReader");
 
-            _command = command;
             _dataReader = dataReader;
-        }
-
-        protected IDbCommand Command
-        {
-            get { return _command; }
         }
 
         protected IDataReader DataReader
@@ -40,8 +32,8 @@ namespace NetGore.Db
         {
             if (disposeManaged)
             {
-                _dataReader.Dispose();
-                _command.Dispose();
+                if (_dataReader != null)
+                    _dataReader.Dispose();
             }
         }
 
