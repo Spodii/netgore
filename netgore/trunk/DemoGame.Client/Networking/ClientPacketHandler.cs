@@ -364,7 +364,7 @@ namespace DemoGame.Client
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapEntityIndex,
-                               dynamicEntity.GetType());
+                    dynamicEntity.GetType());
         }
 
         [MessageHandler((uint)ServerPacketID.Emote)]

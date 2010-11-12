@@ -316,22 +316,26 @@ namespace DemoGame.Editor.Tools
             if (!useTileMode)
             {
                 // Make sure the same MapGrh doesn't already exist at that position
-                if (map.Spatial.Contains<MapGrh>(drawPosArea, x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground
-                                                 && Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
+                if (map.Spatial.Contains<MapGrh>(drawPosArea,
+                    x =>
+                    x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground &&
+                    Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
                     return null;
             }
             else
             {
                 // Make sure the same MapGrh doesn't already exist at that position on the same layer
                 if (map.Spatial.Contains<MapGrh>(drawPosArea,
-                                                 x => x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground
-                                                 && Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
+                    x =>
+                    x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground &&
+                    Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
                     return null;
 
                 // In TileMode, do not allow ANY MapGrh at the same position and layer depth. And if it does exist, instead of aborting,
                 // delete the existing one.
-                var existingMapGrhs = map.Spatial.GetMany<MapGrh>(drawPosArea, x => x.LayerDepth == depth && x.IsForeground == isForeground
-                    && Math.Round(x.Position.QuickDistance(drawPos)) <= 1);
+                var existingMapGrhs = map.Spatial.GetMany<MapGrh>(drawPosArea,
+                    x =>
+                    x.LayerDepth == depth && x.IsForeground == isForeground && Math.Round(x.Position.QuickDistance(drawPos)) <= 1);
                 foreach (var toDelete in existingMapGrhs)
                 {
                     Debug.Assert(toDelete != null);
@@ -341,8 +345,11 @@ namespace DemoGame.Editor.Tools
                     map.RemoveMapGrh(toDelete);
                 }
 
-                Debug.Assert(!map.Spatial.Contains<MapGrh>(drawPosArea, x => x.LayerDepth == depth && x.IsForeground == isForeground
-                    && Math.Round(x.Position.QuickDistance(drawPos)) <= 1));
+                Debug.Assert(
+                    !map.Spatial.Contains<MapGrh>(drawPosArea,
+                        x =>
+                        x.LayerDepth == depth && x.IsForeground == isForeground &&
+                        Math.Round(x.Position.QuickDistance(drawPos)) <= 1));
             }
 
             // Create the new MapGrh and add it to the map

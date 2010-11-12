@@ -237,7 +237,7 @@ namespace log4net.Util
                     {
                         // Call the Parse method
                         return meth.Invoke(null, BindingFlags.InvokeMethod, null, new object[] { txt },
-                                           CultureInfo.InvariantCulture);
+                            CultureInfo.InvariantCulture);
                     }
                     else
                     {

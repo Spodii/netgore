@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
             QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "name", "password", "email", "time_created",
-                                         "time_last_login", "creator_ip");
+                "time_last_login", "creator_ip");
         }
 
         /// <summary>

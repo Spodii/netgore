@@ -181,7 +181,7 @@ namespace DemoGame.Server.DbObjs
             {
                 case "created":
                     return new ColumnMetadata("created", "", "timestamp", "CURRENT_TIMESTAMP", typeof(DateTime), false, false,
-                                              false);
+                        false);
 
                 case "id":
                     return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true, false);

@@ -233,38 +233,38 @@ namespace DemoGame.Server.DbObjs
             {
                 case "connections":
                     return new ColumnMetadata("connections", "Number of connections to the server at the time of the snapshot.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "id":
                     return new ColumnMetadata("id", "", "mediumint(8) unsigned", null, typeof(UInt32), false, true, false);
 
                 case "recv_bytes":
                     return new ColumnMetadata("recv_bytes", "The average bytes received per second since the last snapshot.",
-                                              "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
+                        "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
 
                 case "recv_messages":
                     return new ColumnMetadata("recv_messages", "The average messages received per second since the last snapshot.",
-                                              "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
+                        "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
 
                 case "recv_packets":
                     return new ColumnMetadata("recv_packets", "The average packets received per second since the last snapshot.",
-                                              "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
+                        "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
 
                 case "sent_bytes":
                     return new ColumnMetadata("sent_bytes", "The average bytes sent per second since the last snapshot.",
-                                              "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
+                        "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
 
                 case "sent_messages":
                     return new ColumnMetadata("sent_messages", "The average messages sent per second since the last snapshot.",
-                                              "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
+                        "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
 
                 case "sent_packets":
                     return new ColumnMetadata("sent_packets", "The average packets sent per second since the last snapshot.",
-                                              "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
+                        "mediumint(8) unsigned", null, typeof(UInt32), false, false, false);
 
                 case "when":
                     return new ColumnMetadata("when", "The time the snapshot took place.", "timestamp", "CURRENT_TIMESTAMP",
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

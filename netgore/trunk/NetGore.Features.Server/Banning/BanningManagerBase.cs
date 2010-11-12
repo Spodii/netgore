@@ -190,7 +190,7 @@ namespace NetGore.Features.Banning
 
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Failed to ban account `{0}`: {1}. Exception: {2}", accountID, failReason.GetDetailedString(),
-                                   ex);
+                        ex);
 
                 return false;
             }
@@ -203,7 +203,7 @@ namespace NetGore.Features.Banning
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Successfully banned account `{0}` (length: {1}; reason: {2}; issuedBy: {3}).", accountID, length,
-                               reason, issuedBy);
+                    reason, issuedBy);
 
             failReason = BanManagerFailReason.Unknown;
             return true;

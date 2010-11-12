@@ -68,7 +68,7 @@ namespace SFML.Graphics.Design
             if (propertyValues == null)
                 throw new ArgumentNullException("propertyValues", FrameworkMessages.NullNotAllowed);
             return new Vector4((float)propertyValues["X"], (float)propertyValues["Y"], (float)propertyValues["Z"],
-                               (float)propertyValues["W"]);
+                (float)propertyValues["W"]);
         }
     }
 }

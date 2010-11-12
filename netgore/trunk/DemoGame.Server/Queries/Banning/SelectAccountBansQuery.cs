@@ -34,7 +34,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(AccountBanTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("account_id"),
-                                                                                 s.Parameterize("accountID")));
+                    s.Parameterize("accountID")));
             return q.ToString();
         }
 

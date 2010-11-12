@@ -57,7 +57,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Update(ItemTable.TableName).AddParam(fieldName, "value").Where(f.Equals(s.EscapeColumn("id"),
-                                                                                           s.Parameterize("itemID")));
+                    s.Parameterize("itemID")));
 
             return q.ToString();
         }

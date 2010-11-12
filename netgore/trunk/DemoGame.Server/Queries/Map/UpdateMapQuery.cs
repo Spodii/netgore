@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Update(MapTable.TableName).AddAutoParam(MapTable.DbNonKeyColumns).Where(f.Equals(s.EscapeColumn("id"),
-                                                                                                    s.Parameterize("id")));
+                    s.Parameterize("id")));
             return q.ToString();
         }
 

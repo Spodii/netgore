@@ -579,9 +579,8 @@ namespace log4net.Appender
             if (i < 0 || i > max)
             {
                 throw SystemInfo.CreateArgumentOutOfRangeException("i", i,
-                                                                   "Index was out of range. Must be non-negative and less than the size of the collection. [" +
-                                                                   i +
-                                                                   "] Specified argument was out of the range of valid values.");
+                    "Index was out of range. Must be non-negative and less than the size of the collection. [" + i +
+                    "] Specified argument was out of the range of valid values.");
             }
         }
 

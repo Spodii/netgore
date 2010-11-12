@@ -31,7 +31,7 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var q = qb.Insert(AccountIpsTable.TableName).AddParam("account_id", "accountID").AddParam("ip", "ip").Add("time",
-                                                                                                                      f.Now());
+                f.Now());
             return q.ToString();
         }
 

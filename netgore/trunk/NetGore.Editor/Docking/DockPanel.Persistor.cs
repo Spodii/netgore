@@ -78,7 +78,7 @@ namespace NetGore.Editor.Docking
 
                     contents[i].PersistString = xmlIn.GetAttribute("PersistString");
                     contents[i].AutoHidePortion = Convert.ToDouble(xmlIn.GetAttribute("AutoHidePortion"),
-                                                                   CultureInfo.InvariantCulture);
+                        CultureInfo.InvariantCulture);
                     contents[i].IsHidden = Convert.ToBoolean(xmlIn.GetAttribute("IsHidden"), CultureInfo.InvariantCulture);
                     contents[i].IsFloat = Convert.ToBoolean(xmlIn.GetAttribute("IsFloat"), CultureInfo.InvariantCulture);
                     MoveToNextElement(xmlIn);
@@ -114,13 +114,13 @@ namespace NetGore.Editor.Docking
                         if (xmlIn.Name != "Pane" || id2 != j)
                             throw new ArgumentException(Strings.DockPanel_LoadFromXml_InvalidXmlFormat);
                         dockWindows[i].NestedPanes[j].IndexPane = Convert.ToInt32(xmlIn.GetAttribute("RefID"),
-                                                                                  CultureInfo.InvariantCulture);
+                            CultureInfo.InvariantCulture);
                         dockWindows[i].NestedPanes[j].IndexPrevPane = Convert.ToInt32(xmlIn.GetAttribute("PrevPane"),
-                                                                                      CultureInfo.InvariantCulture);
+                            CultureInfo.InvariantCulture);
                         dockWindows[i].NestedPanes[j].Alignment =
                             (DockAlignment)dockAlignmentConverter.ConvertFrom(xmlIn.GetAttribute("Alignment"));
                         dockWindows[i].NestedPanes[j].Proportion = Convert.ToDouble(xmlIn.GetAttribute("Proportion"),
-                                                                                    CultureInfo.InvariantCulture);
+                            CultureInfo.InvariantCulture);
                         MoveToNextElement(xmlIn);
                     }
                 }
@@ -155,13 +155,13 @@ namespace NetGore.Editor.Docking
                         if (xmlIn.Name != "Pane" || id2 != j)
                             throw new ArgumentException(Strings.DockPanel_LoadFromXml_InvalidXmlFormat);
                         floatWindows[i].NestedPanes[j].IndexPane = Convert.ToInt32(xmlIn.GetAttribute("RefID"),
-                                                                                   CultureInfo.InvariantCulture);
+                            CultureInfo.InvariantCulture);
                         floatWindows[i].NestedPanes[j].IndexPrevPane = Convert.ToInt32(xmlIn.GetAttribute("PrevPane"),
-                                                                                       CultureInfo.InvariantCulture);
+                            CultureInfo.InvariantCulture);
                         floatWindows[i].NestedPanes[j].Alignment =
                             (DockAlignment)dockAlignmentConverter.ConvertFrom(xmlIn.GetAttribute("Alignment"));
                         floatWindows[i].NestedPanes[j].Proportion = Convert.ToDouble(xmlIn.GetAttribute("Proportion"),
-                                                                                     CultureInfo.InvariantCulture);
+                            CultureInfo.InvariantCulture);
                         MoveToNextElement(xmlIn);
                     }
                 }
@@ -209,15 +209,15 @@ namespace NetGore.Editor.Docking
 
                 var dockPanelStruct = new DockPanelStruct();
                 dockPanelStruct.DockLeftPortion = Convert.ToDouble(xmlIn.GetAttribute("DockLeftPortion"),
-                                                                   CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture);
                 dockPanelStruct.DockRightPortion = Convert.ToDouble(xmlIn.GetAttribute("DockRightPortion"),
-                                                                    CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture);
                 dockPanelStruct.DockTopPortion = Convert.ToDouble(xmlIn.GetAttribute("DockTopPortion"),
-                                                                  CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture);
                 dockPanelStruct.DockBottomPortion = Convert.ToDouble(xmlIn.GetAttribute("DockBottomPortion"),
-                                                                     CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture);
                 dockPanelStruct.IndexActiveDocumentPane = Convert.ToInt32(xmlIn.GetAttribute("ActiveDocumentPane"),
-                                                                          CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture);
                 dockPanelStruct.IndexActivePane = Convert.ToInt32(xmlIn.GetAttribute("ActivePane"), CultureInfo.InvariantCulture);
 
                 // Load Contents
@@ -422,7 +422,7 @@ namespace NetGore.Editor.Docking
 
                     panes[i].DockState = (DockState)dockStateConverter.ConvertFrom(xmlIn.GetAttribute("DockState"));
                     panes[i].IndexActiveContent = Convert.ToInt32(xmlIn.GetAttribute("ActiveContent"),
-                                                                  CultureInfo.InvariantCulture);
+                        CultureInfo.InvariantCulture);
                     panes[i].ZOrderIndex = -1;
 
                     MoveToNextElement(xmlIn);
@@ -504,12 +504,11 @@ namespace NetGore.Editor.Docking
                 xmlOut.WriteAttributeString("DockRightPortion", dockPanel.DockRightPortion.ToString(CultureInfo.InvariantCulture));
                 xmlOut.WriteAttributeString("DockTopPortion", dockPanel.DockTopPortion.ToString(CultureInfo.InvariantCulture));
                 xmlOut.WriteAttributeString("DockBottomPortion",
-                                            dockPanel.DockBottomPortion.ToString(CultureInfo.InvariantCulture));
+                    dockPanel.DockBottomPortion.ToString(CultureInfo.InvariantCulture));
                 xmlOut.WriteAttributeString("ActiveDocumentPane",
-                                            dockPanel.Panes.IndexOf(dockPanel.ActiveDocumentPane).ToString(
-                                                CultureInfo.InvariantCulture));
+                    dockPanel.Panes.IndexOf(dockPanel.ActiveDocumentPane).ToString(CultureInfo.InvariantCulture));
                 xmlOut.WriteAttributeString("ActivePane",
-                                            dockPanel.Panes.IndexOf(dockPanel.ActivePane).ToString(CultureInfo.InvariantCulture));
+                    dockPanel.Panes.IndexOf(dockPanel.ActivePane).ToString(CultureInfo.InvariantCulture));
 
                 // Contents
                 xmlOut.WriteStartElement("Contents");
@@ -520,7 +519,7 @@ namespace NetGore.Editor.Docking
                     xmlOut.WriteAttributeString("ID", dockPanel.Contents.IndexOf(content).ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteAttributeString("PersistString", content.DockHandler.PersistString);
                     xmlOut.WriteAttributeString("AutoHidePortion",
-                                                content.DockHandler.AutoHidePortion.ToString(CultureInfo.InvariantCulture));
+                        content.DockHandler.AutoHidePortion.ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteAttributeString("IsHidden", content.DockHandler.IsHidden.ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteAttributeString("IsFloat", content.DockHandler.IsFloat.ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteEndElement();
@@ -536,8 +535,7 @@ namespace NetGore.Editor.Docking
                     xmlOut.WriteAttributeString("ID", dockPanel.Panes.IndexOf(pane).ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteAttributeString("DockState", pane.DockState.ToString());
                     xmlOut.WriteAttributeString("ActiveContent",
-                                                dockPanel.Contents.IndexOf(pane.ActiveContent).ToString(
-                                                    CultureInfo.InvariantCulture));
+                        dockPanel.Contents.IndexOf(pane.ActiveContent).ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteStartElement("Contents");
                     xmlOut.WriteAttributeString("Count", pane.Contents.Count.ToString(CultureInfo.InvariantCulture));
                     foreach (var content in pane.Contents)
@@ -545,7 +543,7 @@ namespace NetGore.Editor.Docking
                         xmlOut.WriteStartElement("Content");
                         xmlOut.WriteAttributeString("ID", pane.Contents.IndexOf(content).ToString(CultureInfo.InvariantCulture));
                         xmlOut.WriteAttributeString("RefID",
-                                                    dockPanel.Contents.IndexOf(content).ToString(CultureInfo.InvariantCulture));
+                            dockPanel.Contents.IndexOf(content).ToString(CultureInfo.InvariantCulture));
                         xmlOut.WriteEndElement();
                     }
                     xmlOut.WriteEndElement();
@@ -563,7 +561,7 @@ namespace NetGore.Editor.Docking
                     dockWindowId++;
                     xmlOut.WriteAttributeString("DockState", dw.DockState.ToString());
                     xmlOut.WriteAttributeString("ZOrderIndex",
-                                                dockPanel.Controls.IndexOf(dw).ToString(CultureInfo.InvariantCulture));
+                        dockPanel.Controls.IndexOf(dw).ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteStartElement("NestedPanes");
                     xmlOut.WriteAttributeString("Count", dw.NestedPanes.Count.ToString(CultureInfo.InvariantCulture));
                     foreach (var pane in dw.NestedPanes)
@@ -573,8 +571,7 @@ namespace NetGore.Editor.Docking
                         xmlOut.WriteAttributeString("RefID", dockPanel.Panes.IndexOf(pane).ToString(CultureInfo.InvariantCulture));
                         var status = pane.NestedDockingStatus;
                         xmlOut.WriteAttributeString("PrevPane",
-                                                    dockPanel.Panes.IndexOf(status.PreviousPane).ToString(
-                                                        CultureInfo.InvariantCulture));
+                            dockPanel.Panes.IndexOf(status.PreviousPane).ToString(CultureInfo.InvariantCulture));
                         xmlOut.WriteAttributeString("Alignment", status.Alignment.ToString());
                         xmlOut.WriteAttributeString("Proportion", status.Proportion.ToString(CultureInfo.InvariantCulture));
                         xmlOut.WriteEndElement();
@@ -594,7 +591,7 @@ namespace NetGore.Editor.Docking
                     xmlOut.WriteAttributeString("ID", dockPanel.FloatWindows.IndexOf(fw).ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteAttributeString("Bounds", rectConverter.ConvertToInvariantString(fw.Bounds));
                     xmlOut.WriteAttributeString("ZOrderIndex",
-                                                fw.DockPanel.FloatWindows.IndexOf(fw).ToString(CultureInfo.InvariantCulture));
+                        fw.DockPanel.FloatWindows.IndexOf(fw).ToString(CultureInfo.InvariantCulture));
                     xmlOut.WriteStartElement("NestedPanes");
                     xmlOut.WriteAttributeString("Count", fw.NestedPanes.Count.ToString(CultureInfo.InvariantCulture));
                     foreach (var pane in fw.NestedPanes)
@@ -604,8 +601,7 @@ namespace NetGore.Editor.Docking
                         xmlOut.WriteAttributeString("RefID", dockPanel.Panes.IndexOf(pane).ToString(CultureInfo.InvariantCulture));
                         var status = pane.NestedDockingStatus;
                         xmlOut.WriteAttributeString("PrevPane",
-                                                    dockPanel.Panes.IndexOf(status.PreviousPane).ToString(
-                                                        CultureInfo.InvariantCulture));
+                            dockPanel.Panes.IndexOf(status.PreviousPane).ToString(CultureInfo.InvariantCulture));
                         xmlOut.WriteAttributeString("Alignment", status.Alignment.ToString());
                         xmlOut.WriteAttributeString("Proportion", status.Proportion.ToString(CultureInfo.InvariantCulture));
                         xmlOut.WriteEndElement();

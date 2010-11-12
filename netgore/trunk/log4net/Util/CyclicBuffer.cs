@@ -54,8 +54,7 @@ namespace log4net.Util
             if (maxSize < 1)
             {
                 throw SystemInfo.CreateArgumentOutOfRangeException("maxSize", maxSize,
-                                                                   "Parameter: maxSize, Value: [" + maxSize +
-                                                                   "] out of range. Non zero positive integer required");
+                    "Parameter: maxSize, Value: [" + maxSize + "] out of range. Non zero positive integer required");
             }
 
             m_maxSize = maxSize;

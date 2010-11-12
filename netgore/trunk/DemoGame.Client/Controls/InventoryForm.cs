@@ -315,7 +315,7 @@ namespace DemoGame.Client
                 // Draw the amount
                 if (item.Amount > 1)
                     spriteBatch.DrawStringShaded(GUIManager.Font, item.Amount.ToString(), ScreenPosition, ItemAmountForeColor,
-                                                 ItemAmountBackColor);
+                        ItemAmountBackColor);
             }
 
             /// <summary>

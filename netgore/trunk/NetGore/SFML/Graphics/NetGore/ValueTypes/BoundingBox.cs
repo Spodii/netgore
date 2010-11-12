@@ -104,7 +104,7 @@ namespace SFML.Graphics
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "{{Min:{0} Max:{1}}}",
-                                 new object[] { Min.ToString(), Max.ToString() });
+                new object[] { Min.ToString(), Max.ToString() });
         }
 
         /// <summary>Creates the smallest BoundingBox that contains the two specified BoundingBox instances.</summary>

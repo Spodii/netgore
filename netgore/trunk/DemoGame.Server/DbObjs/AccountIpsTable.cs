@@ -181,18 +181,18 @@ namespace DemoGame.Server.DbObjs
             {
                 case "account_id":
                     return new ColumnMetadata("account_id", "The ID of the account.", "int(11)", null, typeof(Int32), false, false,
-                                              true);
+                        true);
 
                 case "id":
                     return new ColumnMetadata("id", "", "int(10) unsigned", null, typeof(UInt32), false, true, false);
 
                 case "ip":
                     return new ColumnMetadata("ip", "The IP that logged into the account.", "int(10) unsigned", null,
-                                              typeof(UInt32), false, false, false);
+                        typeof(UInt32), false, false, false);
 
                 case "time":
                     return new ColumnMetadata("time", "When this IP last logged into this account.", "datetime", null,
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

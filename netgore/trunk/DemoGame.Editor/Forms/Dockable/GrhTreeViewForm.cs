@@ -38,7 +38,7 @@ namespace DemoGame.Editor
                 return;
 
             var frm = new EditGrhForm(gd, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size),
-                                      deleteOnCancel);
+                deleteOnCancel);
             frm.Show();
         }
 

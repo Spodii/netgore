@@ -232,9 +232,8 @@ namespace NetGore.Editor.Docking
                     Form.ShowInTaskbar = false;
                     Form.WindowState = FormWindowState.Normal;
                     NativeMethods.SetWindowPos(Form.Handle, IntPtr.Zero, 0, 0, 0, 0,
-                                               FlagsSetWindowPos.SWP_NOACTIVATE | FlagsSetWindowPos.SWP_NOMOVE |
-                                               FlagsSetWindowPos.SWP_NOSIZE | FlagsSetWindowPos.SWP_NOZORDER |
-                                               FlagsSetWindowPos.SWP_NOOWNERZORDER | FlagsSetWindowPos.SWP_FRAMECHANGED);
+                        FlagsSetWindowPos.SWP_NOACTIVATE | FlagsSetWindowPos.SWP_NOMOVE | FlagsSetWindowPos.SWP_NOSIZE |
+                        FlagsSetWindowPos.SWP_NOZORDER | FlagsSetWindowPos.SWP_NOOWNERZORDER | FlagsSetWindowPos.SWP_FRAMECHANGED);
                 }
             }
         }

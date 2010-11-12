@@ -59,7 +59,7 @@ namespace NetGore.Audio
 
                 if (_infosByName.ContainsKey(soundInfo.Name))
                     throw new DuplicateKeyException(string.Format("Two or more SoundInfos found with the name `{0}`!",
-                                                                  soundInfo.Name));
+                        soundInfo.Name));
 
                 // Add
                 _infosByName.Add(soundInfo.Name, soundInfo);

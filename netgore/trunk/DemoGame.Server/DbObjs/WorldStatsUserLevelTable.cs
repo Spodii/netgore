@@ -210,32 +210,32 @@ namespace DemoGame.Server.DbObjs
             {
                 case "character_id":
                     return new ColumnMetadata("character_id", "The ID of the character that leveled up.", "int(11)", null,
-                                              typeof(Int32), false, false, false);
+                        typeof(Int32), false, false, false);
 
                 case "id":
                     return new ColumnMetadata("id", "", "int(10) unsigned", null, typeof(UInt32), false, true, false);
 
                 case "level":
                     return new ColumnMetadata("level", "The level that the character leveled up to (their new level).",
-                                              "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
+                        "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
 
                 case "map_id":
                     return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned",
-                                              null, typeof(ushort?), true, false, false);
+                        null, typeof(ushort?), true, false, false);
 
                 case "when":
                     return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP",
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 case "x":
                     return new ColumnMetadata("x",
-                                              "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "y":
                     return new ColumnMetadata("y",
-                                              "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

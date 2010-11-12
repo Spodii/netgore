@@ -229,16 +229,16 @@ namespace DemoGame.Server.DbObjs
             {
                 case "creator_ip":
                     return new ColumnMetadata("creator_ip", "The IP address that created the account.", "int(10) unsigned", null,
-                                              typeof(UInt32), false, false, false);
+                        typeof(UInt32), false, false, false);
 
                 case "current_ip":
                     return new ColumnMetadata("current_ip",
-                                              "IP address currently logged in to the account, or null if nobody is logged in.",
-                                              "int(10) unsigned", null, typeof(uint?), true, false, false);
+                        "IP address currently logged in to the account, or null if nobody is logged in.", "int(10) unsigned", null,
+                        typeof(uint?), true, false, false);
 
                 case "email":
                     return new ColumnMetadata("email", "The email address.", "varchar(60)", null, typeof(String), false, false,
-                                              false);
+                        false);
 
                 case "id":
                     return new ColumnMetadata("id", "The account ID.", "int(11)", null, typeof(Int32), false, true, false);
@@ -248,18 +248,18 @@ namespace DemoGame.Server.DbObjs
 
                 case "password":
                     return new ColumnMetadata("password", "The account password.", "varchar(40)", null, typeof(String), false,
-                                              false, false);
+                        false, false);
 
                 case "permissions":
                     return new ColumnMetadata("permissions", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
 
                 case "time_created":
                     return new ColumnMetadata("time_created", "The DateTime of when the account was created.", "datetime", null,
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 case "time_last_login":
                     return new ColumnMetadata("time_last_login", "The DateTime that the account was last logged in to.",
-                                              "datetime", null, typeof(DateTime), false, false, false);
+                        "datetime", null, typeof(DateTime), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

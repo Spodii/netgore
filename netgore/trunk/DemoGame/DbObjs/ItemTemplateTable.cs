@@ -368,7 +368,7 @@ namespace DemoGame.DbObjs
             {
                 case "action_display_id":
                     return new ColumnMetadata("action_display_id", "The ActionDisplayID to use when using this item.",
-                                              "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
+                        "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
 
                 case "description":
                     return new ColumnMetadata("description", "", "varchar(255)", " ", typeof(String), false, false, false);

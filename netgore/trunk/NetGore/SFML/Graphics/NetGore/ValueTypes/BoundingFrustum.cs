@@ -579,11 +579,8 @@ namespace SFML.Graphics
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "{{Near:{0} Far:{1} Left:{2} Right:{3} Top:{4} Bottom:{5}}}",
-                                 new object[]
-                                 {
-                                     Near.ToString(), Far.ToString(), Left.ToString(), Right.ToString(), Top.ToString(),
-                                     Bottom.ToString()
-                                 });
+                new object[]
+                { Near.ToString(), Far.ToString(), Left.ToString(), Right.ToString(), Top.ToString(), Bottom.ToString() });
         }
 
         #region IEquatable<BoundingFrustum> Members

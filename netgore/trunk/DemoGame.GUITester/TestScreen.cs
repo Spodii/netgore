@@ -170,7 +170,7 @@ namespace DemoGame.GUITester
             {
                 case MessageBoxButton.Yes:
                     new MessageBox(sender.GUIManager, ":|", "Yes? What do you mean yes? I didn't even ask you a question!",
-                                   MessageBoxButton.Ok);
+                        MessageBoxButton.Ok);
                     break;
 
                 case MessageBoxButton.No:
@@ -197,8 +197,8 @@ namespace DemoGame.GUITester
                 source.Text = "I was clicked!";
 
             var msgBox = new MessageBox(GUIManager, "My message box",
-                                        "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf",
-                                        MessageBoxButton.YesNoCancel);
+                "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf",
+                MessageBoxButton.YesNoCancel);
             msgBox.OptionSelected += (x, y) => new MessageBox(GUIManager, "Hello", "You selected: " + y, MessageBoxButton.Ok);
         }
     }

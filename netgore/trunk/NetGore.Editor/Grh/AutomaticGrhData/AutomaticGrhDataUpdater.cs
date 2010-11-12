@@ -136,7 +136,7 @@ namespace NetGore.Editor.Grhs
                 {
                     if (log.IsWarnEnabled)
                         log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.",
-                                       dir);
+                            dir);
                     continue;
                 }
 
@@ -237,7 +237,7 @@ namespace NetGore.Editor.Grhs
                 {
                     if (log.IsWarnEnabled)
                         log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.",
-                                       texture);
+                            texture);
                     continue;
                 }
 

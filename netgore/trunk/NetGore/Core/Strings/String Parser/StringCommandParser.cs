@@ -266,7 +266,7 @@ namespace NetGore
         protected virtual string HandleCommandInvokeDenied(object binder, StringCommandParserCommandData<T> cd, string[] args)
         {
             return string.Format("Object `{0}` was not allowed to invoke command `{1}`.",
-                                 binder != null ? binder.ToString() : "NULL", cd.Attribute.Command);
+                binder != null ? binder.ToString() : "NULL", cd.Attribute.Command);
         }
 
         /// <summary>

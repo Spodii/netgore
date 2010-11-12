@@ -275,7 +275,7 @@ namespace NetGore.Editor.Grhs
                 {
                     if (
                         MessageBox.Show("Are you sure you wish to change the index? Changes will not be reflected on maps!",
-                                        "Change GrhIndex", MessageBoxButtons.YesNo) == DialogResult.No)
+                            "Change GrhIndex", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
 
                     if (GrhInfo.GetData(newIndex) != null)

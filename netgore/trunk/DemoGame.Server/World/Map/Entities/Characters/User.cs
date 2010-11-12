@@ -940,7 +940,7 @@ namespace DemoGame.Server
                 {
                     using (
                         var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchasePlural, amount,
-                                                          itemTemplate.Name))
+                            itemTemplate.Name))
                     {
                         Send(pw, ServerMessageType.GUI);
                     }
@@ -1005,7 +1005,7 @@ namespace DemoGame.Server
             {
                 using (
                     var pw = ServerPacket.SendMessage(GameMessage.ShopPurchasePlural, amountPurchased, itemTemplate.Name,
-                                                      chargeAmount))
+                        chargeAmount))
                 {
                     Send(pw, ServerMessageType.GUI);
                 }
@@ -1013,7 +1013,7 @@ namespace DemoGame.Server
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
                 {
                     WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)itemEntity.ItemTemplateID, (byte)amountPurchased,
-                                                                  chargeAmount, ShoppingState.ShoppingAt.ID);
+                        chargeAmount, ShoppingState.ShoppingAt.ID);
 
                     if (itemEntity.ItemTemplateID.HasValue)
                         WorldStatsTracker.Instance.AddCountBuyItem((int)itemEntity.ItemTemplateID.Value, amountPurchased);
@@ -1112,7 +1112,7 @@ namespace DemoGame.Server
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
                 {
                     WorldStatsTracker.Instance.AddUserShopSellItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
-                                                                   ShoppingState.ShoppingAt.ID);
+                        ShoppingState.ShoppingAt.ID);
 
                     if (invItem.ItemTemplateID.HasValue)
                         WorldStatsTracker.Instance.AddCountSellItem((int)invItem.ItemTemplateID.Value, amountToSell);

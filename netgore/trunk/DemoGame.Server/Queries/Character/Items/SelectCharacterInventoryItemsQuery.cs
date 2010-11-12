@@ -36,9 +36,8 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(ItemTable.TableName, "i").AllColumns("i").AddFunc(s.ApplyColumnAlias("c.slot",
-                                                                                               "character_inventory_slot")).
-                    InnerJoinOnColumn(CharacterInventoryTable.TableName, "c", "item_id", "i", "id").Where(
-                        f.Equals(s.EscapeColumn("character_id"), s.Parameterize("characterID")));
+                    "character_inventory_slot")).InnerJoinOnColumn(CharacterInventoryTable.TableName, "c", "item_id", "i", "id").
+                    Where(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("characterID")));
             return q.ToString();
         }
 

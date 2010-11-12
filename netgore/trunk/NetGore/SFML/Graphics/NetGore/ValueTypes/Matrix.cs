@@ -966,23 +966,20 @@ namespace SFML.Graphics
             if ((fieldOfView <= 0f) || (fieldOfView >= 3.141593f))
             {
                 throw new ArgumentOutOfRangeException("fieldOfView",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.OutRangeFieldOfView,
-                                                                    new object[] { "fieldOfView" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.OutRangeFieldOfView,
+                        new object[] { "fieldOfView" }));
             }
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "nearPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "farPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
@@ -1012,23 +1009,20 @@ namespace SFML.Graphics
             if ((fieldOfView <= 0f) || (fieldOfView >= 3.141593f))
             {
                 throw new ArgumentOutOfRangeException("fieldOfView",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.OutRangeFieldOfView,
-                                                                    new object[] { "fieldOfView" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.OutRangeFieldOfView,
+                        new object[] { "fieldOfView" }));
             }
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "nearPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "farPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
@@ -1056,16 +1050,14 @@ namespace SFML.Graphics
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "nearPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "farPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
@@ -1093,16 +1085,14 @@ namespace SFML.Graphics
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "nearPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "farPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
@@ -1131,16 +1121,14 @@ namespace SFML.Graphics
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "nearPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "farPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
@@ -1171,16 +1159,14 @@ namespace SFML.Graphics
             if (nearPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "nearPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "nearPlaneDistance" }));
             }
             if (farPlaneDistance <= 0f)
             {
                 throw new ArgumentOutOfRangeException("farPlaneDistance",
-                                                      string.Format(CultureInfo.CurrentCulture,
-                                                                    FrameworkMessages.NegativePlaneDistance,
-                                                                    new object[] { "farPlaneDistance" }));
+                    string.Format(CultureInfo.CurrentCulture, FrameworkMessages.NegativePlaneDistance,
+                        new object[] { "farPlaneDistance" }));
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkMessages.OppositePlanes);
@@ -1728,29 +1714,29 @@ namespace SFML.Graphics
             var currentCulture = CultureInfo.CurrentCulture;
             return ("{ " +
                     string.Format(currentCulture, "{{M11:{0} M12:{1} M13:{2} M14:{3}}} ",
-                                  new object[]
-                                  {
-                                      M11.ToString(currentCulture), M12.ToString(currentCulture), M13.ToString(currentCulture),
-                                      M14.ToString(currentCulture)
-                                  }) +
+                        new object[]
+                        {
+                            M11.ToString(currentCulture), M12.ToString(currentCulture), M13.ToString(currentCulture),
+                            M14.ToString(currentCulture)
+                        }) +
                     string.Format(currentCulture, "{{M21:{0} M22:{1} M23:{2} M24:{3}}} ",
-                                  new object[]
-                                  {
-                                      M21.ToString(currentCulture), M22.ToString(currentCulture), M23.ToString(currentCulture),
-                                      M24.ToString(currentCulture)
-                                  }) +
+                        new object[]
+                        {
+                            M21.ToString(currentCulture), M22.ToString(currentCulture), M23.ToString(currentCulture),
+                            M24.ToString(currentCulture)
+                        }) +
                     string.Format(currentCulture, "{{M31:{0} M32:{1} M33:{2} M34:{3}}} ",
-                                  new object[]
-                                  {
-                                      M31.ToString(currentCulture), M32.ToString(currentCulture), M33.ToString(currentCulture),
-                                      M34.ToString(currentCulture)
-                                  }) +
+                        new object[]
+                        {
+                            M31.ToString(currentCulture), M32.ToString(currentCulture), M33.ToString(currentCulture),
+                            M34.ToString(currentCulture)
+                        }) +
                     string.Format(currentCulture, "{{M41:{0} M42:{1} M43:{2} M44:{3}}} ",
-                                  new object[]
-                                  {
-                                      M41.ToString(currentCulture), M42.ToString(currentCulture), M43.ToString(currentCulture),
-                                      M44.ToString(currentCulture)
-                                  }) + "}");
+                        new object[]
+                        {
+                            M41.ToString(currentCulture), M42.ToString(currentCulture), M43.ToString(currentCulture),
+                            M44.ToString(currentCulture)
+                        }) + "}");
         }
 
         /// <summary>Determines whether the specified Object is equal to the Matrix.</summary>

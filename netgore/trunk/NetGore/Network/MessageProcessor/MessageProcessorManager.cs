@@ -88,7 +88,7 @@ namespace NetGore.Network
                                 "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
                             Debug.Fail(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method, method));
                             throw new DuplicateKeyException(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method,
-                                                                          method));
+                                method));
                         }
 
                         var del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);

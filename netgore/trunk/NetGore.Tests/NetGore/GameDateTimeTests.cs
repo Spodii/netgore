@@ -125,7 +125,7 @@ namespace NetGore.Tests.NetGore
             var clientTime = DateTime.Now;
 
             var serverTime = new DateTime(clientTime.Year, clientTime.Month, clientTime.Day,
-                                          clientTime.Hour - (clientTime.Hour <= 1 ? 0 : 1), clientTime.Minute, clientTime.Second);
+                clientTime.Hour - (clientTime.Hour <= 1 ? 0 : 1), clientTime.Minute, clientTime.Second);
             GameDateTime.SetServerTimeOffset(serverTime);
 
             Assert.AreEqual((clientTime.Hour <= 1 ? 0 : 1), Math.Round(GameDateTime.ServerTimeOffset.TotalHours));

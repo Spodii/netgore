@@ -6,7 +6,6 @@ using System.Reflection;
 using DemoGame.Client.Properties;
 using log4net;
 using NetGore;
-using NetGore.Content;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.NPCChat;
@@ -483,7 +482,7 @@ namespace DemoGame.Client
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
             _inventoryForm = new InventoryForm(_dragDropHandler, x => x == UserInfo.Inventory, InventoryInfoRequester,
-                                               new Vector2(250, 0), _cScreen);
+                new Vector2(250, 0), _cScreen);
             _inventoryForm.RequestDropItem += InventoryForm_RequestDropItem;
             _inventoryForm.RequestUseItem += InventoryForm_RequestUseItem;
 
@@ -520,7 +519,7 @@ namespace DemoGame.Client
                 x =>
                 UserInfo.QuestInfo.ActiveQuests.Contains(x) && (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
             _availableQuestsForm = new AvailableQuestsForm(_cScreen, new Vector2(200), new Vector2(250, 350), questStartReqs,
-                                                           questFinishReqs);
+                questFinishReqs);
             _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
             _latencyLabel = new Label(_cScreen, new Vector2(_cScreen.ClientSize.X - 75, 5))
@@ -716,7 +715,7 @@ namespace DemoGame.Client
             var sock = _socket.RemoteSocket;
             if (_latencyLabel != null && sock != null && sock.IsConnected)
                 _latencyLabel.Text = string.Format(_latencyString,
-                                                   sock.AverageLatency < 1 ? "<1" : Math.Round(sock.AverageLatency).ToString());
+                    sock.AverageLatency < 1 ? "<1" : Math.Round(sock.AverageLatency).ToString());
 
             _userLight.IsEnabled = true;
             _userLight.SetCenter(UserChar.Center);
@@ -792,7 +791,7 @@ namespace DemoGame.Client
         void _guildForm_JoinRequested(GuildForm sender)
         {
             var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.",
-                                  MessageBoxButton.OkCancel);
+                MessageBoxButton.OkCancel);
 
             ib.OptionSelected += delegate(Control s, MessageBoxButton args)
             {

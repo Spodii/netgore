@@ -339,7 +339,7 @@ namespace NetGore.Graphics.ParticleEngine
             {
                 var newSize = BitOps.NextPowerOf2(lastIndex + 1);
                 Debug.Assert(BitOps.IsPowerOf2(newSize),
-                             "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
+                    "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
                 Debug.Assert(newSize >= lastIndex + 1);
                 Array.Resize(ref _particles, newSize);
             }

@@ -292,8 +292,7 @@ namespace NetGore.Editor.Docking
             {
                 var matrixRotated = new Matrix();
                 matrixRotated.RotateAt(90,
-                                       new PointF(rectTabStrip.X + (float)rectTabStrip.Height / 2,
-                                                  rectTabStrip.Y + (float)rectTabStrip.Height / 2));
+                    new PointF(rectTabStrip.X + (float)rectTabStrip.Height / 2, rectTabStrip.Y + (float)rectTabStrip.Height / 2));
                 g.Transform = matrixRotated;
             }
 
@@ -401,12 +400,11 @@ namespace NetGore.Editor.Docking
             var rectTabStrip = GetLogicalTabStripRectangle(dockState);
             var matrix = new Matrix();
             matrix.RotateAt(90,
-                            new PointF(rectTabStrip.X + (float)rectTabStrip.Height / 2,
-                                       rectTabStrip.Y + (float)rectTabStrip.Height / 2));
+                new PointF(rectTabStrip.X + (float)rectTabStrip.Height / 2, rectTabStrip.Y + (float)rectTabStrip.Height / 2));
             matrix.TransformPoints(pts);
 
             return new Rectangle((int)(pts[0].X - (float)rect.Height / 2 + .5F), (int)(pts[0].Y - (float)rect.Width / 2 + .5F),
-                                 rect.Height, rect.Width);
+                rect.Height, rect.Width);
         }
 
         protected override IDockContent HitTest(Point ptMouse)

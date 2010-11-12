@@ -49,14 +49,14 @@ For more information on the DbClassCreator, please see:
         /// Points to the ...\DemoGame\DbObjs\ folder.
         /// </summary>
         static readonly string _outputGameDir = string.Format("{0}..{1}..{1}DemoGame{1}DbObjs{1}",
-                                                              AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+            AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
         /// <summary>
         /// Output directory for the generated code that is referenced only by the server.
         /// Points to the ...\DemoGame.Server\DbObjs\ folder.
         /// </summary>
         static readonly string _outputServerDir = string.Format("{0}..{1}..{1}DemoGame.Server{1}DbObjs{1}",
-                                                                AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+            AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
         static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(CodeFormatter formatter,
                                                                               StatCollectionType statCollectionType)
@@ -104,9 +104,9 @@ For more information on the DbClassCreator, please see:
                 var reqStatTables = new string[] { "item", "item_template" };
 
                 generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), typeof(short), baseStatTables,
-                                              baseStatColumns);
+                    baseStatColumns);
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), typeof(short), reqStatTables,
-                                              reqStatColumns);
+                    reqStatColumns);
 
                 // Custom external types
                 generator.AddCustomType(typeof(AccountID), "account", "id");
@@ -146,7 +146,7 @@ For more information on the DbClassCreator, please see:
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
                 generator.AddCustomType(typeof(CharacterID), "*", "character_id", "target_character_id", "user_id", "npc_id");
                 generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id", "user_template_id",
-                                        "npc_template_id");
+                    "npc_template_id");
                 generator.AddCustomType(typeof(AccountID), "*", "account_id");
                 generator.AddCustomType(typeof(MapID), "*", "map_id", "respawn_map_id", "load_map_id");
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");

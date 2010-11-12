@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(GuildMemberTable.TableName).AddFunc(f.Count()).Where(f.Equals(s.EscapeColumn("guild_id"),
-                                                                                        s.Parameterize("guild_id")));
+                    s.Parameterize("guild_id")));
             return q.ToString();
         }
 

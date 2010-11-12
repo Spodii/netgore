@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var q = qb.Insert(GuildEventTable.TableName).AddAutoParam(GuildEventTable.DbColumns).Remove("id").Add("created",
-                                                                                                                  f.Now());
+                f.Now());
             return q.ToString();
         }
 

@@ -75,7 +75,7 @@ namespace NetGore.Editor.EditorTool
 
             // Create the auto-saver
             _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolState, _autoSaveSettingsRate,
-                                               _autoSaveSettingsRate);
+                _autoSaveSettingsRate);
         }
 
         /// <summary>

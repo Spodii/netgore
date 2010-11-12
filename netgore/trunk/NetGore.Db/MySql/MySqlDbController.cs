@@ -153,7 +153,7 @@ namespace NetGore.Db.MySql
                     {
                         var cmd = conn.CreateCommand();
                         cmd.CommandText = string.Format("SELECT COUNT(*) FROM {0}.{1} WHERE `{2}`=@value", fk.Schema, fk.Table,
-                                                        fk.Column);
+                            fk.Column);
 
                         var p = cmd.CreateParameter();
                         p.ParameterName = "@value";

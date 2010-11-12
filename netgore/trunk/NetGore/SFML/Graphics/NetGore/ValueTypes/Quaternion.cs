@@ -62,11 +62,8 @@ namespace SFML.Graphics
         {
             var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1} Z:{2} W:{3}}}",
-                                 new object[]
-                                 {
-                                     X.ToString(currentCulture), Y.ToString(currentCulture), Z.ToString(currentCulture),
-                                     W.ToString(currentCulture)
-                                 });
+                new object[]
+                { X.ToString(currentCulture), Y.ToString(currentCulture), Z.ToString(currentCulture), W.ToString(currentCulture) });
         }
 
         /// <summary>Determines whether the specified Object is equal to the Quaternion.</summary>

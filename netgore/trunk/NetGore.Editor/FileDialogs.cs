@@ -166,7 +166,7 @@ namespace NetGore.Editor
         static void HandleUnhandledException(string contentType, bool wasLoadError, Exception innerException)
         {
             var msg = string.Format("Failed to {0} {1}:{2}{2}{3}", wasLoadError ? "load" : "save", contentType,
-                                    Environment.NewLine, innerException);
+                Environment.NewLine, innerException);
 
             MessageBox.Show(msg, "Unhandled I/O error", MessageBoxButtons.OK);
         }

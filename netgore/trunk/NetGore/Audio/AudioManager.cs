@@ -82,7 +82,7 @@ namespace NetGore.Audio
                     if (contentManager == null || contentManager.IsDisposed)
                     {
                         throw new ArgumentNullException("contentManager",
-                                                        "The contentManager parameter cannot be null or disposed on the first call to this method.");
+                            "The contentManager parameter cannot be null or disposed on the first call to this method.");
                     }
 
                     _instance = new AudioManager(contentManager);
@@ -95,7 +95,7 @@ namespace NetGore.Audio
         internal static IEnumerable<KeyValuePair<string, int>> LoadValues(string fileName, string rootNode)
         {
             var r = GenericValueReader.CreateFromFile(ContentPaths.Build.Data.Join(fileName + EngineSettings.DataFileSuffix),
-                                                      rootNode);
+                rootNode);
             var ret = r.ReadManyNodes("Items", ReadValue);
             return ret;
         }

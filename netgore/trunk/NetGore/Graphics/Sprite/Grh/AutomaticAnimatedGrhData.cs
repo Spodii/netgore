@@ -49,7 +49,7 @@ namespace NetGore.Graphics
             // or a single path separator and some characters. This allows us to also match when the path of a frame
             // is passed.
             var regexStr = string.Format(@"[{1}]{0}(?<Title>[^{1}]+?){0}frames{0}(?<Speed>\d+)([{1}][^{1}{0}]*)?$",
-                                         DirectoryNameDelimiter, @"\\/");
+                DirectoryNameDelimiter, @"\\/");
             _aaFolderRegex = new Regex(regexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
         }
 

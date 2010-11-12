@@ -17,12 +17,9 @@ namespace NetGore.Db
         IQueryBuilder QueryBuilder { get; }
 
         /// <summary>
-        /// Creates and returns a <see cref="DbParameter"/> that is compatible with the type of database
-        /// used by connections in this pool.
+        /// Gets the <see cref="IDbQueryRunner"/> to use for this pool of database connections.
         /// </summary>
-        /// <param name="parameterName">Reference name of the parameter.</param>
-        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
-        DbParameter CreateParameter(string parameterName);
+        IDbQueryRunner QueryRunner { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by
@@ -31,8 +28,11 @@ namespace NetGore.Db
         IQueryStatsTracker QueryStats { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="IDbQueryRunner"/> to use for this pool of database connections.
+        /// Creates and returns a <see cref="DbParameter"/> that is compatible with the type of database
+        /// used by connections in this pool.
         /// </summary>
-        IDbQueryRunner QueryRunner { get; }
+        /// <param name="parameterName">Reference name of the parameter.</param>
+        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
+        DbParameter CreateParameter(string parameterName);
     }
 }

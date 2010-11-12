@@ -254,8 +254,7 @@ namespace NetGore.Graphics.GUI
 
             // Draw the border
             var borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
-                                           (int)(_borderSize.X + (BorderPadding.X * 2)),
-                                           (int)(_borderSize.Y + (BorderPadding.Y * 2)));
+                (int)(_borderSize.X + (BorderPadding.X * 2)), (int)(_borderSize.Y + (BorderPadding.Y * 2)));
 
             var b = _args.Border;
             if (b != null)

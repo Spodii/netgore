@@ -183,7 +183,7 @@ namespace log4net.Util
         const string CDATA_UNESCAPABLE_TOKEN = "]]";
 
         static readonly Regex INVALIDCHARS = new Regex(@"[^\x09\x0A\x0D\x20-\xFF\u00FF-\u07FF\uE000-\uFFFD]",
-                                                       RegexOptions.Compiled);
+            RegexOptions.Compiled);
 
         #endregion Private Static Fields
     }

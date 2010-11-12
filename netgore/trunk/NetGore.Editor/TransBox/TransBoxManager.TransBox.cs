@@ -73,7 +73,7 @@ namespace NetGore.Editor
 
                     case TransBoxType.Move:
                         return new Vector2(_spatial.Center.X - (Size.X / 2f),
-                                           _spatial.Position.Y - Size.Y - GetTransBoxSize(TransBoxType.Top).Y);
+                            _spatial.Position.Y - Size.Y - GetTransBoxSize(TransBoxType.Top).Y);
 
                     case TransBoxType.Right:
                         return new Vector2(_spatial.Max.X, _spatial.Center.Y - (Size.Y / 2f));

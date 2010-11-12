@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(ActiveTradeItemTable.TableName).Add("item_id").Where(f.Equals(s.EscapeColumn("character_id"),
-                                                                                        s.Parameterize("characterID")));
+                    s.Parameterize("characterID")));
             return q.ToString();
         }
 
@@ -60,7 +60,7 @@ namespace DemoGame.Server.Queries
             }
 
             Debug.Assert(ret == null || !ret.HasDuplicates(),
-                         "There shouldn't be any duplicates since the item_id field should be a primary key...");
+                "There shouldn't be any duplicates since the item_id field should be a primary key...");
 
             // If there were no items for this character, return the empty collection
             if (ret == null)

@@ -262,7 +262,7 @@ namespace NetGore.Db.MySql.QueryBuilder
                 throw new ArgumentNullException("date");
             if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
                 throw new ArgumentOutOfRangeException("interval",
-                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+                    string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
 
             return DateAddInterval(date, Interval(interval, value));
         }
@@ -284,7 +284,7 @@ namespace NetGore.Db.MySql.QueryBuilder
                 throw new ArgumentNullException("date");
             if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
                 throw new ArgumentOutOfRangeException("interval",
-                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+                    string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException("value");
 
@@ -325,7 +325,7 @@ namespace NetGore.Db.MySql.QueryBuilder
                 throw new ArgumentNullException("date");
             if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
                 throw new ArgumentOutOfRangeException("interval",
-                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+                    string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
 
             return DateSubtractInterval(date, Interval(interval, value));
         }
@@ -347,7 +347,7 @@ namespace NetGore.Db.MySql.QueryBuilder
                 throw new ArgumentNullException("date");
             if (!EnumHelper<QueryIntervalType>.IsDefined(interval))
                 throw new ArgumentOutOfRangeException("interval",
-                                                      string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
+                    string.Format("`{0}` is not a defined QueryIntervalType value.", interval));
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException("value");
 

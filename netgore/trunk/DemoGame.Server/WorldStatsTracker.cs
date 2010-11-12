@@ -191,9 +191,8 @@ namespace DemoGame.Server
             var mapID = (npc.Map == null ? (MapID?)null : npc.Map.ID);
 
             var args = new WorldStatsNpcKillUserTable(when: Now(), mapID: mapID, npcTemplateId: npc.CharacterTemplateID,
-                                                      npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
-                                                      userLevel: user.Level, userX: (ushort)user.Position.X,
-                                                      userY: (ushort)user.Position.Y, iD: 0);
+                npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID, userLevel: user.Level,
+                userX: (ushort)user.Position.X, userY: (ushort)user.Position.Y, iD: 0);
 
             _npcKillUserQuery.Execute(args);
         }
@@ -208,7 +207,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsQuestAcceptTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questAcceptQuery.Execute(args);
         }
@@ -223,7 +222,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsQuestCancelTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questCancelQuery.Execute(args);
         }
@@ -238,7 +237,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsQuestCompleteTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                                                        x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questCompleteQuery.Execute(args);
         }
@@ -260,8 +259,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserConsumeItemTable(when: Now(), itemTemplateID: itemTemplate.Value, mapID: mapID,
-                                                          userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y,
-                                                          iD: 0);
+                userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _userConsumeItemQuery.Execute(args);
         }
@@ -289,9 +287,8 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserKillNpcTable(when: Now(), mapID: mapID, npcTemplateId: npc.CharacterTemplateID,
-                                                      npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
-                                                      userLevel: user.Level, userX: (ushort)user.Position.X,
-                                                      userY: (ushort)user.Position.Y, iD: 0);
+                npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID, userLevel: user.Level,
+                userX: (ushort)user.Position.X, userY: (ushort)user.Position.Y, iD: 0);
 
             _userKillNPCQuery.Execute(args);
         }
@@ -305,7 +302,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserLevelTable(when: Now(), characterID: user.ID, level: user.Level, mapID: mapID,
-                                                    x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _userLevelQuery.Execute(args);
         }
@@ -324,9 +321,8 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserShoppingTable(saleType: 0, amount: amount, characterID: user.ID, cost: cost,
-                                                       itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: mapID,
-                                                       shopID: shopID, when: Now(), x: (ushort)user.Position.X,
-                                                       y: (ushort)user.Position.Y, iD: 0);
+                itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: mapID, shopID: shopID, when: Now(),
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _userShoppingQuery.Execute(args);
         }
@@ -345,9 +341,8 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserShoppingTable(saleType: 1, amount: amount, characterID: user.ID, cost: cost,
-                                                       itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: mapID,
-                                                       shopID: shopID, when: Now(), x: (ushort)user.Position.X,
-                                                       y: (ushort)user.Position.Y, iD: 0);
+                itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: mapID, shopID: shopID, when: Now(),
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _userShoppingQuery.Execute(args);
         }
@@ -366,8 +361,8 @@ namespace DemoGame.Server
                                             uint sentPackets, uint sentMsgs)
         {
             var args = new WorldStatsNetworkTable(iD: 0, when: Now(), connections: connections, recvBytes: recvBytes,
-                                                  recvPackets: recvPackets, recvMessages: recvMsgs, sentBytes: sentBytes,
-                                                  sentPackets: sentPackets, sentMessages: sentMsgs);
+                recvPackets: recvPackets, recvMessages: recvMsgs, sentBytes: sentBytes, sentPackets: sentPackets,
+                sentMessages: sentMsgs);
             _networkQuery.Execute(args);
         }
     }

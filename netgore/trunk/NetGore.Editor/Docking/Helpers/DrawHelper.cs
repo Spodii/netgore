@@ -83,7 +83,7 @@ namespace NetGore.Editor.Docking
                 return rectangle;
             else
                 return new Rectangle(control.ClientRectangle.Right - rectangle.Right, rectangle.Y, rectangle.Width,
-                                     rectangle.Height);
+                    rectangle.Height);
         }
     }
 }

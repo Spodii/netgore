@@ -52,7 +52,7 @@ namespace NetGore.Editor.Docking
                 throw new ArgumentNullException("floatWindow");
 
             InternalConstruct(content, DockState.Float, false, Rectangle.Empty,
-                              floatWindow.NestedPanes.GetDefaultPreviousPane(this), DockAlignment.Right, 0.5, show);
+                floatWindow.NestedPanes.GetDefaultPreviousPane(this), DockAlignment.Right, 0.5, show);
         }
 
         protected internal DockPane(IDockContent content, DockPane previousPane, DockAlignment alignment, double proportion,
@@ -814,7 +814,7 @@ namespace NetGore.Editor.Docking
 
             if (ActiveContent != null)
                 ActiveContent.DockHandler.SetDockState(ActiveContent.DockHandler.IsHidden, DockState,
-                                                       ActiveContent.DockHandler.Pane);
+                    ActiveContent.DockHandler.Pane);
             foreach (var content in Contents)
             {
                 if (content.DockHandler.Pane == this)
@@ -1016,7 +1016,7 @@ namespace NetGore.Editor.Docking
         public void SetNestedDockingProportion(double proportion)
         {
             NestedDockingStatus.SetStatus(NestedDockingStatus.NestedPanes, NestedDockingStatus.PreviousPane,
-                                          NestedDockingStatus.Alignment, proportion);
+                NestedDockingStatus.Alignment, proportion);
             if (NestedPanesContainer != null)
                 ((Control)NestedPanesContainer).PerformLayout();
         }

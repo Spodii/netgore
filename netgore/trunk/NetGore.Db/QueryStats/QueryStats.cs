@@ -42,6 +42,14 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the number of times that the query has been executed.
+        /// </summary>
+        public int TimesExecuted
+        {
+            get { return _timesExecuted; }
+        }
+
+        /// <summary>
         /// Appends the detailed statistics of the <see cref="IQueryStats"/> to a <see cref="StringBuilder"/>.
         /// </summary>
         /// <param name="sb">The <see cref="StringBuilder"/> to write the details to.</param>
@@ -51,14 +59,6 @@ namespace NetGore.Db
             sb.Append(": ");
             sb.Append(TimesExecuted);
             sb.AppendLine();
-        }
-
-        /// <summary>
-        /// Gets the number of times that the query has been executed.
-        /// </summary>
-        public int TimesExecuted
-        {
-            get { return _timesExecuted; }
         }
 
         #endregion

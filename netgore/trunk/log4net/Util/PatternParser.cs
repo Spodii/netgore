@@ -201,7 +201,7 @@ namespace log4net.Util
                                 formattingInfo.Min = 0;
                             formattingInfo.Min = (formattingInfo.Min * 10) +
                                                  int.Parse(pattern[offset].ToString(CultureInfo.InvariantCulture),
-                                                           NumberFormatInfo.InvariantInfo);
+                                                     NumberFormatInfo.InvariantInfo);
                             offset++;
                         }
                         // Look for the separator between min and max
@@ -221,7 +221,7 @@ namespace log4net.Util
                                 formattingInfo.Max = 0;
                             formattingInfo.Max = (formattingInfo.Max * 10) +
                                                  int.Parse(pattern[offset].ToString(CultureInfo.InvariantCulture),
-                                                           NumberFormatInfo.InvariantInfo);
+                                                     NumberFormatInfo.InvariantInfo);
                             offset++;
                         }
 
@@ -234,7 +234,7 @@ namespace log4net.Util
                             {
                                 if (
                                     String.Compare(pattern, offset, matches[m], 0, matches[m].Length, false,
-                                                   CultureInfo.InvariantCulture) == 0)
+                                        CultureInfo.InvariantCulture) == 0)
                                 {
                                     // Found match
                                     offset = offset + matches[m].Length;

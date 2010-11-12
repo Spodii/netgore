@@ -142,7 +142,7 @@ namespace log4net.Util.TypeConverters
         {
             if (converterType == null)
                 throw new ArgumentNullException("converterType",
-                                                "CreateConverterInstance cannot create instance, converterType is null");
+                    "CreateConverterInstance cannot create instance, converterType is null");
 
             // Check type is a converter
             if (typeof(IConvertFrom).IsAssignableFrom(converterType) || typeof(IConvertTo).IsAssignableFrom(converterType))

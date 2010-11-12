@@ -184,11 +184,11 @@ namespace DemoGame.Server.DbObjs
 
                 case "last_update":
                     return new ColumnMetadata("last_update", "", "timestamp", "0000-00-00 00:00:00", typeof(DateTime), false,
-                                              false, false);
+                        false, false);
 
                 case "npc_template_id":
                     return new ColumnMetadata("npc_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true,
-                                              false);
+                        false);
 
                 case "user_id":
                     return new ColumnMetadata("user_id", "", "int(11)", null, typeof(Int32), false, true, false);

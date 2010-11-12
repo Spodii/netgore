@@ -340,7 +340,7 @@ namespace log4net.Core
         {
             if (IsDebugEnabled)
                 Logger.Log(ThisDeclaringType, m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args),
-                           null);
+                    null);
         }
 
         /// <summary>
@@ -370,7 +370,7 @@ namespace log4net.Core
             if (IsDebugEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelDebug,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
             }
         }
 
@@ -402,7 +402,7 @@ namespace log4net.Core
             if (IsDebugEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelDebug,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
             }
         }
 
@@ -435,7 +435,7 @@ namespace log4net.Core
             if (IsDebugEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelDebug,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
             }
         }
 
@@ -538,7 +538,7 @@ namespace log4net.Core
         {
             if (IsErrorEnabled)
                 Logger.Log(ThisDeclaringType, m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args),
-                           null);
+                    null);
         }
 
         /// <summary>
@@ -568,7 +568,7 @@ namespace log4net.Core
             if (IsErrorEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelError,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
             }
         }
 
@@ -600,7 +600,7 @@ namespace log4net.Core
             if (IsErrorEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelError,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
             }
         }
 
@@ -633,7 +633,7 @@ namespace log4net.Core
             if (IsErrorEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelError,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
             }
         }
 
@@ -736,7 +736,7 @@ namespace log4net.Core
         {
             if (IsFatalEnabled)
                 Logger.Log(ThisDeclaringType, m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args),
-                           null);
+                    null);
         }
 
         /// <summary>
@@ -766,7 +766,7 @@ namespace log4net.Core
             if (IsFatalEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelFatal,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
             }
         }
 
@@ -798,7 +798,7 @@ namespace log4net.Core
             if (IsFatalEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelFatal,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
             }
         }
 
@@ -831,7 +831,7 @@ namespace log4net.Core
             if (IsFatalEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelFatal,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
             }
         }
 
@@ -934,7 +934,7 @@ namespace log4net.Core
         {
             if (IsInfoEnabled)
                 Logger.Log(ThisDeclaringType, m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args),
-                           null);
+                    null);
         }
 
         /// <summary>
@@ -964,7 +964,7 @@ namespace log4net.Core
             if (IsInfoEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelInfo,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
             }
         }
 
@@ -996,7 +996,7 @@ namespace log4net.Core
             if (IsInfoEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelInfo,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
             }
         }
 
@@ -1029,7 +1029,7 @@ namespace log4net.Core
             if (IsInfoEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelInfo,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
             }
         }
 
@@ -1132,7 +1132,7 @@ namespace log4net.Core
         {
             if (IsWarnEnabled)
                 Logger.Log(ThisDeclaringType, m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args),
-                           null);
+                    null);
         }
 
         /// <summary>
@@ -1162,7 +1162,7 @@ namespace log4net.Core
             if (IsWarnEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelWarn,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
             }
         }
 
@@ -1194,7 +1194,7 @@ namespace log4net.Core
             if (IsWarnEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelWarn,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
             }
         }
 
@@ -1227,7 +1227,7 @@ namespace log4net.Core
             if (IsWarnEnabled)
             {
                 Logger.Log(ThisDeclaringType, m_levelWarn,
-                           new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+                    new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
             }
         }
 

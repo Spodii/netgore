@@ -182,18 +182,18 @@ namespace DemoGame.Server.DbObjs
             {
                 case "guild_id":
                     return new ColumnMetadata("guild_id", "The ID of the guild, or null if the user left a guild.",
-                                              "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
+                        "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
 
                 case "id":
                     return new ColumnMetadata("id", "", "int(10) unsigned", null, typeof(UInt32), false, true, false);
 
                 case "user_id":
                     return new ColumnMetadata("user_id", "The ID of the user who changed the guild they are part of.", "int(11)",
-                                              null, typeof(Int32), false, false, true);
+                        null, typeof(Int32), false, false, true);
 
                 case "when":
                     return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP",
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

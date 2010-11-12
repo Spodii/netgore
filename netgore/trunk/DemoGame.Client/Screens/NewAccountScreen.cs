@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Lidgren.Network;
 using NetGore;
-using NetGore.Content;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;

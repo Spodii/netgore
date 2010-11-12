@@ -250,53 +250,53 @@ namespace DemoGame.Server.DbObjs
             {
                 case "amount":
                     return new ColumnMetadata("amount",
-                                              "The number of items involved in the transaction. Should always be greater than 0, and should only be greater for 1 for items that can stack.",
-                                              "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
+                        "The number of items involved in the transaction. Should always be greater than 0, and should only be greater for 1 for items that can stack.",
+                        "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
 
                 case "character_id":
                     return new ColumnMetadata("character_id",
-                                              "The ID of the character that performed this transaction with the shop.", "int(11)",
-                                              null, typeof(Int32), false, false, true);
+                        "The ID of the character that performed this transaction with the shop.", "int(11)", null, typeof(Int32),
+                        false, false, true);
 
                 case "cost":
                     return new ColumnMetadata("cost",
-                                              "The amount of money that was involved in this transaction (how much the shopper sold the items for, or how much they bought the items for). ",
-                                              "int(11)", null, typeof(Int32), false, false, false);
+                        "The amount of money that was involved in this transaction (how much the shopper sold the items for, or how much they bought the items for). ",
+                        "int(11)", null, typeof(Int32), false, false, false);
 
                 case "id":
                     return new ColumnMetadata("id", "", "int(10) unsigned", null, typeof(UInt32), false, true, false);
 
                 case "item_template_id":
                     return new ColumnMetadata("item_template_id",
-                                              "The ID of the item template that the event relates to. Only valid when the item involved has a set item template ID.",
-                                              "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
+                        "The ID of the item template that the event relates to. Only valid when the item involved has a set item template ID.",
+                        "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
 
                 case "map_id":
                     return new ColumnMetadata("map_id", "The ID of the map the event took place on.", "smallint(5) unsigned", null,
-                                              typeof(ushort?), true, false, true);
+                        typeof(ushort?), true, false, true);
 
                 case "sale_type":
                     return new ColumnMetadata("sale_type",
-                                              "Whether the shop sold to the user, or vise versa. If 0, the shop sold an item to the shopper. If non-zero, the shopper sold an item to a shop.",
-                                              "tinyint(4)", null, typeof(SByte), false, false, false);
+                        "Whether the shop sold to the user, or vise versa. If 0, the shop sold an item to the shopper. If non-zero, the shopper sold an item to a shop.",
+                        "tinyint(4)", null, typeof(SByte), false, false, false);
 
                 case "shop_id":
                     return new ColumnMetadata("shop_id", "The ID of the shop the event took place at.", "smallint(5) unsigned",
-                                              null, typeof(UInt16), false, false, true);
+                        null, typeof(UInt16), false, false, true);
 
                 case "when":
                     return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP",
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 case "x":
                     return new ColumnMetadata("x",
-                                              "The map X coordinate of the shopper when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map X coordinate of the shopper when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "y":
                     return new ColumnMetadata("y",
-                                              "The map Y coordinate of the shopper when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map Y coordinate of the shopper when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

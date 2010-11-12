@@ -366,7 +366,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "move_speed":
                     return new ColumnMetadata("move_speed", "", "smallint(5) unsigned", "1800", typeof(UInt16), false, false,
-                                              false);
+                        false);
 
                 case "name":
                     return new ColumnMetadata("name", "", "varchar(50)", "New NPC", typeof(String), false, false, false);

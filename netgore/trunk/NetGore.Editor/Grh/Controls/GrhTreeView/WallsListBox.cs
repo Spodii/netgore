@@ -28,7 +28,7 @@ namespace NetGore.Editor.Grhs
         static string GetDrawString(WallEntityBase item)
         {
             return string.Format("({0},{1}) [{2}x{3}]{4}", item.Position.X, item.Position.Y, item.Size.X, item.Size.Y,
-                                 item.IsPlatform ? " - Platform" : string.Empty);
+                item.IsPlatform ? " - Platform" : string.Empty);
         }
 
         /// <summary>

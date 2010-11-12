@@ -724,7 +724,7 @@ namespace DemoGame.Server
                 {
                     using (
                         var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests.Select(x => x.QuestID),
-                                                                   turnInQuests.Select(x => x.QuestID)))
+                            turnInQuests.Select(x => x.QuestID)))
                     {
                         user.Send(pw, ServerMessageType.GUI);
                     }

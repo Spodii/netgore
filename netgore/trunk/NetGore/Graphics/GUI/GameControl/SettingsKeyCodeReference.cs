@@ -56,7 +56,7 @@ namespace NetGore.Graphics.GUI
             if (!_settingsCache.TryGetValue(settings, out c))
             {
                 c = new HashCache<string, SettingsKeyCodeReference>(x => new SettingsKeyCodeReference(settings, x),
-                                                                    StringComparer.Ordinal);
+                    StringComparer.Ordinal);
                 _settingsCache.Add(settings, c);
             }
 

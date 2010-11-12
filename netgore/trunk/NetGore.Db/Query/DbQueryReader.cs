@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
-using log4net;
 using MySql.Data.MySqlClient;
 
 namespace NetGore.Db
@@ -88,7 +86,6 @@ namespace NetGore.Db
 
     sealed class DbQueryReaderContainer
     {
-
     }
 
     /// <summary>

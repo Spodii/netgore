@@ -62,7 +62,7 @@ namespace DemoGame.Server
             var settings = new DbConnectionSettings();
             _dbController =
                 settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                                                                 x => PromptEditDbSettingsFile(settings, x));
+                    x => PromptEditDbSettingsFile(settings, x));
 
             if (_dbController == null)
                 return;

@@ -118,7 +118,7 @@ namespace NetGore.Content
                 {
                     throw new ArgumentException(
                         string.Format("Found multiple suffixes for the file named `{0}` in path `{1}`. Was expecting just one.",
-                                      rootPathStr, fileName));
+                            rootPathStr, fileName));
                 }
 
                 var fileToUse = files.First();

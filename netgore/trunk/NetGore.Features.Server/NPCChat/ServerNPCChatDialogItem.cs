@@ -146,7 +146,7 @@ namespace NetGore.Features.NPCChat
                                               NPCChatConditionalCollectionBase conditionals)
         {
             Debug.Assert(_id == default(NPCChatDialogItemID) && _responses == default(IEnumerable<NPCChatResponseBase>),
-                         "Values were already set?");
+                "Values were already set?");
 
             _id = page;
             _isBranch = isBranch;

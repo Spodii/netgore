@@ -275,13 +275,9 @@ namespace NetGore
             Vector2 min;
 
             if (center)
-            {
                 min = source - new Vector2(width / 2f, height / 2f);
-            }
             else
-            {
                 min = source;
-            }
 
             return new Rectangle((int)Math.Round(min.X), (int)Math.Round(min.Y), (int)Math.Round(width), (int)Math.Round(height));
         }

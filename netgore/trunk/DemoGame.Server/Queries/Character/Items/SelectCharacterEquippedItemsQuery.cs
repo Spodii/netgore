@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Select(ItemTable.TableName, "i").AllColumns("i").Add("c.slot").InnerJoinOnColumn(
                     CharacterEquippedTable.TableName, "c", "item_id", "i", "id").Where(f.Equals("c.character_id",
-                                                                                                s.Parameterize("characterID")));
+                        s.Parameterize("characterID")));
             return q.ToString();
         }
 

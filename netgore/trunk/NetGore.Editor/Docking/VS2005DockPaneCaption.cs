@@ -343,7 +343,7 @@ namespace NetGore.Editor.Docking
                 colorText = DockPane.DockPanel.Skin.DockPaneStripSkin.ToolWindowGradient.InactiveCaptionGradient.TextColor;
 
             TextRenderer.DrawText(g, DockPane.CaptionText, TextFont, DrawHelper.RtlTransform(this, rectCaptionText), colorText,
-                                  TextFormat);
+                TextFormat);
         }
 
         protected internal override int MeasureHeight()

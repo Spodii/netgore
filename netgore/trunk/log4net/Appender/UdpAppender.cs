@@ -156,11 +156,8 @@ namespace log4net.Appender
                 if (value != 0 && (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort))
                 {
                     throw SystemInfo.CreateArgumentOutOfRangeException("value", value,
-                                                                       "The value specified is less than " +
-                                                                       IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                       " or greater than " +
-                                                                       IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                       ".");
+                        "The value specified is less than " + IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
+                        " or greater than " + IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) + ".");
                 }
                 else
                     m_localPort = value;
@@ -262,11 +259,8 @@ namespace log4net.Appender
                 if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
                 {
                     throw SystemInfo.CreateArgumentOutOfRangeException("value", value,
-                                                                       "The value specified is less than " +
-                                                                       IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                       " or greater than " +
-                                                                       IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                       ".");
+                        "The value specified is less than " + IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
+                        " or greater than " + IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) + ".");
                 }
                 else
                     m_remotePort = value;
@@ -348,20 +342,14 @@ namespace log4net.Appender
             else if (RemotePort < IPEndPoint.MinPort || RemotePort > IPEndPoint.MaxPort)
             {
                 throw SystemInfo.CreateArgumentOutOfRangeException("this.RemotePort", RemotePort,
-                                                                   "The RemotePort is less than " +
-                                                                   IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                   " or greater than " +
-                                                                   IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                   ".");
+                    "The RemotePort is less than " + IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
+                    " or greater than " + IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) + ".");
             }
             else if (LocalPort != 0 && (LocalPort < IPEndPoint.MinPort || LocalPort > IPEndPoint.MaxPort))
             {
                 throw SystemInfo.CreateArgumentOutOfRangeException("this.LocalPort", LocalPort,
-                                                                   "The LocalPort is less than " +
-                                                                   IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                   " or greater than " +
-                                                                   IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) +
-                                                                   ".");
+                    "The LocalPort is less than " + IPEndPoint.MinPort.ToString(NumberFormatInfo.InvariantInfo) +
+                    " or greater than " + IPEndPoint.MaxPort.ToString(NumberFormatInfo.InvariantInfo) + ".");
             }
             else
             {

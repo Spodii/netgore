@@ -202,7 +202,7 @@ namespace NetGore.Editor.Docking
             {
                 var rect = ClientRectangle;
                 return new Rectangle(rect.X, rect.Top + DocumentStripGapTop, rect.Width,
-                                     rect.Height - DocumentStripGapTop - ToolWindowStripGapBottom);
+                    rect.Height - DocumentStripGapTop - ToolWindowStripGapBottom);
             }
         }
 
@@ -212,7 +212,7 @@ namespace NetGore.Editor.Docking
             {
                 var rect = ClientRectangle;
                 return new Rectangle(rect.X, rect.Top + ToolWindowStripGapTop, rect.Width,
-                                     rect.Height - ToolWindowStripGapTop - ToolWindowStripGapBottom);
+                    rect.Height - ToolWindowStripGapTop - ToolWindowStripGapBottom);
             }
         }
 
@@ -500,10 +500,10 @@ namespace NetGore.Editor.Docking
 
             if (DockPane.DockPanel.DocumentTabStripLocation == DocumentTabStripLocation.Bottom)
                 g.DrawLine(PenDocumentTabActiveBorder, rectTabStrip.Left, rectTabStrip.Top + 1, rectTabStrip.Right,
-                           rectTabStrip.Top + 1);
+                    rectTabStrip.Top + 1);
             else
                 g.DrawLine(PenDocumentTabActiveBorder, rectTabStrip.Left, rectTabStrip.Bottom - 1, rectTabStrip.Right,
-                           rectTabStrip.Bottom - 1);
+                    rectTabStrip.Bottom - 1);
 
             g.SetClip(DrawHelper.RtlTransform(this, rectTabOnly));
             if (tabActive != null)
@@ -532,8 +532,7 @@ namespace NetGore.Editor.Docking
                 return;
 
             var rectIcon = new Rectangle(rect.X + DocumentIconGapLeft,
-                                         rect.Y + rect.Height - 1 - DocumentIconGapBottom - DocumentIconHeight, DocumentIconWidth,
-                                         DocumentIconHeight);
+                rect.Y + rect.Height - 1 - DocumentIconGapBottom - DocumentIconHeight, DocumentIconWidth, DocumentIconHeight);
             var rectText = rectIcon;
             if (DockPane.DockPanel.ShowDocumentIcon)
             {
@@ -587,8 +586,8 @@ namespace NetGore.Editor.Docking
         void DrawTab_ToolWindow(System.Drawing.Graphics g, TabVS2005 tab, Rectangle rect)
         {
             var rectIcon = new Rectangle(rect.X + ToolWindowImageGapLeft,
-                                         rect.Y + rect.Height - 1 - ToolWindowImageGapBottom - ToolWindowImageHeight,
-                                         ToolWindowImageWidth, ToolWindowImageHeight);
+                rect.Y + rect.Height - 1 - ToolWindowImageGapBottom - ToolWindowImageHeight, ToolWindowImageWidth,
+                ToolWindowImageHeight);
             var rectText = rectIcon;
             rectText.X += rectIcon.Width + ToolWindowImageGapRight;
             rectText.Width = rect.Width - rectIcon.Width - ToolWindowImageGapLeft - ToolWindowImageGapRight -
@@ -671,7 +670,7 @@ namespace NetGore.Editor.Docking
             var height = GetTabRectangle_Document(index).Height;
 
             var sizeText = TextRenderer.MeasureText(content.DockHandler.TabText, BoldFont, new Size(DocumentTabMaxWidth, height),
-                                                    DocumentTextFormat);
+                DocumentTextFormat);
 
             if (DockPane.DockPanel.ShowDocumentIcon)
                 return sizeText.Width + DocumentIconWidth + DocumentIconGapLeft + DocumentIconGapRight + DocumentTextGapRight;
@@ -775,13 +774,13 @@ namespace NetGore.Editor.Docking
                         // It is not needed so it has been commented out.
                         //GraphicsPath.AddLine(rect.Right, rect.Bottom, rect.Right + rect.Height / 2, rect.Bottom);
                         GraphicsPath.AddLine(rect.Right + rect.Height / 2, rect.Top, rect.Right - rect.Height / 2 + curveSize / 2,
-                                             rect.Bottom - curveSize / 2);
+                            rect.Bottom - curveSize / 2);
                     }
                     else
                     {
                         GraphicsPath.AddLine(rect.Right, rect.Bottom, rect.Right + rect.Height / 2, rect.Bottom);
                         GraphicsPath.AddLine(rect.Right + rect.Height / 2, rect.Bottom,
-                                             rect.Right - rect.Height / 2 + curveSize / 2, rect.Top + curveSize / 2);
+                            rect.Right - rect.Height / 2 + curveSize / 2, rect.Top + curveSize / 2);
                     }
                 }
                 else
@@ -792,13 +791,13 @@ namespace NetGore.Editor.Docking
                         // It is not needed so it has been commented out.
                         //GraphicsPath.AddLine(rect.Left, rect.Top, rect.Left - rect.Height / 2, rect.Top);
                         GraphicsPath.AddLine(rect.Left - rect.Height / 2, rect.Top, rect.Left + rect.Height / 2 - curveSize / 2,
-                                             rect.Bottom - curveSize / 2);
+                            rect.Bottom - curveSize / 2);
                     }
                     else
                     {
                         GraphicsPath.AddLine(rect.Left, rect.Bottom, rect.Left - rect.Height / 2, rect.Bottom);
                         GraphicsPath.AddLine(rect.Left - rect.Height / 2, rect.Bottom, rect.Left + rect.Height / 2 - curveSize / 2,
-                                             rect.Top + curveSize / 2);
+                            rect.Top + curveSize / 2);
                     }
                 }
             }
@@ -811,13 +810,13 @@ namespace NetGore.Editor.Docking
                     {
                         GraphicsPath.AddLine(rect.Right, rect.Top, rect.Right, rect.Top + rect.Height / 2);
                         GraphicsPath.AddLine(rect.Right, rect.Top + rect.Height / 2, rect.Right - rect.Height / 2 + curveSize / 2,
-                                             rect.Bottom - curveSize / 2);
+                            rect.Bottom - curveSize / 2);
                     }
                     else
                     {
                         GraphicsPath.AddLine(rect.Right, rect.Bottom, rect.Right, rect.Bottom - rect.Height / 2);
                         GraphicsPath.AddLine(rect.Right, rect.Bottom - rect.Height / 2,
-                                             rect.Right - rect.Height / 2 + curveSize / 2, rect.Top + curveSize / 2);
+                            rect.Right - rect.Height / 2 + curveSize / 2, rect.Top + curveSize / 2);
                     }
                 }
                 else
@@ -826,13 +825,13 @@ namespace NetGore.Editor.Docking
                     {
                         GraphicsPath.AddLine(rect.Left, rect.Top, rect.Left, rect.Top + rect.Height / 2);
                         GraphicsPath.AddLine(rect.Left, rect.Top + rect.Height / 2, rect.Left + rect.Height / 2 - curveSize / 2,
-                                             rect.Bottom - curveSize / 2);
+                            rect.Bottom - curveSize / 2);
                     }
                     else
                     {
                         GraphicsPath.AddLine(rect.Left, rect.Bottom, rect.Left, rect.Bottom - rect.Height / 2);
                         GraphicsPath.AddLine(rect.Left, rect.Bottom - rect.Height / 2, rect.Left + rect.Height / 2 - curveSize / 2,
-                                             rect.Top + curveSize / 2);
+                            rect.Top + curveSize / 2);
                     }
                 }
             }
@@ -843,7 +842,7 @@ namespace NetGore.Editor.Docking
                 {
                     // Draws the bottom horizontal line (short side)
                     GraphicsPath.AddLine(rect.Right - rect.Height / 2 - curveSize / 2, rect.Bottom, rect.Left + curveSize / 2,
-                                         rect.Bottom);
+                        rect.Bottom);
 
                     // Drawing the rounded corner is not necessary. The path is automatically connected
                     //GraphicsPath.AddArc(new Rectangle(rect.Left, rect.Top, curveSize, curveSize), 180, 90);
@@ -852,7 +851,7 @@ namespace NetGore.Editor.Docking
                 {
                     // Draws the bottom horizontal line (short side)
                     GraphicsPath.AddLine(rect.Right - rect.Height / 2 - curveSize / 2, rect.Top, rect.Left + curveSize / 2,
-                                         rect.Top);
+                        rect.Top);
                     GraphicsPath.AddArc(new Rectangle(rect.Left, rect.Top, curveSize, curveSize), 180, 90);
                 }
             }
@@ -862,7 +861,7 @@ namespace NetGore.Editor.Docking
                 {
                     // Draws the bottom horizontal line (short side)
                     GraphicsPath.AddLine(rect.Left + rect.Height / 2 + curveSize / 2, rect.Bottom, rect.Right - curveSize / 2,
-                                         rect.Bottom);
+                        rect.Bottom);
 
                     // Drawing the rounded corner is not necessary. The path is automatically connected
                     //GraphicsPath.AddArc(new Rectangle(rect.Right - curveSize, rect.Bottom, curveSize, curveSize), 90, -90);
@@ -871,7 +870,7 @@ namespace NetGore.Editor.Docking
                 {
                     // Draws the top horizontal line (short side)
                     GraphicsPath.AddLine(rect.Left + rect.Height / 2 + curveSize / 2, rect.Top, rect.Right - curveSize / 2,
-                                         rect.Top);
+                        rect.Top);
 
                     // Draws the rounded corner oppposite the angled side
                     GraphicsPath.AddArc(new Rectangle(rect.Right - curveSize, rect.Top, curveSize, curveSize), -90, 90);

@@ -166,7 +166,7 @@ namespace DemoGame.Server
             lock (_instancedMapsSync)
             {
                 Debug.Assert(!_instancedMaps.Contains(instance),
-                             string.Format("MapInstance `{0}` has already been added to the world `{1}`!", instance, this));
+                    string.Format("MapInstance `{0}` has already been added to the world `{1}`!", instance, this));
 
                 _instancedMaps.Add(instance);
             }

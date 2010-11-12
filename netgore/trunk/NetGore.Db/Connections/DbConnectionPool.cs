@@ -26,7 +26,7 @@ namespace NetGore.Db
         {
             _connectionString = connectionString;
             _pool = new ObjectPool<PooledDbConnection>(CreateNewObj, InitializePooledConnection, DeinitializePooledConnection,
-                                                       true);
+                true);
 
             // Create our DbQueryRunner using a connection NOT in the pool (since the connection will remain opened)
             var conn = CreateConnection(ConnectionString);
@@ -62,43 +62,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates and returns a <see cref="DbParameter"/>
-        /// that is compatible with the type of database used by connections in this pool.
-        /// </summary>
-        /// <param name="parameterName">Reference name of the parameter.</param>
-        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
-        protected abstract DbParameter HandleCreateParameter(string parameterName);
-
-        /// <summary>
-        /// Creates and returns a <see cref="DbParameter"/> that is compatible with the type of database
-        /// used by connections in this pool.
-        /// </summary>
-        /// <param name="parameterName">Reference name of the parameter.</param>
-        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
-        public DbParameter CreateParameter(string parameterName)
-        {
-            return HandleCreateParameter(parameterName);
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by
-        /// this object. If null, statistics will not be tracked.
-        /// </summary>
-        public IQueryStatsTracker QueryStats
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IDbQueryRunner"/> to use for this pool of database connections.
-        /// </summary>
-        IDbQueryRunner IDbConnectionPool.QueryRunner
-        {
-            get { return _queryRunner; }
-        }
-
-        /// <summary>
         /// Performs the deinitialization of a <see cref="PooledDbConnection"/> as it is released back into the object pool.
         /// </summary>
         /// <param name="conn">The <see cref="PooledDbConnection"/> to deinitialize.</param>
@@ -106,6 +69,14 @@ namespace NetGore.Db
         {
             conn.Connection.Close();
         }
+
+        /// <summary>
+        /// When overridden in the derived class, creates and returns a <see cref="DbParameter"/>
+        /// that is compatible with the type of database used by connections in this pool.
+        /// </summary>
+        /// <param name="parameterName">Reference name of the parameter.</param>
+        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
+        protected abstract DbParameter HandleCreateParameter(string parameterName);
 
         /// <summary>
         /// Performs the initialization of a <see cref="PooledDbConnection"/> as it is grabbed from the object pool.
@@ -133,6 +104,20 @@ namespace NetGore.Db
         public abstract IQueryBuilder QueryBuilder { get; }
 
         /// <summary>
+        /// Gets the <see cref="IDbQueryRunner"/> to use for this pool of database connections.
+        /// </summary>
+        IDbQueryRunner IDbConnectionPool.QueryRunner
+        {
+            get { return _queryRunner; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by
+        /// this object. If null, statistics will not be tracked.
+        /// </summary>
+        public IQueryStatsTracker QueryStats { get; set; }
+
+        /// <summary>
         /// Gets a free object instance from the pool.
         /// </summary>
         /// <returns>A free object instance from the pool.</returns>
@@ -147,6 +132,17 @@ namespace NetGore.Db
         public void Clear()
         {
             _pool.Clear();
+        }
+
+        /// <summary>
+        /// Creates and returns a <see cref="DbParameter"/> that is compatible with the type of database
+        /// used by connections in this pool.
+        /// </summary>
+        /// <param name="parameterName">Reference name of the parameter.</param>
+        /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
+        public DbParameter CreateParameter(string parameterName)
+        {
+            return HandleCreateParameter(parameterName);
         }
 
         /// <summary>

@@ -76,7 +76,7 @@ namespace NetGore.Editor.WinForms
 
             // Show the original value
             MessageBox.Show(string.Format("Original value for `{0}`: {1}", asAdvPropDesc.DisplayName,
-                                          asAdvPropDesc.OriginalValue ?? "[NULL]"));
+                asAdvPropDesc.OriginalValue ?? "[NULL]"));
         }
 
         /// <summary>

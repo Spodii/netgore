@@ -959,8 +959,7 @@ namespace log4net.Appender
 
                     if (
                         !(last.ToString(m_datePattern, DateTimeFormatInfo.InvariantInfo).Equals(m_now.ToString(m_datePattern,
-                                                                                                               DateTimeFormatInfo.
-                                                                                                                   InvariantInfo))))
+                            DateTimeFormatInfo.InvariantInfo))))
                     {
                         m_scheduledFilename = m_baseFileName + last.ToString(m_datePattern, DateTimeFormatInfo.InvariantInfo);
                         LogLog.Debug("RollingFileAppender: Initial roll over to [" + m_scheduledFilename + "]");
@@ -1028,7 +1027,7 @@ namespace log4net.Appender
                     {
                         // Unable to move or delete the file
                         ErrorHandler.Error("Exception while deleting file [" + fileToDelete + "]", deleteEx,
-                                           ErrorCode.GenericFailure);
+                            ErrorCode.GenericFailure);
                     }
                     else
                     {
@@ -1088,7 +1087,7 @@ namespace log4net.Appender
                 catch (Exception moveEx)
                 {
                     ErrorHandler.Error("Exception while rolling file [" + fromFile + "] -> [" + toFile + "]", moveEx,
-                                       ErrorCode.GenericFailure);
+                        ErrorCode.GenericFailure);
                 }
             }
             else

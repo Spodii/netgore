@@ -323,11 +323,11 @@ namespace SFML.Graphics
         {
             var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1} Width:{2} Height:{3}}}",
-                                 new object[]
-                                 {
-                                     X.ToString(currentCulture), Y.ToString(currentCulture), Width.ToString(currentCulture),
-                                     Height.ToString(currentCulture)
-                                 });
+                new object[]
+                {
+                    X.ToString(currentCulture), Y.ToString(currentCulture), Width.ToString(currentCulture),
+                    Height.ToString(currentCulture)
+                });
         }
 
         /// <summary>Gets the hash code for this object.</summary>

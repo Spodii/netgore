@@ -840,7 +840,7 @@ namespace NetGore.Db.ClassCreator
                                   bool isVirtual, bool isStatic)
         {
             return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility,
-                               setterVisibility, member, isVirtual, isStatic);
+                setterVisibility, member, isVirtual, isStatic);
         }
 
         /// <summary>

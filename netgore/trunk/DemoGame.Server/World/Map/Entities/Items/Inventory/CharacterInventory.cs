@@ -33,14 +33,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets if the state of this <see cref="CharacterInventory"/> is persistent.
-        /// </summary>
-        public bool IsPersistent
-        {
-            get { return Character.IsPersistent; }
-        }
-
-        /// <summary>
         /// Gets the Character that this Inventory belongs to.
         /// </summary>
         public Character Character
@@ -54,6 +46,14 @@ namespace DemoGame.Server
         public IDbController DbController
         {
             get { return Character.DbController; }
+        }
+
+        /// <summary>
+        /// Gets if the state of this <see cref="CharacterInventory"/> is persistent.
+        /// </summary>
+        public bool IsPersistent
+        {
+            get { return Character.IsPersistent; }
         }
 
         /// <summary>
@@ -213,13 +213,9 @@ namespace DemoGame.Server
             {
                 // Update the inventory slot in the database
                 if (newItem == null)
-                {
                     DbController.GetQuery<DeleteCharacterInventoryItemQuery>().Execute(Character.ID, slot);
-                }
                 else
-                {
                     DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
-                }
             }
 
             // Prepare the slot for updating

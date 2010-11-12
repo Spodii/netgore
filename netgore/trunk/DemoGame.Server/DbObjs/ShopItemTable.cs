@@ -163,7 +163,7 @@ namespace DemoGame.Server.DbObjs
             {
                 case "item_template_id":
                     return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true,
-                                              false);
+                        false);
 
                 case "shop_id":
                     return new ColumnMetadata("shop_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true, false);

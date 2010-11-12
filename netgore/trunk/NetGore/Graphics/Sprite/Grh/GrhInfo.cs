@@ -52,7 +52,7 @@ namespace NetGore.Graphics
         {
             _catDic = new Dictionary<SpriteCategory, Dictionary<SpriteTitle, GrhData>>();
             Debug.Assert(EqualityComparer<SpriteCategory>.Default.Equals("asdf", "ASDF"),
-                         "Sprite category must not be case sensitive.");
+                "Sprite category must not be case sensitive.");
             Debug.Assert(EqualityComparer<SpriteTitle>.Default.Equals("asdf", "ASDF"), "Sprite title must not be case sensitive.");
         }
 
@@ -139,7 +139,7 @@ namespace NetGore.Graphics
 
             // Make sure the GrhData is only in the list once
             Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1,
-                         "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
+                "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
         }
 
         /// <summary>
@@ -606,9 +606,9 @@ namespace NetGore.Graphics
             {
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(),
-                                    typeof(T).Name);
+                        typeof(T).Name);
                 Debug.Fail(string.Format(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(),
-                                         typeof(T).Name));
+                    typeof(T).Name));
                 failedLoads.Clear();
             }
         }

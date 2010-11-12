@@ -36,9 +36,7 @@ namespace DemoGame.Server.Queries
             var f = qb.Functions;
             var q =
                 qb.Insert(WorldStatsCountNpcKillUserTable.TableName).AddParam("user_id", "userID").AddParam("npc_template_id",
-                                                                                                            "npcTID").Add(
-                                                                                                                "count", "1").ODKU
-                    ().Add("count", f.Add(s.EscapeColumn("count"), "1"));
+                    "npcTID").Add("count", "1").ODKU().Add("count", f.Add(s.EscapeColumn("count"), "1"));
             return q.ToString();
         }
 

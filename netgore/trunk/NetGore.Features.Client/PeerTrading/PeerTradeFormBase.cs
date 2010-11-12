@@ -17,8 +17,8 @@ namespace NetGore.Features.PeerTrading
     /// <typeparam name="TItem">The type of item.</typeparam>
     /// <typeparam name="TItemInfo">The type describing item information.</typeparam>
     [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
-    public abstract class PeerTradeFormBase<TChar, TItem, TItemInfo> : Form where TChar : Entity where TItem : Entity
-                                                                            where TItemInfo : class
+    public abstract class PeerTradeFormBase<TChar, TItem, TItemInfo> : Form
+        where TChar : Entity where TItem : Entity where TItemInfo : class
     {
         readonly Button _acceptButton;
 

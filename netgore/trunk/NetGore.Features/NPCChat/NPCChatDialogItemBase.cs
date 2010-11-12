@@ -90,7 +90,7 @@ namespace NetGore.Features.NPCChat
         {
             if (!IsBranch)
                 Debug.Assert(Conditionals == null || Conditionals.Count() == 0,
-                             "Conditionals should never be set for a non-branch.");
+                    "Conditionals should never be set for a non-branch.");
         }
 
         [Conditional("DEBUG")]

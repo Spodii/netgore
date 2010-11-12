@@ -103,7 +103,7 @@ namespace SFML.Graphics
         {
             var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{Normal:{0} D:{1}}}",
-                                 new object[] { Normal.ToString(), D.ToString(currentCulture) });
+                new object[] { Normal.ToString(), D.ToString(currentCulture) });
         }
 
         /// <summary>Changes the coefficients of the Normal vector of this Plane to make it of unit length.</summary>

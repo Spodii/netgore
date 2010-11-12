@@ -58,7 +58,7 @@ namespace DemoGame.Editor
             var dbConnSettings = new DbConnectionSettings();
             _dbController =
                 dbConnSettings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                                                                       x => dbConnSettings.PromptEditFileMessageBox(x));
+                    x => dbConnSettings.PromptEditFileMessageBox(x));
 
             _defaultRenderFont = ContentManager.LoadFont("Font/Arial", 16, ContentLevel.Global);
 

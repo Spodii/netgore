@@ -20,9 +20,8 @@ namespace NetGore.Features.WorldStats
     /// <typeparam name="TNPC">The type of NPC character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
     [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
-    public abstract class WorldStatsTracker<TUser, TNPC, TItem> : IWorldStatsTracker<TUser, TNPC, TItem> where TUser : class
-                                                                                                         where TNPC : class
-                                                                                                         where TItem : class
+    public abstract class WorldStatsTracker<TUser, TNPC, TItem> : IWorldStatsTracker<TUser, TNPC, TItem>
+        where TUser : class where TNPC : class where TItem : class
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

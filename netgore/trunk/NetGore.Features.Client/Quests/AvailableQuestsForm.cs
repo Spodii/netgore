@@ -210,8 +210,7 @@ namespace NetGore.Features.Quests
 
             _lstQuests.Position = new Vector2(_padding, _lblAvailableQuests.Position.Y + _lblAvailableQuests.Size.Y + _padding);
             _lstQuests.ClientSize = new Vector2(cs.X - _lstQuests.Border.Width - _padding2,
-                                                (Math.Max(1, _lastItemsListSize) * _lstQuests.ItemHeight) +
-                                                _lstQuests.Border.Height + 5);
+                (Math.Max(1, _lastItemsListSize) * _lstQuests.ItemHeight) + _lstQuests.Border.Height + 5);
 
             Debug.Assert(_lstQuests.ItemsPerPage >= _lastItemsListSize);
 

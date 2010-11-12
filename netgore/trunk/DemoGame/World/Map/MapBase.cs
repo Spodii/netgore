@@ -138,7 +138,7 @@ namespace DemoGame
                 throw new ArgumentNullException("entity");
 
             Debug.Assert(!_dynamicEntities.Values.Contains(entity),
-                         string.Format("`{0}` is already in the DynamicEntity list!", entity));
+                string.Format("`{0}` is already in the DynamicEntity list!", entity));
 
             var existingDE = _dynamicEntities[(int)mapEntityIndex];
             if (existingDE != null)
@@ -184,7 +184,7 @@ namespace DemoGame
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
                 Debug.Assert(!_dynamicEntities.Values.Contains(dynamicEntity),
-                             string.Format("`{0}` is already in the DynamicEntity list!", entity));
+                    string.Format("`{0}` is already in the DynamicEntity list!", entity));
 
                 var indexRaw = _dynamicEntities.Add(dynamicEntity);
                 var index = new MapEntityIndex(indexRaw);
@@ -646,8 +646,7 @@ namespace DemoGame
             // Intersections were found, so we have to find a valid position
             // First, grab the walls in the region around the cb
             var nearbyWallsRect = new Rectangle(r.X - _findValidPlacementPadding, r.Y - _findValidPlacementPadding,
-                                                r.Width + (_findValidPlacementPadding * 2),
-                                                r.Height + (_findValidPlacementPadding * 2));
+                r.Width + (_findValidPlacementPadding * 2), r.Height + (_findValidPlacementPadding * 2));
             var nearbyWalls = Spatial.GetMany<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
@@ -845,7 +844,7 @@ namespace DemoGame
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
                 Debug.Assert(_dynamicEntities[(int)dynamicEntity.MapEntityIndex] == dynamicEntity,
-                             string.Format("DynamicEntity `{0}` is holding an invalid MapEntityIndex!", dynamicEntity));
+                    string.Format("DynamicEntity `{0}` is holding an invalid MapEntityIndex!", dynamicEntity));
 
                 _dynamicEntities[(int)dynamicEntity.MapEntityIndex] = null;
             }
@@ -1031,7 +1030,7 @@ namespace DemoGame
 
             if (newSize.X > ushort.MaxValue || newSize.Y > ushort.MaxValue)
                 throw new ArgumentOutOfRangeException("newSize",
-                                                      "Map sizes larger than ushort.MaxValue are not supported by default.");
+                    "Map sizes larger than ushort.MaxValue are not supported by default.");
 
             // Remove any objects outside of the new dimensions
             if (Size.X > newSize.X || Size.Y > newSize.Y)

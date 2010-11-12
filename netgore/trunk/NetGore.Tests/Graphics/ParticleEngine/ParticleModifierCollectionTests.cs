@@ -14,14 +14,14 @@ namespace NetGore.Tests.Graphics.ParticleEngine
         static void ConsistencyAsserts(ParticleModifierCollection c)
         {
             Assert.AreEqual(c.Where(x => x.ProcessOnRelease).Count(), c.ReleaseModifiers.Count(),
-                            "Sub-list has too many or too few elements.");
+                "Sub-list has too many or too few elements.");
             Assert.AreEqual(c.Where(x => x.ProcessOnUpdate).Count(), c.UpdateModifiers.Count(),
-                            "Sub-list has too many or too few elements.");
+                "Sub-list has too many or too few elements.");
 
             Assert.IsTrue(c.Where(x => x.ProcessOnRelease).ContainSameElements(c.ReleaseModifiers),
-                          "Sub-list does not match main list for given value.");
+                "Sub-list does not match main list for given value.");
             Assert.IsTrue(c.Where(x => x.ProcessOnUpdate).ContainSameElements(c.UpdateModifiers),
-                          "Sub-list does not match main list for given value.");
+                "Sub-list does not match main list for given value.");
 
             Assert.IsFalse(c.Any(x => x == null), "Shouldn't be able to add null items.");
 

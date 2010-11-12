@@ -211,30 +211,30 @@ namespace DemoGame.Server.DbObjs
             {
                 case "account_id":
                     return new ColumnMetadata("account_id", "The account that this ban is for.", "int(11)", null, typeof(Int32),
-                                              false, false, true);
+                        false, false, true);
 
                 case "end_time":
                     return new ColumnMetadata("end_time", "When this ban ends.", "datetime", null, typeof(DateTime), false, false,
-                                              false);
+                        false);
 
                 case "expired":
                     return new ColumnMetadata("expired", "If the ban is expired. A non-zero value means true.",
-                                              "tinyint(1) unsigned", "0", typeof(Boolean), false, false, true);
+                        "tinyint(1) unsigned", "0", typeof(Boolean), false, false, true);
 
                 case "id":
                     return new ColumnMetadata("id", "The unique ban ID.", "int(11)", null, typeof(Int32), false, true, false);
 
                 case "issued_by":
                     return new ColumnMetadata("issued_by", "Name of the person or system that issued this ban.", "varchar(255)",
-                                              null, typeof(String), true, false, false);
+                        null, typeof(String), true, false, false);
 
                 case "reason":
                     return new ColumnMetadata("reason", "The reason why this account was banned.", "varchar(255)", null,
-                                              typeof(String), false, false, false);
+                        typeof(String), false, false, false);
 
                 case "start_time":
                     return new ColumnMetadata("start_time", "When this ban started.", "datetime", null, typeof(DateTime), false,
-                                              false, false);
+                        false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

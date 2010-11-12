@@ -1,4 +1,6 @@
-﻿namespace NetGore.Db
+﻿using System.Linq;
+
+namespace NetGore.Db
 {
     /// <summary>
     /// Interface for an object that can mutate the values of an <see cref="IQueryStats"/>.

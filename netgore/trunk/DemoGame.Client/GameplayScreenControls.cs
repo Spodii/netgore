@@ -45,10 +45,10 @@ namespace DemoGame.Client
 #endif
 
             CreateAndAdd(GameControlsKeys.MoveLeft, minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
-                         HandleGameControl_MoveLeft);
+                HandleGameControl_MoveLeft);
 
             CreateAndAdd(GameControlsKeys.MoveRight, minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
-                         HandleGameControl_MoveRight);
+                HandleGameControl_MoveRight);
 
             CreateAndAdd(GameControlsKeys.Attack, minAttackRate, CanUserMove, HandleGameControl_Attack);
 
@@ -70,9 +70,9 @@ namespace DemoGame.Client
 
             CreateAndAdd(GameControlsKeys.EmoteEllipsis, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Ellipsis));
             CreateAndAdd(GameControlsKeys.EmoteExclamation, minEmoteRate, () => true,
-                         x => HandleGameControl_Emote(Emoticon.Exclamation));
+                x => HandleGameControl_Emote(Emoticon.Exclamation));
             CreateAndAdd(GameControlsKeys.EmoteHeartbroken, minEmoteRate, () => true,
-                         x => HandleGameControl_Emote(Emoticon.Heartbroken));
+                x => HandleGameControl_Emote(Emoticon.Heartbroken));
             CreateAndAdd(GameControlsKeys.EmoteHearts, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Hearts));
             CreateAndAdd(GameControlsKeys.EmoteMeat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
             CreateAndAdd(GameControlsKeys.EmoteQuestion, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Question));

@@ -35,10 +35,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(GuildMemberTable.TableName, "t1").AllColumns("t1").InnerJoinOnColumn(CharacterTable.TableName, "t2",
-                                                                                               "id", "t1", "character_id").Where(
-                                                                                                   f.Equals(
-                                                                                                       s.EscapeColumn("t2.name"),
-                                                                                                       s.Parameterize("name")));
+                    "id", "t1", "character_id").Where(f.Equals(s.EscapeColumn("t2.name"), s.Parameterize("name")));
             return q.ToString();
         }
 

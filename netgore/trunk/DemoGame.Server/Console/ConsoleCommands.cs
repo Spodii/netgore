@@ -89,7 +89,7 @@ namespace DemoGame.Server
             AccountID accountID;
             GameMessage failReason;
             var success = Server.UserAccountManager.TryCreateAccount(null, accountName, accountPassword, email, out accountID,
-                                                                     out failReason);
+                out failReason);
 
             if (success)
                 return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);
@@ -159,7 +159,7 @@ namespace DemoGame.Server
                 return string.Format("Item `{0}` is equipped by Character `{1}`.", item, ((CharacterEquipped)source).Character);
             else if (source is CharacterInventory)
                 return string.Format("Item `{0}` is in the inventory of Character `{1}`.", item,
-                                     ((CharacterInventory)source).Character);
+                    ((CharacterInventory)source).Character);
             else
                 return string.Format("Item `{0}` found at unknown source `{1}`.", item, source);
         }

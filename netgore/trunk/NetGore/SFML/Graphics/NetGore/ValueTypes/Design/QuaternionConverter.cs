@@ -48,7 +48,7 @@ namespace SFML.Graphics.Design
             {
                 var quaternion2 = (Quaternion)value;
                 return ConvertFromValues(context, culture,
-                                         new float[] { quaternion2.X, quaternion2.Y, quaternion2.Z, quaternion2.W });
+                    new float[] { quaternion2.X, quaternion2.Y, quaternion2.Z, quaternion2.W });
             }
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Quaternion))
             {
@@ -57,7 +57,7 @@ namespace SFML.Graphics.Design
                     typeof(Quaternion).GetConstructor(new Type[] { typeof(float), typeof(float), typeof(float), typeof(float) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor,
-                                                  new object[] { quaternion.X, quaternion.Y, quaternion.Z, quaternion.W });
+                        new object[] { quaternion.X, quaternion.Y, quaternion.Z, quaternion.W });
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
@@ -70,7 +70,7 @@ namespace SFML.Graphics.Design
             if (propertyValues == null)
                 throw new ArgumentNullException("propertyValues", FrameworkMessages.NullNotAllowed);
             return new Quaternion((float)propertyValues["X"], (float)propertyValues["Y"], (float)propertyValues["Z"],
-                                  (float)propertyValues["W"]);
+                (float)propertyValues["W"]);
         }
     }
 }

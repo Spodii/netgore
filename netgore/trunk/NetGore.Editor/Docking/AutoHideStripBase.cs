@@ -145,15 +145,15 @@ namespace NetGore.Editor.Docking
             else if (dockState == DockState.DockBottomAutoHide && PanesBottom.Count > 0)
             {
                 return new Rectangle(RectangleBottomLeft.Width, Height - height,
-                                     Width - RectangleBottomLeft.Width - RectangleBottomRight.Width, height);
+                    Width - RectangleBottomLeft.Width - RectangleBottomRight.Width, height);
             }
             else if (dockState == DockState.DockLeftAutoHide && PanesLeft.Count > 0)
                 return new Rectangle(0, RectangleTopLeft.Width, height,
-                                     Height - RectangleTopLeft.Height - RectangleBottomLeft.Height);
+                    Height - RectangleTopLeft.Height - RectangleBottomLeft.Height);
             else if (dockState == DockState.DockRightAutoHide && PanesRight.Count > 0)
             {
                 return new Rectangle(Width - height, RectangleTopRight.Width, height,
-                                     Height - RectangleTopRight.Height - RectangleBottomRight.Height);
+                    Height - RectangleTopRight.Height - RectangleBottomRight.Height);
             }
             else
                 return Rectangle.Empty;

@@ -243,43 +243,43 @@ namespace DemoGame.Server.DbObjs
 
                 case "map_id":
                     return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned",
-                                              null, typeof(ushort?), true, false, true);
+                        null, typeof(ushort?), true, false, true);
 
                 case "npc_template_id":
                     return new ColumnMetadata("npc_template_id",
-                                              "The template ID of the NPC. Only valid when the NPC has a template ID set.",
-                                              "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
+                        "The template ID of the NPC. Only valid when the NPC has a template ID set.", "smallint(5) unsigned", null,
+                        typeof(ushort?), true, false, true);
 
                 case "npc_x":
                     return new ColumnMetadata("npc_x",
-                                              "The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "npc_y":
                     return new ColumnMetadata("npc_y",
-                                              "The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "user_id":
                     return new ColumnMetadata("user_id", "The ID of the user.", "int(11)", null, typeof(Int32), false, false, true);
 
                 case "user_level":
                     return new ColumnMetadata("user_level", "The level of the user was when this event took place.",
-                                              "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
+                        "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
 
                 case "user_x":
                     return new ColumnMetadata("user_x",
-                                              "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "user_y":
                     return new ColumnMetadata("user_y",
-                                              "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.",
-                                              "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
+                        "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, false, false);
 
                 case "when":
                     return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP",
-                                              typeof(DateTime), false, false, false);
+                        typeof(DateTime), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

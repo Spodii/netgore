@@ -40,7 +40,7 @@ namespace NetGore.Editor.Docking
                 return;
 
             this[0].NestedDockingStatus.SetDisplayingBounds(Container.DisplayingRectangle, Container.DisplayingRectangle,
-                                                            Rectangle.Empty);
+                Rectangle.Empty);
 
             for (var i = 1; i < Count; i++)
             {
@@ -153,7 +153,7 @@ namespace NetGore.Editor.Docking
                 Items[IndexOf(pane)] = lastNestedPane;
                 var lastNestedDock = lastNestedPane.NestedDockingStatus;
                 lastNestedDock.SetDisplayingStatus(true, statusPane.DisplayingPreviousPane, statusPane.DisplayingAlignment,
-                                                   statusPane.DisplayingProportion);
+                    statusPane.DisplayingProportion);
                 for (var i = indexLastNestedPane - 1; i > IndexOf(lastNestedPane); i--)
                 {
                     var status = this[i].NestedDockingStatus;

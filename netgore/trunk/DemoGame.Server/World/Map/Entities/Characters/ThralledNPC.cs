@@ -27,7 +27,7 @@ namespace DemoGame.Server
 
             if (log.IsDebugEnabled)
                 log.DebugFormat("Created ThralledNPC `{0}` on map `{1}` at `{2}` with template `{3}`.", this, Map, Position,
-                                template);
+                    template);
         }
 
         /// <summary>

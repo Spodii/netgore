@@ -11,6 +11,11 @@ namespace DemoGame
     public static class CommonConfig
     {
         /// <summary>
+        /// The number of seconds of non-response before disconnecting because of time out.
+        /// </summary>
+        public const float ConnectionTimeout = 20000; // TODO: !! Temp!
+
+        /// <summary>
         /// The string used to identify this application over the network. The actual string isn't too important, but it is recommended
         /// you keep it relatively short. Only applications with the same identifier string will be able to connect to one
         /// another.
@@ -31,11 +36,6 @@ namespace DemoGame
         /// The simulated percentage of duplicated packets (range: 0.0f to 1.0f).
         /// </summary>
         public const float SimulatedDuplicatesChance = 0;
-
-        /// <summary>
-        /// The number of seconds of non-response before disconnecting because of time out.
-        /// </summary>
-        public const float ConnectionTimeout = 20000; // TODO: !! Temp!
 
         /// <summary>
         /// The simulated percentage of sent packets lost (range: 0.0f to 1.0f).

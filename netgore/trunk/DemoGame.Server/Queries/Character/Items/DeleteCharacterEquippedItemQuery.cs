@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Delete(CharacterEquippedTable.TableName).Where(
                     f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("character_id")),
-                          f.Equals(s.EscapeColumn("slot"), s.Parameterize("slot"))));
+                        f.Equals(s.EscapeColumn("slot"), s.Parameterize("slot"))));
             return q.ToString();
         }
 

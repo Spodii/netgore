@@ -185,7 +185,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "character_template_id":
                     return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false,
-                                              true, false);
+                        true, false);
 
                 case "count":
                     return new ColumnMetadata("count", "", "smallint(5) unsigned", null, typeof(UInt16), false, false, false);

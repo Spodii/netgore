@@ -43,10 +43,8 @@ namespace DemoGame.Client
                     (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
 
                 var e = new QuestMapDrawingExtension<Character>(userInfo.QuestInfo, questStartReqs, questFinishReqs,
-                                                                m =>
-                                                                m.Spatial.GetMany<Character>(m.Camera.GetViewArea(),
-                                                                                             c => !c.ProvidedQuests.IsEmpty()),
-                                                                c => c.ProvidedQuests)
+                    m => m.Spatial.GetMany<Character>(m.Camera.GetViewArea(), c => !c.ProvidedQuests.IsEmpty()),
+                    c => c.ProvidedQuests)
                 {
                     QuestAvailableCanStartIndicator = new Grh(GrhInfo.GetData("Quest", "can start")),
                     QuestStartedIndicator = new Grh(GrhInfo.GetData("Quest", "started")),

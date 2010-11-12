@@ -125,11 +125,11 @@ namespace log4net.Layout.Pattern
                 m_dateFormatter = new Iso8601DateFormatter();
             else if (
                 string.Compare(dateFormatStr, AbsoluteTimeDateFormatter.AbsoluteTimeDateFormat, true,
-                               CultureInfo.InvariantCulture) == 0)
+                    CultureInfo.InvariantCulture) == 0)
                 m_dateFormatter = new AbsoluteTimeDateFormatter();
             else if (
                 string.Compare(dateFormatStr, AbsoluteTimeDateFormatter.DateAndTimeDateFormat, true,
-                               CultureInfo.InvariantCulture) == 0)
+                    CultureInfo.InvariantCulture) == 0)
                 m_dateFormatter = new DateTimeDateFormatter();
             else
             {

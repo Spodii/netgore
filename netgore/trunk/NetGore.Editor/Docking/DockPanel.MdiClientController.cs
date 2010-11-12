@@ -370,9 +370,8 @@ namespace NetGore.Editor.Docking
                 // control's Invalidate method does not affect the non-client area.
                 // Instead use a Win32 call to signal the style has changed.
                 NativeMethods.SetWindowPos(MdiClient.Handle, IntPtr.Zero, 0, 0, 0, 0,
-                                           FlagsSetWindowPos.SWP_NOACTIVATE | FlagsSetWindowPos.SWP_NOMOVE |
-                                           FlagsSetWindowPos.SWP_NOSIZE | FlagsSetWindowPos.SWP_NOZORDER |
-                                           FlagsSetWindowPos.SWP_NOOWNERZORDER | FlagsSetWindowPos.SWP_FRAMECHANGED);
+                    FlagsSetWindowPos.SWP_NOACTIVATE | FlagsSetWindowPos.SWP_NOMOVE | FlagsSetWindowPos.SWP_NOSIZE |
+                    FlagsSetWindowPos.SWP_NOZORDER | FlagsSetWindowPos.SWP_NOOWNERZORDER | FlagsSetWindowPos.SWP_FRAMECHANGED);
             }
 
             protected override void WndProc(ref Message m)

@@ -34,7 +34,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(GuildMemberTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("character_id"),
-                                                                                  s.Parameterize("character_id")));
+                    s.Parameterize("character_id")));
             return q.ToString();
         }
 

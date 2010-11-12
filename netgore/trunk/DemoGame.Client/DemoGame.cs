@@ -262,9 +262,9 @@ namespace DemoGame.Client
                 const string errmsg = "Was expecting `{0}` to be type GameForm, but was `{1}` instead.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, displayContainer,
-                                    displayContainer != null ? displayContainer.GetType().ToString() : "[NULL]");
+                        displayContainer != null ? displayContainer.GetType().ToString() : "[NULL]");
                 Debug.Fail(string.Format(errmsg, displayContainer,
-                                         displayContainer != null ? displayContainer.GetType().ToString() : "[NULL]"));
+                    displayContainer != null ? displayContainer.GetType().ToString() : "[NULL]"));
                 return null;
             }
 

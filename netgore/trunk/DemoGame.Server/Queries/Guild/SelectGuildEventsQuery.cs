@@ -35,9 +35,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(GuildEventTable.TableName).AllColumns().Where(f.Equals(s.EscapeColumn("guild_id"),
-                                                                                 s.Parameterize("guildID"))).OrderBy(
-                                                                                     s.EscapeColumn("id"), OrderByType.Descending)
-                    .Limit(50);
+                    s.Parameterize("guildID"))).OrderBy(s.EscapeColumn("id"), OrderByType.Descending).Limit(50);
             return q.ToString();
         }
 

@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
 

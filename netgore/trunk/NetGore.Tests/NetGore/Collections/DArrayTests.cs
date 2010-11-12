@@ -49,7 +49,7 @@ namespace NetGore.Tests.Collections
 
             Assert.IsFalse(d.CanGet(-1));
             Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1],
-                                                       "Failed to generate ArgumentOutOfRangeException for d[-1].");
+                "Failed to generate ArgumentOutOfRangeException for d[-1].");
 
             Assert.IsFalse(d.CanGet(1));
             Assert.Throws<ArgumentOutOfRangeException>(() => o = d[-1], "Failed to generate ArgumentOutOfRangeException for d[1].");
@@ -162,8 +162,7 @@ namespace NetGore.Tests.Collections
 
             var remainingObjs = objs.Where(obj => obj != null).Count();
             Assert.AreEqual(0, remainingObjs,
-                            "One or more items failed to be enumerated since all enumerated " +
-                            "items should have been removed from objs[].");
+                "One or more items failed to be enumerated since all enumerated " + "items should have been removed from objs[].");
         }
 
         static void EnumerateValueTypeTestSub(bool trackFree)
@@ -194,7 +193,7 @@ namespace NetGore.Tests.Collections
 
             var remainingObjs = objs.Where(obj => obj != -1).Count();
             Assert.AreEqual(0, remainingObjs,
-                            "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
+                "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
         }
 
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",

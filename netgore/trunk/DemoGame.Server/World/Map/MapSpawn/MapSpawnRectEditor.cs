@@ -49,7 +49,7 @@ namespace DemoGame.Server
                     { typeof(ushort?), typeof(ushort?), typeof(ushort?), typeof(ushort?) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor,
-                                                  new object[] { rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height });
+                        new object[] { rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height });
             }
 
             return base.ConvertTo(context, culture, value, destinationType);
@@ -69,7 +69,7 @@ namespace DemoGame.Server
         public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
         {
             return new MapSpawnRect((ushort?)propertyValues["X"], (ushort?)propertyValues["Y"], (ushort?)propertyValues["Width"],
-                                    (ushort?)propertyValues["Height"]);
+                (ushort?)propertyValues["Height"]);
         }
     }
 }

@@ -329,7 +329,7 @@ namespace NetGore.Graphics
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
         {
             var copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization, TextureName,
-                                             AutomaticSize ? (Rectangle?)null : SourceRect);
+                AutomaticSize ? (Rectangle?)null : SourceRect);
             return copy;
         }
 
