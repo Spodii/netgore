@@ -538,17 +538,31 @@ namespace DemoGame.Server
                 return false;
             }
 
-            // Give the ItemEntity to the character
-            if (character.GiveItem(this) == null)
+            // Create a deep copy of the item to give to the character instead of giving them this item (its easier this way)
+            var itemCopy = (ItemEntity)DeepCopy();
+            int amountGiven = character.GiveItem(itemCopy);
+
+            // If nothing was given, then nothing happens... move on
+            if (amountGiven <= 0)
             {
-                // The ItemEntity was all added to the inventory, so dispose of it.
-                // The map automatically removes disposed Entities.
-                Destroy();
+                Debug.Assert(amountGiven == 0);
+                return false;
             }
 
-            // Notify listeners
+            // Find the new item amount
+            var newAmount = (byte)Math.Max(Math.Min(Amount - amountGiven, byte.MaxValue), byte.MinValue);
+            Debug.Assert(amountGiven > 0 && amountGiven <= Amount);
+
+            // Update the amount property
+            Amount = newAmount;
+
+            // If all of the item was picked up, then destroy this item
+            if (newAmount == 0)
+                Destroy();
+
+            // Notify listeners using the item copy since that was the one actually given to them
             if (PickedUp != null)
-                PickedUp(this, charEntity);
+                PickedUp(itemCopy, charEntity);
 
             return true;
         }

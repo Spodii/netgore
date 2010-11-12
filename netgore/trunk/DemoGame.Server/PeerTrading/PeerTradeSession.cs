@@ -152,14 +152,14 @@ namespace DemoGame.Server.PeerTrading
         protected override void GiveItemToCharacter(User character, ItemEntity item)
         {
             // Give the character the item
-            var giveRemainder = character.GiveItem(item);
+            var giveRemainder = character.TryGiveItem(item);
 
             if (giveRemainder == null)
                 return;
 
             // If there is a remainder (could not give them back all of the item), try adding it back to the trade table
             var charTT = GetTradeTable(character);
-            var ttRemainder = charTT.Add(giveRemainder);
+            var ttRemainder = charTT.TryAdd(giveRemainder);
 
             if (ttRemainder == null)
                 return;

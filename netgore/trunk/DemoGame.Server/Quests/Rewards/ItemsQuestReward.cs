@@ -64,7 +64,7 @@ namespace DemoGame.Server.Quests
                 var addItem = new ItemEntity(item.ItemTemplate, item.Amount);
 
                 // Add to the character's inventory
-                var remaining = character.GiveItem(addItem);
+                var remaining = character.TryGiveItem(addItem);
 
                 // Ensure it was all added
                 if (remaining != null)
@@ -74,6 +74,9 @@ namespace DemoGame.Server.Quests
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, addItem, character, item.Amount - remaining.Amount, item.Amount);
                     Debug.Fail(string.Format(errmsg, addItem, character, item.Amount - remaining.Amount, item.Amount));
+
+                    // Throw any remainder on the ground (not much else we can do with it)
+                    character.DropItem(remaining);
                 }
             }
         }

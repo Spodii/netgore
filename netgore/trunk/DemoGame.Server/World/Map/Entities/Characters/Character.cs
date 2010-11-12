@@ -991,7 +991,7 @@ namespace DemoGame.Server
             // If failed to equip, give the item back to the User
             if (!successful)
             {
-                var remainder = GiveItem(item);
+                var remainder = TryGiveItem(item);
                 if (remainder != null)
                 {
                     Debug.Fail("What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
@@ -1071,9 +1071,33 @@ namespace DemoGame.Server
         /// Gives an item to the Character to be placed in their Inventory.
         /// </summary>
         /// <param name="item">Item to give to the character.</param>
+        /// <returns>The amount of the <paramref name="item"/> that was successfully given to the <see cref="Character"/>.</returns>
+        public virtual int GiveItem(ItemEntity item)
+        {
+            if (item == null)
+            {
+                Debug.Fail("Item is null.");
+                return 0;
+            }
+
+            Debug.Assert(item.Amount != 0, "Invalid item amount.");
+
+            var amountAdded = _inventory.Add(item);
+            Debug.Assert(amountAdded >= byte.MinValue && amountAdded <= byte.MaxValue);
+
+            if (amountAdded > 0)
+                AfterGiveItem(item, (byte)amountAdded);
+
+            return amountAdded;
+        }
+
+        /// <summary>
+        /// Gives an item to the Character to be placed in their Inventory.
+        /// </summary>
+        /// <param name="item">Item to give to the character.</param>
         /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
         /// item was added.</returns>
-        public virtual ItemEntity GiveItem(ItemEntity item)
+        public virtual ItemEntity TryGiveItem(ItemEntity item)
         {
             if (item == null)
             {
@@ -1084,22 +1108,17 @@ namespace DemoGame.Server
             Debug.Assert(item.Amount != 0, "Invalid item amount.");
 
             // Add as much of the item to the inventory as we can
-            var startAmount = item.Amount;
-            var remainder = _inventory.Add(item);
+            int startAmount = item.Amount;
+            var remainder = _inventory.TryAdd(item);
 
             // Check how much was added
-            byte amountAdded;
-            if (remainder == null)
-                amountAdded = startAmount;
-            else
-            {
-                Debug.Assert(startAmount >= item.Amount, "Somehow the startAmount is less than the current amount of items.");
-                Debug.Assert(startAmount - item.Amount >= 0, "Negative item amount given...?");
-                amountAdded = (byte)(startAmount - item.Amount);
-            }
+            var amountAdded = (startAmount - (remainder != null ? remainder.Amount : 0));
+            Debug.Assert(amountAdded >= 0 && amountAdded <= byte.MaxValue);
+
+            amountAdded = amountAdded.Clamp(byte.MinValue, byte.MaxValue);
 
             if (amountAdded > 0)
-                AfterGiveItem(item, amountAdded);
+                AfterGiveItem(item, (byte)amountAdded);
 
             // Return the remainder
             return remainder;

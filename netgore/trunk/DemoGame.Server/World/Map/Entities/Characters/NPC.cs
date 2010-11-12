@@ -452,9 +452,7 @@ namespace DemoGame.Server
                     if (item == null)
                         continue;
 
-                    var extraItems = Inventory.Add(item);
-                    if (extraItems != null)
-                        extraItems.Destroy();
+                    Inventory.Add(item);
                 }
             }
 
