@@ -162,6 +162,8 @@ namespace NetGore.Graphics
 
             newValue.ShowMouseCursor(ShowMouseCursor);
             newValue.UseVerticalSync(UseVerticalSync);
+            newValue.SetActive();
+            newValue.Show(true);
         }
 
         /// <summary>
