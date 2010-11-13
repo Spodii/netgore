@@ -24,15 +24,15 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml2-window", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfContext_Create();
 
-            [DllImport("csfml2-window", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfContext_Destroy(IntPtr View);
 
-            [DllImport("csfml2-window", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfContext_SetActive(IntPtr View, bool Active);
 

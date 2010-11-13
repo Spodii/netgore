@@ -18,18 +18,6 @@ namespace SFML
         {
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Default constructor (invalid image)
-            /// </summary>
-            /// <exception cref="LoadingFailedException" />
-            ////////////////////////////////////////////////////////////
-            public Image() : base(sfImage_Create())
-            {
-                if (This == IntPtr.Zero)
-                    throw new LoadingFailedException("image");
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
             /// Construct the image with black color
             /// </summary>
             /// <param name="width">Image width</param>
@@ -424,10 +412,6 @@ namespace SFML
             [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfImage_CopyScreen(IntPtr This, IntPtr Window, IntRect SourceRect);
-
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_Create();
 
             [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
