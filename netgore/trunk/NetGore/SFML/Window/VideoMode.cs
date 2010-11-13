@@ -110,15 +110,15 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml2-window", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern VideoMode sfVideoMode_GetDesktopMode();
 
-            [DllImport("csfml2-window", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern unsafe VideoMode* sfVideoMode_GetFullscreenModes(out uint Count);
 
-            [DllImport("csfml2-window", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfVideoMode_IsValid(VideoMode Mode);
 

@@ -30,10 +30,6 @@ namespace SFML
 
             [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_Create();
-
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfShader_CreateFromFile(string Filename);
 
             [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
@@ -73,17 +69,6 @@ namespace SFML
             static extern void sfShader_Unbind(IntPtr Shader);
 
             #endregion
-
-            /// <summary>
-            /// Default constructor (invalid shader)
-            /// </summary>
-            /// <exception cref="LoadingFailedException" />
-            ////////////////////////////////////////////////////////////
-            public Shader() : base(sfShader_Create())
-            {
-                if (This == IntPtr.Zero)
-                    throw new LoadingFailedException("shader");
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
