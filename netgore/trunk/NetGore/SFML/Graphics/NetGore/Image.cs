@@ -17,6 +17,8 @@ namespace SFML
         public class Image : ObjectBase
         {
             ////////////////////////////////////////////////////////////
+            readonly bool myExternal = false;
+
             /// <summary>
             /// Construct the image with black color
             /// </summary>
@@ -142,6 +144,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             internal Image(IntPtr thisPtr) : base(thisPtr)
             {
+                myExternal = true;
             }
 
             /// <summary>
@@ -287,13 +290,16 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override void Destroy(bool disposing)
             {
-                if (!disposing)
-                    Context.Global.SetActive(true);
+                if (!myExternal)
+                {
+                    if (!disposing)
+                        Context.Global.SetActive(true);
 
-                sfImage_Destroy(This);
+                    sfImage_Destroy(This);
 
-                if (!disposing)
-                    Context.Global.SetActive(false);
+                    if (!disposing)
+                        Context.Global.SetActive(false);
+                }
             }
 
             /// <summary>

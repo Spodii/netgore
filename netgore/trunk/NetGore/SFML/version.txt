@@ -1,2 +1,2 @@
-﻿SFML 2.0, Revision 1570
-September 17, 2010
+﻿SFML 2.0, Revision 1637
+November 13, 2010

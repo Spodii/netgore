@@ -16,6 +16,9 @@ namespace SFML
         public class View : ObjectBase
         {
             ////////////////////////////////////////////////////////////
+
+            readonly bool myExternal = false;
+
             /// <summary>
             /// Create a default view (1000x1000)
             /// </summary>
@@ -64,6 +67,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             internal View(IntPtr thisPtr) : base(thisPtr)
             {
+                myExternal = true;
             }
 
             ////////////////////////////////////////////////////////////
@@ -119,7 +123,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override void Destroy(bool disposing)
             {
-                sfView_Destroy(This);
+                if (!myExternal)
+                    sfView_Destroy(This);
             }
 
             ////////////////////////////////////////////////////////////
