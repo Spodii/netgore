@@ -20,51 +20,51 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_Bind(IntPtr Shader);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfShader_Copy(IntPtr Shader);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfShader_CreateFromFile(string Filename);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfShader_CreateFromMemory(string Shader);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_Destroy(IntPtr Shader);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfShader_IsAvailable();
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_SetParameter1(IntPtr Shader, string Name, float X);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_SetParameter2(IntPtr Shader, string Name, float X, float Y);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_SetParameter3(IntPtr Shader, string Name, float X, float Y, float Z);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_SetParameter4(IntPtr Shader, string Name, float X, float Y, float Z, float W);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_SetTexture(IntPtr Shader, string Name, IntPtr Texture);
 
-            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_Unbind(IntPtr Shader);
 

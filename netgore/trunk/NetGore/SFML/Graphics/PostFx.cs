@@ -20,47 +20,47 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfPostFX_CanUsePostFX();
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfPostFX_CreateFromFile(string Filename);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfPostFX_CreateFromMemory(string Effect);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfPostFX_Destroy(IntPtr PostFX);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfPostFX_SetParameter1(IntPtr PostFX, string Name, float X);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfPostFX_SetParameter2(IntPtr PostFX, string Name, float X, float Y);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfPostFX_SetParameter3(IntPtr PostFX, string Name, float X, float Y, float Z);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfPostFX_SetParameter4(IntPtr PostFX, string Name, float X, float Y, float Z, float W);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfPostFX_SetTexture(IntPtr PostFX, string Name, IntPtr Texture);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfPostFx_Create();
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfPostFx_Destroy(IntPtr This);
 
