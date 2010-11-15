@@ -12,33 +12,41 @@ namespace SFML
         public interface RenderTarget
         {
             ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Return the current active view
+            /// </summary>
+            /// <returns>The current view</returns>
+            ////////////////////////////////////////////////////////////
+            View GetView();
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Current view active in the window
+            /// Change the current active view
             /// </summary>
+            /// <param name="view">New view</param>
             ////////////////////////////////////////////////////////////
-            View CurrentView { get; }
+            void SetView(View view);
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Default view of the window
             /// </summary>
             ////////////////////////////////////////////////////////////
             View DefaultView { get; }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Height of the rendering region of the window
             /// </summary>
             ////////////////////////////////////////////////////////////
             uint Height { get; }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Width of the rendering region of the window
             /// </summary>
             ////////////////////////////////////////////////////////////
             uint Width { get; }
-
-            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -55,6 +63,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             void Clear(Color color);
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Convert a point in target coordinates into view coordinates
             /// This version uses the current view of the window
@@ -94,6 +103,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             void Draw(Drawable objectToDraw, Shader shader);
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Get the viewport of a view applied to this target
             /// </summary>
@@ -103,14 +113,13 @@ namespace SFML
             IntRect GetViewport(View view);
 
             ////////////////////////////////////////////////////////////
-
-            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Restore the previously saved OpenGL render states and matrices
             /// </summary>
             ////////////////////////////////////////////////////////////
             void RestoreGLStates();
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Save the current OpenGL render states and matrices
             /// </summary>

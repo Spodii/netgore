@@ -15,10 +15,8 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public class RenderImage : ObjectBase, RenderTarget
         {
-            ////////////////////////////////////////////////////////////
             readonly View myDefaultView = null;
             readonly Image myImage = null;
-            View myCurrentView = null;
 
             #region Imports
 
@@ -89,6 +87,7 @@ namespace SFML
 
             #endregion
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Create the render image with the given dimensions
             /// </summary>
@@ -112,11 +111,11 @@ namespace SFML
             {
                 myDefaultView = new View(sfRenderImage_GetDefaultView(This));
                 myImage = new Image(sfRenderImage_GetImage(This));
-                myCurrentView = myDefaultView;
                 GC.SuppressFinalize(myDefaultView);
                 GC.SuppressFinalize(myImage);
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Target image of the render image
             /// </summary>
@@ -136,6 +135,7 @@ namespace SFML
                 get { return sfRenderImage_IsAvailable(); }
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Handle the destruction of the object
             /// </summary>
@@ -158,6 +158,7 @@ namespace SFML
                     Context.Global.SetActive(false);
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Update the contents of the target image
             /// </summary>
@@ -166,8 +167,6 @@ namespace SFML
             {
                 sfRenderImage_Display(This);
             }
-
-            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -182,6 +181,7 @@ namespace SFML
                 return sfRenderImage_SetActive(This, active);
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Provide a string describing the object
             /// </summary>
@@ -190,29 +190,23 @@ namespace SFML
             public override string ToString()
             {
                 return "[RenderImage]" + " Width(" + Width + ")" + " Height(" + Height + ")" + " Image(" + Image + ")" +
-                       " DefaultView(" + DefaultView + ")" + " CurrentView(" + CurrentView + ")";
+                       " DefaultView(" + DefaultView + ")" + " View(" + GetView() + ")";
             }
-
-            ////////////////////////////////////////////////////////////
-
-            ////////////////////////////////////////////////////////////
 
             #region RenderTarget Members
 
-            /// <summary>
-            /// Current view active in the render image
-            /// </summary>
             ////////////////////////////////////////////////////////////
-            public View CurrentView
+            /// <summary>
+            /// Return the current active view
+            /// </summary>
+            /// <returns>The current view</returns>
+            ////////////////////////////////////////////////////////////
+            public View GetView()
             {
-                get { return myCurrentView; }
-                set
-                {
-                    myCurrentView = value;
-                    sfRenderImage_SetView(This, value.This);
-                }
+                return new View(sfRenderImage_GetView(This));
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Default view of the render image
             /// </summary>
@@ -222,6 +216,18 @@ namespace SFML
                 get { return myDefaultView; }
             }
 
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change the current active view
+            /// </summary>
+            /// <param name="view">New view</param>
+            ////////////////////////////////////////////////////////////
+            public void SetView(View view)
+            {
+                sfRenderImage_SetView(This, view.This);
+            }
+
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Height of the rendering region of the image
             /// </summary>
@@ -231,6 +237,7 @@ namespace SFML
                 get { return sfRenderImage_GetHeight(This); }
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Width of the rendering region of the image
             /// </summary>
@@ -239,8 +246,6 @@ namespace SFML
             {
                 get { return sfRenderImage_GetWidth(This); }
             }
-
-            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -274,7 +279,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Vector2 ConvertCoords(uint x, uint y)
             {
-                return ConvertCoords(x, y, CurrentView);
+                return ConvertCoords(x, y, GetView());
             }
 
             ////////////////////////////////////////////////////////////
@@ -352,8 +357,6 @@ namespace SFML
             }
 
             #endregion
-
-            ////////////////////////////////////////////////////////////
         }
     }
 }

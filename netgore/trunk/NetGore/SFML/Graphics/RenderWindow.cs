@@ -16,8 +16,6 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public class RenderWindow : Window.Window, RenderTarget
         {
-            ////////////////////////////////////////////////////////////
-            View myCurrentView = null;
             View myDefaultView = null;
 
             #region Imports
@@ -315,7 +313,6 @@ namespace SFML
             {
                 myInput = new Input(sfRenderWindow_GetInput(This));
                 myDefaultView = new View(sfRenderWindow_GetDefaultView(This));
-                myCurrentView = myDefaultView;
                 GC.SuppressFinalize(myDefaultView);
             }
 
@@ -453,7 +450,7 @@ namespace SFML
             public override string ToString()
             {
                 return "[RenderWindow]" + " Width(" + Width + ")" + " Height(" + Height + ")" + " Settings(" + Settings + ")" +
-                       " DefaultView(" + DefaultView + ")" + " CurrentView(" + CurrentView + ")";
+                       " DefaultView(" + DefaultView + ")" + " View(" + GetView() + ")";
             }
 
             /// <summary>
@@ -483,18 +480,26 @@ namespace SFML
 
             #region RenderTarget Members
 
-            /// <summary>
-            /// Current view active in the window
-            /// </summary>
             ////////////////////////////////////////////////////////////
-            public View CurrentView
+            /// <summary>
+            /// Return the current active view
+            /// </summary>
+            /// <returns>The current view</returns>
+            ////////////////////////////////////////////////////////////
+            public View GetView()
             {
-                get { return myCurrentView; }
-                set
-                {
-                    myCurrentView = value;
-                    sfRenderWindow_SetView(This, value.This);
-                }
+                return new View(sfRenderWindow_GetView(This));
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change the current active view
+            /// </summary>
+            /// <param name="view">New view</param>
+            ////////////////////////////////////////////////////////////
+            public void SetView(View view)
+            {
+                sfRenderWindow_SetView(This, view.This);
             }
 
             /// <summary>
@@ -558,7 +563,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Vector2 ConvertCoords(uint x, uint y)
             {
-                return ConvertCoords(x, y, CurrentView);
+                return ConvertCoords(x, y, GetView());
             }
 
             ////////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@ namespace NetGore.Graphics
     {
         readonly SFML.Graphics.Sprite _sprite = new SFML.Graphics.Sprite();
         readonly Text _str = new Text();
+        readonly View _view = new View();
 
         bool _isDisposed;
         bool _isStarted;
@@ -61,14 +62,6 @@ namespace NetGore.Graphics
                 return false;
 
             return true;
-        }
-
-        static void TryRefreshCurrentView(RenderTarget renderTarget)
-        {
-            if (renderTarget is RenderWindow)
-                ((RenderWindow)renderTarget).CurrentView = renderTarget.CurrentView;
-            else if (renderTarget is RenderImage)
-                ((RenderImage)renderTarget).CurrentView = renderTarget.CurrentView;
         }
 
         #region ISpriteBatch Members
@@ -127,12 +120,9 @@ namespace NetGore.Graphics
         /// <param name="rotation">The amount to rotation the view in degrees.</param>
         public void Begin(BlendMode blendMode, Vector2 position, Vector2 size, float rotation)
         {
-            _rt.CurrentView.Reset(new FloatRect(position.X, position.Y, size.X, size.Y));
-            _rt.CurrentView.Rotate(rotation);
-
-            // We have to set the CurrentView property again, even though it didn't change, to make the changes
-            // to the CurrentView take affect
-            TryRefreshCurrentView(_rt);
+            _view.Reset(new FloatRect(position.X, position.Y, size.X, size.Y));
+            _view.Rotate(rotation);
+            _rt.SetView(_view);
 
             _sprite.BlendMode = blendMode;
 
@@ -159,14 +149,9 @@ namespace NetGore.Graphics
         /// <param name="blendMode">Blending options to use when rendering.</param>
         public virtual void Begin(BlendMode blendMode)
         {
-            var v = new Vector2(_rt.Width, _rt.Height);
-
-            _rt.CurrentView.Size = v;
-            _rt.CurrentView.Center = v / 2f;
-
-            // We have to set the CurrentView property again, even though it didn't change, to make the changes
-            // to the CurrentView take affect
-            TryRefreshCurrentView(_rt);
+            _view.Reset(new FloatRect(0f, 0f, _rt.Width, _rt.Height));
+            _view.Rotate(0f);
+            _rt.SetView(_view);
 
             _sprite.BlendMode = blendMode;
 

@@ -25,6 +25,7 @@ namespace NetGore.Graphics
         readonly ILightManager _lightManager;
         readonly IRefractionManager _refractionManager;
         readonly ISpriteBatch _sb;
+        readonly View _view = new View();
 
         RenderImage _buffer;
         bool _isDisposed;
@@ -131,8 +132,9 @@ namespace NetGore.Graphics
             _drawBufferToWindowSprite.Height = size.Y;
             _drawBufferToWindowSprite.SubRect = new IntRect(0, 0, (int)size.X, (int)size.Y);
 
-            _rw.CurrentView.Reset(new FloatRect(0, 0, size.X, size.Y));
-            _rw.CurrentView = _rw.CurrentView;
+            // TODO: !! Is this needed?
+            _view.Reset(new FloatRect(0, 0, size.X, size.Y));
+            _rw.SetView(_view);
 
             _rw.Draw(_drawBufferToWindowSprite);
         }
