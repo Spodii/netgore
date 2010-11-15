@@ -16,6 +16,7 @@ namespace NetGore.Editor.Grhs
 
         readonly Camera2D _camera = new Camera2D(new Vector2(400, 300));
         readonly DrawingManager _drawingManager = new DrawingManager();
+        readonly SFML.Graphics.View _drawView = new SFML.Graphics.View();
 
         Grh _grh;
 
@@ -82,14 +83,16 @@ namespace NetGore.Editor.Grhs
 
             Grh.Update(currentTime);
 
-            RenderWindow.CurrentView = RenderWindow.CurrentView;
             _drawingManager.Update(currentTime);
 
             var sb = _drawingManager.BeginDrawWorld(_camera);
             if (sb == null)
                 return;
 
-            RenderWindow.CurrentView.Reset(new FloatRect(Camera.Min.X, Camera.Min.Y, Camera.Size.X, Camera.Size.Y));
+            // Change the view
+            var oldView = RenderWindow.GetView();
+            _drawView.Reset(new FloatRect(Camera.Min.X, Camera.Min.Y, Camera.Size.X, Camera.Size.Y));
+            RenderWindow.SetView(_drawView);
 
             try
             {
@@ -116,6 +119,9 @@ namespace NetGore.Editor.Grhs
             finally
             {
                 _drawingManager.EndDrawWorld();
+
+                // Restore the view
+                RenderWindow.SetView(oldView);
             }
         }
 
