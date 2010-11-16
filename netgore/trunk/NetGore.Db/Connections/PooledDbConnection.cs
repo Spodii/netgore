@@ -26,14 +26,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
-        /// </summary>
-        public IQueryBuilder QueryBuilder
-        {
-            get { return _pool.QueryBuilder; }
-        }
-
-        /// <summary>
         /// Sets the <see cref="DbConnection"/> to be used by this <see cref="IPoolableDbConnection"/>.
         /// This should only be called by the <see cref="DbConnectionPool"/>, and can only be called once.
         /// </summary>
@@ -67,6 +59,22 @@ namespace NetGore.Db
         public DbConnection Connection
         {
             get { return _connection; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDbQueryRunner"/> to use for this pooled database connection.
+        /// </summary>
+        public IDbQueryRunner QueryRunner
+        {
+            get { return _pool.QueryRunner; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        public IQueryBuilder QueryBuilder
+        {
+            get { return _pool.QueryBuilder; }
         }
 
         /// <summary>

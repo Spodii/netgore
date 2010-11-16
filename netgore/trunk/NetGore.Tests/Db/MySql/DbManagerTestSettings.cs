@@ -17,14 +17,5 @@ namespace NetGore.Tests.Db.MySql
         {
             return new MySqlDbConnectionPool(TestDb.GetConnectionString());
         }
-
-        /// <summary>
-        /// Creates a DbManager to be used in tests.
-        /// </summary>
-        /// <returns>A DbManager to be used in tests.</returns>
-        public static DbManager CreateDbManager()
-        {
-            return new DbManager(CreateConnectionPool());
-        }
     }
 }

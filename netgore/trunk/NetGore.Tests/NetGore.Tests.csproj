@@ -169,7 +169,6 @@
     <Compile Include="Db\ClassCreator\ClassCreatorHelper.cs" />
     <Compile Include="Db\ClassCreator\TypeTests.cs" />
     <Compile Include="Db\MySql\DbQueryNonReaderTests.cs" />
-    <Compile Include="Db\MySql\DbQueryReaderTests.cs" />
     <Compile Include="Db\MySql\MySqlDbConnectionPoolTests.cs" />
     <Compile Include="Db\MySql\MySqlDbManagerTests.cs" />
     <Compile Include="Db\MySql\QueryTestValues.cs" />

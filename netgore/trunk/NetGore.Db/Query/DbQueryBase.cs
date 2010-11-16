@@ -514,6 +514,7 @@ namespace NetGore.Db
                 {
                     cmd.Dispose();
                 }
+
                 _commands.Clear();
             }
         }
