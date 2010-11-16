@@ -89,10 +89,6 @@
     <Compile Include="VersionControlCleaner.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Externals\Lidgren.Network\Lidgren.Network.csproj">
-      <Project>{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}</Project>
-      <Name>Lidgren.Network</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InstallationValidator\InstallationValidator.csproj">
       <Project>{F3B486E3-E405-47C8-8AB0-E5F3FDEA7BAF}</Project>
       <Name>InstallationValidator</Name>
