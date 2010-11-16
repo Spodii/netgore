@@ -69,10 +69,12 @@ namespace DemoGame.Server
             config.PingFrequency = CommonConfig.PingFrequency;
             config.ConnectionTimeout = CommonConfig.ConnectionTimeout;
 
+#if DEBUG
             config.SimulatedDuplicatesChance = CommonConfig.SimulatedDuplicatesChance;
             config.SimulatedLoss = CommonConfig.SimulatedLoss;
             config.SimulatedMinimumLatency = CommonConfig.SimulatedMinimumLatency;
             config.SimulatedRandomLatency = CommonConfig.SimulatedRandomLatency;
+#endif
 
             // Settings unique to the server (not set on the client)
             config.MaximumConnections = ServerSettings.Default.MaxConnections;
