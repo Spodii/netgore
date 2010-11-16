@@ -100,10 +100,6 @@
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network">
-      <HintPath>..\_dependencies\Lidgren.Network.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -748,6 +744,11 @@
     <None Include="SFML\version.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}</Project>
+      <Name>Lidgren.Network</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\log4net\log4net.csproj">
       <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
       <Name>log4net</Name>

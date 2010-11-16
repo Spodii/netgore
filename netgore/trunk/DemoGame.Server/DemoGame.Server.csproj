@@ -97,9 +97,6 @@
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network">
-      <HintPath>..\_dependencies\Lidgren.Network.dll</HintPath>
-    </Reference>
     <Reference Include="mysql.data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\mysql.data.dll</HintPath>
@@ -541,6 +538,10 @@
     <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\log4net\log4net.csproj">
       <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
       <Name>log4net</Name>
