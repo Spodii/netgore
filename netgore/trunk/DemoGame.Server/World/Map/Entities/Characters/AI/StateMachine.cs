@@ -59,7 +59,7 @@ namespace DemoGame.Server
             _target = attacker;
 
             //Set up event handler for when the target dies.
-            _target.Killed += new Character.CharacterEventHandler(_target_Killed);
+            _target.Killed += _target_Killed;
 
             if (Actor.HP <= 10)
             {

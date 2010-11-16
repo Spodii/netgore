@@ -86,10 +86,12 @@ namespace DemoGame.Client
             config.PingFrequency = CommonConfig.PingFrequency;
             config.ConnectionTimeout = CommonConfig.ConnectionTimeout;
 
+#if DEBUG
             config.SimulatedDuplicatesChance = CommonConfig.SimulatedDuplicatesChance;
             config.SimulatedLoss = CommonConfig.SimulatedLoss;
             config.SimulatedMinimumLatency = CommonConfig.SimulatedMinimumLatency;
             config.SimulatedRandomLatency = CommonConfig.SimulatedRandomLatency;
+#endif
         }
 
         /// <summary>

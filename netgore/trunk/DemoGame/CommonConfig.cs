@@ -34,21 +34,25 @@ namespace DemoGame
 
         /// <summary>
         /// The simulated percentage of duplicated packets (range: 0.0f to 1.0f).
+        /// Only applicable in debug builds.
         /// </summary>
         public const float SimulatedDuplicatesChance = 0;
 
         /// <summary>
         /// The simulated percentage of sent packets lost (range: 0.0f to 1.0f).
+        /// Only applicable in debug builds.
         /// </summary>
         public const float SimulatedLoss = 0;
 
         /// <summary>
         /// The minimum simulated amount of one way latency, in seconds, for sent packets.
+        /// Only applicable in debug builds.
         /// </summary>
         public const float SimulatedMinimumLatency = 0;
 
         /// <summary>
         /// The simulated added random amount of one way latency, in seconds, for sent packets.
+        /// Only applicable in debug builds.
         /// </summary>
         public const float SimulatedRandomLatency = 0;
 
