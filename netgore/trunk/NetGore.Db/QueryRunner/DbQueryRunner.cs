@@ -191,12 +191,12 @@ namespace NetGore.Db
         /// <returns>The <see cref="DbDataReader"/> to use to read the results.</returns>
         public DbDataReader BeginExecuteReader(DbCommand cmd)
         {
-            // Grab the execution lock since we are going to be executing queries. We can't use the lock statement since
-            // we are going to have to be holding onto the lock even after the method returns due to the usage of the reader.
-            Monitor.Enter(_executeQuerySync);
-
             try
             {
+                // Grab the execution lock since we are going to be executing queries. We can't use the lock statement since
+                // we are going to have to be holding onto the lock even after the method returns due to the usage of the reader.
+                Monitor.Enter(_executeQuerySync);
+
                 // Empty out the queue
                 FlushQueue();
 
