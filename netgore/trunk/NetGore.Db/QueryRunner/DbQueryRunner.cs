@@ -39,8 +39,8 @@ namespace NetGore.Db
         readonly List<KeyValuePair<DbCommand, DbQueryBase>> _queueDumpList = new List<KeyValuePair<DbCommand, DbQueryBase>>();
 
         readonly object _queueSync = new object();
-
         readonly Thread _workerThread;
+
         bool _isDisposed;
 
         /// <summary>
@@ -55,8 +55,59 @@ namespace NetGore.Db
                 Connection.Open();
 
             // Create and start the worker thread
-            _workerThread = new Thread(WorkerThreadLoop) { Name = "DbQueryRunner worker thread" };
+            _workerThread = new Thread(WorkerThreadLoop) { Name = "DbQueryRunner worker thread", IsBackground = false };
             _workerThread.Start();
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            // Wait for the worker thread to die now that _isDisposed is set
+            try
+            {
+                if (_workerThread.IsAlive)
+                    _workerThread.Join();
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to join worker thread. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+            }
+
+            // Flush the queue to make sure all the remaining tasks are finished
+            try
+            {
+                lock (_executeQuerySync)
+                {
+                    FlushQueue();
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to flush queue on `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this, ex);
+                Debug.Fail(string.Format(errmsg, this, ex));
+            }
+
+            // Dispose of the connection
+            try
+            {
+                Connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to dispose DbConnection `{0}`. Exception: {1}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, Connection, ex);
+                Debug.Fail(string.Format(errmsg, Connection, ex));
+            }
         }
 
         /// <summary>
@@ -85,6 +136,22 @@ namespace NetGore.Db
                 // Free the command
                 job.Value.ReleaseCommand(job.Key);
             }
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="DbQueryRunner"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~DbQueryRunner()
+        {
+            Debug.Assert(!IsDisposed, "Destructor called even though this object was disposed...");
+
+            if (IsDisposed)
+                return;
+
+            _isDisposed = true;
+
+            Dispose(false);
         }
 
         /// <summary>
@@ -159,9 +226,33 @@ namespace NetGore.Db
                     // If we didn't have any jobs, sleep for a while
                     if (flushCount == 0)
                     {
-                        Thread.Sleep(_emptyQueueSleepTime);
+                        try
+                        {
+                            Thread.Sleep(_emptyQueueSleepTime);
+                        }
+                        catch (ThreadAbortException ex)
+                        {
+                            const string errmsg = 
+                                "DbQueryRunner worker received ThreadAbortException while sleeping. Because it was during sleep," + 
+                                " nothing was lost. But you just got lucky this time... Exception: {0}";
+                            if (log.IsWarnEnabled)
+                                log.WarnFormat(errmsg, ex);
+                            Debug.Fail(string.Format(errmsg, ex));
+                            break;
+                        }
+
                         continue;
                     }
+                }
+                catch (ThreadAbortException ex)
+                {
+                    const string errmsg =
+                        "DbQueryRunner worker received ThreadAbortException while sleeping. The query being executed may have" +
+                        " been lost! Exception: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
+                    break;
                 }
                 catch (Exception ex)
                 {
@@ -181,6 +272,14 @@ namespace NetGore.Db
         public DbConnection Connection
         {
             get { return _conn; }
+        }
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
         }
 
         /// <summary>
@@ -224,52 +323,14 @@ namespace NetGore.Db
         /// </summary>
         public void Dispose()
         {
-            if (_isDisposed)
+            if (IsDisposed)
                 return;
 
             _isDisposed = true;
 
-            // Wait for the worker thread to die now that _isDisposed is set
-            try
-            {
-                _workerThread.Join();
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to join worker thread. Exception: {0}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-                Debug.Fail(string.Format(errmsg, ex));
-            }
+            GC.SuppressFinalize(this);
 
-            // Flush the queue to make sure all the remaining tasks are finished
-            try
-            {
-                lock (_executeQuerySync)
-                {
-                    FlushQueue();
-                }
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to flush queue on `{0}`. Exception: {1}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this, ex);
-                Debug.Fail(string.Format(errmsg, this, ex));
-            }
-
-            // Dispose of the connection
-            try
-            {
-                Connection.Dispose();
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to dispose DbConnection `{0}`. Exception: {1}";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, Connection, ex);
-                Debug.Fail(string.Format(errmsg, Connection, ex));
-            }
+            Dispose(true);
         }
 
         /// <summary>
@@ -322,6 +383,19 @@ namespace NetGore.Db
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Flushes the query queue, and blocks until all queries in the queue at the time this method was called have been
+        /// executed.
+        /// </summary>
+        /// <returns>The number of queries that were flushed from the internal queue.</returns>
+        public int Flush()
+        {
+            lock (_executeQuerySync)
+            {
+                return FlushQueue();
+            }
         }
 
         #endregion

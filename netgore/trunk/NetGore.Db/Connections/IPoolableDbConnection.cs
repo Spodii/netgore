@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using System.Linq;
+using NetGore.Db.QueryBuilder;
 
 namespace NetGore.Db
 {
@@ -14,6 +15,16 @@ namespace NetGore.Db
         /// Never dispose of this <see cref="DbConnection"/> directly.
         /// </summary>
         DbConnection Connection { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IDbQueryRunner"/> to use for this pooled database connection.
+        /// </summary>
+        IDbQueryRunner QueryRunner { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
+        /// </summary>
+        IQueryBuilder QueryBuilder { get; }
 
         /// <summary>
         /// Gets the <see cref="IQueryStatsTracker"/> to use to track the statistics for queries executed by

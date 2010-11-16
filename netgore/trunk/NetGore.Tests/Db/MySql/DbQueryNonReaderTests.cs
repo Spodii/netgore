@@ -9,25 +9,21 @@ namespace NetGore.Tests.Db.MySql
     [TestFixture]
     public class DbQueryNonReaderTests
     {
-        static MyNonReader CreateNonReader()
-        {
-            return new MyNonReader(DbManagerTestSettings.CreateConnectionPool());
-        }
-
         #region Unit tests
 
         [Test]
         public void SelectTest()
         {
-            using (var nonReader = CreateNonReader())
+            using (var pool = DbManagerTestSettings.CreateConnectionPool())
             {
-                var cp = nonReader.ConnectionPool;
-
-                for (var i = 0; i < 100; i++)
+                using (var nonReader = new MyNonReader(pool))
                 {
-                    Assert.AreEqual(0, cp.LiveObjects);
-                    nonReader.Execute(new QueryTestValues(5, 10, 15));
-                    Assert.AreEqual(0, cp.LiveObjects);
+                    for (var i = 0; i < 10; i++)
+                    {
+                        nonReader.Execute(new QueryTestValues(5, 10, 15));
+                    }
+
+                    nonReader.ConnectionPool.QueryRunner.Flush();
                 }
             }
         }

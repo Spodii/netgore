@@ -16,6 +16,11 @@ namespace NetGore.Db
         DbConnection Connection { get; }
 
         /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        bool IsDisposed { get; }
+
+        /// <summary>
         /// Executes a query that returns a <see cref="DbDataReader"/> to read the results.
         /// This runs in blocking mode.
         /// </summary>
@@ -46,5 +51,12 @@ namespace NetGore.Db
         /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
         /// <returns>The number of rows affected.</returns>
         int ExecuteNonReaderWithResult(DbCommand cmd);
+
+        /// <summary>
+        /// Flushes the query queue, and blocks until all queries in the queue at the time this method was called have been
+        /// executed.
+        /// </summary>
+        /// <returns>The number of queries that were flushed from the internal queue.</returns>
+        int Flush();
     }
 }

@@ -155,7 +155,8 @@ namespace NetGore.Db
 
             _disposed = true;
 
-            _queryRunner.Dispose();
+            if (!_queryRunner.IsDisposed)
+                _queryRunner.Dispose();
         }
 
         /// <summary>

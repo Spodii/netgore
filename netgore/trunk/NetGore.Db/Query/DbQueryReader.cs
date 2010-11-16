@@ -84,10 +84,6 @@ namespace NetGore.Db
         #endregion
     }
 
-    sealed class DbQueryReaderContainer
-    {
-    }
-
     /// <summary>
     /// Base class for all data queries that execute queries and require reading the results.
     /// </summary>
