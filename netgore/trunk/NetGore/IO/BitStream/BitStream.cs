@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Lidgren.Network;
 
 // FUTURE: Add a Debug check to see if Write operations result in data loss
 
@@ -264,51 +263,6 @@ namespace NetGore.IO
 
             // Check if the bits can fit
             return PositionBits + numBits <= BufferLength * _bitsByte;
-        }
-
-        /// <summary>
-        /// Copies the contents of the BitStream to a <see cref="NetOutgoingMessage"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="NetOutgoingMessage"/> to copy the contents of this <see cref="BitStream"/> to.</param>
-        public void CopyTo(NetOutgoingMessage target)
-        {
-#if DEBUG
-            var startMsgLen = target.LengthBits;
-#endif
-            var i = 0;
-
-            var fullBytes = (int)Math.Floor(LengthBits / (float)_bitsByte);
-
-            // Write full 32-bit integers
-            while (i + 3 < fullBytes)
-            {
-                var v = (_buffer[i] << (_bitsByte * 3)) | (_buffer[i + 1] << (_bitsByte * 2)) |
-                        (_buffer[i + 2] << (_bitsByte * 1)) | (_buffer[i + 3]);
-                i += 4;
-                target.Write((uint)v);
-            }
-
-            // Write full 8-bit integers
-            while (i < fullBytes)
-            {
-                target.Write(_buffer[i]);
-                i++;
-            }
-
-            // Write the remaining bits that don't make up a full byte
-            var remainingBits = LengthBits % _bitsByte;
-            if (remainingBits > 0)
-            {
-                var remainingData = _buffer[i];
-                for (var j = _highBit; j > _highBit - remainingBits; j--)
-                {
-                    target.Write((remainingData & (1 << j)) != 0);
-                }
-            }
-
-#if DEBUG
-            Debug.Assert(target.LengthBits - startMsgLen == LengthBits);
-#endif
         }
 
         /// <summary>

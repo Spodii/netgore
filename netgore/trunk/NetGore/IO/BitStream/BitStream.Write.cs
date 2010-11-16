@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Lidgren.Network;
 
 namespace NetGore.IO
 {
@@ -657,45 +656,6 @@ namespace NetGore.IO
             {
                 Write(value[i]);
             }
-        }
-
-        /// <summary>
-        /// Writes a <see cref="NetIncomingMessage"/> buffer into the BitStream.
-        /// </summary>
-        /// <param name="source">The <see cref="NetIncomingMessage"/> who's contents will be copied to this BitStream.</param>
-        public void Write(NetIncomingMessage source)
-        {
-#if DEBUG
-            var startBSPos = PositionBits;
-            var startMsgPos = (int)source.Position;
-#endif
-
-            // Read full 32-bit integers
-            while (source.LengthBits - source.Position >= _bitsInt)
-            {
-                var v = source.ReadUInt32();
-                Write(v);
-            }
-
-            // Read full 8-bit integers
-            while (source.LengthBits - source.Position >= _bitsByte)
-            {
-                var v = source.ReadByte();
-                Write(v);
-            }
-
-            // Read the remaining bits
-            while (source.LengthBits > source.Position)
-            {
-                var v = source.ReadBoolean();
-                Write(v);
-            }
-
-            Debug.Assert(source.Position == source.LengthBits);
-
-#if DEBUG
-            Debug.Assert(PositionBits - startBSPos == source.LengthBits - startMsgPos);
-#endif
         }
 
         /// <summary>
