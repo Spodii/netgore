@@ -102,7 +102,7 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
-    <ProjectReference Include="..\log4net\log4net.csproj">
+    <ProjectReference Include="..\Externals\log4net\log4net.csproj">
       <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
       <Name>log4net</Name>
       <Private>True</Private>
