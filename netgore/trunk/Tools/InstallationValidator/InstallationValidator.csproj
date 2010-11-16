@@ -56,11 +56,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network, Version=2010.7.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_dependencies\Lidgren.Network.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="mysql.data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\_dependencies\mysql.data.dll</HintPath>
@@ -72,8 +67,8 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\log4net.Dummy\Main.cs">
-      <Link>External - log4net\Main.cs</Link>
+    <Compile Include="..\..\Externals\log4net.Dummy\Main.cs">
+      <Link>External - log4net.Dummy\Main.cs</Link>
     </Compile>
     <Compile Include="..\..\NetGore.Db\DbConnectionSettings.cs">
       <Link>External - NetGore.Db\DbConnectionSettings.cs</Link>
@@ -366,7 +361,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Externals\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

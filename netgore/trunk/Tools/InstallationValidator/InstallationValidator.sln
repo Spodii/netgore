@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallationValidator", "InstallationValidator.csproj", "{F3B486E3-E405-47C8-8AB0-E5F3FDEA7BAF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{56330C38-25D0-46DE-8DA6-C45675B56BE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network", "..\..\Externals\Lidgren.Network\Lidgren.Network.csproj", "{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -25,8 +29,23 @@ Global
 		{F3B486E3-E405-47C8-8AB0-E5F3FDEA7BAF}.Release|x86.Build.0 = Release|x86
 		{F3B486E3-E405-47C8-8AB0-E5F3FDEA7BAF}.ReleaseTopDown|x86.ActiveCfg = Release|x86
 		{F3B486E3-E405-47C8-8AB0-E5F3FDEA7BAF}.ReleaseTopDown|x86.Build.0 = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Debug|x86.ActiveCfg = Debug|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Debug|x86.Build.0 = Debug|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.DebugTopDown|x86.ActiveCfg = Debug|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.DebugTopDown|x86.Build.0 = Debug|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Mono|x86.ActiveCfg = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Mono|x86.Build.0 = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.MonoTopDown|x86.ActiveCfg = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.MonoTopDown|x86.Build.0 = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Release|x86.ActiveCfg = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Release|x86.Build.0 = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.ReleaseTopDown|x86.ActiveCfg = Release|x86
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.ReleaseTopDown|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD} = {56330C38-25D0-46DE-8DA6-C45675B56BE9}
 	EndGlobalSection
 EndGlobal
