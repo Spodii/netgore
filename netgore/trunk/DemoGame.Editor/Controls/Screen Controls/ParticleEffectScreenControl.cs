@@ -13,18 +13,15 @@ namespace DemoGame.Editor
 {
     public class ParticleEffectScreenControl : GraphicsDeviceControl
     {
-        ICamera2D _camera;
-        DrawingManager _drawingManager;
+        readonly ICamera2D _camera;
+        readonly DrawingManager _drawingManager;
 
         /// <summary>
-        /// Initializes the control.
+        /// Initializes a new instance of the <see cref="ParticleEffectScreenControl"/> class.
         /// </summary>
-        protected override void OnCreateControl()
+        public ParticleEffectScreenControl()
         {
-            base.OnCreateControl();
-
-            // Only create our objects when not in design mode
-            if (!DesignMode)
+            if (!DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Runtime)
             {
                 _camera = new Camera2D(new Vector2(400, 300));
                 _drawingManager = new DrawingManager();
@@ -175,7 +172,7 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            _drawingManager.RenderWindow = newRenderWindow;
+            DrawingManager.RenderWindow = newRenderWindow;
 
             var oldCenter = Camera.Center;
             Camera.Size = ClientSize.ToVector2();

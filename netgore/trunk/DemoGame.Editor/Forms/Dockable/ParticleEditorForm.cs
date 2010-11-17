@@ -282,5 +282,45 @@ namespace DemoGame.Editor
 
             pgEmitter.SelectedObject = lstEmitters.SelectedItem;
         }
+
+        /// <summary>
+        /// Handles the Click event of the btnEmitterDown control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnEmitterDown_Click(object sender, EventArgs e)
+        {
+            var pe = ParticleEffect;
+            if (pe == null)
+                return;
+
+            var selected = lstEmitters.SelectedItem as IParticleEmitter;
+            if (selected == null)
+                return;
+
+            pe.IncrementEmitterOrder(selected);
+
+            lstEmitters.RebuildList(pe);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnEmitterUp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnEmitterUp_Click(object sender, EventArgs e)
+        {
+            var pe = ParticleEffect;
+            if (pe == null)
+                return;
+
+            var selected = lstEmitters.SelectedItem as IParticleEmitter;
+            if (selected == null)
+                return;
+
+            pe.DecrementEmitterOrder(selected);
+
+            lstEmitters.RebuildList(pe);
+        }
     }
 }
