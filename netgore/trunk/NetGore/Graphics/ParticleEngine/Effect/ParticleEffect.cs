@@ -26,10 +26,8 @@ namespace NetGore.Graphics.ParticleEngine
         const string _emittersNodeName = "Emitters";
         const string _particleEffectNodeName = "ParticleEffect";
 
+        readonly List<ParticleEmitter> _emitters = new List<ParticleEmitter>();
         readonly ParticleEffectConfig _effectConfig;
-
-        readonly Dictionary<string, ParticleEmitter> _emitters =
-            new Dictionary<string, ParticleEmitter>(ParticleEmitter.EmitterNameComparer);
 
         bool _isDisposed;
         bool _isExpired = false;
@@ -86,7 +84,7 @@ namespace NetGore.Graphics.ParticleEngine
                 return;
             }
 
-            Debug.Assert(!_emitters.ContainsValue(emitter));
+            Debug.Assert(!_emitters.Contains(emitter));
             Debug.Assert(emitter.Owner == this);
 
             // Make sure the emitter's name is unique
@@ -94,7 +92,7 @@ namespace NetGore.Graphics.ParticleEngine
             emitter.ChangeName(newName);
 
             // Add
-            _emitters.Add(newName, emitter);
+            _emitters.Add(emitter);
 
             emitter.Disposed += emitter_Disposed;
 
@@ -110,11 +108,11 @@ namespace NetGore.Graphics.ParticleEngine
         {
             sender.Disposed -= emitter_Disposed;
 
-            Debug.Assert(_emitters.ContainsKey(sender.Name));
-            Debug.Assert(_emitters[sender.Name] == sender);
+            Debug.Assert(_emitters.Contains(sender));
             Debug.Assert(sender.Owner == this);
+            Debug.Assert(sender is ParticleEmitter);
 
-            _emitters.Remove(sender.Name);
+            _emitters.Remove((ParticleEmitter)sender);
 
             if (EmitterRemoved != null)
                 EmitterRemoved(this, sender);
@@ -143,7 +141,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Browsable(false)]
         public IEnumerable<IParticleEmitter> Emitters
         {
-            get { return _emitters.Values; }
+            get { return _emitters; }
         }
 
         /// <summary>
@@ -223,6 +221,26 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets if an <see cref="IParticleEmitter"/> with the given name exists in this <see cref="IParticleEffect"/>.
+        /// </summary>
+        /// <param name="emitterName">The name of the <see cref="IParticleEmitter"/> to look for.</param>
+        /// <returns>True if a <see cref="IParticleEmitter"/> exists in this collection with the given name; otherwise false.</returns>
+        public bool Contains(string emitterName)
+        {
+            return _emitters.Any(x => ParticleEmitter.EmitterNameComparer.Equals(emitterName, x.Name));
+        }
+
+        /// <summary>
+        /// Gets if an <see cref="IParticleEmitter"/> exists in this <see cref="IParticleEffect"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to look for.</param>
+        /// <returns>True if the <see cref="IParticleEmitter"/> exists in this collection; otherwise false.</returns>
+        public bool Contains(IParticleEmitter emitter)
+        {
+            return _emitters.Contains(emitter);
+        }
+
+        /// <summary>
         /// Creates a deep copy of this <see cref="IParticleEffect"/>.
         /// </summary>
         /// <returns>A deep copy of this <see cref="IParticleEffect"/>.</returns>
@@ -230,7 +248,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             var ret = new ParticleEffect(_effectConfig) { Life = Life, Position = Position };
 
-            foreach (var e in _emitters.Values)
+            foreach (var e in _emitters)
             {
                 e.DeepCopy(ret);
             }
@@ -249,7 +267,7 @@ namespace NetGore.Graphics.ParticleEngine
             _isDisposed = true;
 
             // Dispose all emitters
-            foreach (var e in _emitters.Values)
+            foreach (var e in _emitters)
             {
                 e.Dispose();
             }
@@ -268,9 +286,10 @@ namespace NetGore.Graphics.ParticleEngine
                 return;
 
             // Draw the emitters
-            foreach (var e in _emitters.Values)
+            for (var i = 0; i < _emitters.Count; i++)
             {
-                e.Draw(spriteBatch);
+                var emitter = _emitters[i];
+                emitter.Draw(spriteBatch);
             }
         }
 
@@ -284,7 +303,7 @@ namespace NetGore.Graphics.ParticleEngine
         public string GenerateUniqueEmitterName(string baseEmitterName)
         {
             // Initial check - see if the base name is available
-            if (!_emitters.ContainsKey(baseEmitterName))
+            if (!Contains(baseEmitterName))
                 return baseEmitterName;
 
             // Base name not available, so start appending an incrementing value. So if baseEmitterName = MyEmitter, it will look like:
@@ -299,11 +318,105 @@ namespace NetGore.Graphics.ParticleEngine
                 newName = baseEmitterName + " (" + i + ")";
                 i++;
             }
-            while (_emitters.ContainsKey(newName));
+            while (Contains(newName));
 
-            Debug.Assert(!_emitters.ContainsKey(newName));
+            Debug.Assert(!_emitters.Any(x => ParticleEmitter.EmitterNameComparer.Equals(x.Name, newName)));
 
             return newName;
+        }
+
+        /// <summary>
+        /// Gets the 0-based order index of a <see cref="IParticleEmitter"/> in this <see cref="IParticleEffect"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to get the order index of.</param>
+        /// <returns>The 0-based order index of a <see cref="IParticleEmitter"/> in this <see cref="IParticleEffect"/>.</returns>
+        public int GetEmitterOrder(IParticleEmitter emitter)
+        {
+            var e = emitter as ParticleEmitter;
+            if (e == null)
+                return -1;
+
+            return _emitters.IndexOf(e);
+        }
+
+        /// <summary>
+        /// Gets an <see cref="IParticleEmitter"/> by its emitter index.
+        /// </summary>
+        /// <param name="emitterIndex">The emitter index of the <see cref="IParticleEmitter"/> to get.</param>
+        /// <returns>The <see cref="IParticleEmitter"/> at the given <paramref name="emitterIndex"/>, or null if the
+        /// <paramref name="emitterIndex"/> is out of range or otherwise invalid.</returns>
+        public IParticleEmitter GetEmitter(int emitterIndex)
+        {
+            if (emitterIndex < 0 || emitterIndex >= _emitters.Count)
+                return null;
+
+            return _emitters[emitterIndex];
+        }
+
+        /// <summary>
+        /// Changes the order of an <see cref="IParticleEmitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to change the order of.</param>
+        /// <param name="newIndex">The new index to give the <paramref name="emitter"/>. Other <see cref="IParticleEmitter"/>s will be
+        /// shifted accordingly. If this value is less than or equal to 0, the <paramref name="emitter"/> will be placed at the head.
+        /// If greater than or equal to the number of <see cref="IParticleEmitter"/>s in this collection, it will be placed at the
+        /// tail.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
+        public void ChangeEmitterOrder(IParticleEmitter emitter, int newIndex)
+        {
+            if (emitter == null)
+                throw new ArgumentNullException("emitter");
+
+            var currIndex = GetEmitterOrder(emitter);
+            if (currIndex == -1)
+            {
+                const string errmsg = "IParticleEmitter `{0}` not found in this collection.";
+                throw new ArgumentException(string.Format(errmsg, emitter), "emitter");
+            }
+
+            // Clamp
+            newIndex = newIndex.Clamp(0, _emitters.Count - 1);
+
+            if (currIndex == newIndex)
+                return;
+
+            // Remove then re-add at the given index
+            Debug.Assert(_emitters[currIndex] == emitter);
+            _emitters.RemoveAt(currIndex);
+
+            _emitters.Insert(newIndex, (ParticleEmitter)emitter);
+            Debug.Assert(_emitters[newIndex] == emitter);
+        }
+
+        /// <summary>
+        /// Increments the order of an <see cref="IParticleEmitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to decrement the order of.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
+        public void IncrementEmitterOrder(IParticleEmitter emitter)
+        {
+            var index = GetEmitterOrder(emitter);
+            if (index < 0)
+                return;
+
+            ChangeEmitterOrder(emitter, index + 1);
+        }
+
+        /// <summary>
+        /// Decrements the order of an <see cref="IParticleEmitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to decrement the order of.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
+        public void DecrementEmitterOrder(IParticleEmitter emitter)
+        {
+            var index = GetEmitterOrder(emitter);
+            if (index < 0)
+                return;
+
+            ChangeEmitterOrder(emitter, index - 1);
         }
 
         /// <summary>
@@ -313,11 +426,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>The <see cref="ParticleEmitter"/> with the given <paramref name="emitterName"/>, or null if not found.</returns>
         public IParticleEmitter GetEmitter(string emitterName)
         {
-            ParticleEmitter ret;
-            if (_emitters.TryGetValue(emitterName, out ret))
-                return ret;
-
-            return null;
+            return _emitters.FirstOrDefault(x => ParticleEmitter.EmitterNameComparer.Equals(x.Name, emitterName));
         }
 
         /// <summary>
@@ -325,7 +434,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public void Kill()
         {
-            foreach (var e in _emitters.Values)
+            foreach (var e in _emitters)
             {
                 e.Kill();
             }
@@ -341,7 +450,7 @@ namespace NetGore.Graphics.ParticleEngine
             reader = reader.ReadNode(_particleEffectNodeName);
 
             // Clear the emitters
-            foreach (var e in _emitters.Values.ToImmutable())
+            foreach (var e in _emitters.ToImmutable())
             {
                 e.Dispose();
             }
@@ -372,7 +481,7 @@ namespace NetGore.Graphics.ParticleEngine
             _isExpired = false;
 
             // Reset all emitters
-            foreach (var e in _emitters.Values)
+            foreach (var e in _emitters)
             {
                 e.Reset();
             }
@@ -407,25 +516,18 @@ namespace NetGore.Graphics.ParticleEngine
                 return true;
 
             // Check if the name is free
-            if (_emitters.ContainsKey(newName))
+            if (Contains(newName))
                 return false;
 
-            // Remove from the emitters collection
-            // The name will be null if the emitter was just constructed
-            if (!string.IsNullOrEmpty(e.Name))
-            {
-                Debug.Assert(_emitters[e.Name] == e);
-                _emitters.Remove(e.Name);
-            }
-
-            // Re-add with the new name
-            _emitters.Add(newName, e);
+            // Add the emitter if not already in the collection
+            if (!_emitters.Contains(e))
+                _emitters.Add(e);
 
             // Set the new name
             e.ChangeName(newName);
 
             Debug.Assert(ParticleEmitter.EmitterNameComparer.Equals(e.Name, newName));
-            Debug.Assert(_emitters[newName] == e);
+            Debug.Assert(_emitters.Contains(e));
 
             return true;
         }
@@ -443,7 +545,7 @@ namespace NetGore.Graphics.ParticleEngine
             if (RemainingLife == 0)
             {
                 // Kill all the emitters
-                foreach (var e in _emitters.Values)
+                foreach (var e in _emitters)
                 {
                     e.Kill();
                 }
@@ -451,7 +553,7 @@ namespace NetGore.Graphics.ParticleEngine
 
             // Update the emitters
             var emittersHaveExpired = true;
-            foreach (var e in _emitters.Values)
+            foreach (var e in _emitters)
             {
                 e.Update(currentTime);
                 if (!e.IsExpired)
@@ -475,7 +577,7 @@ namespace NetGore.Graphics.ParticleEngine
                 PersistableHelper.Write(this, writer);
 
                 // Write the emitters
-                writer.WriteManyNodes(_emittersNodeName, _emitters.Values, ParticleEmitterFactory.Write);
+                writer.WriteManyNodes(_emittersNodeName, _emitters, ParticleEmitterFactory.Write);
             }
             writer.WriteEndNode(_particleEffectNodeName);
         }
