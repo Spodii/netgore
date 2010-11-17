@@ -13,14 +13,16 @@ namespace DemoGame.Editor
 {
     public class ParticleEffectScreenControl : GraphicsDeviceControl
     {
-        readonly ICamera2D _camera;
-        readonly DrawingManager _drawingManager;
+        ICamera2D _camera;
+        DrawingManager _drawingManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleEffectScreenControl"/> class.
+        /// Initializes the control.
         /// </summary>
-        public ParticleEffectScreenControl()
+        protected override void OnCreateControl()
         {
+            base.OnCreateControl();
+
             // Only create our objects when not in design mode
             if (!DesignMode)
             {
