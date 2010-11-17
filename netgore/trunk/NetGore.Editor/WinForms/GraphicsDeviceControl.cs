@@ -21,9 +21,7 @@ namespace NetGore.Editor.WinForms
         readonly Timer _redrawTimer;
 
         bool _isInitialized = false;
-
         string _lastDrawError = null;
-
         RenderWindow _rw;
 
         /// <summary>
