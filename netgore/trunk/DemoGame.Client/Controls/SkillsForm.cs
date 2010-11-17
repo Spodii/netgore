@@ -32,15 +32,13 @@ namespace DemoGame.Client
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
         public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent)
-            : base(parent, position, new Vector2(150, 100))
+            : base(parent, position, new Vector2(32, 32))
         {
             IsVisible = false;
 
             _cooldownManager = cooldownManager;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             var fontLineSpacing = Font.GetLineSpacing();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Find the spacing to use between lines
             _lineSpacing = (int)Math.Max(fontLineSpacing, _iconSize.Y);
@@ -84,6 +82,7 @@ namespace DemoGame.Client
             base.SetDefaultValues();
 
             Text = "Skills";
+            ResizeToChildren = true;
         }
 
         void SkillLabel_Clicked(object sender, MouseButtonEventArgs e)
