@@ -25,7 +25,7 @@ namespace DemoGame
         /// <summary>
         /// The number of seconds between performing pings (which are used to determine the latency of the connection).
         /// </summary>
-        public const float PingFrequency = 6;
+        public const float PingInterval = 6;
 
         /// <summary>
         /// The port that the server listens on, and that the client uses when connecting to the server.

@@ -162,11 +162,11 @@ namespace NetGore.Network
             if (data == null || data.Length == 0)
                 return false;
 
-            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.LengthBytes);
+            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Peer, data.LengthBytes);
             data.CopyTo(msg);
 
             var ret = _conn.SendMessage(msg, deliveryMethod, sequenceChannel);
-            return ret;
+            return ret == NetSendResult.Sent || ret == NetSendResult.Queued;
         }
 
         /// <summary>
@@ -192,11 +192,11 @@ namespace NetGore.Network
             if (data == null || data.Length == 0)
                 return false;
 
-            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.Length);
+            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Peer, data.Length);
             msg.Write(data);
 
             var ret = _conn.SendMessage(msg, deliveryMethod, sequenceChannel);
-            return ret;
+            return ret == NetSendResult.Sent || ret == NetSendResult.Queued;
         }
 
         #endregion

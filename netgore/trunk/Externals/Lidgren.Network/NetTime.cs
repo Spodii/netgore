@@ -45,11 +45,10 @@ namespace Lidgren.Network
 		/// </summary>
 		public static double Now { get { return (double)Environment.TickCount / 1000.0; } }
 #endif
-		public static double GetRemoteNow(NetConnection conn)
-		{
-			return Now - conn.m_remoteToLocalNetTime;
-		}
 
+		/// <summary>
+		/// Given seconds it will output a human friendly readable string (milliseconds if less than 60 seconds)
+		/// </summary>
 		public static string ToReadable(double seconds)
 		{
 			if (seconds > 60)
