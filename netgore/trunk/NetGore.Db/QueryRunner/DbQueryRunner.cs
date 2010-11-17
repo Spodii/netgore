@@ -55,7 +55,7 @@ namespace NetGore.Db
                 Connection.Open();
 
             // Create and start the worker thread
-            _workerThread = new Thread(WorkerThreadLoop) { Name = "DbQueryRunner worker thread", IsBackground = false };
+            _workerThread = new Thread(WorkerThreadLoop) { Name = "DbQueryRunner worker thread", IsBackground = true };
             _workerThread.Start();
         }
 
