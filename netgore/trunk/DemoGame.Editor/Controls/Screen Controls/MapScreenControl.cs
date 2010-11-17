@@ -20,34 +20,12 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
-        readonly ICamera2D _camera;
-        readonly DrawingManager _drawingManager = new DrawingManager();
-        readonly TransBoxManager _transBoxManager = new TransBoxManager();
-
+        ICamera2D _camera;
         Vector2 _cameraVelocity = Vector2.Zero;
+        DrawingManager _drawingManager;
         TickCount _lastUpdateTime = TickCount.MinValue;
         EditorMap _map;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapScreenControl"/> class.
-        /// </summary>
-        public MapScreenControl()
-        {
-            if (DesignMode)
-                return;
-
-            _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
-
-            if (DrawingManager.LightManager.DefaultSprite == null)
-                DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
-
-            GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
-
-            lock (_instancesSync)
-            {
-                _instances.Add(this);
-            }
-        }
+        TransBoxManager _transBoxManager;
 
         /// <summary>
         /// Notifies listeners when the map has changed.
@@ -266,6 +244,31 @@ namespace DemoGame.Editor
                 return true;
 
             return base.IsInputKey(keyData);
+        }
+
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        protected override void OnCreateControl()
+        {
+            base.OnCreateControl();
+
+            if (DesignMode)
+                return;
+
+            _drawingManager = new DrawingManager();
+            _transBoxManager = new TransBoxManager();
+            _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
+
+            if (DrawingManager.LightManager.DefaultSprite == null)
+                DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+
+            GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
+
+            lock (_instancesSync)
+            {
+                _instances.Add(this);
+            }
         }
 
         /// <summary>
