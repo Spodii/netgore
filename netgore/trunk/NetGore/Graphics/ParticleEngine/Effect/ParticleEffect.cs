@@ -143,7 +143,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Browsable(false)]
         public IEnumerable<IParticleEmitter> Emitters
         {
-            get { return _emitters.Values.Cast<IParticleEmitter>(); }
+            get { return _emitters.Values; }
         }
 
         /// <summary>
