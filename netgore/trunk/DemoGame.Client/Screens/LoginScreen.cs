@@ -181,7 +181,8 @@ namespace DemoGame.Client
         {
             var sock = _sockets.RemoteSocket;
             _btnLogin.IsEnabled = (sock == null ||
-                                   !(sock.Status == NetConnectionStatus.Connected || sock.Status == NetConnectionStatus.Connecting ||
+                                   !(sock.Status == NetConnectionStatus.Connected || sock.Status == NetConnectionStatus.InitiatedConnect ||
+                                    sock.Status == NetConnectionStatus.RespondedConnect ||
                                      sock.Status == NetConnectionStatus.None));
 
             base.Update(gameTime);

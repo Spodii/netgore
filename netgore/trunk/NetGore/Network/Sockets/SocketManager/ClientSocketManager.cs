@@ -235,7 +235,8 @@ namespace NetGore.Network
                         // Set the ClientDisconnected value based on the status
                         switch (status)
                         {
-                            case NetConnectionStatus.Connecting:
+                            case NetConnectionStatus.InitiatedConnect:
+                            case NetConnectionStatus.RespondedConnect:
                             case NetConnectionStatus.Connected:
                             case NetConnectionStatus.None:
                                 // Reset the status

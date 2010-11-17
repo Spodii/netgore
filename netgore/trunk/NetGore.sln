@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net", "Externals\log4net\log4net.csproj", "{F6A02431-167E-4347-BC43-65532C31CDB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network", "Externals\Lidgren.Network\Lidgren.Network.csproj", "{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network", "Externals\Lidgren.Network\Lidgren.Network.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -273,28 +273,28 @@ Global
 		{F6A02431-167E-4347-BC43-65532C31CDB7}.ReleaseClient|x86.Build.0 = Release|x86
 		{F6A02431-167E-4347-BC43-65532C31CDB7}.ReleaseTopDown|x86.ActiveCfg = Release|x86
 		{F6A02431-167E-4347-BC43-65532C31CDB7}.ReleaseTopDown|x86.Build.0 = Release|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Debug|x86.ActiveCfg = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Debug|x86.Build.0 = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.DebugDbClassGen|x86.Build.0 = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.DebugTopDown|x86.ActiveCfg = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.DebugTopDown|x86.Build.0 = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Mono|x86.ActiveCfg = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Mono|x86.Build.0 = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.MonoTopDown|x86.ActiveCfg = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.MonoTopDown|x86.Build.0 = Debug|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Release|x86.ActiveCfg = Release|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.Release|x86.Build.0 = Release|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.ReleaseClient|x86.Build.0 = Release|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.ReleaseTopDown|x86.ActiveCfg = Release|x86
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}.ReleaseTopDown|x86.Build.0 = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.ActiveCfg = Debug|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Debug|x86.Build.0 = Debug|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.DebugDbClassGen|x86.Build.0 = Debug|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.DebugTopDown|x86.ActiveCfg = Debug|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.DebugTopDown|x86.Build.0 = Debug|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Mono|x86.ActiveCfg = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Mono|x86.Build.0 = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.MonoTopDown|x86.ActiveCfg = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.MonoTopDown|x86.Build.0 = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.ActiveCfg = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.Release|x86.Build.0 = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.ReleaseClient|x86.ActiveCfg = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.ReleaseClient|x86.Build.0 = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.ReleaseTopDown|x86.ActiveCfg = Release|x86
+		{AE483C29-042E-4226-BA52-D247CE7676DA}.ReleaseTopDown|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD} = {C5A3ED67-1F7E-454F-8FC2-9B434FAA9222}
 		{F6A02431-167E-4347-BC43-65532C31CDB7} = {C5A3ED67-1F7E-454F-8FC2-9B434FAA9222}
+		{AE483C29-042E-4226-BA52-D247CE7676DA} = {C5A3ED67-1F7E-454F-8FC2-9B434FAA9222}
 	EndGlobalSection
 EndGlobal

@@ -83,7 +83,7 @@ namespace DemoGame.Client
         {
             base.InitNetPeerConfig(config);
 
-            config.PingFrequency = CommonConfig.PingFrequency;
+            config.PingInterval = CommonConfig.PingInterval;
             config.ConnectionTimeout = CommonConfig.ConnectionTimeout;
 
 #if DEBUG
