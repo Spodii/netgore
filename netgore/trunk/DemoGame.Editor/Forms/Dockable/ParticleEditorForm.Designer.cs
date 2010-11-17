@@ -47,6 +47,9 @@ namespace DemoGame.Editor
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.gameScreen = new DemoGame.Editor.ParticleEffectScreenControl();
+            this.btnEmitterUp = new System.Windows.Forms.Button();
+            this.btnEmitterDown = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -185,6 +188,8 @@ namespace DemoGame.Editor
             // 
             // pButtons
             // 
+            this.pButtons.Controls.Add(this.btnEmitterDown);
+            this.pButtons.Controls.Add(this.btnEmitterUp);
             this.pButtons.Controls.Add(this.btnClone);
             this.pButtons.Controls.Add(this.btnDeleteEmitter);
             this.pButtons.Controls.Add(this.btnNewEmitter);
@@ -250,6 +255,28 @@ namespace DemoGame.Editor
             this.gameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseDown);
             this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
             // 
+            // btnEmitterUp
+            // 
+            this.btnEmitterUp.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnEmitterUp.Location = new System.Drawing.Point(209, 3);
+            this.btnEmitterUp.Name = "btnEmitterUp";
+            this.btnEmitterUp.Size = new System.Drawing.Size(30, 25);
+            this.btnEmitterUp.TabIndex = 8;
+            this.btnEmitterUp.Text = "/\\";
+            this.btnEmitterUp.UseVisualStyleBackColor = true;
+            this.btnEmitterUp.Click += new System.EventHandler(this.btnEmitterUp_Click);
+            // 
+            // btnEmitterDown
+            // 
+            this.btnEmitterDown.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnEmitterDown.Location = new System.Drawing.Point(179, 3);
+            this.btnEmitterDown.Name = "btnEmitterDown";
+            this.btnEmitterDown.Size = new System.Drawing.Size(30, 25);
+            this.btnEmitterDown.TabIndex = 9;
+            this.btnEmitterDown.Text = "\\/";
+            this.btnEmitterDown.UseVisualStyleBackColor = true;
+            this.btnEmitterDown.Click += new System.EventHandler(this.btnEmitterDown_Click);
+            // 
             // ParticleEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,6 +289,7 @@ namespace DemoGame.Editor
             this.Text = "Particle Effect Editor";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.tc.ResumeLayout(false);
             this.tpEffect.ResumeLayout(false);
@@ -293,6 +321,8 @@ namespace DemoGame.Editor
         private System.Windows.Forms.Button btnClone;
         private System.Windows.Forms.Button btnDeleteEmitter;
         private System.Windows.Forms.Button btnNewEmitter;
+        private System.Windows.Forms.Button btnEmitterDown;
+        private System.Windows.Forms.Button btnEmitterUp;
 
     }
 }

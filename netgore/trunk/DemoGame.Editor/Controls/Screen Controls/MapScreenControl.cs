@@ -20,12 +20,13 @@ namespace DemoGame.Editor
     /// </summary>
     public partial class MapScreenControl : GraphicsDeviceControl, IGetTime, IToolTargetMapContainer
     {
-        ICamera2D _camera;
+        readonly ICamera2D _camera;
+        readonly DrawingManager _drawingManager;
+        readonly TransBoxManager _transBoxManager;
+
         Vector2 _cameraVelocity = Vector2.Zero;
-        DrawingManager _drawingManager;
         TickCount _lastUpdateTime = TickCount.MinValue;
         EditorMap _map;
-        TransBoxManager _transBoxManager;
 
         /// <summary>
         /// Notifies listeners when the map has changed.
@@ -247,13 +248,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Initializes the control.
+        /// Initializes a new instance of the <see cref="MapScreenControl"/> class.
         /// </summary>
-        protected override void OnCreateControl()
+        public MapScreenControl()
         {
-            base.OnCreateControl();
-
-            if (DesignMode)
+            if (!DesignMode && LicenseManager.UsageMode != LicenseUsageMode.Runtime)
                 return;
 
             _drawingManager = new DrawingManager();
