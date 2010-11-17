@@ -108,6 +108,15 @@ namespace NetGore.Graphics.ParticleEngine
         /// Applies a force to the <see cref="Particle"/>.
         /// </summary>
         /// <param name="force">The <see cref="Vector2"/> describing the force.</param>
+        public void ApplyForce(Vector2 force)
+        {
+            Vector2.Add(ref Velocity, ref force, out Velocity);
+        }
+
+        /// <summary>
+        /// Applies a force to the <see cref="Particle"/>.
+        /// </summary>
+        /// <param name="force">The <see cref="Vector2"/> describing the force.</param>
         public void ApplyForce(ref Vector2 force)
         {
             Vector2.Add(ref Velocity, ref force, out Velocity);
