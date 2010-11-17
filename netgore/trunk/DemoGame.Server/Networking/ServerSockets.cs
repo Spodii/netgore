@@ -1,7 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using DemoGame.Server.Properties;
 using Lidgren.Network;
+using log4net;
 using NetGore;
 using NetGore.IO;
 using NetGore.Network;
@@ -80,6 +83,8 @@ namespace DemoGame.Server
             config.MaximumConnections = ServerSettings.Default.MaxConnections;
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.
         /// </summary>
@@ -89,8 +94,18 @@ namespace DemoGame.Server
         {
             base.OnReceiveData(sender, data);
 
-            // Process the data
-            _messageProcessorManager.Process(sender, data);
+            try
+            {
+                // Process the data
+                _messageProcessorManager.Process(sender, data);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to process received data from `{0}`. Exception: {1}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, sender, ex);
+                Debug.Fail(string.Format(errmsg, sender, ex));
+            }
         }
 
         /// <summary>
