@@ -35,8 +35,9 @@ namespace DemoGame.Editor.Tools
                 if (Map != null)
                 {
                     // Re-add the items
-                    foreach (var bgImage in Map.BackgroundImages)
-                        lstBGs.Items.Add(bgImage);
+                    var items = Map.BackgroundImages.Cast<object>().ToArray();
+                    if (items.Length > 0)
+                        lstBGs.Items.AddRange(items);
 
                     // Re-set the selected item
                     if (selected != null && lstBGs.Items.Contains(selected))
@@ -51,6 +52,7 @@ namespace DemoGame.Editor.Tools
 
         protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
         {
+            Text = string.Format("BG Images (Map: {0})", newValue != null ? newValue.ToString() : "None");
             RebuildList();
         }
 
