@@ -10,9 +10,9 @@ namespace NetGore.Editor
     public static class ListBoxExtensions
     {
         /// <summary>
-        /// Adds an item to the ListBox, then selects the newly added item.
+        /// Adds an item to the <see cref="ListBox"/>, then selects the newly added item.
         /// </summary>
-        /// <param name="listBox">The ListBox.</param>
+        /// <param name="listBox">The <see cref="ListBox"/>.</param>
         /// <param name="item">The item to add.</param>
         public static void AddItemAndReselect(this ListBox listBox, object item)
         {
@@ -24,7 +24,7 @@ namespace NetGore.Editor
         /// Deletes the selected item from the <see cref="ListBox"/> if possible, and selects a new item
         /// after deleting it.
         /// </summary>
-        /// <param name="listBox">The ListBox.</param>
+        /// <param name="listBox">The <see cref="ListBox"/>.</param>
         /// <returns>True if an item was selected and it was removed; otherwise false.</returns>
         public static bool DeleteSelectedItem(this ListBox listBox)
         {
@@ -40,7 +40,7 @@ namespace NetGore.Editor
         /// <summary>
         /// Refreshes the cached text for an item at the specified index.
         /// </summary>
-        /// <param name="listBox">The ListBox.</param>
+        /// <param name="listBox">The <see cref="ListBox"/>.</param>
         /// <param name="index">The index of the item to refresh the text of.</param>
         public static void RefreshItemAt(this ListBox listBox, int index)
         {
@@ -52,9 +52,9 @@ namespace NetGore.Editor
         }
 
         /// <summary>
-        /// Removes an item from the ListBox, then select a new item if item that was removed was selected.
+        /// Removes an item from the <see cref="ListBox"/>, then select a new item if item that was removed was selected.
         /// </summary>
-        /// <param name="listBox">The ListBox.</param>
+        /// <param name="listBox">The <see cref="ListBox"/>.</param>
         /// <param name="item">The item to remove.</param>
         public static void RemoveItemAndReselect(this ListBox listBox, object item)
         {
@@ -65,9 +65,9 @@ namespace NetGore.Editor
         }
 
         /// <summary>
-        /// Removes an item from the ListBox, then select a new item if item that was removed was selected.
+        /// Removes an item from the <see cref="ListBox"/>, then select a new item if item that was removed was selected.
         /// </summary>
-        /// <param name="listBox">The ListBox.</param>
+        /// <param name="listBox">The <see cref="ListBox"/>.</param>
         /// <param name="itemIndex">Index of the item to remove.</param>
         public static void RemoveItemAtAndReselect(this ListBox listBox, int itemIndex)
         {
@@ -92,13 +92,13 @@ namespace NetGore.Editor
         }
 
         /// <summary>
-        /// Synchronizes the items in the ListBox with the given set of <paramref name="values"/>. Only items
-        /// that need to be added/removed are changed, preserving the state of the ListBox as much as possible.
+        /// Synchronizes the items in the <see cref="ListBox"/> with the given set of <paramref name="values"/>. Only items
+        /// that need to be added/removed are changed, preserving the state of the <see cref="ListBox"/> as much as possible.
         /// Any item in the <paramref name="listBox"/> not of type <typeparamref name="T"/> will be removed.
         /// </summary>
-        /// <typeparam name="T">The Type of value.</typeparam>
-        /// <param name="listBox">The ListBox.</param>
-        /// <param name="values">The set of values that the ListBox should have for its Items.</param>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="listBox">The <see cref="ListBox"/>.</param>
+        /// <param name="values">The set of values that the <see cref="ListBox"/> should have for its Items.</param>
         public static void SynchronizeItemList<T>(this ListBox listBox, IEnumerable<T> values) where T : class
         {
             var notOfThisType = new List<object>(2);
