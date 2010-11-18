@@ -1,59 +1,66 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.DbObjs;
+using DemoGame.Server;
+using DemoGame.Server.DbObjs;
+using DemoGame.Server.Queries;
+using NetGore.Db;
 using NetGore.Editor;
 using NetGore.Graphics;
 
 namespace DemoGame.Editor.Tools
 {
-    public partial class MapEditBackgroundToolForm : Form
+    public partial class MapEditNPCSpawnsToolForm : Form
     {
         EditorMap _map;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapEditBackgroundToolForm"/> class.
+        /// Initializes a new instance of the <see cref="MapEditNPCSpawnsToolForm"/> class.
         /// </summary>
-        public MapEditBackgroundToolForm()
+        public MapEditNPCSpawnsToolForm()
         {
             InitializeComponent();
         }
 
         /// <summary>
-        /// Rebuilds the list of <see cref="BackgroundImage"/>s.
+        /// Rebuilds the list of NPC spawns.
         /// </summary>
         public void RebuildList()
         {
-            var selected = lstBGs.SelectedItem;
+            var selected = lstSpawns.SelectedItem;
 
             try
             {
-                lstBGs.BeginUpdate();
+                lstSpawns.BeginUpdate();
 
                 // Clear the list
-                lstBGs.Items.Clear();
+                lstSpawns.Items.Clear();
 
                 if (Map != null)
                 {
                     // Re-add the items
-                    var items = Map.BackgroundImages.Cast<object>().ToArray();
+                    var items = MapHelper.GetSpawns(Map.ID).OrderBy(x => x.ID).Cast<object>().ToArray();
                     if (items.Length > 0)
-                        lstBGs.Items.AddRange(items);
+                        lstSpawns.Items.AddRange(items);
 
                     // Re-set the selected item
-                    if (selected != null && lstBGs.Items.Contains(selected))
-                        lstBGs.SelectedItem = selected;
+                    if (selected != null && lstSpawns.Items.Contains(selected))
+                        lstSpawns.SelectedItem = selected;
                 }
             }
             finally
             {
-                lstBGs.EndUpdate();
+                lstSpawns.EndUpdate();
             }
         }
 
         protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
         {
-            Text = string.Format("BG Images (Map: {0})", newValue != null ? newValue.ToString() : "None");
+            Text = string.Format("NPC Spawns (Map: {0})", newValue != null ? newValue.ToString() : "None");
             RebuildList();
+
+            lstSpawns.Map = newValue;
         }
 
         /// <summary>
@@ -75,47 +82,48 @@ namespace DemoGame.Editor.Tools
         }
 
         /// <summary>
-        /// Handles the PropertyValueChanged event of the pg control.
+        /// Handles the PropertyValueChanged event of the <see cref="pg"/> control.
         /// </summary>
         /// <param name="s">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.PropertyValueChangedEventArgs"/> instance containing the event data.</param>
         private void pg_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            var selected = lstBGs.SelectedItem;
+            var selected = lstSpawns.SelectedItem;
             if (selected != pg.SelectedObject)
                 return;
 
-            lstBGs.RefreshItemAt(lstBGs.SelectedIndex);
+            lstSpawns.RefreshItemAt(lstSpawns.SelectedIndex);
         }
 
         /// <summary>
-        /// Handles the Click event of the btnDelete control.
+        /// Handles the Click event of the <see cref="btnDelete"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnDelete_Click(object sender, System.EventArgs e)
         {
+            // TODO: !!
             var map = Map;
-            var selected = lstBGs.SelectedItem as BackgroundImage;
+            var selected = lstSpawns.SelectedItem as IMapSpawnTable;
             if (selected == null || map == null)
                 return;
 
             // Confirm deletion
-            const string confirmMsg = "Are you sure you wish to delete the BackgroundImage `{0}`?";
-            if (MessageBox.Show(string.Format(confirmMsg, selected.Name), "Delete BackgroundImage?", MessageBoxButtons.YesNo) == DialogResult.No)
+            const string confirmMsg = "Are you sure you wish to delete the selected NPC spawn?";
+            if (MessageBox.Show(confirmMsg, "Delete NPC spawn?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             // Delete
-            bool wasDeleted = map.RemoveBackgroundImage(selected);
-            Debug.Assert(wasDeleted);
+            var q = DbControllerBase.GetInstance().GetQuery<DeleteMapSpawnQuery>();
+            q.Execute(selected.ID);
 
             // Update list
-            lstBGs.RemoveItemAndReselect(selected);
+            lstSpawns.RemoveItemAndReselect(selected);
             RebuildList();
         }
 
         /// <summary>
-        /// Handles the Click event of the btnNew control.
+        /// Handles the Click event of the <see cref="btnNew"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -125,22 +133,25 @@ namespace DemoGame.Editor.Tools
             if (map == null)
                 return;
 
-            // Create new BackgroundImage
-            var bg = new BackgroundLayer(map, map);
-            map.AddBackgroundImage(bg);
+            // Create new spawn
+            var charID = CharacterTemplateManager.Instance.First().TemplateTable.ID;
+            var value = new MapSpawnTable { MapID = map.ID, Amount = 1, CharacterTemplateID = charID };
+
+            var q = DbControllerBase.GetInstance().GetQuery<InsertMapSpawnQuery>();
+            q.Execute(value);
 
             // Update list
             RebuildList();
         }
 
         /// <summary>
-        /// Handles the SelectedValueChanged event of the lstBGs control.
+        /// Handles the SelectedValueChanged event of the <see cref="lstSpawns"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstBGs_SelectedValueChanged(object sender, System.EventArgs e)
+        private void lstSpawns_SelectedValueChanged(object sender, System.EventArgs e)
         {
-            var selected = lstBGs.SelectedItem;
+            var selected = lstSpawns.SelectedItem;
             if (selected == null)
                 return;
 

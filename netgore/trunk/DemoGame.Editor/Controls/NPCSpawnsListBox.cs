@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
+using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Db;
 using NetGore.Editor;
 using NetGore.Editor.WinForms;
@@ -16,6 +18,14 @@ namespace DemoGame.Editor
     public class NPCSpawnsListBox : ListBox, IMapBoundControl
     {
         MapBase _map;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPCSpawnsListBox"/> class.
+        /// </summary>
+        public NPCSpawnsListBox()
+        {
+            DrawMode = DrawMode.OwnerDrawFixed;
+        }
 
         /// <summary>
         /// Gets or sets the map used to populate this list box.
@@ -35,18 +45,6 @@ namespace DemoGame.Editor
             }
         }
 
-        public MapSpawnValues SelectedItemReal
-        {
-            get
-            {
-                var item = SelectedItem as NPCSpawnsListBoxItem;
-                if (item == null)
-                    return null;
-
-                return item.Value;
-            }
-        }
-
         public void AddNewItem()
         {
             if (Map == null)
@@ -55,36 +53,31 @@ namespace DemoGame.Editor
                 return;
             }
 
-            var newSpawn = new MapSpawnValues(DbControllerBase.GetInstance(), Map.ID, new CharacterTemplateID(1));
-            var newItem = new NPCSpawnsListBoxItem(newSpawn);
+            var charID = CharacterTemplateManager.Instance.First().TemplateTable.ID;
+            var newSpawn = new MapSpawnValues(DbControllerBase.GetInstance(), Map.ID, charID);
 
-            this.AddItemAndReselect(newItem);
-
-            SelectedItem = newItem;
+            this.AddItemAndReselect(newSpawn);
         }
 
-        public void DeleteItem(object item)
+        public bool DeleteItem(object item)
+        {
+            return DeleteItem(item as MapSpawnValues);
+        }
+
+        public bool DeleteItem(MapSpawnValues item)
         {
             if (item == null)
-                return;
+                return false;
 
-            var listBoxItem = SelectedItem as NPCSpawnsListBoxItem;
-            if (listBoxItem == null)
-                return;
+            if (!Items.Contains(item))
+                return false;
 
-            var spawnItem = listBoxItem.Value;
-            if (spawnItem == null)
-                return;
+            var q = DbControllerBase.GetInstance().GetQuery<DeleteMapSpawnQuery>();
+            q.Execute(item.ID);
 
-            if (!Items.Contains(listBoxItem))
-            {
-                MessageBox.Show("Failed to find NPC `{0}` in the ListBox.");
-                return;
-            }
+            ReloadSpawns();
 
-            this.RemoveItemAndReselect(listBoxItem);
-
-            spawnItem.Delete();
+            return true;
         }
 
         public void DeleteSelectedItem()
@@ -95,21 +88,54 @@ namespace DemoGame.Editor
             DeleteItem(SelectedItem);
         }
 
+        static string GetDrawString(MapSpawnValues x)
+        {
+            return string.Format("Char ID: {0}  Count: {1}  Region: {2}", x.CharacterTemplateID, x.SpawnAmount, x.SpawnArea);
+        }
+
         public IEnumerable<MapSpawnValues> GetMapSpawnValues()
         {
-            return Items.OfType<NPCSpawnsListBoxItem>().Select(item => item.Value);
+            return Items.OfType<MapSpawnValues>().ToImmutable();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data. </param>
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (DesignMode || !ControlHelper.DrawListItem<MapSpawnValues>(Items, e, x => GetDrawString(x)))
+                base.OnDrawItem(e);
         }
 
         void ReloadSpawns()
         {
-            Items.Clear();
+            var selected = SelectedItem;
 
-            if (Map == null)
-                return;
+            try
+            {
+                BeginUpdate();
 
-            var spawnInfo = MapSpawnValues.Load(DbControllerBase.GetInstance(), Map.ID);
-            var asArray = spawnInfo.Select(x => new NPCSpawnsListBoxItem(x)).ToArray();
-            Items.AddRange(asArray);
+                Items.Clear();
+
+                if (Map != null)
+                {
+                    var spawnInfo = MapSpawnValues.Load(DbControllerBase.GetInstance(), Map.ID);
+                    var asArray = spawnInfo.OrderBy(x => x.ID).ToArray();
+
+                    if (asArray.Length > 0)
+                    {
+                        Items.AddRange(asArray);
+
+                        if (selected != null && Items.Contains(selected))
+                            SelectedItem = selected;
+                    }
+                }
+            }
+            finally
+            {
+                EndUpdate();
+            }
         }
 
         #region IMapBoundControl Members
@@ -125,26 +151,5 @@ namespace DemoGame.Editor
         }
 
         #endregion
-
-        class NPCSpawnsListBoxItem
-        {
-            public readonly MapSpawnValues Value;
-
-            public NPCSpawnsListBoxItem(MapSpawnValues v)
-            {
-                Value = v;
-            }
-
-            public override string ToString()
-            {
-                return string.Format("Char ID: {0}  Count: {1}  Region: {2}", Value.CharacterTemplateID, Value.SpawnAmount,
-                    Value.SpawnArea);
-            }
-
-            public static implicit operator MapSpawnValues(NPCSpawnsListBoxItem v)
-            {
-                return v.Value;
-            }
-        }
     }
 }

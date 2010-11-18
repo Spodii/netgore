@@ -88,6 +88,13 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapEditNPCSpawnsTool {
+            get {
+                object obj = ResourceManager.GetObject("MapEditNPCSpawnsTool", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapEntityCursorTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapEntityCursorTool_Disabled", resourceCulture);
