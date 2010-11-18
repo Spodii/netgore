@@ -31,7 +31,7 @@ namespace NetGore.Editor
         public static bool DeleteSelectedItem<T>(this T listBox) where T : ListBox
         {
             var i = listBox.SelectedIndex;
-            if (i <= 0 || i > listBox.Items.Count)
+            if (i < 0 || i >= listBox.Items.Count)
                 return false;
 
             listBox.RemoveItemAtAndReselect(i);
@@ -47,6 +47,9 @@ namespace NetGore.Editor
         /// <param name="index">The index of the item to refresh the text of.</param>
         public static void RefreshItemAt<T>(this T listBox, int index) where T : ListBox
         {
+            if (index < 0 || index >= listBox.Items.Count)
+                return;
+
             var region = listBox.GetItemRectangle(index);
             listBox.Invalidate(region);
         }
