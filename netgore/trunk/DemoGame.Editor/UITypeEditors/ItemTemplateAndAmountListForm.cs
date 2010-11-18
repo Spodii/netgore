@@ -74,7 +74,7 @@ namespace DemoGame.Editor.UITypeEditors
 
             if (RequireDistinct)
             {
-                if (lstItems.Items.OfType<MutablePair<ItemTemplateID, byte>>().Any(x => x.Key == _selectedItem.Value))
+                if (lstItems.Items.OfType<MutablePair<ItemTemplateID, byte>>().Any(x => _selectedItem.HasValue && x.Key == _selectedItem.Value))
                 {
                     MessageBox.Show("That item is already in the list.");
                     _selectedItem = null;
