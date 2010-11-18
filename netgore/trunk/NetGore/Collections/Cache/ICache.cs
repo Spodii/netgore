@@ -9,7 +9,7 @@ namespace NetGore.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of key.</typeparam>
     /// <typeparam name="TValue">The type of value.</typeparam>
-    public interface ICache<TKey, TValue> where TValue : class
+    public interface ICache<in TKey, out TValue> where TValue : class
     {
         /// <summary>
         /// Gets the item from the cache with the given <paramref name="key"/>.

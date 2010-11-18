@@ -196,9 +196,9 @@ namespace NetGore.Editor.Grhs
         /// <summary>
         /// Scales the unscaled <see cref="Bitmap"/> for a <see cref="StationaryGrhData"/>.
         /// </summary>
-        /// <param name="unscaled">The unscaled <see cref="Bitmap"/>.</param>
+        /// <param name="unscaled">The unscaled <see cref="Image"/>.</param>
         /// <returns>The scaled <see cref="Bitmap"/> scaled to the size for this image list, or null if an error occured.</returns>
-        static Bitmap CreateScaledBitmap(Bitmap unscaled)
+        static Bitmap CreateScaledBitmap(Image unscaled)
         {
             try
             {

@@ -67,6 +67,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
         /// <c>false</c> to release only unmanaged resources.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2215:Dispose methods should call base class dispose")]
         protected override void Dispose(bool disposeManaged)
         {
             try

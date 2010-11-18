@@ -385,7 +385,7 @@ namespace NetGore.Editor.Docking
                 var width = rectWindow.Width;
                 var height = TabStripControl.MeasureHeight();
 
-                var y = 0;
+                int y;
                 if (DockPanel.DocumentTabStripLocation == DocumentTabStripLocation.Bottom)
                     y = rectWindow.Height - height;
                 else

@@ -63,8 +63,6 @@ namespace NetGore
         /// <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            culture = culture ?? CultureInfo.CurrentCulture;
-
             string s;
             if ((s = value as string) != null)
             {
@@ -133,8 +131,6 @@ namespace NetGore
         /// <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            culture = culture ?? CultureInfo.CurrentCulture;
-
             if (destinationType == typeof(string) && value is T)
             {
                 var valueAsT = (T)value;

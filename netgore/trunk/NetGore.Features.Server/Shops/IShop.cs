@@ -8,7 +8,7 @@ namespace NetGore.Features.Shops
     /// Interface for a shop.
     /// </summary>
     /// <typeparam name="TShopItem">The type of shop item.</typeparam>
-    public interface IShop<TShopItem>
+    public interface IShop<out TShopItem>
     {
         /// <summary>
         /// Gets if this shop can buy items from shoppers instead of just sell items to them.

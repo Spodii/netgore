@@ -205,7 +205,7 @@ namespace NetGore.Editor.Docking
             {
                 var control = FromChildHandle(hWnd);
 
-                IDockContent content = null;
+                IDockContent content;
                 DockPane pane = null;
                 for (; control != null; control = control.Parent)
                 {

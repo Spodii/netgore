@@ -8,7 +8,7 @@ namespace NetGore.Features.Quests
     /// </summary>
     /// <typeparam name="TCharacter">The type of the <see cref="IQuestPerformer{TCharacter}"/>
     /// that can perform the quest.</typeparam>
-    public interface IQuestRewardCollection<TCharacter> : IEnumerable<IQuestReward<TCharacter>>
+    public interface IQuestRewardCollection<in TCharacter> : IEnumerable<IQuestReward<TCharacter>>
         where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>
