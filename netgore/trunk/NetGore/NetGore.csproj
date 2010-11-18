@@ -494,7 +494,6 @@
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector2.cs" />
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector3.cs" />
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector4.cs" />
-    <Compile Include="SFML\Graphics\PostFx.cs" />
     <Compile Include="SFML\Graphics\IntRect.cs" />
     <Compile Include="SFML\Graphics\NetGore\RenderImage.cs" />
     <Compile Include="SFML\Graphics\RenderTarget.cs" />
