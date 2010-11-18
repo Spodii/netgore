@@ -17,56 +17,71 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Linq;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `account_ban`.
-    /// </summary>
-    public interface IAccountBanTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `account_id`.
-        /// </summary>
-        AccountID AccountID { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `account_ban`.
+/// </summary>
+public interface IAccountBanTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+IAccountBanTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `end_time`.
-        /// </summary>
-        DateTime EndTime { get; }
+/// <summary>
+/// Gets the value of the database column `account_id`.
+/// </summary>
+DemoGame.AccountID AccountID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `end_time`.
+/// </summary>
+System.DateTime EndTime
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `expired`.
+/// </summary>
+System.Boolean Expired
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `id`.
+/// </summary>
+System.Int32 ID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `issued_by`.
+/// </summary>
+System.String IssuedBy
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `reason`.
+/// </summary>
+System.String Reason
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `start_time`.
+/// </summary>
+System.DateTime StartTime
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `expired`.
-        /// </summary>
-        Boolean Expired { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `id`.
-        /// </summary>
-        Int32 ID { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `issued_by`.
-        /// </summary>
-        String IssuedBy { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `reason`.
-        /// </summary>
-        String Reason { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `start_time`.
-        /// </summary>
-        DateTime StartTime { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IAccountBanTable DeepCopy();
-    }
 }

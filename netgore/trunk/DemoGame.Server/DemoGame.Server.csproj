@@ -117,10 +117,12 @@
     <Compile Include="DbObjs\AccountCharacterTable.cs" />
     <Compile Include="DbObjs\ActiveTradeCashTable.cs" />
     <Compile Include="DbObjs\ActiveTradeItemTable.cs" />
+    <Compile Include="DbObjs\CharacterSkillTable.cs" />
     <Compile Include="DbObjs\DbExtensions\AccountBanTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\AccountCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeCashTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeItemTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\CharacterSkillTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ViewNpcCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ViewUserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountConsumeItemTableDbExtensions.cs" />
