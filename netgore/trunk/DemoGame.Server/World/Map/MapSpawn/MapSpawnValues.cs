@@ -116,7 +116,8 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the area on the map the spawning will take place at.
+        /// Gets or sets the area on the map the spawning will take place at.
+        /// When possible, its best to use <see cref="SetSpawnArea"/> to ensure the spawn area is validated.
         /// </summary>
         [Browsable(true)]
         [DisplayName("Area")]
@@ -124,7 +125,7 @@ namespace DemoGame.Server
         public MapSpawnRect SpawnArea
         {
             get { return _spawnArea; }
-            private set
+            set
             {
                 _spawnArea = value;
                 UpdateDB();
@@ -195,7 +196,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sets the spawn area for this MapSpawnValues.
+        /// Sets the spawn area for this <see cref="MapSpawnValues"/>.
         /// </summary>
         /// <param name="map">Instance of the Map with the <see cref="MapID"/> equal to the <see cref="MapID"/> handled by this
         /// <see cref="MapSpawnValues"/>. This is to ensure that the <paramref name="newSpawnArea"/> given is in a
