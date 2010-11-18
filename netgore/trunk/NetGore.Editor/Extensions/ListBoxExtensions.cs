@@ -12,10 +12,9 @@ namespace NetGore.Editor
         /// <summary>
         /// Adds an item to the ListBox, then selects the newly added item.
         /// </summary>
-        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <param name="item">The item to add.</param>
-        public static void AddItemAndReselect<T>(this T listBox, object item) where T : ListBox
+        public static void AddItemAndReselect(this ListBox listBox, object item)
         {
             listBox.Items.Add(item);
             listBox.SelectedItem = item;
@@ -25,10 +24,9 @@ namespace NetGore.Editor
         /// Deletes the selected item from the <see cref="ListBox"/> if possible, and selects a new item
         /// after deleting it.
         /// </summary>
-        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <returns>True if an item was selected and it was removed; otherwise false.</returns>
-        public static bool DeleteSelectedItem<T>(this T listBox) where T : ListBox
+        public static bool DeleteSelectedItem(this ListBox listBox)
         {
             var i = listBox.SelectedIndex;
             if (i < 0 || i >= listBox.Items.Count)
@@ -42,10 +40,9 @@ namespace NetGore.Editor
         /// <summary>
         /// Refreshes the cached text for an item at the specified index.
         /// </summary>
-        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <param name="index">The index of the item to refresh the text of.</param>
-        public static void RefreshItemAt<T>(this T listBox, int index) where T : ListBox
+        public static void RefreshItemAt(this ListBox listBox, int index)
         {
             if (index < 0 || index >= listBox.Items.Count)
                 return;
@@ -57,10 +54,9 @@ namespace NetGore.Editor
         /// <summary>
         /// Removes an item from the ListBox, then select a new item if item that was removed was selected.
         /// </summary>
-        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <param name="item">The item to remove.</param>
-        public static void RemoveItemAndReselect<T>(this T listBox, object item) where T : ListBox
+        public static void RemoveItemAndReselect(this ListBox listBox, object item)
         {
             if (item == null)
                 return;
@@ -71,10 +67,9 @@ namespace NetGore.Editor
         /// <summary>
         /// Removes an item from the ListBox, then select a new item if item that was removed was selected.
         /// </summary>
-        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <param name="itemIndex">Index of the item to remove.</param>
-        public static void RemoveItemAtAndReselect<T>(this T listBox, int itemIndex) where T : ListBox
+        public static void RemoveItemAtAndReselect(this ListBox listBox, int itemIndex)
         {
             if (itemIndex < 0)
                 return;
