@@ -7,11 +7,12 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Editor;
+using NetGore.Editor.Docking;
 using NetGore.Graphics;
 
 namespace DemoGame.Editor.Tools
 {
-    public partial class MapEditNPCSpawnsToolForm : Form
+    public partial class MapEditNPCSpawnsToolForm : DockContent
     {
         EditorMap _map;
 

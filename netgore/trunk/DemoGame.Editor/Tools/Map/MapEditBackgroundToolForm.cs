@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor;
+using NetGore.Editor.Docking;
 using NetGore.Graphics;
 
 namespace DemoGame.Editor.Tools
 {
-    public partial class MapEditBackgroundToolForm : Form
+    public partial class MapEditBackgroundToolForm : DockContent
     {
         EditorMap _map;
 
