@@ -247,6 +247,13 @@
     <Compile Include="Tools\Map\Cursors\MapGrhCursorTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapLightCursorTool.cs" />
     <Compile Include="Tools\Map\MapDeleteTool.cs" />
+    <Compile Include="Tools\Map\MapEditBackgroundTool.cs" />
+    <Compile Include="Tools\Map\MapEditBackgroundToolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\Map\MapEditBackgroundToolForm.Designer.cs">
+      <DependentUpon>MapEditBackgroundToolForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Map\MapPreviewTool.cs" />
     <Compile Include="Tools\Map\MapPropertiesTool.cs" />
     <Compile Include="Tools\Map\MapPropertiesToolForm.cs">
@@ -440,6 +447,9 @@
       <DependentUpon>ShiftNodesInputForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Map\MapEditBackgroundToolForm.resx">
+      <DependentUpon>MapEditBackgroundToolForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\Map\MapPropertiesToolForm.resx">
       <DependentUpon>MapPropertiesToolForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -588,6 +598,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MapPreviewTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapEditBackgroundTool.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -81,6 +81,13 @@ namespace DemoGame.Editor.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap MapEditBackgroundTool {
+            get {
+                object obj = ResourceManager.GetObject("MapEditBackgroundTool", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap MapEntityCursorTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapEntityCursorTool_Disabled", resourceCulture);

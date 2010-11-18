@@ -20,6 +20,11 @@ namespace DemoGame.Editor.Tools
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
         }
 
+        /// <summary>
+        /// Handles the Click event of the ControlSettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void ControlSettings_Click(object sender, EventArgs e)
         {
             var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
