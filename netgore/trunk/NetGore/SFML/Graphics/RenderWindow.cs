@@ -478,29 +478,9 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
 
+            ////////////////////////////////////////////////////////////
+
             #region RenderTarget Members
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Return the current active view
-            /// </summary>
-            /// <returns>The current view</returns>
-            ////////////////////////////////////////////////////////////
-            public View GetView()
-            {
-                return new View(sfRenderWindow_GetView(This));
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Change the current active view
-            /// </summary>
-            /// <param name="view">New view</param>
-            ////////////////////////////////////////////////////////////
-            public void SetView(View view)
-            {
-                sfRenderWindow_SetView(This, view.This);
-            }
 
             /// <summary>
             /// Default view of the window
@@ -609,6 +589,16 @@ namespace SFML
             }
 
             /// <summary>
+            /// Return the current active view
+            /// </summary>
+            /// <returns>The current view</returns>
+            ////////////////////////////////////////////////////////////
+            public View GetView()
+            {
+                return new View(sfRenderWindow_GetView(This));
+            }
+
+            /// <summary>
             /// Get the viewport of a view applied to this target
             /// </summary>
             /// <param name="view">Target view</param>
@@ -638,6 +628,16 @@ namespace SFML
             public void SaveGLStates()
             {
                 sfRenderWindow_SaveGLStates(This);
+            }
+
+            /// <summary>
+            /// Change the current active view
+            /// </summary>
+            /// <param name="view">New view</param>
+            ////////////////////////////////////////////////////////////
+            public void SetView(View view)
+            {
+                sfRenderWindow_SetView(This, view.This);
             }
 
             #endregion

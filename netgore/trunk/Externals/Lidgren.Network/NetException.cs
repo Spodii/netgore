@@ -18,54 +18,51 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Lidgren.Network
 {
-	/// <summary>
-	/// Exception thrown in the Lidgren Network Library
-	/// </summary>
-	[Serializable]
-	public sealed class NetException : Exception
-	{
-		public NetException()
-			: base()
-		{
-		}
+    /// <summary>
+    /// Exception thrown in the Lidgren Network Library
+    /// </summary>
+    [Serializable]
+    public sealed class NetException : Exception
+    {
+        public NetException()
+        {
+        }
 
-		public NetException(string message)
-			: base(message)
-		{
-		}
+        public NetException(string message) : base(message)
+        {
+        }
 
-		public NetException(string message, Exception inner)
-			: base(message, inner)
-		{
-		}
+        public NetException(string message, Exception inner) : base(message, inner)
+        {
+        }
 
-		private NetException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
+        NetException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
 
-		/// <summary>
-		/// Throws an exception, in DEBUG only, if first parameter is false
-		/// </summary>
-		[Conditional("DEBUG")]
-		public static void Assert(bool isOk, string message)
-		{
-			if (!isOk)
-				throw new NetException(message);
-		}
+        /// <summary>
+        /// Throws an exception, in DEBUG only, if first parameter is false
+        /// </summary>
+        [Conditional("DEBUG")]
+        public static void Assert(bool isOk, string message)
+        {
+            if (!isOk)
+                throw new NetException(message);
+        }
 
-		/// <summary>
-		/// Throws an exception, in DEBUG only, if first parameter is false
-		/// </summary>
-		[Conditional("DEBUG")]
-		public static void Assert(bool isOk)
-		{
-			if (!isOk)
-				throw new NetException();
-		}
-	}
+        /// <summary>
+        /// Throws an exception, in DEBUG only, if first parameter is false
+        /// </summary>
+        [Conditional("DEBUG")]
+        public static void Assert(bool isOk)
+        {
+            if (!isOk)
+                throw new NetException();
+        }
+    }
 }

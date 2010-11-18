@@ -19,141 +19,141 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Diagnostics;
 
 namespace Lidgren.Network
 {
-	public partial class NetPeer
-	{
-
+    public partial class NetPeer
+    {
 #if DEBUG
-		private readonly List<DelayedPacket> m_delayedPackets = new List<DelayedPacket>();
+        readonly List<DelayedPacket> m_delayedPackets = new List<DelayedPacket>();
 
-		private class DelayedPacket
-		{
-			public byte[] Data;
-			public double DelayedUntil;
-			public IPEndPoint Target;
-		}
+        class DelayedPacket
+        {
+            public byte[] Data;
+            public double DelayedUntil;
+            public IPEndPoint Target;
+        }
 
-		internal void SendPacket(int numBytes, IPEndPoint target, int numMessages, out bool connectionReset)
-		{
-			connectionReset = false;
+        internal void SendPacket(int numBytes, IPEndPoint target, int numMessages, out bool connectionReset)
+        {
+            connectionReset = false;
 
-			// simulate loss
-			float loss = m_configuration.m_loss;
-			if (loss > 0.0f)
-			{
-				if ((float)NetRandom.Instance.NextDouble() < loss)
-				{
-					LogVerbose("Sending packet " + numBytes + " bytes - SIMULATED LOST!");
-					return; // packet "lost"
-				}
-			}
+            // simulate loss
+            var loss = m_configuration.m_loss;
+            if (loss > 0.0f)
+            {
+                if ((float)NetRandom.Instance.NextDouble() < loss)
+                {
+                    LogVerbose("Sending packet " + numBytes + " bytes - SIMULATED LOST!");
+                    return; // packet "lost"
+                }
+            }
 
-			m_statistics.PacketSent(numBytes, numMessages);
+            m_statistics.PacketSent(numBytes, numMessages);
 
-			// simulate latency
-			float m = m_configuration.m_minimumOneWayLatency;
-			float r = m_configuration.m_randomOneWayLatency;
-			if (m == 0.0f && r == 0.0f)
-			{
-				// no latency simulation
-				// LogVerbose("Sending packet " + numBytes + " bytes");
-				bool wasSent = ActuallySendPacket(m_sendBuffer, numBytes, target, out connectionReset);
-				// TODO: handle wasSent == false?
-				return;
-			}
+            // simulate latency
+            var m = m_configuration.m_minimumOneWayLatency;
+            var r = m_configuration.m_randomOneWayLatency;
+            if (m == 0.0f && r == 0.0f)
+            {
+                // no latency simulation
+                // LogVerbose("Sending packet " + numBytes + " bytes");
+                var wasSent = ActuallySendPacket(m_sendBuffer, numBytes, target, out connectionReset);
+                // TODO: handle wasSent == false?
+                return;
+            }
 
-			int num = 1;
-			if (m_configuration.m_duplicates > 0.0f && NetRandom.Instance.NextSingle() < m_configuration.m_duplicates)
-				num++;
+            var num = 1;
+            if (m_configuration.m_duplicates > 0.0f && NetRandom.Instance.NextSingle() < m_configuration.m_duplicates)
+                num++;
 
-			float delay = 0;
-			for (int i = 0; i < num; i++)
-			{
-				delay = m_configuration.m_minimumOneWayLatency + (NetRandom.Instance.NextSingle() * m_configuration.m_randomOneWayLatency);
+            float delay = 0;
+            for (var i = 0; i < num; i++)
+            {
+                delay = m_configuration.m_minimumOneWayLatency +
+                        (NetRandom.Instance.NextSingle() * m_configuration.m_randomOneWayLatency);
 
-				// Enqueue delayed packet
-				DelayedPacket p = new DelayedPacket();
-				p.Target = target;
-				p.Data = new byte[numBytes];
-				Buffer.BlockCopy(m_sendBuffer, 0, p.Data, 0, numBytes);
-				p.DelayedUntil = NetTime.Now + delay;
+                // Enqueue delayed packet
+                var p = new DelayedPacket();
+                p.Target = target;
+                p.Data = new byte[numBytes];
+                Buffer.BlockCopy(m_sendBuffer, 0, p.Data, 0, numBytes);
+                p.DelayedUntil = NetTime.Now + delay;
 
-				m_delayedPackets.Add(p);
-			}
+                m_delayedPackets.Add(p);
+            }
 
-			// LogVerbose("Sending packet " + numBytes + " bytes - delayed " + NetTime.ToReadable(delay));
-		}
+            // LogVerbose("Sending packet " + numBytes + " bytes - delayed " + NetTime.ToReadable(delay));
+        }
 
-		private void SendDelayedPackets()
-		{
-			if (m_delayedPackets.Count <= 0)
-				return;
+        void SendDelayedPackets()
+        {
+            if (m_delayedPackets.Count <= 0)
+                return;
 
-			double now = NetTime.Now;
+            var now = NetTime.Now;
 
-			bool connectionReset;
+            bool connectionReset;
 
-		RestartDelaySending:
-			foreach (DelayedPacket p in m_delayedPackets)
-			{
-				if (now > p.DelayedUntil)
-				{
-					ActuallySendPacket(p.Data, p.Data.Length, p.Target, out connectionReset);
-					m_delayedPackets.Remove(p);
-					goto RestartDelaySending;
-				}
-			}
-		}
+            RestartDelaySending:
+            foreach (var p in m_delayedPackets)
+            {
+                if (now > p.DelayedUntil)
+                {
+                    ActuallySendPacket(p.Data, p.Data.Length, p.Target, out connectionReset);
+                    m_delayedPackets.Remove(p);
+                    goto RestartDelaySending;
+                }
+            }
+        }
 
-		internal bool ActuallySendPacket(byte[] data, int numBytes, IPEndPoint target, out bool connectionReset)
-		{
-			connectionReset = false;
-			try
-			{
-				if (target.Address == IPAddress.Broadcast)
-					m_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+        internal bool ActuallySendPacket(byte[] data, int numBytes, IPEndPoint target, out bool connectionReset)
+        {
+            connectionReset = false;
+            try
+            {
+                if (target.Address == IPAddress.Broadcast)
+                    m_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
 
-				int bytesSent = m_socket.SendTo(data, 0, numBytes, SocketFlags.None, target);
-				if (numBytes != bytesSent)
-					LogWarning("Failed to send the full " + numBytes + "; only " + bytesSent + " bytes sent in packet!");
-			}
-			catch (SocketException sx)
-			{
-				if (sx.SocketErrorCode == SocketError.WouldBlock)
-				{
-					// send buffer full?
-					LogWarning("Socket threw exception; would block - send buffer full? Increase in NetPeerConfiguration");
-					return false;
-				}
-				if (sx.SocketErrorCode == SocketError.ConnectionReset)
-				{
-					// connection reset by peer, aka connection forcibly closed aka "ICMP port unreachable" 
-					connectionReset = true;
-					return false;
-				}
-				LogError("Failed to send packet: " + sx);
-			}
-			catch (Exception ex)
-			{
-				LogError("Failed to send packet: " + ex);
-			}
-			finally
-			{
-				if (target.Address == IPAddress.Broadcast)
-					m_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, false);
-			}
-			return true;
-		}
+                var bytesSent = m_socket.SendTo(data, 0, numBytes, SocketFlags.None, target);
+                if (numBytes != bytesSent)
+                    LogWarning("Failed to send the full " + numBytes + "; only " + bytesSent + " bytes sent in packet!");
+            }
+            catch (SocketException sx)
+            {
+                if (sx.SocketErrorCode == SocketError.WouldBlock)
+                {
+                    // send buffer full?
+                    LogWarning("Socket threw exception; would block - send buffer full? Increase in NetPeerConfiguration");
+                    return false;
+                }
+                if (sx.SocketErrorCode == SocketError.ConnectionReset)
+                {
+                    // connection reset by peer, aka connection forcibly closed aka "ICMP port unreachable" 
+                    connectionReset = true;
+                    return false;
+                }
+                LogError("Failed to send packet: " + sx);
+            }
+            catch (Exception ex)
+            {
+                LogError("Failed to send packet: " + ex);
+            }
+            finally
+            {
+                if (target.Address == IPAddress.Broadcast)
+                    m_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, false);
+            }
+            return true;
+        }
 
 #else
-		//
-		// Release - just send the packet straight away
-		//
+    //
+    // Release - just send the packet straight away
+    //
 		internal void SendPacket(int numBytes, IPEndPoint target, int numMessages, out bool connectionReset)
 		{
 			connectionReset = false;
@@ -200,5 +200,5 @@ namespace Lidgren.Network
 			m_socket.EndSendTo(res);
 		}
 #endif
-	}
+    }
 }

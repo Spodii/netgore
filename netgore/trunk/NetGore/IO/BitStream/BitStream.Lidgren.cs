@@ -1,53 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Lidgren.Network;
 
 namespace NetGore.IO
 {
     public partial class BitStream
     {
-        /// <summary>
-        /// Writes a <see cref="NetIncomingMessage"/> buffer into the BitStream.
-        /// </summary>
-        /// <param name="source">The <see cref="NetIncomingMessage"/> who's contents will be copied to this BitStream.</param>
-        public void Write(NetIncomingMessage source)
-        {
-#if DEBUG
-            var startBSPos = PositionBits;
-            var startMsgPos = (int)source.Position;
-#endif
-
-            // Read full 32-bit integers
-            while (source.LengthBits - source.Position >= _bitsInt)
-            {
-                var v = source.ReadUInt32();
-                Write(v);
-            }
-
-            // Read full 8-bit integers
-            while (source.LengthBits - source.Position >= _bitsByte)
-            {
-                var v = source.ReadByte();
-                Write(v);
-            }
-
-            // Read the remaining bits
-            while (source.LengthBits > source.Position)
-            {
-                var v = source.ReadBoolean();
-                Write(v);
-            }
-
-            Debug.Assert(source.Position == source.LengthBits);
-
-#if DEBUG
-            Debug.Assert(PositionBits - startBSPos == source.LengthBits - startMsgPos);
-#endif
-        }
-
         /// <summary>
         /// Copies the contents of the BitStream to a <see cref="NetOutgoingMessage"/>.
         /// </summary>
@@ -90,6 +49,45 @@ namespace NetGore.IO
 
 #if DEBUG
             Debug.Assert(target.LengthBits - startMsgLen == LengthBits);
+#endif
+        }
+
+        /// <summary>
+        /// Writes a <see cref="NetIncomingMessage"/> buffer into the BitStream.
+        /// </summary>
+        /// <param name="source">The <see cref="NetIncomingMessage"/> who's contents will be copied to this BitStream.</param>
+        public void Write(NetIncomingMessage source)
+        {
+#if DEBUG
+            var startBSPos = PositionBits;
+            var startMsgPos = (int)source.Position;
+#endif
+
+            // Read full 32-bit integers
+            while (source.LengthBits - source.Position >= _bitsInt)
+            {
+                var v = source.ReadUInt32();
+                Write(v);
+            }
+
+            // Read full 8-bit integers
+            while (source.LengthBits - source.Position >= _bitsByte)
+            {
+                var v = source.ReadByte();
+                Write(v);
+            }
+
+            // Read the remaining bits
+            while (source.LengthBits > source.Position)
+            {
+                var v = source.ReadBoolean();
+                Write(v);
+            }
+
+            Debug.Assert(source.Position == source.LengthBits);
+
+#if DEBUG
+            Debug.Assert(PositionBits - startBSPos == source.LengthBits - startMsgPos);
 #endif
         }
     }

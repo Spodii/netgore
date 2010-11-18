@@ -1499,6 +1499,12 @@ using System.Linq;
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "0#", Scope = "member",
         Target = "SFML.Graphics.Image.#UpdatePixels(SFML.Graphics.Color[,],System.UInt32,System.UInt32)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage", Scope = "member", Target = "SFML.Graphics.RenderImage.#sfRenderImage_GetView(System.IntPtr)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage", Scope = "member", Target = "SFML.Graphics.RenderWindow.#sfRenderWindow_GetView(System.IntPtr)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage", Scope = "member", Target = "SFML.Graphics.Shader.#sfShader_CreateFromMemory(System.String)")]
+[assembly:
+    SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage", Scope = "member",
+        Target = "SFML.Graphics.RenderImage.#sfRenderImage_GetView(System.IntPtr)")]
+[assembly:
+    SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage", Scope = "member",
+        Target = "SFML.Graphics.RenderWindow.#sfRenderWindow_GetView(System.IntPtr)")]
+[assembly:
+    SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage", Scope = "member",
+        Target = "SFML.Graphics.Shader.#sfShader_CreateFromMemory(System.String)")]

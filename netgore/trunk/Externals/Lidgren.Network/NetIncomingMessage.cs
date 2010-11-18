@@ -16,107 +16,124 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.Net;
 using System.Diagnostics;
+using System.Linq;
+using System.Net;
 
 namespace Lidgren.Network
 {
-	/// <summary>
-	/// Incoming message either sent from a remote peer or generated within the library
-	/// </summary>
-	[DebuggerDisplay("Type={MessageType} LengthBits={LengthBits}")]
-	public partial class NetIncomingMessage
-	{
-		internal byte[] m_data;
-		internal int m_bitLength;
-		internal NetIncomingMessageType m_incomingMessageType;
-		internal IPEndPoint m_senderEndpoint;
-		internal NetConnection m_senderConnection;
-		internal int m_sequenceNumber;
-		internal NetMessageType m_receivedMessageType;
-		internal bool m_isFragment;
+    /// <summary>
+    /// Incoming message either sent from a remote peer or generated within the library
+    /// </summary>
+    [DebuggerDisplay("Type={MessageType} LengthBits={LengthBits}")]
+    public partial class NetIncomingMessage
+    {
+        internal int m_bitLength;
+        internal byte[] m_data;
+        internal NetIncomingMessageType m_incomingMessageType;
+        internal bool m_isFragment;
+        internal NetMessageType m_receivedMessageType;
+        internal NetConnection m_senderConnection;
+        internal IPEndPoint m_senderEndpoint;
+        internal int m_sequenceNumber;
 
-		/// <summary>
-		/// Gets the type of this incoming message
-		/// </summary>
-		public NetIncomingMessageType MessageType { get { return m_incomingMessageType; } }
+        internal NetIncomingMessage()
+        {
+        }
 
-		/// <summary>
-		/// Gets the delivery method this message was sent with (if user data)
-		/// </summary>
-		public NetDeliveryMethod DeliveryMethod { get { return NetUtility.GetDeliveryMethod(m_receivedMessageType); } }
+        internal NetIncomingMessage(NetIncomingMessageType tp)
+        {
+            m_incomingMessageType = tp;
+        }
 
-		/// <summary>
-		/// Gets the sequence channel this message was sent with (if user data)
-		/// </summary>
-		public int SequenceChannel { get { return (int)m_receivedMessageType - (int)NetUtility.GetDeliveryMethod(m_receivedMessageType); } }
+        /// <summary>
+        /// Gets the delivery method this message was sent with (if user data)
+        /// </summary>
+        public NetDeliveryMethod DeliveryMethod
+        {
+            get { return NetUtility.GetDeliveryMethod(m_receivedMessageType); }
+        }
 
-		/// <summary>
-		/// IPEndPoint of sender, if any
-		/// </summary>
-		public IPEndPoint SenderEndpoint { get { return m_senderEndpoint; } }
+        /// <summary>
+        /// Gets the length of the message payload in bits
+        /// </summary>
+        public int LengthBits
+        {
+            get { return m_bitLength; }
+            internal set { m_bitLength = value; }
+        }
 
-		/// <summary>
-		/// NetConnection of sender, if any
-		/// </summary>
-		public NetConnection SenderConnection { get { return m_senderConnection; } }
+        /// <summary>
+        /// Gets the length of the message payload in bytes
+        /// </summary>
+        public int LengthBytes
+        {
+            get { return ((m_bitLength + 7) >> 3); }
+        }
 
-		/// <summary>
-		/// Gets the length of the message payload in bytes
-		/// </summary>
-		public int LengthBytes
-		{
-			get { return ((m_bitLength + 7) >> 3); }
-		}
+        /// <summary>
+        /// Gets the type of this incoming message
+        /// </summary>
+        public NetIncomingMessageType MessageType
+        {
+            get { return m_incomingMessageType; }
+        }
 
-		/// <summary>
-		/// Gets the length of the message payload in bits
-		/// </summary>
-		public int LengthBits
-		{
-			get { return m_bitLength; }
-			internal set { m_bitLength = value; }
-		}
+        /// <summary>
+        /// NetConnection of sender, if any
+        /// </summary>
+        public NetConnection SenderConnection
+        {
+            get { return m_senderConnection; }
+        }
 
-		internal NetIncomingMessage()
-		{
-		}
+        /// <summary>
+        /// IPEndPoint of sender, if any
+        /// </summary>
+        public IPEndPoint SenderEndpoint
+        {
+            get { return m_senderEndpoint; }
+        }
 
-		internal NetIncomingMessage(NetIncomingMessageType tp)
-		{
-			m_incomingMessageType = tp;
-		}
+        /// <summary>
+        /// Gets the sequence channel this message was sent with (if user data)
+        /// </summary>
+        public int SequenceChannel
+        {
+            get { return (int)m_receivedMessageType - (int)NetUtility.GetDeliveryMethod(m_receivedMessageType); }
+        }
 
-		internal void Reset()
-		{
-			m_incomingMessageType = NetIncomingMessageType.Error;
-			m_readPosition = 0;
-			m_receivedMessageType = NetMessageType.LibraryError;
-			m_senderConnection = null;
-			m_bitLength = 0;
-			m_isFragment = false;
-		}
+        public void Decrypt(NetXtea tea)
+        {
+            // requires blocks of 8 bytes
+            var blocks = m_bitLength / 64;
+            if (blocks * 64 != m_bitLength)
+                throw new NetException("Wrong message length for XTEA decrypt! Length is " + m_bitLength + " bits");
 
-		public void Decrypt(NetXtea tea)
-		{
-			// requires blocks of 8 bytes
-			int blocks = m_bitLength / 64;
-			if (blocks * 64 != m_bitLength)
-				throw new NetException("Wrong message length for XTEA decrypt! Length is " + m_bitLength + " bits");
+            var result = new byte[m_data.Length];
+            for (var i = 0; i < blocks; i++)
+            {
+                tea.DecryptBlock(m_data, (i * 8), result, (i * 8));
+            }
+            m_data = result;
+        }
 
-			byte[] result = new byte[m_data.Length];
-			for (int i = 0; i < blocks; i++)
-				tea.DecryptBlock(m_data, (i * 8), result, (i * 8));
-			m_data = result;
-		}
+        internal void Reset()
+        {
+            m_incomingMessageType = NetIncomingMessageType.Error;
+            m_readPosition = 0;
+            m_receivedMessageType = NetMessageType.LibraryError;
+            m_senderConnection = null;
+            m_bitLength = 0;
+            m_isFragment = false;
+        }
 
-		/// <summary>
-		/// Returns a string that represents this object
-		/// </summary>
-		public override string ToString()
-		{
-			return "[NetIncomingMessage #" + m_sequenceNumber + " " + this.LengthBytes + " bytes]";
-		}
-	}
+        /// <summary>
+        /// Returns a string that represents this object
+        /// </summary>
+        public override string ToString()
+        {
+            return "[NetIncomingMessage #" + m_sequenceNumber + " " + LengthBytes + " bytes]";
+        }
+    }
 }

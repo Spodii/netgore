@@ -9,6 +9,9 @@ namespace NetGore.Editor.Docking
 {
     class VS2005DockPaneCaption : DockPaneCaptionBase
     {
+        const TextFormatFlags _textFormat =
+            TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis | TextFormatFlags.VerticalCenter;
+
         static Blend _activeBackColorGradientBlend;
         static Bitmap _imageButtonAutoHide;
         static Bitmap _imageButtonClose;
@@ -16,9 +19,6 @@ namespace NetGore.Editor.Docking
         static Bitmap _imageButtonDock;
 
         static Bitmap _imageButtonOptions;
-
-        const TextFormatFlags _textFormat = TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis |
-                                             TextFormatFlags.VerticalCenter;
 
         static string _toolTipAutoHide;
         static string _toolTipClose;

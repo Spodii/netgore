@@ -68,6 +68,40 @@ namespace NetGore.Graphics.ParticleEngine
         int RemainingLife { get; }
 
         /// <summary>
+        /// Changes the order of an <see cref="IParticleEmitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to change the order of.</param>
+        /// <param name="newIndex">The new index to give the <paramref name="emitter"/>. Other <see cref="IParticleEmitter"/>s will be
+        /// shifted accordingly. If this value is less than or equal to 0, the <paramref name="emitter"/> will be placed at the head.
+        /// If greater than or equal to the number of <see cref="IParticleEmitter"/>s in this collection, it will be placed at the
+        /// tail.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
+        void ChangeEmitterOrder(IParticleEmitter emitter, int newIndex);
+
+        /// <summary>
+        /// Gets if an <see cref="IParticleEmitter"/> with the given name exists in this <see cref="IParticleEffect"/>.
+        /// </summary>
+        /// <param name="emitterName">The name of the <see cref="IParticleEmitter"/> to look for.</param>
+        /// <returns>True if a <see cref="IParticleEmitter"/> exists in this collection with the given name; otherwise false.</returns>
+        bool Contains(string emitterName);
+
+        /// <summary>
+        /// Gets if an <see cref="IParticleEmitter"/> exists in this <see cref="IParticleEffect"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to look for.</param>
+        /// <returns>True if the <see cref="IParticleEmitter"/> exists in this collection; otherwise false.</returns>
+        bool Contains(IParticleEmitter emitter);
+
+        /// <summary>
+        /// Decrements the order of an <see cref="IParticleEmitter"/>.
+        /// </summary>
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to decrement the order of.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
+        void DecrementEmitterOrder(IParticleEmitter emitter);
+
+        /// <summary>
         /// Creates a deep copy of this <see cref="IParticleEffect"/>.
         /// </summary>
         /// <returns>A deep copy of this <see cref="IParticleEffect"/>.</returns>
@@ -89,48 +123,12 @@ namespace NetGore.Graphics.ParticleEngine
         string GenerateUniqueEmitterName(string baseEmitterName);
 
         /// <summary>
-        /// Gets the 0-based order index of a <see cref="IParticleEmitter"/> in this <see cref="IParticleEffect"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="IParticleEmitter"/> to get the order index of.</param>
-        /// <returns>The 0-based order index of a <see cref="IParticleEmitter"/> in this <see cref="IParticleEffect"/>, or
-        /// -1 if the <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/> or invalid.</returns>
-        int GetEmitterOrder(IParticleEmitter emitter);
-
-        /// <summary>
         /// Gets an <see cref="IParticleEmitter"/> by its emitter index.
         /// </summary>
         /// <param name="emitterIndex">The emitter index of the <see cref="IParticleEmitter"/> to get.</param>
         /// <returns>The <see cref="IParticleEmitter"/> at the given <paramref name="emitterIndex"/>, or null if the
         /// <paramref name="emitterIndex"/> is out of range or otherwise invalid.</returns>
         IParticleEmitter GetEmitter(int emitterIndex);
-        
-        /// <summary>
-        /// Changes the order of an <see cref="IParticleEmitter"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="IParticleEmitter"/> to change the order of.</param>
-        /// <param name="newIndex">The new index to give the <paramref name="emitter"/>. Other <see cref="IParticleEmitter"/>s will be
-        /// shifted accordingly. If this value is less than or equal to 0, the <paramref name="emitter"/> will be placed at the head.
-        /// If greater than or equal to the number of <see cref="IParticleEmitter"/>s in this collection, it will be placed at the
-        /// tail.</param>
-        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
-        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
-        void ChangeEmitterOrder(IParticleEmitter emitter, int newIndex);
-
-        /// <summary>
-        /// Increments the order of an <see cref="IParticleEmitter"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="IParticleEmitter"/> to decrement the order of.</param>
-        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
-        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
-        void IncrementEmitterOrder(IParticleEmitter emitter);
-
-        /// <summary>
-        /// Decrements the order of an <see cref="IParticleEmitter"/>.
-        /// </summary>
-        /// <param name="emitter">The <see cref="IParticleEmitter"/> to decrement the order of.</param>
-        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
-        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
-        void DecrementEmitterOrder(IParticleEmitter emitter);
 
         /// <summary>
         /// Gets a <see cref="ParticleEmitter"/> in this <see cref="IParticleEffect"/> from the <see cref="IParticleEmitter"/>'s name.
@@ -140,18 +138,20 @@ namespace NetGore.Graphics.ParticleEngine
         IParticleEmitter GetEmitter(string emitterName);
 
         /// <summary>
-        /// Gets if an <see cref="IParticleEmitter"/> with the given name exists in this <see cref="IParticleEffect"/>.
+        /// Gets the 0-based order index of a <see cref="IParticleEmitter"/> in this <see cref="IParticleEffect"/>.
         /// </summary>
-        /// <param name="emitterName">The name of the <see cref="IParticleEmitter"/> to look for.</param>
-        /// <returns>True if a <see cref="IParticleEmitter"/> exists in this collection with the given name; otherwise false.</returns>
-        bool Contains(string emitterName);
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to get the order index of.</param>
+        /// <returns>The 0-based order index of a <see cref="IParticleEmitter"/> in this <see cref="IParticleEffect"/>, or
+        /// -1 if the <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/> or invalid.</returns>
+        int GetEmitterOrder(IParticleEmitter emitter);
 
         /// <summary>
-        /// Gets if an <see cref="IParticleEmitter"/> exists in this <see cref="IParticleEffect"/>.
+        /// Increments the order of an <see cref="IParticleEmitter"/>.
         /// </summary>
-        /// <param name="emitter">The <see cref="IParticleEmitter"/> to look for.</param>
-        /// <returns>True if the <see cref="IParticleEmitter"/> exists in this collection; otherwise false.</returns>
-        bool Contains(IParticleEmitter emitter);
+        /// <param name="emitter">The <see cref="IParticleEmitter"/> to decrement the order of.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="emitter"/> is null.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="emitter"/> is not in this <see cref="IParticleEffect"/>.</exception>
+        void IncrementEmitterOrder(IParticleEmitter emitter);
 
         /// <summary>
         /// Kills this <see cref="IParticleEffect"/> and all the <see cref="IParticleEmitter"/>s in it.

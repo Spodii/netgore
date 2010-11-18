@@ -16,6 +16,7 @@ namespace DemoGame.Server
     /// </summary>
     public class ServerSockets : ServerSocketManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IMessageProcessorManager _messageProcessorManager;
         readonly ServerPacketHandler _packetHandler;
 
@@ -82,8 +83,6 @@ namespace DemoGame.Server
             // Settings unique to the server (not set on the client)
             config.MaximumConnections = ServerSettings.Default.MaxConnections;
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.

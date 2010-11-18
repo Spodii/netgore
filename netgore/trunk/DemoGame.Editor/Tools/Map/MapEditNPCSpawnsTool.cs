@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DemoGame.Editor.Properties;
 using NetGore.Editor.EditorTool;
 
@@ -15,8 +16,7 @@ namespace DemoGame.Editor.Tools
         /// Initializes a new instance of the <see cref="MapEditNPCSpawnsTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapEditNPCSpawnsTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
+        protected MapEditNPCSpawnsTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Edit the NPC spawns";
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
@@ -39,9 +39,7 @@ namespace DemoGame.Editor.Tools
 
             // Display BG properties
             if (_form == null || _form.IsDisposed)
-            {
                 _form = new MapEditNPCSpawnsToolForm();
-            }
 
             _form.Map = map;
             _form.Show();

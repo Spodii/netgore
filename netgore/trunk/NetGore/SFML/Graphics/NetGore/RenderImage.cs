@@ -193,20 +193,12 @@ namespace SFML
                        " DefaultView(" + DefaultView + ")" + " View(" + GetView() + ")";
             }
 
+            ////////////////////////////////////////////////////////////
+
+            ////////////////////////////////////////////////////////////
+
             #region RenderTarget Members
 
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Return the current active view
-            /// </summary>
-            /// <returns>The current view</returns>
-            ////////////////////////////////////////////////////////////
-            public View GetView()
-            {
-                return new View(sfRenderImage_GetView(This));
-            }
-
-            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Default view of the render image
             /// </summary>
@@ -217,15 +209,6 @@ namespace SFML
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Change the current active view
-            /// </summary>
-            /// <param name="view">New view</param>
-            ////////////////////////////////////////////////////////////
-            public void SetView(View view)
-            {
-                sfRenderImage_SetView(This, view.This);
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -325,6 +308,16 @@ namespace SFML
             }
 
             /// <summary>
+            /// Return the current active view
+            /// </summary>
+            /// <returns>The current view</returns>
+            ////////////////////////////////////////////////////////////
+            public View GetView()
+            {
+                return new View(sfRenderImage_GetView(This));
+            }
+
+            /// <summary>
             /// Get the viewport of a view applied to this target
             /// </summary>
             /// <param name="view">Target view</param>
@@ -354,6 +347,16 @@ namespace SFML
             public void SaveGLStates()
             {
                 sfRenderImage_SaveGLStates(This);
+            }
+
+            /// <summary>
+            /// Change the current active view
+            /// </summary>
+            /// <param name="view">New view</param>
+            ////////////////////////////////////////////////////////////
+            public void SetView(View view)
+            {
+                sfRenderImage_SetView(This, view.This);
             }
 
             #endregion
