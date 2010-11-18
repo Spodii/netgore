@@ -286,7 +286,7 @@ namespace NetGore.Graphics.GUI
 
             // Create the buttons
             var buttons = CreateButtons(ButtonTypes);
-            _msgBoxChildren.AddRange(buttons.Cast<Control>());
+            _msgBoxChildren.AddRange(buttons);
 
             // Expand the form if needed to fit the buttons
             var neededButtonWidth = buttons.Sum(x => x.Size.X) + ((buttons.Count() + 1) * Padding);

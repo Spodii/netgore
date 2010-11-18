@@ -49,8 +49,8 @@ namespace NetGore.Db.Schema
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnSchema"/> class.
         /// </summary>
-        /// <param name="r">The <see cref="IDataReader"/> to read the values from.</param>
-        public ColumnSchema(IDataReader r)
+        /// <param name="r">The <see cref="IDataRecord"/> to read the values from.</param>
+        public ColumnSchema(IDataRecord r)
         {
             _values = ReadValues(r);
         }

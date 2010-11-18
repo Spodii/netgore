@@ -202,30 +202,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Makes sure that <see cref="Control"/>s in the <see cref="_controls"/> list that have <see cref="Control.AlwaysOnTop"/>
-        /// set to true are the top-most <see cref="Control"/>s.
-        /// </summary>
-        void OrganizeAlwaysOnTopControls()
-        {
-            // For each AlwaysOnTop control, pull it out of the list and push it onto the end. This approach
-            // does preserve ordering, so an already-sorted list will come out the exact same.
-            var max = _controls.Count;
-            for (var i = 0; i < max; i++)
-            {
-                var c = _controls[i];
-                if (c.AlwaysOnTop)
-                {
-                    _controls.RemoveAt(i);
-                    _controls.Add(c);
-                    i--;
-                    max--;
-                }
-            }
-
-            AssertAlwaysOnTopIsValid();
-        }
-
-        /// <summary>
         /// Updates what <see cref="Control"/> is currently under the cursor.
         /// </summary>
         /// <param name="e">The <see cref="SFML.Window.MouseMoveEventArgs"/> instance containing the event data.</param>

@@ -141,7 +141,7 @@ namespace NetGore.Network
         /// </summary>
         public IEnumerable<IMessageProcessorStats> GetAllStats()
         {
-            return _stats.Values.Cast<IMessageProcessorStats>();
+            return _stats.Values;
         }
 
         /// <summary>

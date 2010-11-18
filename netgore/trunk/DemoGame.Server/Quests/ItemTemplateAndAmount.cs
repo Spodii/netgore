@@ -81,7 +81,7 @@ namespace DemoGame.Server.Quests
 
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, Amount, ItemTemplate);
-                Debug.Fail(string.Format(errmsg, Amount, ItemTemplate.ToString() ?? "[NULL]"));
+                Debug.Fail(string.Format(errmsg, Amount, ItemTemplate));
 
                 return false;
             }

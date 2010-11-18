@@ -399,7 +399,7 @@ namespace NetGore.Editor.Docking
 
                 #region consts
 
-                int _PanelIndicatorMargin = 10;
+                const int _PanelIndicatorMargin = 10;
 
                 #endregion
 

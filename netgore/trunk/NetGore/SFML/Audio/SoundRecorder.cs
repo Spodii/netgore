@@ -62,7 +62,7 @@ namespace SFML
             /// Default constructor
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public SoundRecorder() : base(IntPtr.Zero)
+            protected SoundRecorder() : base(IntPtr.Zero)
             {
                 myStartCallback = new StartCallback(OnStart);
                 myProcessCallback = new ProcessCallback(ProcessSamples);

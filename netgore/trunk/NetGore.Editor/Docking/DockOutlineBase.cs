@@ -16,7 +16,7 @@ namespace NetGore.Editor.Docking
         Control m_oldDockTo;
         Rectangle m_oldFloatWindowBounds;
 
-        public DockOutlineBase()
+        protected DockOutlineBase()
         {
             Init();
         }

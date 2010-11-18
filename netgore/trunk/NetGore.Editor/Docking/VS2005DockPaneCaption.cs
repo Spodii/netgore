@@ -17,7 +17,7 @@ namespace NetGore.Editor.Docking
 
         static Bitmap _imageButtonOptions;
 
-        static TextFormatFlags _textFormat = TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis |
+        const TextFormatFlags _textFormat = TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis |
                                              TextFormatFlags.VerticalCenter;
 
         static string _toolTipAutoHide;
