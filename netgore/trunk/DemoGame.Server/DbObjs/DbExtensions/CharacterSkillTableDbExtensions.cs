@@ -20,15 +20,14 @@ using System.Data;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore.Db;
-using NetGore.Features.Guilds;
 
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Contains extension methods for class WorldStatsGuildUserChangeTable that assist in performing
+    /// Contains extension methods for class CharacterSkillTable that assist in performing
     /// reads and writes to and from a database.
     /// </summary>
-    public static class WorldStatsGuildUserChangeTableDbExtensions
+    public static class CharacterSkillTableDbExtensions
     {
         /// <summary>
         /// Copies the column values into the given DbParameterValues using the database column name
@@ -37,26 +36,25 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this IWorldStatsGuildUserChangeTable source, DbParameterValues paramValues)
+        public static void CopyValues(this ICharacterSkillTable source, DbParameterValues paramValues)
         {
-            paramValues["guild_id"] = (ushort?)source.GuildID;
-            paramValues["id"] = source.ID;
-            paramValues["user_id"] = (Int32)source.UserId;
-            paramValues["when"] = source.When;
+            paramValues["character_id"] = (Int32)source.CharacterID;
+            paramValues["skill_id"] = source.SkillId;
+            paramValues["time_added"] = source.TimeAdded;
         }
 
         /// <summary>
-        /// Checks if this <see cref="IWorldStatsGuildUserChangeTable"/> contains the same values as another <see cref="IWorldStatsGuildUserChangeTable"/>.
+        /// Checks if this <see cref="ICharacterSkillTable"/> contains the same values as another <see cref="ICharacterSkillTable"/>.
         /// </summary>
-        /// <param name="source">The source <see cref="IWorldStatsGuildUserChangeTable"/>.</param>
-        /// <param name="otherItem">The <see cref="IWorldStatsGuildUserChangeTable"/> to compare the values to.</param>
+        /// <param name="source">The source <see cref="ICharacterSkillTable"/>.</param>
+        /// <param name="otherItem">The <see cref="ICharacterSkillTable"/> to compare the values to.</param>
         /// <returns>
-        /// True if this <see cref="IWorldStatsGuildUserChangeTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
+        /// True if this <see cref="ICharacterSkillTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
         /// </returns>
-        public static Boolean HasSameValues(this IWorldStatsGuildUserChangeTable source, IWorldStatsGuildUserChangeTable otherItem)
+        public static Boolean HasSameValues(this ICharacterSkillTable source, ICharacterSkillTable otherItem)
         {
-            return Equals(source.GuildID, otherItem.GuildID) && Equals(source.ID, otherItem.ID) &&
-                   Equals(source.UserId, otherItem.UserId) && Equals(source.When, otherItem.When);
+            return Equals(source.CharacterID, otherItem.CharacterID) && Equals(source.SkillId, otherItem.SkillId) &&
+                   Equals(source.TimeAdded, otherItem.TimeAdded);
         }
 
         /// <summary>
@@ -66,25 +64,21 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this WorldStatsGuildUserChangeTable source, IDataRecord dataRecord)
+        public static void ReadValues(this CharacterSkillTable source, IDataRecord dataRecord)
         {
             Int32 i;
 
-            i = dataRecord.GetOrdinal("guild_id");
+            i = dataRecord.GetOrdinal("character_id");
 
-            source.GuildID = (Nullable<GuildID>)(dataRecord.IsDBNull(i) ? (ushort?)null : dataRecord.GetUInt16(i));
+            source.CharacterID = (CharacterID)dataRecord.GetInt32(i);
 
-            i = dataRecord.GetOrdinal("id");
+            i = dataRecord.GetOrdinal("skill_id");
 
-            source.ID = dataRecord.GetUInt32(i);
+            source.SkillId = dataRecord.GetUInt16(i);
 
-            i = dataRecord.GetOrdinal("user_id");
+            i = dataRecord.GetOrdinal("time_added");
 
-            source.UserId = (CharacterID)dataRecord.GetInt32(i);
-
-            i = dataRecord.GetOrdinal("when");
-
-            source.When = dataRecord.GetDateTime(i);
+            source.TimeAdded = dataRecord.GetDateTime(i);
         }
 
         /// <summary>
@@ -97,26 +91,22 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this IWorldStatsGuildUserChangeTable source, DbParameterValues paramValues)
+        public static void TryCopyValues(this ICharacterSkillTable source, DbParameterValues paramValues)
         {
             for (var i = 0; i < paramValues.Count; i++)
             {
                 switch (paramValues.GetParameterName(i))
                 {
-                    case "guild_id":
-                        paramValues[i] = (ushort?)source.GuildID;
+                    case "character_id":
+                        paramValues[i] = (Int32)source.CharacterID;
                         break;
 
-                    case "id":
-                        paramValues[i] = source.ID;
+                    case "skill_id":
+                        paramValues[i] = source.SkillId;
                         break;
 
-                    case "user_id":
-                        paramValues[i] = (Int32)source.UserId;
-                        break;
-
-                    case "when":
-                        paramValues[i] = source.When;
+                    case "time_added":
+                        paramValues[i] = source.TimeAdded;
                         break;
                 }
             }
@@ -132,26 +122,22 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this WorldStatsGuildUserChangeTable source, IDataRecord dataRecord)
+        public static void TryReadValues(this CharacterSkillTable source, IDataRecord dataRecord)
         {
             for (var i = 0; i < dataRecord.FieldCount; i++)
             {
                 switch (dataRecord.GetName(i))
                 {
-                    case "guild_id":
-                        source.GuildID = (Nullable<GuildID>)(dataRecord.IsDBNull(i) ? (ushort?)null : dataRecord.GetUInt16(i));
+                    case "character_id":
+                        source.CharacterID = (CharacterID)dataRecord.GetInt32(i);
                         break;
 
-                    case "id":
-                        source.ID = dataRecord.GetUInt32(i);
+                    case "skill_id":
+                        source.SkillId = dataRecord.GetUInt16(i);
                         break;
 
-                    case "user_id":
-                        source.UserId = (CharacterID)dataRecord.GetInt32(i);
-                        break;
-
-                    case "when":
-                        source.When = dataRecord.GetDateTime(i);
+                    case "time_added":
+                        source.TimeAdded = dataRecord.GetDateTime(i);
                         break;
                 }
             }

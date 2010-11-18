@@ -62,19 +62,19 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the <see cref="IDbQueryRunner"/> to use for this pooled database connection.
-        /// </summary>
-        public IDbQueryRunner QueryRunner
-        {
-            get { return _pool.QueryRunner; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="IQueryBuilder"/> to build queries for this connection.
         /// </summary>
         public IQueryBuilder QueryBuilder
         {
             get { return _pool.QueryBuilder; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDbQueryRunner"/> to use for this pooled database connection.
+        /// </summary>
+        public IDbQueryRunner QueryRunner
+        {
+            get { return _pool.QueryRunner; }
         }
 
         /// <summary>

@@ -15,24 +15,30 @@ For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 ********************************************************************/
 
+using System;
 using System.Linq;
 
 namespace DemoGame.DbObjs
 {
     /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `alliance_attackable`.
+    /// Interface for a class that can be used to serialize values to the database table `character_skill`.
     /// </summary>
-    public interface IAllianceAttackableTable
+    public interface ICharacterSkillTable
     {
         /// <summary>
-        /// Gets the value of the database column `alliance_id`.
+        /// Gets the value of the database column `character_id`.
         /// </summary>
-        AllianceID AllianceID { get; }
+        CharacterID CharacterID { get; }
 
         /// <summary>
-        /// Gets the value of the database column `attackable_id`.
+        /// Gets the value of the database column `skill_id`.
         /// </summary>
-        AllianceID AttackableID { get; }
+        UInt16 SkillId { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `time_added`.
+        /// </summary>
+        DateTime TimeAdded { get; }
 
         /// <summary>
         /// Creates a deep copy of this table. All the values will be the same
@@ -41,6 +47,6 @@ namespace DemoGame.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        IAllianceAttackableTable DeepCopy();
+        ICharacterSkillTable DeepCopy();
     }
 }

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
 
 namespace Lidgren.Network
 {
-	/// <summary>
-	/// Lidgren Network Library
-	/// </summary>
-	internal class NamespaceDoc
-	{
-		// <include file='_Namespace.xml' path='Documentation/*' />
-	}
+    /// <summary>
+    /// Lidgren Network Library
+    /// </summary>
+    class NamespaceDoc
+    {
+        // <include file='_Namespace.xml' path='Documentation/*' />
+    }
 }

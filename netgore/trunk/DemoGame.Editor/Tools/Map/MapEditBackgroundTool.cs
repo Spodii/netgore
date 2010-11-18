@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DemoGame.Editor.Properties;
 using NetGore.Editor.EditorTool;
 
@@ -15,8 +16,7 @@ namespace DemoGame.Editor.Tools
         /// Initializes a new instance of the <see cref="MapEditBackgroundTool"/> class.
         /// </summary>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        protected MapEditBackgroundTool(ToolManager toolManager)
-            : base(toolManager, CreateSettings())
+        protected MapEditBackgroundTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Edit the background layers";
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
@@ -32,16 +32,14 @@ namespace DemoGame.Editor.Tools
             var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
             if (tb == null)
                 return;
-            
+
             var map = tb.DisplayObject as EditorMap;
             if (map == null)
                 return;
 
             // Display BG properties
             if (_form == null || _form.IsDisposed)
-            {
                 _form = new MapEditBackgroundToolForm();
-            }
 
             _form.Map = map;
             _form.Show();

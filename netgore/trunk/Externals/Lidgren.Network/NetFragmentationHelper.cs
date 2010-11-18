@@ -1,174 +1,169 @@
-﻿using System;
+﻿using System.Linq;
 
 namespace Lidgren.Network
 {
-	internal static class NetFragmentationHelper
-	{
-		internal static int WriteHeader(
-			byte[] destination,
-			int ptr,
-			int group,
-			int totalBits,
-			int chunkByteSize,
-			int chunkNumber)
-		{
-			uint num1 = (uint)group;
-			while (num1 >= 0x80)
-			{
-				destination[ptr++] = (byte)(num1 | 0x80);
-				num1 = num1 >> 7;
-			}
-			destination[ptr++] = (byte)num1;
+    static class NetFragmentationHelper
+    {
+        internal static int GetBestChunkSize(int group, int totalBytes, int mtu)
+        {
+            var tryNumChunks = (totalBytes / (mtu - 8)) + 1;
+            var tryChunkSize = (totalBytes / tryNumChunks) + 1; // +1 since we immediately decrement it in the loop
 
-			// write variable length fragment total bits
-			uint num2 = (uint)totalBits;
-			while (num2 >= 0x80)
-			{
-				destination[ptr++] = (byte)(num2 | 0x80);
-				num2 = num2 >> 7;
-			}
-			destination[ptr++] = (byte)num2;
+            var headerSize = 0;
+            do
+            {
+                tryChunkSize--; // keep reducing chunk size until it fits within MTU including header
 
-			// write variable length fragment chunk size
-			uint num3 = (uint)chunkByteSize;
-			while (num3 >= 0x80)
-			{
-				destination[ptr++] = (byte)(num3 | 0x80);
-				num3 = num3 >> 7;
-			}
-			destination[ptr++] = (byte)num3;
+                var numChunks = totalBytes / tryChunkSize;
+                if (numChunks * tryChunkSize < totalBytes)
+                    numChunks++;
 
-			// write variable length fragment chunk number
-			uint num4 = (uint)chunkNumber;
-			while (num4 >= 0x80)
-			{
-				destination[ptr++] = (byte)(num4 | 0x80);
-				num4 = num4 >> 7;
-			}
-			destination[ptr++] = (byte)num4;
+                headerSize = GetFragmentationHeaderSize(group, totalBytes, tryChunkSize, numChunks);
+            }
+            while (tryChunkSize + headerSize + 5 + 1 >= mtu);
 
-			return ptr;
-		}
+            return tryChunkSize;
+        }
 
-		internal static int ReadHeader(byte[] buffer, int ptr, out int group, out int totalBits, out int chunkByteSize, out int chunkNumber)
-		{
-			int num1 = 0;
-			int num2 = 0;
-			while (true)
-			{
-				byte num3 = buffer[ptr++];
-				num1 |= (num3 & 0x7f) << (num2 & 0x1f);
-				num2 += 7;
-				if ((num3 & 0x80) == 0)
-				{
-					group = num1;
-					break;
-				}
-			}
+        internal static int GetFragmentationHeaderSize(int groupId, int totalBytes, int chunkByteSize, int numChunks)
+        {
+            var len = 4;
 
-			num1 = 0;
-			num2 = 0;
-			while (true)
-			{
-				byte num3 = buffer[ptr++];
-				num1 |= (num3 & 0x7f) << (num2 & 0x1f);
-				num2 += 7;
-				if ((num3 & 0x80) == 0)
-				{
-					totalBits = num1;
-					break;
-				}
-			}
+            // write variable length fragment group id
+            var num1 = (uint)groupId;
+            while (num1 >= 0x80)
+            {
+                len++;
+                num1 = num1 >> 7;
+            }
 
-			num1 = 0;
-			num2 = 0;
-			while (true)
-			{
-				byte num3 = buffer[ptr++];
-				num1 |= (num3 & 0x7f) << (num2 & 0x1f);
-				num2 += 7;
-				if ((num3 & 0x80) == 0)
-				{
-					chunkByteSize = num1;
-					break;
-				}
-			}
+            // write variable length fragment total bits
+            var num2 = (uint)(totalBytes * 8);
+            while (num2 >= 0x80)
+            {
+                len++;
+                num2 = num2 >> 7;
+            }
 
-			num1 = 0;
-			num2 = 0;
-			while (true)
-			{
-				byte num3 = buffer[ptr++];
-				num1 |= (num3 & 0x7f) << (num2 & 0x1f);
-				num2 += 7;
-				if ((num3 & 0x80) == 0)
-				{
-					chunkNumber = num1;
-					break;
-				}
-			}
+            // write variable length fragment chunk byte size
+            var num3 = (uint)chunkByteSize;
+            while (num3 >= 0x80)
+            {
+                len++;
+                num3 = num3 >> 7;
+            }
 
-			return ptr;
-		}
+            // write variable length fragment chunk number
+            var num4 = (uint)numChunks;
+            while (num4 >= 0x80)
+            {
+                len++;
+                num4 = num4 >> 7;
+            }
 
-		internal static int GetFragmentationHeaderSize(int groupId, int totalBytes, int chunkByteSize, int numChunks)
-		{
-			int len = 4;
+            return len;
+        }
 
-			// write variable length fragment group id
-			uint num1 = (uint)groupId;
-			while (num1 >= 0x80)
-			{
-				len++;
-				num1 = num1 >> 7;
-			}
+        internal static int ReadHeader(byte[] buffer, int ptr, out int group, out int totalBits, out int chunkByteSize,
+                                       out int chunkNumber)
+        {
+            var num1 = 0;
+            var num2 = 0;
+            while (true)
+            {
+                var num3 = buffer[ptr++];
+                num1 |= (num3 & 0x7f) << (num2 & 0x1f);
+                num2 += 7;
+                if ((num3 & 0x80) == 0)
+                {
+                    group = num1;
+                    break;
+                }
+            }
 
-			// write variable length fragment total bits
-			uint num2 = (uint)(totalBytes * 8);
-			while (num2 >= 0x80)
-			{
-				len++;
-				num2 = num2 >> 7;
-			}
+            num1 = 0;
+            num2 = 0;
+            while (true)
+            {
+                var num3 = buffer[ptr++];
+                num1 |= (num3 & 0x7f) << (num2 & 0x1f);
+                num2 += 7;
+                if ((num3 & 0x80) == 0)
+                {
+                    totalBits = num1;
+                    break;
+                }
+            }
 
-			// write variable length fragment chunk byte size
-			uint num3 = (uint)chunkByteSize;
-			while (num3 >= 0x80)
-			{
-				len++;
-				num3 = num3 >> 7;
-			}
+            num1 = 0;
+            num2 = 0;
+            while (true)
+            {
+                var num3 = buffer[ptr++];
+                num1 |= (num3 & 0x7f) << (num2 & 0x1f);
+                num2 += 7;
+                if ((num3 & 0x80) == 0)
+                {
+                    chunkByteSize = num1;
+                    break;
+                }
+            }
 
-			// write variable length fragment chunk number
-			uint num4 = (uint)numChunks;
-			while (num4 >= 0x80)
-			{
-				len++;
-				num4 = num4 >> 7;
-			}
+            num1 = 0;
+            num2 = 0;
+            while (true)
+            {
+                var num3 = buffer[ptr++];
+                num1 |= (num3 & 0x7f) << (num2 & 0x1f);
+                num2 += 7;
+                if ((num3 & 0x80) == 0)
+                {
+                    chunkNumber = num1;
+                    break;
+                }
+            }
 
-			return len;
-		}
+            return ptr;
+        }
 
-		internal static int GetBestChunkSize(int group, int totalBytes, int mtu)
-		{
-			int tryNumChunks = (totalBytes / (mtu - 8)) + 1;
-			int tryChunkSize = (totalBytes / tryNumChunks) + 1; // +1 since we immediately decrement it in the loop
+        internal static int WriteHeader(byte[] destination, int ptr, int group, int totalBits, int chunkByteSize, int chunkNumber)
+        {
+            var num1 = (uint)group;
+            while (num1 >= 0x80)
+            {
+                destination[ptr++] = (byte)(num1 | 0x80);
+                num1 = num1 >> 7;
+            }
+            destination[ptr++] = (byte)num1;
 
-			int headerSize = 0;
-			do
-			{
-				tryChunkSize--; // keep reducing chunk size until it fits within MTU including header
+            // write variable length fragment total bits
+            var num2 = (uint)totalBits;
+            while (num2 >= 0x80)
+            {
+                destination[ptr++] = (byte)(num2 | 0x80);
+                num2 = num2 >> 7;
+            }
+            destination[ptr++] = (byte)num2;
 
-				int numChunks = totalBytes / tryChunkSize;
-				if (numChunks * tryChunkSize < totalBytes)
-					numChunks++;
+            // write variable length fragment chunk size
+            var num3 = (uint)chunkByteSize;
+            while (num3 >= 0x80)
+            {
+                destination[ptr++] = (byte)(num3 | 0x80);
+                num3 = num3 >> 7;
+            }
+            destination[ptr++] = (byte)num3;
 
-				headerSize = GetFragmentationHeaderSize(group, totalBytes, tryChunkSize, numChunks);
+            // write variable length fragment chunk number
+            var num4 = (uint)chunkNumber;
+            while (num4 >= 0x80)
+            {
+                destination[ptr++] = (byte)(num4 | 0x80);
+                num4 = num4 >> 7;
+            }
+            destination[ptr++] = (byte)num4;
 
-			} while (tryChunkSize + headerSize + 5 + 1 >= mtu);
-
-			return tryChunkSize;
-		}
-	}
+            return ptr;
+        }
+    }
 }

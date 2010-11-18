@@ -7,6 +7,7 @@ using NetGore.Graphics;
 using NetGore.World;
 using SFML;
 using SFML.Graphics;
+using View = SFML.Graphics.View;
 
 namespace NetGore.Editor.Grhs
 {
@@ -15,8 +16,8 @@ namespace NetGore.Editor.Grhs
         static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
 
         readonly Camera2D _camera = new Camera2D(new Vector2(400, 300));
+        readonly View _drawView = new View();
         readonly DrawingManager _drawingManager = new DrawingManager();
-        readonly SFML.Graphics.View _drawView = new SFML.Graphics.View();
 
         Grh _grh;
 

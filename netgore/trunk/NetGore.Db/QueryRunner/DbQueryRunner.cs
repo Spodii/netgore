@@ -232,8 +232,8 @@ namespace NetGore.Db
                         }
                         catch (ThreadAbortException ex)
                         {
-                            const string errmsg = 
-                                "DbQueryRunner worker received ThreadAbortException while sleeping. Because it was during sleep," + 
+                            const string errmsg =
+                                "DbQueryRunner worker received ThreadAbortException while sleeping. Because it was during sleep," +
                                 " nothing was lost. But you just got lucky this time... Exception: {0}";
                             if (log.IsWarnEnabled)
                                 log.WarnFormat(errmsg, ex);

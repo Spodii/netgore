@@ -12,20 +12,6 @@ namespace SFML
         public interface RenderTarget
         {
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Return the current active view
-            /// </summary>
-            /// <returns>The current view</returns>
-            ////////////////////////////////////////////////////////////
-            View GetView();
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Change the current active view
-            /// </summary>
-            /// <param name="view">New view</param>
-            ////////////////////////////////////////////////////////////
-            void SetView(View view);
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -103,6 +89,13 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             void Draw(Drawable objectToDraw, Shader shader);
 
+            /// <summary>
+            /// Return the current active view
+            /// </summary>
+            /// <returns>The current view</returns>
+            ////////////////////////////////////////////////////////////
+            View GetView();
+
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Get the viewport of a view applied to this target
@@ -125,6 +118,13 @@ namespace SFML
             /// </summary>
             ////////////////////////////////////////////////////////////
             void SaveGLStates();
+
+            /// <summary>
+            /// Change the current active view
+            /// </summary>
+            /// <param name="view">New view</param>
+            ////////////////////////////////////////////////////////////
+            void SetView(View view);
         }
     }
 }

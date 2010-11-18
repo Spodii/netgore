@@ -17,35 +17,36 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System.Diagnostics;
+using System.Linq;
 
 namespace Lidgren.Network
 {
-	public partial class NetPeer
-	{
-		[Conditional("DEBUG")]
-		internal void LogVerbose(string message)
-		{
-			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.VerboseDebugMessage))
-				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.VerboseDebugMessage, message));
-		}
+    public partial class NetPeer
+    {
+        [Conditional("DEBUG")]
+        internal void LogDebug(string message)
+        {
+            if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.DebugMessage))
+                ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.DebugMessage, message));
+        }
 
-		[Conditional("DEBUG")]
-		internal void LogDebug(string message)
-		{
-			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.DebugMessage))
-				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.DebugMessage, message));
-		}
+        internal void LogError(string message)
+        {
+            if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.ErrorMessage))
+                ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.ErrorMessage, message));
+        }
 
-		internal void LogWarning(string message)
-		{
-			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.WarningMessage))
-				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.WarningMessage, message));
-		}
+        [Conditional("DEBUG")]
+        internal void LogVerbose(string message)
+        {
+            if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.VerboseDebugMessage))
+                ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.VerboseDebugMessage, message));
+        }
 
-		internal void LogError(string message)
-		{
-			if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.ErrorMessage))
-				ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.ErrorMessage, message));
-		}
-	}
+        internal void LogWarning(string message)
+        {
+            if (m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.WarningMessage))
+                ReleaseMessage(CreateIncomingMessage(NetIncomingMessageType.WarningMessage, message));
+        }
+    }
 }

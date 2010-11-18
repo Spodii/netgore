@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
@@ -8,7 +8,6 @@ using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
-using NetGore.Graphics;
 
 namespace DemoGame.Editor.Tools
 {
@@ -22,6 +21,32 @@ namespace DemoGame.Editor.Tools
         public MapEditNPCSpawnsToolForm()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="EditorMap"/> being edited.
+        /// </summary>
+        public EditorMap Map
+        {
+            get { return _map; }
+            set
+            {
+                if (Map == value)
+                    return;
+
+                var oldValue = Map;
+                _map = value;
+
+                OnMapChanged(oldValue, value);
+            }
+        }
+
+        protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
+        {
+            Text = string.Format("NPC Spawns (Map: {0})", newValue != null ? newValue.ToString() : "None");
+            RebuildList();
+
+            lstSpawns.Map = newValue;
         }
 
         /// <summary>
@@ -56,52 +81,12 @@ namespace DemoGame.Editor.Tools
             }
         }
 
-        protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
-        {
-            Text = string.Format("NPC Spawns (Map: {0})", newValue != null ? newValue.ToString() : "None");
-            RebuildList();
-
-            lstSpawns.Map = newValue;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="EditorMap"/> being edited.
-        /// </summary>
-        public EditorMap Map
-        {
-            get { return _map; }
-            set
-            {
-                if (Map == value)
-                    return;
-
-                var oldValue = Map;
-                _map = value;
-
-                OnMapChanged(oldValue, value);
-            }
-        }
-
-        /// <summary>
-        /// Handles the PropertyValueChanged event of the <see cref="pg"/> control.
-        /// </summary>
-        /// <param name="s">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.PropertyValueChangedEventArgs"/> instance containing the event data.</param>
-        private void pg_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
-            var selected = lstSpawns.SelectedItem;
-            if (selected != pg.SelectedObject)
-                return;
-
-            lstSpawns.RefreshItemAt(lstSpawns.SelectedIndex);
-        }
-
         /// <summary>
         /// Handles the Click event of the <see cref="btnDelete"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnDelete_Click(object sender, System.EventArgs e)
+        void btnDelete_Click(object sender, EventArgs e)
         {
             // TODO: !!
             var map = Map;
@@ -128,7 +113,7 @@ namespace DemoGame.Editor.Tools
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnNew_Click(object sender, System.EventArgs e)
+        void btnNew_Click(object sender, EventArgs e)
         {
             var map = Map;
             if (map == null)
@@ -150,13 +135,27 @@ namespace DemoGame.Editor.Tools
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstSpawns_SelectedValueChanged(object sender, System.EventArgs e)
+        void lstSpawns_SelectedValueChanged(object sender, EventArgs e)
         {
             var selected = lstSpawns.SelectedItem;
             if (selected == null)
                 return;
 
             pg.SelectedObject = selected;
+        }
+
+        /// <summary>
+        /// Handles the PropertyValueChanged event of the <see cref="pg"/> control.
+        /// </summary>
+        /// <param name="s">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.PropertyValueChangedEventArgs"/> instance containing the event data.</param>
+        void pg_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            var selected = lstSpawns.SelectedItem;
+            if (selected != pg.SelectedObject)
+                return;
+
+            lstSpawns.RefreshItemAt(lstSpawns.SelectedIndex);
         }
     }
 }

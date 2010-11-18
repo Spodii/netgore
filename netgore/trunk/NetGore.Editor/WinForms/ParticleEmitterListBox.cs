@@ -21,24 +21,6 @@ namespace NetGore.Editor
             DrawMode = DrawMode.OwnerDrawFixed;
         }
 
-        public void RebuildList(IParticleEffect pe)
-        {
-            try
-            {
-                BeginUpdate();
-
-                var selected = SelectedItem;
-                Items.Clear();
-                Items.AddRange(pe.Emitters.ToArray<object>());
-
-                SelectedItem = selected;
-            }
-            finally
-            {
-                EndUpdate();
-            }
-        }
-
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
         /// </summary>
@@ -71,6 +53,24 @@ namespace NetGore.Editor
             }
 
             e.DrawFocusRectangle();
+        }
+
+        public void RebuildList(IParticleEffect pe)
+        {
+            try
+            {
+                BeginUpdate();
+
+                var selected = SelectedItem;
+                Items.Clear();
+                Items.AddRange(pe.Emitters.ToArray<object>());
+
+                SelectedItem = selected;
+            }
+            finally
+            {
+                EndUpdate();
+            }
         }
     }
 }

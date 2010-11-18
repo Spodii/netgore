@@ -22,19 +22,6 @@ namespace DemoGame.Editor
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Gets the NPC spawns on a map.
-        /// </summary>
-        /// <param name="mapID">The ID of the map to get the spawns for.</param>
-        /// <returns>The NPC spawns for the given <paramref name="mapID"/>.</returns>
-        public static IEnumerable<IMapSpawnTable> GetSpawns(MapID mapID)
-        {
-            var dbController = DbControllerBase.GetInstance();
-            var q = dbController.GetQuery<SelectMapSpawnsOnMapQuery>();
-            var spawns = q.Execute(mapID);
-            return spawns;
-        }
-
-        /// <summary>
         /// Creates a new map.
         /// </summary>
         /// <param name="showConfirmation">If true, a confirmation will be shown to make sure the user wants to
@@ -153,6 +140,19 @@ namespace DemoGame.Editor
 
             // Return the results sorted
             return ret.OrderBy(x => x.ID).ToImmutable();
+        }
+
+        /// <summary>
+        /// Gets the NPC spawns on a map.
+        /// </summary>
+        /// <param name="mapID">The ID of the map to get the spawns for.</param>
+        /// <returns>The NPC spawns for the given <paramref name="mapID"/>.</returns>
+        public static IEnumerable<IMapSpawnTable> GetSpawns(MapID mapID)
+        {
+            var dbController = DbControllerBase.GetInstance();
+            var q = dbController.GetQuery<SelectMapSpawnsOnMapQuery>();
+            var spawns = q.Execute(mapID);
+            return spawns;
         }
 
         /// <summary>

@@ -26,9 +26,9 @@ using NetGore.IO;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Provides a strongly-typed structure for the database table `character_inventory`.
+    /// Provides a strongly-typed structure for the database table `character_skill`.
     /// </summary>
-    public class CharacterInventoryTable : ICharacterInventoryTable, IPersistable
+    public class CharacterSkillTable : ICharacterSkillTable, IPersistable
     {
         /// <summary>
         /// The number of columns in the database table that this class represents.
@@ -38,22 +38,22 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The name of the database table that this class represents.
         /// </summary>
-        public const String TableName = "character_inventory";
+        public const String TableName = "character_skill";
 
         /// <summary>
         /// Array of the database column names.
         /// </summary>
-        static readonly String[] _dbColumns = new string[] { "character_id", "item_id", "slot" };
+        static readonly String[] _dbColumns = new string[] { "character_id", "skill_id", "time_added" };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[] { "character_id", "slot" };
+        static readonly String[] _dbColumnsKeys = new string[] { "character_id", "skill_id" };
 
         /// <summary>
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsNonKey = new string[] { "item_id" };
+        static readonly String[] _dbColumnsNonKey = new string[] { "time_added" };
 
         /// <summary>
         /// The field that maps onto the database column `character_id`.
@@ -61,40 +61,40 @@ namespace DemoGame.Server.DbObjs
         Int32 _characterID;
 
         /// <summary>
-        /// The field that maps onto the database column `item_id`.
+        /// The field that maps onto the database column `skill_id`.
         /// </summary>
-        Int32 _itemID;
+        UInt16 _skillId;
 
         /// <summary>
-        /// The field that maps onto the database column `slot`.
+        /// The field that maps onto the database column `time_added`.
         /// </summary>
-        Byte _slot;
+        DateTime _timeAdded;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CharacterInventoryTable"/> class.
+        /// Initializes a new instance of the <see cref="CharacterSkillTable"/> class.
         /// </summary>
-        public CharacterInventoryTable()
+        public CharacterSkillTable()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CharacterInventoryTable"/> class.
+        /// Initializes a new instance of the <see cref="CharacterSkillTable"/> class.
         /// </summary>
         /// <param name="characterID">The initial value for the corresponding property.</param>
-        /// <param name="itemID">The initial value for the corresponding property.</param>
-        /// <param name="slot">The initial value for the corresponding property.</param>
-        public CharacterInventoryTable(CharacterID @characterID, ItemID @itemID, InventorySlot @slot)
+        /// <param name="skillId">The initial value for the corresponding property.</param>
+        /// <param name="timeAdded">The initial value for the corresponding property.</param>
+        public CharacterSkillTable(CharacterID @characterID, UInt16 @skillId, DateTime @timeAdded)
         {
             CharacterID = @characterID;
-            ItemID = @itemID;
-            Slot = @slot;
+            SkillId = @skillId;
+            TimeAdded = @timeAdded;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CharacterInventoryTable"/> class.
+        /// Initializes a new instance of the <see cref="CharacterSkillTable"/> class.
         /// </summary>
-        /// <param name="source">ICharacterInventoryTable to copy the initial values from.</param>
-        public CharacterInventoryTable(ICharacterInventoryTable source)
+        /// <param name="source">ICharacterSkillTable to copy the initial values from.</param>
+        public CharacterSkillTable(ICharacterSkillTable source)
         {
             CopyValuesFrom(source);
         }
@@ -130,11 +130,11 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
-        public static void CopyValues(ICharacterInventoryTable source, IDictionary<String, Object> dic)
+        public static void CopyValues(ICharacterSkillTable source, IDictionary<String, Object> dic)
         {
             dic["character_id"] = source.CharacterID;
-            dic["item_id"] = source.ItemID;
-            dic["slot"] = source.Slot;
+            dic["skill_id"] = source.SkillId;
+            dic["time_added"] = source.TimeAdded;
         }
 
         /// <summary>
@@ -149,14 +149,14 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Copies the values from the given <paramref name="source"/> into this CharacterInventoryTable.
+        /// Copies the values from the given <paramref name="source"/> into this CharacterSkillTable.
         /// </summary>
-        /// <param name="source">The ICharacterInventoryTable to copy the values from.</param>
-        public void CopyValuesFrom(ICharacterInventoryTable source)
+        /// <param name="source">The ICharacterSkillTable to copy the values from.</param>
+        public void CopyValuesFrom(ICharacterSkillTable source)
         {
             CharacterID = source.CharacterID;
-            ItemID = source.ItemID;
-            Slot = source.Slot;
+            SkillId = source.SkillId;
+            TimeAdded = source.TimeAdded;
         }
 
         /// <summary>
@@ -171,16 +171,16 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "character_id":
-                    return new ColumnMetadata("character_id", "The character who has this item in their inventory.", "int(11)",
-                        null, typeof(Int32), false, true, false);
+                    return new ColumnMetadata("character_id", "The character that knows the skill.", "int(11)", null,
+                        typeof(Int32), false, true, false);
 
-                case "item_id":
-                    return new ColumnMetadata("item_id", "The item that is in the character's inventory.", "int(11)", null,
-                        typeof(Int32), false, false, true);
+                case "skill_id":
+                    return new ColumnMetadata("skill_id", "The skill the character knows.", "smallint(5) unsigned", null,
+                        typeof(UInt16), false, true, false);
 
-                case "slot":
-                    return new ColumnMetadata("slot", "The slot the item is in in the character's inventory.",
-                        "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
+                case "time_added":
+                    return new ColumnMetadata("time_added", "When this row was added.", "timestamp", "CURRENT_TIMESTAMP",
+                        typeof(DateTime), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -201,11 +201,11 @@ namespace DemoGame.Server.DbObjs
                 case "character_id":
                     return CharacterID;
 
-                case "item_id":
-                    return ItemID;
+                case "skill_id":
+                    return SkillId;
 
-                case "slot":
-                    return Slot;
+                case "time_added":
+                    return TimeAdded;
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -225,12 +225,12 @@ namespace DemoGame.Server.DbObjs
                     CharacterID = (CharacterID)value;
                     break;
 
-                case "item_id":
-                    ItemID = (ItemID)value;
+                case "skill_id":
+                    SkillId = (UInt16)value;
                     break;
 
-                case "slot":
-                    Slot = (InventorySlot)value;
+                case "time_added":
+                    TimeAdded = (DateTime)value;
                     break;
 
                 default:
@@ -238,14 +238,14 @@ namespace DemoGame.Server.DbObjs
             }
         }
 
-        #region ICharacterInventoryTable Members
+        #region ICharacterSkillTable Members
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `character_id`.
         /// The underlying database type is `int(11)`.The database column contains the comment: 
-        /// "The character who has this item in their inventory.".
+        /// "The character that knows the skill.".
         /// </summary>
-        [Description("The character who has this item in their inventory.")]
+        [Description("The character that knows the skill.")]
         [SyncValue]
         public CharacterID CharacterID
         {
@@ -254,29 +254,29 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `item_id`.
-        /// The underlying database type is `int(11)`.The database column contains the comment: 
-        /// "The item that is in the character's inventory.".
+        /// Gets or sets the value for the field that maps onto the database column `skill_id`.
+        /// The underlying database type is `smallint(5) unsigned`.The database column contains the comment: 
+        /// "The skill the character knows.".
         /// </summary>
-        [Description("The item that is in the character's inventory.")]
+        [Description("The skill the character knows.")]
         [SyncValue]
-        public ItemID ItemID
+        public UInt16 SkillId
         {
-            get { return (ItemID)_itemID; }
-            set { _itemID = (Int32)value; }
+            get { return _skillId; }
+            set { _skillId = value; }
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `slot`.
-        /// The underlying database type is `tinyint(3) unsigned`.The database column contains the comment: 
-        /// "The slot the item is in in the character's inventory.".
+        /// Gets or sets the value for the field that maps onto the database column `time_added`.
+        /// The underlying database type is `timestamp` with the default value of `CURRENT_TIMESTAMP`.The database column contains the comment: 
+        /// "When this row was added.".
         /// </summary>
-        [Description("The slot the item is in in the character's inventory.")]
+        [Description("When this row was added.")]
         [SyncValue]
-        public InventorySlot Slot
+        public DateTime TimeAdded
         {
-            get { return (InventorySlot)_slot; }
-            set { _slot = (Byte)value; }
+            get { return _timeAdded; }
+            set { _timeAdded = value; }
         }
 
         /// <summary>
@@ -286,9 +286,9 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        public virtual ICharacterInventoryTable DeepCopy()
+        public virtual ICharacterSkillTable DeepCopy()
         {
-            return new CharacterInventoryTable(this);
+            return new CharacterSkillTable(this);
         }
 
         #endregion

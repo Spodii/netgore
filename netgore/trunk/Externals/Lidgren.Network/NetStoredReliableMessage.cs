@@ -1,18 +1,18 @@
-﻿using System;
+﻿using System.Linq;
 
 namespace Lidgren.Network
 {
-	internal struct NetStoredReliableMessage
-	{
-		public int NumSent;
-		public float LastSent;
-		public NetOutgoingMessage Message;
+    struct NetStoredReliableMessage
+    {
+        public int NumSent;
+        public float LastSent;
+        public NetOutgoingMessage Message;
 
-		public void Reset()
-		{
-			NumSent = 0;
-			LastSent = 0;
-			Message = null;
-		}
-	}
+        public void Reset()
+        {
+            NumSent = 0;
+            LastSent = 0;
+            Message = null;
+        }
+    }
 }

@@ -29,6 +29,29 @@ namespace DemoGame.Editor
         EditorMap _map;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MapScreenControl"/> class.
+        /// </summary>
+        public MapScreenControl()
+        {
+            if (!DesignMode && LicenseManager.UsageMode != LicenseUsageMode.Runtime)
+                return;
+
+            _drawingManager = new DrawingManager();
+            _transBoxManager = new TransBoxManager();
+            _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
+
+            if (DrawingManager.LightManager.DefaultSprite == null)
+                DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+
+            GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
+
+            lock (_instancesSync)
+            {
+                _instances.Add(this);
+            }
+        }
+
+        /// <summary>
         /// Notifies listeners when the map has changed.
         /// </summary>
         public event MapScreenControlMapChangedEventHandler MapChanged;
@@ -245,29 +268,6 @@ namespace DemoGame.Editor
                 return true;
 
             return base.IsInputKey(keyData);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapScreenControl"/> class.
-        /// </summary>
-        public MapScreenControl()
-        {
-            if (!DesignMode && LicenseManager.UsageMode != LicenseUsageMode.Runtime)
-                return;
-
-            _drawingManager = new DrawingManager();
-            _transBoxManager = new TransBoxManager();
-            _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
-
-            if (DrawingManager.LightManager.DefaultSprite == null)
-                DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
-
-            GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
-
-            lock (_instancesSync)
-            {
-                _instances.Add(this);
-            }
         }
 
         /// <summary>
