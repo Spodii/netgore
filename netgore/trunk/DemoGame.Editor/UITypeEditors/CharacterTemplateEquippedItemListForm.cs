@@ -74,7 +74,7 @@ namespace DemoGame.Editor.UITypeEditors
 
             if (RequireDistinct)
             {
-                if (lstItems.Items.Cast<CharacterTemplateEquippedItem>().Any(x => x.ID == _selectedItem.Value))
+                if (lstItems.Items.Cast<CharacterTemplateEquippedItem>().Any(x => _selectedItem.HasValue && x.ID == _selectedItem.Value))
                 {
                     MessageBox.Show("That item is already in the list.");
                     _selectedItem = null;
