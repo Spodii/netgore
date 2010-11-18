@@ -343,11 +343,11 @@ CREATE TABLE `character` (
   `stat_int` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Int stat.',
   `stat_str` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Str stat.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_name` (`name`) USING BTREE,
-  KEY `template_id` (`character_template_id`),
+  UNIQUE KEY `idx_character_name` (`name`),
   KEY `character_ibfk_2` (`load_map_id`),
   KEY `shop_id` (`shop_id`),
   KEY `character_ibfk_5` (`respawn_map_id`),
+  KEY `template_id` (`character_template_id`),
   CONSTRAINT `character_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_3` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_4` FOREIGN KEY (`load_map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -844,7 +844,7 @@ CREATE TABLE `item_template` (
   `equipped_body` varchar(255) DEFAULT NULL COMMENT 'When equipped and not null, sets the character''s paper doll to include this layer.',
   `action_display_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ActionDisplayID to use when using this item (e.g. drink potion, attack with sword, etc).',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The templates used to instantiate items.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPRESSED COMMENT='The templates used to instantiate items.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2162,4 +2162,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-18 14:29:58
+-- Dump completed on 2010-11-18 15:20:10
