@@ -45,7 +45,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `user_id`.
         /// </summary>
-        CharacterID UserId { get; }
+        CharacterID UserID { get; }
 
         /// <summary>
         /// Gets the value of the database column `when`.

@@ -43,7 +43,7 @@ namespace DemoGame.Server.DbObjs
             paramValues["id"] = source.ID;
             paramValues["map_id"] = (ushort?)source.MapID;
             paramValues["quest_id"] = (UInt16)source.QuestID;
-            paramValues["user_id"] = (Int32)source.UserId;
+            paramValues["user_id"] = (Int32)source.UserID;
             paramValues["when"] = source.When;
             paramValues["x"] = source.X;
             paramValues["y"] = source.Y;
@@ -60,7 +60,7 @@ namespace DemoGame.Server.DbObjs
         public static Boolean HasSameValues(this IWorldStatsQuestAcceptTable source, IWorldStatsQuestAcceptTable otherItem)
         {
             return Equals(source.ID, otherItem.ID) && Equals(source.MapID, otherItem.MapID) &&
-                   Equals(source.QuestID, otherItem.QuestID) && Equals(source.UserId, otherItem.UserId) &&
+                   Equals(source.QuestID, otherItem.QuestID) && Equals(source.UserID, otherItem.UserID) &&
                    Equals(source.When, otherItem.When) && Equals(source.X, otherItem.X) && Equals(source.Y, otherItem.Y);
         }
 
@@ -89,7 +89,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("user_id");
 
-            source.UserId = (CharacterID)dataRecord.GetInt32(i);
+            source.UserID = (CharacterID)dataRecord.GetInt32(i);
 
             i = dataRecord.GetOrdinal("when");
 
@@ -133,7 +133,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        paramValues[i] = (Int32)source.UserId;
+                        paramValues[i] = (Int32)source.UserID;
                         break;
 
                     case "when":
@@ -180,7 +180,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        source.UserId = (CharacterID)dataRecord.GetInt32(i);
+                        source.UserID = (CharacterID)dataRecord.GetInt32(i);
                         break;
 
                     case "when":

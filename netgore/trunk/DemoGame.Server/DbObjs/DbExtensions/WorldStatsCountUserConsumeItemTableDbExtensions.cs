@@ -41,7 +41,7 @@ namespace DemoGame.Server.DbObjs
             paramValues["count"] = source.Count;
             paramValues["item_template_id"] = (UInt16)source.ItemTemplateID;
             paramValues["last_update"] = source.LastUpdate;
-            paramValues["user_id"] = (Int32)source.UserId;
+            paramValues["user_id"] = (Int32)source.UserID;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace DemoGame.Server.DbObjs
                                             IWorldStatsCountUserConsumeItemTable otherItem)
         {
             return Equals(source.Count, otherItem.Count) && Equals(source.ItemTemplateID, otherItem.ItemTemplateID) &&
-                   Equals(source.LastUpdate, otherItem.LastUpdate) && Equals(source.UserId, otherItem.UserId);
+                   Equals(source.LastUpdate, otherItem.LastUpdate) && Equals(source.UserID, otherItem.UserID);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("user_id");
 
-            source.UserId = (CharacterID)dataRecord.GetInt32(i);
+            source.UserID = (CharacterID)dataRecord.GetInt32(i);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        paramValues[i] = (Int32)source.UserId;
+                        paramValues[i] = (Int32)source.UserID;
                         break;
                 }
             }
@@ -151,7 +151,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        source.UserId = (CharacterID)dataRecord.GetInt32(i);
+                        source.UserID = (CharacterID)dataRecord.GetInt32(i);
                         break;
                 }
             }

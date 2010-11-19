@@ -41,7 +41,7 @@ namespace DemoGame.Server.DbObjs
         {
             paramValues["guild_id"] = (ushort?)source.GuildID;
             paramValues["id"] = source.ID;
-            paramValues["user_id"] = (Int32)source.UserId;
+            paramValues["user_id"] = (Int32)source.UserID;
             paramValues["when"] = source.When;
         }
 
@@ -56,7 +56,7 @@ namespace DemoGame.Server.DbObjs
         public static Boolean HasSameValues(this IWorldStatsGuildUserChangeTable source, IWorldStatsGuildUserChangeTable otherItem)
         {
             return Equals(source.GuildID, otherItem.GuildID) && Equals(source.ID, otherItem.ID) &&
-                   Equals(source.UserId, otherItem.UserId) && Equals(source.When, otherItem.When);
+                   Equals(source.UserID, otherItem.UserID) && Equals(source.When, otherItem.When);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("user_id");
 
-            source.UserId = (CharacterID)dataRecord.GetInt32(i);
+            source.UserID = (CharacterID)dataRecord.GetInt32(i);
 
             i = dataRecord.GetOrdinal("when");
 
@@ -112,7 +112,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        paramValues[i] = (Int32)source.UserId;
+                        paramValues[i] = (Int32)source.UserID;
                         break;
 
                     case "when":
@@ -147,7 +147,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        source.UserId = (CharacterID)dataRecord.GetInt32(i);
+                        source.UserID = (CharacterID)dataRecord.GetInt32(i);
                         break;
 
                     case "when":

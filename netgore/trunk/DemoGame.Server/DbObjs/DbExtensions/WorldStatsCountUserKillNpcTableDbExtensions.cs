@@ -40,8 +40,8 @@ namespace DemoGame.Server.DbObjs
         {
             paramValues["count"] = source.Count;
             paramValues["last_update"] = source.LastUpdate;
-            paramValues["npc_template_id"] = (UInt16)source.NpcTemplateId;
-            paramValues["user_id"] = (Int32)source.UserId;
+            paramValues["npc_template_id"] = (UInt16)source.NPCTemplateID;
+            paramValues["user_id"] = (Int32)source.UserID;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace DemoGame.Server.DbObjs
                                             IWorldStatsCountUserKillNpcTable otherItem)
         {
             return Equals(source.Count, otherItem.Count) && Equals(source.LastUpdate, otherItem.LastUpdate) &&
-                   Equals(source.NpcTemplateId, otherItem.NpcTemplateId) && Equals(source.UserId, otherItem.UserId);
+                   Equals(source.NPCTemplateID, otherItem.NPCTemplateID) && Equals(source.UserID, otherItem.UserID);
         }
 
         /// <summary>
@@ -80,11 +80,11 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("npc_template_id");
 
-            source.NpcTemplateId = (CharacterTemplateID)dataRecord.GetUInt16(i);
+            source.NPCTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
 
             i = dataRecord.GetOrdinal("user_id");
 
-            source.UserId = (CharacterID)dataRecord.GetInt32(i);
+            source.UserID = (CharacterID)dataRecord.GetInt32(i);
         }
 
         /// <summary>
@@ -112,11 +112,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "npc_template_id":
-                        paramValues[i] = (UInt16)source.NpcTemplateId;
+                        paramValues[i] = (UInt16)source.NPCTemplateID;
                         break;
 
                     case "user_id":
-                        paramValues[i] = (Int32)source.UserId;
+                        paramValues[i] = (Int32)source.UserID;
                         break;
                 }
             }
@@ -147,11 +147,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "npc_template_id":
-                        source.NpcTemplateId = (CharacterTemplateID)dataRecord.GetUInt16(i);
+                        source.NPCTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
                         break;
 
                     case "user_id":
-                        source.UserId = (CharacterID)dataRecord.GetInt32(i);
+                        source.UserID = (CharacterID)dataRecord.GetInt32(i);
                         break;
                 }
             }
