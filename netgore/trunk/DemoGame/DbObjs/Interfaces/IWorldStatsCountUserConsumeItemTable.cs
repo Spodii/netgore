@@ -43,7 +43,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `user_id`.
         /// </summary>
-        CharacterID UserId { get; }
+        CharacterID UserID { get; }
 
         /// <summary>
         /// Creates a deep copy of this table. All the values will be the same

@@ -33,7 +33,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `skill_id`.
         /// </summary>
-        UInt16 SkillId { get; }
+        SkillType SkillID { get; }
 
         /// <summary>
         /// Gets the value of the database column `time_added`.

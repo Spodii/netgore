@@ -41,10 +41,10 @@ namespace DemoGame.Server.DbObjs
         {
             paramValues["id"] = source.ID;
             paramValues["map_id"] = (ushort?)source.MapID;
-            paramValues["npc_template_id"] = (ushort?)source.NpcTemplateId;
+            paramValues["npc_template_id"] = (ushort?)source.NPCTemplateID;
             paramValues["npc_x"] = source.NpcX;
             paramValues["npc_y"] = source.NpcY;
-            paramValues["user_id"] = (Int32)source.UserId;
+            paramValues["user_id"] = (Int32)source.UserID;
             paramValues["user_level"] = source.UserLevel;
             paramValues["user_x"] = source.UserX;
             paramValues["user_y"] = source.UserY;
@@ -62,8 +62,8 @@ namespace DemoGame.Server.DbObjs
         public static Boolean HasSameValues(this IWorldStatsUserKillNpcTable source, IWorldStatsUserKillNpcTable otherItem)
         {
             return Equals(source.ID, otherItem.ID) && Equals(source.MapID, otherItem.MapID) &&
-                   Equals(source.NpcTemplateId, otherItem.NpcTemplateId) && Equals(source.NpcX, otherItem.NpcX) &&
-                   Equals(source.NpcY, otherItem.NpcY) && Equals(source.UserId, otherItem.UserId) &&
+                   Equals(source.NPCTemplateID, otherItem.NPCTemplateID) && Equals(source.NpcX, otherItem.NpcX) &&
+                   Equals(source.NpcY, otherItem.NpcY) && Equals(source.UserID, otherItem.UserID) &&
                    Equals(source.UserLevel, otherItem.UserLevel) && Equals(source.UserX, otherItem.UserX) &&
                    Equals(source.UserY, otherItem.UserY) && Equals(source.When, otherItem.When);
         }
@@ -89,7 +89,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("npc_template_id");
 
-            source.NpcTemplateId =
+            source.NPCTemplateID =
                 (Nullable<CharacterTemplateID>)(dataRecord.IsDBNull(i) ? (ushort?)null : dataRecord.GetUInt16(i));
 
             i = dataRecord.GetOrdinal("npc_x");
@@ -102,7 +102,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("user_id");
 
-            source.UserId = (CharacterID)dataRecord.GetInt32(i);
+            source.UserID = (CharacterID)dataRecord.GetInt32(i);
 
             i = dataRecord.GetOrdinal("user_level");
 
@@ -146,7 +146,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "npc_template_id":
-                        paramValues[i] = (ushort?)source.NpcTemplateId;
+                        paramValues[i] = (ushort?)source.NPCTemplateID;
                         break;
 
                     case "npc_x":
@@ -158,7 +158,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        paramValues[i] = (Int32)source.UserId;
+                        paramValues[i] = (Int32)source.UserID;
                         break;
 
                     case "user_level":
@@ -205,7 +205,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "npc_template_id":
-                        source.NpcTemplateId =
+                        source.NPCTemplateID =
                             (Nullable<CharacterTemplateID>)(dataRecord.IsDBNull(i) ? (ushort?)null : dataRecord.GetUInt16(i));
                         break;
 
@@ -218,7 +218,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "user_id":
-                        source.UserId = (CharacterID)dataRecord.GetInt32(i);
+                        source.UserID = (CharacterID)dataRecord.GetInt32(i);
                         break;
 
                     case "user_level":
