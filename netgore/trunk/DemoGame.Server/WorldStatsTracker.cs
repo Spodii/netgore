@@ -190,8 +190,8 @@ namespace DemoGame.Server
         {
             var mapID = (npc.Map == null ? (MapID?)null : npc.Map.ID);
 
-            var args = new WorldStatsNpcKillUserTable(when: Now(), mapID: mapID, npcTemplateId: npc.CharacterTemplateID,
-                npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID, userLevel: user.Level,
+            var args = new WorldStatsNpcKillUserTable(when: Now(), mapID: mapID, nPCTemplateID: npc.CharacterTemplateID,
+                npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userID: user.ID, userLevel: user.Level,
                 userX: (ushort)user.Position.X, userY: (ushort)user.Position.Y, iD: 0);
 
             _npcKillUserQuery.Execute(args);
@@ -206,7 +206,7 @@ namespace DemoGame.Server
         {
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
-            var args = new WorldStatsQuestAcceptTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
+            var args = new WorldStatsQuestAcceptTable(when: Now(), mapID: mapID, questID: questID, userID: user.ID,
                 x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questAcceptQuery.Execute(args);
@@ -221,7 +221,7 @@ namespace DemoGame.Server
         {
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
-            var args = new WorldStatsQuestCancelTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
+            var args = new WorldStatsQuestCancelTable(when: Now(), mapID: mapID, questID: questID, userID: user.ID,
                 x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questCancelQuery.Execute(args);
@@ -236,7 +236,7 @@ namespace DemoGame.Server
         {
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
-            var args = new WorldStatsQuestCompleteTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
+            var args = new WorldStatsQuestCompleteTable(when: Now(), mapID: mapID, questID: questID, userID: user.ID,
                 x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questCompleteQuery.Execute(args);
@@ -259,7 +259,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserConsumeItemTable(when: Now(), itemTemplateID: itemTemplate.Value, mapID: mapID,
-                userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
+                userID: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _userConsumeItemQuery.Execute(args);
         }
@@ -272,7 +272,7 @@ namespace DemoGame.Server
         /// this value will be null.</param>
         protected override void InternalAddUserGuildChange(User user, GuildID? guildID)
         {
-            var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: guildID, userId: user.ID, iD: 0);
+            var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: guildID, userID: user.ID, iD: 0);
 
             _guildUserChangeQuery.Execute(args);
         }
@@ -286,8 +286,8 @@ namespace DemoGame.Server
         {
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
-            var args = new WorldStatsUserKillNpcTable(when: Now(), mapID: mapID, npcTemplateId: npc.CharacterTemplateID,
-                npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID, userLevel: user.Level,
+            var args = new WorldStatsUserKillNpcTable(when: Now(), mapID: mapID, nPCTemplateID: npc.CharacterTemplateID,
+                npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userID: user.ID, userLevel: user.Level,
                 userX: (ushort)user.Position.X, userY: (ushort)user.Position.Y, iD: 0);
 
             _userKillNPCQuery.Execute(args);

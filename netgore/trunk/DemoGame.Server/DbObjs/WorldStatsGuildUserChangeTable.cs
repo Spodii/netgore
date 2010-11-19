@@ -69,7 +69,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `user_id`.
         /// </summary>
-        Int32 _userId;
+        Int32 _userID;
 
         /// <summary>
         /// The field that maps onto the database column `when`.
@@ -88,13 +88,13 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="guildID">The initial value for the corresponding property.</param>
         /// <param name="iD">The initial value for the corresponding property.</param>
-        /// <param name="userId">The initial value for the corresponding property.</param>
+        /// <param name="userID">The initial value for the corresponding property.</param>
         /// <param name="when">The initial value for the corresponding property.</param>
-        public WorldStatsGuildUserChangeTable(GuildID? @guildID, UInt32 @iD, CharacterID @userId, DateTime @when)
+        public WorldStatsGuildUserChangeTable(GuildID? @guildID, UInt32 @iD, CharacterID @userID, DateTime @when)
         {
             GuildID = @guildID;
             ID = @iD;
-            UserId = @userId;
+            UserID = @userID;
             When = @when;
         }
 
@@ -142,7 +142,7 @@ namespace DemoGame.Server.DbObjs
         {
             dic["guild_id"] = source.GuildID;
             dic["id"] = source.ID;
-            dic["user_id"] = source.UserId;
+            dic["user_id"] = source.UserID;
             dic["when"] = source.When;
         }
 
@@ -165,7 +165,7 @@ namespace DemoGame.Server.DbObjs
         {
             GuildID = source.GuildID;
             ID = source.ID;
-            UserId = source.UserId;
+            UserID = source.UserID;
             When = source.When;
         }
 
@@ -218,7 +218,7 @@ namespace DemoGame.Server.DbObjs
                     return ID;
 
                 case "user_id":
-                    return UserId;
+                    return UserID;
 
                 case "when":
                     return When;
@@ -246,7 +246,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "user_id":
-                    UserId = (CharacterID)value;
+                    UserID = (CharacterID)value;
                     break;
 
                 case "when":
@@ -313,10 +313,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The ID of the user who changed the guild they are part of.")]
         [SyncValue]
-        public CharacterID UserId
+        public CharacterID UserID
         {
-            get { return (CharacterID)_userId; }
-            set { _userId = (Int32)value; }
+            get { return (CharacterID)_userID; }
+            set { _userID = (Int32)value; }
         }
 
         /// <summary>

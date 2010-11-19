@@ -75,7 +75,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `user_id`.
         /// </summary>
-        Int32 _userId;
+        Int32 _userID;
 
         /// <summary>
         /// The field that maps onto the database column `when`.
@@ -105,17 +105,17 @@ namespace DemoGame.Server.DbObjs
         /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="mapID">The initial value for the corresponding property.</param>
         /// <param name="questID">The initial value for the corresponding property.</param>
-        /// <param name="userId">The initial value for the corresponding property.</param>
+        /// <param name="userID">The initial value for the corresponding property.</param>
         /// <param name="when">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public WorldStatsQuestCompleteTable(UInt32 @iD, MapID? @mapID, QuestID @questID, CharacterID @userId, DateTime @when,
+        public WorldStatsQuestCompleteTable(UInt32 @iD, MapID? @mapID, QuestID @questID, CharacterID @userID, DateTime @when,
                                             UInt16 @x, UInt16 @y)
         {
             ID = @iD;
             MapID = @mapID;
             QuestID = @questID;
-            UserId = @userId;
+            UserID = @userID;
             When = @when;
             X = @x;
             Y = @y;
@@ -166,7 +166,7 @@ namespace DemoGame.Server.DbObjs
             dic["id"] = source.ID;
             dic["map_id"] = source.MapID;
             dic["quest_id"] = source.QuestID;
-            dic["user_id"] = source.UserId;
+            dic["user_id"] = source.UserID;
             dic["when"] = source.When;
             dic["x"] = source.X;
             dic["y"] = source.Y;
@@ -192,7 +192,7 @@ namespace DemoGame.Server.DbObjs
             ID = source.ID;
             MapID = source.MapID;
             QuestID = source.QuestID;
-            UserId = source.UserId;
+            UserID = source.UserID;
             When = source.When;
             X = source.X;
             Y = source.Y;
@@ -264,7 +264,7 @@ namespace DemoGame.Server.DbObjs
                     return QuestID;
 
                 case "user_id":
-                    return UserId;
+                    return UserID;
 
                 case "when":
                     return When;
@@ -302,7 +302,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "user_id":
-                    UserId = (CharacterID)value;
+                    UserID = (CharacterID)value;
                     break;
 
                 case "when":
@@ -390,10 +390,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The ID of the user that completed the quest.")]
         [SyncValue]
-        public CharacterID UserId
+        public CharacterID UserID
         {
-            get { return (CharacterID)_userId; }
-            set { _userId = (Int32)value; }
+            get { return (CharacterID)_userID; }
+            set { _userID = (Int32)value; }
         }
 
         /// <summary>
