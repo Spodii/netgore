@@ -63,7 +63,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `skill_id`.
         /// </summary>
-        UInt16 _skillId;
+        UInt16 _skillID;
 
         /// <summary>
         /// The field that maps onto the database column `time_added`.
@@ -81,12 +81,12 @@ namespace DemoGame.Server.DbObjs
         /// Initializes a new instance of the <see cref="CharacterSkillTable"/> class.
         /// </summary>
         /// <param name="characterID">The initial value for the corresponding property.</param>
-        /// <param name="skillId">The initial value for the corresponding property.</param>
+        /// <param name="skillID">The initial value for the corresponding property.</param>
         /// <param name="timeAdded">The initial value for the corresponding property.</param>
-        public CharacterSkillTable(CharacterID @characterID, UInt16 @skillId, DateTime @timeAdded)
+        public CharacterSkillTable(CharacterID @characterID, SkillType @skillID, DateTime @timeAdded)
         {
             CharacterID = @characterID;
-            SkillId = @skillId;
+            SkillID = @skillID;
             TimeAdded = @timeAdded;
         }
 
@@ -133,7 +133,7 @@ namespace DemoGame.Server.DbObjs
         public static void CopyValues(ICharacterSkillTable source, IDictionary<String, Object> dic)
         {
             dic["character_id"] = source.CharacterID;
-            dic["skill_id"] = source.SkillId;
+            dic["skill_id"] = source.SkillID;
             dic["time_added"] = source.TimeAdded;
         }
 
@@ -155,7 +155,7 @@ namespace DemoGame.Server.DbObjs
         public void CopyValuesFrom(ICharacterSkillTable source)
         {
             CharacterID = source.CharacterID;
-            SkillId = source.SkillId;
+            SkillID = source.SkillID;
             TimeAdded = source.TimeAdded;
         }
 
@@ -202,7 +202,7 @@ namespace DemoGame.Server.DbObjs
                     return CharacterID;
 
                 case "skill_id":
-                    return SkillId;
+                    return SkillID;
 
                 case "time_added":
                     return TimeAdded;
@@ -226,7 +226,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "skill_id":
-                    SkillId = (UInt16)value;
+                    SkillID = (SkillType)value;
                     break;
 
                 case "time_added":
@@ -260,10 +260,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The skill the character knows.")]
         [SyncValue]
-        public UInt16 SkillId
+        public SkillType SkillID
         {
-            get { return _skillId; }
-            set { _skillId = value; }
+            get { return (SkillType)_skillID; }
+            set { _skillID = (UInt16)value; }
         }
 
         /// <summary>

@@ -158,6 +158,7 @@ For more information on the DbClassCreator, please see:
                 generator.AddCustomType(typeof(NPCChatDialogID), "*", "chat_dialog");
                 generator.AddCustomType(typeof(ShopID), "*", "shop_id");
                 generator.AddCustomType(typeof(ActionDisplayID), "*", "action_display_id");
+                generator.AddCustomType(typeof(SkillType), "*", "skill_id");
 
                 // Renaming
                 var formatter = generator.Formatter;
@@ -167,6 +168,8 @@ For more information on the DbClassCreator, please see:
                 formatter.AddAlias("hostile_id", "HostileID");
                 formatter.AddAlias("character_id", "CharacterID");
                 formatter.AddAlias("character_template_id", "CharacterTemplateID");
+                formatter.AddAlias("npc_template_id", "NPCTemplateID");
+                formatter.AddAlias("user_template_id", "UserTemplateID");
                 formatter.AddAlias("item_template_id", "ItemTemplateID");
                 formatter.AddAlias("item_id", "ItemID");
                 formatter.AddAlias("map_id", "MapID");
@@ -184,6 +187,9 @@ For more information on the DbClassCreator, please see:
                 formatter.AddAlias("event_id", "EventID");
                 formatter.AddAlias("target_character_id", "TargetCharacterID");
                 formatter.AddAlias("action_display_id", "ActionDisplayID");
+                formatter.AddAlias("skill_id", "SkillID");
+                formatter.AddAlias("npc_id", "NPCID");
+                formatter.AddAlias("user_id", "UserID");
 
                 formatter.AddAlias("Name");
                 formatter.AddAlias("ID");

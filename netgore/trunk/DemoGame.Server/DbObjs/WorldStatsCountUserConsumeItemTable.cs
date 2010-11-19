@@ -73,7 +73,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `user_id`.
         /// </summary>
-        Int32 _userId;
+        Int32 _userID;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorldStatsCountUserConsumeItemTable"/> class.
@@ -88,14 +88,14 @@ namespace DemoGame.Server.DbObjs
         /// <param name="count">The initial value for the corresponding property.</param>
         /// <param name="itemTemplateID">The initial value for the corresponding property.</param>
         /// <param name="lastUpdate">The initial value for the corresponding property.</param>
-        /// <param name="userId">The initial value for the corresponding property.</param>
+        /// <param name="userID">The initial value for the corresponding property.</param>
         public WorldStatsCountUserConsumeItemTable(Int32 @count, ItemTemplateID @itemTemplateID, DateTime @lastUpdate,
-                                                   CharacterID @userId)
+                                                   CharacterID @userID)
         {
             Count = @count;
             ItemTemplateID = @itemTemplateID;
             LastUpdate = @lastUpdate;
-            UserId = @userId;
+            UserID = @userID;
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace DemoGame.Server.DbObjs
             dic["count"] = source.Count;
             dic["item_template_id"] = source.ItemTemplateID;
             dic["last_update"] = source.LastUpdate;
-            dic["user_id"] = source.UserId;
+            dic["user_id"] = source.UserID;
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace DemoGame.Server.DbObjs
             Count = source.Count;
             ItemTemplateID = source.ItemTemplateID;
             LastUpdate = source.LastUpdate;
-            UserId = source.UserId;
+            UserID = source.UserID;
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace DemoGame.Server.DbObjs
                     return LastUpdate;
 
                 case "user_id":
-                    return UserId;
+                    return UserID;
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -252,7 +252,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "user_id":
-                    UserId = (CharacterID)value;
+                    UserID = (CharacterID)value;
                     break;
 
                 default:
@@ -330,10 +330,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("Character this counter is for. Logically, it should be a user (not persistent NPC).")]
         [SyncValue]
-        public CharacterID UserId
+        public CharacterID UserID
         {
-            get { return (CharacterID)_userId; }
-            set { _userId = (Int32)value; }
+            get { return (CharacterID)_userID; }
+            set { _userID = (Int32)value; }
         }
 
         /// <summary>

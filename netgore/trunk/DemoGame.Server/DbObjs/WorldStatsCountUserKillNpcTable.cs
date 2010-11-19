@@ -68,12 +68,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `npc_template_id`.
         /// </summary>
-        UInt16 _npcTemplateId;
+        UInt16 _nPCTemplateID;
 
         /// <summary>
         /// The field that maps onto the database column `user_id`.
         /// </summary>
-        Int32 _userId;
+        Int32 _userID;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorldStatsCountUserKillNpcTable"/> class.
@@ -87,15 +87,15 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="count">The initial value for the corresponding property.</param>
         /// <param name="lastUpdate">The initial value for the corresponding property.</param>
-        /// <param name="npcTemplateId">The initial value for the corresponding property.</param>
-        /// <param name="userId">The initial value for the corresponding property.</param>
-        public WorldStatsCountUserKillNpcTable(Int32 @count, DateTime @lastUpdate, CharacterTemplateID @npcTemplateId,
-                                               CharacterID @userId)
+        /// <param name="nPCTemplateID">The initial value for the corresponding property.</param>
+        /// <param name="userID">The initial value for the corresponding property.</param>
+        public WorldStatsCountUserKillNpcTable(Int32 @count, DateTime @lastUpdate, CharacterTemplateID @nPCTemplateID,
+                                               CharacterID @userID)
         {
             Count = @count;
             LastUpdate = @lastUpdate;
-            NpcTemplateId = @npcTemplateId;
-            UserId = @userId;
+            NPCTemplateID = @nPCTemplateID;
+            UserID = @userID;
         }
 
         /// <summary>
@@ -142,8 +142,8 @@ namespace DemoGame.Server.DbObjs
         {
             dic["count"] = source.Count;
             dic["last_update"] = source.LastUpdate;
-            dic["npc_template_id"] = source.NpcTemplateId;
-            dic["user_id"] = source.UserId;
+            dic["npc_template_id"] = source.NPCTemplateID;
+            dic["user_id"] = source.UserID;
         }
 
         /// <summary>
@@ -165,8 +165,8 @@ namespace DemoGame.Server.DbObjs
         {
             Count = source.Count;
             LastUpdate = source.LastUpdate;
-            NpcTemplateId = source.NpcTemplateId;
-            UserId = source.UserId;
+            NPCTemplateID = source.NPCTemplateID;
+            UserID = source.UserID;
         }
 
         /// <summary>
@@ -219,10 +219,10 @@ namespace DemoGame.Server.DbObjs
                     return LastUpdate;
 
                 case "npc_template_id":
-                    return NpcTemplateId;
+                    return NPCTemplateID;
 
                 case "user_id":
-                    return UserId;
+                    return UserID;
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -247,11 +247,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "npc_template_id":
-                    NpcTemplateId = (CharacterTemplateID)value;
+                    NPCTemplateID = (CharacterTemplateID)value;
                     break;
 
                 case "user_id":
-                    UserId = (CharacterID)value;
+                    UserID = (CharacterID)value;
                     break;
 
                 default:
@@ -316,10 +316,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The character template that this NPC kill counter is for.")]
         [SyncValue]
-        public CharacterTemplateID NpcTemplateId
+        public CharacterTemplateID NPCTemplateID
         {
-            get { return (CharacterTemplateID)_npcTemplateId; }
-            set { _npcTemplateId = (UInt16)value; }
+            get { return (CharacterTemplateID)_nPCTemplateID; }
+            set { _nPCTemplateID = (UInt16)value; }
         }
 
         /// <summary>
@@ -329,10 +329,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The user that this kill counter is for.")]
         [SyncValue]
-        public CharacterID UserId
+        public CharacterID UserID
         {
-            get { return (CharacterID)_userId; }
-            set { _userId = (Int32)value; }
+            get { return (CharacterID)_userID; }
+            set { _userID = (Int32)value; }
         }
 
         /// <summary>

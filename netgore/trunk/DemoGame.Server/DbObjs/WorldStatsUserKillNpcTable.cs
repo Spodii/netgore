@@ -71,7 +71,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `npc_template_id`.
         /// </summary>
-        ushort? _npcTemplateId;
+        ushort? _nPCTemplateID;
 
         /// <summary>
         /// The field that maps onto the database column `npc_x`.
@@ -86,7 +86,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `user_id`.
         /// </summary>
-        Int32 _userId;
+        Int32 _userID;
 
         /// <summary>
         /// The field that maps onto the database column `user_level`.
@@ -120,24 +120,24 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="mapID">The initial value for the corresponding property.</param>
-        /// <param name="npcTemplateId">The initial value for the corresponding property.</param>
+        /// <param name="nPCTemplateID">The initial value for the corresponding property.</param>
         /// <param name="npcX">The initial value for the corresponding property.</param>
         /// <param name="npcY">The initial value for the corresponding property.</param>
-        /// <param name="userId">The initial value for the corresponding property.</param>
+        /// <param name="userID">The initial value for the corresponding property.</param>
         /// <param name="userLevel">The initial value for the corresponding property.</param>
         /// <param name="userX">The initial value for the corresponding property.</param>
         /// <param name="userY">The initial value for the corresponding property.</param>
         /// <param name="when">The initial value for the corresponding property.</param>
-        public WorldStatsUserKillNpcTable(UInt32 @iD, MapID? @mapID, CharacterTemplateID? @npcTemplateId, UInt16 @npcX,
-                                          UInt16 @npcY, CharacterID @userId, Byte @userLevel, UInt16 @userX, UInt16 @userY,
+        public WorldStatsUserKillNpcTable(UInt32 @iD, MapID? @mapID, CharacterTemplateID? @nPCTemplateID, UInt16 @npcX,
+                                          UInt16 @npcY, CharacterID @userID, Byte @userLevel, UInt16 @userX, UInt16 @userY,
                                           DateTime @when)
         {
             ID = @iD;
             MapID = @mapID;
-            NpcTemplateId = @npcTemplateId;
+            NPCTemplateID = @nPCTemplateID;
             NpcX = @npcX;
             NpcY = @npcY;
-            UserId = @userId;
+            UserID = @userID;
             UserLevel = @userLevel;
             UserX = @userX;
             UserY = @userY;
@@ -188,10 +188,10 @@ namespace DemoGame.Server.DbObjs
         {
             dic["id"] = source.ID;
             dic["map_id"] = source.MapID;
-            dic["npc_template_id"] = source.NpcTemplateId;
+            dic["npc_template_id"] = source.NPCTemplateID;
             dic["npc_x"] = source.NpcX;
             dic["npc_y"] = source.NpcY;
-            dic["user_id"] = source.UserId;
+            dic["user_id"] = source.UserID;
             dic["user_level"] = source.UserLevel;
             dic["user_x"] = source.UserX;
             dic["user_y"] = source.UserY;
@@ -217,10 +217,10 @@ namespace DemoGame.Server.DbObjs
         {
             ID = source.ID;
             MapID = source.MapID;
-            NpcTemplateId = source.NpcTemplateId;
+            NPCTemplateID = source.NPCTemplateID;
             NpcX = source.NpcX;
             NpcY = source.NpcY;
-            UserId = source.UserId;
+            UserID = source.UserID;
             UserLevel = source.UserLevel;
             UserX = source.UserX;
             UserY = source.UserY;
@@ -304,7 +304,7 @@ namespace DemoGame.Server.DbObjs
                     return MapID;
 
                 case "npc_template_id":
-                    return NpcTemplateId;
+                    return NPCTemplateID;
 
                 case "npc_x":
                     return NpcX;
@@ -313,7 +313,7 @@ namespace DemoGame.Server.DbObjs
                     return NpcY;
 
                 case "user_id":
-                    return UserId;
+                    return UserID;
 
                 case "user_level":
                     return UserLevel;
@@ -350,7 +350,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "npc_template_id":
-                    NpcTemplateId = (CharacterTemplateID?)value;
+                    NPCTemplateID = (CharacterTemplateID?)value;
                     break;
 
                 case "npc_x":
@@ -362,7 +362,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "user_id":
-                    UserId = (CharacterID)value;
+                    UserID = (CharacterID)value;
                     break;
 
                 case "user_level":
@@ -441,10 +441,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The template ID of the NPC. Only valid when the NPC has a template ID set.")]
         [SyncValue]
-        public CharacterTemplateID? NpcTemplateId
+        public CharacterTemplateID? NPCTemplateID
         {
-            get { return (Nullable<CharacterTemplateID>)_npcTemplateId; }
-            set { _npcTemplateId = (ushort?)value; }
+            get { return (Nullable<CharacterTemplateID>)_nPCTemplateID; }
+            set { _nPCTemplateID = (ushort?)value; }
         }
 
         /// <summary>
@@ -480,10 +480,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The ID of the user.")]
         [SyncValue]
-        public CharacterID UserId
+        public CharacterID UserID
         {
-            get { return (CharacterID)_userId; }
-            set { _userId = (Int32)value; }
+            get { return (CharacterID)_userID; }
+            set { _userID = (Int32)value; }
         }
 
         /// <summary>

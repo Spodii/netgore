@@ -74,7 +74,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `user_id`.
         /// </summary>
-        Int32 _userId;
+        Int32 _userID;
 
         /// <summary>
         /// The field that maps onto the database column `when`.
@@ -104,17 +104,17 @@ namespace DemoGame.Server.DbObjs
         /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="itemTemplateID">The initial value for the corresponding property.</param>
         /// <param name="mapID">The initial value for the corresponding property.</param>
-        /// <param name="userId">The initial value for the corresponding property.</param>
+        /// <param name="userID">The initial value for the corresponding property.</param>
         /// <param name="when">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public WorldStatsUserConsumeItemTable(UInt32 @iD, ItemTemplateID @itemTemplateID, MapID? @mapID, CharacterID @userId,
+        public WorldStatsUserConsumeItemTable(UInt32 @iD, ItemTemplateID @itemTemplateID, MapID? @mapID, CharacterID @userID,
                                               DateTime @when, UInt16 @x, UInt16 @y)
         {
             ID = @iD;
             ItemTemplateID = @itemTemplateID;
             MapID = @mapID;
-            UserId = @userId;
+            UserID = @userID;
             When = @when;
             X = @x;
             Y = @y;
@@ -165,7 +165,7 @@ namespace DemoGame.Server.DbObjs
             dic["id"] = source.ID;
             dic["item_template_id"] = source.ItemTemplateID;
             dic["map_id"] = source.MapID;
-            dic["user_id"] = source.UserId;
+            dic["user_id"] = source.UserID;
             dic["when"] = source.When;
             dic["x"] = source.X;
             dic["y"] = source.Y;
@@ -191,7 +191,7 @@ namespace DemoGame.Server.DbObjs
             ID = source.ID;
             ItemTemplateID = source.ItemTemplateID;
             MapID = source.MapID;
-            UserId = source.UserId;
+            UserID = source.UserID;
             When = source.When;
             X = source.X;
             Y = source.Y;
@@ -262,7 +262,7 @@ namespace DemoGame.Server.DbObjs
                     return MapID;
 
                 case "user_id":
-                    return UserId;
+                    return UserID;
 
                 case "when":
                     return When;
@@ -300,7 +300,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "user_id":
-                    UserId = (CharacterID)value;
+                    UserID = (CharacterID)value;
                     break;
 
                 case "when":
@@ -388,10 +388,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         [Description("The user that this event is related to.")]
         [SyncValue]
-        public CharacterID UserId
+        public CharacterID UserID
         {
-            get { return (CharacterID)_userId; }
-            set { _userId = (Int32)value; }
+            get { return (CharacterID)_userID; }
+            set { _userID = (Int32)value; }
         }
 
         /// <summary>
