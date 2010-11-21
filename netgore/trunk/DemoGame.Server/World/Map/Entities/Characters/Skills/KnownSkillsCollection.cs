@@ -15,11 +15,31 @@ namespace DemoGame.Server
         readonly Character _owner;
 
         /// <summary>
+        /// Gets the known skills for a <see cref="Character"/> from the database.
+        /// </summary>
+        /// <param name="owner">The <see cref="Character"/> to get the known skills for.</param>
+        /// <returns>The known skills for the <paramref name="owner"/> from the database.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        static IEnumerable<SkillType> GetKnownSkillsFromDb(Character owner)
+        {
+            if (owner == null)
+                throw new ArgumentNullException("owner");
+
+            if (!owner.IsPersistent)
+                return Enumerable.Empty<SkillType>();
+
+            var q = owner.DbController.GetQuery<SelectCharacterSkillsQuery>();
+            var ret = q.Execute(owner.ID);
+
+            return ret;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="KnownSkillsCollection"/> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="initialSkills">The initially known skills.</param>
-        public KnownSkillsCollection(Character owner, IEnumerable<SkillType> initialSkills) : base(initialSkills)
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public KnownSkillsCollection(Character owner) : base(GetKnownSkillsFromDb(owner))
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");

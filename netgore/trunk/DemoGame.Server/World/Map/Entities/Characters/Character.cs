@@ -107,7 +107,7 @@ namespace DemoGame.Server
     /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
-    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference,
+    public abstract partial class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference,
                                       IServerSaveable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -139,12 +139,18 @@ namespace DemoGame.Server
         readonly World _world;
 
         /// <summary>
+        /// Gets the collection of skills known by this <see cref="Character"/>.
+        /// </summary>
+        public KnownSkillsCollection KnownSkills { get { return _knownSkills; } }
+
+        /// <summary>
         /// Character's alliance.
         /// </summary>
         Alliance _alliance;
 
         int _attackTimeout = 500;
 
+        KnownSkillsCollection _knownSkills;
         int _cash;
         int _exp;
         SPValueType _hp;
@@ -224,13 +230,11 @@ namespace DemoGame.Server
             _statusEffects.Added += StatusEffects_HandleOnAdd;
             _statusEffects.Removed += StatusEffects_HandleOnRemove;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _baseStats = CreateStats(StatCollectionType.Base);
             _modStats = CreateStats(StatCollectionType.Modified);
             _spSync = CreateSPSynchronizer();
             _inventory = CreateInventory();
             _equipped = CreateEquipped();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Set up the listeners for when the stat collections change
             BaseStats.StatChanged += BaseStatChangedHandler;
@@ -1257,12 +1261,6 @@ namespace DemoGame.Server
             LoadFromQueryValues(values);
         }
 
-        protected void Load(string characterName)
-        {
-            var values = DbController.GetQuery<SelectCharacterQuery>().Execute(characterName);
-            LoadFromQueryValues(values);
-        }
-
         protected void Load(CharacterTemplate template)
         {
             var v = template.TemplateTable;
@@ -1318,6 +1316,8 @@ namespace DemoGame.Server
             RespawnMapID = v.RespawnMapID;
             RespawnPosition = new Vector2(v.RespawnX, v.RespawnY);
             StatPoints = v.StatPoints;
+
+            _knownSkills = new KnownSkillsCollection(this);
 
             // Create the AI
             if (v.AIID.HasValue)
@@ -2113,68 +2113,6 @@ namespace DemoGame.Server
                 return position;
             }
         }
-
-#if !TOPDOWN
-        /// <summary>
-        /// Makes the Character jump if <see cref="Character.CanJump"/> is true. If <see cref="Character.CanJump"/> is false,
-        /// this will do nothing.
-        /// </summary>
-        public void Jump()
-        {
-            if (!IsAlive)
-                return;
-
-            if (!CanJump)
-                return;
-
-            if (_skillCaster.IsCastingSkill)
-                return;
-
-            SetVelocity(Velocity + new Vector2(0.0f, -0.48f));
-        }
-#endif
-
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Starts moving the character down.
-    /// </summary>
-        public void MoveDown()
-        {
-            if (!IsAlive)
-                return;
-
-            if (IsMovingDown)
-                return;
-
-            if (_skillCaster.IsCastingSkill)
-                return;
-
-            SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
-        }
-#endif
-#pragma warning restore 1587
-
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Starts moving the character up.
-    /// </summary>
-        public void MoveUp()
-        {
-            if (!IsAlive)
-                return;
-
-            if (IsMovingUp)
-                return;
-
-            if (_skillCaster.IsCastingSkill)
-                return;
-
-            SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
-        }
-#endif
-#pragma warning restore 1587
 
         #region ICharacterTable Members
 
