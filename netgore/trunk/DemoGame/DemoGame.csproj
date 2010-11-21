@@ -108,6 +108,7 @@
     <Compile Include="Account\AccountIDTypeConverter.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterSkillTable.cs" />
+    <Compile Include="DbObjs\Interfaces\ICharacterTemplateSkillTable.cs" />
     <Compile Include="DbObjs\Interfaces\IViewNpcCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\IViewUserCharacterTable.cs" />
     <Compile Include="GlobalSuppressions.cs" />

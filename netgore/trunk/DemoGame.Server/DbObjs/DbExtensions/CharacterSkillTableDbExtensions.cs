@@ -39,7 +39,7 @@ namespace DemoGame.Server.DbObjs
         public static void CopyValues(this ICharacterSkillTable source, DbParameterValues paramValues)
         {
             paramValues["character_id"] = (Int32)source.CharacterID;
-            paramValues["skill_id"] = (UInt16)source.SkillID;
+            paramValues["skill_id"] = (Byte)source.SkillID;
             paramValues["time_added"] = source.TimeAdded;
         }
 
@@ -74,7 +74,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("skill_id");
 
-            source.SkillID = (SkillType)dataRecord.GetUInt16(i);
+            source.SkillID = (SkillType)dataRecord.GetByte(i);
 
             i = dataRecord.GetOrdinal("time_added");
 
@@ -102,7 +102,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "skill_id":
-                        paramValues[i] = (UInt16)source.SkillID;
+                        paramValues[i] = (Byte)source.SkillID;
                         break;
 
                     case "time_added":
@@ -133,7 +133,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "skill_id":
-                        source.SkillID = (SkillType)dataRecord.GetUInt16(i);
+                        source.SkillID = (SkillType)dataRecord.GetByte(i);
                         break;
 
                     case "time_added":

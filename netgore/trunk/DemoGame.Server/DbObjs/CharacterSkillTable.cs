@@ -63,7 +63,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `skill_id`.
         /// </summary>
-        UInt16 _skillID;
+        Byte _skillID;
 
         /// <summary>
         /// The field that maps onto the database column `time_added`.
@@ -175,8 +175,8 @@ namespace DemoGame.Server.DbObjs
                         typeof(Int32), false, true, false);
 
                 case "skill_id":
-                    return new ColumnMetadata("skill_id", "The skill the character knows.", "smallint(5) unsigned", null,
-                        typeof(UInt16), false, true, false);
+                    return new ColumnMetadata("skill_id", "The skill the character knows.", "tinyint(5) unsigned", null,
+                        typeof(Byte), false, true, false);
 
                 case "time_added":
                     return new ColumnMetadata("time_added", "When this row was added.", "timestamp", "CURRENT_TIMESTAMP",
@@ -255,7 +255,7 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `skill_id`.
-        /// The underlying database type is `smallint(5) unsigned`.The database column contains the comment: 
+        /// The underlying database type is `tinyint(5) unsigned`.The database column contains the comment: 
         /// "The skill the character knows.".
         /// </summary>
         [Description("The skill the character knows.")]
@@ -263,7 +263,7 @@ namespace DemoGame.Server.DbObjs
         public SkillType SkillID
         {
             get { return (SkillType)_skillID; }
-            set { _skillID = (UInt16)value; }
+            set { _skillID = (Byte)value; }
         }
 
         /// <summary>

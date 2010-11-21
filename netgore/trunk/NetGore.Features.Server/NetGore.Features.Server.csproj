@@ -148,6 +148,8 @@
     <Compile Include="PeerTrading\IPeerTradeSession.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandlerBase.cs" />
     <Compile Include="PeerTrading\PeerTradeSessionBase.cs" />
+    <Compile Include="Skills\IKnownSkillsCollection.cs" />
+    <Compile Include="Skills\KnownSkillsCollection.cs" />
     <Compile Include="WorldStats\IWorldStatsTracker.cs" />
     <Compile Include="WorldStats\WorldStatsTracker.cs" />
   </ItemGroup>
@@ -182,7 +184,6 @@
     <Folder Include="ActionDisplays\" />
     <Folder Include="Emoticons\" />
     <Folder Include="GameTime\" />
-    <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
   </ItemGroup>
   <ItemGroup>
