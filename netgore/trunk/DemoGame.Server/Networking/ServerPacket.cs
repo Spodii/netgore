@@ -523,6 +523,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SkillSetKnown(SkillType skillType, bool isKnown)
+        {
+            var pw = GetWriter(ServerPacketID.SkillSetKnown);
+            pw.WriteEnum(skillType);
+            pw.Write(isKnown);
+            return pw;
+        }
+
         public static PacketWriter SkillSetGroupCooldown(byte skillGroup, ushort cooldownTime)
         {
             var pw = GetWriter(ServerPacketID.SkillSetGroupCooldown);

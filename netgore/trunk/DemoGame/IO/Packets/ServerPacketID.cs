@@ -61,6 +61,7 @@ namespace DemoGame
         SetMap,
         SetUserChar,
         SkillSetGroupCooldown,
+        SkillSetKnown,
         SkillStartCasting_ToUser,
         SkillStartCasting_ToMap,
         SkillStopCasting_ToUser,

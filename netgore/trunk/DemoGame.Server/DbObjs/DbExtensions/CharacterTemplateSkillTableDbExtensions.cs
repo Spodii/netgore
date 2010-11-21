@@ -24,10 +24,10 @@ using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Contains extension methods for class CharacterSkillTable that assist in performing
+    /// Contains extension methods for class CharacterTemplateSkillTable that assist in performing
     /// reads and writes to and from a database.
     /// </summary>
-    public static class CharacterSkillTableDbExtensions
+    public static class CharacterTemplateSkillTableDbExtensions
     {
         /// <summary>
         /// Copies the column values into the given DbParameterValues using the database column name
@@ -36,25 +36,23 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this ICharacterSkillTable source, DbParameterValues paramValues)
+        public static void CopyValues(this ICharacterTemplateSkillTable source, DbParameterValues paramValues)
         {
-            paramValues["character_id"] = (Int32)source.CharacterID;
+            paramValues["character_template_id"] = (UInt16)source.CharacterTemplateID;
             paramValues["skill_id"] = (Byte)source.SkillID;
-            paramValues["time_added"] = source.TimeAdded;
         }
 
         /// <summary>
-        /// Checks if this <see cref="ICharacterSkillTable"/> contains the same values as another <see cref="ICharacterSkillTable"/>.
+        /// Checks if this <see cref="ICharacterTemplateSkillTable"/> contains the same values as another <see cref="ICharacterTemplateSkillTable"/>.
         /// </summary>
-        /// <param name="source">The source <see cref="ICharacterSkillTable"/>.</param>
-        /// <param name="otherItem">The <see cref="ICharacterSkillTable"/> to compare the values to.</param>
+        /// <param name="source">The source <see cref="ICharacterTemplateSkillTable"/>.</param>
+        /// <param name="otherItem">The <see cref="ICharacterTemplateSkillTable"/> to compare the values to.</param>
         /// <returns>
-        /// True if this <see cref="ICharacterSkillTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
+        /// True if this <see cref="ICharacterTemplateSkillTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
         /// </returns>
-        public static Boolean HasSameValues(this ICharacterSkillTable source, ICharacterSkillTable otherItem)
+        public static Boolean HasSameValues(this ICharacterTemplateSkillTable source, ICharacterTemplateSkillTable otherItem)
         {
-            return Equals(source.CharacterID, otherItem.CharacterID) && Equals(source.SkillID, otherItem.SkillID) &&
-                   Equals(source.TimeAdded, otherItem.TimeAdded);
+            return Equals(source.CharacterTemplateID, otherItem.CharacterTemplateID) && Equals(source.SkillID, otherItem.SkillID);
         }
 
         /// <summary>
@@ -64,21 +62,17 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this CharacterSkillTable source, IDataRecord dataRecord)
+        public static void ReadValues(this CharacterTemplateSkillTable source, IDataRecord dataRecord)
         {
             Int32 i;
 
-            i = dataRecord.GetOrdinal("character_id");
+            i = dataRecord.GetOrdinal("character_template_id");
 
-            source.CharacterID = (CharacterID)dataRecord.GetInt32(i);
+            source.CharacterTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
 
             i = dataRecord.GetOrdinal("skill_id");
 
             source.SkillID = (SkillType)dataRecord.GetByte(i);
-
-            i = dataRecord.GetOrdinal("time_added");
-
-            source.TimeAdded = dataRecord.GetDateTime(i);
         }
 
         /// <summary>
@@ -91,22 +85,18 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this ICharacterSkillTable source, DbParameterValues paramValues)
+        public static void TryCopyValues(this ICharacterTemplateSkillTable source, DbParameterValues paramValues)
         {
             for (var i = 0; i < paramValues.Count; i++)
             {
                 switch (paramValues.GetParameterName(i))
                 {
-                    case "character_id":
-                        paramValues[i] = (Int32)source.CharacterID;
+                    case "character_template_id":
+                        paramValues[i] = (UInt16)source.CharacterTemplateID;
                         break;
 
                     case "skill_id":
                         paramValues[i] = (Byte)source.SkillID;
-                        break;
-
-                    case "time_added":
-                        paramValues[i] = source.TimeAdded;
                         break;
                 }
             }
@@ -122,22 +112,18 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this CharacterSkillTable source, IDataRecord dataRecord)
+        public static void TryReadValues(this CharacterTemplateSkillTable source, IDataRecord dataRecord)
         {
             for (var i = 0; i < dataRecord.FieldCount; i++)
             {
                 switch (dataRecord.GetName(i))
                 {
-                    case "character_id":
-                        source.CharacterID = (CharacterID)dataRecord.GetInt32(i);
+                    case "character_template_id":
+                        source.CharacterTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
                         break;
 
                     case "skill_id":
                         source.SkillID = (SkillType)dataRecord.GetByte(i);
-                        break;
-
-                    case "time_added":
-                        source.TimeAdded = dataRecord.GetDateTime(i);
                         break;
                 }
             }

@@ -118,11 +118,13 @@
     <Compile Include="DbObjs\ActiveTradeCashTable.cs" />
     <Compile Include="DbObjs\ActiveTradeItemTable.cs" />
     <Compile Include="DbObjs\CharacterSkillTable.cs" />
+    <Compile Include="DbObjs\CharacterTemplateSkillTable.cs" />
     <Compile Include="DbObjs\DbExtensions\AccountBanTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\AccountCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeCashTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterSkillTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\CharacterTemplateSkillTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ViewNpcCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ViewUserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsCountConsumeItemTableDbExtensions.cs" />
@@ -250,6 +252,10 @@
     <Compile Include="Queries\Banning\SelectAccountBansQuery.cs" />
     <Compile Include="Queries\Character\DeleteUserCharacterQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterEquippedBodiesQuery.cs" />
+    <Compile Include="Queries\Character\Skills\DeleteCharacterSkillQuery.cs" />
+    <Compile Include="Queries\Character\Skills\InsertCharacterSkillQuery.cs" />
+    <Compile Include="Queries\Character\Skills\SelectCharacterSkillsQuery.cs" />
+    <Compile Include="Queries\Character\Skills\SelectCharacterTemplateSkillsQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateEquippedForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateInventoryForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuestProviderForCharacterQuery.cs" />
@@ -457,6 +463,7 @@
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStatusEffects.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterSPSynchronizer.cs" />
+    <Compile Include="World\Map\Entities\Characters\Skills\KnownSkillsCollection.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplate.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateEquipmentItem.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateIDConverter.cs" />

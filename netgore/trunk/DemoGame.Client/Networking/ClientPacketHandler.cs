@@ -771,6 +771,15 @@ namespace DemoGame.Client
             GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
         }
 
+        [MessageHandler((uint)ServerPacketID.SkillSetKnown)]
+        void RecvSkillSetKnown(IIPSocket conn, BitStream r)
+        {
+            var skillType = r.ReadEnum<SkillType>();
+            var isKnown = r.ReadBool();
+
+            // TODO: !! Store known skills
+        }
+
         [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToMap)]
         void RecvSkillStartCasting_ToMap(IIPSocket conn, BitStream r)
         {
