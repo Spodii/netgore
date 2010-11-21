@@ -29,7 +29,7 @@ namespace DemoGame.Server
             if (_skillCaster.IsCastingSkill)
                 return;
 
-            SetVelocity(Velocity + new Vector2(0.0f, -0.48f));
+            SetVelocity(Velocity + new Vector2(0.0f, -0.48f)); // TODO: Put jump velocity in server configs
         }
     }
 }
