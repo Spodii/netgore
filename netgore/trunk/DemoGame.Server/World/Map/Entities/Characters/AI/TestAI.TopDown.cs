@@ -6,7 +6,6 @@ using System.Linq;
 
 #if TOPDOWN
 
-using System.Linq;
 using NetGore;
 using NetGore.AI;
 
