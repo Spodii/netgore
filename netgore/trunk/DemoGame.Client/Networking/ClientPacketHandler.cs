@@ -797,7 +797,7 @@ namespace DemoGame.Client
             var knownSkills = new List<SkillType>(count);
 
             // Read the known skills list
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var value = r.ReadEnum<SkillType>();
                 knownSkills.Add(value);

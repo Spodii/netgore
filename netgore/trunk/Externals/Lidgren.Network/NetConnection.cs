@@ -334,7 +334,7 @@ namespace Lidgren.Network
             {
                 bool connReset; // TODO: handle connection reset
                 NetException.Assert(m_sendBufferWritePtr > 0 && m_sendBufferNumMessages > 0);
-                    // or else the message should have been fragmented earlier
+                // or else the message should have been fragmented earlier
                 m_peer.SendPacket(m_sendBufferWritePtr, m_remoteEndpoint, m_sendBufferNumMessages, out connReset);
                 m_statistics.PacketSent(m_sendBufferWritePtr, m_sendBufferNumMessages);
                 m_sendBufferWritePtr = 0;

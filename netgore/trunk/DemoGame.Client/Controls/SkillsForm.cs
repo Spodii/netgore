@@ -23,10 +23,8 @@ namespace DemoGame.Client
         static readonly Vector2 _iconSize = new Vector2(32, 32);
 
         readonly ISkillCooldownManager _cooldownManager;
-        readonly int _lineSpacing;
         readonly KnownSkillsCollection _knownSkills;
-
-        public KnownSkillsCollection KnownSkills { get { return _knownSkills; } }
+        readonly int _lineSpacing;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillsForm"/> class.
@@ -35,8 +33,8 @@ namespace DemoGame.Client
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
         /// <param name="knownSkills">The known skills.</param>
-        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent, KnownSkillsCollection knownSkills)
-            : base(parent, position, new Vector2(32, 32))
+        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent,
+                          KnownSkillsCollection knownSkills) : base(parent, position, new Vector2(32, 32))
         {
             if (knownSkills == null)
                 throw new ArgumentNullException("knownSkills");
@@ -69,6 +67,11 @@ namespace DemoGame.Client
         public ISkillCooldownManager CooldownManager
         {
             get { return _cooldownManager; }
+        }
+
+        public KnownSkillsCollection KnownSkills
+        {
+            get { return _knownSkills; }
         }
 
         void CreateSkillEntry(Vector2 position, SkillType skillType)

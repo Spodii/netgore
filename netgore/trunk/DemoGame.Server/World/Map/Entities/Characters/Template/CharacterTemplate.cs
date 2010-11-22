@@ -64,14 +64,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the skills known by the <see cref="CharacterTemplate"/>.
-        /// </summary>
-        public IEnumerable<SkillType> KnownSkills
-        {
-            get { return _knownSkills; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="CharacterTemplate"/>'s equipment items.
         /// </summary>
         public IEnumerable<CharacterTemplateEquipmentItem> Equipment
@@ -85,6 +77,14 @@ namespace DemoGame.Server
         public IEnumerable<CharacterTemplateInventoryItem> Inventory
         {
             get { return _inventory; }
+        }
+
+        /// <summary>
+        /// Gets the skills known by the <see cref="CharacterTemplate"/>.
+        /// </summary>
+        public IEnumerable<SkillType> KnownSkills
+        {
+            get { return _knownSkills; }
         }
 
         /// <summary>

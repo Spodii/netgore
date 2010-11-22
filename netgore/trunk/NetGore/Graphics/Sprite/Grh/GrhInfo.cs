@@ -135,27 +135,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Asserts that a given <see cref="GrhIndex"/> is not already occupied.
-        /// </summary>
-        /// <param name="index">The <see cref="GrhIndex"/> to check.</param>
-        /// <param name="ignoreWhen">When the <see cref="GrhData"/> at the <paramref name="index"/> is equal to this value,
-        /// and this value is not null, no errors will be raised.</param>
-        [Conditional("DEBUG")]
-        static void AssertGrhIndexIsFree(GrhIndex index, GrhData ignoreWhen)
-        {
-            // Make sure we can even get the index
-            if (!_grhDatas.CanGet((int)index))
-                return;
-
-            // Get the current GrhData
-            var currentGD = GetData(index);
-
-            // Check if occupied
-            if (currentGD != null && (ignoreWhen == null || currentGD != ignoreWhen))
-                Debug.Fail("Existing GrhData is going to be overwritten. This is likely not what was intended.");
-        }
-
-        /// <summary>
         /// Handles when a <see cref="GrhData"/> is added to the <see cref="GrhData"/>s DArray.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -202,6 +181,27 @@ namespace NetGore.Graphics
 
             // Add the GrhData to the sub-dictionary by its title
             titleDic.Add(gd.Categorization.Title, gd);
+        }
+
+        /// <summary>
+        /// Asserts that a given <see cref="GrhIndex"/> is not already occupied.
+        /// </summary>
+        /// <param name="index">The <see cref="GrhIndex"/> to check.</param>
+        /// <param name="ignoreWhen">When the <see cref="GrhData"/> at the <paramref name="index"/> is equal to this value,
+        /// and this value is not null, no errors will be raised.</param>
+        [Conditional("DEBUG")]
+        static void AssertGrhIndexIsFree(GrhIndex index, GrhData ignoreWhen)
+        {
+            // Make sure we can even get the index
+            if (!_grhDatas.CanGet((int)index))
+                return;
+
+            // Get the current GrhData
+            var currentGD = GetData(index);
+
+            // Check if occupied
+            if (currentGD != null && (ignoreWhen == null || currentGD != ignoreWhen))
+                Debug.Fail("Existing GrhData is going to be overwritten. This is likely not what was intended.");
         }
 
         /// <summary>

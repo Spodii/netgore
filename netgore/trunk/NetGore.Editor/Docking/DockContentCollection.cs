@@ -87,6 +87,20 @@ namespace NetGore.Editor.Docking
             Items.Insert(index, content);
         }
 
+        [Conditional("DEBUG")]
+        void AssertDockPaneNotNull()
+        {
+            if (DockPane == null)
+                throw new InvalidOperationException();
+        }
+
+        [Conditional("DEBUG")]
+        void AssertDockPaneNull()
+        {
+            if (DockPane != null)
+                throw new InvalidOperationException();
+        }
+
         public new bool Contains(IDockContent content)
         {
             if (DockPane == null)
@@ -114,20 +128,6 @@ namespace NetGore.Editor.Docking
                 }
             }
             return -1;
-        }
-
-        [Conditional("DEBUG")]
-        void AssertDockPaneNotNull()
-        {
-            if (DockPane == null)
-                throw new InvalidOperationException();
-        }
-
-        [Conditional("DEBUG")]
-        void AssertDockPaneNull()
-        {
-            if (DockPane != null)
-                throw new InvalidOperationException();
         }
 
         IDockContent GetVisibleContent(int index)

@@ -114,7 +114,7 @@ namespace Lidgren.Network
                     //m_connection.m_peer.LogDebug("Using early ack for #" + m_windowStart + "...");
                     m_receivedAcks[m_windowStart] = false;
                     NetException.Assert(m_storedMessages[m_windowStart % m_windowSize].Message == null);
-                        // should already be destored
+                    // should already be destored
                     m_windowStart = (m_windowStart + 1) % NetConstants.NumSequenceNumbers;
                     //m_connection.m_peer.LogDebug("Advancing window to #" + m_windowStart);
                 }

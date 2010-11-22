@@ -21,10 +21,10 @@ namespace DemoGame.Client
         readonly HasQuestRequirementsTracker _hasFinishQuestRequirements;
         readonly HasQuestRequirementsTracker _hasStartQuestRequirements;
         readonly Inventory _inventory;
+        readonly KnownSkillsCollection _knownSkills = new KnownSkillsCollection();
         readonly StatCollection<StatType> _modStats = new StatCollection<StatType>(StatCollectionType.Modified);
         readonly UserQuestInformation _questInfo;
         readonly INetworkSender _socket;
-        readonly KnownSkillsCollection _knownSkills = new KnownSkillsCollection();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
@@ -99,6 +99,11 @@ namespace DemoGame.Client
             get { return _inventory; }
         }
 
+        public KnownSkillsCollection KnownSkills
+        {
+            get { return _knownSkills; }
+        }
+
         public byte Level { get; set; }
 
         public SPValueType MP { get; set; }
@@ -114,8 +119,6 @@ namespace DemoGame.Client
                 return (byte)((MP / (float)max) * 100.0f).Clamp(0, 100);
             }
         }
-
-        public KnownSkillsCollection KnownSkills { get { return _knownSkills; } }
 
         public StatCollection<StatType> ModStats
         {

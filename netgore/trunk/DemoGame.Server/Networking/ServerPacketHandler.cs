@@ -173,148 +173,58 @@ namespace DemoGame.Server
             user.ShoppingState.TryPurchase(slot, amount);
         }
 
-        [MessageHandler((uint)ClientPacketID.Emoticon)]
-        void RecvEmoticon(IIPSocket conn, BitStream r)
-        {
-            var emoticon = r.ReadEnum<Emoticon>();
-
-            if (!EnumHelper<Emoticon>.IsDefined(emoticon))
-            {
-                const string errmsg = "Attempted to use undefined emoticon `{0}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, emoticon);
-                return;
-            }
-
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            user.Emote(emoticon);
-        }
-
-        [MessageHandler((uint)ClientPacketID.DropInventoryItem)]
-        void RecvDropInventoryItem(IIPSocket conn, BitStream r)
-        {
-            var slot = r.ReadInventorySlot();
-            var amount = r.ReadByte();
-
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            if (user.IsPeerTrading)
-                return;
-
-            if (amount < 1)
-                return;
-
-            user.Inventory.Drop(slot, amount);
-        }
-
-        [MessageHandler((uint)ClientPacketID.EndNPCChatDialog)]
-        void RecvEndNPCChatDialog(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            user.ChatState.EndChat();
-        }
-
-        [MessageHandler((uint)ClientPacketID.GetEquipmentItemInfo)]
-        void RecvGetEquipmentItemInfo(IIPSocket conn, BitStream r)
-        {
-            var slot = r.ReadEnum<EquipmentSlot>();
-
-            User user;
-            if ((user = TryGetUser(conn)) != null)
-                user.SendEquipmentItemStats(slot);
-        }
-
-        [MessageHandler((uint)ClientPacketID.HasQuestStartRequirements)]
-        void RecvHasQuestStartRequirements(IIPSocket conn, BitStream r)
-        {
-            var questID = r.ReadQuestID();
-
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            var quest = _questManager.GetQuest(questID);
-            var hasRequirements = false;
-
-            if (quest == null)
-            {
-                const string errmsg = "User `{0}` sent request for invalid quest ID `{1}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, user, questID);
-            }
-            else
-                hasRequirements = quest.StartRequirements.HasRequirements(user);
-
-            using (var pw = ServerPacket.HasQuestStartRequirements(questID, hasRequirements))
-            {
-                user.Send(pw, ServerMessageType.GUI);
-            }
-        }
-
-        [MessageHandler((uint)ClientPacketID.PeerTradeEvent)]
-        void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            ServerPeerTradeInfoHandler.Instance.Read(user, r);
-        }
-
-        [MessageHandler((uint)ClientPacketID.HasQuestFinishRequirements)]
-        void RecvHasQuestFinishRequirements(IIPSocket conn, BitStream r)
-        {
-            var questID = r.ReadQuestID();
-
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            var quest = _questManager.GetQuest(questID);
-            var hasRequirements = false;
-
-            if (quest == null)
-            {
-                const string errmsg = "User `{0}` sent request for invalid quest ID `{1}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, user, questID);
-            }
-            else
-                hasRequirements = quest.FinishRequirements.HasRequirements(user);
-
-            using (var pw = ServerPacket.HasQuestFinishRequirements(questID, hasRequirements))
-            {
-                user.Send(pw, ServerMessageType.GUI);
-            }
-        }
-
-        [MessageHandler((uint)ClientPacketID.GetInventoryItemInfo)]
-        void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
-        {
-            var slot = r.ReadInventorySlot();
-
-            User user;
-            if ((user = TryGetUser(conn)) != null)
-                user.SendInventoryItemStats(slot);
-        }
-
-        [MessageHandler((uint)ClientPacketID.Login)]
-        void RecvLogin(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ClientPacketID.CreateNewAccount)]
+        void RecvCreateNewAccount(IIPSocket conn, BitStream r)
         {
             ThreadAsserts.IsMainThread();
 
             var name = r.ReadString();
             var password = r.ReadString();
+            var email = r.ReadString();
 
-            Server.LoginAccount(conn, name, password);
+            // Ensure the connection isn't logged in
+            var user = TryGetUser(conn, false);
+            if (user != null)
+            {
+                const string errmsg = "User `{0}` tried to create a new account while already logged in.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user);
+                return;
+            }
+
+            // Create the new account
+            Server.CreateAccount(conn, name, password, email);
+        }
+
+        [MessageHandler((uint)ClientPacketID.CreateNewAccountCharacter)]
+        void RecvCreateNewAccountCharacter(IIPSocket conn, BitStream r)
+        {
+            ThreadAsserts.IsMainThread();
+
+            var name = r.ReadString();
+
+            // Check for a valid account
+            var account = TryGetAccount(conn);
+            if (account == null)
+            {
+                const string errmsg =
+                    "Connection `{0}` tried to create a new account character but no account is associated with this connection.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, conn);
+                return;
+            }
+
+            // Ensure the connection isn't logged in
+            if (account.User != null)
+            {
+                const string errmsg = "User `{0}` tried to create a new account character while already logged in.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, account.User);
+                return;
+            }
+
+            // Create the new account character
+            Server.CreateAccountCharacter(conn, name);
         }
 
         [MessageHandler((uint)ClientPacketID.DeleteAccountCharacter)]
@@ -361,58 +271,138 @@ namespace DemoGame.Server
             account.SendAccountCharacterInfos();
         }
 
-        [MessageHandler((uint)ClientPacketID.CreateNewAccountCharacter)]
-        void RecvCreateNewAccountCharacter(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ClientPacketID.DropInventoryItem)]
+        void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
-            ThreadAsserts.IsMainThread();
+            var slot = r.ReadInventorySlot();
+            var amount = r.ReadByte();
 
-            var name = r.ReadString();
-
-            // Check for a valid account
-            var account = TryGetAccount(conn);
-            if (account == null)
-            {
-                const string errmsg =
-                    "Connection `{0}` tried to create a new account character but no account is associated with this connection.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, conn);
+            User user;
+            if ((user = TryGetUser(conn)) == null)
                 return;
-            }
 
-            // Ensure the connection isn't logged in
-            if (account.User != null)
-            {
-                const string errmsg = "User `{0}` tried to create a new account character while already logged in.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, account.User);
+            if (user.IsPeerTrading)
                 return;
-            }
 
-            // Create the new account character
-            Server.CreateAccountCharacter(conn, name);
+            if (amount < 1)
+                return;
+
+            user.Inventory.Drop(slot, amount);
         }
 
-        [MessageHandler((uint)ClientPacketID.CreateNewAccount)]
-        void RecvCreateNewAccount(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ClientPacketID.Emoticon)]
+        void RecvEmoticon(IIPSocket conn, BitStream r)
+        {
+            var emoticon = r.ReadEnum<Emoticon>();
+
+            if (!EnumHelper<Emoticon>.IsDefined(emoticon))
+            {
+                const string errmsg = "Attempted to use undefined emoticon `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, emoticon);
+                return;
+            }
+
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            user.Emote(emoticon);
+        }
+
+        [MessageHandler((uint)ClientPacketID.EndNPCChatDialog)]
+        void RecvEndNPCChatDialog(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            user.ChatState.EndChat();
+        }
+
+        [MessageHandler((uint)ClientPacketID.GetEquipmentItemInfo)]
+        void RecvGetEquipmentItemInfo(IIPSocket conn, BitStream r)
+        {
+            var slot = r.ReadEnum<EquipmentSlot>();
+
+            User user;
+            if ((user = TryGetUser(conn)) != null)
+                user.SendEquipmentItemStats(slot);
+        }
+
+        [MessageHandler((uint)ClientPacketID.GetInventoryItemInfo)]
+        void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
+        {
+            var slot = r.ReadInventorySlot();
+
+            User user;
+            if ((user = TryGetUser(conn)) != null)
+                user.SendInventoryItemStats(slot);
+        }
+
+        [MessageHandler((uint)ClientPacketID.HasQuestFinishRequirements)]
+        void RecvHasQuestFinishRequirements(IIPSocket conn, BitStream r)
+        {
+            var questID = r.ReadQuestID();
+
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            var quest = _questManager.GetQuest(questID);
+            var hasRequirements = false;
+
+            if (quest == null)
+            {
+                const string errmsg = "User `{0}` sent request for invalid quest ID `{1}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user, questID);
+            }
+            else
+                hasRequirements = quest.FinishRequirements.HasRequirements(user);
+
+            using (var pw = ServerPacket.HasQuestFinishRequirements(questID, hasRequirements))
+            {
+                user.Send(pw, ServerMessageType.GUI);
+            }
+        }
+
+        [MessageHandler((uint)ClientPacketID.HasQuestStartRequirements)]
+        void RecvHasQuestStartRequirements(IIPSocket conn, BitStream r)
+        {
+            var questID = r.ReadQuestID();
+
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            var quest = _questManager.GetQuest(questID);
+            var hasRequirements = false;
+
+            if (quest == null)
+            {
+                const string errmsg = "User `{0}` sent request for invalid quest ID `{1}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user, questID);
+            }
+            else
+                hasRequirements = quest.StartRequirements.HasRequirements(user);
+
+            using (var pw = ServerPacket.HasQuestStartRequirements(questID, hasRequirements))
+            {
+                user.Send(pw, ServerMessageType.GUI);
+            }
+        }
+
+        [MessageHandler((uint)ClientPacketID.Login)]
+        void RecvLogin(IIPSocket conn, BitStream r)
         {
             ThreadAsserts.IsMainThread();
 
             var name = r.ReadString();
             var password = r.ReadString();
-            var email = r.ReadString();
 
-            // Ensure the connection isn't logged in
-            var user = TryGetUser(conn, false);
-            if (user != null)
-            {
-                const string errmsg = "User `{0}` tried to create a new account while already logged in.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, user);
-                return;
-            }
-
-            // Create the new account
-            Server.CreateAccount(conn, name, password, email);
+            Server.LoginAccount(conn, name, password);
         }
 
         [MessageHandler((uint)ClientPacketID.MoveLeft)]
@@ -449,6 +439,16 @@ namespace DemoGame.Server
                 user.StopMoving();
         }
 
+        [MessageHandler((uint)ClientPacketID.PeerTradeEvent)]
+        void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            ServerPeerTradeInfoHandler.Instance.Read(user, r);
+        }
+
         [MessageHandler((uint)ClientPacketID.PickupItem)]
         void RecvPickupItem(IIPSocket conn, BitStream r)
         {
@@ -475,6 +475,34 @@ namespace DemoGame.Server
 
             // Pick it up
             item.Pickup(user);
+        }
+
+        [MessageHandler((uint)ClientPacketID.RaiseStat)]
+        void RecvRaiseStat(IIPSocket conn, BitStream r)
+        {
+            StatType statType;
+
+            // Get the StatType
+            try
+            {
+                statType = r.ReadEnum<StatType>();
+            }
+            catch (InvalidCastException)
+            {
+                const string errorMsg = "Received invaild StatType on connection `{0}`.";
+                Debug.Fail(string.Format(errorMsg, conn));
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errorMsg, conn);
+                return;
+            }
+
+            // Get the User
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            // Raise the user's stat
+            user.RaiseStat(statType);
         }
 
         [MessageHandler((uint)ClientPacketID.RequestDynamicEntity)]
@@ -510,34 +538,6 @@ namespace DemoGame.Server
                     conn.Send(pw, ServerMessageType.Map);
                 }
             }
-        }
-
-        [MessageHandler((uint)ClientPacketID.RaiseStat)]
-        void RecvRaiseStat(IIPSocket conn, BitStream r)
-        {
-            StatType statType;
-
-            // Get the StatType
-            try
-            {
-                statType = r.ReadEnum<StatType>();
-            }
-            catch (InvalidCastException)
-            {
-                const string errorMsg = "Received invaild StatType on connection `{0}`.";
-                Debug.Fail(string.Format(errorMsg, conn));
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errorMsg, conn);
-                return;
-            }
-
-            // Get the User
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            // Raise the user's stat
-            user.RaiseStat(statType);
         }
 
         [MessageHandler((uint)ClientPacketID.Say)]
@@ -667,29 +667,6 @@ namespace DemoGame.Server
             user.ChatState.StartChat(npc);
         }
 
-        [MessageHandler((uint)ClientPacketID.SynchronizeGameTime)]
-        void RecvSynchronizeGameTime(IIPSocket conn, BitStream r)
-        {
-            // Just reply immediately with the current game time
-            using (var pw = ServerPacket.SetGameTime(DateTime.Now))
-            {
-                conn.Send(pw, ServerMessageType.GUI);
-            }
-        }
-
-        [MessageHandler((uint)ClientPacketID.SwapInventorySlots)]
-        void RecvSwapInventorySlots(IIPSocket conn, BitStream r)
-        {
-            var a = r.ReadInventorySlot();
-            var b = r.ReadInventorySlot();
-
-            var user = TryGetUser(conn);
-            if (user == null)
-                return;
-
-            user.Inventory.SwapSlots(a, b);
-        }
-
         [MessageHandler((uint)ClientPacketID.StartShopping)]
         void RecvStartShopping(IIPSocket conn, BitStream r)
         {
@@ -708,6 +685,29 @@ namespace DemoGame.Server
                 return;
 
             user.ShoppingState.TryStartShopping(shopkeeper);
+        }
+
+        [MessageHandler((uint)ClientPacketID.SwapInventorySlots)]
+        void RecvSwapInventorySlots(IIPSocket conn, BitStream r)
+        {
+            var a = r.ReadInventorySlot();
+            var b = r.ReadInventorySlot();
+
+            var user = TryGetUser(conn);
+            if (user == null)
+                return;
+
+            user.Inventory.SwapSlots(a, b);
+        }
+
+        [MessageHandler((uint)ClientPacketID.SynchronizeGameTime)]
+        void RecvSynchronizeGameTime(IIPSocket conn, BitStream r)
+        {
+            // Just reply immediately with the current game time
+            using (var pw = ServerPacket.SetGameTime(DateTime.Now))
+            {
+                conn.Send(pw, ServerMessageType.GUI);
+            }
         }
 
         [MessageHandler((uint)ClientPacketID.UnequipItem)]
@@ -764,9 +764,7 @@ namespace DemoGame.Server
             {
                 // Check that they know the skill
                 if (!user.KnownSkills.Knows(skillType))
-                {
                     user.Send(GameMessage.SkillNotKnown, ServerMessageType.GUIChat);
-                }
                 else
                 {
                     // Use the skill

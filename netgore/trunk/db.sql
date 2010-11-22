@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.1.51, for Win64 (unknown)
 --
--- Host: localhost    Database: demogame
+-- Host: localhost    Database: demogame_tmp
 -- ------------------------------------------------------
 -- Server version	5.1.51-community
 
@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com',255,'2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-21 17:00:34',16777343,NULL),(2,'Skye','74B87337454200D4D33F80C4663DC5E5','skye@test.com',0,'2010-11-11 15:23:57','2010-11-11 15:25:53',16777343,NULL),(3,'Omnio','74B87337454200D4D33F80C4663DC5E5','omnio@test.com',0,'2010-11-11 15:24:07','2010-11-11 15:24:07',16777343,NULL),(4,'Cruzn','74B87337454200D4D33F80C4663DC5E5','cruzn@test.com',0,'2010-11-11 15:24:13','2010-11-11 15:24:13',16777343,NULL),(5,'Darkfrost','74B87337454200D4D33F80C4663DC5E5','df@test.com',0,'2010-11-11 15:24:36','2010-11-11 15:26:56',16777343,NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-22 12:11:48',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +144,7 @@ CREATE TABLE `account_character` (
 
 LOCK TABLES `account_character` WRITE;
 /*!40000 ALTER TABLE `account_character` DISABLE KEYS */;
-INSERT INTO `account_character` VALUES (0,0,NULL),(1,1,NULL),(2,1,NULL),(3,1,NULL),(4,2,NULL),(5,2,NULL),(6,2,NULL),(7,5,NULL),(8,5,NULL);
+INSERT INTO `account_character` VALUES (1,1,NULL);
 /*!40000 ALTER TABLE `account_character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +172,6 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (2,1,16777343,'2010-11-10 10:18:11'),(3,1,16777343,'2010-11-10 10:18:40'),(4,1,16777343,'2010-11-10 10:24:05'),(5,1,16777343,'2010-11-10 10:30:10'),(6,1,16777343,'2010-11-10 10:39:11'),(7,1,16777343,'2010-11-10 11:33:55'),(8,1,16777343,'2010-11-10 11:36:38'),(9,1,16777343,'2010-11-11 15:23:16'),(10,1,16777343,'2010-11-11 15:25:16'),(11,2,16777343,'2010-11-11 15:25:53'),(12,5,16777343,'2010-11-11 15:26:30'),(13,5,16777343,'2010-11-11 15:26:56'),(14,1,16777343,'2010-11-11 15:29:22'),(15,1,16777343,'2010-11-11 17:38:17'),(16,1,16777343,'2010-11-11 18:14:43'),(17,1,16777343,'2010-11-11 21:56:45'),(18,1,16777343,'2010-11-11 22:07:39'),(19,1,16777343,'2010-11-11 22:26:36'),(20,1,16777343,'2010-11-11 22:36:24'),(21,1,16777343,'2010-11-12 00:01:30'),(22,1,16777343,'2010-11-12 00:04:05'),(23,1,16777343,'2010-11-12 00:17:10'),(24,1,16777343,'2010-11-12 00:21:06'),(25,1,16777343,'2010-11-12 00:33:43'),(26,1,16777343,'2010-11-12 00:44:28'),(27,1,16777343,'2010-11-12 02:23:13'),(28,1,16777343,'2010-11-12 02:25:12'),(29,1,16777343,'2010-11-12 02:38:59'),(30,1,16777343,'2010-11-12 02:40:52'),(31,1,16777343,'2010-11-12 11:31:11'),(32,1,16777343,'2010-11-12 11:53:02'),(33,1,16777343,'2010-11-12 11:54:13'),(34,1,16777343,'2010-11-12 11:54:43'),(35,1,16777343,'2010-11-12 11:56:47'),(36,1,16777343,'2010-11-12 12:09:59'),(37,1,16777343,'2010-11-12 12:53:39'),(38,1,16777343,'2010-11-12 12:55:59'),(39,1,16777343,'2010-11-13 10:53:09'),(40,1,16777343,'2010-11-15 11:01:17'),(41,1,16777343,'2010-11-17 07:35:25'),(42,1,16777343,'2006-11-17 10:04:39'),(43,1,16777343,'2006-11-17 10:05:14'),(44,1,16777343,'2006-11-17 10:06:00'),(45,1,16777343,'2006-11-17 10:07:57'),(46,1,16777343,'2006-11-17 10:09:40'),(47,1,16777343,'2006-11-17 10:10:07'),(48,1,16777343,'2006-11-17 10:10:34'),(49,1,16777343,'2006-11-17 10:12:56'),(50,1,16777343,'2006-11-17 10:13:48'),(51,1,16777343,'2006-11-17 10:14:39'),(52,1,16777343,'2006-11-17 10:15:08'),(53,1,16777343,'2006-11-17 12:26:38'),(54,1,16777343,'2006-11-17 12:26:55'),(55,1,16777343,'2010-11-18 14:21:24'),(56,1,16777343,'2010-11-20 21:22:07'),(57,1,16777343,'2010-11-21 16:09:11'),(58,1,16777343,'2010-11-21 16:34:35'),(59,1,16777343,'2010-11-21 16:35:37'),(60,1,16777343,'2010-11-21 16:56:15'),(61,1,16777343,'2010-11-21 17:00:34');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,7 +360,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,NULL,'Test',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202765,76,2260,372,100,100,100,100,1,1,1,1,3,2),(2,NULL,'Spodii',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(3,NULL,'Spodiii',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(4,NULL,'Skye',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(5,NULL,'Blahh',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(6,NULL,'Grrrrr',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(7,NULL,'Kitty',NULL,NULL,NULL,1,1024,600,3,1024,600,1,1800,0,3,60,0,50,50,50,50,1,1,1,1,2,10),(8,NULL,'Pickles',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
+INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202770,76,2265,372,96,100,100,100,1,1,1,1,3,2);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +388,6 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
-INSERT INTO `character_equipped` VALUES (1,20,0),(1,124,2),(7,129,2),(7,132,0),(1,157,1);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -418,7 +416,6 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
-INSERT INTO `character_inventory` VALUES (1,22,2),(1,33,0),(1,39,3),(1,40,4),(1,41,1),(1,112,5),(1,117,8),(7,128,1),(1,134,9),(1,137,7),(7,138,0),(1,145,12),(1,149,10),(1,150,6),(7,154,2),(1,165,13),(1,186,17),(1,191,11),(1,194,15),(1,195,18),(1,197,14),(1,200,16);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -444,7 +441,6 @@ CREATE TABLE `character_quest_status` (
 
 LOCK TABLES `character_quest_status` WRITE;
 /*!40000 ALTER TABLE `character_quest_status` DISABLE KEYS */;
-INSERT INTO `character_quest_status` VALUES (7,1,'2010-11-11 15:28:00','2010-11-11 15:28:05');
 /*!40000 ALTER TABLE `character_quest_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,7 +496,7 @@ CREATE TABLE `character_skill` (
 
 LOCK TABLES `character_skill` WRITE;
 /*!40000 ALTER TABLE `character_skill` DISABLE KEYS */;
-INSERT INTO `character_skill` VALUES (1,1,'2010-11-22 00:35:25');
+INSERT INTO `character_skill` VALUES (1,0,'2010-11-22 20:11:38'),(1,1,'2010-11-22 00:35:25');
 /*!40000 ALTER TABLE `character_skill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -529,7 +525,6 @@ CREATE TABLE `character_status_effect` (
 
 LOCK TABLES `character_status_effect` WRITE;
 /*!40000 ALTER TABLE `character_status_effect` DISABLE KEYS */;
-INSERT INTO `character_status_effect` VALUES (0,1,0,3,35024);
 /*!40000 ALTER TABLE `character_status_effect` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -832,7 +827,6 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (0,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',25,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(5,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(6,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(7,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(8,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',31,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(9,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(10,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(11,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',34,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(12,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(13,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(14,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(15,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',22,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(16,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',25,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(17,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',2,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(18,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(19,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(20,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(21,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(22,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(23,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(24,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',23,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(25,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(26,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(27,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(28,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',24,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(29,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(30,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(31,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(32,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',28,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(33,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',27,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(34,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',2,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(35,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(36,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(37,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',30,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(38,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(39,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(40,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(41,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',24,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(42,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(43,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',20,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(44,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(45,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(46,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',24,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(47,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',2,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(48,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(49,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(50,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',33,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(51,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',3,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(52,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(53,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(54,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',27,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(55,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(56,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(57,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',21,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(58,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(59,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(60,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',26,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(61,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(62,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',28,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(63,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(64,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(65,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',30,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(66,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(67,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(68,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(69,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(70,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(71,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(72,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(73,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',36,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(74,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(75,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',2,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(76,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(77,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(78,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',19,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(79,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(80,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',24,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(81,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(82,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(83,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(84,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',31,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(85,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(86,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(87,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(88,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',26,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(89,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(90,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',30,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(91,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(92,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',37,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(93,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(96,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(97,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(99,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(102,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',22,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(104,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(105,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(106,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',40,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(107,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',35,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(108,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',26,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(109,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(110,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(111,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',21,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(112,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(113,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(114,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(115,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',2,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(116,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(117,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(121,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(122,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',23,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(123,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(124,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(125,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',24,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(126,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(127,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(128,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',38,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(129,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(130,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',31,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(131,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',18,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(132,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(133,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(134,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(135,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',31,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(136,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',26,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(137,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(138,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',3,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(139,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(140,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(141,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(142,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',30,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(143,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',23,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(144,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',21,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(145,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',3,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body',NULL),(146,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',15,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(147,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(148,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(149,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(150,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(151,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(152,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',24,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(154,1,1,0,0,9,16,'Healing Potion','A healing potion',4,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(155,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',22,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(156,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(157,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body',NULL),(158,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',24,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(159,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(160,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(161,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(165,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(167,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',29,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(169,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',20,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(170,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',32,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(181,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(182,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(183,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(186,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(191,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',99,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(194,1,1,0,0,9,16,'Healing Potion','A healing potion',14,94,15,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(195,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(197,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',97,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL),(200,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',68,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1147,7 +1141,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-11-21 19:08:34');
+INSERT INTO `server_time` VALUES ('2010-11-22 12:11:53');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1305,7 +1299,6 @@ CREATE TABLE `world_stats_count_consume_item` (
 
 LOCK TABLES `world_stats_count_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_consume_item` DISABLE KEYS */;
-INSERT INTO `world_stats_count_consume_item` VALUES (1,13,'2010-11-12 09:00:08');
 /*!40000 ALTER TABLE `world_stats_count_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1356,7 +1349,6 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
-INSERT INTO `world_stats_count_item_create` VALUES (3,1274,'2010-11-22 03:08:27'),(5,912,'2010-11-22 03:08:27'),(7,877,'2010-11-22 03:08:27');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1410,7 +1402,6 @@ CREATE TABLE `world_stats_count_npc_kill_user` (
 
 LOCK TABLES `world_stats_count_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` DISABLE KEYS */;
-INSERT INTO `world_stats_count_npc_kill_user` VALUES (1,1,1,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1489,7 +1480,6 @@ CREATE TABLE `world_stats_count_user_consume_item` (
 
 LOCK TABLES `world_stats_count_user_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_consume_item` DISABLE KEYS */;
-INSERT INTO `world_stats_count_user_consume_item` VALUES (1,1,13,'2010-11-12 09:00:08');
 /*!40000 ALTER TABLE `world_stats_count_user_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1518,7 +1508,6 @@ CREATE TABLE `world_stats_count_user_kill_npc` (
 
 LOCK TABLES `world_stats_count_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_count_user_kill_npc` VALUES (1,1,139,'2010-11-22 00:09:14');
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1569,7 +1558,7 @@ CREATE TABLE `world_stats_network` (
   `sent_packets` mediumint(8) unsigned NOT NULL COMMENT 'The average packets sent per second since the last snapshot.',
   `sent_messages` mediumint(8) unsigned NOT NULL COMMENT 'The average messages sent per second since the last snapshot.',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=75 DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1578,7 +1567,6 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
-INSERT INTO `world_stats_network` VALUES (1,'2010-11-10 18:40:09',0,100,10,17,307,10,15),(2,'2010-11-10 19:34:50',1,56,5,10,163,6,8),(3,'2010-11-10 19:37:35',0,139,14,26,413,15,19),(4,'2010-11-11 23:24:07',0,5,0,0,3,0,0),(5,'2010-11-11 23:25:07',0,4,0,0,2,0,0),(6,'2010-11-11 23:26:07',1,7,1,1,7,1,1),(7,'2010-11-11 23:27:07',1,31,3,5,84,3,5),(8,'2010-11-11 23:28:07',1,125,13,22,365,13,19),(9,'2010-11-11 23:30:15',1,112,11,20,340,11,17),(10,'2010-11-12 01:37:57',0,0,0,0,0,0,0),(11,'2010-11-12 01:38:57',1,43,4,7,144,4,7),(12,'2010-11-12 01:39:57',1,105,11,20,328,11,14),(13,'2010-11-12 01:40:57',1,122,13,25,364,14,15),(14,'2010-11-12 01:41:57',1,117,13,25,327,14,14),(15,'2010-11-12 01:42:57',1,118,13,25,326,14,14),(16,'2010-11-12 01:43:57',1,116,13,25,325,14,14),(17,'2010-11-12 01:44:57',1,116,13,25,326,14,14),(18,'2010-11-12 01:45:57',1,117,13,25,328,14,14),(19,'2010-11-12 01:46:57',1,119,13,26,328,14,14),(20,'2010-11-12 01:47:57',1,117,13,25,326,14,14),(21,'2010-11-12 01:48:57',1,117,13,25,328,14,14),(22,'2010-11-12 01:49:57',1,118,13,25,331,14,14),(23,'2010-11-12 01:50:57',1,117,13,25,326,14,14),(24,'2010-11-12 01:51:57',1,117,13,25,326,14,14),(25,'2010-11-12 01:52:57',1,117,13,25,332,14,14),(26,'2010-11-12 01:53:57',1,117,13,25,326,14,14),(27,'2010-11-12 01:54:57',1,117,13,25,326,14,14),(28,'2010-11-12 01:55:57',1,118,13,25,328,14,14),(29,'2010-11-12 01:56:57',1,118,13,25,331,14,14),(30,'2010-11-12 01:57:57',1,117,13,25,333,14,14),(31,'2010-11-12 01:58:57',1,117,13,25,328,14,14),(32,'2010-11-12 01:59:57',1,118,13,25,332,14,14),(33,'2010-11-12 02:00:57',1,117,13,25,327,14,14),(34,'2010-11-12 02:01:57',1,116,12,25,329,14,14),(35,'2010-11-12 02:02:57',1,118,13,25,331,14,14),(36,'2010-11-12 02:03:57',1,118,13,25,329,14,14),(37,'2010-11-12 02:04:57',1,118,13,25,333,14,14),(38,'2010-11-12 02:05:57',1,119,13,25,330,14,14),(39,'2010-11-12 02:06:57',1,117,13,25,329,14,14),(40,'2010-11-12 02:07:57',1,117,12,24,340,14,14),(41,'2010-11-12 02:17:19',0,6,0,1,22,1,1),(42,'2010-11-12 02:17:19',0,0,0,0,0,0,0),(43,'2010-11-12 05:57:06',1,51,4,8,191,5,8),(44,'2010-11-12 06:27:33',1,53,5,10,160,6,7),(45,'2010-11-12 06:28:33',1,37,4,7,110,5,5),(46,'2010-11-12 08:02:26',1,59,6,10,189,6,9),(47,'2010-11-12 08:05:03',1,31,3,5,100,3,5),(48,'2010-11-12 08:06:03',1,3,0,0,3,0,0),(49,'2010-11-12 08:07:03',1,3,0,0,3,0,0),(50,'2010-11-12 08:08:04',1,5,1,1,7,1,1),(51,'2010-11-12 08:18:09',0,74,7,14,227,8,10),(52,'2010-11-12 08:34:42',1,89,9,17,281,9,13),(53,'2010-11-12 08:45:22',1,68,7,12,208,7,10),(54,'2010-11-12 08:46:22',1,59,6,11,172,6,8),(55,'2010-11-12 08:47:22',1,4,0,1,7,0,1),(56,'2010-11-12 08:48:22',1,3,0,0,4,0,1),(57,'2010-11-12 08:49:22',1,3,0,0,4,0,1),(58,'2010-11-12 08:50:22',1,3,0,0,3,0,0),(59,'2010-11-12 08:51:22',1,3,0,0,3,0,0),(60,'2010-11-12 08:52:22',1,3,0,0,3,0,0),(61,'2010-11-12 08:53:22',1,3,0,0,3,0,0),(62,'2010-11-12 08:54:22',1,3,0,0,3,0,0),(63,'2010-11-12 08:55:22',1,3,0,0,3,0,0),(64,'2010-11-12 08:56:22',1,3,0,0,3,0,0),(65,'2010-11-12 08:57:22',1,3,0,0,3,0,0),(66,'2010-11-12 08:58:22',1,3,0,0,3,0,0),(67,'2010-11-12 08:59:22',1,3,0,0,3,0,0),(68,'2010-11-12 09:00:22',1,4,0,1,6,0,0),(69,'2010-11-12 09:01:22',1,3,0,0,3,0,0),(70,'2010-11-12 09:02:22',1,3,0,0,3,0,0),(71,'2010-11-12 09:03:22',1,3,0,0,3,0,0),(72,'2010-11-12 10:39:55',1,60,6,11,200,6,9),(73,'2010-11-12 10:40:55',1,95,9,17,314,9,14),(74,'2010-11-13 19:36:16',0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1607,7 +1595,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='Event log: NPC kill user.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: NPC kill user.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1616,7 +1604,6 @@ CREATE TABLE `world_stats_npc_kill_user` (
 
 LOCK TABLES `world_stats_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
-INSERT INTO `world_stats_npc_kill_user` VALUES (1,1,1,53,1024,593,1131,754,3,'2010-11-10 18:39:25'),(2,1,1,54,1024,593,1017,594,3,'2010-11-10 19:34:37'),(3,1,1,54,1024,593,1033,518,3,'2010-11-10 19:35:28'),(4,7,1,1,1024,593,1152,754,3,'2010-11-11 23:27:07'),(5,7,1,1,1024,593,492,717,3,'2010-11-11 23:27:20'),(6,1,1,75,1024,593,1032,594,3,'2006-11-17 18:08:08');
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1642,7 +1629,7 @@ CREATE TABLE `world_stats_quest_accept` (
   CONSTRAINT `world_stats_quest_accept_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_quest_accept_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_quest_accept_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT COMMENT='Event log: User accepts a quest.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT COMMENT='Event log: User accepts a quest.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1651,7 +1638,6 @@ CREATE TABLE `world_stats_quest_accept` (
 
 LOCK TABLES `world_stats_quest_accept` WRITE;
 /*!40000 ALTER TABLE `world_stats_quest_accept` DISABLE KEYS */;
-INSERT INTO `world_stats_quest_accept` VALUES (1,7,1,1,232,308,'2010-11-11 23:28:00');
 /*!40000 ALTER TABLE `world_stats_quest_accept` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1711,7 +1697,7 @@ CREATE TABLE `world_stats_quest_complete` (
   CONSTRAINT `world_stats_quest_complete_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_quest_complete_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_quest_complete_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Event log: User completes a quest.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User completes a quest.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1720,7 +1706,6 @@ CREATE TABLE `world_stats_quest_complete` (
 
 LOCK TABLES `world_stats_quest_complete` WRITE;
 /*!40000 ALTER TABLE `world_stats_quest_complete` DISABLE KEYS */;
-INSERT INTO `world_stats_quest_complete` VALUES (1,7,1,1,218,308,'2010-11-11 23:28:05');
 /*!40000 ALTER TABLE `world_stats_quest_complete` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1746,7 +1731,7 @@ CREATE TABLE `world_stats_user_consume_item` (
   CONSTRAINT `world_stats_user_consume_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 COMMENT='Event log: User consumes use-once item.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User consumes use-once item.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1755,7 +1740,6 @@ CREATE TABLE `world_stats_user_consume_item` (
 
 LOCK TABLES `world_stats_user_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_consume_item` DISABLE KEYS */;
-INSERT INTO `world_stats_user_consume_item` VALUES (1,1,1,3,883,498,'2010-11-12 01:38:29'),(2,1,2,3,1024,594,'2010-11-12 06:27:04'),(3,1,1,3,1024,594,'2010-11-12 06:27:15'),(4,1,1,3,1056,594,'2010-11-12 08:01:48'),(5,1,1,3,1056,594,'2010-11-12 08:01:49'),(6,1,1,3,1056,594,'2010-11-12 08:01:49'),(7,1,1,3,1056,594,'2010-11-12 08:01:49'),(8,1,1,3,1056,594,'2010-11-12 08:01:49'),(9,1,1,3,1056,594,'2010-11-12 08:01:49'),(10,1,1,3,1056,594,'2010-11-12 08:01:50'),(11,1,1,3,1056,594,'2010-11-12 08:01:50'),(12,1,1,3,651,434,'2010-11-12 09:00:05'),(13,1,1,3,651,434,'2010-11-12 09:00:06'),(14,1,1,3,651,434,'2010-11-12 09:00:08');
 /*!40000 ALTER TABLE `world_stats_user_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1784,7 +1768,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1793,7 +1777,6 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,1,53,1142,754,0,0,3,'2010-11-10 18:39:31'),(2,1,1,53,1142,754,0,0,3,'2010-11-10 18:39:32'),(3,1,1,53,1142,754,0,0,3,'2010-11-10 18:39:32'),(4,1,1,53,1203,722,0,0,3,'2010-11-10 18:39:43'),(5,1,1,53,1106,589,0,0,3,'2010-11-10 18:39:45'),(6,1,1,54,1095,594,0,0,3,'2010-11-10 18:39:46'),(7,1,1,54,705,754,0,0,3,'2010-11-10 18:39:59'),(8,1,1,54,705,754,0,0,3,'2010-11-10 18:40:00'),(9,1,1,54,705,754,0,0,3,'2010-11-10 18:40:00'),(10,1,1,54,1024,594,0,0,3,'2010-11-10 19:34:45'),(11,1,1,54,929,730,0,0,3,'2010-11-10 19:36:41'),(12,1,1,55,882,754,0,0,3,'2010-11-10 19:36:45'),(13,1,1,55,1256,691,0,0,3,'2010-11-10 19:36:48'),(14,1,1,55,862,495,0,0,3,'2010-11-10 19:36:57'),(15,1,1,55,921,694,0,0,3,'2010-11-10 19:36:58'),(16,1,1,55,936,754,0,0,3,'2010-11-10 19:36:59'),(17,1,1,55,1177,754,0,0,3,'2010-11-10 19:37:09'),(18,1,1,56,1141,639,0,0,3,'2010-11-10 19:37:10'),(19,1,1,56,1162,706,0,0,3,'2010-11-10 19:37:10'),(20,1,1,56,1164,754,0,0,3,'2010-11-10 19:37:20'),(21,1,1,56,764,498,0,0,3,'2010-11-10 19:37:24'),(22,1,1,56,705,694,0,0,3,'2010-11-10 19:37:26'),(23,7,1,1,1160,754,0,0,3,'2010-11-11 23:27:05'),(24,7,1,1,677,754,0,0,3,'2010-11-11 23:27:11'),(25,7,1,1,397,754,0,0,3,'2010-11-11 23:27:17'),(26,7,1,1,860,754,0,0,3,'2010-11-11 23:27:23'),(27,7,1,1,932,754,0,0,3,'2010-11-11 23:27:28'),(28,7,1,1,936,754,0,0,3,'2010-11-11 23:27:33'),(29,7,1,2,911,754,0,0,3,'2010-11-11 23:27:33'),(30,7,1,2,317,754,0,0,3,'2010-11-11 23:27:45'),(31,7,1,2,841,658,0,0,1,'2010-11-11 23:27:47'),(32,7,1,2,603,658,0,0,1,'2010-11-11 23:27:49'),(33,1,1,56,1024,594,0,0,3,'2010-11-11 23:29:27'),(34,1,1,57,1265,722,0,0,3,'2010-11-11 23:29:29'),(35,1,1,57,1265,722,0,0,3,'2010-11-11 23:29:30'),(36,1,1,57,384,850,0,0,4,'2010-11-11 23:29:36'),(37,1,1,57,384,850,0,0,4,'2010-11-11 23:29:37'),(38,1,1,57,384,850,0,0,4,'2010-11-11 23:29:38'),(39,1,1,57,351,850,0,0,4,'2010-11-11 23:29:48'),(40,1,1,58,373,850,0,0,4,'2010-11-11 23:30:00'),(41,1,1,58,373,850,0,0,4,'2010-11-11 23:30:01'),(42,1,1,58,1257,722,0,0,3,'2010-11-11 23:30:12'),(43,1,1,58,1261,722,0,0,3,'2010-11-11 23:30:13'),(44,1,1,58,1261,722,0,0,3,'2010-11-11 23:30:14'),(45,1,1,58,903,754,0,0,3,'2010-11-12 01:39:22'),(46,1,1,59,903,754,0,0,3,'2010-11-12 01:39:23'),(47,1,1,59,903,754,0,0,3,'2010-11-12 01:39:25'),(48,1,1,59,893,498,0,0,3,'2010-11-12 01:39:37'),(49,1,1,59,993,594,0,0,3,'2010-11-12 01:39:52'),(50,1,1,59,1227,722,0,0,3,'2010-11-12 01:40:08'),(51,1,1,59,1098,594,0,0,3,'2010-11-12 02:08:09'),(52,1,1,60,993,754,0,0,3,'2010-11-12 02:17:19'),(53,1,1,60,1095,594,0,0,3,'2010-11-12 05:56:52'),(54,1,1,60,1193,722,0,0,3,'2010-11-12 05:56:56'),(55,1,1,60,1193,722,0,0,3,'2010-11-12 05:57:00'),(56,1,1,60,991,594,0,0,3,'2010-11-12 06:07:41'),(57,1,1,60,991,594,0,0,3,'2010-11-12 06:07:42'),(58,1,1,61,991,594,0,0,3,'2010-11-12 06:07:47'),(59,1,1,61,651,707,0,0,3,'2010-11-12 06:07:54'),(60,1,1,61,1190,623,0,0,3,'2010-11-12 06:07:58'),(61,1,1,61,1295,725,0,0,3,'2010-11-12 06:07:59'),(62,1,1,61,1215,722,0,0,3,'2010-11-12 06:08:05'),(63,1,1,61,776,406,0,0,3,'2010-11-12 06:08:10'),(64,1,1,62,804,498,0,0,3,'2010-11-12 06:36:34'),(65,1,1,62,804,498,0,0,3,'2010-11-12 06:36:34'),(66,1,1,62,1009,594,0,0,3,'2010-11-12 08:04:13'),(67,1,1,62,973,594,0,0,3,'2010-11-12 08:17:13'),(68,1,1,62,869,461,0,0,3,'2010-11-12 08:17:13'),(69,1,1,62,1024,594,0,0,3,'2010-11-12 08:33:47'),(70,1,1,63,1269,722,0,0,3,'2010-11-12 08:34:00'),(71,1,1,63,1168,720,0,0,3,'2010-11-12 08:34:04'),(72,1,1,63,1168,754,0,0,3,'2010-11-12 08:34:04'),(73,1,1,63,1021,594,0,0,3,'2010-11-12 08:34:13'),(74,1,1,63,1024,594,0,0,3,'2010-11-12 08:44:31'),(75,1,1,63,1024,594,0,0,3,'2010-11-12 08:44:33'),(76,1,1,64,1024,594,0,0,3,'2010-11-12 08:44:34'),(77,1,1,64,719,754,0,0,3,'2010-11-12 08:44:44'),(78,1,1,64,1192,712,0,0,3,'2010-11-12 08:44:47'),(79,1,1,64,1170,655,0,0,3,'2010-11-12 08:44:48'),(80,1,1,64,648,434,0,0,3,'2010-11-12 08:44:56'),(81,1,1,64,648,434,0,0,3,'2010-11-12 08:45:32'),(82,1,1,65,659,434,0,0,3,'2010-11-12 08:45:35'),(83,1,1,65,626,754,0,0,3,'2010-11-12 08:45:44'),(84,1,1,65,979,754,0,0,3,'2010-11-12 08:45:51'),(85,1,1,65,1195,633,0,0,3,'2010-11-12 08:45:52'),(86,1,1,65,835,498,0,0,3,'2010-11-12 08:45:55'),(87,1,1,65,1152,750,0,0,3,'2010-11-12 08:46:10'),(88,1,1,66,702,366,0,0,3,'2010-11-12 08:46:16'),(89,1,1,66,970,594,0,0,3,'2010-11-12 10:25:15'),(90,1,1,66,970,594,0,0,3,'2010-11-12 10:25:16'),(91,1,1,66,1207,722,0,0,3,'2010-11-12 10:25:19'),(92,1,1,66,877,469,0,0,3,'2010-11-12 10:25:29'),(93,1,1,66,693,366,0,0,3,'2010-11-12 10:25:30'),(94,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(95,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(96,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(97,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(98,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(99,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(100,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(101,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(102,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(103,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(104,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(105,1,1,68,715,754,0,0,3,'2010-11-12 10:40:48'),(106,1,1,69,1024,594,0,0,3,'2010-11-12 19:31:15'),(107,1,1,69,991,594,0,0,3,'2010-11-12 19:31:18'),(108,1,1,69,1175,693,0,0,3,'2010-11-12 19:31:22'),(109,1,1,69,1024,594,0,0,3,'2010-11-12 19:53:05'),(110,1,1,69,898,468,0,0,3,'2010-11-12 19:53:07'),(111,1,1,69,929,685,0,0,3,'2010-11-12 19:53:10'),(112,1,1,70,1040,594,0,0,3,'2010-11-12 19:53:24'),(113,1,1,70,1144,720,0,0,3,'2010-11-12 19:53:30'),(114,1,1,70,1144,754,0,0,3,'2010-11-12 19:53:31'),(115,1,1,70,1163,611,0,0,3,'2010-11-12 19:53:40'),(116,1,1,70,825,498,0,0,3,'2010-11-12 19:53:43'),(117,1,1,71,1144,647,0,0,3,'2010-11-12 19:54:35'),(118,1,1,71,1144,647,0,0,3,'2010-11-12 19:54:35'),(119,1,1,71,1144,647,0,0,3,'2010-11-12 19:54:35'),(120,1,1,71,1144,647,0,0,3,'2010-11-12 19:54:35'),(121,1,1,71,1144,647,0,0,3,'2010-11-12 19:54:35'),(122,1,1,71,1144,647,0,0,3,'2010-11-12 19:54:35'),(123,1,1,71,929,730,0,0,3,'2010-11-12 19:56:50'),(124,1,1,72,900,754,0,0,3,'2010-11-12 19:56:51'),(125,1,1,72,795,754,0,0,3,'2010-11-12 19:56:51'),(126,1,1,72,980,590,0,0,3,'2010-11-12 19:57:02'),(127,1,1,72,792,754,0,0,3,'2010-11-12 19:57:06'),(128,1,1,72,698,754,0,0,3,'2010-11-12 19:57:07'),(129,1,1,72,884,658,0,0,1,'2010-11-12 19:57:12'),(130,1,1,73,870,658,0,0,1,'2010-11-12 19:57:13'),(131,1,1,73,675,658,0,0,1,'2010-11-12 19:57:14'),(132,1,1,73,1147,754,0,0,3,'2010-11-12 19:57:21'),(133,1,1,73,1185,630,0,0,3,'2010-11-12 19:57:21'),(134,1,1,73,1127,590,0,0,3,'2010-11-12 19:57:23'),(135,1,1,73,1051,594,0,0,3,'2010-11-12 19:57:35'),(136,1,1,74,922,469,0,0,3,'2010-11-12 19:57:36'),(137,1,1,74,929,724,0,0,3,'2010-11-12 19:57:37'),(138,1,1,74,929,754,0,0,3,'2010-11-12 20:10:04'),(139,1,1,74,929,754,0,0,3,'2010-11-12 20:10:05'),(140,1,1,74,929,754,0,0,3,'2010-11-12 20:10:06'),(141,1,1,74,932,740,0,0,3,'2010-11-12 20:10:18'),(142,1,1,75,1026,754,0,0,3,'2010-11-12 20:10:18'),(143,1,1,75,1056,594,0,0,3,'2010-11-12 20:10:21'),(144,1,1,75,1024,594,0,0,3,'2010-11-12 20:53:42'),(145,1,1,75,1121,754,0,0,3,'2010-11-12 20:53:46'),(146,1,1,75,1024,594,0,0,3,'2010-11-18 22:21:28'),(147,1,1,75,894,461,0,0,3,'2010-11-18 22:21:29'),(148,1,1,76,1024,594,0,0,3,'2010-11-21 05:22:15'),(149,1,1,76,1016,594,0,0,3,'2010-11-22 00:09:14');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1813,7 +1796,7 @@ CREATE TABLE `world_stats_user_level` (
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'When this event took place.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1 COMMENT='Event log: User levels up.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User levels up.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1822,7 +1805,6 @@ CREATE TABLE `world_stats_user_level` (
 
 LOCK TABLES `world_stats_user_level` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_level` DISABLE KEYS */;
-INSERT INTO `world_stats_user_level` VALUES (1,1,3,1106,589,54,'2010-11-10 18:39:45'),(2,1,3,929,730,55,'2010-11-10 19:36:41'),(3,1,3,1177,754,56,'2010-11-10 19:37:09'),(4,7,3,936,754,2,'2010-11-11 23:27:33'),(5,7,1,218,308,3,'2010-11-11 23:28:05'),(6,1,3,1024,594,57,'2010-11-11 23:29:27'),(7,1,4,351,850,58,'2010-11-11 23:29:48'),(8,1,3,903,754,59,'2010-11-12 01:39:22'),(9,1,3,1098,594,60,'2010-11-12 02:08:09'),(10,1,3,991,594,61,'2010-11-12 06:07:42'),(11,1,3,776,406,62,'2010-11-12 06:08:10'),(12,1,3,1024,594,63,'2010-11-12 08:33:47'),(13,1,3,1024,594,64,'2010-11-12 08:44:33'),(14,1,3,648,434,65,'2010-11-12 08:45:32'),(15,1,3,1152,750,66,'2010-11-12 08:46:10'),(16,1,3,693,366,67,'2010-11-12 10:25:30'),(17,1,3,715,754,69,'2010-11-12 10:40:48'),(18,1,3,715,754,69,'2010-11-12 10:40:48'),(19,1,3,929,685,70,'2010-11-12 19:53:10'),(20,1,3,1135,754,71,'2010-11-12 19:54:17'),(21,1,3,929,730,72,'2010-11-12 19:56:50'),(22,1,1,884,658,73,'2010-11-12 19:57:12'),(23,1,3,1051,594,74,'2010-11-12 19:57:35'),(24,1,3,932,740,75,'2010-11-12 20:10:18'),(25,1,3,894,461,76,'2010-11-18 22:21:29');
 /*!40000 ALTER TABLE `world_stats_user_level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1867,7 +1849,7 @@ LOCK TABLES `world_stats_user_shopping` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'demogame'
+-- Dumping routines for database 'demogame_tmp'
 --
 /*!50003 DROP FUNCTION IF EXISTS `create_user_on_account` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1880,44 +1862,44 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `create_user_on_account`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
-BEGIN
-		
-		DECLARE character_count INT DEFAULT 0;
-		DECLARE max_character_count INT DEFAULT 9;
-		DECLARE is_id_free INT DEFAULT 0;
-		DECLARE is_name_free INT DEFAULT 0;
-		DECLARE errorMsg VARCHAR(100) DEFAULT "";
-		DECLARE accountID INT DEFAULT NULL;
-
-		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
-
-		IF ISNULL(accountID) THEN
-			SET errorMsg = "Account with the specified name does not exist.";
-		ELSE
-			SELECT COUNT(*) INTO character_count FROM `account_character` WHERE `account_id` = accountID;
-
-			IF character_count > max_character_count THEN
-				SET errorMsg = "No free character slots available in the account.";
-			ELSE
-				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
-				
-				IF is_id_free > 0 THEN
-					SET errorMsg = "The specified CharacterID is not available for use.";
-				ELSE
-					SELECT COUNT(*) INTO is_name_free FROM `character` WHERE `name` = characterName LIMIT 1;
-						
-					IF is_name_free > 0 THEN
-						SET errorMsg = "The specified character name is not available for use.";
-					ELSE
-						INSERT INTO `character` SET `id` = characterID, `name`	= characterName;
-						INSERT INTO `account_character` SET `character_id` = characterID, `account_id` = accountID;
-					END IF;
-				END IF;
-			END IF;
-		END IF;
-				
-		RETURN errorMsg;
-  
+BEGIN
+		
+		DECLARE character_count INT DEFAULT 0;
+		DECLARE max_character_count INT DEFAULT 9;
+		DECLARE is_id_free INT DEFAULT 0;
+		DECLARE is_name_free INT DEFAULT 0;
+		DECLARE errorMsg VARCHAR(100) DEFAULT "";
+		DECLARE accountID INT DEFAULT NULL;
+
+		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
+
+		IF ISNULL(accountID) THEN
+			SET errorMsg = "Account with the specified name does not exist.";
+		ELSE
+			SELECT COUNT(*) INTO character_count FROM `account_character` WHERE `account_id` = accountID;
+
+			IF character_count > max_character_count THEN
+				SET errorMsg = "No free character slots available in the account.";
+			ELSE
+				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
+				
+				IF is_id_free > 0 THEN
+					SET errorMsg = "The specified CharacterID is not available for use.";
+				ELSE
+					SELECT COUNT(*) INTO is_name_free FROM `character` WHERE `name` = characterName LIMIT 1;
+						
+					IF is_name_free > 0 THEN
+						SET errorMsg = "The specified character name is not available for use.";
+					ELSE
+						INSERT INTO `character` SET `id` = characterID, `name`	= characterName;
+						INSERT INTO `account_character` SET `character_id` = characterID, `account_id` = accountID;
+					END IF;
+				END IF;
+			END IF;
+		END IF;
+				
+		RETURN errorMsg;
+  
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1935,25 +1917,25 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `ft_banning_isbanned`(accountID INT) RETURNS int(11)
-BEGIN
-		DECLARE cnt INT DEFAULT 0;
-		DECLARE tnow TIMESTAMP;
-
-		SET tnow = NOW();
-
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `account_id` = accountID
-				AND `end_time` <= tnow;
-		
-		SELECT COUNT(*)
-			INTO cnt
-			FROM `account_ban`
-			WHERE `expired` = 0
-				AND `account_id` = accountID;
-				
-		RETURN cnt;
+BEGIN
+		DECLARE cnt INT DEFAULT 0;
+		DECLARE tnow TIMESTAMP;
+
+		SET tnow = NOW();
+
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `account_id` = accountID
+				AND `end_time` <= tnow;
+		
+		SELECT COUNT(*)
+			INTO cnt
+			FROM `account_ban`
+			WHERE `expired` = 0
+				AND `account_id` = accountID;
+				
+		RETURN cnt;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1971,18 +1953,18 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `delete_user_on_account`(characterID INT)
-BEGIN
-
-	UPDATE `account_character`
-		SET `time_deleted` = NOW()
-		WHERE `character_id` = characterID
-		AND `time_deleted` IS NULL;
-
-	UPDATE `character`
-		SET `name` = CONCAT('~',`id`,'_',name)
-		WHERE `id` = characterID
-			AND SUBSTR(`name`, 1) != '~';
-
+BEGIN
+
+	UPDATE `account_character`
+		SET `time_deleted` = NOW()
+		WHERE `character_id` = characterID
+		AND `time_deleted` IS NULL;
+
+	UPDATE `character`
+		SET `name` = CONCAT('~',`id`,'_',name)
+		WHERE `id` = characterID
+			AND SUBSTR(`name`, 1) != '~';
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2000,14 +1982,14 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `find_foreign_keys`(tableSchema VARCHAR(100), tableName VARCHAR(100), columnName VARCHAR(100))
-BEGIN
-
-		SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME`
-			FROM information_schema.KEY_COLUMN_USAGE
-			WHERE `REFERENCED_TABLE_SCHEMA` = tableSchema
-				AND `REFERENCED_TABLE_NAME` = tableName
-				AND `REFERENCED_COLUMN_NAME` = columnName;
-
+BEGIN
+
+		SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME`
+			FROM information_schema.KEY_COLUMN_USAGE
+			WHERE `REFERENCED_TABLE_SCHEMA` = tableSchema
+				AND `REFERENCED_TABLE_NAME` = tableName
+				AND `REFERENCED_COLUMN_NAME` = columnName;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2025,23 +2007,23 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `ft_banning_get_reasons`(accountID INT)
-BEGIN
-		DECLARE tnow TIMESTAMP;
-
-		SET tnow = NOW();
-
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `account_id` = accountID
-				AND `end_time` <= tnow;
-		
-		SELECT GROUP_CONCAT(DISTINCT `reason` SEPARATOR '\n\r') AS 'reasons',
-				ROUND(TIME_TO_SEC(TIMEDIFF(MAX(`end_time`), NOW())) / 60) AS 'mins_left'
-			FROM `account_ban`
-			WHERE `account_id` = accountID
-				AND	`expired` = 0;
-		
+BEGIN
+		DECLARE tnow TIMESTAMP;
+
+		SET tnow = NOW();
+
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `account_id` = accountID
+				AND `end_time` <= tnow;
+		
+		SELECT GROUP_CONCAT(DISTINCT `reason` SEPARATOR '\n\r') AS 'reasons',
+				ROUND(TIME_TO_SEC(TIMEDIFF(MAX(`end_time`), NOW())) / 60) AS 'mins_left'
+			FROM `account_ban`
+			WHERE `account_id` = accountID
+				AND	`expired` = 0;
+		
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2059,15 +2041,15 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `ft_banning_update_expired`()
-BEGIN
-		DECLARE tnow TIMESTAMP;
-		
-		SET tnow = NOW();
-		
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `end_time` <= tnow;
+BEGIN
+		DECLARE tnow TIMESTAMP;
+		
+		SET tnow = NOW();
+		
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `end_time` <= tnow;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2085,11 +2067,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_views`()
-BEGIN
-	
-	CALL rebuild_view_npc_character();
-	CALL rebuild_view_user_character();
-    
+BEGIN
+	
+	CALL rebuild_view_npc_character();
+	CALL rebuild_view_user_character();
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2107,11 +2089,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_view_npc_character`()
-BEGIN
-	
-	DROP VIEW IF EXISTS `view_npc_character`;
-	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_npc_character` AS SELECT c.*  FROM `character` c LEFT JOIN `account_character` a ON c.id = a.character_id WHERE a.account_id IS NULL;
-    
+BEGIN
+	
+	DROP VIEW IF EXISTS `view_npc_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_npc_character` AS SELECT c.*  FROM `character` c LEFT JOIN `account_character` a ON c.id = a.character_id WHERE a.account_id IS NULL;
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2129,11 +2111,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_view_user_character`()
-BEGIN
-	
-	DROP VIEW IF EXISTS `view_user_character`;
-	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_user_character` AS SELECT c.* FROM `character` c INNER JOIN `account_character` a ON c.id = a.character_id WHERE a.time_deleted IS NULL;
-    
+BEGIN
+	
+	DROP VIEW IF EXISTS `view_user_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_user_character` AS SELECT c.* FROM `character` c INNER JOIN `account_character` a ON c.id = a.character_id WHERE a.time_deleted IS NULL;
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2188,4 +2170,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-22 11:22:45
+-- Dump completed on 2010-11-22 12:49:28

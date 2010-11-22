@@ -201,7 +201,7 @@ namespace Lidgren.Network
                             // awesome
                             m_peer.AcceptConnection(this);
                             m_sentPingTime = (float)NetTime.Now - (m_peerConfiguration.PingInterval / 2.0f);
-                                // delay ping for a little while
+                            // delay ping for a little while
                             SetStatus(NetConnectionStatus.Connected,
                                 "Connected to " + NetUtility.ToHexString(m_remoteUniqueIdentifier));
                             return;

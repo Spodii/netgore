@@ -9,13 +9,13 @@ namespace DemoGame.Client
     partial class GameplayScreenControls : GameControlCollection
     {
         const int _minAttackRate = GameData.AttackTimeoutMin;
+        const int _minEmoteRate = 1000;
         const int _minMoveRate = 150;
         const int _minNPCChatRate = 150;
         const int _minPickupRate = 150;
+        const int _minQuickBarRate = 200;
         const int _minShopRate = 250;
         const int _minUseRate = 250;
-        const int _minEmoteRate = 1000;
-        const int _minQuickBarRate = 200;
 
         readonly GameplayScreen _gameplayScreen;
 
@@ -31,6 +31,48 @@ namespace DemoGame.Client
             _gameplayScreen = gameplayScreen;
 
             CreateControls();
+        }
+
+        public GameplayScreen GameplayScreen
+        {
+            get { return _gameplayScreen; }
+        }
+
+        Map Map
+        {
+            get { return GameplayScreen.Map; }
+        }
+
+        ClientSockets Socket
+        {
+            get { return GameplayScreen.Socket; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="MapEntityIndex"/> of the entity to use as the target for input controls
+        /// that can utilize a target. If null, no target will be used.
+        /// </summary>
+        public MapEntityIndex? TargetIndex { get; set; }
+
+        Character UserChar
+        {
+            get { return GameplayScreen.UserChar; }
+        }
+
+        /// <summary>
+        /// Gets if the User character is allowed to move or perform actions. This only checks general
+        /// conditions like if the User is chatting to a NPC or in some other state that does not
+        /// allow movement of any kind.
+        /// </summary>
+        /// <returns>True if the User can move or perform actions; otherwise false.</returns>
+        bool CanUserMove()
+        {
+            // Don't allow actions while chatting to NPCs
+            if (!GameData.AllowMovementWhileChattingToNPC && GameplayScreen.ChatDialogForm.IsChatting)
+                return false;
+
+            // Movement is allowed
+            return true;
         }
 
         /// <summary>
@@ -56,14 +98,16 @@ namespace DemoGame.Client
 
             CreateAndAdd(GameControlsKeys.PickUp, _minPickupRate, CanUserMove, HandleGameControl_PickUp);
 
-            CreateAndAdd(GameControlsKeys.EmoteEllipsis, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Ellipsis));
+            CreateAndAdd(GameControlsKeys.EmoteEllipsis, _minEmoteRate, () => true,
+                x => HandleGameControl_Emote(Emoticon.Ellipsis));
             CreateAndAdd(GameControlsKeys.EmoteExclamation, _minEmoteRate, () => true,
                 x => HandleGameControl_Emote(Emoticon.Exclamation));
             CreateAndAdd(GameControlsKeys.EmoteHeartbroken, _minEmoteRate, () => true,
                 x => HandleGameControl_Emote(Emoticon.Heartbroken));
             CreateAndAdd(GameControlsKeys.EmoteHearts, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Hearts));
             CreateAndAdd(GameControlsKeys.EmoteMeat, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
-            CreateAndAdd(GameControlsKeys.EmoteQuestion, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Question));
+            CreateAndAdd(GameControlsKeys.EmoteQuestion, _minEmoteRate, () => true,
+                x => HandleGameControl_Emote(Emoticon.Question));
             CreateAndAdd(GameControlsKeys.EmoteSweat, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Sweat));
 
             CreateAndAdd(GameControlsKeys.QuickBarItem0, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(0));
@@ -79,48 +123,6 @@ namespace DemoGame.Client
 
             // Create the controls specific to a perspective
             CreateControlsForPerspective();
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="MapEntityIndex"/> of the entity to use as the target for input controls
-        /// that can utilize a target. If null, no target will be used.
-        /// </summary>
-        public MapEntityIndex? TargetIndex { get; set; }
-
-        public GameplayScreen GameplayScreen
-        {
-            get { return _gameplayScreen; }
-        }
-
-        Map Map
-        {
-            get { return GameplayScreen.Map; }
-        }
-
-        ClientSockets Socket
-        {
-            get { return GameplayScreen.Socket; }
-        }
-
-        Character UserChar
-        {
-            get { return GameplayScreen.UserChar; }
-        }
-
-        /// <summary>
-        /// Gets if the User character is allowed to move or perform actions. This only checks general
-        /// conditions like if the User is chatting to a NPC or in some other state that does not
-        /// allow movement of any kind.
-        /// </summary>
-        /// <returns>True if the User can move or perform actions; otherwise false.</returns>
-        bool CanUserMove()
-        {
-            // Don't allow actions while chatting to NPCs
-            if (!GameData.AllowMovementWhileChattingToNPC && GameplayScreen.ChatDialogForm.IsChatting)
-                return false;
-
-            // Movement is allowed
-            return true;
         }
 
         /// <summary>
@@ -157,11 +159,6 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_QuickBar(byte slot)
-        {
-            GameplayScreen.QuickBarForm.UseSlot(slot);
-        }
-
         void HandleGameControl_MoveLeft(GameControl sender)
         {
             using (var pw = ClientPacket.MoveLeft())
@@ -196,6 +193,11 @@ namespace DemoGame.Client
             {
                 Socket.Send(pw, ClientMessageType.CharacterInteract);
             }
+        }
+
+        void HandleGameControl_QuickBar(byte slot)
+        {
+            GameplayScreen.QuickBarForm.UseSlot(slot);
         }
 
         void HandleGameControl_Shop(GameControl sender)

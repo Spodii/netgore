@@ -108,7 +108,7 @@ namespace DemoGame.Server
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
     public abstract partial class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference,
-                                      IServerSaveable
+                                              IServerSaveable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -139,18 +139,12 @@ namespace DemoGame.Server
         readonly World _world;
 
         /// <summary>
-        /// Gets the collection of skills known by this <see cref="Character"/>.
-        /// </summary>
-        public KnownSkillsCollection KnownSkills { get { return _knownSkills; } }
-
-        /// <summary>
         /// Character's alliance.
         /// </summary>
         Alliance _alliance;
 
         int _attackTimeout = 500;
 
-        KnownSkillsCollection _knownSkills;
         int _cash;
         int _exp;
         SPValueType _hp;
@@ -162,6 +156,7 @@ namespace DemoGame.Server
         bool _isAlive = false;
 
         bool _isLoaded = false;
+        KnownSkillsCollection _knownSkills;
 
         byte _level;
 
@@ -444,6 +439,14 @@ namespace DemoGame.Server
         public bool IsPersistent
         {
             get { return _isPersistent; }
+        }
+
+        /// <summary>
+        /// Gets the collection of skills known by this <see cref="Character"/>.
+        /// </summary>
+        public KnownSkillsCollection KnownSkills
+        {
+            get { return _knownSkills; }
         }
 
         /// <summary>
@@ -1072,6 +1075,20 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the <see cref="MapID"/> that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
+        protected abstract MapID GetLoadMap();
+
+        /// <summary>
+        /// When overridden in the derived class, gets the position that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The position to load this <see cref="Character"/> at.</returns>
+        protected abstract Vector2 GetLoadPosition();
+
+        /// <summary>
         /// Gives an item to the Character to be placed in their Inventory.
         /// </summary>
         /// <param name="item">Item to give to the character.</param>
@@ -1093,39 +1110,6 @@ namespace DemoGame.Server
                 AfterGiveItem(item, (byte)amountAdded);
 
             return amountAdded;
-        }
-
-        /// <summary>
-        /// Gives an item to the Character to be placed in their Inventory.
-        /// </summary>
-        /// <param name="item">Item to give to the character.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        public virtual ItemEntity TryGiveItem(ItemEntity item)
-        {
-            if (item == null)
-            {
-                Debug.Fail("Item is null.");
-                return null;
-            }
-
-            Debug.Assert(item.Amount != 0, "Invalid item amount.");
-
-            // Add as much of the item to the inventory as we can
-            int startAmount = item.Amount;
-            var remainder = _inventory.TryAdd(item);
-
-            // Check how much was added
-            var amountAdded = (startAmount - (remainder != null ? remainder.Amount : 0));
-            Debug.Assert(amountAdded >= 0 && amountAdded <= byte.MaxValue);
-
-            amountAdded = amountAdded.Clamp(byte.MinValue, byte.MaxValue);
-
-            if (amountAdded > 0)
-                AfterGiveItem(item, (byte)amountAdded);
-
-            // Return the remainder
-            return remainder;
         }
 
         protected virtual void GiveKillReward(int exp, int cash)
@@ -1169,6 +1153,42 @@ namespace DemoGame.Server
                 StatusEffects.Dispose();
 
             base.HandleDispose(disposeManaged);
+        }
+
+        /// <summary>
+        /// Handles when no legal position could be found for this <see cref="Character"/>.
+        /// This will usually occur when performing a teleport into an area that is completely blocked off, and no near-by
+        /// position can be found. Moving a <see cref="Character"/> too far from the original position can result in them
+        /// going somewhere that they are not supposed to, so it is best to send them to a predefined location.
+        /// </summary>
+        /// <param name="position">The position that the <see cref="Character"/> tried to go to, but failed to.</param>
+        /// <returns>The position to warp the <see cref="Character"/> to.</returns>
+        protected virtual Vector2 HandleNoLegalPositionFound(Vector2 position)
+        {
+            if (IsPersistent)
+            {
+                // Persistent characters get sent to their loading position
+                const string errmsg = "Character `{0}` is persistent, so they are being set back to their respawn position.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this);
+
+                var mapID = GetLoadMap();
+                var map = World.GetMap(mapID);
+                var pos = GetLoadPosition();
+
+                Teleport(map, pos);
+                return pos;
+            }
+            else
+            {
+                // Non-persistent characters are destroyed
+                const string errmsg = "Character `{0}` is not persistent, so they are being disposed.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this);
+
+                DelayedDispose();
+                return position;
+            }
         }
 
         /// <summary>
@@ -1834,6 +1854,39 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gives an item to the Character to be placed in their Inventory.
+        /// </summary>
+        /// <param name="item">Item to give to the character.</param>
+        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
+        /// item was added.</returns>
+        public virtual ItemEntity TryGiveItem(ItemEntity item)
+        {
+            if (item == null)
+            {
+                Debug.Fail("Item is null.");
+                return null;
+            }
+
+            Debug.Assert(item.Amount != 0, "Invalid item amount.");
+
+            // Add as much of the item to the inventory as we can
+            int startAmount = item.Amount;
+            var remainder = _inventory.TryAdd(item);
+
+            // Check how much was added
+            var amountAdded = (startAmount - (remainder != null ? remainder.Amount : 0));
+            Debug.Assert(amountAdded >= 0 && amountAdded <= byte.MaxValue);
+
+            amountAdded = amountAdded.Clamp(byte.MinValue, byte.MaxValue);
+
+            if (amountAdded > 0)
+                AfterGiveItem(item, (byte)amountAdded);
+
+            // Return the remainder
+            return remainder;
+        }
+
+        /// <summary>
         /// Tries to send data to the <see cref="Character"/> if they implement <see cref="INetworkSender"/>.
         /// </summary>
         /// <param name="gameMessage">The game message.</param>
@@ -2089,42 +2142,6 @@ namespace DemoGame.Server
             return position;
         }
 
-        /// <summary>
-        /// Handles when no legal position could be found for this <see cref="Character"/>.
-        /// This will usually occur when performing a teleport into an area that is completely blocked off, and no near-by
-        /// position can be found. Moving a <see cref="Character"/> too far from the original position can result in them
-        /// going somewhere that they are not supposed to, so it is best to send them to a predefined location.
-        /// </summary>
-        /// <param name="position">The position that the <see cref="Character"/> tried to go to, but failed to.</param>
-        /// <returns>The position to warp the <see cref="Character"/> to.</returns>
-        protected virtual Vector2 HandleNoLegalPositionFound(Vector2 position)
-        {
-            if (IsPersistent)
-            {
-                // Persistent characters get sent to their loading position
-                const string errmsg = "Character `{0}` is persistent, so they are being set back to their respawn position.";
-                if (log.IsInfoEnabled)
-                    log.InfoFormat(errmsg, this);
-
-                var mapID = GetLoadMap();
-                var map = World.GetMap(mapID);
-                var pos = GetLoadPosition();
-
-                Teleport(map, pos);
-                return pos;
-            }
-            else
-            {
-                // Non-persistent characters are destroyed
-                const string errmsg = "Character `{0}` is not persistent, so they are being disposed.";
-                if (log.IsInfoEnabled)
-                    log.InfoFormat(errmsg, this);
-
-                DelayedDispose();
-                return position;
-            }
-        }
-
         #region ICharacterTable Members
 
         /// <summary>
@@ -2287,6 +2304,30 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the value of the database column `map_id`.
+        /// </summary>
+        MapID ICharacterTable.LoadMapID
+        {
+            get { return Map.ID; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `x`.
+        /// </summary>
+        ushort ICharacterTable.LoadX
+        {
+            get { return (ushort)GetLoadPosition().X; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `y`.
+        /// </summary>
+        ushort ICharacterTable.LoadY
+        {
+            get { return (ushort)GetLoadPosition().Y; }
+        }
+
+        /// <summary>
         /// Gets or sets the value of the database column `mp`.
         /// </summary>
         public SPValueType MP
@@ -2316,14 +2357,6 @@ namespace DemoGame.Server
                 if (MPChanged != null)
                     MPChanged(this, oldValue, _mp);
             }
-        }
-
-        /// <summary>
-        /// Gets the value of the database column `map_id`.
-        /// </summary>
-        MapID ICharacterTable.LoadMapID
-        {
-            get { return Map.ID; }
         }
 
         /// <summary>
@@ -2427,36 +2460,6 @@ namespace DemoGame.Server
         IEnumerable<KeyValuePair<StatType, int>> ICharacterTable.Stats
         {
             get { return BaseStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)); }
-        }
-
-        /// <summary>
-        /// Gets the value of the database column `x`.
-        /// </summary>
-        ushort ICharacterTable.LoadX
-        {
-            get { return (ushort)GetLoadPosition().X; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the position that this <see cref="Character"/>
-        /// will use for when loading.
-        /// </summary>
-        /// <returns>The position to load this <see cref="Character"/> at.</returns>
-        protected abstract Vector2 GetLoadPosition();
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="MapID"/> that this <see cref="Character"/>
-        /// will use for when loading.
-        /// </summary>
-        /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
-        protected abstract MapID GetLoadMap();
-
-        /// <summary>
-        /// Gets the value of the database column `y`.
-        /// </summary>
-        ushort ICharacterTable.LoadY
-        {
-            get { return (ushort)GetLoadPosition().Y; }
         }
 
         /// <summary>

@@ -4,10 +4,7 @@
 
 #if !TOPDOWN
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client
@@ -16,6 +13,11 @@ namespace DemoGame.Client
     {
         static GameControlKeys _jump;
 
+        public static GameControlKeys Jump
+        {
+            get { return _jump; }
+        }
+
         /// <summary>
         /// Initializes the perspective-specific <see cref="GameControlKeys"/>.
         /// </summary>
@@ -23,11 +25,6 @@ namespace DemoGame.Client
         {
             _jump = new GameControlKeys("Jump", SKC("MoveUp"));
             _moveStop = new GameControlKeys("Move Stop", null, _moveLeft.KeysDown.Concat(_moveRight.KeysDown));
-        }
-
-        public static GameControlKeys Jump
-        {
-            get { return _jump; }
         }
     }
 }
