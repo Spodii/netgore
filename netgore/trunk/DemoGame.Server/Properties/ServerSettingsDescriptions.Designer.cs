@@ -169,6 +169,15 @@ namespace DemoGame.Server.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The salt to use when generating the MD5 hash for the passwords in the database. Using a unique salt makes it impossible to use a rainbow table to reverse a hash. However, changing the salt will break all existing hashes. So if you change the password salt, you will have to have everyone change their passwords..
+        /// </summary>
+        public static string PasswordSalt {
+            get {
+                return ResourceManager.GetString("PasswordSalt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to How frequently, in milliseconds, to wait between checks to respawn IRespawnable entities. Lower values will result in IRespawnables respawning closer to their desired time, but will require more overhead. In contrast, a higher value means more things can end up spawning at once since there is a larger time frame to cover..
         /// </summary>
         public static string RespawnablesUpdateRate {
