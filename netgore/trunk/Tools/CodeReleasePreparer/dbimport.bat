@@ -5,4 +5,4 @@ echo -
 SET /P B= Type your port number (Note 3306 is default mysql port). 
 echo -
 @echo on
-mysql --user=root --password=%A% --host=localhost --port=%B% demogame < ..\db.sql
+mysql --user=root --password=%A% --host=localhost --port=%B% demogame < db.sql
