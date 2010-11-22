@@ -23,13 +23,6 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter DeleteAccountCharacter(byte charSlot)
-        {
-            var pw = GetWriter(ClientPacketID.DeleteAccountCharacter);
-            pw.Write(charSlot);
-            return pw;
-        }
-
         public static PacketWriter Attack(MapEntityIndex? target)
         {
             var pw = GetWriter(ClientPacketID.Attack);
@@ -44,6 +37,29 @@ namespace DemoGame.Client
             var pw = GetWriter(ClientPacketID.BuyFromShop);
             pw.Write(index);
             pw.Write(amount);
+            return pw;
+        }
+
+        public static PacketWriter CreateNewAccount(string name, string password, string email)
+        {
+            var pw = GetWriter(ClientPacketID.CreateNewAccount);
+            pw.Write(name);
+            pw.Write(password);
+            pw.Write(email);
+            return pw;
+        }
+
+        public static PacketWriter CreateNewAccountCharacter(string name)
+        {
+            var pw = GetWriter(ClientPacketID.CreateNewAccountCharacter);
+            pw.Write(name);
+            return pw;
+        }
+
+        public static PacketWriter DeleteAccountCharacter(byte charSlot)
+        {
+            var pw = GetWriter(ClientPacketID.DeleteAccountCharacter);
+            pw.Write(charSlot);
             return pw;
         }
 
@@ -81,20 +97,6 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter HasQuestStartRequirements(QuestID questID)
-        {
-            var pw = GetWriter(ClientPacketID.HasQuestStartRequirements);
-            pw.Write(questID);
-            return pw;
-        }
-
-        public static PacketWriter HasQuestFinishRequirements(QuestID questID)
-        {
-            var pw = GetWriter(ClientPacketID.HasQuestFinishRequirements);
-            pw.Write(questID);
-            return pw;
-        }
-
         /// <summary>
         /// Gets a <see cref="PacketWriter"/> to use from the internal pool. It is important that this
         /// <see cref="PacketWriter"/> is disposed of properly when done.
@@ -119,27 +121,25 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter HasQuestFinishRequirements(QuestID questID)
+        {
+            var pw = GetWriter(ClientPacketID.HasQuestFinishRequirements);
+            pw.Write(questID);
+            return pw;
+        }
+
+        public static PacketWriter HasQuestStartRequirements(QuestID questID)
+        {
+            var pw = GetWriter(ClientPacketID.HasQuestStartRequirements);
+            pw.Write(questID);
+            return pw;
+        }
+
         public static PacketWriter Login(string name, string password)
         {
             var pw = GetWriter(ClientPacketID.Login);
             pw.Write(name);
             pw.Write(password);
-            return pw;
-        }
-
-        public static PacketWriter CreateNewAccountCharacter(string name)
-        {
-            var pw = GetWriter(ClientPacketID.CreateNewAccountCharacter);
-            pw.Write(name);
-            return pw;
-        }
-
-        public static PacketWriter CreateNewAccount(string name, string password, string email)
-        {
-            var pw = GetWriter(ClientPacketID.CreateNewAccount);
-            pw.Write(name);
-            pw.Write(password);
-            pw.Write(email);
             return pw;
         }
 

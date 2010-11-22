@@ -18,6 +18,7 @@ namespace DemoGame.Server
     public class UserAccountManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly string _passwordSalt = ServerSettings.Default.PasswordSalt;
 
         readonly IDictionary<string, UserAccount> _accounts = new Dictionary<string, UserAccount>(StringComparer.OrdinalIgnoreCase);
         readonly object _accountsSync = new object();
@@ -42,8 +43,6 @@ namespace DemoGame.Server
         {
             get { return _dbController; }
         }
-
-        static readonly string _passwordSalt = ServerSettings.Default.PasswordSalt;
 
         /// <summary>
         /// Generates a salted hash for a password.

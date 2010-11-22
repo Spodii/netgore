@@ -28,6 +28,11 @@ namespace DemoGame.Server
         /// </summary>
         const int _updateFrequency = 200;
 
+        /// <summary>
+        /// The <see cref="StatusEffectManager"/> instance.
+        /// </summary>
+        static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
+
         readonly Character _character;
 
         /// <summary>
@@ -36,6 +41,18 @@ namespace DemoGame.Server
         readonly StatCollection<StatType> _modStats = new StatCollection<StatType>(StatCollectionType.Modified);
 
         TickCount _lastUpdateTime;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterStatusEffects"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> that this collection belongs to.</param>
+        protected CharacterStatusEffects(Character character)
+        {
+            if (character == null)
+                throw new ArgumentNullException("character");
+
+            _character = character;
+        }
 
         /// <summary>
         /// Notifies listeners when an <see cref="ActiveStatusEffect"/> is added to this collection.
@@ -56,15 +73,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CharacterStatusEffects"/> class.
+        /// Checks that the mod stat values are correct.
+        /// Only occurs in debug builds.
         /// </summary>
-        /// <param name="character">The <see cref="Character"/> that this collection belongs to.</param>
-        protected CharacterStatusEffects(Character character)
+        [Conditional("DEBUG")]
+        void AssertModStatsAreCorrect()
         {
-            if (character == null)
-                throw new ArgumentNullException("character");
+            // Only test every so often
+            if (RandomHelper.NextInt(0, 5) != 0)
+                return;
 
-            _character = character;
+            var oldValues = _modStats.DeepCopy();
+            RecalculateStatBonuses();
+            Debug.Assert(_modStats.HasSameValues(oldValues), "Somehow, at some point, the ModStats became out of sync!");
         }
 
         /// <summary>
@@ -106,22 +127,6 @@ namespace DemoGame.Server
                 Removed(this, statusEffect);
 
             AssertModStatsAreCorrect();
-        }
-
-        /// <summary>
-        /// Checks that the mod stat values are correct.
-        /// Only occurs in debug builds.
-        /// </summary>
-        [Conditional("DEBUG")]
-        void AssertModStatsAreCorrect()
-        {
-            // Only test every so often
-            if (RandomHelper.NextInt(0, 5) != 0)
-                return;
-
-            var oldValues = _modStats.DeepCopy();
-            RecalculateStatBonuses();
-            Debug.Assert(_modStats.HasSameValues(oldValues), "Somehow, at some point, the ModStats became out of sync!");
         }
 
         /// <summary>
@@ -179,11 +184,6 @@ namespace DemoGame.Server
         /// <returns>True if the <paramref name="statusEffect"/> of the given <paramref name="power"/> was added
         /// to this collection; otherwise false.</returns>
         public abstract bool TryAdd(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power);
-
-        /// <summary>
-        /// The <see cref="StatusEffectManager"/> instance.
-        /// </summary>
-        static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
 
         /// <summary>
         /// Tries to add a <see cref="StatusEffectType"/> of a given power to this collection.
@@ -269,7 +269,7 @@ namespace DemoGame.Server
 
         #endregion
 
-        #region IModStatContainer Members
+        #region IModStatContainer<StatType> Members
 
         /// <summary>
         /// Gets the modifier value for the given <paramref name="statType"/>, where a positive value adds to the

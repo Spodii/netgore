@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SFML.Graphics;
+﻿using System.Linq;
 
 #if !TOPDOWN
 #pragma warning disable 1587

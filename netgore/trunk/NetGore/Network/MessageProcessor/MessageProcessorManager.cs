@@ -41,6 +41,22 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Asserts that the rest of a <see cref="BitStream"/> contains only unset bits.
+        /// </summary>
+        /// <param name="data">The <see cref="BitStream"/> to check.</param>
+        [Conditional("DEBUG")]
+        static void AssertRestOfStreamIsZero(BitStream data)
+        {
+            if (!RestOfStreamIsZero(data))
+            {
+                const string errmsg = "Encountered msgID = 0, but there was set bits remaining in the stream.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg);
+                Debug.Fail(errmsg);
+            }
+        }
+
+        /// <summary>
         /// Builds the array of <see cref="IMessageProcessor"/>s.
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static).</param>
@@ -200,22 +216,6 @@ namespace NetGore.Network
         public IEnumerable<IMessageProcessor> Processors
         {
             get { return _processors.Where(x => x != null); }
-        }
-
-        /// <summary>
-        /// Asserts that the rest of a <see cref="BitStream"/> contains only unset bits.
-        /// </summary>
-        /// <param name="data">The <see cref="BitStream"/> to check.</param>
-        [Conditional("DEBUG")]
-        static void AssertRestOfStreamIsZero(BitStream data)
-        {
-            if (!RestOfStreamIsZero(data))
-            {
-                const string errmsg = "Encountered msgID = 0, but there was set bits remaining in the stream.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg);
-                Debug.Fail(errmsg);
-            }
         }
 
         /// <summary>

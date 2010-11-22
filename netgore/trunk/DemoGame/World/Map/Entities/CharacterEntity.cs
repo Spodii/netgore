@@ -25,11 +25,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets or sets (protected) the CharacterEntity's BodyInfo.
-        /// </summary>
-        public BodyInfo BodyInfo { get; protected set; }
-
-        /// <summary>
         /// Synchronizes the BodyInfo index for the CharacterEntity.
         /// </summary>
         [SyncValue("BodyID")]
@@ -38,6 +33,11 @@ namespace DemoGame
             get { return BodyInfo.ID; }
             set { BodyInfo = BodyInfoManager.Instance.GetBody(value); }
         }
+
+        /// <summary>
+        /// Gets or sets (protected) the CharacterEntity's BodyInfo.
+        /// </summary>
+        public BodyInfo BodyInfo { get; protected set; }
 
         /// <summary>
         /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against

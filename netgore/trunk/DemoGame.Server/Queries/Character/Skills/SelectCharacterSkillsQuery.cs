@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
@@ -12,6 +13,8 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterSkillsQuery : DbQueryReader<CharacterID>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterSkillsQuery"/> class.
         /// </summary>
@@ -21,7 +24,7 @@ namespace DemoGame.Server.Queries
         {
             QueryAsserts.ContainsColumns(CharacterSkillTable.DbColumns, "character_id", "skill_id");
         }
-    
+
         /// <summary>
         /// Creates the query for this class.
         /// </summary>
@@ -42,21 +45,9 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>The <see cref="DbParameter"/>s needed for this class to perform database queries.
-        /// If null, no parameters will be used.</returns>
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return CreateParameters("characterID");
-        }
-
         public IEnumerable<SkillType> Execute(CharacterID charID)
         {
-            List<SkillType> ret = new List<SkillType>();
+            var ret = new List<SkillType>();
 
             using (var r = ExecuteReader(charID))
             {
@@ -80,6 +71,16 @@ namespace DemoGame.Server.Queries
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>The <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.</returns>
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters("characterID");
         }
 
         /// <summary>

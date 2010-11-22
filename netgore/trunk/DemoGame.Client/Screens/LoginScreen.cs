@@ -101,11 +101,10 @@ namespace DemoGame.Client
             _cRememberPassword.ValueChanged += _cRememberPassword_ValueChanged;
 
             // NOTE: Display the admin account info
-            const string adminAccountInfo = "Use the following account for the default admin account:"
-+ "\n    Username: Spodi"
-    + "\n    Password: qwerty123";
-            new Label(cScreen, _cRememberPassword.Position + new Vector2(-32, _cRememberPassword.Size.Y + 32)) { Text = adminAccountInfo, ForeColor = Color.Green,
-            Font = GameScreenHelper.DefaultChatFont};
+            const string adminAccountInfo =
+                "Use the following account for the default admin account:" + "\n    Username: Spodi" + "\n    Password: qwerty123";
+            new Label(cScreen, _cRememberPassword.Position + new Vector2(-32, _cRememberPassword.Size.Y + 32))
+            { Text = adminAccountInfo, ForeColor = Color.Green, Font = GameScreenHelper.DefaultChatFont };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Login", "Back");

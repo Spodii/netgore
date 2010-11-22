@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
@@ -19,11 +20,6 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ContainsColumns(CharacterSkillTable.DbColumns, "character_id", "skill_id");
         }
 
-        public void Execute(CharacterID characterID, SkillType skillType)
-        {
-            Execute(new KeyValuePair<CharacterID, SkillType>(characterID, skillType));
-        }
-
         /// <summary>
         /// Creates the query for this class.
         /// </summary>
@@ -38,10 +34,15 @@ namespace DemoGame.Server.Queries
 
             var s = qb.Settings;
             var q =
-                qb.Insert(CharacterSkillTable.TableName).AddAutoParam("character_id", "skill_id")
-                    .ODKU().Add(s.EscapeColumn("character_id"),s.EscapeColumn("character_id"));
+                qb.Insert(CharacterSkillTable.TableName).AddAutoParam("character_id", "skill_id").ODKU().Add(
+                    s.EscapeColumn("character_id"), s.EscapeColumn("character_id"));
 
             return q.ToString();
+        }
+
+        public void Execute(CharacterID characterID, SkillType skillType)
+        {
+            Execute(new KeyValuePair<CharacterID, SkillType>(characterID, skillType));
         }
 
         /// <summary>

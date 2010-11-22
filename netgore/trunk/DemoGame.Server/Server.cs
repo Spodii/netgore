@@ -95,7 +95,8 @@ namespace DemoGame.Server
             // Check for the password salt
             if (string.IsNullOrEmpty(ServerSettings.Default.PasswordSalt))
             {
-                const string errmsg = "No password salt has been defined in the server settings file. Make sure you define one before releasing.";
+                const string errmsg =
+                    "No password salt has been defined in the server settings file. Make sure you define one before releasing.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg);
             }

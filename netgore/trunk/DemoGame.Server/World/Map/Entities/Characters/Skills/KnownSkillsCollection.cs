@@ -15,6 +15,30 @@ namespace DemoGame.Server
         readonly Character _owner;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="KnownSkillsCollection"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public KnownSkillsCollection(Character owner) : base(GetKnownSkillsFromDb(owner))
+        {
+            if (owner == null)
+                throw new ArgumentNullException("owner");
+
+            _owner = owner;
+
+            // Send the initial collection of known skills
+            SendAllKnownSkills();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Character"/> that this collection is for.
+        /// </summary>
+        public Character Owner
+        {
+            get { return _owner; }
+        }
+
+        /// <summary>
         /// Gets the known skills for a <see cref="Character"/> from the database.
         /// </summary>
         /// <param name="owner">The <see cref="Character"/> to get the known skills for.</param>
@@ -34,45 +58,6 @@ namespace DemoGame.Server
             var ret = q.Execute(owner.ID);
 
             return ret;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="KnownSkillsCollection"/> class.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
-        public KnownSkillsCollection(Character owner) : base(GetKnownSkillsFromDb(owner))
-        {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-
-            _owner = owner;
-
-            // Send the initial collection of known skills
-            SendAllKnownSkills();
-        }
-
-        /// <summary>
-        /// Sends the complete collection of known skills to the <see cref="Owner"/>, if possible.
-        /// </summary>
-        void SendAllKnownSkills()
-        {
-            var netSender = Owner as INetworkSender;
-            if (netSender == null)
-                return;
-
-            using (var pw = ServerPacket.SkillSetKnownAll(KnownSkills))
-            {
-                netSender.Send(pw, ServerMessageType.GUIUserStats);
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Character"/> that this collection is for.
-        /// </summary>
-        public Character Owner
-        {
-            get { return _owner; }
         }
 
         /// <summary>
@@ -110,6 +95,21 @@ namespace DemoGame.Server
                     // Change to unknown
                     Owner.DbController.GetQuery<DeleteCharacterSkillQuery>().Execute(kvp);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sends the complete collection of known skills to the <see cref="Owner"/>, if possible.
+        /// </summary>
+        void SendAllKnownSkills()
+        {
+            var netSender = Owner as INetworkSender;
+            if (netSender == null)
+                return;
+
+            using (var pw = ServerPacket.SkillSetKnownAll(KnownSkills))
+            {
+                netSender.Send(pw, ServerMessageType.GUIUserStats);
             }
         }
     }

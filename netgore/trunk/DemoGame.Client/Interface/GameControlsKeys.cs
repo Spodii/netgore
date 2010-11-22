@@ -10,12 +10,6 @@ namespace DemoGame.Client
     public static partial class GameControlsKeys
     {
         static readonly GameControlKeys _attack;
-        static readonly GameControlKeys _moveLeft;
-        static readonly GameControlKeys _moveRight;
-        static readonly GameControlKeys _pickUp;
-        static readonly GameControlKeys _talkToNPC;
-        static readonly GameControlKeys _useShop;
-        static readonly GameControlKeys _useWorld;
         static readonly GameControlKeys _emoteEllipsis;
         static readonly GameControlKeys _emoteExclamation;
         static readonly GameControlKeys _emoteHeartbroken;
@@ -23,6 +17,9 @@ namespace DemoGame.Client
         static readonly GameControlKeys _emoteMeat;
         static readonly GameControlKeys _emoteQuestion;
         static readonly GameControlKeys _emoteSweat;
+        static readonly GameControlKeys _moveLeft;
+        static readonly GameControlKeys _moveRight;
+        static readonly GameControlKeys _pickUp;
         static readonly GameControlKeys _quickBarItem0;
         static readonly GameControlKeys _quickBarItem1;
         static readonly GameControlKeys _quickBarItem2;
@@ -33,19 +30,11 @@ namespace DemoGame.Client
         static readonly GameControlKeys _quickBarItem7;
         static readonly GameControlKeys _quickBarItem8;
         static readonly GameControlKeys _quickBarItem9;
+        static readonly GameControlKeys _talkToNPC;
+        static readonly GameControlKeys _useShop;
+        static readonly GameControlKeys _useWorld;
 
         static GameControlKeys _moveStop;
-
-        /// <summary>
-        /// Helper method to create a <see cref="SettingsKeyCodeReference"/>.
-        /// </summary>
-        /// <param name="settingName">The setting name for the key, without the Keys_ prefix.</param>
-        /// <returns>The <see cref="IKeyCodeReference"/> instance.</returns>
-        static IKeyCodeReference SKC(string settingName)
-        {
-            const string prefix = "Keys_";
-            return SettingsKeyCodeReference.Create(ClientSettings.Default, prefix + settingName);
-        }
 
         /// <summary>
         /// Initializes the <see cref="GameControlsKeys"/> class.
@@ -85,6 +74,11 @@ namespace DemoGame.Client
             InitPerspectiveSpecificKeys();
         }
 
+        public static GameControlKeys Attack
+        {
+            get { return _attack; }
+        }
+
         public static GameControlKeys EmoteEllipsis
         {
             get { return _emoteEllipsis; }
@@ -120,9 +114,24 @@ namespace DemoGame.Client
             get { return _emoteSweat; }
         }
 
-        public static GameControlKeys Attack
+        public static GameControlKeys MoveLeft
         {
-            get { return _attack; }
+            get { return _moveLeft; }
+        }
+
+        public static GameControlKeys MoveRight
+        {
+            get { return _moveRight; }
+        }
+
+        public static GameControlKeys MoveStop
+        {
+            get { return _moveStop; }
+        }
+
+        public static GameControlKeys PickUp
+        {
+            get { return _pickUp; }
         }
 
         public static GameControlKeys QuickBarItem0
@@ -175,26 +184,6 @@ namespace DemoGame.Client
             get { return _quickBarItem9; }
         }
 
-        public static GameControlKeys MoveLeft
-        {
-            get { return _moveLeft; }
-        }
-
-        public static GameControlKeys MoveRight
-        {
-            get { return _moveRight; }
-        }
-
-        public static GameControlKeys MoveStop
-        {
-            get { return _moveStop; }
-        }
-
-        public static GameControlKeys PickUp
-        {
-            get { return _pickUp; }
-        }
-
         public static GameControlKeys TalkToNPC
         {
             get { return _talkToNPC; }
@@ -208,6 +197,17 @@ namespace DemoGame.Client
         public static GameControlKeys UseWorld
         {
             get { return _useWorld; }
+        }
+
+        /// <summary>
+        /// Helper method to create a <see cref="SettingsKeyCodeReference"/>.
+        /// </summary>
+        /// <param name="settingName">The setting name for the key, without the Keys_ prefix.</param>
+        /// <returns>The <see cref="IKeyCodeReference"/> instance.</returns>
+        static IKeyCodeReference SKC(string settingName)
+        {
+            const string prefix = "Keys_";
+            return SettingsKeyCodeReference.Create(ClientSettings.Default, prefix + settingName);
         }
     }
 }

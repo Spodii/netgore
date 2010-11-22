@@ -4,11 +4,8 @@
 
 #if !TOPDOWN
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using NetGore;
 using SFML.Graphics;
 
@@ -24,10 +21,7 @@ namespace DemoGame
         [Browsable(false)]
         public bool CanJump
         {
-            get
-            {
-                return IsOnGround;
-            }
+            get { return IsOnGround; }
         }
 
         /// <summary>

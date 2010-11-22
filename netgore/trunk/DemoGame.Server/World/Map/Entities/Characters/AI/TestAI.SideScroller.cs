@@ -31,8 +31,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="TestAI"/> class.
         /// </summary>
         /// <param name="actor">Character for this AI module to control.</param>
-        public TestAI(Character actor)
-            : base(actor)
+        public TestAI(Character actor) : base(actor)
         {
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
@@ -12,6 +13,8 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterTemplateSkillsQuery : DbQueryReader<CharacterTemplateID>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateSkillsQuery"/> class.
         /// </summary>
@@ -37,26 +40,14 @@ namespace DemoGame.Server.Queries
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(CharacterTemplateSkillTable.TableName).Add("skill_id").Where(f.Equals(s.EscapeColumn("character_template_id"),
-                    s.Parameterize("id")));
+                qb.Select(CharacterTemplateSkillTable.TableName).Add("skill_id").Where(
+                    f.Equals(s.EscapeColumn("character_template_id"), s.Parameterize("id")));
             return q.ToString();
-        }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>The <see cref="DbParameter"/>s needed for this class to perform database queries.
-        /// If null, no parameters will be used.</returns>
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return CreateParameters("id");
         }
 
         public IEnumerable<SkillType> Execute(CharacterTemplateID charTemplateID)
         {
-            List<SkillType> ret = new List<SkillType>();
+            var ret = new List<SkillType>();
 
             using (var r = ExecuteReader(charTemplateID))
             {
@@ -80,6 +71,16 @@ namespace DemoGame.Server.Queries
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>The <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.</returns>
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters("id");
         }
 
         /// <summary>
