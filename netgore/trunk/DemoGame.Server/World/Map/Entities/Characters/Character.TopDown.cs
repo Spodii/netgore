@@ -6,6 +6,8 @@
 
 #if TOPDOWN
 
+using SFML.Graphics;
+
 namespace DemoGame.Server
 {
     public partial class Character
