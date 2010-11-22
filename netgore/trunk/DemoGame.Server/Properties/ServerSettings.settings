@@ -57,5 +57,8 @@ Use the arrow keys to move, control to attack, alt to talk to NPCs and use world
     <Setting Name="ThreadPriority" Type="System.Threading.ThreadPriority" Scope="Application">
       <Value Profile="(Default)">AboveNormal</Value>
     </Setting>
+    <Setting Name="PasswordSalt" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

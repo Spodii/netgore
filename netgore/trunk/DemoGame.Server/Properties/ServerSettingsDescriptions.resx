@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DefaultMapItemLife" xml:space="preserve">
     <value>The amount of time, in milliseconds, an item may remain on the map before it is removed automatically.</value>
@@ -167,5 +167,8 @@
   </data>
   <data name="UnarmedItemTemplateID" xml:space="preserve">
     <value>The ItemTemplateID that represents the template of the item used for attacking when no weapon is specified (see: World.UnarmedWeapon).</value>
+  </data>
+  <data name="PasswordSalt" xml:space="preserve">
+    <value>The salt to use when generating the MD5 hash for the passwords in the database. Using a unique salt makes it impossible to use a rainbow table to reverse a hash. However, changing the salt will break all existing hashes. So if you change the password salt, you will have to have everyone change their passwords.</value>
   </data>
 </root>

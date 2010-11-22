@@ -43,14 +43,24 @@ namespace DemoGame.Server
             get { return _dbController; }
         }
 
+        static readonly string _passwordSalt = ServerSettings.Default.PasswordSalt;
+
         /// <summary>
-        /// Encodes a password in a hash.
+        /// Generates a salted hash for a password.
         /// </summary>
-        /// <param name="originalPassword">The original password.</param>
-        /// <returns>The hash-encoded password.</returns>
+        /// <param name="originalPassword">The original (raw text) password.</param>
+        /// <returns>The salted and hashed password.</returns>
         public static string EncodePassword(string originalPassword)
         {
-            return Hasher.GetHashAsBase16String(originalPassword);
+            // Apply the salt (if one exists)
+            string saltedPassword;
+            if (!string.IsNullOrEmpty(_passwordSalt))
+                saltedPassword = _passwordSalt + originalPassword;
+            else
+                saltedPassword = originalPassword;
+
+            // Hash the salted password
+            return Hasher.GetHashAsBase16String(saltedPassword);
         }
 
         /// <summary>

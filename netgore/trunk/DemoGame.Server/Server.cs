@@ -92,6 +92,14 @@ namespace DemoGame.Server
 
             WorldStatsTracker.Instance.NetPeerToTrack = _sockets.GetNetServer();
 
+            // Check for the password salt
+            if (string.IsNullOrEmpty(ServerSettings.Default.PasswordSalt))
+            {
+                const string errmsg = "No password salt has been defined in the server settings file. Make sure you define one before releasing.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg);
+            }
+
             // Set the thread priority
             SetThreadPriority(ServerSettings.Default.ThreadPriority);
 

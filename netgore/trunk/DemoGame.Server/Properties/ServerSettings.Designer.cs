@@ -185,5 +185,14 @@ namespace DemoGame.Server.Properties {
                 return ((global::System.Threading.ThreadPriority)(this["ThreadPriority"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PasswordSalt {
+            get {
+                return ((string)(this["PasswordSalt"]));
+            }
+        }
     }
 }
