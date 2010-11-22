@@ -417,7 +417,7 @@ namespace GoreUpdater
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Successfully downloaded remote file `{0}` to `{1}` using `{2}`.", remoteFile, localFilePath,
-                               sender);
+                    sender);
 
             try
             {
@@ -447,7 +447,7 @@ namespace GoreUpdater
             if (log.IsInfoEnabled)
             {
                 log.InfoFormat("Failed to move file `{0}` to `{1}` using `{2}`; adding job to IOfflineFileReplacer `{3}`.",
-                               localFilePath, targetFilePath, sender, _fileReplacer);
+                    localFilePath, targetFilePath, sender, _fileReplacer);
             }
 
             try
@@ -780,7 +780,7 @@ namespace GoreUpdater
                 if (log.IsInfoEnabled)
                 {
                     log.InfoFormat("Could not execute IOfflineFileReplacer `{0}` - state is `{1}` (expected: {2}).", _fileReplacer,
-                                   State, UpdateClientState.Completed);
+                        State, UpdateClientState.Completed);
                 }
 
                 return false;

@@ -58,11 +58,11 @@ namespace GoreUpdater.Manager
         ManagerSettings(string filePath)
         {
             _liveVersionFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath,
-                                                                    MasterServerReader.CurrentVersionFilePath);
+                MasterServerReader.CurrentVersionFilePath);
             _masterServerListFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath,
-                                                                         MasterServerReader.CurrentMasterServersFilePath);
+                MasterServerReader.CurrentMasterServersFilePath);
             _fileServerListFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath,
-                                                                       MasterServerReader.CurrentDownloadSourcesFilePath);
+                MasterServerReader.CurrentDownloadSourcesFilePath);
 
             _filePath = filePath;
         }

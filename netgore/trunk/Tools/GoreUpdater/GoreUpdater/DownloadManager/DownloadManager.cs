@@ -873,7 +873,7 @@ namespace GoreUpdater
                 {
                     if (log.IsDebugEnabled)
                         log.DebugFormat("Could not remove DownloadSource `{0}` - was not in the _downloadSources list.",
-                                        downloadSource);
+                            downloadSource);
 
                     return false;
                 }

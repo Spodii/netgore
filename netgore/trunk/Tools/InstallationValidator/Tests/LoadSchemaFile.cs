@@ -45,7 +45,8 @@ namespace InstallationValidator.Tests
 
             if (!File.Exists(schemaFile))
             {
-                const string errmsg = "The database schema file could not be found at path `{0}`, so this program will not be" + 
+                const string errmsg =
+                    "The database schema file could not be found at path `{0}`, so this program will not be" +
                     " able to check your database schema to see if it is up-to-date.";
                 errorMessage = string.Format(errmsg, schemaFile);
                 return false;

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using MySql.Data.MySqlClient;
-using MySqlHelper = InstallationValidator.MySqlHelper;
+using InstallationValidator;
 
 namespace CodeReleasePreparer
 {
@@ -17,27 +15,16 @@ namespace CodeReleasePreparer
 
         static readonly string[] _deleteFilePatterns = new string[]
         {
-            @"\.csproj\.user$",
-            @"\.resharper\.user$", 
-            @"\.suo$",
-            @"\.cachefile$", 
-            @"\.vshost\.exe", 
-            @"\.pdb$", 
-            @"[\\/]bin[\\/]",
-            @"[\\/]obj[\\/]", 
-            @"[\\/]\.svn[\\/]", 
-            @"[\\/]_ReSharper\.", 
-            @"[\\/]InstallationValidator[\\/]bin[\\/]csfml.+\.dll$",
-            @"[\\/]InstallationValidator[\\/]bin[\\/]libsndfile.*\.dll$", 
-            @"[\\/]InstallationValidator[\\/]bin[\\/]openal.*\.dll$",
+            @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe", @"\.pdb$", @"[\\/]bin[\\/]",
+            @"[\\/]obj[\\/]", @"[\\/]\.svn[\\/]", @"[\\/]_ReSharper\.", @"[\\/]InstallationValidator[\\/]bin[\\/]csfml.+\.dll$",
+            @"[\\/]InstallationValidator[\\/]bin[\\/]libsndfile.*\.dll$", @"[\\/]InstallationValidator[\\/]bin[\\/]openal.*\.dll$"
+            ,
         };
 
         static readonly string[] _preserveFilePatterns = new string[]
         {
-            @"\.bat$", 
-            @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.exe",
-            @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.dll",
-            @"[\\/]CodeReleasePreparer[\\/]bin[\\/]",
+            @"\.bat$", @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.exe",
+            @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.dll", @"[\\/]CodeReleasePreparer[\\/]bin[\\/]",
         };
 
         static RegexCollection _delFileRegexes;
@@ -179,7 +166,7 @@ namespace CodeReleasePreparer
             Console.WriteLine("Creating self-destruct batch file...");
             var programPath = string.Format("{0}CodeReleasePreparer{1}", Paths.Root, Path.DirectorySeparatorChar);
             RunBatchFile(true, "CHOICE /c 1 /d 1 /t 2 > nul", "RMDIR /S /Q \"" + programPath + "bin\"",
-                         "RMDIR /S /Q \"" + programPath + "obj\"", "DEL %0");
+                "RMDIR /S /Q \"" + programPath + "obj\"", "DEL %0");
 
             Console.WriteLine("Done");
         }

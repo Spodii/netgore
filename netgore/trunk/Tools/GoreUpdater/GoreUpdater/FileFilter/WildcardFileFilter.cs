@@ -43,7 +43,7 @@ namespace GoreUpdater
         {
             if (log.IsDebugEnabled)
                 log.DebugFormat("Performing IsMatch on `{0}` for filePath `{1}`. Note: Will end up calling RegexFileFilter.", this,
-                                filePath);
+                    filePath);
 
             return _filter.IsMatch(filePath);
         }
