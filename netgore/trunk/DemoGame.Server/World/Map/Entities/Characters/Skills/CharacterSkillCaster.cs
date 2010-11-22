@@ -96,6 +96,10 @@ namespace DemoGame.Server
             if (!_character.IsAlive)
                 return false;
 
+            // Check that the character knows the skill
+            if (!_character.KnownSkills.Knows(skill.SkillType))
+                return false;
+
             // Don't interrupt a skill that the character is already casting
             if (IsCastingSkill)
                 return false;

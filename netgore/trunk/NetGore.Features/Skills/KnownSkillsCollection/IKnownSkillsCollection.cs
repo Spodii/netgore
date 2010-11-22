@@ -40,5 +40,11 @@ namespace NetGore.Features.Skills
         /// <param name="skill">The skill to set the status for.</param>
         /// <param name="value">True if the skill is to be set as known; false to be set as unknown.</param>
         void SetSkill(T skill, bool value);
+
+        /// <summary>
+        /// Explicitly sets which skills are known.
+        /// </summary>
+        /// <param name="knownSkills">The skills to set as known. Any skill not in this collection will be set to unknown.</param>
+        void SetValues(IEnumerable<T> knownSkills);
     }
 }

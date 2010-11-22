@@ -154,10 +154,12 @@
     <Compile Include="Shops\ShopItemIndex.cs" />
     <Compile Include="Shops\ShopItemIndexExtensions.cs" />
     <Compile Include="Shops\ShopSettings.cs" />
+    <Compile Include="Skills\KnownSkillsCollection\IKnownSkillsCollection.cs" />
     <Compile Include="Skills\ISkill.cs" />
-    <Compile Include="Skills\ISkillCooldownManager.cs" />
+    <Compile Include="Skills\SkillCooldownmanager\ISkillCooldownManager.cs" />
+    <Compile Include="Skills\KnownSkillsCollection\KnownSkillsCollection.cs" />
     <Compile Include="Skills\SkillBase.cs" />
-    <Compile Include="Skills\SkillCooldownManager.cs" />
+    <Compile Include="Skills\SkillCooldownmanager\SkillCooldownManager.cs" />
     <Compile Include="Skills\SkillInfo.cs" />
     <Compile Include="Skills\SkillInfoManager.cs" />
     <Compile Include="Skills\SkillManager.cs" />

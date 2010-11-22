@@ -262,7 +262,6 @@
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuestsQuery.cs" />
     <Compile Include="Queries\Map\DeleteMapQuery.cs" />
     <Compile Include="Queries\Map\SelectMapQuery.cs" />
-    <Compile Include="Queries\User\SelectUserByNameQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Character\Template\InsertCharacterTemplateEquippedQuery.cs" />
     <Compile Include="Queries\Character\Template\InsertCharacterTemplateInventoryQuery.cs" />
@@ -446,7 +445,6 @@
     <Compile Include="Queries\Shop\SelectShopIDsQuery.cs" />
     <Compile Include="Queries\Shop\SelectShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\SelectShopItemsQuery.cs" />
-    <Compile Include="Queries\User\UserExistsQuery.cs" />
     <Compile Include="UI\WinForms\ConsoleWindowHider.WindowsImpl.cs" />
     <Compile Include="WorldStatsTracker.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />

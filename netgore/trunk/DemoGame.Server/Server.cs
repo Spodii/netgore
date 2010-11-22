@@ -207,18 +207,22 @@ namespace DemoGame.Server
 
             ThreadAsserts.IsMainThread();
 
+            // Get the account
             var account = conn.Tag as IUserAccount;
             if (account == null)
                 return;
 
+            // Try to create the character
             string errorMessage;
             var success = UserAccountManager.TryAddCharacter(account.Name, name, out errorMessage);
 
+            // Send the result to the client (which we have to do both when successful and failed)
             using (var pw = ServerPacket.CreateAccountCharacter(success, errorMessage))
             {
                 conn.Send(pw, ServerMessageType.System);
             }
 
+            // If we successfully created the character, reload and resync the character listing
             if (success)
             {
                 account.LoadCharacterIDs();

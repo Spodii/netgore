@@ -14,11 +14,12 @@ namespace DemoGame.Server
     {
         static readonly CharacterTemplateManager _instance;
         static readonly QuestManager _questManager = QuestManager.Instance;
-        SelectCharacterTemplateQuery _selectCharacterTemplateQuery;
 
+        SelectCharacterTemplateQuery _selectCharacterTemplateQuery;
         SelectCharacterTemplateEquippedQuery _selectEquippedQuery;
         SelectCharacterTemplateInventoryQuery _selectInventoryQuery;
         SelectCharacterTemplateQuestsQuery _selectQuestsQuery;
+        SelectCharacterTemplateSkillsQuery _selectSkillsQuery;
 
         /// <summary>
         /// Initializes the <see cref="CharacterTemplateManager"/> class.
@@ -57,6 +58,7 @@ namespace DemoGame.Server
             _selectInventoryQuery = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>();
             _selectEquippedQuery = dbController.GetQuery<SelectCharacterTemplateEquippedQuery>();
             _selectQuestsQuery = dbController.GetQuery<SelectCharacterTemplateQuestsQuery>();
+            _selectSkillsQuery = dbController.GetQuery<SelectCharacterTemplateSkillsQuery>();
 
             base.CacheDbQueries(dbController);
         }
@@ -101,6 +103,7 @@ namespace DemoGame.Server
             var itemValues = _selectInventoryQuery.Execute(id);
             var equippedValues = _selectEquippedQuery.Execute(id);
             var questValues = _selectQuestsQuery.Execute(id);
+            var skillValues = _selectSkillsQuery.Execute(id);
 
             Debug.Assert(id == v.ID);
             Debug.Assert(itemValues.All(x => id == x.CharacterTemplateID));
@@ -112,7 +115,7 @@ namespace DemoGame.Server
             var equipped = equippedValues.Select(x => new CharacterTemplateEquipmentItem(itm[x.ItemTemplateID], x.Chance));
             var quests = questValues.Select(x => _questManager.GetQuest(x));
 
-            var template = new CharacterTemplate(v, items, equipped, quests);
+            var template = new CharacterTemplate(v, items, equipped, quests, skillValues);
 
             return template;
         }

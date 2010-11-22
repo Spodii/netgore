@@ -489,7 +489,7 @@ namespace DemoGame.Client
             _shopForm = new ShopForm(_dragDropHandler, new Vector2(250, 0), _cScreen);
             _shopForm.RequestPurchase += ShopForm_RequestPurchase;
 
-            _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), _cScreen);
+            _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), _cScreen, UserInfo.KnownSkills);
             _skillsForm.RequestUseSkill += SkillsForm_RequestUseSkill;
 
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);

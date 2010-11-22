@@ -807,6 +807,7 @@ namespace DemoGame.Server
             SkillType skillType;
             MapEntityIndex? targetIndex = null;
 
+            // Get the SkillType to use
             try
             {
                 skillType = r.ReadEnum<SkillType>();
@@ -821,13 +822,26 @@ namespace DemoGame.Server
                 return;
             }
 
+            // Check for a target
             var hasTarget = r.ReadBool();
             if (hasTarget)
                 targetIndex = r.ReadMapEntityIndex();
 
+            // Get the user
             User user;
             if ((user = TryGetUser(conn)) != null)
-                user.UseSkill(skillType, GetTargetCharacter(user, targetIndex));
+            {
+                // Check that they know the skill
+                if (!user.KnownSkills.Knows(skillType))
+                {
+                    user.Send(GameMessage.SkillNotKnown, ServerMessageType.GUIChat);
+                }
+                else
+                {
+                    // Use the skill
+                    user.UseSkill(skillType, GetTargetCharacter(user, targetIndex));
+                }
+            }
         }
 
         [MessageHandler((uint)ClientPacketID.UseWorld)]

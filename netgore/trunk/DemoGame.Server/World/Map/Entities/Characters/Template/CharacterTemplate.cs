@@ -19,6 +19,7 @@ namespace DemoGame.Server
 
         readonly IEnumerable<CharacterTemplateEquipmentItem> _equipment;
         readonly IEnumerable<CharacterTemplateInventoryItem> _inventory;
+        readonly IEnumerable<SkillType> _knownSkills;
         readonly IEnumerable<IQuest<User>> _quests;
         readonly ICharacterTemplateTable _templateTable;
 
@@ -29,28 +30,45 @@ namespace DemoGame.Server
         /// <param name="inventory">The inventory.</param>
         /// <param name="equipment">The equipment.</param>
         /// <param name="quests">The quests.</param>
+        /// <param name="knownSkills">The known skills.</param>
         public CharacterTemplate(ICharacterTemplateTable templateTable, IEnumerable<CharacterTemplateInventoryItem> inventory,
-                                 IEnumerable<CharacterTemplateEquipmentItem> equipment, IEnumerable<IQuest<User>> quests)
+                                 IEnumerable<CharacterTemplateEquipmentItem> equipment, IEnumerable<IQuest<User>> quests,
+                                 IEnumerable<SkillType> knownSkills)
         {
+            _templateTable = templateTable;
+
             if (templateTable == null)
                 throw new ArgumentNullException("templateTable");
             if (inventory == null)
                 throw new ArgumentNullException("inventory");
             if (equipment == null)
                 throw new ArgumentNullException("equipment");
+            if (knownSkills == null)
+                throw new ArgumentNullException("knownSkills");
 
-            Debug.Assert(!inventory.Any(x => x == null));
-            Debug.Assert(!equipment.Any(x => x == null));
-            Debug.Assert(!quests.Any(x => x == null));
-
+            // Compact all the collections given to us to ensure they are immutable and have minimal overhead
             _inventory = inventory.ToCompact();
             _equipment = equipment.ToCompact();
             _quests = quests.ToCompact();
+            _knownSkills = knownSkills.ToCompact();
 
-            _templateTable = templateTable;
+            // Assert values are valid
+            Debug.Assert(!_inventory.Any(x => x == null));
+            Debug.Assert(!_equipment.Any(x => x == null));
+            Debug.Assert(!_quests.Any(x => x == null));
+            Debug.Assert(_knownSkills.All(EnumHelper<SkillType>.IsDefined),
+                string.Format("One or more SkillTypes for CharacterTemplate `{0}` are invalid!", this));
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded CharacterTemplate `{0}`.", this);
+        }
+
+        /// <summary>
+        /// Gets the skills known by the <see cref="CharacterTemplate"/>.
+        /// </summary>
+        public IEnumerable<SkillType> KnownSkills
+        {
+            get { return _knownSkills; }
         }
 
         /// <summary>

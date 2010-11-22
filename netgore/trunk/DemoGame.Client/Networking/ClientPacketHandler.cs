@@ -777,7 +777,37 @@ namespace DemoGame.Client
             var skillType = r.ReadEnum<SkillType>();
             var isKnown = r.ReadBool();
 
-            // TODO: !! Store known skills
+            if (EnumHelper<SkillType>.IsDefined(skillType))
+            {
+                const string errmsg = "Invalid SkillType received: `{0}`";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, skillType);
+                Debug.Fail(string.Format(errmsg, skillType));
+                return;
+            }
+
+            // Set the skill's known state
+            UserInfo.KnownSkills.SetSkill(skillType, isKnown);
+        }
+
+        [MessageHandler((uint)ServerPacketID.SkillSetKnownAll)]
+        void RecvSkillSetKnownAll(IIPSocket conn, BitStream r)
+        {
+            var count = r.ReadByte();
+            var knownSkills = new List<SkillType>(count);
+
+            // Read the known skills list
+            for (int i = 0; i < count; i++)
+            {
+                var value = r.ReadEnum<SkillType>();
+                knownSkills.Add(value);
+            }
+
+            Debug.Assert(knownSkills.Count == count);
+            Debug.Assert(knownSkills.All(EnumHelper<SkillType>.IsDefined), "One or more known skills were unknown...");
+
+            // Set the known skills
+            UserInfo.KnownSkills.SetValues(knownSkills);
         }
 
         [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToMap)]

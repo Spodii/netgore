@@ -24,6 +24,9 @@ namespace DemoGame.Client
 
         readonly ISkillCooldownManager _cooldownManager;
         readonly int _lineSpacing;
+        readonly KnownSkillsCollection _knownSkills;
+
+        public KnownSkillsCollection KnownSkills { get { return _knownSkills; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillsForm"/> class.
@@ -31,9 +34,15 @@ namespace DemoGame.Client
         /// <param name="cooldownManager">The skill cooldown manager.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent)
+        /// <param name="knownSkills">The known skills.</param>
+        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent, KnownSkillsCollection knownSkills)
             : base(parent, position, new Vector2(32, 32))
         {
+            if (knownSkills == null)
+                throw new ArgumentNullException("knownSkills");
+
+            _knownSkills = knownSkills;
+
             IsVisible = false;
 
             _cooldownManager = cooldownManager;
@@ -117,12 +126,15 @@ namespace DemoGame.Client
         public sealed class SkillPictureBox : PictureBox, IDragDropProvider, IQuickBarItemProvider
         {
             readonly ISkillCooldownManager _cooldownManager;
+            readonly KnownSkillsCollection _knownSkills;
 
             bool _isCoolingDown = false;
 
             public SkillPictureBox(SkillsForm parent, SkillInfo<SkillType> skillInfo, Vector2 position)
                 : base(parent, position, _iconSize)
             {
+                _knownSkills = parent.KnownSkills;
+
                 SkillInfo = skillInfo;
                 Sprite = new Grh(GrhInfo.GetData(SkillInfo.Icon));
                 _cooldownManager = parent.CooldownManager;
@@ -143,6 +155,9 @@ namespace DemoGame.Client
 
                 if (_isCoolingDown)
                     RenderRectangle.Draw(spriteBatch, GetScreenArea(), new Color(0, 0, 0, 150));
+
+                if (!IsEnabled)
+                    RenderRectangle.Draw(spriteBatch, GetScreenArea(), new Color(255, 0, 0, 150));
             }
 
             /// <summary>
@@ -165,6 +180,8 @@ namespace DemoGame.Client
             protected override void UpdateControl(TickCount currentTime)
             {
                 _isCoolingDown = _cooldownManager.IsCoolingDown(SkillInfo.CooldownGroup, currentTime);
+
+                IsEnabled = _knownSkills.Knows(SkillInfo.Value);
 
                 base.UpdateControl(currentTime);
             }
