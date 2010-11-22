@@ -19,7 +19,7 @@ using NetGore.World;
 
 namespace DemoGame.Server
 {
-    class ServerPacketHandler : IGetTime
+    partial class ServerPacketHandler : IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly QuestManager _questManager = QuestManager.Instance;
@@ -306,21 +306,6 @@ namespace DemoGame.Server
                 user.SendInventoryItemStats(slot);
         }
 
-#if !TOPDOWN
-        [MessageHandler((uint)ClientPacketID.Jump)]
-        void RecvJump(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if (((user = TryGetUser(conn)) != null) && user.CanJump)
-            {
-                if (user.IsPeerTrading)
-                    return;
-
-                user.Jump();
-            }
-        }
-#endif
-
         [MessageHandler((uint)ClientPacketID.Login)]
         void RecvLogin(IIPSocket conn, BitStream r)
         {
@@ -430,16 +415,6 @@ namespace DemoGame.Server
             Server.CreateAccount(conn, name, password, email);
         }
 
-#if TOPDOWN
-        [MessageHandler((uint)ClientPacketID.MoveDown)]
-        void RecvMoveDown(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if ((user = TryGetUser(conn)) != null && !user.IsMovingDown)
-                user.MoveDown();
-        }
-#endif
-
         [MessageHandler((uint)ClientPacketID.MoveLeft)]
         void RecvMoveLeft(IIPSocket conn, BitStream r)
         {
@@ -473,50 +448,6 @@ namespace DemoGame.Server
             if (((user = TryGetUser(conn)) != null) && user.IsMoving)
                 user.StopMoving();
         }
-
-#if TOPDOWN
-        [MessageHandler((uint)ClientPacketID.MoveStopHorizontal)]
-        void RecvMoveStopHorizontal(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if ((user = TryGetUser(conn)) != null && (user.IsMovingLeft || user.IsMovingRight))
-            {
-                if (user.IsPeerTrading)
-                    return;
-                user.StopMovingHorizontal();
-            }
-        }
-#endif
-
-#if TOPDOWN
-        [MessageHandler((uint)ClientPacketID.MoveStopVertical)]
-        void RecvMoveStopVertical(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if ((user = TryGetUser(conn)) != null && (user.IsMovingUp || user.IsMovingDown))
-            {
-                if (user.IsPeerTrading)
-                    return;
-
-                user.StopMovingVertical();
-            }
-        }
-#endif
-
-#if TOPDOWN
-        [MessageHandler((uint)ClientPacketID.MoveUp)]
-        void RecvMoveUp(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if ((user = TryGetUser(conn)) != null && !user.IsMovingUp)
-            {
-                if (user.IsPeerTrading)
-                    return;
-
-                user.MoveUp();
-            }
-        }
-#endif
 
         [MessageHandler((uint)ClientPacketID.PickupItem)]
         void RecvPickupItem(IIPSocket conn, BitStream r)

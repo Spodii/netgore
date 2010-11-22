@@ -11,12 +11,9 @@ namespace DemoGame
     /// <summary>
     /// Abstract class for an Entity that is a Character.
     /// </summary>
-    public abstract class CharacterEntity : DynamicEntity, IUpdateableEntity
+    public abstract partial class CharacterEntity : DynamicEntity, IUpdateableEntity
     {
         Direction _heading = Direction.East;
-#if !TOPDOWN
-        CharacterState _state = CharacterState.Idle;
-#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
@@ -40,22 +37,6 @@ namespace DemoGame
         {
             get { return BodyInfo.ID; }
             set { BodyInfo = BodyInfoManager.Instance.GetBody(value); }
-        }
-
-        /// <summary>
-        /// Gets if the character meets the requirements allowing them to jump. For top-down, this is always false.
-        /// </summary>
-        [Browsable(false)]
-        public bool CanJump
-        {
-            get
-            {
-#if TOPDOWN
-                return false;
-#else
-                return IsOnGround;
-#endif
-            }
         }
 
         /// <summary>
@@ -99,19 +80,6 @@ namespace DemoGame
             get { return Velocity.X != 0; }
         }
 
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Gets if the character is moving up.
-    /// </summary>
-        [Browsable(false)]
-        public bool IsMovingDown
-        {
-            get { return Velocity.Y > 0; }
-        }
-#endif
-#pragma warning restore 1587
-
         /// <summary>
         /// Gets if the character is moving to the left.
         /// </summary>
@@ -130,34 +98,11 @@ namespace DemoGame
             get { return Velocity.X > 0; }
         }
 
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Gets if the character is moving up.
-    /// </summary>
-        [Browsable(false)]
-        public bool IsMovingUp
-        {
-            get { return Velocity.Y < 0; }
-        }
-#endif
-#pragma warning restore 1587
-
         /// <summary>
         /// Gets or sets the name of the CharacterEntity.
         /// </summary>
         [SyncValue]
         public virtual string Name { get; set; }
-
-#if !TOPDOWN
-        /// <summary>
-        /// Gets the character's current state.
-        /// </summary>
-        public CharacterState State
-        {
-            get { return _state; }
-        }
-#endif
 
         /// <summary>
         /// Handles collision against other entities.
@@ -207,45 +152,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Stops the character's controllable movement. Any forces acting upon the character, such as gravity, will
-        /// not be affected.
-        /// </summary>
-        public virtual void StopMoving()
-        {
-#if TOPDOWN
-            SetVelocity(Vector2.Zero);
-#else
-            SetVelocity(new Vector2(0.0f, Velocity.Y));
-#endif
-        }
-
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Stops the character's horizontal movement. Any forces acting upon the character, such as gravity, will
-    /// not be affected.
-    /// </summary>
-        public virtual void StopMovingHorizontal()
-        {
-            SetVelocity(new Vector2(0, Velocity.Y));
-        }
-#endif
-#pragma warning restore 1587
-
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Stops the character's vertical movement. Any forces acting upon the character, such as gravity, will
-    /// not be affected.
-    /// </summary>
-        public virtual void StopMovingVertical()
-        {
-            SetVelocity(new Vector2(Velocity.X, 0));
-        }
-#endif
-#pragma warning restore 1587
-
-        /// <summary>
         /// Moves the character to a new location instantly. The character's velocity will
         /// also be set to zero upon teleporting.
         /// </summary>
@@ -292,68 +198,6 @@ namespace DemoGame
         {
             // Update velocity
             UpdateVelocity(map, deltaTime);
-        }
-
-        /// <summary>
-        /// Updates the character's state.
-        /// </summary>
-        void UpdateState()
-        {
-#if !TOPDOWN
-            // Start with the idle state
-            var newState = CharacterState.Idle;
-
-            // Check the vertical state (moving up or down)
-            if (Velocity.Y != 0 || StandingOn == null)
-            {
-                if (Velocity.Y > 0)
-                    newState = CharacterState.Falling;
-                else
-                    newState = CharacterState.Jumping;
-            }
-
-            // Check the horizontal state (left or moving)
-            if (Velocity.X != 0)
-            {
-                // Set the heading accordingly
-                if (Velocity.X < 0)
-                    _heading = Direction.West;
-                else
-                    _heading = Direction.East;
-
-                // Change from the stationary state to its moving equivilant
-                switch (newState)
-                {
-                    case CharacterState.Idle:
-                        if (Velocity.X > 0)
-                            newState = CharacterState.WalkingRight;
-                        else
-                            newState = CharacterState.WalkingLeft;
-                        break;
-
-                    case CharacterState.Falling:
-                        if (Velocity.X > 0)
-                            newState = CharacterState.FallingRight;
-                        else
-                            newState = CharacterState.FallingLeft;
-                        break;
-
-                    case CharacterState.Jumping:
-                        if (Velocity.X > 0)
-                            newState = CharacterState.JumpingRight;
-                        else
-                            newState = CharacterState.JumpingLeft;
-                        break;
-                }
-            }
-
-            // Set the new state
-            _state = newState;
-#else
-            var newHeading = DirectionHelper.FromVector(Velocity);
-            if (newHeading.HasValue)
-                _heading = newHeading.Value;
-#endif
         }
 
         #region IUpdateableEntity Members

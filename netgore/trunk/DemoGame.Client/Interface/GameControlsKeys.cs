@@ -7,12 +7,11 @@ namespace DemoGame.Client
     /// <summary>
     /// Contains all of the <see cref="GameControlKeys"/> used for the <see cref="GameControl"/>s.
     /// </summary>
-    public static class GameControlsKeys
+    public static partial class GameControlsKeys
     {
         static readonly GameControlKeys _attack;
         static readonly GameControlKeys _moveLeft;
         static readonly GameControlKeys _moveRight;
-        static readonly GameControlKeys _moveStop;
         static readonly GameControlKeys _pickUp;
         static readonly GameControlKeys _talkToNPC;
         static readonly GameControlKeys _useShop;
@@ -35,16 +34,7 @@ namespace DemoGame.Client
         static readonly GameControlKeys _quickBarItem8;
         static readonly GameControlKeys _quickBarItem9;
 
-#if !TOPDOWN
-        static readonly GameControlKeys _jump;
-#endif
-
-#if TOPDOWN
-        static readonly GameControlKeys _moveDown;
-        static readonly GameControlKeys _moveStopHorizontal;
-        static readonly GameControlKeys _moveStopVertical;
-        static readonly GameControlKeys _moveUp;
-#endif
+        static GameControlKeys _moveStop;
 
         /// <summary>
         /// Helper method to create a <see cref="SettingsKeyCodeReference"/>.
@@ -65,18 +55,6 @@ namespace DemoGame.Client
             // Create the GameControlKeys with the default keys
             _moveLeft = new GameControlKeys("Move Left", SKC("MoveLeft"), SKC("MoveRight"));
             _moveRight = new GameControlKeys("Move Right", SKC("MoveRight"), SKC("MoveLeft"));
-
-#if TOPDOWN
-            _moveUp = new GameControlKeys("Move Up", SKC("MoveUp"), SKC("MoveDown"));
-            _moveDown = new GameControlKeys("Move Down", SKC("MoveDown"), SKC("MoveUp"));
-            _moveStopHorizontal = new GameControlKeys("Move Stop Horizontal", null, _moveLeft.KeysDown.Concat(_moveRight.KeysDown));
-            _moveStopVertical = new GameControlKeys("Move Stop Vertical", null, _moveUp.KeysDown.Concat(_moveDown.KeysDown));
-            _moveStop = new GameControlKeys("Move Stop", null,
-                _moveLeft.KeysDown.Concat(_moveRight.KeysDown).Concat(_moveUp.KeysDown).Concat(_moveDown.KeysDown));
-#else
-            _jump = new GameControlKeys("Jump", SKC("MoveUp"));
-            _moveStop = new GameControlKeys("Move Stop", null, _moveLeft.KeysDown.Concat(_moveRight.KeysDown));
-#endif
 
             _attack = new GameControlKeys("Attack", SKC("Attack"));
             _useWorld = new GameControlKeys("Use World", SKC("UseWorld"));
@@ -102,6 +80,9 @@ namespace DemoGame.Client
             _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, SKC("QuickBarItem7"));
             _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, SKC("QuickBarItem8"));
             _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, SKC("QuickBarItem9"));
+
+            // Initialize the keys specific to the perspective being used
+            InitPerspectiveSpecificKeys();
         }
 
         public static GameControlKeys EmoteEllipsis
@@ -194,20 +175,6 @@ namespace DemoGame.Client
             get { return _quickBarItem9; }
         }
 
-#if !TOPDOWN
-        public static GameControlKeys Jump
-        {
-            get { return _jump; }
-        }
-#endif
-
-#if TOPDOWN
-        public static GameControlKeys MoveDown
-        {
-            get { return _moveDown; }
-        }
-#endif
-
         public static GameControlKeys MoveLeft
         {
             get { return _moveLeft; }
@@ -222,27 +189,6 @@ namespace DemoGame.Client
         {
             get { return _moveStop; }
         }
-
-#if TOPDOWN
-        public static GameControlKeys MoveStopHorizontal
-        {
-            get { return _moveStopHorizontal; }
-        }
-#endif
-
-#if TOPDOWN
-        public static GameControlKeys MoveStopVertical
-        {
-            get { return _moveStopVertical; }
-        }
-#endif
-
-#if TOPDOWN
-        public static GameControlKeys MoveUp
-        {
-            get { return _moveUp; }
-        }
-#endif
 
         public static GameControlKeys PickUp
         {

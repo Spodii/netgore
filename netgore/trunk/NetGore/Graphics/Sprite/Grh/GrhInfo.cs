@@ -74,7 +74,7 @@ namespace NetGore.Graphics
         public static event GrhDataEventHandler Removed;
 
         /// <summary>
-        /// Gets or sets a <see cref="Func{T,U}"/> used to determine the <see cref="ContentLevel"/>
+        /// Gets or sets a func used to determine the <see cref="ContentLevel"/>
         /// for a <see cref="GrhData"/>. This value should be set before calling <see cref="GrhInfo.Load"/>
         /// for best results.
         /// </summary>
@@ -125,21 +125,34 @@ namespace NetGore.Graphics
 
             var index = gd.GrhIndex;
 
-#if DEBUG
-            // Check if a GrhData will be overwritten
-            if (_grhDatas.CanGet((int)index))
-            {
-                var currentGD = GetData(index);
-                if (currentGD != null && currentGD != gd)
-                    Debug.Fail("Existing GrhData is going to be overwritten. This is likely not what was intended.");
-            }
-#endif
+            AssertGrhIndexIsFree(index, gd);
 
             _grhDatas[(int)index] = gd;
 
             // Make sure the GrhData is only in the list once
             Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1,
                 "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
+        }
+
+        /// <summary>
+        /// Asserts that a given <see cref="GrhIndex"/> is not already occupied.
+        /// </summary>
+        /// <param name="index">The <see cref="GrhIndex"/> to check.</param>
+        /// <param name="ignoreWhen">When the <see cref="GrhData"/> at the <paramref name="index"/> is equal to this value,
+        /// and this value is not null, no errors will be raised.</param>
+        [Conditional("DEBUG")]
+        static void AssertGrhIndexIsFree(GrhIndex index, GrhData ignoreWhen)
+        {
+            // Make sure we can even get the index
+            if (!_grhDatas.CanGet((int)index))
+                return;
+
+            // Get the current GrhData
+            var currentGD = GetData(index);
+
+            // Check if occupied
+            if (currentGD != null && (ignoreWhen == null || currentGD != ignoreWhen))
+                Debug.Fail("Existing GrhData is going to be overwritten. This is likely not what was intended.");
         }
 
         /// <summary>

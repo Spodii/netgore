@@ -11,7 +11,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Packets going out from the client / in to the server
     /// </summary>
-    public static class ClientPacket
+    public static partial class ClientPacket
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
 
@@ -119,13 +119,6 @@ namespace DemoGame.Client
             return pw;
         }
 
-#if !TOPDOWN
-        public static PacketWriter Jump()
-        {
-            return GetWriter(ClientPacketID.Jump);
-        }
-#endif
-
         public static PacketWriter Login(string name, string password)
         {
             var pw = GetWriter(ClientPacketID.Login);
@@ -150,13 +143,6 @@ namespace DemoGame.Client
             return pw;
         }
 
-#if TOPDOWN
-        public static PacketWriter MoveDown()
-        {
-            return GetWriter(ClientPacketID.MoveDown);
-        }
-#endif
-
         public static PacketWriter MoveLeft()
         {
             return GetWriter(ClientPacketID.MoveLeft);
@@ -171,27 +157,6 @@ namespace DemoGame.Client
         {
             return GetWriter(ClientPacketID.MoveStop);
         }
-
-#if TOPDOWN
-        public static PacketWriter MoveStopHorizontal()
-        {
-            return GetWriter(ClientPacketID.MoveStopHorizontal);
-        }
-#endif
-
-#if TOPDOWN
-        public static PacketWriter MoveStopVertical()
-        {
-            return GetWriter(ClientPacketID.MoveStopVertical);
-        }
-#endif
-
-#if TOPDOWN
-        public static PacketWriter MoveUp()
-        {
-            return GetWriter(ClientPacketID.MoveUp);
-        }
-#endif
 
         public static PacketWriter PickupItem(MapEntityIndex mapEntityIndex)
         {

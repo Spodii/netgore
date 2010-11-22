@@ -6,8 +6,17 @@ using NetGore.World;
 
 namespace DemoGame.Client
 {
-    class GameplayScreenControls : GameControlCollection
+    partial class GameplayScreenControls : GameControlCollection
     {
+        const int _minAttackRate = GameData.AttackTimeoutMin;
+        const int _minMoveRate = 150;
+        const int _minNPCChatRate = 150;
+        const int _minPickupRate = 150;
+        const int _minShopRate = 250;
+        const int _minUseRate = 250;
+        const int _minEmoteRate = 1000;
+        const int _minQuickBarRate = 200;
+
         readonly GameplayScreen _gameplayScreen;
 
         /// <summary>
@@ -21,73 +30,55 @@ namespace DemoGame.Client
 
             _gameplayScreen = gameplayScreen;
 
-            // Set some delay values for input handling
-            const int minAttackRate = GameData.AttackTimeoutMin;
-            const int minMoveRate = 150;
-            const int minNPCChatRate = 150;
-            const int minPickupRate = 150;
-            const int minShopRate = 250;
-            const int minUseRate = 250;
-            const int minEmoteRate = 1000;
-            const int minQuickBarRate = 200;
+            CreateControls();
+        }
 
-            // Set the handlers for all the different controls
-#if !TOPDOWN
-            CreateAndAdd(GameControlsKeys.Jump, minMoveRate, () => UserChar.CanJump && CanUserMove(), HandleGameControl_Jump);
-#endif
-
-#if TOPDOWN
-            CreateAndAdd(GameControlsKeys.MoveUp, minMoveRate, () => !UserChar.IsMovingUp && CanUserMove(),
-                         HandleGameControl_MoveUp);
-
-            CreateAndAdd(GameControlsKeys.MoveDown, minMoveRate, () => !UserChar.IsMovingDown && CanUserMove(),
-                         HandleGameControl_MoveDown);
-#endif
-
-            CreateAndAdd(GameControlsKeys.MoveLeft, minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
+        /// <summary>
+        /// Creates all of the controls for the <see cref="GameplayScreen"/> not specific to a single perspective.
+        /// </summary>
+        void CreateControls()
+        {
+            CreateAndAdd(GameControlsKeys.MoveLeft, _minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
                 HandleGameControl_MoveLeft);
 
-            CreateAndAdd(GameControlsKeys.MoveRight, minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
+            CreateAndAdd(GameControlsKeys.MoveRight, _minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
                 HandleGameControl_MoveRight);
 
-            CreateAndAdd(GameControlsKeys.Attack, minAttackRate, CanUserMove, HandleGameControl_Attack);
+            CreateAndAdd(GameControlsKeys.Attack, _minAttackRate, CanUserMove, HandleGameControl_Attack);
 
-            CreateAndAdd(GameControlsKeys.MoveStop, minMoveRate, () => UserChar.IsMoving, HandleGameControl_MoveStop);
+            CreateAndAdd(GameControlsKeys.MoveStop, _minMoveRate, () => UserChar.IsMoving, HandleGameControl_MoveStop);
 
-#if TOPDOWN
-            CreateAndAdd(GameControlsKeys.MoveStopHorizontal, minMoveRate, () => UserChar.IsMovingLeft || UserChar.IsMovingRight, HandleGameControl_MoveStopHorizontal);
+            CreateAndAdd(GameControlsKeys.UseWorld, _minUseRate, CanUserMove, HandleGameControl_Use);
 
-            CreateAndAdd(GameControlsKeys.MoveStopVertical, minMoveRate, () => UserChar.IsMovingUp || UserChar.IsMovingDown, HandleGameControl_MoveStopVertical);
-#endif
+            CreateAndAdd(GameControlsKeys.UseShop, _minShopRate, CanUserMove, HandleGameControl_Shop);
 
-            CreateAndAdd(GameControlsKeys.UseWorld, minUseRate, CanUserMove, HandleGameControl_Use);
+            CreateAndAdd(GameControlsKeys.TalkToNPC, _minNPCChatRate, CanUserMove, HandleGameControl_TalkToNPC);
 
-            CreateAndAdd(GameControlsKeys.UseShop, minShopRate, CanUserMove, HandleGameControl_Shop);
+            CreateAndAdd(GameControlsKeys.PickUp, _minPickupRate, CanUserMove, HandleGameControl_PickUp);
 
-            CreateAndAdd(GameControlsKeys.TalkToNPC, minNPCChatRate, CanUserMove, HandleGameControl_TalkToNPC);
-
-            CreateAndAdd(GameControlsKeys.PickUp, minPickupRate, CanUserMove, HandleGameControl_PickUp);
-
-            CreateAndAdd(GameControlsKeys.EmoteEllipsis, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Ellipsis));
-            CreateAndAdd(GameControlsKeys.EmoteExclamation, minEmoteRate, () => true,
+            CreateAndAdd(GameControlsKeys.EmoteEllipsis, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Ellipsis));
+            CreateAndAdd(GameControlsKeys.EmoteExclamation, _minEmoteRate, () => true,
                 x => HandleGameControl_Emote(Emoticon.Exclamation));
-            CreateAndAdd(GameControlsKeys.EmoteHeartbroken, minEmoteRate, () => true,
+            CreateAndAdd(GameControlsKeys.EmoteHeartbroken, _minEmoteRate, () => true,
                 x => HandleGameControl_Emote(Emoticon.Heartbroken));
-            CreateAndAdd(GameControlsKeys.EmoteHearts, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Hearts));
-            CreateAndAdd(GameControlsKeys.EmoteMeat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
-            CreateAndAdd(GameControlsKeys.EmoteQuestion, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Question));
-            CreateAndAdd(GameControlsKeys.EmoteSweat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Sweat));
+            CreateAndAdd(GameControlsKeys.EmoteHearts, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Hearts));
+            CreateAndAdd(GameControlsKeys.EmoteMeat, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
+            CreateAndAdd(GameControlsKeys.EmoteQuestion, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Question));
+            CreateAndAdd(GameControlsKeys.EmoteSweat, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Sweat));
 
-            CreateAndAdd(GameControlsKeys.QuickBarItem0, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(0));
-            CreateAndAdd(GameControlsKeys.QuickBarItem1, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(1));
-            CreateAndAdd(GameControlsKeys.QuickBarItem2, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(2));
-            CreateAndAdd(GameControlsKeys.QuickBarItem3, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(3));
-            CreateAndAdd(GameControlsKeys.QuickBarItem4, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(4));
-            CreateAndAdd(GameControlsKeys.QuickBarItem5, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(5));
-            CreateAndAdd(GameControlsKeys.QuickBarItem6, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(6));
-            CreateAndAdd(GameControlsKeys.QuickBarItem7, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(7));
-            CreateAndAdd(GameControlsKeys.QuickBarItem8, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(8));
-            CreateAndAdd(GameControlsKeys.QuickBarItem9, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(9));
+            CreateAndAdd(GameControlsKeys.QuickBarItem0, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(0));
+            CreateAndAdd(GameControlsKeys.QuickBarItem1, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(1));
+            CreateAndAdd(GameControlsKeys.QuickBarItem2, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(2));
+            CreateAndAdd(GameControlsKeys.QuickBarItem3, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(3));
+            CreateAndAdd(GameControlsKeys.QuickBarItem4, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(4));
+            CreateAndAdd(GameControlsKeys.QuickBarItem5, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(5));
+            CreateAndAdd(GameControlsKeys.QuickBarItem6, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(6));
+            CreateAndAdd(GameControlsKeys.QuickBarItem7, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(7));
+            CreateAndAdd(GameControlsKeys.QuickBarItem8, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(8));
+            CreateAndAdd(GameControlsKeys.QuickBarItem9, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(9));
+
+            // Create the controls specific to a perspective
+            CreateControlsForPerspective();
         }
 
         /// <summary>
@@ -171,26 +162,6 @@ namespace DemoGame.Client
             GameplayScreen.QuickBarForm.UseSlot(slot);
         }
 
-#if !TOPDOWN
-        void HandleGameControl_Jump(GameControl sender)
-        {
-            using (var pw = ClientPacket.Jump())
-            {
-                Socket.Send(pw, ClientMessageType.CharacterMove);
-            }
-        }
-#endif
-
-#if TOPDOWN
-        void HandleGameControl_MoveDown(GameControl sender)
-        {
-            using (var pw = ClientPacket.MoveDown())
-            {
-                Socket.Send(pw, ClientMessageType.CharacterMove);
-            }
-        }
-#endif
-
         void HandleGameControl_MoveLeft(GameControl sender)
         {
             using (var pw = ClientPacket.MoveLeft())
@@ -214,36 +185,6 @@ namespace DemoGame.Client
                 Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
-
-#if TOPDOWN
-        void HandleGameControl_MoveStopHorizontal(GameControl sender)
-        {
-            using (var pw = ClientPacket.MoveStopHorizontal())
-            {
-                Socket.Send(pw, ClientMessageType.CharacterMove);
-            }
-        }
-#endif
-
-#if TOPDOWN
-        void HandleGameControl_MoveStopVertical(GameControl sender)
-        {
-            using (var pw = ClientPacket.MoveStopVertical())
-            {
-                Socket.Send(pw, ClientMessageType.CharacterMove);
-            }
-        }
-#endif
-
-#if TOPDOWN
-        void HandleGameControl_MoveUp(GameControl sender)
-        {
-            using (var pw = ClientPacket.MoveUp())
-            {
-                Socket.Send(pw, ClientMessageType.CharacterMove);
-            }
-        }
-#endif
 
         void HandleGameControl_PickUp(GameControl sender)
         {

@@ -125,7 +125,7 @@ namespace DemoGame.Server
                     continue;
 
                 _statusEffects.RemoveAt(i);
-                NotifyRemoved(activeStatusEffect);
+                OnRemoved(activeStatusEffect);
                 DeleteFromDatabase(item.ID);
                 return;
             }
@@ -161,7 +161,7 @@ namespace DemoGame.Server
                 var ase = new ActiveStatusEffect(statusEffect, value.Power, (TickCount)(value.TimeLeftSecs * 1000 + currentTime));
                 var aseWithID = new ASEWithID(value.ID, ase);
                 _statusEffects.Add(aseWithID);
-                NotifyAdded(ase);
+                OnAdded(ase);
             }
         }
 
@@ -198,7 +198,7 @@ namespace DemoGame.Server
 
                 var aseWithID = new ASEWithID(id, ase);
                 _statusEffects.Add(aseWithID);
-                NotifyAdded(aseWithID.Value);
+                OnAdded(aseWithID.Value);
                 UpdateInDatabase(aseWithID);
 
                 return true;

@@ -30,10 +30,6 @@ namespace DemoGame.Server
 
         readonly Character _character;
 
-#if DEBUG
-        static readonly SafeRandom _random = new SafeRandom();
-#endif
-
         /// <summary>
         /// Contains the sum of the stat modifiers for each ActiveStatusEffect for each <see cref="StatType"/>.
         /// </summary>
@@ -84,30 +80,48 @@ namespace DemoGame.Server
         /// <param name="activeStatusEffect">StatusEffect to be removed.</param>
         protected abstract void HandleExpired(ActiveStatusEffect activeStatusEffect);
 
-        protected virtual void NotifyAdded(ActiveStatusEffect statusEffect)
+        /// <summary>
+        /// Occurs when the <see cref="CharacterStatusEffects.Added"/> event is raised.
+        /// </summary>
+        /// <param name="statusEffect">The <see cref="ActiveStatusEffect"/> that was added.</param>
+        protected virtual void OnAdded(ActiveStatusEffect statusEffect)
         {
             statusEffect.AddBonusesTo(_modStats);
 
             if (Added != null)
                 Added(this, statusEffect);
+
+            AssertModStatsAreCorrect();
         }
 
-        protected virtual void NotifyRemoved(ActiveStatusEffect statusEffect)
+        /// <summary>
+        /// Occurs when the <see cref="CharacterStatusEffects.Removed"/> event is raised.
+        /// </summary>
+        /// <param name="statusEffect">The <see cref="ActiveStatusEffect"/> that was removed.</param>
+        protected virtual void OnRemoved(ActiveStatusEffect statusEffect)
         {
             statusEffect.SubtractBonusesFrom(_modStats);
 
             if (Removed != null)
                 Removed(this, statusEffect);
 
-#if DEBUG
-            // Randomly test to see if the values are correct
-            if (_random.Next(0, 5) == 0)
-            {
-                var oldValues = _modStats.DeepCopy();
-                RecalculateStatBonuses();
-                Debug.Assert(_modStats.HasSameValues(oldValues), "Somehow, at some point, the ModStats became out of sync!");
-            }
-#endif
+            AssertModStatsAreCorrect();
+        }
+
+        /// <summary>
+        /// Checks that the mod stat values are correct.
+        /// Only occurs in debug builds.
+        /// </summary>
+        [Conditional("DEBUG")]
+        void AssertModStatsAreCorrect()
+        {
+            // Only test every so often
+            if (RandomHelper.NextInt(0, 5) != 0)
+                return;
+
+            var oldValues = _modStats.DeepCopy();
+            RecalculateStatBonuses();
+            Debug.Assert(_modStats.HasSameValues(oldValues), "Somehow, at some point, the ModStats became out of sync!");
         }
 
         /// <summary>
