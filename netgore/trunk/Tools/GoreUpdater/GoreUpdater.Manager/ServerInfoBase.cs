@@ -314,7 +314,7 @@ namespace GoreUpdater.Manager
             lock (_infoSync)
             {
                 return string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}", CreationStringDelimiter, FileUploaderType, Host, User,
-                                     Password, DownloadSourceType, DownloadHost);
+                    Password, DownloadSourceType, DownloadHost);
             }
         }
 

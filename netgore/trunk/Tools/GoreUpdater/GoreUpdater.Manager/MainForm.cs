@@ -278,7 +278,7 @@ namespace GoreUpdater.Manager
             // Confirm change
             if (
                 MessageBox.Show("Are you sure you wish to update the live version?", "Update live version?",
-                                MessageBoxButtons.YesNo) == DialogResult.No)
+                    MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             // If the new version is still being uploaded to the servers, warn the user

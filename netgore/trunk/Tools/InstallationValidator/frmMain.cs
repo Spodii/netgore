@@ -142,7 +142,7 @@ namespace InstallationValidator
 
             if (ex != null)
                 MessageBox.Show(string.Format("Failed to open file {0}.{1}{1}{2}", MySqlHelper.DbSettingsFile, Environment.NewLine,
-                                              ex));
+                    ex));
         }
 
         /// <summary>

@@ -32,6 +32,26 @@ namespace InstallationValidator.Tests
         {
         }
 
+        static int IsValidVersion(int major, int minor, int revision, string version)
+        {
+            if (!StringComparer.OrdinalIgnoreCase.Equals(version, "community"))
+            {
+                // Unknown version
+                return 2;
+            }
+
+            if (major > 5)
+                return 0;
+
+            if (minor > 1)
+                return 0;
+
+            if (revision >= 38)
+                return 0;
+
+            return 1;
+        }
+
         /// <summary>
         /// When overridden in the derived class, runs the test.
         /// </summary>
@@ -54,9 +74,10 @@ namespace InstallationValidator.Tests
                 return false;
             }
 
-            var reg = new Regex(@"(?<Major>\d+)\.(?<Minor>\d+)\.(?<Revision>\d+)-(?<Version>[a-zA-Z]+)", RegexOptions.CultureInvariant);
+            var reg = new Regex(@"(?<Major>\d+)\.(?<Minor>\d+)\.(?<Revision>\d+)-(?<Version>[a-zA-Z]+)",
+                RegexOptions.CultureInvariant);
 
-            int success = -1;
+            var success = -1;
 
             var m = reg.Match(output);
             if (m.Success)
@@ -64,14 +85,13 @@ namespace InstallationValidator.Tests
                 int major;
                 int minor;
                 int revision;
-                if (int.TryParse(m.Groups["Major"].Value, out major) && int.TryParse(m.Groups["Minor"].Value, out minor)
-                    && int.TryParse(m.Groups["Revision"].Value, out revision))
-                {
+                if (int.TryParse(m.Groups["Major"].Value, out major) && int.TryParse(m.Groups["Minor"].Value, out minor) &&
+                    int.TryParse(m.Groups["Revision"].Value, out revision))
                     success = IsValidVersion(major, minor, revision, m.Groups["Version"].Value);
-                }
             }
 
-            var foundVersion = string.IsNullOrEmpty(output) ? "[UNKNOWN]" : output.Replace("\r", "").Replace("\n", "").Replace("version()", "");
+            var foundVersion = string.IsNullOrEmpty(output)
+                                   ? "[UNKNOWN]" : output.Replace("\r", "").Replace("\n", "").Replace("version()", "");
             switch (success)
             {
                 case 0:
@@ -89,26 +109,6 @@ namespace InstallationValidator.Tests
                     errorMessage = string.Format(_failMessage, foundVersion);
                     return false;
             }
-        }
-
-        static int IsValidVersion(int major, int minor, int revision, string version)
-        {
-            if (!StringComparer.OrdinalIgnoreCase.Equals(version, "community"))
-            {
-                // Unknown version
-                return 2;
-            }
-
-            if (major > 5)
-                return 0;
-
-            if (minor > 1)
-                return 0;
-
-            if (revision >= 38)
-                return 0;
-
-            return 1;
         }
     }
 }

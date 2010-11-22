@@ -121,8 +121,8 @@ namespace GoreUpdater
                 if (log.IsInfoEnabled)
                 {
                     log.InfoFormat("Download of file `{0}` to `{1}` using {2} failed (cancelled? {3}). Error: {4}",
-                                   downloadInfo.RemoteFile, downloadInfo.LocalFilePath, sender, e.Cancelled,
-                                   e.Error != null ? e.Error.ToString() : "[NULL]");
+                        downloadInfo.RemoteFile, downloadInfo.LocalFilePath, sender, e.Cancelled,
+                        e.Error != null ? e.Error.ToString() : "[NULL]");
                 }
 
                 try
@@ -140,7 +140,7 @@ namespace GoreUpdater
                 if (log.IsInfoEnabled)
                 {
                     log.InfoFormat("Download of file `{0}` to `{1}` using {2} successful.", downloadInfo.RemoteFile,
-                                   downloadInfo.LocalFilePath, sender);
+                        downloadInfo.LocalFilePath, sender);
                 }
 
                 try
@@ -235,7 +235,7 @@ namespace GoreUpdater
             if (log.IsDebugEnabled)
             {
                 log.DebugFormat("Attempting Download on `{0}`. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
-                                remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
+                    remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
             }
 
             var uriPath = RootPath;

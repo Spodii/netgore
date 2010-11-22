@@ -326,7 +326,7 @@ namespace GoreUpdater
             {
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Skipping creating remote file `{0}` - file already exists and SkipIfExists is set.",
-                                    remoteFile);
+                        remoteFile);
                 return;
             }
 
@@ -771,7 +771,7 @@ namespace GoreUpdater
 
                                 if (log.IsDebugEnabled)
                                     log.DebugFormat("Read WebResponseStream line for remote path `{0}`: {1}", remotePath,
-                                                    s ?? "[NULL]");
+                                        s ?? "[NULL]");
 
                                 // Skip null lines
                                 if (s == null)
@@ -978,10 +978,10 @@ namespace GoreUpdater
                         // Remove the job from the active list and throw it back into the queue
                         var removed = _jobsActive.Remove(job);
                         Debug.Assert(removed,
-                                     "Why was this job not in the _jobsActive list? It should be there since it was just active.");
+                            "Why was this job not in the _jobsActive list? It should be there since it was just active.");
 
                         Debug.Assert(!_jobsQueue.Contains(job),
-                                     "Why was this job already in the job queue? Now we're going to get stuck running the job multiple times...");
+                            "Why was this job already in the job queue? Now we're going to get stuck running the job multiple times...");
                         _jobsQueue.Enqueue(job);
                     }
 
@@ -994,7 +994,7 @@ namespace GoreUpdater
                         {
                             if (UploadError != null)
                                 UploadError(this, asJobCreateFile.LocalFile, asJobCreateFile.RemoteFile,
-                                            FormatExceptionMessage(ex), job.Attempts);
+                                    FormatExceptionMessage(ex), job.Attempts);
                         }
                         catch (NullReferenceException ex2)
                         {
@@ -1009,7 +1009,7 @@ namespace GoreUpdater
                         {
                             if (DownloadError != null)
                                 DownloadError(this, asJobDownloadFile.LocalFile, asJobDownloadFile.RemoteFile,
-                                              FormatExceptionMessage(ex), job.Attempts);
+                                    FormatExceptionMessage(ex), job.Attempts);
                         }
                         catch (NullReferenceException ex2)
                         {
@@ -1052,7 +1052,7 @@ namespace GoreUpdater
                 {
                     var removed = _jobsActive.Remove(job);
                     Debug.Assert(removed,
-                                 "Why was this job not in the _jobsActive list? It should be there since it was just active.");
+                        "Why was this job not in the _jobsActive list? It should be there since it was just active.");
                 }
 
                 // Notify listeners
@@ -1122,7 +1122,7 @@ namespace GoreUpdater
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("TestConnectionMessage (userState: {0}): {1}", userState != null ? userState.ToString() : "[NULL]",
-                               msg);
+                    msg);
         }
 
         #region IFileUploader Members
@@ -1529,7 +1529,7 @@ namespace GoreUpdater
 
                 // *** Directory create test ***
                 WriteTestConnectionMessage(userState,
-                                           "Creating sub-directories and creating a file inside those sub-directories...");
+                    "Creating sub-directories and creating a file inside those sub-directories...");
 
                 try
                 {

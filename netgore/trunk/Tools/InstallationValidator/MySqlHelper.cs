@@ -24,13 +24,13 @@ namespace InstallationValidator
         /// The relative path to the database schema file.
         /// </summary>
         public static readonly string DbSchemaFile = string.Format("Tools{0}InstallationValidator{0}dbschema{1}",
-                                                                   Path.DirectorySeparatorChar, EngineSettings.DataFileSuffix);
+            Path.DirectorySeparatorChar, EngineSettings.DataFileSuffix);
 
         /// <summary>
         /// The relative path to the database settings file.
         /// </summary>
         public static readonly string DbSettingsFile = string.Format("DemoGame.Server{0}DbSettings{1}",
-                                                                     Path.DirectorySeparatorChar, EngineSettings.DataFileSuffix);
+            Path.DirectorySeparatorChar, EngineSettings.DataFileSuffix);
 
         /// <summary>
         /// The database connection settings.
@@ -101,7 +101,7 @@ namespace InstallationValidator
         {
             const string div1 = "=====";
             const string div2 = "===";
-            
+
             string err;
             if (p != null && p.Length > 0)
                 err = string.Format(errmsg, p);
@@ -372,7 +372,7 @@ namespace InstallationValidator
 
                     if (
                         MessageBox.Show("The selected file was invalid. Please select mysql.exe.", "Select mysql.exe",
-                                        MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                            MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                         return false;
                 }
             }

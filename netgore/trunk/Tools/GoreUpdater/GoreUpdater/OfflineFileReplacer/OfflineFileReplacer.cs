@@ -134,7 +134,7 @@ namespace GoreUpdater
                 if (log.IsDebugEnabled)
                 {
                     log.DebugFormat("Writing OfflineFileReplacer `{0}`'s contents to file `{1}`: {2} jobs to write.", this,
-                                    _outputFilePath, _jobs.Count);
+                        _outputFilePath, _jobs.Count);
                 }
 
                 // Build the file contents

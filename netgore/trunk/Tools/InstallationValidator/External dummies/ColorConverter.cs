@@ -1,4 +1,6 @@
-﻿namespace SFML.Graphics.Design
+﻿using System.Linq;
+
+namespace SFML.Graphics.Design
 {
     public class ColorConverter
     {

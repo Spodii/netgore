@@ -130,7 +130,7 @@ namespace GoreUpdater
             if (log.IsDebugEnabled)
             {
                 log.DebugFormat("ForceEndWithChar(path: {0}, endingChar: {1}, removeChars: ({2})) -> {3}", path, endingChar,
-                                removeChars == null ? "[NULL]" : removeChars.Aggregate((x, y) => x + "," + y), ret);
+                    removeChars == null ? "[NULL]" : removeChars.Aggregate((x, y) => x + "," + y), ret);
             }
 
             return ret;

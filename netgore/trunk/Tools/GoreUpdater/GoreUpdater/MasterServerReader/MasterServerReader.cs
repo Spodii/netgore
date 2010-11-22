@@ -71,7 +71,7 @@ namespace GoreUpdater
             if (log.IsDebugEnabled)
             {
                 log.DebugFormat("Running MasterServerReader worker. UserState: {0}. ReadVersion: {1}. Callback: {2}", userState,
-                                readVersion.HasValue ? readVersion.Value.ToString() : "[NULL]", callback);
+                    readVersion.HasValue ? readVersion.Value.ToString() : "[NULL]", callback);
             }
 
             var info = new MasterServerReadInfo();
@@ -558,7 +558,7 @@ namespace GoreUpdater
                     Interlocked.Decrement(ref _numBusyVersionFile);
                 else if (_readVersion.HasValue &&
                          StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt",
-                                                                 remoteFile))
+                             remoteFile))
                     Interlocked.Decrement(ref _numBusyVersionFile);
                 else if (remoteFile == CurrentMasterServersFilePath)
                     Interlocked.Decrement(ref _numBusyMasterServersFile);
@@ -622,7 +622,7 @@ namespace GoreUpdater
                 }
                 else if (_readVersion.HasValue &&
                          StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt",
-                                                                 remoteFile))
+                             remoteFile))
                 {
                     // VersionFileList file
                     try
