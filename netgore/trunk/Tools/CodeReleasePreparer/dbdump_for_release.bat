@@ -22,4 +22,4 @@ REM Dump temp
 mysqldump demogame_tmp --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options > db-clean.sql
 
 REM Delete temp database
-REM mysqladmin --force --user=root --password=%A% --host=localhost --port=%B% drop demogame_tmp
+mysqladmin --force --user=root --password=%A% --host=localhost --port=%B% drop demogame_tmp
