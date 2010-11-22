@@ -55,6 +55,9 @@ DisconnectNoReasonSpecified: "The connection to the server has been lost."
 DisconnectTimedOut: "The connection has timed out due to inactivity."
 DisconnectUserKicked: "You've been kicked from the server!\nReason: $0"
 
+########### Feature: Skills ###########
+SkillNotKnown: "You do not know that skill."
+
 ########### Feature: Shops ###########
 ShopInsufficientFundsToPurchaseSingular: "You do not have enough money to purchase a $0."
 ShopInsufficientFundsToPurchasePlural: "You do not have enough money to purchase $0 $1s."
