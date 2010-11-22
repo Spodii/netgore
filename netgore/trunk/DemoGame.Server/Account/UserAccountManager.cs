@@ -72,26 +72,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Checks if the given string is a valid string for an account name.
-        /// </summary>
-        /// <param name="s">The string to test.</param>
-        /// <returns>True if <paramref name="s"/> is a valid string for an account name; otherwise false.</returns>
-        public static bool IsValidName(string s)
-        {
-            return GameData.AccountName.IsValid(s);
-        }
-
-        /// <summary>
-        /// Checks if the given string is a valid string for an account password.
-        /// </summary>
-        /// <param name="s">The string to test.</param>
-        /// <returns>True if <paramref name="s"/> is a valid string for an account password; otherwise false.</returns>
-        public static bool IsValidPassword(string s)
-        {
-            return GameData.AccountPassword.IsValid(s);
-        }
-
-        /// <summary>
         /// Tries to log in an account.
         /// </summary>
         /// <param name="socket">The socket used to communicate with the client.</param>

@@ -19,6 +19,11 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ContainsColumns(CharacterSkillTable.DbColumns, "character_id", "skill_id");
         }
 
+        public void Execute(CharacterID characterID, SkillType skillType)
+        {
+            Execute(new KeyValuePair<CharacterID, SkillType>(characterID, skillType));
+        }
+
         /// <summary>
         /// Creates the query for this class.
         /// </summary>

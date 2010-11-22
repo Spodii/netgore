@@ -103,7 +103,7 @@ namespace DemoGame.Server
                 RespawnPosition = Vector2.Zero;
             }
 
-            LoadSpawnItems();
+            LoadSpawnState();
 
             // Done loading
             SetAsLoaded();
@@ -314,7 +314,10 @@ namespace DemoGame.Server
         {
             base.HandleAdditionalLoading(v);
 
+            // Set the chat dialog
             _chatDialog = v.ChatDialog.HasValue ? _npcChatManager[v.ChatDialog.Value] : null;
+
+            // Set up the shop
             SetShopFromID(v.ShopID);
         }
 
@@ -384,7 +387,7 @@ namespace DemoGame.Server
                 IsAlive = false;
                 RespawnTime = (TickCount)(GetTime() + (RespawnSecs * 1000));
 
-                LoadSpawnItems();
+                LoadSpawnState();
 
                 Teleport(null, Vector2.Zero);
                 World.AddToRespawn(this);
@@ -422,9 +425,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Reloads the Inventory and Equipment items the NPC spawns with.
+        /// Resets the NPC's state back to the initial values, and re-creates the inventory and equipped items they
+        /// will spawn with.
         /// </summary>
-        void LoadSpawnItems()
+        void LoadSpawnState()
         {
             // All items remaining in the inventory or equipment should NOT be referenced!
             // Items that were dropped should have been removed when dropping
@@ -440,10 +444,8 @@ namespace DemoGame.Server
             if (template == null)
                 return;
 
+            // Create the inventory items
             var spawnInventory = template.Inventory;
-            var spawnEquipment = template.Equipment;
-
-            // Create the items
             if (spawnInventory != null)
             {
                 foreach (var inventoryItem in spawnInventory)
@@ -456,6 +458,8 @@ namespace DemoGame.Server
                 }
             }
 
+            // Create the equipped items
+            var spawnEquipment = template.Equipment;
             if (spawnEquipment != null)
             {
                 foreach (var equippedItem in spawnEquipment)
@@ -468,6 +472,10 @@ namespace DemoGame.Server
                         item.Destroy();
                 }
             }
+
+            // Reset the known skills
+            var spawnKnownSkills = template.KnownSkills;
+            KnownSkills.SetValues(spawnKnownSkills);
         }
 
         /// <summary>

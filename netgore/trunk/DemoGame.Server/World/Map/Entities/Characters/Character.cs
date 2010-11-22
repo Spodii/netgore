@@ -1291,6 +1291,12 @@ namespace DemoGame.Server
 
             // Set the base stats
             BaseStats.CopyValuesFrom(v.Stats);
+
+            // Set known skills
+            if (_knownSkills == null)
+                _knownSkills = new KnownSkillsCollection(this);
+
+            KnownSkills.SetValues(template.KnownSkills);
         }
 
         void LoadFromQueryValues(ICharacterTable v)
@@ -2016,7 +2022,8 @@ namespace DemoGame.Server
         /// <param name="target">The target to use the skill on. Can be null.</param>
         public void UseSkill(SkillType skillType, Character target)
         {
-            UseSkill(_skillManager.GetSkill(skillType), target);
+            var skill = _skillManager.GetSkill(skillType);
+            UseSkill(skill, target);
         }
 
         /// <summary>
@@ -2025,7 +2032,8 @@ namespace DemoGame.Server
         /// <param name="skillType">The type of skill to use.</param>
         public void UseSkill(SkillType skillType)
         {
-            UseSkill(_skillManager.GetSkill(skillType), null);
+            var skill = _skillManager.GetSkill(skillType);
+            UseSkill(skill, null);
         }
 
         /// <summary>
@@ -2035,10 +2043,13 @@ namespace DemoGame.Server
         /// <param name="target">The target to use the skill on. Can be null.</param>
         public void UseSkill(ISkill<SkillType, StatType, Character> skill, Character target)
         {
+            // Check for a valid skill
             if (skill == null)
             {
+                const string errmsg = "Character `{0}` tried to use a null skill in UseSkill.";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat("Character `{0}` tried to use a null skill in UseSkill.", this);
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
                 return;
             }
 

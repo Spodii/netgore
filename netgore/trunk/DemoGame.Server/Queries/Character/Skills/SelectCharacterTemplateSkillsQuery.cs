@@ -10,7 +10,7 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectCharacterTemplateSkillsQuery : DbQueryReader<CharacterID>
+    public class SelectCharacterTemplateSkillsQuery : DbQueryReader<CharacterTemplateID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateSkillsQuery"/> class.
@@ -54,11 +54,11 @@ namespace DemoGame.Server.Queries
             return CreateParameters("id");
         }
 
-        public IEnumerable<SkillType> Execute(CharacterID charID)
+        public IEnumerable<SkillType> Execute(CharacterTemplateID charTemplateID)
         {
             List<SkillType> ret = new List<SkillType>();
 
-            using (var r = ExecuteReader(charID))
+            using (var r = ExecuteReader(charTemplateID))
             {
                 while (r.Read())
                 {
@@ -69,7 +69,7 @@ namespace DemoGame.Server.Queries
                         // Invalid SkillType - do not return
                         const string errmsg = "Found invalid SkillType `{0}` on character template ID `{1}`.";
                         if (log.IsWarnEnabled)
-                            log.WarnFormat(errmsg, skill, charID);
+                            log.WarnFormat(errmsg, skill, charTemplateID);
                     }
                     else
                     {
@@ -88,7 +88,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, CharacterID item)
+        protected override void SetParameters(DbParameterValues p, CharacterTemplateID item)
         {
             p["id"] = (int)item;
         }

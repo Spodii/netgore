@@ -213,6 +213,15 @@ namespace DemoGame
 
         #endregion
 
+        #region Feature: Skills
+
+        /// <summary>
+        /// Tried to use a skill that they do not know.
+        /// </summary>
+        SkillNotKnown,
+
+        #endregion
+
         #region Feature: Shops
 
         /// <summary>

@@ -137,6 +137,7 @@
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="KnownSkillsCollection.cs" />
     <Compile Include="Networking\CreateAccountEventHandler.cs" />
     <Compile Include="Properties\ClientSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>

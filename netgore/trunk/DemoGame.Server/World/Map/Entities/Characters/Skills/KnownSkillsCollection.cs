@@ -25,9 +25,11 @@ namespace DemoGame.Server
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
+            // Only grab the known skills for a persistent character
             if (!owner.IsPersistent)
                 return Enumerable.Empty<SkillType>();
 
+            // Create the query
             var q = owner.DbController.GetQuery<SelectCharacterSkillsQuery>();
             var ret = q.Execute(owner.ID);
 
@@ -45,6 +47,24 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("owner");
 
             _owner = owner;
+
+            // Send the initial collection of known skills
+            SendAllKnownSkills();
+        }
+
+        /// <summary>
+        /// Sends the complete collection of known skills to the <see cref="Owner"/>, if possible.
+        /// </summary>
+        void SendAllKnownSkills()
+        {
+            var netSender = Owner as INetworkSender;
+            if (netSender == null)
+                return;
+
+            using (var pw = ServerPacket.SkillSetKnownAll(KnownSkills))
+            {
+                netSender.Send(pw, ServerMessageType.GUIUserStats);
+            }
         }
 
         /// <summary>

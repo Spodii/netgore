@@ -24,6 +24,7 @@ namespace DemoGame.Client
         readonly StatCollection<StatType> _modStats = new StatCollection<StatType>(StatCollectionType.Modified);
         readonly UserQuestInformation _questInfo;
         readonly INetworkSender _socket;
+        readonly KnownSkillsCollection _knownSkills = new KnownSkillsCollection();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
@@ -113,6 +114,8 @@ namespace DemoGame.Client
                 return (byte)((MP / (float)max) * 100.0f).Clamp(0, 100);
             }
         }
+
+        public KnownSkillsCollection KnownSkills { get { return _knownSkills; } }
 
         public StatCollection<StatType> ModStats
         {

@@ -531,6 +531,25 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SkillSetKnownAll(IEnumerable<SkillType> knownSkills)
+        {
+            var pw = GetWriter(ServerPacketID.SkillSetKnownAll);
+            int count = knownSkills == null ? 0 : knownSkills.Count();
+
+            Debug.Assert(count <= byte.MaxValue, "Expected 255 or less known skills... will have to change packet to use a ushort for length.");
+            Debug.Assert(count >= 0, "How do we have a negative count?");
+
+            pw.Write((byte)count);
+
+            if (count > 0)
+            {
+                foreach (var ks in knownSkills)
+                    pw.WriteEnum(ks);
+            }
+
+            return pw;
+        }
+
         public static PacketWriter SkillSetGroupCooldown(byte skillGroup, ushort cooldownTime)
         {
             var pw = GetWriter(ServerPacketID.SkillSetGroupCooldown);

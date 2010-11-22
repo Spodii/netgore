@@ -129,6 +129,24 @@ namespace NetGore.Features.Skills
             _collection.TrySetValue(skill, value);
         }
 
+        /// <summary>
+        /// Explicitly sets which skills are known.
+        /// </summary>
+        /// <param name="knownSkills">The skills to set as known. Any skill not in this collection will be set to unknown.</param>
+        public void SetValues(IEnumerable<T> knownSkills)
+        {
+            _collection.Clear();
+
+            if (knownSkills != null)
+            {
+                foreach (var ks in knownSkills)
+                {
+                    Debug.Assert(EnumHelper<T>.IsDefined(ks));
+                    _collection.TrySetValue(ks, true);
+                }
+            }
+        }
+
         #endregion
     }
 }
