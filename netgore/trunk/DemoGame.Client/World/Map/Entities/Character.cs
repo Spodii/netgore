@@ -318,7 +318,6 @@ namespace DemoGame.Client
         /// Updates the character's sprites.
         /// Only used in sidescroller builds.
         /// </summary>
-        [Conditional("DEBUG")]
         protected virtual void UpdateAnimation()
         {
 #if !TOPDOWN

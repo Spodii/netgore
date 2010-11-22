@@ -203,6 +203,8 @@
     <Compile Include="UserPermissionsExtensions.cs" />
     <Compile Include="World\Map\Entities\AllianceID.cs" />
     <Compile Include="World\Map\Entities\AllianceIDTypeConverter.cs" />
+    <Compile Include="World\Map\Entities\CharacterEntity.SideScroller.cs" />
+    <Compile Include="World\Map\Entities\CharacterEntity.TopDown.cs" />
     <Compile Include="World\Map\Entities\CharacterID.cs" />
     <Compile Include="World\Map\Entities\CharacterIDTypeConverter.cs" />
     <Compile Include="World\Map\Entities\CharacterTemplateID.cs" />

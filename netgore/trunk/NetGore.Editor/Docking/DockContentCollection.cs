@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetGore.Editor.Docking
@@ -45,10 +46,7 @@ namespace NetGore.Editor.Docking
         {
             get
             {
-#if DEBUG
-                if (DockPane == null)
-                    throw new InvalidOperationException();
-#endif
+                AssertDockPaneNotNull();
 
                 var count = 0;
                 foreach (var content in DockPane.Contents)
@@ -67,10 +65,7 @@ namespace NetGore.Editor.Docking
 
         internal int Add(IDockContent content)
         {
-#if DEBUG
-            if (DockPane != null)
-                throw new InvalidOperationException();
-#endif
+            AssertDockPaneNull();
 
             if (Contains(content))
                 return IndexOf(content);
@@ -81,10 +76,7 @@ namespace NetGore.Editor.Docking
 
         internal void AddAt(IDockContent content, int index)
         {
-#if DEBUG
-            if (DockPane != null)
-                throw new InvalidOperationException();
-#endif
+            AssertDockPaneNull();
 
             if (index < 0 || index > Items.Count - 1)
                 return;
@@ -105,10 +97,7 @@ namespace NetGore.Editor.Docking
 
         int GetIndexOfVisibleContents(IDockContent content)
         {
-#if DEBUG
-            if (DockPane == null)
-                throw new InvalidOperationException();
-#endif
+            AssertDockPaneNotNull();
 
             if (content == null)
                 return -1;
@@ -127,12 +116,23 @@ namespace NetGore.Editor.Docking
             return -1;
         }
 
-        IDockContent GetVisibleContent(int index)
+        [Conditional("DEBUG")]
+        void AssertDockPaneNotNull()
         {
-#if DEBUG
             if (DockPane == null)
                 throw new InvalidOperationException();
-#endif
+        }
+
+        [Conditional("DEBUG")]
+        void AssertDockPaneNull()
+        {
+            if (DockPane != null)
+                throw new InvalidOperationException();
+        }
+
+        IDockContent GetVisibleContent(int index)
+        {
+            AssertDockPaneNotNull();
 
             var currentIndex = -1;
             foreach (var content in DockPane.Contents)

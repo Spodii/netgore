@@ -112,18 +112,25 @@ namespace NetGore.World
             // Store the index of the last PropertySync that needs to be synchronized over the network
             _lastNetworkSyncIndex = (byte)(_propertySyncs.Count(x => !x.SkipNetworkSync) - 1);
 
-#if DEBUG
-            // Ensure the _lastNetworkSyncIndex valid, and that every index [0, _lastNetworkSyncIndex] is
-            // set to false, and [_lastNetworkSyncIndex+1, end] is true for SkipNetworkSync.
+            AssertValidPropertySyncs();
+        }
+
+        /// <summary>
+        /// Asserts that the <see cref="_lastNetworkSyncIndex"/> is valid, that every index [0, _lastNetworkSyncIndex]
+        /// is set to false, and [_lastNetworkSyncIndex + 1, end] is true for SkipNetworkSync.
+        /// </summary>
+        [Conditional("DEBUG")]
+        void AssertValidPropertySyncs()
+        {
             for (var i = 0; i < _lastNetworkSyncIndex; i++)
             {
                 Debug.Assert(!_propertySyncs[i].SkipNetworkSync);
             }
+
             for (var i = _lastNetworkSyncIndex + 1; i < _propertySyncs.Length; i++)
             {
                 Debug.Assert(_propertySyncs[i].SkipNetworkSync);
             }
-#endif
         }
 
         /// <summary>

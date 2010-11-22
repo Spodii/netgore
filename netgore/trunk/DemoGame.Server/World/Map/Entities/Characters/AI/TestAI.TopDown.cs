@@ -1,9 +1,19 @@
+#if !TOPDOWN
+#pragma warning disable 1587
+#endif
+
+#if TOPDOWN
+
 using System.Linq;
 using NetGore;
 using NetGore.AI;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// A very simple implementation of NPC AI.
+    /// For TopDown builds.
+    /// </summary>
     [AI(_id)]
     public class TestAI : AIBase
     {
@@ -52,31 +62,11 @@ namespace DemoGame.Server
                 UpdateNoTarget();
             else
                 UpdateWithTarget();
-
-#if !TOPDOWN
-            // Jump randomly for no apparent reason
-            if (Rand(0, 200) == 0)
-                Actor.Jump();
-#endif
         }
 
         void UpdateNoTarget()
         {
             // Move around randomly
-#if !TOPDOWN
-            if (Rand(0, 40) == 0)
-            {
-                if (Actor.IsMoving)
-                    Actor.StopMoving();
-                else
-                {
-                    if (Rand(0, 2) == 0)
-                        Actor.MoveLeft();
-                    else
-                        Actor.MoveRight();
-                }
-            }
-#elif TOPDOWN
             if (Rand(0, 40) == 0)
             {
                 if (Actor.IsMoving)
@@ -108,32 +98,12 @@ namespace DemoGame.Server
                     }
                 }
             }
-#endif
         }
 
         void UpdateWithTarget()
         {
-#if !TOPDOWN
-            // Move towards an enemy
-            if (_target.Position.X > Actor.Position.X + 10)
-                Actor.MoveRight();
-            else if (_target.Position.X < Actor.Position.X - 10)
-                Actor.MoveLeft();
-            else
-            {
-                // Stop moving when close enough to the enemy
-                Actor.StopMoving();
-
-                // Face the correct direction
-                if (Actor.Position.X > _target.Position.X)
-                    Actor.SetHeading(Direction.West);
-                else
-                    Actor.SetHeading(Direction.East);
-            }
-#elif TOPDOWN
-
-    // Move towards the target until in range
-    // Horizontal
+            // Move towards the target until in range
+            // Horizontal
             if (Actor.Center.X > _target.Center.X + 20)
                 Actor.MoveLeft();
             else if (Actor.Center.X < _target.Center.X - 20)
@@ -148,7 +118,6 @@ namespace DemoGame.Server
                 Actor.MoveDown();
             else
                 Actor.StopMovingVertical();
-#endif
 
             // Attack the target if they are in range
             if (Rand(0, 70) == 1)
@@ -159,3 +128,5 @@ namespace DemoGame.Server
         }
     }
 }
+
+#endif

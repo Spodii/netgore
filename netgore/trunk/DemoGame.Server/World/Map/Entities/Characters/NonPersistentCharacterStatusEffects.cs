@@ -83,7 +83,7 @@ namespace DemoGame.Server
             {
                 var ase = new ActiveStatusEffect(statusEffect, power, disableTime);
                 _statusEffects.Add(ase);
-                NotifyAdded(ase);
+                OnAdded(ase);
                 return true;
             }
         }

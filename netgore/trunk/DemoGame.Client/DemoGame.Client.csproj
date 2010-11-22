@@ -136,8 +136,14 @@
     <Compile Include="AccountCharactersLoadedHandler.cs" />
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
+    <Compile Include="Interface\GameControlsKeys.SideScroller.cs" />
+    <Compile Include="Interface\GameControlsKeys.TopDown.cs" />
+    <Compile Include="Interface\GameplayScreenControls.SideScroller.cs" />
+    <Compile Include="Interface\GameplayScreenControls.TopDown.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="KnownSkillsCollection.cs" />
+    <Compile Include="Networking\ClientPacket.SideScroller.cs" />
+    <Compile Include="Networking\ClientPacket.TopDown.cs" />
     <Compile Include="Networking\CreateAccountEventHandler.cs" />
     <Compile Include="Properties\ClientSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -165,7 +171,7 @@
     <Compile Include="GameForm.Designer.cs">
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameplayScreenControls.cs" />
+    <Compile Include="Interface\GameplayScreenControls.cs" />
     <Compile Include="Interface\DamageText.cs" />
     <Compile Include="Interface\DamageTextPool.cs" />
     <Compile Include="Interface\GameControlsKeys.cs" />

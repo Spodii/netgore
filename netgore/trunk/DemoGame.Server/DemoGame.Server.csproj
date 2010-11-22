@@ -152,6 +152,8 @@
     <Compile Include="Networking\INetworkSenderExtensions.cs" />
     <Compile Include="Networking\ServerMessageType.cs" />
     <Compile Include="Networking\ServerMessageTypeExtensions.cs" />
+    <Compile Include="Networking\ServerPacketHandler.SideScroller.cs" />
+    <Compile Include="Networking\ServerPacketHandler.TopDown.cs" />
     <Compile Include="PeerTrading\PeerTradingHelper.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />
     <Compile Include="Properties\ServerSettings.Designer.cs">
@@ -450,8 +452,10 @@
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AISettings.cs" />
-    <Compile Include="World\Map\Entities\Characters\AI\StateMachine.cs" />
-    <Compile Include="World\Map\Entities\Characters\AI\TestAI.cs" />
+    <Compile Include="World\Map\Entities\Characters\AI\StateMachine.SideScroller.cs" />
+    <Compile Include="World\Map\Entities\Characters\AI\StateMachine.TopDown.cs" />
+    <Compile Include="World\Map\Entities\Characters\AI\TestAI.SideScroller.cs" />
+    <Compile Include="World\Map\Entities\Characters\AI\TestAI.TopDown.cs" />
     <Compile Include="World\Map\Entities\Characters\Alliance\Alliance.cs" />
     <Compile Include="World\Map\Entities\Characters\Alliance\AllianceManager.cs" />
     <Compile Include="World\Map\Entities\Characters\Character.cs">
