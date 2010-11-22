@@ -6,7 +6,7 @@ echo -
 @echo on
 
 REM Dump
-mysqldump demogame --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options > db.sql
+mysqldump demogame --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options --triggers > db.sql
 
 REM Create temp database
 mysqladmin --force --user=root --password=%A% --host=localhost --port=%B% drop demogame_tmp
@@ -19,7 +19,7 @@ REM Clean temp
 mysql --user=root --password=%A% --host=localhost --port=%B% demogame_tmp < dbdump_for_release-queries.sql
 
 REM Dump temp
-mysqldump demogame_tmp --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options > db-clean.sql
+mysqldump demogame_tmp --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options --triggers > db-clean.sql
 
 REM Delete temp database
 mysqladmin --force --user=root --password=%A% --host=localhost --port=%B% drop demogame_tmp
