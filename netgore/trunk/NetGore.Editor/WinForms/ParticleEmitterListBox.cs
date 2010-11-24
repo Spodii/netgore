@@ -6,7 +6,7 @@ using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.Editor
 {
-    public class ParticleEmitterListBox : TypedListBox<IParticleEmitter>
+    public class ParticleEmitterListBox : ListBox
     {
         const string _displayTextFormat = "[{0}] {1}";
 

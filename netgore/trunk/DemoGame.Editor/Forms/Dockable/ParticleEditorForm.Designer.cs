@@ -42,13 +42,13 @@ namespace DemoGame.Editor
             this.gbEmitter = new System.Windows.Forms.GroupBox();
             this.lstEmitters = new NetGore.Editor.ParticleEmitterListBox();
             this.pButtons = new System.Windows.Forms.Panel();
+            this.btnEmitterDown = new System.Windows.Forms.Button();
+            this.btnEmitterUp = new System.Windows.Forms.Button();
             this.btnClone = new System.Windows.Forms.Button();
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.gameScreen = new DemoGame.Editor.ParticleEffectScreenControl();
-            this.btnEmitterUp = new System.Windows.Forms.Button();
-            this.btnEmitterDown = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -200,6 +200,28 @@ namespace DemoGame.Editor
             this.pButtons.Size = new System.Drawing.Size(242, 31);
             this.pButtons.TabIndex = 0;
             // 
+            // btnEmitterDown
+            // 
+            this.btnEmitterDown.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnEmitterDown.Location = new System.Drawing.Point(179, 3);
+            this.btnEmitterDown.Name = "btnEmitterDown";
+            this.btnEmitterDown.Size = new System.Drawing.Size(30, 25);
+            this.btnEmitterDown.TabIndex = 9;
+            this.btnEmitterDown.Text = "\\/";
+            this.btnEmitterDown.UseVisualStyleBackColor = true;
+            this.btnEmitterDown.Click += new System.EventHandler(this.btnEmitterDown_Click);
+            // 
+            // btnEmitterUp
+            // 
+            this.btnEmitterUp.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnEmitterUp.Location = new System.Drawing.Point(209, 3);
+            this.btnEmitterUp.Name = "btnEmitterUp";
+            this.btnEmitterUp.Size = new System.Drawing.Size(30, 25);
+            this.btnEmitterUp.TabIndex = 8;
+            this.btnEmitterUp.Text = "/\\";
+            this.btnEmitterUp.UseVisualStyleBackColor = true;
+            this.btnEmitterUp.Click += new System.EventHandler(this.btnEmitterUp_Click);
+            // 
             // btnClone
             // 
             this.btnClone.Dock = System.Windows.Forms.DockStyle.Left;
@@ -254,28 +276,6 @@ namespace DemoGame.Editor
             this.gameScreen.Text = "gameScreenControl1";
             this.gameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseDown);
             this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
-            // 
-            // btnEmitterUp
-            // 
-            this.btnEmitterUp.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnEmitterUp.Location = new System.Drawing.Point(209, 3);
-            this.btnEmitterUp.Name = "btnEmitterUp";
-            this.btnEmitterUp.Size = new System.Drawing.Size(30, 25);
-            this.btnEmitterUp.TabIndex = 8;
-            this.btnEmitterUp.Text = "/\\";
-            this.btnEmitterUp.UseVisualStyleBackColor = true;
-            this.btnEmitterUp.Click += new System.EventHandler(this.btnEmitterUp_Click);
-            // 
-            // btnEmitterDown
-            // 
-            this.btnEmitterDown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnEmitterDown.Location = new System.Drawing.Point(179, 3);
-            this.btnEmitterDown.Name = "btnEmitterDown";
-            this.btnEmitterDown.Size = new System.Drawing.Size(30, 25);
-            this.btnEmitterDown.TabIndex = 9;
-            this.btnEmitterDown.Text = "\\/";
-            this.btnEmitterDown.UseVisualStyleBackColor = true;
-            this.btnEmitterDown.Click += new System.EventHandler(this.btnEmitterDown_Click);
             // 
             // ParticleEditorForm
             // 
