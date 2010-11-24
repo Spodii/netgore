@@ -16,15 +16,17 @@ namespace CodeReleasePreparer
         static readonly string[] _deleteFilePatterns = new string[]
         {
             @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe", @"\.pdb$", @"[\\/]bin[\\/]",
-            @"[\\/]obj[\\/]", @"[\\/]\.svn[\\/]", @"[\\/]_ReSharper\.", @"[\\/]InstallationValidator[\\/]bin[\\/]csfml.+\.dll$",
-            @"[\\/]InstallationValidator[\\/]bin[\\/]libsndfile.*\.dll$", @"[\\/]InstallationValidator[\\/]bin[\\/]openal.*\.dll$"
+            @"[\\/]obj[\\/]", @"[\\/]\.svn[\\/]", @"[\\/]_ReSharper\."
             ,
         };
 
         static readonly string[] _preserveFilePatterns = new string[]
         {
-            @"\.bat$", @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.exe",
-            @"[\\/]InstallationValidator[\\/]bin[\\/][^\\/]+\.dll", @"[\\/]CodeReleasePreparer[\\/]bin[\\/]",
+            @"\.bat$",
+            @"[\\/]InstallationValidator[\\/]bin[\\/]mysql\.data\.dll$",
+            @"[\\/]InstallationValidator[\\/]bin[\\/]InstallationValidator\.exe$",
+            @"[\\/]InstallationValidator[\\/]bin[\\/]InstallationValidator\.exe\.config$",
+            @"[\\/]CodeReleasePreparer[\\/]bin[\\/]",
         };
 
         static RegexCollection _delFileRegexes;
