@@ -7,6 +7,7 @@ using NetGore.Editor.Docking;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
+using NetGore.IO;
 
 namespace DemoGame.Editor
 {
@@ -21,6 +22,18 @@ namespace DemoGame.Editor
         public ParticleEditorForm()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data. </param>
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            // Save changes
+            ParticleEffectManager.Instance.Save(ContentPaths.Dev);
+
+            base.OnClosing(e);
         }
 
         /// <summary>
