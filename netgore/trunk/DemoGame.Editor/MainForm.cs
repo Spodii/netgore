@@ -74,9 +74,13 @@ namespace DemoGame.Editor
             // Save the GrhDatas
             GrhInfo.Save(ContentPaths.Dev);
 
+            // Save ParticleEffects
+            ParticleEffectManager.Instance.Save(ContentPaths.Dev);
+
             // Save the tool settings
             ToolManager.Instance.SaveSettings();
 
+            // Save docking settings
             SaveDockSettings("User");
 
             base.OnClosing(e);
@@ -315,6 +319,9 @@ namespace DemoGame.Editor
 
             // Create the new ParticleEffect
             var pe = new ParticleEffect();
+
+            // Save the new ParticleEffect
+            ParticleEffectManager.Instance.Save(ContentPaths.Dev);
 
             // Show the editor form
             var editorFrm = new ParticleEditorForm();
