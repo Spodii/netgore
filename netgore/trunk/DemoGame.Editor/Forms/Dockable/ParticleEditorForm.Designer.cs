@@ -49,6 +49,7 @@ namespace DemoGame.Editor
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.gameScreen = new DemoGame.Editor.ParticleEffectScreenControl();
+            this.btnDeleteEffect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -59,6 +60,7 @@ namespace DemoGame.Editor
             this.panel1.SuspendLayout();
             this.gbEmitter.SuspendLayout();
             this.pButtons.SuspendLayout();
+            this.tpSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -257,6 +259,7 @@ namespace DemoGame.Editor
             // 
             // tpSettings
             // 
+            this.tpSettings.Controls.Add(this.btnDeleteEffect);
             this.tpSettings.Location = new System.Drawing.Point(4, 22);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
@@ -276,6 +279,16 @@ namespace DemoGame.Editor
             this.gameScreen.Text = "gameScreenControl1";
             this.gameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseDown);
             this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
+            // 
+            // btnDeleteEffect
+            // 
+            this.btnDeleteEffect.Location = new System.Drawing.Point(6, 6);
+            this.btnDeleteEffect.Name = "btnDeleteEffect";
+            this.btnDeleteEffect.Size = new System.Drawing.Size(105, 23);
+            this.btnDeleteEffect.TabIndex = 0;
+            this.btnDeleteEffect.Text = "Delete Effect";
+            this.btnDeleteEffect.UseVisualStyleBackColor = true;
+            this.btnDeleteEffect.Click += new System.EventHandler(this.btnDeleteEffect_Click);
             // 
             // ParticleEditorForm
             // 
@@ -298,6 +311,7 @@ namespace DemoGame.Editor
             this.panel1.PerformLayout();
             this.gbEmitter.ResumeLayout(false);
             this.pButtons.ResumeLayout(false);
+            this.tpSettings.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -323,6 +337,7 @@ namespace DemoGame.Editor
         private System.Windows.Forms.Button btnNewEmitter;
         private System.Windows.Forms.Button btnEmitterDown;
         private System.Windows.Forms.Button btnEmitterUp;
+        private System.Windows.Forms.Button btnDeleteEffect;
 
     }
 }
