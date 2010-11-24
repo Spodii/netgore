@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
@@ -16,7 +15,7 @@ namespace NetGore.Editor.WinForms
     /// <summary>
     /// A list box specifically for particle effects, containing the names of all the particle effects available.
     /// </summary>
-    public class ParticleEffectListBox : TypedListBox<string>
+    public class ParticleEffectListBox : ListBox
     {
         /// <summary>
         /// Notifies listeners when this <see cref="ParticleEffectListBox"/> requests to create a particle effect
@@ -25,18 +24,17 @@ namespace NetGore.Editor.WinForms
         public event ParticleEffectListBoxCreateEventHandler RequestCreateEffect;
 
         /// <summary>
-        /// Gets the items to initially populate the <see cref="Control"/>'s collection with.
+        /// Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
         /// </summary>
-        /// <returns>
-        /// The items to initially populate the <see cref="Control"/>'s collection with.
-        /// </returns>
-        protected override IEnumerable<string> GetInitialItems()
+        protected override void OnCreateControl()
         {
-            // Don't return the values while in design mode
-            if (DesignMode)
-                return Enumerable.Empty<string>();
+            base.OnCreateControl();
 
-            return ParticleEffectManager.Instance.ParticleEffectNames;
+            if (DesignMode)
+                return;
+
+            Items.Clear();
+            Items.AddRange(ParticleEffectManager.Instance.ParticleEffectNames.OfType<object>().ToArray());
         }
 
         /// <summary>
@@ -50,7 +48,7 @@ namespace NetGore.Editor.WinForms
             if (DesignMode)
                 return;
 
-            var name = TypedSelectedItem;
+            var name = SelectedItem as string;
             if (!string.IsNullOrEmpty(name))
             {
                 if (RequestCreateEffect != null)

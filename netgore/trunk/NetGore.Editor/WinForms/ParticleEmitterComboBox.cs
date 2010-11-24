@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
@@ -11,7 +10,7 @@ namespace NetGore.Editor.WinForms
     /// <summary>
     /// A <see cref="ComboBox"/> containing the <see cref="ParticleEmitter"/>s.
     /// </summary>
-    public class ParticleEmitterComboBox : TypedComboBox<Type>
+    public class ParticleEmitterComboBox : ComboBox
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterComboBox"/> class.
@@ -28,17 +27,17 @@ namespace NetGore.Editor.WinForms
         public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
 
         /// <summary>
-        /// Gets the items to initially populate the <see cref="ComboBox"/> with.
+        /// Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
         /// </summary>
-        /// <returns>
-        /// The items to initially populate the <see cref="ComboBox"/> with.
-        /// </returns>
-        protected override IEnumerable<Type> GetInitialItems()
+        protected override void OnCreateControl()
         {
-            if (DesignMode)
-                return Enumerable.Empty<Type>();
+            base.OnCreateControl();
 
-            return ParticleEmitter.EmitterTypes;
+            if (DesignMode)
+                return;
+
+            Items.Clear();
+            Items.AddRange(ParticleEmitter.EmitterTypes.Cast<object>().ToArray());
         }
 
         /// <summary>
@@ -52,12 +51,14 @@ namespace NetGore.Editor.WinForms
         }
 
         /// <summary>
-        /// Handles when the selected value changes.
+        /// Raises the <see cref="E:System.Windows.Forms.DomainUpDown.SelectedItemChanged"/> event.
         /// </summary>
-        /// <param name="item">The new selected value.</param>
-        protected override void OnTypedSelectedItemChanged(Type item)
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        protected override void OnSelectedItemChanged(EventArgs e)
         {
-            base.OnTypedSelectedItemChanged(item);
+            base.OnSelectedItemChanged(e);
+
+            var item = SelectedItem as Type;
 
             if (DesignMode)
                 return;

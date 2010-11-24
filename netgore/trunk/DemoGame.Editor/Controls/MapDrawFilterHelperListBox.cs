@@ -9,7 +9,7 @@ namespace DemoGame.Editor.Forms
     /// A <see cref="ListBox"/> that shows a list of <see cref="MapDrawFilterHelper"/>s and tries to show their name by
     /// using a <see cref="MapDrawFilterHelperCollection"/>.
     /// </summary>
-    public class MapDrawFilterHelperListBox : TypedListBox<MapDrawFilterHelper>
+    public class MapDrawFilterHelperListBox : ListBox
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MapDrawFilterHelperListBox"/> class.

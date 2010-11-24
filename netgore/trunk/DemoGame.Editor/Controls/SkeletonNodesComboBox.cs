@@ -9,7 +9,7 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="ComboBox"/> for the <see cref="SkeletonNode"/>s.
     /// </summary>
-    public class SkeletonNodesComboBox : TypedComboBox<SkeletonNode>
+    public class SkeletonNodesComboBox : ComboBox
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonNodesComboBox"/> class.

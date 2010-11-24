@@ -9,16 +9,14 @@ namespace DemoGame.Editor
     /// <summary>
     /// A <see cref="ListBox"/> for the <see cref="SkeletonBodyItem"/>s.
     /// </summary>
-    public class SkeletonBodyItemsListBox : TypedListBox<SkeletonBodyItem>
+    public class SkeletonBodyItemsListBox : ListBox
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonBodyItemsListBox"/> class.
         /// </summary>
         public SkeletonBodyItemsListBox()
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             DrawMode = DrawMode.OwnerDrawFixed;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         static string GetDSIString(SkeletonBodyItem dsi)

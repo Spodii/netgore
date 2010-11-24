@@ -106,7 +106,7 @@ namespace DemoGame.Editor
             {
                 try
                 {
-                    return lstBodies.TypedSelectedItem;
+                    return lstBodies.SelectedItem as SkeletonBodyItem;
                 }
                 catch
                 {
@@ -120,7 +120,7 @@ namespace DemoGame.Editor
         /// </summary>
         public SkeletonNode SelectedNode
         {
-            get { return cmbSkeletonNodes.TypedSelectedItem; }
+            get { return cmbSkeletonNodes.SelectedItem as SkeletonNode; }
             set { cmbSkeletonNodes.SelectedItem = value; }
         }
 
@@ -556,16 +556,16 @@ namespace DemoGame.Editor
             var nodes = _skeletonAnim.Skeleton.RootNode.GetAllNodes();
 
             cmbSource.Items.Clear();
-            cmbSource.AddItems(nodes);
+            cmbSource.Items.AddRange(nodes.OfType<object>().ToArray());
 
             cmbTarget.Items.Clear();
-            cmbTarget.AddItems(nodes);
+            cmbTarget.Items.AddRange(nodes.OfType<object>().ToArray());
         }
 
         void UpdateBodyList()
         {
             lstBodies.Items.Clear();
-            lstBodies.AddItems(SkeletonBody.BodyItems);
+            lstBodies.Items.AddRange(SkeletonBody.BodyItems.OfType<object>().ToArray());
 
             UpdateAnimationNodeCBs();
         }
@@ -574,7 +574,7 @@ namespace DemoGame.Editor
         {
             cmbSkeletonNodes.Items.Clear();
             var nodes = _skeleton.RootNode.GetAllNodes();
-            cmbSkeletonNodes.AddItems(nodes);
+            cmbSkeletonNodes.Items.AddRange(nodes.OfType<object>().ToArray());
         }
 
         /// <summary>
@@ -1089,7 +1089,7 @@ namespace DemoGame.Editor
         {
             try
             {
-                SelectedDSI.Source = cmbSource.TypedSelectedItem;
+                SelectedDSI.Source = cmbSource.SelectedItem as SkeletonNode;
                 cmbSource.BackColor = EditorColors.Normal;
                 UpdateSelectedDSI();
             }
@@ -1108,7 +1108,7 @@ namespace DemoGame.Editor
         {
             try
             {
-                SelectedDSI.Dest = cmbTarget.TypedSelectedItem;
+                SelectedDSI.Dest = cmbTarget.SelectedItem as SkeletonNode;
                 cmbTarget.BackColor = EditorColors.Normal;
                 UpdateSelectedDSI();
             }
@@ -1137,12 +1137,12 @@ namespace DemoGame.Editor
             if (item.Grh.GrhData != null)
                 txtGrhIndex.Text = item.Grh.GrhData.GrhIndex.ToString();
 
-            cmbSource.SelectedItem = cmbSource.TypedItems.FirstOrDefault(x => x.Name == item.Source.Name);
+            cmbSource.SelectedItem = cmbSource.Items.OfType<SkeletonNode>().FirstOrDefault(x => x.Name == item.Source.Name);
 
             if (item.Dest == null)
                 cmbTarget.SelectedItem = null;
             else
-                cmbTarget.SelectedItem = cmbTarget.TypedItems.FirstOrDefault(x => x.Name == item.Dest.Name);
+                cmbTarget.SelectedItem = cmbTarget.Items.OfType<SkeletonNode>().FirstOrDefault(x => x.Name == item.Dest.Name);
         }
 
         /// <summary>

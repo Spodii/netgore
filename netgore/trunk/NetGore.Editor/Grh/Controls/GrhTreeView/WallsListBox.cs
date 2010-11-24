@@ -6,18 +6,16 @@ using NetGore.World;
 namespace NetGore.Editor.Grhs
 {
     /// <summary>
-    /// A <see cref="TypedListBox{T}"/> for a collection of <see cref="WallEntityBase"/>s.
+    /// A <see cref="ListBox"/> for a collection of <see cref="WallEntityBase"/>s.
     /// </summary>
-    public class WallsListBox : TypedListBox<WallEntityBase>
+    public class WallsListBox : ListBox
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WallsListBox"/> class.
         /// </summary>
         public WallsListBox()
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             DrawMode = DrawMode.OwnerDrawFixed;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
