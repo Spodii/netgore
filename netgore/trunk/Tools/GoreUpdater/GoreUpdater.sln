@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater.Tests", "GoreUp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater.Manager", "GoreUpdater.Manager\GoreUpdater.Manager.csproj", "{58614964-AAD5-42AF-A3E2-81B082F33484}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{9741ED76-8A92-40A2-99E2-37553D36466B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net", "..\..\Externals\log4net\log4net.csproj", "{F6A02431-167E-4347-BC43-65532C31CDB7}"
 EndProject
 Global
@@ -42,8 +40,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{F6A02431-167E-4347-BC43-65532C31CDB7} = {9741ED76-8A92-40A2-99E2-37553D36466B}
 	EndGlobalSection
 EndGlobal

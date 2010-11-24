@@ -91,8 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Externals\log4net\log4net.csproj">
-      <Project>{E3AF9E3A-94F4-41A2-9AEF-01600ECDFC7F}</Project>
-      <Name>log4net %28Externals\log4net%29</Name>
+      <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
+      <Name>log4net</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
