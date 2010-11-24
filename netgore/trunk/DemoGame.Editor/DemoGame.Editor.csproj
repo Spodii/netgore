@@ -512,6 +512,10 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Externals\log4net\log4net.csproj">
       <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
       <Name>log4net</Name>
