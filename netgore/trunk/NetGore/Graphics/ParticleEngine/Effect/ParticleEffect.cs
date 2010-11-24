@@ -40,7 +40,8 @@ namespace NetGore.Graphics.ParticleEngine
         {
             Life = -1;
 
-            _effectConfig = new ParticleEffectConfig(ParticleEffectManager.Instance.GenerateUniqueEffectName(DefaultEffectName));
+            var name = ParticleEffectManager.Instance.GenerateUniqueEffectName(DefaultEffectName);
+            _effectConfig = new ParticleEffectConfig(name);
             ParticleEffectManager.Instance.AddEffect(this);
         }
 

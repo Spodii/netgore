@@ -66,6 +66,7 @@ namespace DemoGame.Editor
             this.dockPanel = new NetGore.Editor.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
+            this.newPEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,7 +110,8 @@ namespace DemoGame.Editor
             // particleEffectToolStripMenuItem
             // 
             this.particleEffectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadPEToolStripMenuItem});
+            this.loadPEToolStripMenuItem,
+            this.newPEToolStripMenuItem});
             this.particleEffectToolStripMenuItem.Name = "particleEffectToolStripMenuItem";
             resources.ApplyResources(this.particleEffectToolStripMenuItem, "particleEffectToolStripMenuItem");
             // 
@@ -243,6 +245,12 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
             // 
+            // newPEToolStripMenuItem
+            // 
+            this.newPEToolStripMenuItem.Name = "newPEToolStripMenuItem";
+            resources.ApplyResources(this.newPEToolStripMenuItem, "newPEToolStripMenuItem");
+            this.newPEToolStripMenuItem.Click += new System.EventHandler(this.newPEToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -282,6 +290,7 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem dbEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem particleEffectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadPEToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newPEToolStripMenuItem;
     }
 }
 

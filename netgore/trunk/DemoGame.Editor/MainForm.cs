@@ -10,6 +10,7 @@ using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
 using NetGore.Graphics;
+using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
@@ -299,6 +300,26 @@ namespace DemoGame.Editor
             editorFrm.MapScreenControl.ChangeMap(id.Value);
 
             editorFrm.Show(dockPanel);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="newPEToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void newPEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            const string confirmMsg = "Are you sure you wish to create a new particle effect?";
+            if (MessageBox.Show(confirmMsg, "Create new particle effect?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Create the new ParticleEffect
+            var pe = new ParticleEffect();
+
+            // Show the editor form
+            var editorFrm = new ParticleEditorForm();
+            editorFrm.ParticleEffect = pe;
+            editorFrm.Show(dockPanel, DockState.Float);
         }
 
         /// <summary>
