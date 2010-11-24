@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Collections;
@@ -22,18 +23,6 @@ namespace DemoGame.Editor
         public ParticleEditorForm()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data. </param>
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            // Save changes
-            ParticleEffectManager.Instance.Save(ContentPaths.Dev);
-
-            base.OnClosing(e);
         }
 
         /// <summary>
@@ -77,6 +66,18 @@ namespace DemoGame.Editor
                 if (ParticleEffectChanged != null)
                     ParticleEffectChanged(this, oldValue, value);
             }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data. </param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            // Save changes
+            ParticleEffectManager.Instance.Save(ContentPaths.Dev);
+
+            base.OnClosing(e);
         }
 
         /// <summary>
@@ -155,6 +156,27 @@ namespace DemoGame.Editor
                 lstEmitters.Items.Add(newEmitter);
 
             lstEmitters.SelectedItem = newEmitter;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="btnDeleteEffect"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnDeleteEffect_Click(object sender, EventArgs e)
+        {
+            if (ParticleEffect == null)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to delete the particle effect `{0}`?";
+            if (
+                MessageBox.Show(string.Format(confirmMsg, ParticleEffect.Name), "Delete particle effect?", MessageBoxButtons.YesNo) ==
+                DialogResult.No)
+                return;
+
+            ParticleEffectManager.Instance.RemoveEffect(ParticleEffect.Name);
+
+            Close();
         }
 
         /// <summary>
