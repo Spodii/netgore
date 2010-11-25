@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -160,11 +161,17 @@ namespace DemoGame.Editor.Tools
             if (e.KeyCode == Keys.Delete)
             {
                 // Only delete when it is an Entity that is on this map
-                foreach (var x in SOM.SelectedObjects.OfType<MapGrh>())
+                var removed = new List<object>();
+                foreach (var x in SOM.SelectedObjects.OfType<MapGrh>().ToImmutable())
                 {
                     if (map.Spatial.CollectionContains(x))
+                    {
                         map.RemoveMapGrh(x);
+                        removed.Add(x);
+                    }
                 }
+
+                SOM.SetManySelected(SOM.SelectedObjects.Except(removed).ToImmutable());
             }
 
             base.MapContainer_KeyUp(sender, map, camera, e);
