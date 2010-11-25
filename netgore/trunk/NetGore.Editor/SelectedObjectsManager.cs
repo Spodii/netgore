@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using log4net;
 using NetGore.World;
 
 namespace NetGore.Editor
@@ -12,6 +14,7 @@ namespace NetGore.Editor
     /// </summary>
     public class SelectedObjectsManager<T> where T : class
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly EntityEventHandler _disposedListenerEntity;
         readonly EventHandler _selectedIndexChangedHandler;
         readonly List<T> _selectedObjs = new List<T>();
@@ -164,7 +167,20 @@ namespace NetGore.Editor
             }
 
             if (PropertyGrid != null)
-                PropertyGrid.SelectedObject = Focused;
+            {
+                try
+                {
+                    PropertyGrid.SelectedObject = Focused;
+                }
+                catch (NullReferenceException ex)
+                {
+                    const string errmsg =
+                        "NullReferenceException occured on setting PropertyGrid.SelectedObject." +
+                        " Most of the time, this is not a problem. Exception: {0}";
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat(errmsg, ex);
+                }
+            }
         }
 
         /// <summary>
