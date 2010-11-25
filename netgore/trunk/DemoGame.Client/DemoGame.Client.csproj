@@ -298,9 +298,7 @@
     </None>
     <None Include="_ProjectInfo.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="World\Map\Entities\NPCChat\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)DevContent\CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content" --clean="[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]"</PreBuildEvent>
