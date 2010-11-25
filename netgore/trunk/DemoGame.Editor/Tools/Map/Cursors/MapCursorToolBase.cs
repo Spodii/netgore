@@ -175,13 +175,18 @@ namespace DemoGame.Editor.Tools
             else
             {
                 // Draw the tooltip
-                if (_toolTipObject != null && _toolTip != null)
+                var font = ToolTipFont;
+                if (_toolTipObject != null && _toolTip != null && font != null)
                 {
-                    var font = GlobalState.Instance.DefaultRenderFont;
                     spriteBatch.DrawStringShaded(font, _toolTip, _toolTipPos, Color.White, Color.Black);
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="Font"/> to use to draw the tooltips.
+        /// </summary>
+        public Font ToolTipFont { get { return GlobalState.Instance.DefaultRenderFont; } }
 
         /// <summary>
         /// Gets if the given object is visible according to the drawing filter currently being used.
@@ -255,22 +260,38 @@ namespace DemoGame.Editor.Tools
             }
             else
             {
-                // Show the tooltip
-
-                if (ShowObjectToolTip)
+                // Create the tooltip
+                var font = ToolTipFont;
+                if (ShowObjectToolTip && font != null)
                 {
                     var hoverEntity = GetObjUnderCursor(map, worldPos);
 
                     if (hoverEntity == null)
                     {
+                        // Nothing under the cursor that we are allowed to select
                         _toolTip = string.Empty;
                         _toolTipObject = null;
                     }
                     else if (_toolTipObject != hoverEntity)
                     {
+                        // Something found under the cursor
                         _toolTipObject = hoverEntity;
                         _toolTipPos = e.Position();
                         _toolTip = GetObjectToolTip(hoverEntity) ?? hoverEntity.ToString();
+
+                        // Make sure the text stays in the view area
+                        const int toolTipPadding = 4;
+                        var toolTipSize = font.MeasureString(_toolTip);
+
+                        if (_toolTipPos.X < toolTipPadding)
+                            _toolTipPos.X = toolTipPadding;
+                        else if (_toolTipPos.X + toolTipSize.X + toolTipPadding > camera.Size.X)
+                            _toolTipPos.X = camera.Size.X - toolTipSize.X - toolTipPadding;
+
+                        if (_toolTipPos.Y < toolTipPadding)
+                            _toolTipPos.Y = toolTipPadding;
+                        else if (_toolTipPos.Y + toolTipSize.Y + toolTipPadding > camera.Size.Y)
+                            _toolTipPos.Y = camera.Size.Y - toolTipSize.Y - toolTipPadding;
                     }
                 }
             }
