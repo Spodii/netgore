@@ -185,6 +185,7 @@ namespace NetGore.World
         /// <summary>
         /// Gets if this <see cref="Entity"/> is currently on the ground. For top-down, this will always return true.
         /// </summary>
+        [Browsable(false)]
         public bool IsOnGround
         {
             get
