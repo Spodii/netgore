@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using log4net;
 using NetGore;
@@ -62,6 +63,7 @@ namespace DemoGame.Editor.Tools
             {
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.SplitButton,
+                MapDrawingExtensions = new MapDrawingExtension[] { new MapEntityBoxDrawer() },
                 DisabledImage = Resources.MapEntityCursorTool_Disabled,
                 EnabledImage = Resources.MapEntityCursorTool_Enabled,
             };
