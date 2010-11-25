@@ -129,11 +129,17 @@ namespace DemoGame.Editor.Tools
             if (e.KeyCode == Keys.Delete)
             {
                 // Only delete when it is an Entity that is on this map
-                foreach (var x in SOM.SelectedObjects.OfType<ILight>())
+                var removed = new List<object>();
+                foreach (var x in SOM.SelectedObjects.OfType<ILight>().ToImmutable())
                 {
                     if (map.Lights.Contains(x))
+                    {
                         map.RemoveLight(x);
+                        removed.Add(x);
+                    }
                 }
+
+                SOM.SetManySelected(SOM.SelectedObjects.Except(removed).ToImmutable());
             }
 
             base.MapContainer_KeyUp(sender, map, camera, e);

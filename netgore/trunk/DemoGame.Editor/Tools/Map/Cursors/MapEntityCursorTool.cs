@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.Editor.Properties;
 using log4net;
+using NetGore;
 using NetGore.Editor;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
@@ -78,11 +80,21 @@ namespace DemoGame.Editor.Tools
             if (e.KeyCode == Keys.Delete)
             {
                 // Only delete when it is an Entity that is on this map
-                foreach (var x in SOM.SelectedObjects.OfType<Entity>())
+                var removed = new List<object>();
+                foreach (var x in SOM.SelectedObjects.OfType<Entity>().ToImmutable())
                 {
                     if (map.Spatial.CollectionContains(x))
+                    {
                         map.RemoveEntity(x);
+
+                        if (!x.IsDisposed)
+                            x.Dispose();
+
+                        removed.Add(x);
+                    }
                 }
+
+                SOM.SetManySelected(SOM.SelectedObjects.Except(removed).ToImmutable());
             }
 
             base.MapContainer_KeyUp(sender, map, camera, e);
