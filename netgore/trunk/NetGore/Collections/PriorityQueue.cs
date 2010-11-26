@@ -3,6 +3,10 @@ using System.Linq;
 
 namespace NetGore.Collections
 {
+
+    /// <summary>
+    /// A semi-sorted queue that holds it's highest value at the head of the array at all times.
+    /// </summary>
     public class PriorityQueue<T>
     {
         readonly IComparer<T> _comparer;
@@ -97,8 +101,8 @@ namespace NetGore.Collections
             do
             {
                 var d = a;
-                var b = 2 * a + 1;
-                var c = 2 * a + 2;
+                var b = (a << 1) + 1;
+                var c = (a << 1) + 2;
 
                 if (_list.Count > b && OnCompare(a, b) > 0)
                     a = b;
@@ -186,7 +190,7 @@ namespace NetGore.Collections
                     break;
 
                 // Half of (index -1)
-                d = ((a - 1) / 2);
+                d = ((a - 1) >> 1);
 
                 // If A is less than D then we switch the positions
                 if (OnCompare(a, d) >= 0)
@@ -204,8 +208,8 @@ namespace NetGore.Collections
             {
                 var b = a;
 
-                var c = 2 * a + 1;
-                d = 2 * a + 2;
+                var c = (a << 1) + 1;
+                d = (a << 1) + 2;
 
                 // If C is less than _list.Count and if A is greater than C then A = C.
                 if (_list.Count > c && OnCompare(a, c) > 0)
