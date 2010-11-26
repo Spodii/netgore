@@ -3,6 +3,10 @@ using System.Linq;
 
 namespace NetGore.Collections
 {
+    /// <summary>
+    /// A list with limited functionality
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     class SlimList<T>
     {
         static readonly T[] _emptyArray = new T[0];
@@ -90,7 +94,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Makes sure that the cpacity of the array is at least the set minimum.
+        /// Makes sure that the capacity of the array is at least the set minimum.
         /// </summary>
         /// <param name="min">The minimum size.</param>
         void EnsureCapacity(int min)
