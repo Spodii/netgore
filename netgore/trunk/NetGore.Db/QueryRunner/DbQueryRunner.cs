@@ -69,7 +69,7 @@ namespace NetGore.Db
             // Wait for the worker thread to die now that _isDisposed is set
             try
             {
-                if (_workerThread.IsAlive)
+                if (_workerThread != null && _workerThread.IsAlive)
                     _workerThread.Join();
             }
             catch (Exception ex)
@@ -99,7 +99,8 @@ namespace NetGore.Db
             // Dispose of the connection
             try
             {
-                Connection.Dispose();
+                if (Connection != null)
+                    Connection.Dispose();
             }
             catch (Exception ex)
             {

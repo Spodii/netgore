@@ -555,13 +555,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Starts the <see cref="Server"/> loop. This will block the calling thread until the server has shut down.
+        /// Starts the <see cref="Server"/> loop. This will block the calling thread until the server has shut down, unless the
+        /// server is already running or cannot be run, in which case this will return immediately.
         /// </summary>
-        /// <exception cref="MethodAccessException">The server has already been started.</exception>
-        public void Start()
+        /// <returns>True if the server was started successfully and this method returned because the server was shut down;
+        /// false if this method returned immediately because the server is already running or could not be started.</returns>
+        public bool Start()
         {
-            if (_hasStarted)
-                throw new MethodAccessException("The server has already started.");
+            if (_dbController == null || _hasStarted)
+                return false;
 
             _hasStarted = true;
 
@@ -573,6 +575,8 @@ namespace DemoGame.Server
 
             // Start the main game loop
             GameLoop();
+
+            return true;
         }
 
         /// <summary>
