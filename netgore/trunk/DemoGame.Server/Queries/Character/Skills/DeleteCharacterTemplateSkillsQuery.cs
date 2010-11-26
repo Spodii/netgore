@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
@@ -8,15 +7,16 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class DeleteCharacterTemplateInventoryForCharacterQuery : DbQueryNonReader<CharacterTemplateID>
+    public class DeleteCharacterTemplateSkillsQuery : DbQueryNonReader<CharacterTemplateID>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteCharacterTemplateInventoryForCharacterQuery"/> class.
+        /// Initializes a new instance of the <see cref="DeleteCharacterTemplateSkillsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public DeleteCharacterTemplateInventoryForCharacterQuery(DbConnectionPool connectionPool)
+        public DeleteCharacterTemplateSkillsQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
+            QueryAsserts.ContainsColumns(CharacterTemplateSkillTable.DbColumns, "character_template_id");
         }
 
         /// <summary>
@@ -27,13 +27,19 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             /*
-                DELETE FROM `{0}` WHERE `character_template_id`=@id
+                DELETE FROM `{0}` WHERE `character_template_id = @charTemplateID
             */
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Delete(CharacterTemplateInventoryTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+                qb.Delete(CharacterTemplateSkillTable.TableName)
+                    .Where(
+                        f.Equals(
+                            s.EscapeColumn("character_template_id"), 
+                            s.Parameterize("charTemplateID")
+                            )
+                    );
             return q.ToString();
         }
 
@@ -44,18 +50,18 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("id");
+            return CreateParameters("charTemplateID");
         }
 
         /// <summary>
         /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
-        /// based on the values specified in the given <paramref name="id"/> parameter.
+        /// based on the values specified in the given <paramref name="item"/> parameter.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="id">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, CharacterTemplateID id)
+        /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
+        protected override void SetParameters(DbParameterValues p, CharacterTemplateID item)
         {
-            p["id"] = id;
+            p["charTemplateID"] = (int)item;
         }
     }
 }

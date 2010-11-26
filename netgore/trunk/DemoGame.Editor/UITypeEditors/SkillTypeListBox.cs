@@ -1,18 +1,16 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
-using NetGore;
 using NetGore.Editor;
-using NetGore.Features.Quests;
-using NetGore.IO;
+using IEnumerableExtensions = NetGore.IEnumerableExtensions;
 
 namespace DemoGame.Editor.UITypeEditors
 {
-    public class QuestIDListBox : ListBox
+    public class SkillTypeListBox : ListBox
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuestIDListBox"/> class.
+        /// Initializes a new instance of the <see cref="SkillTypeListBox"/> class.
         /// </summary>
-        public QuestIDListBox()
+        public SkillTypeListBox()
         {
             if (DesignMode)
                 return;
@@ -26,15 +24,9 @@ namespace DemoGame.Editor.UITypeEditors
         /// </summary>
         /// <param name="x">The item to draw.</param>
         /// <returns>The string to draw for a list item.</returns>
-        static string GetDrawString(QuestID x)
+        static string GetDrawString(SkillType x)
         {
-            var qdc = QuestDescriptionCollection.Create(ContentPaths.Dev);
-            var t = qdc[x];
-
-            if (t == null)
-                return x.ToString();
-            else
-                return t.QuestID + ". " + t.Name + " - " + t.Description;
+            return x.GetValue() + ". " + x;
         }
 
         /// <summary>
@@ -43,7 +35,7 @@ namespace DemoGame.Editor.UITypeEditors
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DesignMode || !ControlHelper.DrawListItem<QuestID>(Items, e, x => GetDrawString(x)))
+            if (DesignMode || !ControlHelper.DrawListItem<SkillType>(Items, e, x => GetDrawString(x)))
                 base.OnDrawItem(e);
         }
 
@@ -70,9 +62,9 @@ namespace DemoGame.Editor.UITypeEditors
             if (DesignMode)
                 return;
 
-            var v = Items.Cast<QuestID>().ToImmutable();
+            var v = IEnumerableExtensions.ToImmutable(Items.Cast<SkillType>());
             Items.Clear();
-            Items.AddRange(v.Cast<object>().ToArray());
+            Items.AddRange(v.OrderBy(x => x.GetValue()).Cast<object>().ToArray());
         }
     }
 }

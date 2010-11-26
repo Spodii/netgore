@@ -26,7 +26,9 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // DELETE FROM `{0}` WHERE `character_template_id`=@id
+            /*
+                DELETE FROM `{0}` WHERE `character_template_id`=@id
+            */
 
             var f = qb.Functions;
             var s = qb.Settings;

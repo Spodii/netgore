@@ -255,7 +255,9 @@
     <Compile Include="Queries\Character\DeleteUserCharacterQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterEquippedBodiesQuery.cs" />
     <Compile Include="Queries\Character\Skills\DeleteCharacterSkillQuery.cs" />
+    <Compile Include="Queries\Character\Skills\DeleteCharacterTemplateSkillsQuery.cs" />
     <Compile Include="Queries\Character\Skills\InsertCharacterSkillQuery.cs" />
+    <Compile Include="Queries\Character\Skills\InsertCharacterTemplateSkillQuery.cs" />
     <Compile Include="Queries\Character\Skills\SelectCharacterSkillsQuery.cs" />
     <Compile Include="Queries\Character\Skills\SelectCharacterTemplateSkillsQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateEquippedForCharacterQuery.cs" />

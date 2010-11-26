@@ -22,6 +22,7 @@ namespace DemoGame.Editor
 
         List<CharacterTemplateEquippedItem> _equipped = new List<CharacterTemplateEquippedItem>();
         List<CharacterTemplateInventoryItem> _inventory = new List<CharacterTemplateInventoryItem>();
+        List<SkillType> _knownSkills = new List<SkillType>();
         List<QuestID> _quests = new List<QuestID>();
 
         /// <summary>
@@ -53,6 +54,11 @@ namespace DemoGame.Editor
                     inventoryRaw.Select(x => new CharacterTemplateInventoryItem(x.ItemTemplateID, x.Chance, x.Min, x.Max));
                 _inventory.AddRange(inventory);
             }
+
+            // Known skills
+            var knownSkills = dbController.GetQuery<SelectCharacterTemplateSkillsQuery>().Execute(id);
+            if (knownSkills != null)
+                _knownSkills.AddRange(knownSkills);
 
             // Quests
             var quests = dbController.GetQuery<SelectCharacterTemplateQuestsQuery>().Execute(id);
@@ -123,6 +129,28 @@ namespace DemoGame.Editor
             {
                 _inventory = value ?? new List<CharacterTemplateInventoryItem>();
                 _inventory.RemoveDuplicates((x, y) => x == y);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the skills that the character knows.
+        /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Browsable(true)]
+        [Description("The skills that the character knows.")]
+        [Category(_category)]
+        public List<SkillType> KnownSkills
+        {
+            get
+            {
+                _knownSkills.RemoveDuplicates((x, y) => x == y);
+                return _knownSkills;
+            }
+            set
+            {
+                _knownSkills = value ?? new List<SkillType>();
+                _knownSkills.RemoveDuplicates((x, y) => x == y);
             }
         }
     }

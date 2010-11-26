@@ -97,7 +97,6 @@ namespace DemoGame.Editor.Tools
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
         protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
-            _mouseDownState = true;
             var cursorPos = e.Position();
             var worldPos = camera.ToWorld(cursorPos);
 
@@ -109,7 +108,6 @@ namespace DemoGame.Editor.Tools
 
                 map.AddEntity(entity);
                 SOM.SetSelected(entity);
-
             }
 
             base.MapContainer_MouseDown(sender, map, camera, e);

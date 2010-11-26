@@ -498,6 +498,15 @@ namespace DemoGame.Editor
                 inventoryQuery.Execute(queryArg);
             }
 
+            // Known Skills (delete old, then add new)
+            _dbController.GetQuery<DeleteCharacterTemplateSkillsQuery>().Execute(v.ID);
+
+            var knownSkillsQuery = _dbController.GetQuery<InsertCharacterTemplateSkillQuery>();
+            foreach (var skill in v.KnownSkills)
+            {
+                knownSkillsQuery.Execute(v.ID, skill);
+            }
+
             // Quests (delete old, then add new)
             _dbController.GetQuery<DeleteCharacterTemplateQuestProviderForCharacterQuery>().Execute(v.ID);
 

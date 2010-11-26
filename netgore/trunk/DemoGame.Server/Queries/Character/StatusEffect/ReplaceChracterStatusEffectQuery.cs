@@ -27,8 +27,10 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // INSERT INTO `{0}` {1}
-            //      ON DUPLICATE KEY UPDATE <{1} - keys>
+            /*
+                INSERT INTO `{0}` {1}
+                    ON DUPLICATE KEY UPDATE <{1} - keys>
+            */
 
             var q =
                 qb.Insert(CharacterStatusEffectTable.TableName).AddAutoParam(CharacterStatusEffectTable.DbColumns).ODKU().
