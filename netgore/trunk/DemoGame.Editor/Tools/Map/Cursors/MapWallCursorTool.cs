@@ -13,6 +13,7 @@ namespace DemoGame.Editor.Tools
 {
     public class MapWallCursorTool : MapCursorToolBase
     {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MapWallCursorTool"/> class.
         /// </summary>
@@ -94,13 +95,12 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
-                                                     MouseEventArgs e)
+        protected override void MapContainer_MouseDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
+            _mouseDownState = true;
             var cursorPos = e.Position();
             var worldPos = camera.ToWorld(cursorPos);
 
-            // Create entity
             if (e.Button == MouseButtons.Right)
             {
                 var entity = new WallEntity(worldPos, new Vector2(4));
@@ -108,9 +108,11 @@ namespace DemoGame.Editor.Tools
                 GridAligner.Instance.Fit(entity);
 
                 map.AddEntity(entity);
+                SOM.SetSelected(entity);
+
             }
 
-            base.MapContainer_MouseUp(sender, map, camera, e);
+            base.MapContainer_MouseDown(sender, map, camera, e);
         }
 
         /// <summary>
