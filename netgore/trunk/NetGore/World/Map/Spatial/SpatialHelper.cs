@@ -85,10 +85,7 @@ namespace NetGore.World
         /// <returns>A <see cref="Rectangle"/> describing the area of a <see cref="ISpatial"/>.</returns>
         public static Rectangle ToRectangle(ISpatial spatial)
         {
-            var p = spatial.Position;
-            var s = spatial.Size;
-
-            return new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
+            return new Rectangle((int)spatial.Position.X, (int)spatial.Position.Y, (int)spatial.Size.X, (int)spatial.Size.Y); 
         }
     }
 }
