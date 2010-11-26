@@ -126,11 +126,9 @@ namespace DemoGame.Editor
             {
                 ToolManager.Instance.ToolTargetContainers.Remove(this);
                 GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged -= SelectedObjsManager_SelectedChanged;
-            }
+                GlobalState.Instance.Tick -= InvokeDrawing;
 
-            if (disposing)
-            {
-                if (!DesignMode)
+                if (disposing)
                 {
                     lock (_instancesSync)
                     {

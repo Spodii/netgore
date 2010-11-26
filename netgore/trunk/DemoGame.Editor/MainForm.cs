@@ -6,12 +6,15 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
+using NetGore;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using NetGore.World;
+using SFML.Graphics;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor

@@ -151,6 +151,12 @@
     <Compile Include="Forms\Dockable\GrhTreeViewForm.Designer.cs">
       <DependentUpon>GrhTreeViewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Dockable\MapPreviewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dockable\MapPreviewForm.Designer.cs">
+      <DependentUpon>MapPreviewForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Dockable\NPCChatEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -411,6 +417,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\GrhTreeViewForm.resx">
       <DependentUpon>GrhTreeViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dockable\MapPreviewForm.resx">
+      <DependentUpon>MapPreviewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\NPCChatEditorForm.resx">
       <DependentUpon>NPCChatEditorForm.cs</DependentUpon>
