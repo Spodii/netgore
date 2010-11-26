@@ -28,7 +28,9 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // INSERT INTO `{0}` SET `id`=@id
+            /*
+                INSERT INTO `{0}` SET `id`=@id
+            */
 
             var q = qb.Insert(CharacterTemplateTable.TableName).AddAutoParam("id");
             return q.ToString();

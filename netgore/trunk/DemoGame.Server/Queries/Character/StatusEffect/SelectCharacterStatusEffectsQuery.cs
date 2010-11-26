@@ -28,7 +28,10 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // SELECT * FROM `{0}` WHERE `character_id`=@character_id
+            /*
+                SELECT * FROM `{0}` 
+                    WHERE `character_id`=@character_id
+            */
 
             var f = qb.Functions;
             var s = qb.Settings;

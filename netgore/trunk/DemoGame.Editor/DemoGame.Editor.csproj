@@ -293,6 +293,7 @@
     <Compile Include="TypeConverters\ItemTemplateAndAmountListTypeConverter.cs" />
     <Compile Include="TypeConverters\ItemTemplateListTypeConverter.cs" />
     <Compile Include="TypeConverters\QuestIDListTypeConverter.cs" />
+    <Compile Include="TypeConverters\SkillTypeListTypeConverter.cs" />
     <Compile Include="UITypeEditors\AllianceIDEditor.cs" />
     <Compile Include="UITypeEditors\AllianceIDListBox.cs">
       <SubType>Component</SubType>
@@ -349,6 +350,16 @@
     <Compile Include="UITypeEditors\CharacterTemplateUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UITypeEditors\SkillTypeListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\SkillTypeListEditor.cs" />
+    <Compile Include="UITypeEditors\SkillTypeListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\SkillTypeListForm.Designer.cs">
+      <DependentUpon>SkillTypeListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UITypeEditors\GameMessageCollectionLanguageEditor.cs" />
     <Compile Include="UITypeEditors\GameMessageCollectionLanguageEditorUITypeEditorForm.cs">
       <SubType>Form</SubType>
@@ -398,6 +409,9 @@
     </Compile>
     <Compile Include="UITypeEditors\ShopIDEditor.cs" />
     <Compile Include="UITypeEditors\ShopUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\SkillTypeUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UITypeEditors\StatTypeConstDictionaryEditor.cs" />
@@ -485,6 +499,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UITypeEditors\CharacterTemplateInventoryItemListForm.resx">
       <DependentUpon>CharacterTemplateInventoryItemListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UITypeEditors\SkillTypeListForm.resx">
+      <DependentUpon>SkillTypeListForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UITypeEditors\ItemTemplateAndAmountListForm.resx">
       <DependentUpon>ItemTemplateAndAmountListForm.cs</DependentUpon>

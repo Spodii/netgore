@@ -112,6 +112,7 @@ namespace DemoGame.Editor
                 new EditorTypes(typeof(IEnumerable<KeyValuePair<StatType, int>>), typeof(StatTypeConstDictionaryEditor)),
                 new EditorTypes(typeof(List<MutablePair<ItemTemplateID, byte>>), typeof(ItemTemplateAndAmountEditor)),
                 new EditorTypes(typeof(List<QuestID>), typeof(QuestIDListEditor)),
+                new EditorTypes(typeof(List<SkillType>), typeof(SkillTypeListEditor)),
                 new EditorTypes(typeof(List<AllianceID>), typeof(AllianceIDListEditor)),
                 new EditorTypes(typeof(List<ItemTemplateID>), typeof(ItemTemplateIDListEditor)),
                 new EditorTypes(typeof(List<MutablePair<CharacterTemplateID, ushort>>), typeof(CharacterTemplateAndAmountEditor)),
@@ -144,6 +145,9 @@ namespace DemoGame.Editor
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<QuestID>),
                 new TypeConverterAttribute(typeof(QuestIDListTypeConverter)));
+
+            TypeDescriptor.AddAttributes(typeof(IEnumerable<SkillType>),
+                new TypeConverterAttribute(typeof(SkillTypeListTypeConverter)));
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<AllianceID>),
                 new TypeConverterAttribute(typeof(AllianceIDListTypeConverter)));
