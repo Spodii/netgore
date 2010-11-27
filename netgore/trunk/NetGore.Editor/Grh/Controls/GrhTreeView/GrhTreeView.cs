@@ -128,6 +128,9 @@ namespace NetGore.Editor.Grhs
             return true;
         }
 
+        /// <summary>
+        /// Checks for any missing textures, and displays the <see cref="MissingTexturesForm"/> if any are missing.
+        /// </summary>
         void CheckForMissingTextures()
         {
             // We must create the hash collection since its constructor has the updating goodies, and we want
@@ -157,7 +160,8 @@ namespace NetGore.Editor.Grhs
         /// <param name="root">Root node to delete.</param>
         static void DeleteNode(GrhTreeViewNode root)
         {
-            GrhInfo.Delete(root.GrhData);
+            if (root != null && root.GrhData != null)
+                GrhInfo.Delete(root.GrhData);
         }
 
         /// <summary>
@@ -166,15 +170,25 @@ namespace NetGore.Editor.Grhs
         /// <param name="root">Root node to delete.</param>
         static void DeleteNode(GrhTreeViewFolderNode root)
         {
-            var toDelete = root.GetChildGrhDataNodes(true).ToArray();
+            if (root == null)
+                return;
+
+            var toDelete = root.GetChildGrhDataNodes(true).ToImmutable();
             foreach (var node in toDelete)
             {
-                GrhInfo.Delete(node.GrhData);
+                DeleteNode(node);
             }
         }
 
+        /// <summary>
+        /// Deletes a node from the tree, along with any node under it.
+        /// </summary>
+        /// <param name="node">Root node to delete.</param>
         static void DeleteNode(TreeNode node)
         {
+            if (node == null)
+                return;
+
             if (node is GrhTreeViewNode)
                 DeleteNode((GrhTreeViewNode)node);
             else if (node is GrhTreeViewFolderNode)
