@@ -192,30 +192,9 @@ namespace DemoGame.Server
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
         public bool TryAddCharacter(string accountName, string characterName, out string errorMsg)
         {
-            var idCreator = DbController.GetQuery<CharacterIDCreator>();
-            var characterID = idCreator.GetNext();
-
-            var success = TryAddCharacter(accountName, characterName, characterID, out errorMsg);
-
-            if (!success)
-                idCreator.FreeID(characterID);
-
-            return success;
-        }
-
-        /// <summary>
-        /// Tries to add a <see cref="Character"/> to an account.
-        /// </summary>
-        /// <param name="accountName">The account name.</param>
-        /// <param name="characterName">Name of the character.</param>
-        /// <param name="characterID">The character ID.</param>
-        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
-        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        bool TryAddCharacter(string accountName, string characterName, CharacterID characterID, out string errorMsg)
-        {
             // Try to execute the query
             var createUserQuery = DbController.GetQuery<CreateUserOnAccountQuery>();
-            if (!createUserQuery.TryExecute(accountName, characterID, characterName, out errorMsg))
+            if (!createUserQuery.TryExecute(accountName, characterName, out errorMsg))
                 return false;
 
             errorMsg = string.Empty;
