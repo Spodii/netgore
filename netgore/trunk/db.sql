@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-26 20:53:58',16777343,NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-26 23:20:14',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +172,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58');
+INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58'),(2,1,16777343,'2010-11-26 23:20:14');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,7 +361,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202770,76,2265,372,100,100,100,100,1,1,1,1,3,2);
+INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202775,76,2270,372,100,100,100,100,1,1,1,1,3,2);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,6 +417,7 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
+INSERT INTO `character_inventory` VALUES (1,1,0),(1,2,1),(1,3,2);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -526,7 +527,6 @@ CREATE TABLE `character_status_effect` (
 
 LOCK TABLES `character_status_effect` WRITE;
 /*!40000 ALTER TABLE `character_status_effect` DISABLE KEYS */;
-INSERT INTO `character_status_effect` VALUES (3,1,0,3,4);
 /*!40000 ALTER TABLE `character_status_effect` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -790,7 +790,7 @@ DROP TABLE IF EXISTS `item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item` (
-  `id` int(11) NOT NULL COMMENT 'The unique ID of the item.',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID of the item.',
   `item_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template the item was created from. Not required. Mostly for development reference.',
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'The type of item (see ItemType enum).',
   `weapon_type` tinyint(3) unsigned NOT NULL COMMENT 'When used as a weapon, the type of weapon (see WeaponType enum).',
@@ -820,7 +820,7 @@ CREATE TABLE `item` (
   PRIMARY KEY (`id`),
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `item_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The live, persisted items.';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='The live, persisted items.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -829,6 +829,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (1,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',4,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',39,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1143,7 +1144,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-11-26 20:55:19');
+INSERT INTO `server_time` VALUES ('2010-11-26 23:20:34');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1351,7 +1352,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
-INSERT INTO `world_stats_count_item_create` VALUES (3,128,'2010-11-27 04:53:54'),(5,108,'2010-11-27 04:53:54'),(7,149,'2010-11-27 04:53:54');
+INSERT INTO `world_stats_count_item_create` VALUES (3,180,'2010-11-27 07:20:13'),(5,122,'2010-11-27 07:20:23'),(7,165,'2010-11-27 07:20:13');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1512,6 +1513,7 @@ CREATE TABLE `world_stats_count_user_kill_npc` (
 
 LOCK TABLES `world_stats_count_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` DISABLE KEYS */;
+INSERT INTO `world_stats_count_user_kill_npc` VALUES (1,1,1,'2010-11-27 07:20:24');
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1774,7 +1776,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1783,6 +1785,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
+INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,1,76,1024,594,0,0,3,'2010-11-27 07:20:23');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2176,4 +2179,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-26 22:59:31
+-- Dump completed on 2010-11-26 23:21:02
