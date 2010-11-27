@@ -71,7 +71,7 @@ namespace NetGore.Db
         /// Executes the query on the database.
         /// </summary>
         /// <returns>Number of rows affected by the query.</returns>
-        public virtual int ExecuteWithResult()
+        public int ExecuteWithResult()
         {
             // Update the query stats
             var stats = ConnectionPool.QueryStats;
@@ -85,6 +85,42 @@ namespace NetGore.Db
             try
             {
                 return r.ExecuteNonReaderWithResult(cmd);
+            }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
+
+                // Everything else, just throw the default exception
+                throw;
+            }
+            finally
+            {
+                ReleaseCommand(cmd);
+            }
+        }
+
+        /// <summary>
+        /// Executes the query on the database.
+        /// </summary>
+        /// <param name="lastInsertedId">Contains the ID for the row that was inserted into the database. Only valid when the
+        /// query contains an auto-increment column and the operation being performed is an insert.</param>
+        /// <returns>Number of rows affected by the query.</returns>
+        public virtual int ExecuteWithResult(out long lastInsertedId)
+        {
+            // Update the query stats
+            var stats = ConnectionPool.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
+
+            var r = ConnectionPool.QueryRunner;
+
+            // Get and set up the command
+            var cmd = GetCommand(r.Connection);
+            try
+            {
+                return r.ExecuteNonReaderWithResult(cmd, out lastInsertedId);
             }
             catch (MySqlException ex)
             {
@@ -178,8 +214,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>Number of rows affected by the query.</returns>
-        /// <exception cref="DuplicateKeyException">Tried to perform an insert query for a key that already exists.</exception>
-        public virtual int ExecuteWithResult(T item)
+        public int ExecuteWithResult(T item)
         {
             // Update the query stats
             var stats = ConnectionPool.QueryStats;
@@ -201,6 +236,52 @@ namespace NetGore.Db
                 }
 
                 return r.ExecuteNonReaderWithResult(cmd);
+            }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
+
+                // Everything else, just throw the default exception
+                throw;
+            }
+            finally
+            {
+                ReleaseCommand(cmd);
+            }
+        }
+
+        /// <summary>
+        /// Executes the query on the database using the specified <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">Item containing the value or values used for executing the query.</param>
+        /// <param name="lastInsertedId">Contains the ID for the row that was inserted into the database. Only valid when the
+        /// query contains an auto-increment column and the operation being performed is an insert.</param>
+        /// <returns>Number of rows affected by the query.</returns>
+        /// <exception cref="DuplicateKeyException">Tried to perform an insert query for a key that already exists.</exception>
+        public virtual int ExecuteWithResult(T item, out long lastInsertedId)
+        {
+            // Update the query stats
+            var stats = ConnectionPool.QueryStats;
+            if (stats != null)
+                stats.QueryExecuted(this);
+
+            var r = ConnectionPool.QueryRunner;
+
+            // Get and set up the command
+            var cmd = GetCommand(r.Connection);
+            try
+            {
+                if (HasParameters)
+                {
+                    using (var p = DbParameterValues.Create(cmd.Parameters))
+                    {
+                        SetParameters(p, item);
+                    }
+                }
+
+                return r.ExecuteNonReaderWithResult(cmd, out lastInsertedId);
             }
             catch (MySqlException ex)
             {

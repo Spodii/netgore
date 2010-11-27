@@ -30,7 +30,7 @@ namespace NetGore.Db
 
             // Create our DbQueryRunner using a connection NOT in the pool (since the connection will remain opened)
             var conn = CreateConnection(ConnectionString);
-            _queryRunner = new DbQueryRunner(conn);
+            _queryRunner = new DbQueryRunner(this, conn);
         }
 
         /// <summary>
@@ -89,6 +89,16 @@ namespace NetGore.Db
         }
 
         #region IDbConnectionPool Members
+
+        /// <summary>
+        /// Gets the integer value to use when inserting a row into a table on this connection, and the table defines an
+        /// auto-increment column. This value will force the database to generate an auto-incremented value instead of explicitly
+        /// setting the value for the field.
+        /// </summary>
+        public int AutoIncrementValue
+        {
+            get { return 0; }
+        }
 
         /// <summary>
         /// Gets the number of live objects in the pool.
@@ -196,6 +206,19 @@ namespace NetGore.Db
         {
             return _pool.FreeAll(condition);
         }
+
+        /// <summary>
+        /// Gets the ID for the row that was inserted into the database. Only valid when the
+        /// query contains an auto-increment column and the operation being performed is an insert.
+        /// </summary>
+        /// <param name="command">The <see cref="DbCommand"/> that was executed and the last inserted id needs to be acquired for.</param>
+        /// <returns>
+        /// The last inserted id for the executed <paramref name="command"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is null.</exception>
+        /// <exception cref="TypeException"><paramref name="command"/> is not of the excepted type.</exception>
+        /// <exception cref="ArgumentException"><paramref name="command"/> is invalid in some other way.</exception>
+        public abstract long GetLastInsertedId(DbCommand command);
 
         /// <summary>
         /// Performs the <paramref name="action"/> on all live objects in the object pool.

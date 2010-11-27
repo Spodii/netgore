@@ -27,6 +27,7 @@ namespace NetGore.Db
         /// </summary>
         const int _emptyQueueSleepTime = 10;
 
+        readonly IDbConnectionPool _dbConnectionPool;
         readonly DbConnection _conn;
         readonly object _executeQuerySync = new object();
         readonly Queue<KeyValuePair<DbCommand, DbQueryBase>> _queue = new Queue<KeyValuePair<DbCommand, DbQueryBase>>();
@@ -46,9 +47,18 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryRunner"/> class.
         /// </summary>
+        /// <param name="dbConnectionPool">The <see cref="IDbConnectionPool"/> that provided the <see cref="DbConnection"/>.</param>
         /// <param name="conn">The <see cref="DbConnection"/> to use.</param>
-        public DbQueryRunner(DbConnection conn)
+        /// <exception cref="ArgumentNullException"><paramref name="dbConnectionPool"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="conn"/> is null.</exception>
+        public DbQueryRunner(IDbConnectionPool dbConnectionPool, DbConnection conn)
         {
+            if (dbConnectionPool == null)
+                throw new ArgumentNullException("dbConnectionPool");
+            if (conn == null)
+                throw new ArgumentNullException("conn");
+
+            _dbConnectionPool = dbConnectionPool;
             _conn = conn;
 
             if (Connection.State == ConnectionState.Closed || Connection.State == ConnectionState.Broken)
@@ -381,6 +391,34 @@ namespace NetGore.Db
 
                 // Execute our job
                 ret = cmd.ExecuteNonQuery();
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Executes a query that returns the number of rows affected.
+        /// This runs in blocking mode.
+        /// </summary>
+        /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
+        /// <param name="lastInsertedId">Contains the ID for the row that was inserted into the database. Only valid when the
+        /// query contains an auto-increment column and the operation being performed is an insert.</param>
+        /// <returns>The number of rows affected.</returns>
+        public int ExecuteNonReaderWithResult(DbCommand cmd, out long lastInsertedId)
+        {
+            int ret;
+
+            // Grab the execution lock since we are going to be executing queries
+            lock (_executeQuerySync)
+            {
+                // Empty out the queue
+                FlushQueue();
+
+                // Execute our job
+                ret = cmd.ExecuteNonQuery();
+
+                // Get the lastInsertedId
+                lastInsertedId = _dbConnectionPool.GetLastInsertedId(cmd);
             }
 
             return ret;

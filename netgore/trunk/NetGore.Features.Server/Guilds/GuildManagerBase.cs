@@ -21,20 +21,15 @@ namespace NetGore.Features.Guilds
         /// </summary>
         readonly object _createSync = new object();
 
-        readonly TSDictionary<GuildID, T> _guilds = new TSDictionary<GuildID, T>();
-        readonly IDCreatorBase<GuildID> _idCreator;
+        /// <summary>
+        /// Object used to lock when accessing the <see cref="_guilds"/> collection.
+        /// </summary>
+        readonly object _guildsSync = new object();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GuildManagerBase&lt;T&gt;"/> class.
+        /// The collection of guilds, indexed by their <see cref="GuildID"/>.
         /// </summary>
-        /// <param name="idCreator">The id creator for finding free guild IDs.</param>
-        protected GuildManagerBase(IDCreatorBase<GuildID> idCreator)
-        {
-            if (idCreator == null)
-                throw new ArgumentNullException("idCreator");
-
-            _idCreator = idCreator;
-        }
+        readonly TSDictionary<GuildID, T> _guilds = new TSDictionary<GuildID, T>();
 
         /// <summary>
         /// Loads all the guild information into the guild manager. This should only be called once, preferably in
@@ -44,9 +39,15 @@ namespace NetGore.Features.Guilds
         {
             var guilds = LoadGuilds();
 
-            foreach (var guild in guilds)
+            lock (_guildsSync)
             {
-                _guilds.Add(guild.ID, guild);
+                Debug.Assert(_guilds.IsEmpty(), "Expected the guilds collection to be empty...");
+
+                foreach (var guild in guilds)
+                {
+                    Debug.Assert(!_guilds.ContainsKey(guild.ID), string.Format("Duplicate guild ID found for ID `{0}`.", guild.ID));
+                    _guilds.Add(guild.ID, guild);
+                }
             }
         }
 
@@ -100,12 +101,11 @@ namespace NetGore.Features.Guilds
         /// Tries to create a new guild.
         /// </summary>
         /// <param name="creator">The one trying to create the guild.</param>
-        /// <param name="id">The ID of the guild to create.</param>
         /// <param name="name">The name of the guild to create.</param>
         /// <param name="tag">The tag for the guild to create.</param>
         /// <returns>The created guild instance if successfully created, or null if the guild could not
         /// be created.</returns>
-        protected abstract T TryCreateGuild(IGuildMember creator, GuildID id, string name, string tag);
+        protected abstract T InternalTryCreateGuild(IGuildMember creator, string name, string tag);
 
         #region IGuildManager<T> Members
 
@@ -126,7 +126,6 @@ namespace NetGore.Features.Guilds
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>1</filterpriority>
         public IEnumerator<KeyValuePair<GuildID, T>> GetEnumerator()
         {
             return _guilds.GetEnumerator();
@@ -153,8 +152,12 @@ namespace NetGore.Features.Guilds
         public T GetGuild(GuildID id)
         {
             T ret;
-            if (!_guilds.TryGetValue(id, out ret))
-                ret = null;
+
+            lock (_guildsSync)
+            {
+                if (!_guilds.TryGetValue(id, out ret))
+                    ret = null;
+            }
 
             return ret;
         }
@@ -170,7 +173,10 @@ namespace NetGore.Features.Guilds
             if (!_guildSettings.IsValidName(name))
                 return null;
 
-            return _guilds.Values.FirstOrDefault(x => StringComparer.OrdinalIgnoreCase.Equals(name, x.Name));
+            lock (_guildsSync)
+            {
+                return _guilds.Values.FirstOrDefault(x => StringComparer.OrdinalIgnoreCase.Equals(name, x.Name));
+            }
         }
 
         /// <summary>
@@ -235,7 +241,6 @@ namespace NetGore.Features.Guilds
             if (!IsValidGuildCreator(creator))
                 return null;
 
-            GuildID id;
             T ret;
 
             // Lock to ensure that we don't have to worry about race conditions since its not like guilds are made
@@ -249,23 +254,23 @@ namespace NetGore.Features.Guilds
                 if (!IsTagAvailable(tag))
                     return null;
 
-                // Get the ID to use
-                id = _idCreator.GetNext();
-
                 // Let the derived class try to create the instance
-                ret = TryCreateGuild(creator, id, name, tag);
+                ret = InternalTryCreateGuild(creator, name, tag);
             }
 
-            if (ret == null)
-            {
-                // If the creation failed, free the ID since we obviously won't be using it
-                _idCreator.FreeID(id);
-            }
-            else
+            // Check that the guild was created successfully
+            if (ret != null)
             {
                 // Add the creator as the founder of the guild
                 creator.GuildRank = _guildSettings.HighestRank;
                 creator.Guild = ret;
+
+                // Add the guild to the dictionary
+                lock (_guildsSync)
+                {
+                    Debug.Assert(!_guilds.ContainsKey(ret.ID));
+                    _guilds.Add(ret.ID, ret);
+                }
             }
 
             return ret;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
@@ -32,7 +33,7 @@ namespace DemoGame.Server.Guilds
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildManagerBase{T}"/> class.
         /// </summary>
-        GuildManager(IDbController dbController) : base(dbController.GetQuery<GuildIDCreator>())
+        GuildManager(IDbController dbController)
         {
             _dbController = dbController;
 
@@ -109,27 +110,35 @@ namespace DemoGame.Server.Guilds
         /// Tries to create a new guild.
         /// </summary>
         /// <param name="creator">The one trying to create the guild.</param>
-        /// <param name="id">The ID of the guild to create.</param>
         /// <param name="name">The name of the guild to create.</param>
         /// <param name="tag">The tag for the guild to create.</param>
         /// <returns>The created guild instance if successfully created, or null if the guild could not
         /// be created.</returns>
-        protected override Guild TryCreateGuild(IGuildMember creator, GuildID id, string name, string tag)
+        protected override Guild InternalTryCreateGuild(IGuildMember creator, string name, string tag)
         {
+            // Let the database assign the ID for us
+            var dummyID = new GuildID(_dbController.ConnectionPool.AutoIncrementValue);
+
             // We want to insert the guild into the database first since if that query fails, we know that
             // we can't create the guild with the given values for whatever reason
-            var values = new GuildTable(iD: id, name: name, tag: tag, created: DateTime.Now);
-            var rowsAffected = _insertGuildQuery.ExecuteWithResult(values);
+            var values = new GuildTable(iD: dummyID, name: name, tag: tag, created: DateTime.Now);
+            long lastInsertedId;
+            var rowsAffected = _insertGuildQuery.ExecuteWithResult(values, out lastInsertedId);
 
             if (rowsAffected <= 0)
             {
                 const string errmsg =
-                    "Failed to create guild using values (id={0}, name={1}, tag={2}) - insert query" +
-                    " returned `{3}` rows affected. Most likely one of the values are not unique.";
+                    "Failed to create guild using values (name={0}, tag={1}) - insert query" +
+                    " returned `{2}` rows affected. Most likely one of the values are not unique.";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, id, name, tag, rowsAffected);
+                    log.WarnFormat(errmsg, name, tag, rowsAffected);
                 return null;
             }
+
+            // Set the guild ID
+            Debug.Assert(lastInsertedId <= int.MaxValue);
+            Debug.Assert(lastInsertedId >= int.MinValue);
+            values.ID = new GuildID((int)lastInsertedId);
 
             // Create the guild instance using the values we just inserted into the database
             return new Guild(this, values);
