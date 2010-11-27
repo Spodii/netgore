@@ -81,7 +81,8 @@ namespace NetGore.Editor.Grhs
             if (_compactMode)
                 return false;
 
-            return BeginEditGrhData(node, GetGrhData(node), false);
+            var gd = GetGrhData(node);
+            return BeginEditGrhData(node, gd, false);
         }
 
         /// <summary>
@@ -106,7 +107,8 @@ namespace NetGore.Editor.Grhs
         /// <returns>True if the editing started successfully; otherwise false.</returns>
         bool BeginEditGrhData(GrhData gd, bool deleteOnCancel)
         {
-            return BeginEditGrhData(FindGrhDataNode(gd), gd, deleteOnCancel);
+            var node = FindGrhDataNode(gd);
+            return BeginEditGrhData(node, gd, deleteOnCancel);
         }
 
         /// <summary>
@@ -139,7 +141,7 @@ namespace NetGore.Editor.Grhs
 
             // Get the GrhDatas with missing textures
             var missing = GrhInfo.FindMissingTextures();
-            if (missing.Count() == 0)
+            if (missing.IsEmpty())
                 return;
 
             // Display a form showing which textures need to be fixed

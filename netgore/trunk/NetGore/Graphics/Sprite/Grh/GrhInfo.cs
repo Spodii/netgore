@@ -336,7 +336,32 @@ namespace NetGore.Graphics
                 return;
             }
 
+            // Remove the GrhData from the collection
             _grhDatas.RemoveAt((int)grhIndex);
+
+            // If a stationary GrhData and auto-size is set, delete the texture, too
+            try
+            {
+                var sgd = grhData as StationaryGrhData;
+                if (sgd != null && sgd.AutomaticSize)
+                {
+                    // Make sure no other GrhData is using the texture
+                    var origTexture = sgd.GetOriginalTexture();
+                    if (!GrhDatas.OfType<StationaryGrhData>().Any(x => origTexture == x.GetOriginalTexture()))
+                    {
+                        // Dispose of the texture then recycle the file
+                        origTexture.Dispose();
+                        sgd.TextureName.RecycleFile();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to recycle texture file for GrhData `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, grhData, ex);
+                Debug.Fail(string.Format(errmsg, grhData, ex));
+            }
         }
 
         /// <summary>
