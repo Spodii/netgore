@@ -208,16 +208,11 @@ namespace DemoGame.Server
         /// <param name="name">The account name.</param>
         /// <param name="password">The account password.</param>
         /// <param name="email">The account email address.</param>
-        /// <param name="accountID">When this method returns true, contains the AccountID for the created
-        /// <see cref="UserAccount"/>.</param>
         /// <param name="failReason">When this method returns false, contains a <see cref="GameMessage"/> that will be
         /// used to describe why the account failed to be created.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public bool TryCreateAccount(IIPSocket socket, string name, string password, string email, out AccountID accountID,
-                                     out GameMessage failReason)
+        public bool TryCreateAccount(IIPSocket socket, string name, string password, string email, out GameMessage failReason)
         {
-            accountID = new AccountID(0);
-
             // Check for valid values
             if (!GameData.AccountName.IsValid(name))
             {
@@ -259,16 +254,8 @@ namespace DemoGame.Server
                 return false;
             }
 
-            // Get the account ID
-            var idCreator = DbController.GetQuery<AccountIDCreator>();
-            accountID = idCreator.GetNext();
-
             // Try to execute the query
-            var success = DbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email, ip);
-
-            // If unsuccessful, free the account ID so it can be reused
-            if (!success)
-                idCreator.FreeID(accountID);
+            var success = DbController.GetQuery<CreateAccountQuery>().TryExecute(name, password, email, ip);
 
             failReason = GameMessage.CreateAccountUnknownError;
             return success;
