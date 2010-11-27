@@ -53,6 +53,16 @@ namespace NetGore.Db
         int ExecuteNonReaderWithResult(DbCommand cmd);
 
         /// <summary>
+        /// Executes a query that returns the number of rows affected.
+        /// This runs in blocking mode.
+        /// </summary>
+        /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
+        /// <param name="lastInsertedId">Contains the ID for the row that was inserted into the database. Only valid when the
+        /// query contains an auto-increment column and the operation being performed is an insert.</param>
+        /// <returns>The number of rows affected.</returns>
+        int ExecuteNonReaderWithResult(DbCommand cmd, out long lastInsertedId);
+
+        /// <summary>
         /// Flushes the query queue, and blocks until all queries in the queue at the time this method was called have been
         /// executed.
         /// </summary>

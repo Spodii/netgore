@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.1.51, for Win64 (unknown)
 --
--- Host: localhost    Database: demogame_tmp
+-- Host: localhost    Database: demogame
 -- ------------------------------------------------------
 -- Server version	5.1.51-community
 
@@ -698,7 +698,7 @@ DROP TABLE IF EXISTS `guild`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `guild` (
-  `id` smallint(5) unsigned NOT NULL COMMENT 'The unique ID of the guild.',
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The unique ID of the guild.',
   `name` varchar(50) NOT NULL COMMENT 'The name of the guild.',
   `tag` varchar(5) NOT NULL COMMENT 'The guild''s tag.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When this guild was created.',
@@ -1141,7 +1141,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-11-22 12:11:53');
+INSERT INTO `server_time` VALUES ('2010-11-26 17:36:38');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1349,6 +1349,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
+INSERT INTO `world_stats_count_item_create` VALUES (3,37,'2010-11-27 01:36:32'),(5,89,'2010-11-27 01:36:32'),(7,10,'2010-11-26 21:35:10');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1849,7 +1850,7 @@ LOCK TABLES `world_stats_user_shopping` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'demogame_tmp'
+-- Dumping routines for database 'demogame'
 --
 /*!50003 DROP FUNCTION IF EXISTS `create_user_on_account` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -2170,4 +2171,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-22 12:49:28
+-- Dump completed on 2010-11-26 17:38:17

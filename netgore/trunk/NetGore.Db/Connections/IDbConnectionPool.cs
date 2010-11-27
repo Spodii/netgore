@@ -34,5 +34,23 @@ namespace NetGore.Db
         /// <param name="parameterName">Reference name of the parameter.</param>
         /// <returns>DbParameter that is compatible with the connections in this <see cref="IDbConnectionPool"/>.</returns>
         DbParameter CreateParameter(string parameterName);
+
+        /// <summary>
+        /// Gets the integer value to use when inserting a row into a table on this connection, and the table defines an
+        /// auto-increment column. This value will force the database to generate an auto-incremented value instead of explicitly
+        /// setting the value for the field.
+        /// </summary>
+        int AutoIncrementValue { get; }
+
+        /// <summary>
+        /// Gets the ID for the row that was inserted into the database. Only valid when the
+        /// query contains an auto-increment column and the operation being performed is an insert.
+        /// </summary>
+        /// <param name="command">The <see cref="DbCommand"/> that was executed and the last inserted id needs to be acquired for.</param>
+        /// <returns>The last inserted id for the executed <paramref name="command"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="command"/> is null.</exception>
+        /// <exception cref="TypeException"><paramref name="command"/> is not of the excepted type.</exception>
+        /// <exception cref="ArgumentException"><paramref name="command"/> is invalid in some other way.</exception>
+        long GetLastInsertedId(DbCommand command);
     }
 }

@@ -371,7 +371,6 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Guilds\Guild.cs" />
-    <Compile Include="Queries\Guild\GuildIDCreator.cs" />
     <Compile Include="Guilds\GuildManager.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformer.cs" />
