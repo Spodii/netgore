@@ -14,32 +14,24 @@ namespace NetGore.Db
     /// <typeparam name="T">The Type of the ID.</typeparam>
     public abstract class IDCreatorBase<T> : IDisposable
     {
-        readonly int _criticalSize;
-        // FUTURE: Use the CriticalSize, which will automatically get the next free values asynchronously in the background
-
         readonly Stack<int> _freeIndices;
         readonly SelectIDQuery _selectIDQuery;
         readonly object _stackLock;
         bool _isRefilling;
 
         /// <summary>
-        /// IDCreatorBase constructor.
+        /// Initializes a new instance of the <see cref="IDCreatorBase&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
         /// <param name="table">Table containing the column to track the values in.</param>
         /// <param name="column">Column containing the IDs to track.</param>
         /// <param name="stackSize">Maximum size of the free ID stack.</param>
-        /// <param name="criticalSize">When there is less than this many IDs available, the free ID
-        /// stack will be replenished. If this is non-zero, the free ID stack will attempt to replenish
-        /// asynchronously. If this is zero, the stack will only replenish on when it is empty.</param>
-        protected IDCreatorBase(DbConnectionPool connectionPool, string table, string column, int stackSize, int criticalSize)
+        protected IDCreatorBase(DbConnectionPool connectionPool, string table, string column, int stackSize)
         {
             if (connectionPool == null)
                 throw new ArgumentNullException("connectionPool");
             if (stackSize < 1)
                 throw new ArgumentOutOfRangeException("stackSize", "stackSize must be >= 1.");
-            if (criticalSize < 0)
-                throw new ArgumentOutOfRangeException("criticalSize", "stackSize must be >= 0.");
             if (string.IsNullOrEmpty(table))
                 throw new ArgumentNullException("table");
             if (string.IsNullOrEmpty(column))
@@ -47,7 +39,6 @@ namespace NetGore.Db
 
             _stackLock = new object();
             _freeIndices = new Stack<int>(stackSize);
-            _criticalSize = criticalSize;
             _selectIDQuery = new SelectIDQuery(connectionPool, table, column);
 
             // Perform the initial fill
@@ -214,9 +205,10 @@ namespace NetGore.Db
         void Refill()
         {
             // Get the free values from the database
-            var amount = _criticalSize - _freeIndices.Count;
+            var amount = _freeIndices.Count;
             if (amount < 1)
                 amount = 1;
+
             var freeValues = GetFreeFromDB(amount);
 
             // Reverse the values so we end up using the lowest values first
