@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-22 12:11:48',16777343,NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-26 20:53:58',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,6 +172,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,7 +361,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202770,76,2265,372,96,100,100,100,1,1,1,1,3,2);
+INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202770,76,2265,372,100,100,100,100,1,1,1,1,3,2);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -508,7 +509,7 @@ DROP TABLE IF EXISTS `character_status_effect`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_status_effect` (
-  `id` int(11) NOT NULL COMMENT 'Unique ID of the status effect instance.',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID of the status effect instance.',
   `character_id` int(11) NOT NULL COMMENT 'ID of the Character that the status effect is on.',
   `status_effect_id` tinyint(3) unsigned NOT NULL COMMENT 'ID of the status effect that this effect is for. This corresponds to the StatusEffectType enum''s value.',
   `power` smallint(5) unsigned NOT NULL COMMENT 'The power of this status effect instance.',
@@ -516,7 +517,7 @@ CREATE TABLE `character_status_effect` (
   PRIMARY KEY (`id`),
   KEY `character_id` (`character_id`),
   CONSTRAINT `character_status_effect_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Active status effects on a character.';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='Active status effects on a character.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,6 +526,7 @@ CREATE TABLE `character_status_effect` (
 
 LOCK TABLES `character_status_effect` WRITE;
 /*!40000 ALTER TABLE `character_status_effect` DISABLE KEYS */;
+INSERT INTO `character_status_effect` VALUES (3,1,0,3,4);
 /*!40000 ALTER TABLE `character_status_effect` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1141,7 +1143,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-11-26 17:36:38');
+INSERT INTO `server_time` VALUES ('2010-11-26 20:55:19');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1349,7 +1351,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
-INSERT INTO `world_stats_count_item_create` VALUES (3,37,'2010-11-27 01:36:32'),(5,89,'2010-11-27 01:36:32'),(7,10,'2010-11-26 21:35:10');
+INSERT INTO `world_stats_count_item_create` VALUES (3,128,'2010-11-27 04:53:54'),(5,108,'2010-11-27 04:53:54'),(7,149,'2010-11-27 04:53:54');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1403,6 +1405,7 @@ CREATE TABLE `world_stats_count_npc_kill_user` (
 
 LOCK TABLES `world_stats_count_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` DISABLE KEYS */;
+INSERT INTO `world_stats_count_npc_kill_user` VALUES (1,1,1,'2010-11-27 04:54:42');
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1559,7 +1562,7 @@ CREATE TABLE `world_stats_network` (
   `sent_packets` mediumint(8) unsigned NOT NULL COMMENT 'The average packets sent per second since the last snapshot.',
   `sent_messages` mediumint(8) unsigned NOT NULL COMMENT 'The average messages sent per second since the last snapshot.',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1568,6 +1571,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
+INSERT INTO `world_stats_network` VALUES (1,'2010-11-27 04:54:55',1,0,0,0,343,12,16);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1596,7 +1600,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: NPC kill user.';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Event log: NPC kill user.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1605,6 +1609,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
 
 LOCK TABLES `world_stats_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
+INSERT INTO `world_stats_npc_kill_user` VALUES (1,1,1,76,1024,593,39,754,3,'2010-11-27 04:54:42');
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2171,4 +2176,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-26 17:38:17
+-- Dump completed on 2010-11-26 22:59:31

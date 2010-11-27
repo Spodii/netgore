@@ -1,6 +1,6 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
+using System.Diagnostics;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -9,15 +9,16 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class InsertCharacterStatusEffectQuery : DbQueryNonReader<ICharacterStatusEffectTable>
+    public class UpdateCharacterStatusEffectQuery : DbQueryNonReader<ICharacterStatusEffectTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertCharacterStatusEffectQuery"/> class.
+        /// Initializes a new instance of the <see cref="UpdateCharacterStatusEffectQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertCharacterStatusEffectQuery(DbConnectionPool connectionPool)
+        public UpdateCharacterStatusEffectQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
+            QueryAsserts.ArePrimaryKeys(CharacterStatusEffectTable.DbKeyColumns, "id");
         }
 
         /// <summary>
@@ -28,13 +29,18 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             /*
-                INSERT INTO `{0}` {1}
-                    ON DUPLICATE KEY UPDATE <{1} - keys>
+                UPDATE `{0}` SET {1}
+                    WHERE `id` = @id
             */
 
+            var s = qb.Settings;
+            var f = qb.Functions;
             var q =
-                qb.Insert(CharacterStatusEffectTable.TableName).AddAutoParam(CharacterStatusEffectTable.DbColumns).ODKU().
-                    AddFromInsert(CharacterStatusEffectTable.DbKeyColumns);
+                qb.Update(CharacterStatusEffectTable.TableName).AddAutoParam(CharacterStatusEffectTable.DbNonKeyColumns)
+                    .Where(
+                        f.Equals(
+                            s.EscapeColumn("id"),
+                            s.Parameterize("id")));
             return q.ToString();
         }
 

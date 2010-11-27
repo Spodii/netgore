@@ -260,6 +260,7 @@
     <Compile Include="Queries\Character\Skills\InsertCharacterTemplateSkillQuery.cs" />
     <Compile Include="Queries\Character\Skills\SelectCharacterSkillsQuery.cs" />
     <Compile Include="Queries\Character\Skills\SelectCharacterTemplateSkillsQuery.cs" />
+    <Compile Include="Queries\Character\StatusEffect\UpdateCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateEquippedForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateInventoryForCharacterQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuestProviderForCharacterQuery.cs" />
@@ -420,9 +421,8 @@
     <Compile Include="Queries\Guild\UpdateGuildQuery.cs" />
     <Compile Include="Queries\Guild\UpdateGuildTagQuery.cs" />
     <Compile Include="Queries\NPC\DeletePersistentNPCQuery.cs" />
-    <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
-    <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
+    <Compile Include="Queries\Character\StatusEffect\InsertCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\SelectCharacterStatusEffectsQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateEquippedQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateIDsQuery.cs" />
