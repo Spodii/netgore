@@ -145,13 +145,24 @@ namespace NetGore.Editor.Grhs
             // Display a form showing which textures need to be fixed
             // The GrhTreeView will be disabled until the MissingTexturesForm is closed
             Enabled = false;
-            var frm = new MissingTexturesForm(hashCollection, missing, _contentManager);
-            frm.FormClosed += delegate
+            try
             {
-                RebuildTree();
+                var frm = new MissingTexturesForm(hashCollection, missing, _contentManager);
+                frm.FormClosed += delegate
+                {
+                    RebuildTree();
+                    Enabled = true;
+                };
+                frm.Show();
+            }
+            catch (Exception)
+            {
+                // If there is an exception creating the form, make sure this control is re-enabled first
                 Enabled = true;
-            };
-            frm.Show();
+
+                // Then re-throw the exception
+                throw;
+            }
         }
 
         /// <summary>
