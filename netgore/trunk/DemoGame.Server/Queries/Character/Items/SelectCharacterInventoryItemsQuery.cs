@@ -28,9 +28,13 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // SELECT {1}.slot AS character_inventory_slot, {0}.* FROM {0}
-            //      INNER JOIN {1} ON {0}.id = {1}.item_id
-            //      WHERE {1}.character_id = @characterID;
+            /*
+                SELECT {1}.slot AS character_inventory_slot, {0}.*
+                    FROM {0}
+                    INNER JOIN {1} 
+                        ON {0}.id = {1}.item_id
+                    WHERE {1}.character_id = @characterID;
+            */
 
             var f = qb.Functions;
             var s = qb.Settings;
