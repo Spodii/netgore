@@ -492,7 +492,6 @@
     <Compile Include="World\Map\Entities\Items\Inventory\CharacterInventory.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeInfo.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeTracker.cs" />
-    <Compile Include="Queries\Character\Items\ItemIDCreator.cs" />
     <Compile Include="PeerTrading\PeerTradeSession.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateComparer.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateManager.cs" />

@@ -39,11 +39,6 @@ namespace DemoGame.Server
         static readonly DeleteItemQuery _queryDeleteItem;
 
         /// <summary>
-        /// The <see cref="ItemIDCreator"/> instance to use.
-        /// </summary>
-        static readonly ItemIDCreator _queryIDCreator;
-
-        /// <summary>
         /// The <see cref="InsertItemQuery"/> instance to use.
         /// </summary>
         static readonly InsertItemQuery _queryInsertItem;
@@ -59,9 +54,15 @@ namespace DemoGame.Server
         static readonly UpdateItemFieldQuery _queryUpdateItemField;
 
         readonly StatCollection<StatType> _baseStats;
-        readonly ItemID _id;
         readonly StatCollection<StatType> _reqStats;
 
+        /// <summary>
+        /// The <see cref="ItemID"/> used to represent when an <see cref="ItemEntity"/> has either an invalid or unassigned
+        /// <see cref="ItemID"/>.
+        /// </summary>
+        static readonly ItemID _invalidIDValue = new ItemID(0);
+
+        ItemID _id = _invalidIDValue;
         ActionDisplayID? _actionDisplayID;
         byte _amount = 1;
         string _description;
@@ -85,7 +86,6 @@ namespace DemoGame.Server
             var dbController = DbControllerBase.GetInstance();
             _queryUpdateItemField = dbController.GetQuery<UpdateItemFieldQuery>();
             _queryInsertItem = dbController.GetQuery<InsertItemQuery>();
-            _queryIDCreator = dbController.GetQuery<ItemIDCreator>();
             _queryDeleteItem = dbController.GetQuery<DeleteItemQuery>();
             _querySelectItem = dbController.GetQuery<SelectItemQuery>();
         }
@@ -138,7 +138,6 @@ namespace DemoGame.Server
         /// </summary>
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
-            _id = _queryIDCreator.GetNext();
         }
 
         /// <summary>
@@ -191,8 +190,6 @@ namespace DemoGame.Server
                    string equippedBody, ActionDisplayID? actionDisplayID, IEnumerable<Stat<StatType>> baseStats,
                    IEnumerable<Stat<StatType>> reqStats) : base(pos, size)
         {
-            _id = _queryIDCreator.GetNext();
-
             _templateID = templateID;
             _name = name;
             _description = desc;
@@ -287,10 +284,36 @@ namespace DemoGame.Server
 
                 _isPersistent = value;
 
+                // Handle the changed persistence
                 if (IsPersistent)
-                    _queryInsertItem.Execute(this);
+                {
+                    // Item changed to persistent
+
+                    // Changed to persistent for the first time?
+                    if (ID == _invalidIDValue)
+                    {
+                        // Perform an insert, and let the database assign us a free ID
+                        long insertID;
+                        _queryInsertItem.ExecuteWithResult(this, out insertID);
+
+                        Debug.Assert(insertID <= ItemID.MaxValue);
+                        Debug.Assert(insertID >= ItemID.MinValue);
+                        Debug.Assert(insertID <= int.MaxValue);
+                        Debug.Assert(insertID >= int.MinValue);
+
+                        _id = new ItemID((int)insertID);
+                    }
+                    else
+                    {
+                        // Just perform a non-blocking insert since we don't need to get the ID
+                        _queryInsertItem.Execute(this);
+                    }
+                }
                 else
+                {
+                    // Item changed to not persistent - delete from database
                     _queryDeleteItem.Execute(ID);
+                }
             }
         }
 
@@ -433,9 +456,6 @@ namespace DemoGame.Server
                     // Delete the ItemEntity from the database
                     _queryDeleteItem.Execute(ID);
                 }
-
-                // Free the ItemEntity's ID
-                _queryIDCreator.FreeID(ID);
             }
 
             base.HandleDispose(disposeManaged);

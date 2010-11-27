@@ -26,8 +26,10 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // INSERT INTO {0} {1}
-            //      ON DUPLICATE KEY UPDATE <{1} - keys>
+            /*
+                INSERT INTO {0} {1}
+                    ON DUPLICATE KEY UPDATE <{1} - keys>
+            */
 
             var q = qb.Insert(ItemTable.TableName).AddAutoParam(ItemTable.DbColumns).ODKU().AddFromInsert(ItemTable.DbKeyColumns);
             return q.ToString();
