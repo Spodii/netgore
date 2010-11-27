@@ -462,7 +462,6 @@
     <Compile Include="World\Map\Entities\Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Queries\Character\CharacterIDCreator.cs" />
     <Compile Include="World\Map\Entities\Characters\Character.SideScroller.cs" />
     <Compile Include="World\Map\Entities\Characters\Character.TopDown.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
