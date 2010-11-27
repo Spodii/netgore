@@ -14,7 +14,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="AccountIDCreator"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public AccountIDCreator(DbConnectionPool connectionPool) : base(connectionPool, AccountTable.TableName, "id", 2048, 128)
+        public AccountIDCreator(DbConnectionPool connectionPool) : base(connectionPool, AccountTable.TableName, "id", 64)
         {
             QueryAsserts.ArePrimaryKeys(AccountTable.DbKeyColumns, "id");
         }

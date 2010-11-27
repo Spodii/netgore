@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
         public MapSpawnValuesIDCreator(DbConnectionPool connectionPool)
-            : base(connectionPool, MapSpawnTable.TableName, "id", 1, 0)
+            : base(connectionPool, MapSpawnTable.TableName, "id", 1)
         {
             QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }

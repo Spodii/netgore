@@ -16,7 +16,7 @@ namespace NetGore.Db
         /// <returns>The next free ID.</returns>
         public static int GetNextFreeID(DbConnectionPool pool, string table, string column)
         {
-            using (var creator = new IntIDCreator(pool, table, column, 2, 0))
+            using (var creator = new IntIDCreator(pool, table, column, 2))
             {
                 return creator.GetNext();
             }
@@ -34,9 +34,8 @@ namespace NetGore.Db
             /// <param name="table">The table.</param>
             /// <param name="column">The column.</param>
             /// <param name="stackSize">Size of the stack.</param>
-            /// <param name="criticalSize">Size of the critical.</param>
-            public IntIDCreator(DbConnectionPool connectionPool, string table, string column, int stackSize, int criticalSize)
-                : base(connectionPool, table, column, stackSize, criticalSize)
+            public IntIDCreator(DbConnectionPool connectionPool, string table, string column, int stackSize)
+                : base(connectionPool, table, column, stackSize)
             {
             }
 

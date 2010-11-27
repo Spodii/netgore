@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
         public ActiveStatusEffectIDCreator(DbConnectionPool connectionPool)
-            : base(connectionPool, CharacterStatusEffectTable.TableName, "id", 2048, 128)
+            : base(connectionPool, CharacterStatusEffectTable.TableName, "id", 32)
         {
             QueryAsserts.ArePrimaryKeys(CharacterStatusEffectTable.DbKeyColumns, "id");
         }
