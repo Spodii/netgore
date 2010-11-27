@@ -24,7 +24,7 @@ namespace DemoGame.Server.Queries
         public CreateAccountQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "name", "password", "email", "time_created",
+            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "name", "password", "email", "time_created",
                 "time_last_login", "creator_ip");
         }
 
@@ -36,12 +36,12 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             // INSERT IGNORE INTO `{0}`
-            //      (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`,`creator_ip`)
-            //      VALUES (@id,@name,@password,@email,NOW(),NOW(),@creator_ip)
+            //      (`name`,`password`,`email`,`time_created`,`time_last_login`,`creator_ip`)
+            //      VALUES (@name,@password,@email,NOW(),NOW(),@creator_ip)
 
             var f = qb.Functions;
             var q =
-                qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam("id", "name", "password", "email", "creator_ip").Add
+                qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam("name", "password", "email", "creator_ip").Add
                     ("time_created", f.Now()).Add("time_last_login", f.Now());
             return q.ToString();
         }
@@ -53,7 +53,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("id", "name", "password", "email", "creator_ip");
+            return CreateParameters("name", "password", "email", "creator_ip");
         }
 
         /// <summary>
@@ -64,7 +64,6 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["id"] = (int)item.AccountID;
             p["name"] = item.Name;
             p["password"] = item.Password;
             p["email"] = item.Email;
@@ -74,13 +73,12 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// Tries to execute the query to create an account.
         /// </summary>
-        /// <param name="accountID">The account ID.</param>
         /// <param name="name">The name.</param>
         /// <param name="password">The password.</param>
         /// <param name="email">The email.</param>
         /// <param name="ip">The IP address.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public bool TryExecute(AccountID accountID, string name, string password, string email, uint ip)
+        public bool TryExecute(string name, string password, string email, uint ip)
         {
             if (!GameData.AccountName.IsValid(name))
                 return false;
@@ -92,7 +90,7 @@ namespace DemoGame.Server.Queries
             bool success;
 
             password = UserAccountManager.EncodePassword(password);
-            var queryArgs = new QueryArgs(accountID, name, password, email, ip);
+            var queryArgs = new QueryArgs(name, password, email, ip);
             try
             {
                 using (var r = ExecuteReader(queryArgs))
@@ -143,11 +141,6 @@ namespace DemoGame.Server.Queries
         public class QueryArgs
         {
             /// <summary>
-            /// The account ID.
-            /// </summary>
-            public readonly AccountID AccountID;
-
-            /// <summary>
             /// The email address.
             /// </summary>
             public readonly string Email;
@@ -170,14 +163,12 @@ namespace DemoGame.Server.Queries
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> class.
             /// </summary>
-            /// <param name="accountID">The account ID.</param>
             /// <param name="name">The name.</param>
             /// <param name="password">The password.</param>
             /// <param name="email">The email.</param>
             /// <param name="ip">The IP address.</param>
-            public QueryArgs(AccountID accountID, string name, string password, string email, uint ip)
+            public QueryArgs(string name, string password, string email, uint ip)
             {
-                AccountID = accountID;
                 Name = name;
                 Password = password;
                 Email = email;

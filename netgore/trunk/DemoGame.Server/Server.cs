@@ -193,9 +193,8 @@ namespace DemoGame.Server
             }
 
             // Create the account
-            AccountID id;
             GameMessage failReason;
-            var success = UserAccountManager.TryCreateAccount(conn, name, password, email, out id, out failReason);
+            var success = UserAccountManager.TryCreateAccount(conn, name, password, email, out failReason);
 
             // Send the appropriate success message
             using (var pw = ServerPacket.CreateAccount(success, failReason))

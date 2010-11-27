@@ -86,13 +86,11 @@ namespace DemoGame.Server
         [ConsoleCommand("CreateAccount")]
         public string CreateAccount(string accountName, string accountPassword, string email)
         {
-            AccountID accountID;
             GameMessage failReason;
-            var success = Server.UserAccountManager.TryCreateAccount(null, accountName, accountPassword, email, out accountID,
-                out failReason);
+            var success = Server.UserAccountManager.TryCreateAccount(null, accountName, accountPassword, email, out failReason);
 
             if (success)
-                return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);
+                return string.Format("Created account `{0}`.", accountName);
             else
                 return "Failed to create new account: " + failReason;
         }
