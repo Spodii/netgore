@@ -133,7 +133,8 @@ namespace NetGore.IO
         /// <param name="other">An object to compare with this object.</param>
         public int CompareTo(PathString other)
         {
-            return _pathComparer.Compare(_path, Equals(other, null) ? null : other._path);
+            var otherPath = Equals(other, null) ? null : other._path;
+            return _pathComparer.Compare(_path, otherPath);
         }
 
         #endregion
@@ -149,7 +150,8 @@ namespace NetGore.IO
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(PathString other)
         {
-            return _pathComparer.Equals(_path, other._path);
+            var otherPath = Equals(other, null) ? null : other._path;
+            return _pathComparer.Equals(_path, otherPath);
         }
 
         #endregion
@@ -186,7 +188,10 @@ namespace NetGore.IO
         /// <returns>The result of the conversion.</returns>
         public static implicit operator string(PathString value)
         {
-            return value._path;
+            if (value == null)
+                return null;
+            else
+                return value._path;
         }
 
         /// <summary>

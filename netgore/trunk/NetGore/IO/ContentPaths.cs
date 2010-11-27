@@ -56,6 +56,11 @@ namespace NetGore.IO
         public const string LanguagesFolder = "Languages";
 
         /// <summary>
+        /// The relative path to the Recycled directory from the Contents directory.
+        /// </summary>
+        public const string RecycledFolder = "Recycled";
+
+        /// <summary>
         /// The relative path to the Maps directory from the Contents directory.
         /// </summary>
         public const string MapsFolder = "Maps";
@@ -173,6 +178,22 @@ namespace NetGore.IO
         public PathString Data
         {
             get { return _data; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="PathString"/> to the recycled content folder. Will return null if the <see cref="ContentPaths.Dev"/>
+        /// path cannot be found.
+        /// </summary>
+        public static PathString Recycled
+        {
+            get
+            {
+                var dev = Dev;
+                if (dev == null)
+                    return null;
+
+                return dev.Root.Join(RecycledFolder);
+            }
         }
 
         /// <summary>

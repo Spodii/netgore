@@ -1,8 +1,11 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 using NetGore.IO;
 
 namespace NetGore.Content
@@ -13,6 +16,8 @@ namespace NetGore.Content
     [TypeConverter(typeof(ContentAssetNameConverter))]
     public class ContentAssetName : IEquatable<ContentAssetName>, IComparable<ContentAssetName>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The string used to separate the directories.
         /// </summary>
@@ -153,6 +158,62 @@ namespace NetGore.Content
         }
 
         /// <summary>
+        /// Recycles the actual content file. The file located in the <see cref="ContentPaths.Dev"/> path (if exists) will be moved
+        /// to the <see cref="ContentPaths.Recycled"/>. Other instances of the file will just be deleted from the system.
+        /// </summary>
+        public void RecycleFile()
+        {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Recycling `{0}`.", this);
+
+            // Delete file in build path
+            var buildPath = GetAbsoluteFilePath(ContentPaths.Build);
+            TryDeleteFile(buildPath);
+
+            // Check for recycle folder
+            var recycled = ContentPaths.Recycled;
+            if (recycled == null)
+            {
+                const string errmsg = "Cannot recycle `{0}` - ContentPaths.Recycled returned null.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
+            // Copy from dev to recycling, then delete from dev
+            var srcPath = GetAbsoluteFilePath(ContentPaths.Dev);
+            if (File.Exists(srcPath))
+            {
+                // Get the relative file path by taking the source path and chopping off the ContentPath's root directory prefix
+                var relPath = srcPath.Substring(ContentPaths.Dev.Root.ToString().Length);
+
+                // Get the destination path by joining the relative path with the recycled path
+                var destPath = ContentPaths.Recycled.Join(relPath);
+
+                // Create directory if it doesn't already exist
+                var destPathDir = Path.GetDirectoryName(destPath);
+                if (destPathDir != null && !Directory.Exists(destPathDir))
+                    Directory.CreateDirectory(destPathDir);
+
+                // Copy file
+                File.Copy(srcPath, destPath, true);
+
+                // Ensure the file was copied over before deleting
+                if (File.Exists(destPath))
+                    TryDeleteFile(srcPath);
+                else
+                {
+                    // Failed to copy over?
+                    const string errmsg = "File.Copy() from `{0}` to `{1}` seems to have failed - File.Exists() returned false.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, srcPath, destPath);
+                    Debug.Fail(string.Format(errmsg, srcPath, destPath));
+                }
+            }
+        }
+
+        /// <summary>
         /// Sanitizes the asset name. This will fix aspects of the asset name that can be fixed without
         /// making too large of assumptions.
         /// </summary>
@@ -187,6 +248,32 @@ namespace NetGore.Content
         public override string ToString()
         {
             return _assetName;
+        }
+
+        /// <summary>
+        /// Attempts to delete a file. No exceptions are ever thrown.
+        /// </summary>
+        /// <param name="filePath">The path to the file to delete.</param>
+        /// <returns>True if the file at the <paramref name="filePath"/> was deleted; otherwise false.</returns>
+        static bool TryDeleteFile(string filePath)
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                    return false;
+
+                File.Delete(filePath);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to delete file at `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, filePath, ex);
+
+                return false;
+            }
         }
 
         #region IComparable<ContentAssetName> Members
