@@ -16,8 +16,6 @@ using SFML.Graphics;
 
 namespace DemoGame.Server
 {
-    // TODO: I REALLY need to make it so that copying values with an ItemEntity is as non-redundant and automated by the IItemTable as possible
-
     /// <summary>
     /// A single item instance on the server. Can be either a single item, or a stack of the exact same kind
     /// of item combined into one (<see cref="ItemEntity.Amount"/> greater than 1).
