@@ -187,6 +187,9 @@ namespace NetGore.Editor.Grhs
                 return;
 
             var toDelete = root.GetChildGrhDataNodes(true).ToImmutable();
+
+            Debug.Assert(!toDelete.HasDuplicates());
+
             foreach (var node in toDelete)
             {
                 DeleteNode(node);
