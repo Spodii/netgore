@@ -13,7 +13,7 @@ namespace DemoGame
         /// <summary>
         /// The number of seconds of non-response before disconnecting because of time out.
         /// </summary>
-        public const float ConnectionTimeout = 20000; // TODO: !! Temp!
+        public const float ConnectionTimeout = 8000;
 
         /// <summary>
         /// The string used to identify this application over the network. The actual string isn't too important, but it is recommended
