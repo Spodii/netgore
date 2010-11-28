@@ -140,7 +140,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the server the world belongs to
+        /// Gets the <see cref="Server"/> this <see cref="World"/> belongs to.
         /// </summary>
         public Server Server
         {
@@ -173,7 +173,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Adds an IRespawnable to the list of objects that need to respawn.
+        /// Adds an <see cref="IRespawnable"/> to the list of objects that need to respawn.
         /// </summary>
         /// <param name="respawnable">The object to respawn.</param>
         public void AddToRespawn(IRespawnable respawnable)
@@ -187,7 +187,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Adds a user to the world
+        /// Adds a <see cref="User"/> to the <see cref="World"/>.
         /// </summary>
         public void AddUser(User user)
         {
