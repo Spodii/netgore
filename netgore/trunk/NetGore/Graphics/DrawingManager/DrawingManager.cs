@@ -132,7 +132,6 @@ namespace NetGore.Graphics
             _drawBufferToWindowSprite.Height = size.Y;
             _drawBufferToWindowSprite.SubRect = new IntRect(0, 0, (int)size.X, (int)size.Y);
 
-            // TODO: !! Is this needed?
             _view.Reset(new FloatRect(0, 0, size.X, size.Y));
             _rw.SetView(_view);
 
