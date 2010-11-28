@@ -84,8 +84,9 @@ For more information on the DbClassCreator, please see:
 
             Console.WriteLine();
 
-            // Force the NetGore.Features.Server assembly to load up
-            // TODO: !! Is this line below still needed?
+            // Force the NetGore.Features.Server assembly to load up so we can properly find the IDbClassGeneratorSettingsProvider
+            // implementations in NetGore.Features.Server. To do this, we just create a random instance of an object in
+            // NetGore.Features.Server.
 #pragma warning disable 168
             var x = new DbClassGeneratorSettings();
 #pragma warning restore 168
