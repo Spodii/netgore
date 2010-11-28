@@ -88,7 +88,6 @@ namespace DemoGame.Editor.Tools
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnDelete_Click(object sender, EventArgs e)
         {
-            // TODO: !!
             var map = Map;
             var selected = lstSpawns.SelectedItem as IMapSpawnTable;
             if (selected == null || map == null)
