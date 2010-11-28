@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DemoGame.Server.Properties;
 using SFML.Graphics;
 
 #if TOPDOWN
@@ -11,6 +12,8 @@ namespace DemoGame.Server
 {
     public partial class Character
     {
+        static readonly float _jumpVelocity = ServerSettings.Default.CharacterJumpVelocity;
+
         /// <summary>
         /// Makes the Character jump if <see cref="Character.CanJump"/> is true. If <see cref="Character.CanJump"/> is false,
         /// this will do nothing.
@@ -26,7 +29,7 @@ namespace DemoGame.Server
             if (_skillCaster.IsCastingSkill)
                 return;
 
-            SetVelocity(Velocity + new Vector2(0.0f, -0.48f)); // TODO: Put jump velocity in server configs
+            SetVelocity(Velocity + new Vector2(0.0f, _jumpVelocity));
         }
     }
 }

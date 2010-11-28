@@ -70,6 +70,15 @@ namespace DemoGame.Server.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The default base velocity to give to a character when they jump..
+        /// </summary>
+        public static string CharacterJumpVelocity {
+            get {
+                return ResourceManager.GetString("CharacterJumpVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The amount of time, in milliseconds, an item may remain on the map before it is removed automatically..
         /// </summary>
         public static string DefaultMapItemLife {

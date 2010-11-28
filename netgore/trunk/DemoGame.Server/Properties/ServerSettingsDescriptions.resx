@@ -171,4 +171,7 @@
   <data name="PasswordSalt" xml:space="preserve">
     <value>The salt to use when generating the MD5 hash for the passwords in the database. Using a unique salt makes it impossible to use a rainbow table to reverse a hash. However, changing the salt will break all existing hashes. So if you change the password salt, you will have to have everyone change their passwords.</value>
   </data>
+  <data name="CharacterJumpVelocity" xml:space="preserve">
+    <value>The default base velocity to give to a character when they jump.</value>
+  </data>
 </root>

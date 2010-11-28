@@ -60,5 +60,8 @@ Use the arrow keys to move, control to attack, alt to talk to NPCs and use world
     <Setting Name="PasswordSalt" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="CharacterJumpVelocity" Type="System.Single" Scope="Application">
+      <Value Profile="(Default)">-0.48</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

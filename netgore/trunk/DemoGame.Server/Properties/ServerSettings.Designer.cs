@@ -194,5 +194,14 @@ namespace DemoGame.Server.Properties {
                 return ((string)(this["PasswordSalt"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-0.48")]
+        public float CharacterJumpVelocity {
+            get {
+                return ((float)(this["CharacterJumpVelocity"]));
+            }
+        }
     }
 }
