@@ -34,7 +34,8 @@ namespace DemoGame.Server
         readonly RespawnTaskList _respawnTaskList;
         readonly Server _server;
         readonly ItemEntity _unarmedWeapon;
-        readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
+        readonly IDictionary<string, User> _users = new Dictionary<string, User>(StringComparer.OrdinalIgnoreCase);
+        readonly object _usersSync = new object();
 
         bool _disposed;
 
@@ -196,9 +197,27 @@ namespace DemoGame.Server
             if (string.IsNullOrEmpty(user.Name))
                 throw new ArgumentException("User contains a null or invalid name.", "user");
 
-            // TODO: If the user is already logged in, this will throw an exception. Will have to determine how to handle this scenario.
+            var name = user.Name;
+
+            lock (_usersSync)
+            {
+                // Make sure the user isn't already in the world
+                if (_users.ContainsKey(name))
+                {
+                    const string errmsg = "User with name `{0}` already in the _users collection! Cannot add user `{1}`.";
+                    string err = string.Format(errmsg, name, user);
+                    if (log.IsErrorEnabled)
+                        log.Error(err);
+                    Debug.Fail(err);
+                    throw new ArgumentException(err, "user");
+                }
+
+                // Add the user to the collection
+                _users.Add(user.Name, user);
+            }
+
+            // Listen for when the user is disposed
             user.Disposed += User_Disposed;
-            _users.Add(user.Name, user);
         }
 
         /// <summary>
@@ -260,8 +279,12 @@ namespace DemoGame.Server
         public User FindUser(string name)
         {
             User user;
-            if (!_users.TryGetValue(name, out user))
-                return null;
+
+            lock (_usersSync)
+            {
+                if (!_users.TryGetValue(name, out user))
+                    return null;
+            }
 
             return user;
         }
@@ -371,7 +394,10 @@ namespace DemoGame.Server
         /// <returns>All the Users in the world.</returns>
         public IEnumerable<User> GetUsers()
         {
-            return _users.Values.ToImmutable();
+            lock (_usersSync)
+            {
+                return _users.Values.ToImmutable();
+            }
         }
 
         /// <summary>
@@ -404,7 +430,7 @@ namespace DemoGame.Server
         /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
         public void Send(BitStream data, ServerMessageType messageType)
         {
-            if (_users.Count == 0)
+            if (_users.Count <= 0)
                 return;
 
             foreach (var map in Maps)
@@ -436,9 +462,6 @@ namespace DemoGame.Server
         /// <param name="parameters">Message parameters.</param>
         public void Send(GameMessage message, ServerMessageType messageType, params object[] parameters)
         {
-            if (_users.Count == 0)
-                return;
-
             using (var pw = ServerPacket.SendMessage(message, parameters))
             {
                 foreach (var map in Maps)
@@ -458,9 +481,12 @@ namespace DemoGame.Server
         /// </summary>
         void SyncExtraUserInformation()
         {
-            foreach (var user in _users.Values)
+            lock (_usersSync)
             {
-                user.SynchronizeExtraUserInformation();
+                foreach (var user in _users.Values)
+                {
+                    user.SynchronizeExtraUserInformation();
+                }
             }
         }
 
@@ -553,7 +579,12 @@ namespace DemoGame.Server
         void User_Disposed(Entity entity)
         {
             // Remove the User from the list of Users
-            _users.Remove(((User)entity).Name);
+            var name = ((User)entity).Name;
+
+            lock (_usersSync)
+            {
+                _users.Remove(name);
+            }
         }
 
         #region IDisposable Members

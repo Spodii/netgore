@@ -519,7 +519,20 @@ namespace DemoGame.Server
                 }
 
                 // Load the User
-                _user = new User(this, world, characterID);
+                try
+                {
+                    _user = new User(this, world, characterID);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to create user with ID `{0}`. Exception: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, characterID, ex);
+                    Debug.Fail(string.Format(errmsg, characterID, ex));
+
+                    Dispose();
+                    return;
+                }
 
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Set User `{0}` on account `{1}`.", _user, this);
