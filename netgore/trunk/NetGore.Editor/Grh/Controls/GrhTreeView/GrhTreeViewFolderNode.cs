@@ -135,15 +135,15 @@ namespace NetGore.Editor.Grhs
             foreach (var node in Nodes.OfType<GrhTreeViewNode>())
             {
                 yield return node;
+            }
 
-                if (recursive)
+            if (recursive)
+            {
+                foreach (var folderNode in Nodes.OfType<GrhTreeViewFolderNode>())
                 {
-                    foreach (var folderNode in Nodes.OfType<GrhTreeViewFolderNode>())
+                    foreach (var node2 in folderNode.GetChildGrhDataNodes(true))
                     {
-                        foreach (var node2 in folderNode.GetChildGrhDataNodes(true))
-                        {
-                            yield return node2;
-                        }
+                        yield return node2;
                     }
                 }
             }
