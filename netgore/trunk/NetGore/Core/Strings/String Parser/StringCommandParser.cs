@@ -64,7 +64,7 @@ namespace NetGore
             new Dictionary<string, IEnumerable<StringCommandParserCommandData<T>>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="StringCommandParser{T}"/> class.
         /// </summary>
         /// <param name="types">Array of Types to check for methods containing an Attribute of
         /// Type <typeparamref name="T"/>.</param>
@@ -73,7 +73,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StringCommandParser&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="StringCommandParser{T}"/> class.
         /// </summary>
         /// <param name="types">IEnumerable of Types to check for methods containing an Attribute of
         /// Type <typeparamref name="T"/>.</param>
@@ -527,7 +527,7 @@ namespace NetGore
             static readonly Func<ParameterInfo, bool> _countFuncDelegate;
 
             /// <summary>
-            /// Initializes the <see cref="StringCommandParser&lt;T&gt;.CommandDataSorter"/> class.
+            /// Initializes the <see cref="StringCommandParser{T}.CommandDataSorter"/> class.
             /// </summary>
             static CommandDataSorter()
             {

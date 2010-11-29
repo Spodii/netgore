@@ -77,7 +77,7 @@ namespace NetGore.Collections
             readonly IDictionary<int, TValue> _buffer;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="DictionaryTable&lt;TKey, TValue&gt;"/> class.
+            /// Initializes a new instance of the <see cref="DictionaryTable{TKey, TValue}"/> class.
             /// </summary>
             public DictionaryTable()
             {
@@ -92,7 +92,7 @@ namespace NetGore.Collections
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="DictionaryTable&lt;TKey, TValue&gt;"/> class.
+            /// Initializes a new instance of the <see cref="DictionaryTable{TKey, TValue}"/> class.
             /// </summary>
             /// <param name="other">The table to copy from.</param>
             DictionaryTable(DictionaryTable<TKey, TValue> other)
@@ -296,7 +296,7 @@ namespace NetGore.Collections
             static bool _rawTableBitArrayCreated = false;
 
             /// <summary>
-            /// Initializes the <see cref="KeyInfo&lt;TKey&gt;"/> class.
+            /// Initializes the <see cref="KeyInfo{TKey}"/> class.
             /// </summary>
             static KeyInfo()
             {
@@ -479,7 +479,7 @@ namespace NetGore.Collections
             readonly TValue[] _buffer;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="RawTable&lt;TKey, TValue&gt;"/> class.
+            /// Initializes a new instance of the <see cref="RawTable{TKey, TValue}"/> class.
             /// </summary>
             public RawTable()
             {
@@ -488,7 +488,7 @@ namespace NetGore.Collections
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="RawTable&lt;TKey, TValue&gt;"/> class.
+            /// Initializes a new instance of the <see cref="RawTable{TKey, TValue}"/> class.
             /// </summary>
             /// <param name="other">The table to copy from.</param>
             RawTable(RawTable<TKey, TValue> other)

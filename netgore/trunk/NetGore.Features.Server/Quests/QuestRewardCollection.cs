@@ -17,7 +17,7 @@ namespace NetGore.Features.Quests
         readonly IEnumerable<IQuestReward<TCharacter>> _questRewards;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuestRewardCollection&lt;TCharacter&gt;"/> class.
+        /// Initializes a new instance of the <see cref="QuestRewardCollection{TCharacter}"/> class.
         /// </summary>
         /// <param name="questRewards">The quest rewards.</param>
         public QuestRewardCollection(IEnumerable<IQuestReward<TCharacter>> questRewards)

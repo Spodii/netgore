@@ -23,7 +23,7 @@ namespace DemoGame
         bool _disposed = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InventoryBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="InventoryBase{T}"/> class.
         /// </summary>
         /// <param name="slots">The number of slots in the inventory.</param>
         protected InventoryBase(int slots)

@@ -463,7 +463,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Docking\Resources.resx" />
-    <EmbeddedResource Include="Docking\Strings.resx" />
+    <EmbeddedResource Include="Docking\Strings.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Grh\AutomaticGrhData\GrhDataUpdaterProgressForm.resx">
       <DependentUpon>GrhDataUpdaterProgressForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -60,7 +60,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TSDictionary&lt;TKey, TValue&gt;"/> class.
+        /// Initializes a new instance of the <see cref="TSDictionary{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="dictionary">A <see cref="IDictionary{TKey, TValue}"/> to copy the values from.</param>
         /// <param name="comparer">The key comparer to use.</param>
