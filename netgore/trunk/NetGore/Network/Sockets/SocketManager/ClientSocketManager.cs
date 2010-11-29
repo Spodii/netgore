@@ -166,7 +166,10 @@ namespace NetGore.Network
 
             // Check if connection successful
             if (conn == null)
+            {
+                Debug.Fail("conn is null. Why?");
                 return false;
+            }
 
             // Store the remote connection as an IPSocket
             _remote = IPSocket.Create(conn);
@@ -283,6 +286,9 @@ namespace NetGore.Network
                         _receiveBitStream.PositionBits = 0;
 
                         OnReceiveData(ipSocket, _receiveBitStream);
+                        break;
+
+                    default:
                         break;
                 }
 
