@@ -22,7 +22,7 @@ namespace NetGore.Features.Quests
         Action<Grh, TCharacter, ISpriteBatch> _indicatorDrawer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuestMapDrawingExtension&lt;TCharacter&gt;"/> class.
+        /// Initializes a new instance of the <see cref="QuestMapDrawingExtension{TCharacter}"/> class.
         /// </summary>
         /// <param name="questInfo">The quest info.</param>
         /// <param name="hasStartQuestReqs">The <see cref="Func{T,U}"/> used to determine if the user has the

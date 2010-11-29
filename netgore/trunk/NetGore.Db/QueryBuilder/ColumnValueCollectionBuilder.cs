@@ -15,7 +15,7 @@ namespace NetGore.Db.QueryBuilder
         readonly IQueryBuilderSettings _settings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnValueCollectionBuilder&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ColumnValueCollectionBuilder{T}"/> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="settings">The <see cref="IQueryBuilderSettings"/>.</param>

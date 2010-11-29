@@ -20,7 +20,7 @@ namespace NetGore.Db
         bool _isRefilling;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IDCreatorBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="IDCreatorBase{T}"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
         /// <param name="table">Table containing the column to track the values in.</param>

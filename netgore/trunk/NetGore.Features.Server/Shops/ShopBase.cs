@@ -20,7 +20,7 @@ namespace NetGore.Features.Shops
         readonly TShopItem[] _shopItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShopBase&lt;TShopItem&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ShopBase{TShopItem}"/> class.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="name">The name.</param>

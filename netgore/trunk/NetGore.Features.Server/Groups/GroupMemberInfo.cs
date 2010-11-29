@@ -17,7 +17,7 @@ namespace NetGore.Features.Groups
         TickCount _inviteTime;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GroupMemberInfo&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="GroupMemberInfo{T}"/> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
         protected GroupMemberInfo(T owner)
