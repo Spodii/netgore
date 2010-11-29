@@ -79,13 +79,12 @@ namespace DemoGame.Server
         [Conditional("DEBUG")]
         void AssertModStatsAreCorrect()
         {
-            // Only test every so often
-            if (RandomHelper.NextInt(0, 5) != 0)
-                return;
-
             var oldValues = _modStats.DeepCopy();
             RecalculateStatBonuses();
-            Debug.Assert(_modStats.HasSameValues(oldValues), "Somehow, at some point, the ModStats became out of sync!");
+            if (!_modStats.HasSameValues(oldValues))
+            {
+                Debug.Fail("Somehow, at some point, the ModStats became out of sync!");
+            }
         }
 
         /// <summary>

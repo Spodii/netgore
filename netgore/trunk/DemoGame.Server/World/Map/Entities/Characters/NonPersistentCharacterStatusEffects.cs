@@ -50,7 +50,14 @@ namespace DemoGame.Server
         /// <param name="activeStatusEffect">StatusEffect to be removed.</param>
         protected override void HandleExpired(ActiveStatusEffect activeStatusEffect)
         {
+            // Remove the item from the list
             var wasRemoved = _statusEffects.Remove(activeStatusEffect);
+
+            // Raise removal event (assuming it was properly removed like it should have been)
+            if (wasRemoved)
+            {
+                OnRemoved(activeStatusEffect);
+            }
 
             Debug.Assert(wasRemoved, "Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }
@@ -77,6 +84,8 @@ namespace DemoGame.Server
             if (alreadyExists)
             {
                 var changed = existingStatusEffect.MergeWith(time, power, disableTime);
+                if (changed)
+                    RecalculateStatBonuses();
                 return changed;
             }
             else

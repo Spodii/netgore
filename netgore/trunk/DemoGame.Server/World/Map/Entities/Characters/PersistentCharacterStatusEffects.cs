@@ -196,8 +196,10 @@ namespace DemoGame.Server
                 // Status effect already exists - merge with it
                 var changed = existingStatusEffect.Value.MergeWith(time, power, disableTime);
                 if (changed)
+                {
+                    RecalculateStatBonuses();
                     UpdateInDatabase(existingStatusEffect);
-
+                }
                 return changed;
             }
             else
