@@ -315,7 +315,6 @@ namespace DemoGame.Client
                     {
                         // Effect that seeks out the position of the target
                         effect = new TemporaryMapParticleEffectSeekPosition(pe, true, target.Center, 250f);
-                        drawableMap.AddTemporaryMapEffect(effect);
                     }
                     else
                     {
@@ -323,7 +322,7 @@ namespace DemoGame.Client
                         effect = new TemporaryMapParticleEffect(pe, true);
                     }
 
-                    // Add the effec to the map
+                    // Add the effect to the map
                     if (effect != null)
                         drawableMap.AddTemporaryMapEffect(effect);
                 }
