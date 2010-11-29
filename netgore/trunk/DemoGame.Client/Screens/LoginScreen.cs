@@ -116,6 +116,7 @@ namespace DemoGame.Client
 
             // Set up the networking stuff for this screen
             _sockets = ClientSockets.Instance;
+            _sockets.StatusChanged -= _sockets_StatusChanged;
             _sockets.StatusChanged += _sockets_StatusChanged;
             _sockets.PacketHandler.ReceivedLoginSuccessful += PacketHandler_ReceivedLoginSuccessful;
             _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
@@ -202,7 +203,10 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void _btnLogin_Clicked(object sender, MouseButtonEventArgs e)
         {
-            _sockets.Connect();
+            if (!_sockets.Connect())
+            {
+                SetError("Already attempting to connect or error occured while creating socket.");
+            }
         }
 
         void _cRememberPassword_ValueChanged(Control sender)
@@ -227,6 +231,7 @@ namespace DemoGame.Client
                             _sockets.Send(pw, ClientMessageType.System);
                         }
                     }
+
                     break;
 
                 case NetConnectionStatus.Disconnected:
