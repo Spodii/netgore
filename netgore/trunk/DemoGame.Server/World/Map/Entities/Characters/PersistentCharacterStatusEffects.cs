@@ -118,15 +118,22 @@ namespace DemoGame.Server
         /// <param name="activeStatusEffect">StatusEffect to be removed.</param>
         protected override void HandleExpired(ActiveStatusEffect activeStatusEffect)
         {
+            // Loop through the _statusEffects list until we find 'activeStatusEffect'
             for (var i = 0; i < _statusEffects.Count; i++)
             {
                 var item = _statusEffects[i];
                 if (item.Value != activeStatusEffect)
                     continue;
 
+                // Found it - now remove it from the list
                 _statusEffects.RemoveAt(i);
+
+                // Raise removal event
                 OnRemoved(activeStatusEffect);
+
+                // Remove from database
                 DeleteFromDatabase(item.ID);
+
                 return;
             }
 
