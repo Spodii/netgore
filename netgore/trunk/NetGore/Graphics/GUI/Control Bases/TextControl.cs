@@ -122,7 +122,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the string for a key if the key represents a valid ASCII character. If possible, try to use
+        /// Gets the string for a key if the key represents a valid printable character. If possible, try to use
         /// a <see cref="TextEventArgs"/> instead.
         /// </summary>
         /// <param name="key">Key to check.</param>
@@ -143,7 +143,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the string for a key if the key represents a valid ASCII character with shift up.
+        /// Gets the string for a key if the key represents a valid printable character with shift up.
         /// </summary>
         /// <param name="key">Key to check.</param>
         /// <returns>String for the key, or String.Empty if invalid.</returns>
@@ -275,7 +275,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the string for a key if the key represents a valid ASCII character with shift down.
+        /// Gets the string for a key if the key represents a valid printable character with shift down.
         /// </summary>
         /// <param name="key">Key to check.</param>
         /// <returns>String for the key, or String.Empty if invalid.</returns>
