@@ -23,8 +23,8 @@ namespace DemoGame.Server.UI
             _server.ConsoleCommandExecuted += Server_ConsoleCommandExecuted;
 
             Console.WriteLine("As long as this console remains open, the server will be running.");
-            Console.WriteLine("No log messages will be printed to this screen, only manually-entered console commands.");
-            Console.WriteLine("PLEASE close the server PROPERLY by typing \"close\" instead of closing the console window!");
+            Console.WriteLine("No game log messages will be printed to this screen.");
+            Console.WriteLine("Please close the server properly by typing \"quit\" instead of closing the console window!");
             Console.WriteLine("Type `help` to see the list of console commands.");
 
             // Spawn a thread to handle the console input
