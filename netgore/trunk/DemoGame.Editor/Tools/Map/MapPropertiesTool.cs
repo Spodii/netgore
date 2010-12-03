@@ -86,9 +86,11 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The map to show the properties for.</param>
         public void ShowMapProperties(EditorMap map)
         {
-            if (_currentPropertiesForm == null)
+            // Create new form instance if needed
+            if (_currentPropertiesForm == null || _currentPropertiesForm.Disposing || _currentPropertiesForm.IsDisposed)
                 _currentPropertiesForm = new MapPropertiesToolForm();
 
+            // If not already visible, show it
             if (!_currentPropertiesForm.Visible)
             {
                 if (DockPanel == null)
@@ -97,6 +99,7 @@ namespace DemoGame.Editor.Tools
                     _currentPropertiesForm.Show(DockPanel);
             }
 
+            // Set the map
             _currentPropertiesForm.Map = map;
         }
     }
