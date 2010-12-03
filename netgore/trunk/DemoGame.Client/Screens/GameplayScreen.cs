@@ -640,14 +640,13 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles when a Toolbar item was clicked.
+        /// Handles the ItemClicked event of the Toolbar control.
         /// </summary>
-        /// <param name="toolbar">Toolbar that was clicked.</param>
-        /// <param name="itemType">ToolbarItemType of the toolbar item clicked.</param>
-        /// <param name="control">Control that was clicked.</param>
-        void Toolbar_ItemClicked(Toolbar toolbar, ToolbarItemType itemType, Control control)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="ToolbarEventArgs"/> instance containing the event data.</param>
+        void Toolbar_ItemClicked(Toolbar sender, ToolbarEventArgs e)
         {
-            switch (itemType)
+            switch (e.ItemType)
             {
                 case ToolbarItemType.Equipped:
                     _equippedForm.IsVisible = !_equippedForm.IsVisible;

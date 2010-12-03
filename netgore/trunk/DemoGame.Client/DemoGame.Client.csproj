@@ -136,6 +136,7 @@
     <Compile Include="AccountCharactersLoadedHandler.cs" />
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
+    <Compile Include="Controls\ToolbarEventArgs.cs" />
     <Compile Include="Interface\GameControlsKeys.SideScroller.cs" />
     <Compile Include="Interface\GameControlsKeys.TopDown.cs" />
     <Compile Include="Interface\GameplayScreenControls.SideScroller.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="KnownSkillsCollection.cs" />
     <Compile Include="Networking\ClientPacket.SideScroller.cs" />
     <Compile Include="Networking\ClientPacket.TopDown.cs" />
+    <Compile Include="Networking\ClientPacketHandlerEventArgs.cs" />
     <Compile Include="Networking\CreateAccountEventHandler.cs" />
     <Compile Include="Properties\ClientSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -182,7 +184,6 @@
     <Compile Include="Networking\ClientMessageType.cs" />
     <Compile Include="Networking\ClientMessageTypeExtensions.cs" />
     <Compile Include="Networking\ClientPacketHandler.ObjGrabber.cs" />
-    <Compile Include="Networking\ClientPacketHandlerEventHandler.cs" />
     <Compile Include="Networking\INetworkSenderExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
