@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -125,6 +126,7 @@ namespace NetGore
     /// <typeparam name="T1">The type of the first component.</typeparam>
     /// <typeparam name="T2">The type of the second component.</typeparam>
     /// <typeparam name="T3">The type of the third component.</typeparam>
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     [Serializable]
     public class EventArgs<T1, T2, T3> : EventArgs<T1, T2>
     {
@@ -177,6 +179,7 @@ namespace NetGore
     /// <typeparam name="T2">The type of the second component.</typeparam>
     /// <typeparam name="T3">The type of the third component.</typeparam>
     /// <typeparam name="T4">The type of the fourth component.</typeparam>
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     [Serializable]
     public class EventArgs<T1, T2, T3, T4> : EventArgs<T1, T2, T3>
     {
@@ -233,6 +236,7 @@ namespace NetGore
     /// <typeparam name="T3">The type of the third component.</typeparam>
     /// <typeparam name="T4">The type of the fourth component.</typeparam>
     /// <typeparam name="T5">The type of the fifth component.</typeparam>
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     [Serializable]
     public class EventArgs<T1, T2, T3, T4, T5> : EventArgs<T1, T2, T3, T4>
     {

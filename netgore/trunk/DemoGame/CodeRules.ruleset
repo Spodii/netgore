@@ -11,7 +11,6 @@
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="None" />
     <Rule Id="CA1006" Action="None" />
-    <Rule Id="CA1009" Action="None" />
     <Rule Id="CA1013" Action="Warning" />
     <Rule Id="CA1016" Action="None" />
     <Rule Id="CA1024" Action="None" />
