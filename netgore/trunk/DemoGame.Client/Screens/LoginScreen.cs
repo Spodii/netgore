@@ -132,19 +132,19 @@ namespace DemoGame.Client
             ScreenManager.SetScreen<MainMenuScreen>();
         }
 
-        void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
+        void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, ClientPacketHandlerEventArgs e)
         {
             // Show the character selection screen
             ScreenManager.SetScreen<CharacterSelectionScreen>();
         }
 
-        void PacketHandler_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string e)
+        void PacketHandler_ReceivedLoginUnsuccessful(ClientPacketHandler sender, ClientPacketHandlerEventArgs<string> e)
         {
             // Show the login screen
             ScreenManager.ActiveScreen = this;
 
             // Display the message
-            SetError(e);
+            SetError(e.Args);
         }
 
         /// <summary>

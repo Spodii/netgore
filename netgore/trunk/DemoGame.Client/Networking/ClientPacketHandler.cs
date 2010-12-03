@@ -85,12 +85,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
         /// </summary>
-        public event ClientPacketHandlerEventHandler ReceivedLoginSuccessful;
+        public event TypedEventHandler<ClientPacketHandler, ClientPacketHandlerEventArgs> ReceivedLoginSuccessful;
 
         /// <summary>
         /// Notifies listeners when an unsuccessful login request has been made.
         /// </summary>
-        public event ClientPacketHandlerEventHandler<string> ReceivedLoginUnsuccessful;
+        public event TypedEventHandler<ClientPacketHandler, ClientPacketHandlerEventArgs<string>> ReceivedLoginUnsuccessful;
 
         public AccountCharacterInfos AccountCharacterInfos
         {
@@ -419,8 +419,7 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
-            if (ReceivedLoginSuccessful != null)
-                ReceivedLoginSuccessful(this, conn);
+            ReceivedLoginSuccessful.Raise(this, new ClientPacketHandlerEventArgs(conn));
         }
 
         [MessageHandler((uint)ServerPacketID.LoginUnsuccessful)]
@@ -428,8 +427,7 @@ namespace DemoGame.Client
         {
             var message = r.ReadGameMessage(GameMessageCollection.CurrentLanguage);
 
-            if (ReceivedLoginUnsuccessful != null)
-                ReceivedLoginUnsuccessful(this, conn, message);
+            ReceivedLoginUnsuccessful.Raise(this, new ClientPacketHandlerEventArgs<string>(conn, message));
         }
 
         [MessageHandler((uint)ServerPacketID.NotifyExpCash)]

@@ -8,14 +8,6 @@ using SFML.Window;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Handles an event on the Toolbar.
-    /// </summary>
-    /// <param name="toolbar">Toolbar that the event took place on.</param>
-    /// <param name="itemType">ToolbarItemType for the Toolbar item that raised the event.</param>
-    /// <param name="control">Control that raised the event.</param>
-    delegate void ToolbarEventHandler(Toolbar toolbar, ToolbarItemType itemType, Control control);
-
-    /// <summary>
     /// A <see cref="Form"/> containing buttons to toggle the visibility of the various forms.
     /// </summary>
     class Toolbar : Form
@@ -50,7 +42,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when an individual tool item on the Toolbar has been clicked.
         /// </summary>
-        public event ToolbarEventHandler ItemClicked;
+        public event TypedEventHandler<Toolbar, ToolbarEventArgs> ItemClicked;
 
         /// <summary>
         /// Creates all of the ToolbarItems.
@@ -148,7 +140,7 @@ namespace DemoGame.Client
                 return;
 
             var item = (ToolbarItem)sender;
-            ItemClicked(this, item.ToolbarItemType, item);
+            ItemClicked(this, new ToolbarEventArgs(item.ToolbarItemType, item));
         }
 
         /// <summary>
