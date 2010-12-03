@@ -108,28 +108,41 @@ namespace DemoGame.Editor
                 base.OnDrawItem(e);
         }
 
-        void ReloadSpawns()
+        /// <summary>
+        /// Reloads the spawns in this list. This shouldn't need to be called manually unless the list is updated externally.
+        /// However, calling this when the list hasn't changed will do no harm.
+        /// </summary>
+        public void ReloadSpawns()
         {
             var selected = SelectedItem;
 
+            if (Map == null)
+            {
+                Items.Clear();
+                return;
+            }
+
+            // Grab the latest values
+            var spawnInfo = MapSpawnValues.Load(DbControllerBase.GetInstance(), Map.ID);
+            var asArray = spawnInfo.OrderBy(x => x.ID).Cast<object>().ToArray();
+
+            // Check if we are already up-to-date
+            if (asArray.ContainSameElements(Items.Cast<object>().ToImmutable()))
+                return;
+
+            // Update the list
             try
             {
                 BeginUpdate();
 
                 Items.Clear();
 
-                if (Map != null)
+                if (asArray.Length > 0)
                 {
-                    var spawnInfo = MapSpawnValues.Load(DbControllerBase.GetInstance(), Map.ID);
-                    var asArray = spawnInfo.OrderBy(x => x.ID).ToArray();
+                    Items.AddRange(asArray);
 
-                    if (asArray.Length > 0)
-                    {
-                        Items.AddRange(asArray);
-
-                        if (selected != null && Items.Contains(selected))
-                            SelectedItem = selected;
-                    }
+                    if (selected != null && Items.Contains(selected))
+                        SelectedItem = selected;
                 }
             }
             finally
