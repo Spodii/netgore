@@ -44,41 +44,7 @@ namespace DemoGame.Editor.Tools
         protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
         {
             Text = string.Format("NPC Spawns (Map: {0})", newValue != null ? newValue.ToString() : "None");
-            RebuildList();
-
             lstSpawns.Map = newValue;
-        }
-
-        /// <summary>
-        /// Rebuilds the list of NPC spawns.
-        /// </summary>
-        public void RebuildList()
-        {
-            var selected = lstSpawns.SelectedItem;
-
-            try
-            {
-                lstSpawns.BeginUpdate();
-
-                // Clear the list
-                lstSpawns.Items.Clear();
-
-                if (Map != null)
-                {
-                    // Re-add the items
-                    var items = MapHelper.GetSpawns(Map.ID).OrderBy(x => x.ID).Cast<object>().ToArray();
-                    if (items.Length > 0)
-                        lstSpawns.Items.AddRange(items);
-
-                    // Re-set the selected item
-                    if (selected != null && lstSpawns.Items.Contains(selected))
-                        lstSpawns.SelectedItem = selected;
-                }
-            }
-            finally
-            {
-                lstSpawns.EndUpdate();
-            }
         }
 
         /// <summary>
@@ -104,7 +70,7 @@ namespace DemoGame.Editor.Tools
 
             // Update list
             lstSpawns.RemoveItemAndReselect(selected);
-            RebuildList();
+            lstSpawns.ReloadSpawns();
         }
 
         /// <summary>
@@ -126,7 +92,7 @@ namespace DemoGame.Editor.Tools
             q.Execute(value);
 
             // Update list
-            RebuildList();
+            lstSpawns.ReloadSpawns();
         }
 
         /// <summary>
