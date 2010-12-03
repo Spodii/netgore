@@ -697,7 +697,7 @@ namespace NetGore.Editor.EditorTool
                 base.OnOwnerChanged(e);
 
                 // If we changed to something that is not a ToolBar, get it out of there!
-                if (!(Owner is ToolBar))
+                if (Owner != null && !(Owner is ToolBar))
                 {
                     const string errmsg = "Attempted to add ToolBar item `{0}` to regular ToolStrip `{1}`!";
                     if (log.IsErrorEnabled)
