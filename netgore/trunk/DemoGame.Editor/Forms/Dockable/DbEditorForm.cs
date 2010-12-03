@@ -191,9 +191,6 @@ namespace DemoGame.Editor
                 return;
             }
 
-            // Load the custom UITypeEditors
-            CustomUITypeEditors.AddEditors(_dbController);
-
             // Process all the PropertyGrids
             foreach (var pg in this.GetControls().OfType<PropertyGrid>())
             {
