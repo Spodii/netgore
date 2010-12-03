@@ -42,6 +42,7 @@ namespace DemoGame.Client
         Color _ambientLight = Color.White;
         TextureAtlas _atlas;
         ICamera2D _camera;
+        bool _isDisposed;
 
         /// <summary>
         /// List of atlas textures used for the graphics for the map
@@ -60,6 +61,11 @@ namespace DemoGame.Client
 
             DrawParticles = true;
         }
+
+        /// <summary>
+        /// Notifies listeners when this object has been disposed.
+        /// </summary>
+        public event MapEventHandler Disposed;
 
         /// <summary>
         /// Gets or sets the ambient light color.
@@ -81,6 +87,14 @@ namespace DemoGame.Client
         public IEnumerable<BackgroundImage> BackgroundImages
         {
             get { return _backgroundImages; }
+        }
+
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
         }
 
         /// <summary>
@@ -209,7 +223,7 @@ namespace DemoGame.Client
                 _atlas.Dispose();
 
             // Generate the atlas out of all the items
-            _atlas = new TextureAtlas(atlasItems.Cast<ITextureAtlasable>());
+            _atlas = new TextureAtlas(atlasItems);
         }
 
         /// <summary>
@@ -564,8 +578,13 @@ namespace DemoGame.Client
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
+            if (IsDisposed)
+                return;
+
+            _isDisposed = true;
+
             try
             {
                 // Clear the atlas (if one exists)
@@ -584,25 +603,28 @@ namespace DemoGame.Client
                     }
                 }
 
-                // Clear the map atlas images
-                foreach (var atlas in _mapAtlases)
+                if (_mapAtlases != null)
                 {
-                    try
+                    // Clear the map atlas images
+                    foreach (var atlas in _mapAtlases)
                     {
-                        if (atlas != null && !atlas.IsDisposed)
-                            atlas.Dispose();
+                        try
+                        {
+                            if (atlas != null && !atlas.IsDisposed)
+                                atlas.Dispose();
+                        }
+                        catch (Exception ex)
+                        {
+                            const string errmsg = "Failed to dispose `{0}`. Exception: {1}";
+                            if (log.IsWarnEnabled)
+                                log.WarnFormat(errmsg, atlas, ex);
+                            Debug.Fail(string.Format(errmsg, atlas, ex));
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        const string errmsg = "Failed to dispose `{0}`. Exception: {1}";
-                        if (log.IsWarnEnabled)
-                            log.WarnFormat(errmsg, atlas, ex);
-                        Debug.Fail(string.Format(errmsg, atlas, ex));
-                    }
-                }
 
-                // Clear the atlas list
-                _mapAtlases.Clear();
+                    // Clear the atlas list
+                    _mapAtlases.Clear();
+                }
             }
             catch (Exception ex)
             {
@@ -611,6 +633,9 @@ namespace DemoGame.Client
                     log.ErrorFormat(errmsg, this, ex);
                 Debug.Fail(string.Format(errmsg, this, ex));
             }
+
+            if (Disposed != null)
+                Disposed(this);
         }
 
         #endregion
