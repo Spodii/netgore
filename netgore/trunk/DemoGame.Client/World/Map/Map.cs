@@ -562,20 +562,55 @@ namespace DemoGame.Client
         #region IDisposable Members
 
         /// <summary>
-        /// Unloads the garbage created by the map (ie atlas textures)
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            if (_atlas != null && !_atlas.IsDisposed)
-                _atlas.Dispose();
-
-            foreach (var atlas in _mapAtlases)
+            try
             {
-                if (atlas != null && !atlas.IsDisposed)
-                    atlas.Dispose();
-            }
+                // Clear the atlas (if one exists)
+                if (_atlas != null && !_atlas.IsDisposed)
+                {
+                    try
+                    {
+                        _atlas.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose `{0}`. Exception: {1}";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, _atlas, ex);
+                        Debug.Fail(string.Format(errmsg, _atlas, ex));
+                    }
+                }
 
-            _mapAtlases.Clear();
+                // Clear the map atlas images
+                foreach (var atlas in _mapAtlases)
+                {
+                    try
+                    {
+                        if (atlas != null && !atlas.IsDisposed)
+                            atlas.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose `{0}`. Exception: {1}";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, atlas, ex);
+                        Debug.Fail(string.Format(errmsg, atlas, ex));
+                    }
+                }
+
+                // Clear the atlas list
+                _mapAtlases.Clear();
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to dispose `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this, ex);
+                Debug.Fail(string.Format(errmsg, this, ex));
+            }
         }
 
         #endregion
