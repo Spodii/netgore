@@ -21,6 +21,12 @@ namespace DemoGame.Editor
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Contains the latest <see cref="MainForm"/> instance. Only deal with one instance since we assume only one
+        /// instance exists (why would anyone run more than one instance in the same program?).
+        /// </summary>
+        static MainForm _instance;
+
         readonly DockContentDeserializer _deserializer;
 
         DbEditorForm _frmDbEditor;
@@ -34,6 +40,8 @@ namespace DemoGame.Editor
         /// </summary>
         public MainForm()
         {
+            _instance = this;
+
             InitializeComponent();
 
             _deserializer = new DockContentDeserializer(this);
@@ -90,6 +98,21 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Updates the screen and world position status bar texts.
+        /// </summary>
+        /// <param name="worldPos">The world position.</param>
+        /// <param name="screenPos">The screen position.</param>
+        public static void UpdateCursorPos(Vector2 worldPos, Vector2 screenPos)
+        {
+            var instance = _instance;
+            if (instance == null)
+                return;
+
+            instance.tssWorldPos.Text = string.Format("World: {0},{1}", worldPos.X, worldPos.Y);
+            instance.tssScreenPos.Text = string.Format("Screen: {0},{1}", screenPos.X, screenPos.Y);
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -99,6 +122,8 @@ namespace DemoGame.Editor
 
             if (DesignMode)
                 return;
+
+            tssInfo.Text = string.Empty;
 
             Show();
 

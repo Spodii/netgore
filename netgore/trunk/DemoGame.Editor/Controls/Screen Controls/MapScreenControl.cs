@@ -415,6 +415,10 @@ namespace DemoGame.Editor
                 return;
             }
 
+            var screenPos = e.Position();
+            var worldPos = Camera.ToWorld(screenPos);
+            MainForm.UpdateCursorPos(worldPos, screenPos);
+
             if (TransBoxManager.HandleMouseMove(e, Camera))
                 return;
 
