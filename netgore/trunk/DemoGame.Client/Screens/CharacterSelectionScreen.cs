@@ -96,9 +96,14 @@ namespace DemoGame.Client
             }
         }
 
-        void DeleteCharacterMsgBox_DeleteRequested(Control sender, byte charSlot)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{Byte}"/> instance containing the event data.</param>
+        void DeleteCharacterMsgBox_DeleteRequested(Control sender, EventArgs<byte> e)
         {
-            using (var pw = ClientPacket.DeleteAccountCharacter(charSlot))
+            using (var pw = ClientPacket.DeleteAccountCharacter(e.Item1))
             {
                 _sockets.Send(pw, ClientMessageType.System);
             }
@@ -223,7 +228,7 @@ namespace DemoGame.Client
             /// <summary>
             /// Notifies listeners when the Delete Character button has been clicked.
             /// </summary>
-            public event ControlEventHandler<MouseButtonEventArgs> DeleteCharacterClicked;
+            public event TypedEventHandler<Control, MouseButtonEventArgs> DeleteCharacterClicked;
 
             /// <summary>
             /// Gets or sets the <see cref="AccountCharacterInfo"/> for the character in this slot.
@@ -391,7 +396,7 @@ namespace DemoGame.Client
             /// </summary>
             /// <param name="sender">The source of the event.</param>
             /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
-            void _deleteControl_Clicked(object sender, MouseButtonEventArgs e)
+            void _deleteControl_Clicked(Control sender, MouseButtonEventArgs e)
             {
                 if (DeleteCharacterClicked != null)
                     DeleteCharacterClicked(this, e);
@@ -420,7 +425,7 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
             /// <summary>
             /// Notifies listeners when this control has requested the character to be deleted.
             /// </summary>
-            public event ControlEventHandler<byte> DeleteRequested;
+            public event TypedEventHandler<Control, EventArgs<byte>> DeleteRequested;
 
             public byte CharacterSlot
             {
@@ -438,7 +443,7 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
                 if (button == MessageBoxButton.Ok)
                 {
                     if (DeleteRequested != null)
-                        DeleteRequested(this, CharacterSlot);
+                        DeleteRequested(this, EventArgsHelper.Create(CharacterSlot));
                 }
 
                 base.OnOptionSelected(button);

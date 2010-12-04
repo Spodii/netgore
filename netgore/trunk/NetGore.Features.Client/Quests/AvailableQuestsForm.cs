@@ -67,7 +67,7 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Notifies listeners when a quest has been clicked to be accepted.
         /// </summary>
-        public event ControlEventHandler<IQuestDescription> QuestAccepted
+        public event TypedEventHandler<Control, EventArgs<IQuestDescription>> QuestAccepted
         {
             add { Events.AddHandler(_eventQuestAccepted, value); }
             remove { Events.RemoveHandler(_eventQuestAccepted, value); }
@@ -154,9 +154,9 @@ namespace NetGore.Features.Quests
         void InvokeQuestAccepted(IQuestDescription questDescription)
         {
             OnQuestAccepted(questDescription);
-            var handler = Events[_eventQuestAccepted] as ControlEventHandler<IQuestDescription>;
+            var handler = Events[_eventQuestAccepted] as TypedEventHandler<Control, EventArgs<IQuestDescription>>;
             if (handler != null)
-                handler(this, questDescription);
+                handler(this, EventArgsHelper.Create(questDescription));
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace NetGore.Features.Quests
         /// Handles when the available quests list's index changes.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        void lstQuests_SelectedIndexChanged(Control sender)
+        void lstQuests_SelectedIndexChanged(Control sender, EventArgs e)
         {
             // Get the selected item
             var selectedItem = _lstQuests.SelectedItem;

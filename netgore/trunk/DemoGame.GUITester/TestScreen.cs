@@ -27,7 +27,12 @@ namespace DemoGame.GUITester
         {
         }
 
-        void DragControl(Control sender)
+        /// <summary>
+        /// Handles the Drag event of a <see cref="Control"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void DragControl(Control sender, EventArgs e)
         {
             var s = (TextControl)sender;
             s.Text = s.Position.ToString();
@@ -159,14 +164,19 @@ namespace DemoGame.GUITester
             msgBox.OptionSelected += msgBox_OptionSelected;
         }
 
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{MessageBoxButton}"/> instance containing the event data.</param>
         [SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "NetGore.Graphics.GUI.MessageBox")]
-        static void msgBox_OptionSelected(Control sender, MessageBoxButton args)
+        static void msgBox_OptionSelected(Control sender, EventArgs<MessageBoxButton> e)
         {
             var senderAsMsgBox = sender as MessageBox;
             if (senderAsMsgBox != null)
                 senderAsMsgBox.OptionSelected -= msgBox_OptionSelected;
 
-            switch (args)
+            switch (e.Item1)
             {
                 case MessageBoxButton.Yes:
                     new MessageBox(sender.GUIManager, ":|", "Yes? What do you mean yes? I didn't even ask you a question!",

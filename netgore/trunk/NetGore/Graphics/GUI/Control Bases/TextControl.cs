@@ -43,7 +43,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="TextControl.Font"/> has changed.
         /// </summary>
-        public event ControlEventHandler FontChanged
+        public event TypedEventHandler<Control> FontChanged
         {
             add { Events.AddHandler(_eventFontChanged, value); }
             remove { Events.RemoveHandler(_eventFontChanged, value); }
@@ -52,7 +52,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="TextControl.Text"/> has changed.
         /// </summary>
-        public event ControlEventHandler TextChanged
+        public event TypedEventHandler<Control> TextChanged
         {
             add { Events.AddHandler(_eventTextChanged, value); }
             remove { Events.RemoveHandler(_eventTextChanged, value); }
@@ -403,9 +403,9 @@ namespace NetGore.Graphics.GUI
         void InvokeFontChanged()
         {
             OnFontChanged();
-            var handler = Events[_eventFontChanged] as ControlEventHandler;
+            var handler = Events[_eventFontChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -415,9 +415,9 @@ namespace NetGore.Graphics.GUI
         protected void InvokeTextChanged()
         {
             OnTextChanged();
-            var handler = Events[_eventTextChanged] as ControlEventHandler;
+            var handler = Events[_eventTextChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>

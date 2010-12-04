@@ -103,9 +103,9 @@ namespace DemoGame.Client
         /// Handles the OptionSelected event of the AddToTradeInputBox, which is the <see cref="InputBox"/> created to
         /// let the user specify how much of the item they want to add to a trade.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void AddToTradeInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{MessageBoxButton}"/> instance containing the event data.</param>
+        void AddToTradeInputBox_OptionSelected(Control sender, EventArgs<MessageBoxButton> e)
         {
             var slot = (InventorySlot)sender.Tag;
             var inBox = (InputBox)sender;
@@ -369,13 +369,13 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the OptionSelected event of the <see cref="AddCashInputBox"/>.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void inBoxAddCash_OptionSelected(Control sender, MessageBoxButton args)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{MessageBoxButton}"/> instance containing the event data.</param>
+        void inBoxAddCash_OptionSelected(Control sender, EventArgs<MessageBoxButton> e)
         {
             _isCashInputBoxCreated = false;
 
-            if (args == MessageBoxButton.Cancel)
+            if (e.Item1 == MessageBoxButton.Cancel)
                 return;
 
             var c = (InputBox)sender;
@@ -413,12 +413,12 @@ namespace DemoGame.Client
         /// Handles the OptionSelected event of the <see cref="RemoveCashInputBox"/>.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void inBoxRemoveCash_OptionSelected(Control sender, MessageBoxButton args)
+        /// <param name="e">The <see cref="NetGore.EventArgs{MessageBoxButton}"/> instance containing the event data.</param>
+        void inBoxRemoveCash_OptionSelected(Control sender, EventArgs<MessageBoxButton> e)
         {
             _isCashInputBoxCreated = false;
 
-            if (args == MessageBoxButton.Cancel)
+            if (e.Item1 == MessageBoxButton.Cancel)
                 return;
 
             var c = (InputBox)sender;
@@ -456,13 +456,13 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the OptionSelected event of the <see cref="AddOrRemoveCashMessageBox"/>.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void msgBoxAddOrRemove_OptionSelected(Control sender, MessageBoxButton args)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{MessageBoxButton}"/> instance containing the event data.</param>
+        void msgBoxAddOrRemove_OptionSelected(Control sender, EventArgs<MessageBoxButton> e)
         {
             _isCashInputBoxCreated = false;
 
-            switch (args)
+            switch (e.Item1)
             {
                 case MessageBoxButton.Yes:
                     CreateAddCashInputBox();

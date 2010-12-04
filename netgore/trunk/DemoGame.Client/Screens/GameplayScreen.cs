@@ -797,10 +797,10 @@ namespace DemoGame.Client
             var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.",
                 MessageBoxButton.OkCancel);
 
-            ib.OptionSelected += delegate(Control s, MessageBoxButton args)
+            ib.OptionSelected += delegate(Control s, EventArgs<MessageBoxButton> e)
             {
                 var c = s as InputBox;
-                if (c == null || args != MessageBoxButton.Ok || Socket == null)
+                if (c == null || e.Item1 != MessageBoxButton.Ok || Socket == null)
                     return;
 
                 var input = c.InputText;
@@ -822,9 +822,14 @@ namespace DemoGame.Client
             }
         }
 
-        void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)
+        /// <summary>
+        /// Availables the quests form_ quest accepted.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.EventArgs{IQuestDescription}"/> instance containing the event data.</param>
+        void availableQuestsForm_QuestAccepted(Control sender, EventArgs<IQuestDescription> e)
         {
-            using (var pw = ClientPacket.AcceptOrTurnInQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
+            using (var pw = ClientPacket.AcceptOrTurnInQuest(AvailableQuestsForm.QuestProviderIndex, e.Item1.QuestID))
             {
                 Socket.Send(pw, ClientMessageType.GUI);
             }

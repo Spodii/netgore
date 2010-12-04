@@ -87,7 +87,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="MessageBox.ButtonTypes"/> has changed.
         /// </summary>
-        public event ControlEventHandler ButtonTypesChanged
+        public event TypedEventHandler<Control> ButtonTypesChanged
         {
             add { Events.AddHandler(_eventButtonTypesChanged, value); }
             remove { Events.RemoveHandler(_eventButtonTypesChanged, value); }
@@ -96,7 +96,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="MessageBox.Message"/> has changed.
         /// </summary>
-        public event ControlEventHandler MessageChanged
+        public event TypedEventHandler<Control> MessageChanged
         {
             add { Events.AddHandler(_eventMessageChanged, value); }
             remove { Events.RemoveHandler(_eventMessageChanged, value); }
@@ -105,7 +105,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="MessageBox"/> has been closed from an option button being clicked.
         /// </summary>
-        public event ControlEventHandler<MessageBoxButton> OptionSelected
+        public event TypedEventHandler<Control, EventArgs<MessageBoxButton>> OptionSelected
         {
             add { Events.AddHandler(_eventOptionSelected, value); }
             remove { Events.RemoveHandler(_eventOptionSelected, value); }
@@ -326,9 +326,9 @@ namespace NetGore.Graphics.GUI
         void InvokeButtonTypesChanged()
         {
             OnButtonTypesChanged();
-            var handler = Events[_eventButtonTypesChanged] as ControlEventHandler;
+            var handler = Events[_eventButtonTypesChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -338,9 +338,9 @@ namespace NetGore.Graphics.GUI
         void InvokeMessageChanged()
         {
             OnMessageChanged();
-            var handler = Events[_eventMessageChanged] as ControlEventHandler;
+            var handler = Events[_eventMessageChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -351,9 +351,9 @@ namespace NetGore.Graphics.GUI
         void InvokeOptionSelected(MessageBoxButton button)
         {
             OnOptionSelected(button);
-            var handler = Events[_eventOptionSelected] as ControlEventHandler<MessageBoxButton>;
+            var handler = Events[_eventOptionSelected] as TypedEventHandler<Control, EventArgs<MessageBoxButton>>;
             if (handler != null)
-                handler(this, button);
+                handler(this, EventArgsHelper.Create(button));
         }
 
         /// <summary>

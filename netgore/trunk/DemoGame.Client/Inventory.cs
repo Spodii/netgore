@@ -131,8 +131,8 @@ namespace DemoGame.Client
         /// let the user specify how much of the item they want to drop.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void DropInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        /// <param name="args">The <see cref="NetGore.EventArgs{MessageBoxButton}"/> instance containing the event data.</param>
+        void DropInputBox_OptionSelected(Control sender, EventArgs<MessageBoxButton> args)
         {
             var slot = (InventorySlot)sender.Tag;
             var inBox = (InputBox)sender;
@@ -196,9 +196,9 @@ namespace DemoGame.Client
         /// Handles the OptionSelected event of the SellToShopInputBox, which is the <see cref="InputBox"/> created to
         /// let the user specify how much of the item they want to sell to a shop.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void SellToShopInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{MessageBoxButton}"/> instance containing the event data.</param>
+        void SellToShopInputBox_OptionSelected(Control sender, EventArgs<MessageBoxButton> e)
         {
             var slot = (InventorySlot)sender.Tag;
             var inBox = (InputBox)sender;

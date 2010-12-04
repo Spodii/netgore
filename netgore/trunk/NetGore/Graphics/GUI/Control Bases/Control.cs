@@ -147,7 +147,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the Control has begun being dragged.
         /// </summary>
-        public event ControlEventHandler BeginDrag
+        public event TypedEventHandler<Control> BeginDrag
         {
             add { Events.AddHandler(_eventBeginDrag, value); }
             remove { Events.RemoveHandler(_eventBeginDrag, value); }
@@ -156,7 +156,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.Border"/> has changed.
         /// </summary>
-        public event ControlEventHandler BorderChanged
+        public event TypedEventHandler<Control> BorderChanged
         {
             add { Events.AddHandler(_eventBorderChanged, value); }
             remove { Events.RemoveHandler(_eventBorderChanged, value); }
@@ -165,7 +165,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.BorderColor"/> has changed.
         /// </summary>
-        public event ControlEventHandler BorderColorChanged
+        public event TypedEventHandler<Control> BorderColorChanged
         {
             add { Events.AddHandler(_eventBorderColorChanged, value); }
             remove { Events.RemoveHandler(_eventBorderColorChanged, value); }
@@ -174,7 +174,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.CanDrag"/> value of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler CanDragChanged
+        public event TypedEventHandler<Control> CanDragChanged
         {
             add { Events.AddHandler(_eventCanDragChanged, value); }
             remove { Events.RemoveHandler(_eventCanDragChanged, value); }
@@ -183,7 +183,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.CanFocus"/> value of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler CanFocusChanged
+        public event TypedEventHandler<Control> CanFocusChanged
         {
             add { Events.AddHandler(_eventCanFocusChanged, value); }
             remove { Events.RemoveHandler(_eventCanFocusChanged, value); }
@@ -192,7 +192,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> was clicked.
         /// </summary>
-        public event EventHandler<MouseButtonEventArgs> Clicked
+        public event TypedEventHandler<Control, MouseButtonEventArgs> Clicked
         {
             add { Events.AddHandler(_eventClicked, value); }
             remove { Events.RemoveHandler(_eventClicked, value); }
@@ -201,7 +201,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has been disposed.
         /// </summary>
-        public event ControlEventHandler Disposed
+        public event TypedEventHandler<Control> Disposed
         {
             add { Events.AddHandler(_eventDisposed, value); }
             remove { Events.RemoveHandler(_eventDisposed, value); }
@@ -210,7 +210,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.IsEnabled"/> value of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler EnabledChanged
+        public event TypedEventHandler<Control> EnabledChanged
         {
             add { Events.AddHandler(_eventEnabledChanged, value); }
             remove { Events.RemoveHandler(_eventEnabledChanged, value); }
@@ -219,7 +219,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has ended being dragged.
         /// </summary>
-        public event ControlEventHandler EndDrag
+        public event TypedEventHandler<Control> EndDrag
         {
             add { Events.AddHandler(_eventEndDrag, value); }
             remove { Events.RemoveHandler(_eventEndDrag, value); }
@@ -228,7 +228,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has gained focus.
         /// </summary>
-        public event ControlEventHandler Focused
+        public event TypedEventHandler<Control> Focused
         {
             add { Events.AddHandler(_eventFocused, value); }
             remove { Events.RemoveHandler(_eventFocused, value); }
@@ -238,7 +238,7 @@ namespace NetGore.Graphics.GUI
         /// Notifies listeners when the <see cref="Control.IsBoundToParentArea"/> value of this
         /// <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler IsBoundToParentAreaChanged
+        public event TypedEventHandler<Control> IsBoundToParentAreaChanged
         {
             add { Events.AddHandler(_eventIsBoundToParentAreaChanged, value); }
             remove { Events.RemoveHandler(_eventIsBoundToParentAreaChanged, value); }
@@ -247,7 +247,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a key is being pressed while the <see cref="Control"/> has focus.
         /// </summary>
-        public event EventHandler<KeyEventArgs> KeyPressed
+        public event TypedEventHandler<Control, KeyEventArgs> KeyPressed
         {
             add { Events.AddHandler(_eventKeyPressed, value); }
             remove { Events.RemoveHandler(_eventKeyPressed, value); }
@@ -256,7 +256,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a key has been released while the <see cref="Control"/> has focus.
         /// </summary>
-        public event EventHandler<KeyEventArgs> KeyReleased
+        public event TypedEventHandler<Control, KeyEventArgs> KeyReleased
         {
             add { Events.AddHandler(_eventKeyReleased, value); }
             remove { Events.RemoveHandler(_eventKeyReleased, value); }
@@ -265,7 +265,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control"/> has lost focus.
         /// </summary>
-        public event ControlEventHandler LostFocus
+        public event TypedEventHandler<Control> LostFocus
         {
             add { Events.AddHandler(_eventLostFocus, value); }
             remove { Events.RemoveHandler(_eventLostFocus, value); }
@@ -274,7 +274,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a mouse button has been pressed down on this <see cref="Control"/>.
         /// </summary>
-        public event EventHandler<MouseButtonEventArgs> MouseDown
+        public event TypedEventHandler<Control, MouseButtonEventArgs> MouseDown
         {
             add { Events.AddHandler(_eventMouseDown, value); }
             remove { Events.RemoveHandler(_eventMouseDown, value); }
@@ -283,7 +283,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the mouse has entered the area of the <see cref="Control"/>.
         /// </summary>
-        public event EventHandler<MouseMoveEventArgs> MouseEnter
+        public event TypedEventHandler<Control, MouseMoveEventArgs> MouseEnter
         {
             add { Events.AddHandler(_eventMouseEnter, value); }
             remove { Events.RemoveHandler(_eventMouseEnter, value); }
@@ -292,7 +292,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the mouse has left the area of the <see cref="Control"/>.
         /// </summary>
-        public event EventHandler<MouseMoveEventArgs> MouseLeave
+        public event TypedEventHandler<Control, MouseMoveEventArgs> MouseLeave
         {
             add { Events.AddHandler(_eventMouseLeave, value); }
             remove { Events.RemoveHandler(_eventMouseLeave, value); }
@@ -301,7 +301,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the mouse has moved over the <see cref="Control"/>.
         /// </summary>
-        public event EventHandler<MouseMoveEventArgs> MouseMoved
+        public event TypedEventHandler<Control, MouseMoveEventArgs> MouseMoved
         {
             add { Events.AddHandler(_eventMouseMoved, value); }
             remove { Events.RemoveHandler(_eventMouseMoved, value); }
@@ -310,7 +310,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when a mouse button has been raised on the <see cref="Control"/>.
         /// </summary>
-        public event EventHandler<MouseButtonEventArgs> MouseUp
+        public event TypedEventHandler<Control, MouseButtonEventArgs> MouseUp
         {
             add { Events.AddHandler(_eventMouseUp, value); }
             remove { Events.RemoveHandler(_eventMouseUp, value); }
@@ -319,7 +319,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when this <see cref="Control"/> has moved.
         /// </summary>
-        public event ControlEventHandler Moved
+        public event TypedEventHandler<Control> Moved
         {
             add { Events.AddHandler(_eventMoved, value); }
             remove { Events.RemoveHandler(_eventMoved, value); }
@@ -328,7 +328,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.ResizeToChildren"/> of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler ResizeToChildrenChanged
+        public event TypedEventHandler<Control> ResizeToChildrenChanged
         {
             add { Events.AddHandler(_eventResizeToChildrenChanged, value); }
             remove { Events.RemoveHandler(_eventResizeToChildrenChanged, value); }
@@ -337,7 +337,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.ResizeToChildrenPadding"/> of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler ResizeToChildrenPaddingChanged
+        public event TypedEventHandler<Control> ResizeToChildrenPaddingChanged
         {
             add { Events.AddHandler(_eventResizeToChildrenPaddingChanged, value); }
             remove { Events.RemoveHandler(_eventResizeToChildrenPaddingChanged, value); }
@@ -346,7 +346,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler Resized
+        public event TypedEventHandler<Control> Resized
         {
             add { Events.AddHandler(_eventResized, value); }
             remove { Events.RemoveHandler(_eventResized, value); }
@@ -355,7 +355,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners text has been entered into this <see cref="Control"/>.
         /// </summary>
-        public event EventHandler<TextEventArgs> TextEntered
+        public event TypedEventHandler<Control, TextEventArgs> TextEntered
         {
             add { Events.AddHandler(_eventTextEntered, value); }
             remove { Events.RemoveHandler(_eventTextEntered, value); }
@@ -364,7 +364,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.Tooltip"/> of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler TooltipChanged
+        public event TypedEventHandler<Control> TooltipChanged
         {
             add { Events.AddHandler(_eventTooltipChanged, value); }
             remove { Events.RemoveHandler(_eventTooltipChanged, value); }
@@ -373,7 +373,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="Control.IsVisible"/> of this <see cref="Control"/> has changed.
         /// </summary>
-        public event ControlEventHandler VisibleChanged
+        public event TypedEventHandler<Control> VisibleChanged
         {
             add { Events.AddHandler(_eventVisibleChanged, value); }
             remove { Events.RemoveHandler(_eventVisibleChanged, value); }
@@ -828,9 +828,9 @@ namespace NetGore.Graphics.GUI
                 Events.Dispose();
             }
 
-            var eventHandler = Events[_eventDisposed] as ControlEventHandler;
+            var eventHandler = Events[_eventDisposed] as TypedEventHandler<Control>;
             if (eventHandler != null)
-                eventHandler(this);
+                eventHandler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1069,9 +1069,9 @@ namespace NetGore.Graphics.GUI
         void InvokeBeginDrag()
         {
             OnBeginDrag();
-            var handler = Events[_eventBeginDrag] as ControlEventHandler;
+            var handler = Events[_eventBeginDrag] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1081,9 +1081,9 @@ namespace NetGore.Graphics.GUI
         void InvokeBorderChanged()
         {
             OnBorderChanged();
-            var handler = Events[_eventBorderChanged] as ControlEventHandler;
+            var handler = Events[_eventBorderChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1093,9 +1093,9 @@ namespace NetGore.Graphics.GUI
         void InvokeBorderColorChanged()
         {
             OnBorderColorChanged();
-            var handler = Events[_eventBorderColorChanged] as ControlEventHandler;
+            var handler = Events[_eventBorderColorChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1105,9 +1105,9 @@ namespace NetGore.Graphics.GUI
         void InvokeCanDragChanged()
         {
             OnCanDragChanged();
-            var handler = Events[_eventCanDragChanged] as ControlEventHandler;
+            var handler = Events[_eventCanDragChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1117,9 +1117,9 @@ namespace NetGore.Graphics.GUI
         void InvokeCanFocusChanged()
         {
             OnCanFocusChanged();
-            var handler = Events[_eventCanFocusChanged] as ControlEventHandler;
+            var handler = Events[_eventCanFocusChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1142,9 +1142,9 @@ namespace NetGore.Graphics.GUI
         void InvokeEnabledChanged()
         {
             OnEnabledChanged();
-            var handler = Events[_eventEnabledChanged] as ControlEventHandler;
+            var handler = Events[_eventEnabledChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1154,9 +1154,9 @@ namespace NetGore.Graphics.GUI
         void InvokeEndDrag()
         {
             OnEndDrag();
-            var handler = Events[_eventEndDrag] as ControlEventHandler;
+            var handler = Events[_eventEndDrag] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1166,9 +1166,9 @@ namespace NetGore.Graphics.GUI
         void InvokeFocused()
         {
             OnFocused();
-            var handler = Events[_eventFocused] as ControlEventHandler;
+            var handler = Events[_eventFocused] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1178,9 +1178,9 @@ namespace NetGore.Graphics.GUI
         void InvokeIsBoundToParentAreaChanged()
         {
             OnIsBoundToParentAreaChanged();
-            var handler = Events[_eventIsBoundToParentAreaChanged] as ControlEventHandler;
+            var handler = Events[_eventIsBoundToParentAreaChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1216,9 +1216,9 @@ namespace NetGore.Graphics.GUI
         void InvokeLostFocus()
         {
             OnLostFocus();
-            var handler = Events[_eventLostFocus] as ControlEventHandler;
+            var handler = Events[_eventLostFocus] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1293,9 +1293,9 @@ namespace NetGore.Graphics.GUI
         void InvokeMoved()
         {
             OnMoved();
-            var handler = Events[_eventMoved] as ControlEventHandler;
+            var handler = Events[_eventMoved] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1305,9 +1305,9 @@ namespace NetGore.Graphics.GUI
         void InvokeResizeToChildrenChanged()
         {
             OnResizeToChildrenChanged();
-            var handler = Events[_eventResizeToChildrenChanged] as ControlEventHandler;
+            var handler = Events[_eventResizeToChildrenChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1317,9 +1317,9 @@ namespace NetGore.Graphics.GUI
         void InvokeResizeToChildrenPaddingChanged()
         {
             OnResizeToChildrenPaddingChanged();
-            var handler = Events[_eventResizeToChildrenPaddingChanged] as ControlEventHandler;
+            var handler = Events[_eventResizeToChildrenPaddingChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1329,9 +1329,9 @@ namespace NetGore.Graphics.GUI
         void InvokeResized()
         {
             OnResized();
-            var handler = Events[_eventResized] as ControlEventHandler;
+            var handler = Events[_eventResized] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1354,9 +1354,9 @@ namespace NetGore.Graphics.GUI
         void InvokeTooltipChanged()
         {
             OnTooltipChanged();
-            var handler = Events[_eventTooltipChanged] as ControlEventHandler;
+            var handler = Events[_eventTooltipChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1366,9 +1366,9 @@ namespace NetGore.Graphics.GUI
         void InvokeVisibleChanged()
         {
             OnVisibleChanged();
-            var handler = Events[_eventVisibleChanged] as ControlEventHandler;
+            var handler = Events[_eventVisibleChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
