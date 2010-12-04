@@ -383,14 +383,14 @@ namespace DemoGame.Client
                 _color = value;
 
                 if (ColorChanged != null)
-                    ColorChanged(this);
+                    ColorChanged(this, EventArgs.Empty);
             }
         }
 
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
         /// </summary>
-        public event IDrawableEventHandler ColorChanged;
+        public event TypedEventHandler<IDrawable> ColorChanged;
 
         /// <summary>
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
@@ -408,7 +408,7 @@ namespace DemoGame.Client
                 _isVisible = value;
 
                 if (VisibleChanged != null)
-                    VisibleChanged(this);
+                    VisibleChanged(this, EventArgs.Empty);
             }
         }
 
@@ -416,7 +416,7 @@ namespace DemoGame.Client
         /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
         /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
         /// </summary>
-        public event IDrawableDrawEventHandler AfterDraw;
+        public event TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> AfterDraw;
 
         /// <summary>
         /// Makes the object draw itself.
@@ -425,7 +425,7 @@ namespace DemoGame.Client
         public void Draw(ISpriteBatch sb)
         {
             if (BeforeDraw != null)
-                BeforeDraw(this, sb);
+                BeforeDraw(this, EventArgsHelper.Create(sb));
 
             var drawPos = DrawPosition;
             _lastScreenPosition = drawPos - Parent.Camera.Min;
@@ -444,7 +444,7 @@ namespace DemoGame.Client
             }
 
             if (AfterDraw != null)
-                AfterDraw(this, sb);
+                AfterDraw(this, EventArgsHelper.Create(sb));
         }
 
         /// <summary>
@@ -483,13 +483,13 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
         /// </summary>
-        public event IDrawableEventHandler VisibleChanged;
+        public event TypedEventHandler<IDrawable> VisibleChanged;
 
         /// <summary>
         /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
         /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
         /// </summary>
-        public event IDrawableDrawEventHandler BeforeDraw;
+        public event TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> BeforeDraw;
 
         #endregion
 

@@ -261,7 +261,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the focused <see cref="Control"/> has changed.
         /// </summary>
-        public event GUIEventHandler FocusedControlChanged;
+        public event TypedEventHandler<GUIManager> FocusedControlChanged;
 
         /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
@@ -337,7 +337,7 @@ namespace NetGore.Graphics.GUI
                 }
 
                 if (FocusedControlChanged != null)
-                    FocusedControlChanged(this);
+                    FocusedControlChanged(this, EventArgs.Empty);
             }
         }
 

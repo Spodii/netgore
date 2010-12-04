@@ -12,18 +12,18 @@ namespace NetGore.Graphics
         /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
         /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
         /// </summary>
-        event IDrawableDrawEventHandler AfterDraw;
+        event TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> AfterDraw;
 
         /// <summary>
         /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
         /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
         /// </summary>
-        event IDrawableDrawEventHandler BeforeDraw;
+        event TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> BeforeDraw;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
         /// </summary>
-        event IDrawableEventHandler ColorChanged;
+        event TypedEventHandler<IDrawable> ColorChanged;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.MapRenderLayer"/> property has changed.
@@ -33,7 +33,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
         /// </summary>
-        event IDrawableEventHandler VisibleChanged;
+        event TypedEventHandler<IDrawable> VisibleChanged;
 
         /// <summary>
         /// Gets or sets the <see cref="Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this

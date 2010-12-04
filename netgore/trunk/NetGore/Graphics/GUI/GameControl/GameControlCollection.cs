@@ -22,7 +22,7 @@ namespace NetGore.Graphics.GUI
         /// <returns>The instance of the created <see cref="GameControl"/> that was added to this
         /// <see cref="GameControlCollection"/>.</returns>
         public GameControl CreateAndAdd(GameControlKeys keys, int delay, Func<bool> additionalRequirements,
-                                        GameControlEventHandler invokeHandler)
+                                        TypedEventHandler<GameControl> invokeHandler)
         {
             var c = new GameControl(keys) { Delay = delay, AdditionalRequirements = additionalRequirements };
             c.Invoked += invokeHandler;

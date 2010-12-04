@@ -27,7 +27,7 @@ namespace NetGore.Graphics.GUI
         /// Notifies listeners that this <see cref="GameControl"/>'s key state requirements match the current key
         /// state and that it is ready to be handled.
         /// </summary>
-        public event GameControlEventHandler Invoked;
+        public event TypedEventHandler<GameControl> Invoked;
 
         /// <summary>
         /// Gets or sets a Func containing any additional requirements for this <see cref="GameControl"/> to be invoked.
@@ -139,7 +139,7 @@ namespace NetGore.Graphics.GUI
             // All keys are in the needed state, so invoke the handler
             OnInvoked();
 
-            Invoked(this);
+            Invoked(this, EventArgs.Empty);
 
             // Set the timeout
             if (!GameControlKeys.NewKeysDown.IsEmpty())
