@@ -464,6 +464,8 @@
     </Compile>
     <Compile Include="World\Map\Entities\Characters\Character.SideScroller.cs" />
     <Compile Include="World\Map\Entities\Characters\Character.TopDown.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterAttackEventArgs.cs" />
+    <Compile Include="World\Map\Entities\Characters\CharacterKillEventArgs.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStatusEffects.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterSPSynchronizer.cs" />

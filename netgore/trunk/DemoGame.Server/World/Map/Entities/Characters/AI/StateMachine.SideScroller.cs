@@ -55,27 +55,26 @@ namespace DemoGame.Server
         /// Called when a character attacks the Actor. It checks certain criteria before trying to
         /// attack the attacker.
         /// </summary>
-        /// <param name="attacker">The character that attacked the Actor</param>
-        /// <param name="attacked">This field would be equal to Actor in this class.</param>
-        /// <param name="damage">Amount of damage caused during attack.</param>
-        void Actor_AttackedByCharacter(Character attacker, Character attacked, int damage)
+        /// <param name="sender">The character that attacked the Actor.</param>
+        /// <param name="e">The <see cref="CharacterAttackEventArgs"/> instance containing the event data.</param>
+        void Actor_AttackedByCharacter(Character sender, CharacterAttackEventArgs e)
         {
             //We already had a target!
-            if (_target != null && _target != attacker)
+            if (_target != null && _target != sender)
             {
                 //find hostile with lowest health.
-                if (attacker.HP >= _target.HP)
+                if (sender.HP >= _target.HP)
                 {
                     //Don't change target so don't do anything.
                 }
                 else
                 {
                     //Change to hostile with lower health value.
-                    _target = attacker;
+                    _target = sender;
                 }
             }
             else
-                _target = attacker;
+                _target = sender;
 
             //Set up event handler for when the _target dies.
             _target.Killed += _target_Killed;
@@ -374,12 +373,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Called when the target is killed.  It resets whether the Actor should be trying to attack the _target.
+        /// Called when the target is killed. It resets whether the Actor should be trying to attack the _target.
         /// </summary>
-        /// <param name="character">The character that is killed</param>
-        void _target_Killed(Character character)
+        /// <param name="sender">The character that was killed.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void _target_Killed(Character sender, EventArgs e)
         {
-            //Stop attacking target. Job done.
+            // Stop attacking target. Job done.
             _hasTarget = false;
         }
     }

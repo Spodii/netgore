@@ -138,13 +138,12 @@ namespace NetGore.Graphics
         /// Handles when a <see cref="GrhData"/> is added to the <see cref="GrhData"/>s DArray.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="item">The item.</param>
-        /// <param name="index">The index.</param>
-        static void AddHandler(DArray<GrhData> sender, GrhData item, int index)
+        /// <param name="e">The <see cref="NetGore.Collections.DArrayEventArgs{T}"/> instance containing the event data.</param>
+        static void AddHandler(DArray<GrhData> sender, DArrayEventArgs<GrhData> e)
         {
-            Debug.Assert(index != GrhIndex.Invalid);
+            Debug.Assert(e.Index != GrhIndex.Invalid);
 
-            var gd = item;
+            var gd = e.Item;
             if (gd == null)
             {
                 Debug.Fail("gd is null.");
@@ -710,16 +709,15 @@ namespace NetGore.Graphics
         /// Handles when a GrhData is removed from the DArray
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="item">The item.</param>
-        /// <param name="index">The index.</param>
-        static void RemoveHandler(object sender, GrhData item, int index)
+        /// <param name="e">The <see cref="NetGore.Collections.DArrayEventArgs{T}"/> instance containing the event data.</param>
+        static void RemoveHandler(object sender, DArrayEventArgs<GrhData> e)
         {
-            Debug.Assert(index != GrhIndex.Invalid);
+            Debug.Assert(e.Index != GrhIndex.Invalid);
 
-            RemoveFromDictionary(item);
+            RemoveFromDictionary(e.Item);
 
             if (Removed != null)
-                Removed(item);
+                Removed(e.Item);
         }
 
         /// <summary>

@@ -83,14 +83,14 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Notifies listeners when an item has been added to the DArray.
+        /// Notifies listeners when an item has been added to the <see cref="DArray{T}"/>.
         /// </summary>
-        public event DArrayModifyEventHandler<T> ItemAdded;
+        public event TypedEventHandler<DArray<T>, DArrayEventArgs<T>> ItemAdded;
 
         /// <summary>
-        /// Notifies listeners when an item has been removed from the DArray.
+        /// Notifies listeners when an item has been removed from the <see cref="DArray{T}"/>.
         /// </summary>
-        public event DArrayModifyEventHandler<T> ItemRemoved;
+        public event TypedEventHandler<DArray<T>, DArrayEventArgs<T>> ItemRemoved;
 
         /// <summary>
         /// Gets the length of the DArray.
@@ -264,7 +264,7 @@ namespace NetGore.Collections
             OnItemRemoved(item, index);
 
             if (ItemRemoved != null)
-                ItemRemoved(this, item, index);
+                ItemRemoved(this, new DArrayEventArgs<T>(item, index));
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace NetGore.Collections
             OnItemRemoved(item, index);
 
             if (ItemRemoved != null)
-                ItemRemoved(this, item, index);
+                ItemRemoved(this, new DArrayEventArgs<T>(item, index));
         }
 
         void ResizeBuffer(int size)
@@ -376,7 +376,7 @@ namespace NetGore.Collections
                 OnItemAdded(value, index);
 
                 if (ItemAdded != null)
-                    ItemAdded(this, value, index);
+                    ItemAdded(this, new DArrayEventArgs<T>(value, index));
             }
         }
 

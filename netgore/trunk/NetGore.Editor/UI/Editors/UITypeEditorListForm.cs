@@ -156,8 +156,9 @@ namespace NetGore.Editor.UI
         /// <summary>
         /// Handles when the filter changes.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        void _filter_FilterChanged(TextFilterContainer sender)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void _filter_FilterChanged(TextFilterContainer sender, EventArgs e)
         {
             // Store the currently selected item
             var selected = lstItems.SelectedItem;

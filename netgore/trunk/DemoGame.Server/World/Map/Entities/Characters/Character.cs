@@ -21,90 +21,6 @@ using SFML.Graphics;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="attacker">The <see cref="Character"/> that did the attacking.</param>
-    /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
-    /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
-    /// the <paramref name="attacker"/>.</param>
-    public delegate void CharacterAttackCharacterEventHandler(Character attacker, Character attacked, int damage);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="oldCash">The old amount of cash.</param>
-    /// <param name="cash">The new amount of cash.</param>
-    public delegate void CharacterCashEventHandler(Character character, int oldCash, int cash);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="oldMap">The old map.</param>
-    /// <param name="newMap">The new map.</param>
-    public delegate void CharacterChangeMapEventHandler(Character character, Map oldMap, Map newMap);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="oldValue">The old value.</param>
-    /// <param name="newValue">The new value.</param>
-    public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    public delegate void CharacterEventHandler(Character character);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="oldExp">The old amount of experience.</param>
-    /// <param name="exp">The new amount of experience.</param>
-    public delegate void CharacterExpEventHandler(Character character, int oldExp, int exp);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="item">The <see cref="ItemEntity"/> related to the event.</param>
-    public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="killed">The <see cref="Character"/> that was killed.</param>
-    /// <param name="killer">The <see cref="Character"/> that killed the <paramref name="killed"/>.</param>
-    public delegate void CharacterKillEventHandler(Character killed, Character killer);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="oldLevel">The old level.</param>
-    /// <param name="level">The new level.</param>
-    public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="map">The map related to the event.</param>
-    public delegate void CharacterMapEventHandler(Character character, Map map);
-
-    /// <summary>
-    /// Delegate for handling an event from a <see cref="Character"/>.
-    /// </summary>
-    /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-    /// <param name="oldValue">The old value.</param>
-    /// <param name="newValue">The new value.</param>
-    public delegate void CharacterStatPointsEventHandler(Character character, int oldValue, int newValue);
-
-    /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
     public abstract partial class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference,
@@ -244,82 +160,82 @@ namespace DemoGame.Server
         /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
         /// anything for this event to be raised. This will be raised before <see cref="AttackedCharacter"/>.
         /// </summary>
-        public event CharacterEventHandler Attacked;
+        public event TypedEventHandler<Character> Attacked;
 
         /// <summary>
         /// Notifies listeners when this Character has been attacked by another Character.
         /// </summary>
-        public event CharacterAttackCharacterEventHandler AttackedByCharacter;
+        public event TypedEventHandler<Character, CharacterAttackEventArgs> AttackedByCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character has successfully attacked another Character.
         /// </summary>
-        public event CharacterAttackCharacterEventHandler AttackedCharacter;
+        public event TypedEventHandler<Character, CharacterAttackEventArgs> AttackedCharacter;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s cash value has changed.
         /// </summary>
-        public event CharacterCashEventHandler CashChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<int>> CashChanged;
 
         /// <summary>
         /// Notifies listeners when this Character has dropped an item.
         /// </summary>
-        public event CharacterItemEventHandler DroppedItem;
+        public event TypedEventHandler<Character, EventArgs<ItemEntity>> DroppedItem;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s exp value has changed.
         /// </summary>
-        public event CharacterExpEventHandler ExpChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<int>> ExpChanged;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s HP value has changed.
         /// </summary>
-        public event CharacterChangeSPEventHandler HPChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<SPValueType>> HPChanged;
 
         /// <summary>
         /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
         /// </summary>
-        public event CharacterEventHandler Killed;
+        public event TypedEventHandler<Character> Killed;
 
         /// <summary>
         /// Notifies listeners when this Character has been killed by another Character.
         /// </summary>
-        public event CharacterKillEventHandler KilledByCharacter;
+        public event TypedEventHandler<Character, CharacterKillEventArgs> KilledByCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character has killed another Character.
         /// </summary>
-        public event CharacterKillEventHandler KilledCharacter;
+        public event TypedEventHandler<Character, CharacterKillEventArgs> KilledCharacter;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s level value has changed.
         /// </summary>
-        public event CharacterLevelEventHandler LevelChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<byte>> LevelChanged;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s MP value has changed.
         /// </summary>
-        public event CharacterChangeSPEventHandler MPChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<SPValueType>> MPChanged;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s map has changed.
         /// </summary>
-        public event CharacterChangeMapEventHandler MapChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<Map>> MapChanged;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s StatPoints value has changed.
         /// </summary>
-        public event CharacterStatPointsEventHandler StatPointsChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<int>> StatPointsChanged;
 
         /// <summary>
         /// Notifies listeners when the Character's TemplateID has changed.
         /// </summary>
-        public event CharacterEventHandler TemplateIDChanged;
+        public event TypedEventHandler<Character> TemplateIDChanged;
 
         /// <summary>
         /// Notifies listeners when this Character uses an item.
         /// </summary>
-        public event CharacterItemEventHandler UsedItem;
+        public event TypedEventHandler<Character, EventArgs<ItemEntity>> UsedItem;
 
         /// <summary>
         /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
@@ -659,11 +575,11 @@ namespace DemoGame.Server
             // Raise attack events
             OnAttackedCharacter(target, damage);
             if (AttackedCharacter != null)
-                AttackedCharacter(this, target, damage);
+                AttackedCharacter(this, new CharacterAttackEventArgs(target, damage));
 
             target.OnAttackedByCharacter(this, damage);
             if (target.AttackedByCharacter != null)
-                target.AttackedByCharacter(this, target, damage);
+                target.AttackedByCharacter(this, new CharacterAttackEventArgs(target, damage));
         }
 
         /// <summary>
@@ -681,7 +597,7 @@ namespace DemoGame.Server
 
             OnAttacked();
             if (Attacked != null)
-                Attacked(this);
+                Attacked(this, EventArgs.Empty);
 
             // If melee and no target was defined, try to find one automatically
             if (target == null)
@@ -758,7 +674,7 @@ namespace DemoGame.Server
 
             OnAttacked();
             if (Attacked != null)
-                Attacked(this);
+                Attacked(this, EventArgs.Empty);
 
             AttackApplyReal(target);
         }
@@ -852,11 +768,11 @@ namespace DemoGame.Server
                     {
                         sourceCharacter.OnKilledCharacter(this);
                         if (sourceCharacter.KilledCharacter != null)
-                            sourceCharacter.KilledCharacter(this, sourceCharacter);
+                            sourceCharacter.KilledCharacter(this, new CharacterKillEventArgs(sourceCharacter));
 
                         OnKilledByCharacter(sourceCharacter);
                         if (KilledByCharacter != null)
-                            KilledByCharacter(this, sourceCharacter);
+                            KilledByCharacter(this, new CharacterKillEventArgs(sourceCharacter));
                     }
                 }
             }
@@ -911,7 +827,7 @@ namespace DemoGame.Server
 
             OnDroppedItem(item);
             if (DroppedItem != null)
-                DroppedItem(this, item);
+                DroppedItem(this, EventArgsHelper.Create(item));
         }
 
         /// <summary>
@@ -938,7 +854,7 @@ namespace DemoGame.Server
 
             OnDroppedItem(droppedItem);
             if (DroppedItem != null)
-                DroppedItem(this, droppedItem);
+                DroppedItem(this, EventArgsHelper.Create(droppedItem));
         }
 
         /// <summary>
@@ -1262,7 +1178,7 @@ namespace DemoGame.Server
             OnKilled();
 
             if (Killed != null)
-                Killed(this);
+                Killed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -2041,7 +1957,7 @@ namespace DemoGame.Server
             {
                 OnUsedItem(item);
                 if (UsedItem != null)
-                    UsedItem(this, item);
+                    UsedItem(this, EventArgsHelper.Create(item));
             }
 
             return wasUsed;
@@ -2183,7 +2099,7 @@ namespace DemoGame.Server
 
                 OnCashChanged(oldValue, _cash);
                 if (CashChanged != null)
-                    CashChanged(this, oldValue, _cash);
+                    CashChanged(this, ValueChangedEventArgs.Create(oldValue, _cash));
             }
         }
 
@@ -2204,7 +2120,7 @@ namespace DemoGame.Server
 
                 OnTemplateIDChanged();
                 if (TemplateIDChanged != null)
-                    TemplateIDChanged(this);
+                    TemplateIDChanged(this, EventArgs.Empty);
             }
         }
 
@@ -2238,7 +2154,7 @@ namespace DemoGame.Server
 
                 OnExpChanged(oldValue, _exp);
                 if (ExpChanged != null)
-                    ExpChanged(this, oldValue, _exp);
+                    ExpChanged(this, ValueChangedEventArgs.Create(oldValue, _exp));
 
                 // Check if this change in experience has made the Character level
                 while (_exp >= _nextLevelExp)
@@ -2273,7 +2189,7 @@ namespace DemoGame.Server
 
                 OnHPChanged(oldValue, _hp);
                 if (HPChanged != null)
-                    HPChanged(this, oldValue, _hp);
+                    HPChanged(this, ValueChangedEventArgs.Create(oldValue, _hp));
 
                 if (_hp <= 0)
                     Kill();
@@ -2299,7 +2215,7 @@ namespace DemoGame.Server
 
                 OnLevelChanged(oldValue, _level);
                 if (LevelChanged != null)
-                    LevelChanged(this, oldValue, _level);
+                    LevelChanged(this, ValueChangedEventArgs.Create(oldValue, _level));
             }
         }
 
@@ -2355,7 +2271,7 @@ namespace DemoGame.Server
 
                 OnMPChanged(oldValue, _mp);
                 if (MPChanged != null)
-                    MPChanged(this, oldValue, _mp);
+                    MPChanged(this, ValueChangedEventArgs.Create(oldValue, _mp));
             }
         }
 
@@ -2449,7 +2365,7 @@ namespace DemoGame.Server
 
                 OnStatPointsChanged(oldValue, _statPoints);
                 if (StatPointsChanged != null)
-                    StatPointsChanged(this, oldValue, _statPoints);
+                    StatPointsChanged(this,ValueChangedEventArgs.Create( oldValue, _statPoints));
             }
         }
 
@@ -2604,7 +2520,7 @@ namespace DemoGame.Server
 
                 OnMapChanged(oldMap, _map);
                 if (MapChanged != null)
-                    MapChanged(this, oldMap, _map);
+                    MapChanged(this, ValueChangedEventArgs.Create(oldMap, _map));
             }
         }
 

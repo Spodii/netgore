@@ -226,8 +226,9 @@ namespace DemoGame.Server
         /// Handles when an item in the UserInventory has changed the amount or graphic, and notifies the
         /// InventoryUpdater to handle the change.
         /// </summary>
-        /// <param name="item">Item that has changed.</param>
-        void ItemGraphicOrAmountChangeHandler(ItemEntity item)
+        /// <param name="sender">Item that has changed.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void ItemGraphicOrAmountChangeHandler(ItemEntity sender, EventArgs e)
         {
             Debug.Assert(IsPersistent, "This should NEVER be called when IsPersistent == false!");
 
@@ -236,11 +237,11 @@ namespace DemoGame.Server
             // Try to get the slot
             try
             {
-                slot = GetSlot(item);
+                slot = GetSlot(sender);
             }
             catch (ArgumentException ex)
             {
-                log.Warn(string.Format("Failed to get the inventory slot of item `{0}`", item), ex);
+                log.Warn(string.Format("Failed to get the inventory slot of item `{0}`", sender), ex);
                 return;
             }
 

@@ -22,13 +22,6 @@ namespace DemoGame.Server
     /// </summary>
     public class ItemEntity : ItemEntityBase, IItemTable
     {
-        /// <summary>
-        /// Delegate for handling <see cref="ItemEntity"/> events.
-        /// </summary>
-        /// <param name="itemEntity"><see cref="ItemEntity"/> this event came from.</param>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -222,7 +215,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners that the ItemEntity's Amount or GraphicIndex have changed.
         /// </summary>
-        public event ItemEntityEventHandler GraphicOrAmountChanged;
+        public event TypedEventHandler<ItemEntity> GraphicOrAmountChanged;
 
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up.
@@ -251,7 +244,7 @@ namespace DemoGame.Server
                 _graphicIndex = value;
 
                 if (GraphicOrAmountChanged != null)
-                    GraphicOrAmountChanged(this);
+                    GraphicOrAmountChanged(this, EventArgs.Empty);
 
                 SynchronizeField("graphic", _graphicIndex);
             }
@@ -731,7 +724,7 @@ namespace DemoGame.Server
                 _amount = value;
 
                 if (GraphicOrAmountChanged != null)
-                    GraphicOrAmountChanged(this);
+                    GraphicOrAmountChanged(this, EventArgs.Empty);
 
                 SynchronizeField("amount", _amount);
             }

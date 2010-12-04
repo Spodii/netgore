@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.World;
@@ -183,7 +184,12 @@ namespace DemoGame.Client
                 TargetCharacter = null;
         }
 
-        void World_MapChanged(World world, Map oldMap, Map newMap)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ValueChangedEventArgs{Map}"/> instance containing the event data.</param>
+        void World_MapChanged(World sender, ValueChangedEventArgs<Map> e)
         {
             MouseOverCharacter = null;
             TargetCharacter = null;

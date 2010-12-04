@@ -59,7 +59,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when the map has changed.
         /// </summary>
-        public event WorldEventHandler<Map, Map> MapChanged;
+        public event TypedEventHandler<World, ValueChangedEventArgs<Map>> MapChanged;
 
         /// <summary>
         /// Gets the camera used for the active view.
@@ -106,7 +106,7 @@ namespace DemoGame.Client
 
                 // Add the map event hooks to the new map
                 if (MapChanged != null)
-                    MapChanged(this, oldMap, Map);
+                    MapChanged(this, ValueChangedEventArgs.Create(oldMap, Map));
             }
         }
 

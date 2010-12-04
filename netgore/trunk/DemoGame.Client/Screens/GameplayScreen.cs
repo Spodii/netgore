@@ -732,7 +732,12 @@ namespace DemoGame.Client
             base.Update(gameTime);
         }
 
-        void World_MapChanged(World world, Map oldMap, Map newMap)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ValueChangedEventArgs{T}"/> instance containing the event data.</param>
+        void World_MapChanged(World sender, ValueChangedEventArgs<Map> e)
         {
             ChatBubble.ClearAll();
 
@@ -740,48 +745,48 @@ namespace DemoGame.Client
             SoundManager.Stop();
 
             // Set the new music
-            if (!newMap.MusicID.HasValue)
+            if (!e.NewValue.MusicID.HasValue)
                 ScreenMusic = null;
-            else if (!MusicManager.Play(newMap.MusicID.Value))
+            else if (!MusicManager.Play(e.NewValue.MusicID.Value))
             {
-                var musicTrack = MusicManager.GetMusicInfo(newMap.MusicID.Value);
+                var musicTrack = MusicManager.GetMusicInfo(e.NewValue.MusicID.Value);
                 if (musicTrack == null)
                 {
                     const string errmsg = "Failed to play map music with ID `{0}`. No music with that ID could be found.";
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, newMap.MusicID);
-                    Debug.Fail(string.Format(errmsg, newMap.MusicID));
+                        log.ErrorFormat(errmsg, e.NewValue.MusicID);
+                    Debug.Fail(string.Format(errmsg, e.NewValue.MusicID));
                 }
 
                 ScreenMusic = musicTrack;
             }
 
             // Remove the lights from the old map
-            if (oldMap != null)
+            if (e.OldValue != null)
             {
-                foreach (var light in oldMap.Lights)
+                foreach (var light in e.OldValue.Lights)
                 {
                     DrawingManager.LightManager.Remove(light);
                 }
             }
 
             // Add the lights for the new map
-            foreach (var light in newMap.Lights)
+            foreach (var light in e.NewValue.Lights)
             {
                 DrawingManager.LightManager.Add(light);
             }
 
             // Remove the refraction effects from the old map
-            if (oldMap != null)
+            if (e.OldValue != null)
             {
-                foreach (var fx in oldMap.RefractionEffects)
+                foreach (var fx in e.OldValue.RefractionEffects)
                 {
                     DrawingManager.RefractionManager.Remove(fx);
                 }
             }
 
             // Add the refraction effects for the new map
-            foreach (var fx in newMap.RefractionEffects)
+            foreach (var fx in e.NewValue.RefractionEffects)
             {
                 DrawingManager.RefractionManager.Add(fx);
             }

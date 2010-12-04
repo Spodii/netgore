@@ -37,7 +37,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when the <see cref="Character.IsCastingSkill"/> property has changed.
         /// </summary>
-        public event CharacterEventHandler IsCastingSkillChanged;
+        public event TypedEventHandler<Character> IsCastingSkillChanged;
 
         /// <summary>
         /// Gets or sets if this <see cref="Character"/> is currently casting a skill.
@@ -53,7 +53,7 @@ namespace DemoGame.Client
                 _isCastingSkill = value;
 
                 if (IsCastingSkillChanged != null)
-                    IsCastingSkillChanged(this);
+                    IsCastingSkillChanged(this, EventArgs.Empty);
             }
         }
 

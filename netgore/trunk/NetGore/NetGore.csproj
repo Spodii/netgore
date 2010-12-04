@@ -530,7 +530,7 @@
     <Compile Include="Stats\ModStatHelper.cs" />
     <Compile Include="Core\Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />
-    <Compile Include="Collections\DArray\DArrayModifyEventHandler.cs" />
+    <Compile Include="Collections\DArray\DArrayEventArgs.cs" />
     <Compile Include="Collections\ImmutableArray.cs" />
     <Compile Include="Collections\Mean Stack\MeanFinderHandler.cs" />
     <Compile Include="Collections\Mean Stack\MeanStack.cs" />
@@ -593,7 +593,6 @@
     <Compile Include="Core\Strings\Text Filter\BasicTextFilter.cs" />
     <Compile Include="Core\Strings\Text Filter\RegexTextFilter.cs" />
     <Compile Include="Core\Strings\Text Filter\TextFilter.cs" />
-    <Compile Include="Core\Strings\Text Filter\TextFilterContainerEventHandler.cs" />
     <Compile Include="Core\SystemPerformance.cs" />
     <Compile Include="Core\Strings\Text Filter\TextFilterContainer.cs" />
     <Compile Include="Core\Type\TypeFilterCreator.cs" />

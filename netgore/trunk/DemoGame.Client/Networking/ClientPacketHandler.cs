@@ -75,12 +75,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a message has been received about creating an account.
         /// </summary>
-        public event CreateAccountEventHandler ReceivedCreateAccount;
+        public event TypedEventHandler<IIPSocket, CreateAccountEventArgs> ReceivedCreateAccount;
 
         /// <summary>
         /// Notifies listeners when a message has been received about creating an account character.
         /// </summary>
-        public event CreateAccountEventHandler ReceivedCreateAccountCharacter;
+        public event TypedEventHandler<IIPSocket, CreateAccountEventArgs> ReceivedCreateAccountCharacter;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -334,8 +334,7 @@ namespace DemoGame.Client
                 errorMessage = GameMessageCollection.CurrentLanguage.GetMessage(failureGameMessage);
             }
 
-            if (ReceivedCreateAccount != null)
-                ReceivedCreateAccount(conn, successful, errorMessage);
+            ReceivedCreateAccount.Raise(conn, new CreateAccountEventArgs(successful, errorMessage));
         }
 
         [MessageHandler((uint)ServerPacketID.CreateAccountCharacter)]
@@ -344,8 +343,7 @@ namespace DemoGame.Client
             var successful = r.ReadBool();
             var errorMessage = successful ? string.Empty : r.ReadString();
 
-            if (ReceivedCreateAccountCharacter != null)
-                ReceivedCreateAccountCharacter(conn, successful, errorMessage);
+            ReceivedCreateAccountCharacter.Raise(conn, new CreateAccountEventArgs(successful, errorMessage));
         }
 
         [MessageHandler((uint)ServerPacketID.CreateDynamicEntity)]
