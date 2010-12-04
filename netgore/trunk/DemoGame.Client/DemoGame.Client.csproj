@@ -146,7 +146,7 @@
     <Compile Include="Networking\ClientPacket.SideScroller.cs" />
     <Compile Include="Networking\ClientPacket.TopDown.cs" />
     <Compile Include="Networking\ClientPacketHandlerEventArgs.cs" />
-    <Compile Include="Networking\CreateAccountEventHandler.cs" />
+    <Compile Include="Networking\CreateAccountEventArgs.cs" />
     <Compile Include="Properties\ClientSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -219,7 +219,6 @@
     <Compile Include="UserEquipped.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="World\Map\Entities\Character.cs" />
-    <Compile Include="World\Map\Entities\CharacterEventHandler.cs" />
     <Compile Include="World\Map\Entities\EntityDrawer.cs" />
     <Compile Include="World\Map\Entities\ItemEntity.cs" />
     <Compile Include="World\Map\Entities\NPC.cs" />
@@ -229,10 +228,8 @@
     <Compile Include="World\Map\Entities\User.cs" />
     <Compile Include="World\Map\Map.cs" />
     <Compile Include="World\Map\MapEntityBoxDrawer.cs" />
-    <Compile Include="World\Map\MapEventHandler.cs" />
     <Compile Include="World\Map\MapWallDrawer.cs" />
     <Compile Include="World\World.cs" />
-    <Compile Include="World\WorldEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">

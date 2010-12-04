@@ -92,17 +92,17 @@ namespace DemoGame.Client
             { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
         }
 
-        void PacketHandler_ReceivedCreateAccountCharacter(IIPSocket sender, bool successful, string errorMessage)
+        void PacketHandler_ReceivedCreateAccountCharacter(IIPSocket sender, CreateAccountEventArgs e)
         {
             _btnCreateCharacter.IsEnabled = true;
 
-            if (successful)
+            if (e.Successful)
             {
                 ScreenManager.SetScreen<CharacterSelectionScreen>();
                 return;
             }
 
-            SetError("Error: " + errorMessage);
+            SetError("Error: " + e.ErrorMessage);
         }
 
         /// <summary>

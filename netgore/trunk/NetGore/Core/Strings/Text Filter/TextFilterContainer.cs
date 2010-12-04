@@ -16,7 +16,7 @@ namespace NetGore
         /// <see cref="TextFilterContainer.Filter"/> property changing, the filter type changing, or the
         /// filter string changing.
         /// </summary>
-        public event TextFilterContainerEventHandler FilterChanged;
+        public event TypedEventHandler<TextFilterContainer> FilterChanged;
 
         /// <summary>
         /// Gets or sets the current <see cref="TextFilter"/>.
@@ -36,7 +36,7 @@ namespace NetGore
                 _filter = value;
 
                 if (FilterChanged != null)
-                    FilterChanged(this);
+                    FilterChanged(this, EventArgs.Empty);
             }
         }
 
@@ -93,7 +93,7 @@ namespace NetGore
             _filter = tempFilter;
 
             if (FilterChanged != null)
-                FilterChanged(this);
+                FilterChanged(this, EventArgs.Empty);
 
             return true;
         }

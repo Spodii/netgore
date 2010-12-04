@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -147,7 +148,8 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sender">The <see cref="Character"/> who's <see cref="Character.IsCastingSkillChanged"/> event
         /// was invoked.</param>
-        static void AD_CastingSkill_Character_IsCastingSkillChanged(Character sender)
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        static void AD_CastingSkill_Character_IsCastingSkillChanged(Character sender, EventArgs e)
         {
             Debug.Assert(sender.IsCastingSkill == false);
 

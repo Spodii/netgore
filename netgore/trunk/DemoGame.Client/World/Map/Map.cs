@@ -65,7 +65,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when this object has been disposed.
         /// </summary>
-        public event MapEventHandler Disposed;
+        public event TypedEventHandler<Map> Disposed;
 
         /// <summary>
         /// Gets or sets the ambient light color.
@@ -634,8 +634,7 @@ namespace DemoGame.Client
                 Debug.Fail(string.Format(errmsg, this, ex));
             }
 
-            if (Disposed != null)
-                Disposed(this);
+            Disposed.Raise(this, EventArgs.Empty);
         }
 
         #endregion

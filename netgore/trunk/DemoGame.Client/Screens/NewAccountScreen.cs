@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Lidgren.Network;
 using NetGore;
 using NetGore.Graphics.GUI;
@@ -151,17 +152,16 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the ReceiveCreateAccount event from the <see cref="ClientPacketHandler"/>.
         /// </summary>
-        /// <param name="conn">The <see cref="IIPSocket"/> the event came from.</param>
-        /// <param name="successful">If the account creation was successful.</param>
-        /// <param name="errorMessage">When <paramref name="successful"/> is false, contains the error message.</param>
-        void PacketHandler_ReceivedCreateAccount(IIPSocket conn, bool successful, string errorMessage)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="CreateAccountEventArgs"/> instance containing the event data.</param>
+        void PacketHandler_ReceivedCreateAccount(IIPSocket sender, CreateAccountEventArgs e)
         {
-            if (!successful)
+            if (!e.Successful)
             {
                 // Unsuccessful - display reason for failure
                 var s = "Failed to create account: ";
                 if (!string.IsNullOrEmpty(s))
-                    s += errorMessage;
+                    s += e.ErrorMessage;
                 else
                     s += "Unspecified error returned from server.";
 
