@@ -1130,7 +1130,7 @@ namespace NetGore.Graphics.GUI
         void InvokeClicked(MouseButtonEventArgs e)
         {
             OnClick(e);
-            var handler = Events[_eventClicked] as EventHandler<MouseButtonEventArgs>;
+            var handler = Events[_eventClicked] as TypedEventHandler<Control, MouseButtonEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1191,7 +1191,7 @@ namespace NetGore.Graphics.GUI
         void InvokeKeyPressed(KeyEventArgs e)
         {
             OnKeyPressed(e);
-            var handler = Events[_eventKeyPressed] as EventHandler<KeyEventArgs>;
+            var handler = Events[_eventKeyPressed] as TypedEventHandler<Control, KeyEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1204,7 +1204,7 @@ namespace NetGore.Graphics.GUI
         void InvokeKeyReleased(KeyEventArgs e)
         {
             OnKeyReleased(e);
-            var handler = Events[_eventKeyReleased] as EventHandler<KeyEventArgs>;
+            var handler = Events[_eventKeyReleased] as TypedEventHandler<Control, KeyEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1229,7 +1229,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseDown(MouseButtonEventArgs e)
         {
             OnMouseDown(e);
-            var handler = Events[_eventMouseDown] as EventHandler<MouseButtonEventArgs>;
+            var handler = Events[_eventMouseDown] as TypedEventHandler<Control, MouseButtonEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1242,7 +1242,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseEnter(MouseMoveEventArgs e)
         {
             OnMouseEnter(e);
-            var handler = Events[_eventMouseEnter] as EventHandler<MouseMoveEventArgs>;
+            var handler = Events[_eventMouseEnter] as TypedEventHandler<Control, MouseMoveEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1255,7 +1255,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseLeave(MouseMoveEventArgs e)
         {
             OnMouseLeave(e);
-            var handler = Events[_eventMouseLeave] as EventHandler<MouseMoveEventArgs>;
+            var handler = Events[_eventMouseLeave] as TypedEventHandler<Control, MouseMoveEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1268,7 +1268,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseMoved(MouseMoveEventArgs e)
         {
             OnMouseMoved(e);
-            var handler = Events[_eventMouseMoved] as EventHandler<MouseMoveEventArgs>;
+            var handler = Events[_eventMouseMoved] as TypedEventHandler<Control, MouseMoveEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1281,7 +1281,7 @@ namespace NetGore.Graphics.GUI
         void InvokeMouseUp(MouseButtonEventArgs e)
         {
             OnMouseUp(e);
-            var handler = Events[_eventMouseUp] as EventHandler<MouseButtonEventArgs>;
+            var handler = Events[_eventMouseUp] as TypedEventHandler<Control, MouseButtonEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
@@ -1342,7 +1342,7 @@ namespace NetGore.Graphics.GUI
         void InvokeTextEntered(TextEventArgs e)
         {
             OnTextEntered(e);
-            var handler = Events[_eventTextEntered] as EventHandler<TextEventArgs>;
+            var handler = Events[_eventTextEntered] as TypedEventHandler<Control, TextEventArgs>;
             if (handler != null)
                 handler(this, e);
         }
