@@ -163,6 +163,9 @@ namespace CodeReleasePreparer
 
             var p = Path.Combine(Paths.Root, "Tools", "PngOptimizer");
             Directory.Delete(p, true);
+			
+			p = Path.Combine(Paths.Root, "Tools", "IllegalEventCallFinder");
+            Directory.Delete(p, true);
 
             // Create self-destroying batch file that will delete this program's binaries
             Console.WriteLine("Creating self-destruct batch file...");
