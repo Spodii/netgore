@@ -101,7 +101,7 @@ namespace NetGore.Editor.Docking
         class FocusManagerImpl : Component, IContentFocusManager, IFocusManager
         {
             readonly DockPanel m_dockPanel;
-            readonly LocalWindowsHook.HookEventHandler m_hookEventHandler;
+            readonly EventHandler<HookEventArgs> m_hookEventHandler;
 
             readonly List<IDockContent> m_listContent = new List<IDockContent>();
             readonly LocalWindowsHook m_localWindowsHook;
@@ -120,7 +120,7 @@ namespace NetGore.Editor.Docking
             {
                 m_dockPanel = dockPanel;
                 m_localWindowsHook = new LocalWindowsHook(HookType.WH_CALLWNDPROCRET);
-                m_hookEventHandler = new LocalWindowsHook.HookEventHandler(HookEventHandler);
+                m_hookEventHandler = new EventHandler<HookEventArgs>(HookEventHandler);
                 m_localWindowsHook.HookInvoked += m_hookEventHandler;
                 m_localWindowsHook.Install();
             }
@@ -492,9 +492,6 @@ namespace NetGore.Editor.Docking
 
             class LocalWindowsHook : IDisposable
             {
-                // Internal properties
-                public delegate void HookEventHandler(object sender, HookEventArgs e);
-
                 readonly NativeMethods.HookProc m_filterFunc = null;
                 readonly HookType m_hookType;
                 IntPtr m_hHook = IntPtr.Zero;
@@ -507,7 +504,7 @@ namespace NetGore.Editor.Docking
                     m_filterFunc = new NativeMethods.HookProc(CoreHookProc);
                 }
 
-                public event HookEventHandler HookInvoked;
+                public event EventHandler<HookEventArgs> HookInvoked;
 
                 // Default filter function
                 public IntPtr CoreHookProc(int code, IntPtr wParam, IntPtr lParam)

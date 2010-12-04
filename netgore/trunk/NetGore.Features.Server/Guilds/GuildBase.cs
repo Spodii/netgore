@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -205,7 +206,7 @@ namespace NetGore.Features.Guilds
             GuildManager.LogEvent(invoker, GuildEvents.Demote, target);
 
             if (MemberDemoted != null)
-                MemberDemoted(invoker, target);
+                MemberDemoted(invoker, EventArgsHelper.Create(target));
 
             OnMemberDemoted(invoker, target);
 
@@ -228,7 +229,7 @@ namespace NetGore.Features.Guilds
             GuildManager.LogEvent(invoker, GuildEvents.Invite, target);
 
             if (MemberInvited != null)
-                MemberInvited(invoker, target);
+                MemberInvited(invoker, EventArgsHelper.Create(target));
 
             OnMemberInvited(invoker, target);
 
@@ -251,7 +252,7 @@ namespace NetGore.Features.Guilds
             GuildManager.LogEvent(invoker, GuildEvents.Kick, target);
 
             if (MemberKicked != null)
-                MemberKicked(invoker, target);
+                MemberKicked(invoker, EventArgsHelper.Create(target));
 
             OnMemberKicked(invoker, target);
 
@@ -309,7 +310,7 @@ namespace NetGore.Features.Guilds
             GuildManager.LogEvent(invoker, GuildEvents.Promote, target);
 
             if (MemberPromoted != null)
-                MemberPromoted(invoker, target);
+                MemberPromoted(invoker, EventArgsHelper.Create(target));
 
             OnMemberPromoted(invoker, target);
 
@@ -431,52 +432,52 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when the guild has been destroyed.
         /// </summary>
-        public event GuildEventHandler Destroyed;
+        public event TypedEventHandler<IGuild> Destroyed;
 
         /// <summary>
         /// Notifies listeners when a new member has joined the guild.
         /// </summary>
-        public event GuildMemberEventHandler MemberAdded;
+        public event TypedEventHandler<IGuild, EventArgs<IGuildMember>> MemberAdded;
 
         /// <summary>
         /// Notifies listeners when a member has been demoted.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberDemoted;
+        public event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberDemoted;
 
         /// <summary>
         /// Notifies listeners when a member has been invited into the guild.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberInvited;
+        public event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberInvited;
 
         /// <summary>
         /// Notifies listeners when a member has been kicked from the guild.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberKicked;
+        public event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberKicked;
 
         /// <summary>
         /// Notifies listeners when a member has been promoted.
         /// </summary>
-        public event GuildInvokeEventWithTargetHandler MemberPromoted;
+        public event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberPromoted;
 
         /// <summary>
         /// Notifies listeners when the guild's name has been changed.
         /// </summary>
-        public event GuildRenameEventHandler NameChanged;
+        public event TypedEventHandler<IGuild, GuildRenameEventArgs> NameChanged;
 
         /// <summary>
         /// Notifies listeners when a member of this guild has come online.
         /// </summary>
-        public event GuildMemberEventHandler OnlineUserAdded;
+        public event TypedEventHandler<IGuild, EventArgs<IGuildMember>> OnlineUserAdded;
 
         /// <summary>
         /// Notifies listeners when a member of this guild has gone offline.
         /// </summary>
-        public event GuildMemberEventHandler OnlineUserRemoved;
+        public event TypedEventHandler<IGuild, EventArgs<IGuildMember>> OnlineUserRemoved;
 
         /// <summary>
         /// Notifies listeners when the guild's tag has been changed.
         /// </summary>
-        public event GuildRenameEventHandler TagChanged;
+        public event TypedEventHandler<IGuild, GuildRenameEventArgs> TagChanged;
 
         /// <summary>
         /// Gets the <see cref="IGuildManager"/> managing this guild.
@@ -535,7 +536,7 @@ namespace NetGore.Features.Guilds
         public void AddNewOnlineMember(IGuildMember newMember)
         {
             if (MemberAdded != null)
-                MemberAdded(this, newMember);
+                MemberAdded(this, EventArgsHelper.Create(newMember));
 
             OnMemberAdded(newMember);
 
@@ -570,7 +571,7 @@ namespace NetGore.Features.Guilds
             _onlineMembers.Add(member);
 
             if (OnlineUserAdded != null)
-                OnlineUserAdded(this, member);
+                OnlineUserAdded(this, EventArgsHelper.Create(member));
 
             OnOnlineUserAdded(member);
         }
@@ -585,7 +586,7 @@ namespace NetGore.Features.Guilds
             _isDestroyed = true;
 
             if (Destroyed != null)
-                Destroyed(this);
+                Destroyed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -628,7 +629,7 @@ namespace NetGore.Features.Guilds
             }
 
             if (OnlineUserRemoved != null)
-                OnlineUserRemoved(this, member);
+                OnlineUserRemoved(this, EventArgsHelper.Create(member));
 
             OnOnlineUserRemoved(member);
         }
@@ -667,7 +668,7 @@ namespace NetGore.Features.Guilds
                 OnNameChanged(invoker, oldValue, Name);
 
                 if (NameChanged != null)
-                    NameChanged(this, invoker, oldValue, Name);
+                    NameChanged(this, new GuildRenameEventArgs(invoker, oldValue, Name));
             }
 
             return success;
@@ -702,7 +703,7 @@ namespace NetGore.Features.Guilds
                 OnTagChanged(invoker, oldValue, Tag);
 
                 if (TagChanged != null)
-                    TagChanged(this, invoker, oldValue, Tag);
+                    TagChanged(this, new GuildRenameEventArgs(invoker, oldValue, Tag));
             }
 
             return success;

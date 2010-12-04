@@ -60,7 +60,12 @@ namespace NetGore.Features.Groups
             }
         }
 
-        void GroupInfo_GroupChanged(UserGroupInformation sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void GroupInfo_GroupChanged(UserGroupInformation sender, EventArgs e)
         {
             IsVisible = sender.IsInGroup;
         }

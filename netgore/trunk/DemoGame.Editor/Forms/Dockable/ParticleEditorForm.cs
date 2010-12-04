@@ -122,8 +122,8 @@ namespace DemoGame.Editor
         /// Handles when a <see cref="IParticleEmitter"/> is added to the <see cref="ParticleEditorForm.ParticleEffect"/>.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="emitter">The emitter.</param>
-        void ParticleEffect_EmitterAdded(IParticleEffect sender, IParticleEmitter emitter)
+        /// <param name="emitter">The <see cref="NetGore.EventArgs{IParticleEmitter}"/> instance containing the event data.</param>
+        void ParticleEffect_EmitterAdded(IParticleEffect sender, NetGore.EventArgs<IParticleEmitter> emitter)
         {
             if (!lstEmitters.Items.Contains(emitter))
                 lstEmitters.AddItemAndReselect(emitter);
@@ -133,8 +133,8 @@ namespace DemoGame.Editor
         /// Handles when a <see cref="IParticleEmitter"/> is removed from the <see cref="ParticleEditorForm.ParticleEffect"/>.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="emitter">The emitter.</param>
-        void ParticleEffect_EmitterRemoved(IParticleEffect sender, IParticleEmitter emitter)
+        /// <param name="emitter">The <see cref="NetGore.EventArgs{IParticleEmitter}"/> instance containing the event data.</param>
+        void ParticleEffect_EmitterRemoved(IParticleEffect sender, NetGore.EventArgs<IParticleEmitter> emitter)
         {
             lstEmitters.RemoveItemAndReselect(emitter);
         }

@@ -127,7 +127,6 @@
     <Compile Include="DataReaderContainer.cs" />
     <Compile Include="Connections\DbConnectionPool.cs" />
     <Compile Include="DbController\DbControllerQueryAttributeChecker.cs" />
-    <Compile Include="DbController\DbControllerQueryAttributeCheckerEventHandler.cs" />
     <Compile Include="DbController\DbControllerBase.cs" />
     <Compile Include="DbController\DbControllerQueryAttribute.cs" />
     <Compile Include="DbController\IDbController.cs" />

@@ -139,12 +139,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Handles when an ItemEntity being handled by this EquippedBase is disposed while still equipped.
+        /// Handles when an ItemEntity being handled by this <see cref="EquippedBase{T}"/> is disposed while still equipped.
         /// </summary>
-        /// <param name="entity">Item that was disposed.</param>
-        protected virtual void ItemDisposeHandler(Entity entity)
+        /// <param name="sender">Item that was disposed.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected virtual void ItemDisposeHandler(Entity sender, EventArgs e)
         {
-            var item = (T)entity;
+            var item = (T)sender;
 
             // Try to get the slot of the item
             EquipmentSlot slot;

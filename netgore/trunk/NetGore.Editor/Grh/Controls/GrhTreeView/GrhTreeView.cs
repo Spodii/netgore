@@ -40,7 +40,7 @@ namespace NetGore.Editor.Grhs
             DrawMode = TreeViewDrawMode.OwnerDrawAll;
         }
 
-        public event GrhTreeViewEditGrhDataEventHandler EditGrhDataRequested;
+        public event TypedEventHandler<GrhTreeView, GrhTreeViewEditGrhDataEventArgs> EditGrhDataRequested;
 
         /// <summary>
         /// Notofies listeners after a new <see cref="GrhData"/> node is selected.
@@ -125,7 +125,7 @@ namespace NetGore.Editor.Grhs
                 return false;
 
             if (EditGrhDataRequested != null)
-                EditGrhDataRequested(this, node, gd, deleteOnCancel);
+                EditGrhDataRequested(this, new GrhTreeViewEditGrhDataEventArgs(node, gd, deleteOnCancel));
 
             return true;
         }
@@ -406,7 +406,7 @@ namespace NetGore.Editor.Grhs
             }
         }
 
-        void GrhInfo_Removed(GrhData sender)
+        void GrhInfo_Removed(GrhData sender, EventArgs e)
         {
             var node = FindGrhDataNode(sender);
             if (node != null)

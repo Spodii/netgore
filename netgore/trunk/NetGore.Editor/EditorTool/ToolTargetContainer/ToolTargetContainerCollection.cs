@@ -19,12 +19,12 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Notifies listeners when a <see cref="IToolTargetContainer"/> is successfully added to this collection.
         /// </summary>
-        public event ToolTargetContainerCollectionEventHandler Added;
+        public event TypedEventHandler<ToolTargetContainerCollection, EventArgs<IToolTargetContainer>> Added;
 
         /// <summary>
         /// Notifies listeners when a <see cref="IToolTargetContainer"/> is successfully removed from this collection.
         /// </summary>
-        public event ToolTargetContainerCollectionEventHandler Removed;
+        public event TypedEventHandler<ToolTargetContainerCollection, EventArgs<IToolTargetContainer>> Removed;
 
         /// <summary>
         /// Adds a <see cref="IToolTargetContainer"/> to this collection.
@@ -52,7 +52,7 @@ namespace NetGore.Editor.EditorTool
 
             // Raise the event
             if (Added != null)
-                Added(this, c);
+                Added(this, EventArgsHelper.Create(c));
 
             return true;
         }
@@ -82,7 +82,7 @@ namespace NetGore.Editor.EditorTool
             {
                 // Raise the event
                 if (Removed != null)
-                    Removed(this, c);
+                    Removed(this, EventArgsHelper.Create(c));
             }
 
             return ret;

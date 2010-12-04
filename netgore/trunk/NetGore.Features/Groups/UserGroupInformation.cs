@@ -20,17 +20,17 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Notifies listeners when the group has changed.
         /// </summary>
-        public event UserGroupInformationEventHandler GroupChanged;
+        public event TypedEventHandler<UserGroupInformation> GroupChanged;
 
         /// <summary>
         /// Notifies listeners when a member has been added to the group.
         /// </summary>
-        public event UserGroupInformationEventHandler<string> MemberAdded;
+        public event TypedEventHandler<UserGroupInformation, EventArgs<string>> MemberAdded;
 
         /// <summary>
         /// Notifies listeners when a member has been removed from the group.
         /// </summary>
-        public event UserGroupInformationEventHandler<string> MemberRemoved;
+        public event TypedEventHandler<UserGroupInformation, EventArgs<string>> MemberRemoved;
 
         /// <summary>
         /// Gets the name of the group's founder, or null if the user is not in a group.
@@ -134,7 +134,7 @@ namespace NetGore.Features.Groups
             OnMemberAdded(name);
 
             if (MemberAdded != null)
-                MemberAdded(this, name);
+                MemberAdded(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace NetGore.Features.Groups
             OnMemberRemoved(name);
 
             if (MemberRemoved != null)
-                MemberRemoved(this, name);
+                MemberRemoved(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace NetGore.Features.Groups
             OnGroupChanged();
 
             if (GroupChanged != null)
-                GroupChanged(this);
+                GroupChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

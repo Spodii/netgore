@@ -15,17 +15,17 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Notifies listeners when this <see cref="IParticleEffect"/> has been disposed.
         /// </summary>
-        event IParticleEffectEventHandler Disposed;
+        event TypedEventHandler<IParticleEffect> Disposed;
 
         /// <summary>
         /// Notifies listeners when an <see cref="IParticleEmitter"/> has been added to this <see cref="IParticleEffect"/>.
         /// </summary>
-        event IParticleEffectEmitterEventHandler EmitterAdded;
+        event TypedEventHandler<IParticleEffect, EventArgs<IParticleEmitter>> EmitterAdded;
 
         /// <summary>
         /// Notifies listeners when an <see cref="IParticleEmitter"/> has been removed from this <see cref="IParticleEffect"/>.
         /// </summary>
-        event IParticleEffectEmitterEventHandler EmitterRemoved;
+        event TypedEventHandler<IParticleEffect, EventArgs<IParticleEmitter>> EmitterRemoved;
 
         /// <summary>
         /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/>.

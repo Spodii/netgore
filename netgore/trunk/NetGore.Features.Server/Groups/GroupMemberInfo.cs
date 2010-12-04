@@ -64,29 +64,29 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Listens to the <see cref="IGroup.MemberJoin"/> event.
         /// </summary>
-        /// <param name="group">The group.</param>
-        /// <param name="member">The group member.</param>
-        void Group_MemberJoin(IGroup group, IGroupable member)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{IGroupable}"/> instance containing the event data.</param>
+        void Group_MemberJoin(IGroup sender, EventArgs<IGroupable> e)
         {
             // Make sure the event is for the group we are in, and the member is not us
-            if (group != Group || Owner.Equals(member))
+            if (sender != Group || Owner.Equals(e))
                 return;
 
-            OnGroupMemberJoined(member);
+            OnGroupMemberJoined(e.Item1);
         }
 
         /// <summary>
         /// Listens to the <see cref="IGroup.MemberLeave"/> event.
         /// </summary>
-        /// <param name="group">The group.</param>
-        /// <param name="member">The group member.</param>
-        void Group_MemberLeave(IGroup group, IGroupable member)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{IGroupable}"/> instance containing the event data.</param>
+        void Group_MemberLeave(IGroup sender, EventArgs<IGroupable> e)
         {
             // Make sure the event is for the group we are in, and the member is not us
-            if (group != Group || Owner.Equals(member))
+            if (sender != Group || Owner.Equals(e))
                 return;
 
-            OnGroupMemberLeft(member);
+            OnGroupMemberLeft(e.Item1);
         }
 
         /// <summary>

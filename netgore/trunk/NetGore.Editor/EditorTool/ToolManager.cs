@@ -81,12 +81,12 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Notifies listeners when a <see cref="Tool"/> instance has been added to this <see cref="ToolManager"/>.
         /// </summary>
-        public event ToolManagerToolEventHandler ToolAdded;
+        public event TypedEventHandler<ToolManager, EventArgs<Tool>> ToolAdded;
 
         /// <summary>
         /// Notifies listeners when a <see cref="Tool"/> instance has been removed from this <see cref="ToolManager"/>.
         /// </summary>
-        public event ToolManagerToolEventHandler ToolRemoved;
+        public event TypedEventHandler<ToolManager, EventArgs<Tool>> ToolRemoved;
 
         /// <summary>
         /// Gets all of the enabled <see cref="Tool"/>s.
@@ -290,15 +290,15 @@ namespace NetGore.Editor.EditorTool
         /// Handles the <see cref="ToolTargetContainerCollection.Added"/> event for the <see cref="_containers"/>.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="c">The <see cref="IToolTargetContainer"/> that was added.</param>
-        void ToolTargetContainers_Added(ToolTargetContainerCollection sender, IToolTargetContainer c)
+        /// <param name="c">The <see cref="NetGore.EventArgs{IToolTargetContainer}"/> instance containing the event data.</param>
+        void ToolTargetContainers_Added(ToolTargetContainerCollection sender, EventArgs<IToolTargetContainer> c)
         {
             // Notify all tools that it was added
             foreach (var tool in Tools)
             {
                 try
                 {
-                    tool.InvokeToolTargetContainerAdded(c);
+                    tool.InvokeToolTargetContainerAdded(c.Item1);
                 }
                 catch (Exception ex)
                 {
@@ -316,14 +316,14 @@ namespace NetGore.Editor.EditorTool
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="c">The <see cref="IToolTargetContainer"/> that was removed.</param>
-        void ToolTargetContainers_Removed(ToolTargetContainerCollection sender, IToolTargetContainer c)
+        void ToolTargetContainers_Removed(ToolTargetContainerCollection sender, EventArgs<IToolTargetContainer> c)
         {
             // Notify all tools that it was removed
             foreach (var tool in Tools)
             {
                 try
                 {
-                    tool.InvokeToolTargetContainerRemoved(c);
+                    tool.InvokeToolTargetContainerRemoved(c.Item1);
                 }
                 catch (Exception ex)
                 {
@@ -380,7 +380,8 @@ namespace NetGore.Editor.EditorTool
         /// Handles the <see cref="Tool.Disposed"/> event of a <see cref="Tool"/> in this <see cref="ToolManager"/>.
         /// </summary>
         /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
-        void tool_Disposed(Tool sender)
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void tool_Disposed(Tool sender, EventArgs e)
         {
             if (sender == null)
             {
@@ -399,7 +400,7 @@ namespace NetGore.Editor.EditorTool
                 if (wasRemoved)
                 {
                     if (ToolRemoved != null)
-                        ToolRemoved(this, sender);
+                        ToolRemoved(this, EventArgsHelper.Create(sender));
                 }
 
                 Debug.Assert(wasRemoved);
@@ -482,7 +483,7 @@ namespace NetGore.Editor.EditorTool
 
                 // Notify listeners
                 if (ToolAdded != null)
-                    ToolAdded(this, tool);
+                    ToolAdded(this, EventArgsHelper.Create(tool));
             }
             catch (Exception ex)
             {

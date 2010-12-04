@@ -119,7 +119,7 @@ namespace DemoGame
         {
             foreach (var item in _buffer.Where(x => x != null))
             {
-                item.Disposed -= ItemDisposeHandler;
+                item.Disposed -= InventoryItemDisposedHandler;
             }
 
             Dispose(disposeManaged);
@@ -210,12 +210,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Handles when an item is disposed while still in the Inventory.
+        /// Handles when an item is disposed while still in this <see cref="InventoryBase{T}"/>.
         /// </summary>
-        /// <param name="entity">Entity that was disposed.</param>
-        protected virtual void ItemDisposeHandler(Entity entity)
+        /// <param name="sender">The <see cref="Entity"/> that was disposed.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected virtual void InventoryItemDisposedHandler(Entity sender, EventArgs e)
         {
-            var item = (T)entity;
+            var item = (T)sender;
 
             // Try to get the slot
             InventorySlot slot;
@@ -370,9 +371,9 @@ namespace DemoGame
 
                 // Attach (if item added) or remove (if item removed) hook to the Dispose event
                 if (oldItem != null)
-                    oldItem.Disposed -= ItemDisposeHandler;
+                    oldItem.Disposed -= InventoryItemDisposedHandler;
                 else
-                    value.Disposed += ItemDisposeHandler;
+                    value.Disposed += InventoryItemDisposedHandler;
 
                 // Change the ItemEntity reference
                 _buffer[(int)slot] = value;

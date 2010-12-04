@@ -217,7 +217,6 @@
     <Compile Include="Items\ItemTemplateID.cs" />
     <Compile Include="World\Map\Entities\CharacterTemplateIDTypeConverter.cs" />
     <Compile Include="IO\PropertySyncAllianceID.cs" />
-    <Compile Include="World\Map\MapBaseEventHandler.cs" />
     <Compile Include="World\Map\MapSpawnValuesID.cs" />
     <Compile Include="StatusEffect\StatusEffectInfoAttribute.cs" />
     <Compile Include="StatusEffect\StatusEffectInfoManager.cs" />

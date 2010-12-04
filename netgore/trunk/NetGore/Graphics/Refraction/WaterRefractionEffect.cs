@@ -238,7 +238,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
-        void PositionProvider_Moved(ISpatial sender, Vector2 e)
+        void PositionProvider_Moved(ISpatial sender, EventArgs<Vector2> e)
         {
             // Avoid needless calculations on finding the position when there are no listeners for Moved
             if (Moved != null)
@@ -246,7 +246,7 @@ namespace NetGore.Graphics
                 // Moved has listener(s)
                 var oldValue = Position;
                 _position = sender.Position;
-                Moved(this, oldValue);
+                Moved(this, EventArgsHelper.Create(oldValue));
             }
             else
             {
@@ -305,12 +305,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Moved;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Moved;
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Resized;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Resized;
 
         /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
@@ -378,7 +378,7 @@ namespace NetGore.Graphics
                 _position = value;
 
                 if (Moved != null)
-                    Moved(this, oldPos);
+                    Moved(this, EventArgsHelper.Create(oldPos));
             }
         }
 
@@ -424,7 +424,7 @@ namespace NetGore.Graphics
                 _size = value;
 
                 if (Resized != null)
-                    Resized(this, oldSize);
+                    Resized(this, EventArgsHelper.Create(oldSize));
             }
         }
 

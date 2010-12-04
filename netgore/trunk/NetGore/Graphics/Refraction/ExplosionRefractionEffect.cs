@@ -207,16 +207,16 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles when the <see cref="IRefractionEffect.PositionProvider"/> moves.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        void PositionProvider_Moved(ISpatial sender, Vector2 e)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{Vector2}"/> instance containing the event data.</param>
+        void PositionProvider_Moved(ISpatial sender, EventArgs<Vector2> e)
         {
             // Avoid needless calculations on finding the position when there are no listeners for Moved
             if (Moved != null)
             {
                 var oldValue = Position;
                 _center = sender.Center;
-                Moved(this, oldValue);
+                Moved(this, EventArgsHelper.Create(oldValue));
             }
             else
                 _center = sender.Center;
@@ -241,12 +241,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when this <see cref="IRefractionEffect"/> has moved.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Moved;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Moved;
 
         /// <summary>
         /// Unused by <see cref="ExplosionRefractionEffect"/>.
         /// </summary>
-        event SpatialEventHandler<Vector2> ISpatial.Resized
+        event TypedEventHandler<ISpatial, EventArgs<Vector2>> ISpatial.Resized
         {
             add { }
             remove { }
@@ -317,7 +317,7 @@ namespace NetGore.Graphics
                 _center = value - (_size / 2.0f);
 
                 if (Moved != null)
-                    Moved(this, oldValue);
+                    Moved(this, EventArgsHelper.Create(oldValue));
             }
         }
 

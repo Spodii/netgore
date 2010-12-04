@@ -13,22 +13,22 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Notifies listeners when this group has been disbanded.
         /// </summary>
-        event IGroupEventHandler Disbanded;
+        event TypedEventHandler<IGroup> Disbanded;
 
         /// <summary>
         /// Notifies listeners when a group member joins the group.
         /// </summary>
-        event IGroupMemberEventHandler MemberJoin;
+        event TypedEventHandler<IGroup, EventArgs<IGroupable>> MemberJoin;
 
         /// <summary>
         /// Notifies listeners when a group member leaves the group.
         /// </summary>
-        event IGroupMemberEventHandler MemberLeave;
+        event TypedEventHandler<IGroup, EventArgs<IGroupable>> MemberLeave;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IGroup.ShareMode"/> has changed.
         /// </summary>
-        event IGroupEventHandler ShareModeChanged;
+        event TypedEventHandler<IGroup> ShareModeChanged;
 
         /// <summary>
         /// Gets the <see cref="IGroupable"/> that is the founder of this group. If this value is false, the group

@@ -65,17 +65,17 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Notifies listeners when this object has been disposed.
         /// </summary>
-        public event ToolEventHandler Disposed;
+        public event TypedEventHandler<Tool> Disposed;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IsEnabled"/> property has changed.
         /// </summary>
-        public event ToolValueChangedEventHandler<bool> IsEnabledChanged;
+        public event TypedEventHandler<Tool, ValueChangedEventArgs<bool>> IsEnabledChanged;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IsOnToolBar"/> property has changed.
         /// </summary>
-        public event ToolValueChangedEventHandler<bool> IsOnToolBarChanged;
+        public event TypedEventHandler<Tool, ValueChangedEventArgs<bool>> IsOnToolBarChanged;
 
         /// <summary>
         /// Gets if this tool can be shown in the <see cref="ToolBar"/>. This does not mean that the tool will be shown in the
@@ -133,7 +133,7 @@ namespace NetGore.Editor.EditorTool
                 // Raise event
                 OnIsEnabledChanged(!IsEnabled, IsEnabled);
                 if (IsEnabledChanged != null)
-                    IsEnabledChanged(this, !IsEnabled, IsEnabled);
+                    IsEnabledChanged(this, ValueChangedEventArgs.Create(!IsEnabled, IsEnabled));
 
                 // Internal handling
                 HandleEnabledChangedInternal();
@@ -174,7 +174,7 @@ namespace NetGore.Editor.EditorTool
                 {
                     OnIsOnToolBarChanged(oldValue, newValue);
                     if (IsOnToolBarChanged != null)
-                        IsOnToolBarChanged(this, oldValue, newValue);
+                        IsOnToolBarChanged(this, ValueChangedEventArgs.Create(oldValue, newValue));
                 }
             }
         }
@@ -503,7 +503,7 @@ namespace NetGore.Editor.EditorTool
             Dispose(true);
 
             if (Disposed != null)
-                Disposed(this);
+                Disposed(this, EventArgs.Empty);
         }
 
         #endregion

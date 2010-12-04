@@ -99,7 +99,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that the Map has been saved.
         /// </summary>
-        public event MapBaseEventHandler Saved;
+        public event TypedEventHandler<MapBase> Saved;
 
         /// <summary>
         /// Gets an IEnumerable of all the DynamicEntities on the Map.
@@ -332,12 +332,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Handles when an Entity is disposed while still on the map.
+        /// Handles when an <see cref="Entity"/> is disposed while still on the map.
         /// </summary>
-        /// <param name="entity"></param>
-        void Entity_Disposed(Entity entity)
+        /// <param name="sender">The <see cref="Entity"/> that was disposed.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void Entity_Disposed(Entity sender, EventArgs e)
         {
-            RemoveEntity(entity);
+            RemoveEntity(sender);
         }
 
         /// <summary>
@@ -934,7 +935,7 @@ namespace DemoGame
             Save(path, dynamicEntityFactory);
 
             if (Saved != null)
-                Saved(this);
+                Saved(this, EventArgs.Empty);
         }
 
         /// <summary>

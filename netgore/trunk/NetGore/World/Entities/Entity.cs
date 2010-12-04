@@ -38,13 +38,13 @@ namespace NetGore.World
         /// is guarenteed to only be raised once.
         /// </summary>
         [Browsable(false)]
-        public event EntityEventHandler Disposed;
+        public event TypedEventHandler<Entity> Disposed;
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
         [Browsable(false)]
-        public event SpatialEventHandler<Vector2> Moved;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Moved;
 
         /// <summary>
         /// When overridden in the derived class, allows for handling for when the <see cref="ISpatial.Moved"/> event occurs.
@@ -59,7 +59,7 @@ namespace NetGore.World
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
         [Browsable(false)]
-        public event SpatialEventHandler<Vector2> Resized;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Resized;
 
         /// <summary>
         /// When overridden in the derived class, allows for handling for when the <see cref="ISpatial.Resized"/> event occurs.
@@ -130,7 +130,7 @@ namespace NetGore.World
             _isDisposed = true;
 
             if (Disposed != null)
-                Disposed(this);
+                Disposed(this, EventArgs.Empty);
 
             HandleDispose(false);
         }
@@ -413,7 +413,7 @@ namespace NetGore.World
             // Notify listeners
             OnMoved(oldPos);
             if (Moved != null)
-                Moved(this, oldPos);
+                Moved(this, EventArgsHelper.Create(oldPos));
         }
 
         /// <summary>
@@ -433,7 +433,7 @@ namespace NetGore.World
             // Notify listeners
             OnResized(oldSize);
             if (Resized != null)
-                Resized(this, oldSize);
+                Resized(this, EventArgsHelper.Create(oldSize));
         }
 
         /// <summary>
@@ -550,7 +550,7 @@ namespace NetGore.World
 
             // Notify listeners that the Entity is being disposed
             if (Disposed != null)
-                Disposed(this);
+                Disposed(this, EventArgs.Empty);
 
             // Handle the disposing
             HandleDispose(true);

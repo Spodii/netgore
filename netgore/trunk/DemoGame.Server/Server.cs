@@ -587,11 +587,11 @@ namespace DemoGame.Server
                 "Type `{0}` fails to implement attribute `{1}`. Ensure this is okay. If you are unsure, add the attribute anyways.";
             var attribType = typeof(DbControllerQueryAttribute);
 
-            new DbControllerQueryAttributeChecker(delegate(DbControllerQueryAttributeChecker sender, Type type)
+            new DbControllerQueryAttributeChecker(delegate(DbControllerQueryAttributeChecker sender, EventArgs<Type> e)
             {
-                Debug.Fail(string.Format(errmsg, type, attribType));
+                Debug.Fail(string.Format(errmsg, e.Item1, attribType));
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, type, attribType);
+                    log.ErrorFormat(errmsg, e.Item1, attribType);
             });
         }
 

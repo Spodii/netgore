@@ -95,8 +95,8 @@ namespace NetGore.Editor.Grhs
         /// Handles when one of the bound walls have changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        void BoundWallChanged(ISpatial sender, Vector2 e)
+        /// <param name="e">The <see cref="NetGore.EventArgs{Vector2}"/> instance containing the event data.</param>
+        void BoundWallChanged(ISpatial sender, EventArgs<Vector2> e)
         {
             var index = lstWalls.Items.IndexOf(sender);
             if (index < 0)

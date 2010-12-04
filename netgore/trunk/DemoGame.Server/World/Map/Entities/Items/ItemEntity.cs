@@ -220,7 +220,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up.
         /// </summary>
-        public override event EntityEventHandler<CharacterEntity> PickedUp;
+        public override event TypedEventHandler<Entity, EventArgs<CharacterEntity>> PickedUp;
 
         /// <summary>
         /// Gets the <see cref="ItemEntity"/>'s base stats.
@@ -455,17 +455,17 @@ namespace DemoGame.Server
         /// <summary>
         /// Handles when an ItemEntity is resized.
         /// </summary>
-        /// <param name="entity">ItemEntity that was resized.</param>
-        /// <param name="oldSize">Old ItemEntity size.</param>
-        void ItemEntity_Resized(ISpatial entity, Vector2 oldSize)
+        /// <param name="sender">The <see cref="ItemEntity"/> that was resized.</param>
+        /// <param name="e">The <see cref="NetGore.EventArgs{Vector2}"/> instance containing the event data.</param>
+        void ItemEntity_Resized(ISpatial sender, EventArgs<Vector2> e)
         {
-            Debug.Assert(entity == this, "Why did we receive an ItemEntity_OnResize for another Entity?");
+            Debug.Assert(sender == this, "Why did we receive an ItemEntity_OnResize for another Entity?");
 
             // Get the sizes as a byte
-            var oldWidth = (byte)oldSize.X;
-            var oldHeight = (byte)oldSize.Y;
-            var width = (byte)entity.Size.X;
-            var height = (byte)entity.Size.Y;
+            var oldWidth = (byte)e.Item1.X;
+            var oldHeight = (byte)e.Item1.Y;
+            var width = (byte)sender.Size.X;
+            var height = (byte)sender.Size.Y;
 
             // Update the changed sizes
             if (oldWidth != width)
@@ -573,7 +573,7 @@ namespace DemoGame.Server
 
             // Notify listeners using the item copy since that was the one actually given to them
             if (PickedUp != null)
-                PickedUp(itemCopy, charEntity);
+                PickedUp(itemCopy, EventArgsHelper.Create(charEntity));
 
             return true;
         }

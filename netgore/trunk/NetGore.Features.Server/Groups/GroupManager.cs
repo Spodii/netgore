@@ -13,14 +13,14 @@ namespace NetGore.Features.Groups
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly IGroupEventHandler _groupDisbandHandler;
+        readonly TypedEventHandler<IGroup> _groupDisbandHandler;
         readonly List<IGroup> _groups = new List<IGroup>();
         readonly Func<IGroupManager, IGroupable, IGroup> _tryCreateGroup;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupManager"/> class.
         /// </summary>
-        /// <param name="tryCreateGroup">A <see cref="Func{T,U,V}"/> that is used to create a group started by
+        /// <param name="tryCreateGroup">A func that is used to create a group started by
         /// an <see cref="IGroupable"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="tryCreateGroup"/> is null.</exception>
         public GroupManager(Func<IGroupManager, IGroupable, IGroup> tryCreateGroup)
@@ -35,16 +35,17 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Handles when a <see cref="IGroup"/> in this <see cref="GroupManager"/> is disbanded.
         /// </summary>
-        /// <param name="group">The group that was disbanded.</param>
-        void Group_Disbanded(IGroup group)
+        /// <param name="sender">The group that was disbanded.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void Group_Disbanded(IGroup sender, EventArgs e)
         {
-            group.Disbanded -= _groupDisbandHandler;
-            if (!_groups.Remove(group))
+            sender.Disbanded -= _groupDisbandHandler;
+            if (!_groups.Remove(sender))
             {
                 const string errmsg =
                     "Tried to remove disbanded group `{0}` from group manager `{1}`, but it was not in the _groups list!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, group, this);
+                    log.WarnFormat(errmsg, sender, this);
             }
         }
 

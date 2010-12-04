@@ -575,11 +575,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Handles when a User is Disposed.
         /// </summary>
-        /// <param name="entity">User that was Disposed.</param>
-        void User_Disposed(Entity entity)
+        /// <param name="sender">User that was Disposed.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void User_Disposed(Entity sender, EventArgs e)
         {
             // Remove the User from the list of Users
-            var name = ((User)entity).Name;
+            var name = ((User)sender).Name;
 
             lock (_usersSync)
             {

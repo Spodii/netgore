@@ -376,12 +376,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Moved;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Moved;
 
         /// <summary>
         /// Unused by the <see cref="MapGrh"/>.
         /// </summary>
-        event SpatialEventHandler<Vector2> ISpatial.Resized
+        event TypedEventHandler<ISpatial, EventArgs<Vector2>> ISpatial.Resized
         {
             add { }
             remove { }
@@ -425,7 +425,7 @@ namespace NetGore.Graphics
                 _position = value;
 
                 if (Moved != null)
-                    Moved(this, oldPosition);
+                    Moved(this, EventArgsHelper.Create(oldPosition));
             }
         }
 

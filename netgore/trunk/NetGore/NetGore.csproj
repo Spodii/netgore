@@ -198,13 +198,10 @@
     <Compile Include="Graphics\GUI\GameControl\StaticKeyCodeReference.cs" />
     <Compile Include="Graphics\Map\DrawableMapDrawEventArgs.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffect.cs" />
-    <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffectEmitterEventHandler.cs" />
-    <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffectEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffectConfig.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffectManager.cs" />
     <Compile Include="Graphics\ParticleEngine\Emitters\IParticleEmitter.cs" />
-    <Compile Include="Graphics\ParticleEngine\Emitters\IParticleEmitterEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleEffectReference.cs" />
     <Compile Include="IO\BitStream\BitStream.Lidgren.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncInventorySlot.cs" />
@@ -230,7 +227,6 @@
     <Compile Include="IO\BitStream\BitStream.Write.cs" />
     <Compile Include="Network\MessageProcessor\MessageProcessorID.cs" />
     <Compile Include="Network\NetConnectionStatsTracker.cs" />
-    <Compile Include="Network\Sockets\IIPSocketEventHandler.cs" />
     <Compile Include="Network\Sockets\SocketHelper.cs" />
     <Compile Include="Network\Sockets\SocketManager\ClientSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\IClientSocketManager.cs" />
@@ -394,7 +390,6 @@
     <Compile Include="Graphics\Sprite\Grh\GrhConverter.cs" />
     <Compile Include="Graphics\Sprite\Grh\GrhData.cs" />
     <Compile Include="Graphics\Sprite\Grh\GrhDataChangeCategorizationHandler.cs" />
-    <Compile Include="Graphics\Sprite\Grh\GrhDataEventHandler.cs" />
     <Compile Include="Graphics\Sprite\Grh\GrhInfo.cs" />
     <Compile Include="Graphics\Sprite\Grh\StationaryGrhData.cs" />
     <Compile Include="Graphics\Sprite\Grh\SystemGrhData.cs" />
@@ -617,7 +612,6 @@
     <Compile Include="World\Entities\DynamicEntity.cs" />
     <Compile Include="World\Entities\DynamicEntityFactoryBase.cs" />
     <Compile Include="World\Entities\Entity.cs" />
-    <Compile Include="World\Entities\EntityEventHandler.cs" />
     <Compile Include="Core\Extensions\RectangleExtensions.cs" />
     <Compile Include="Core\GrhIndex.cs" />
     <Compile Include="Core\Extensions\IDataRecordExtensions.cs" />
@@ -678,7 +672,6 @@
     <Compile Include="Core\Extensions\Vector2Extensions.cs" />
     <Compile Include="World\Map\MapEntityIndex.cs" />
     <Compile Include="World\Map\MapID.cs" />
-    <Compile Include="World\Map\Spatial\SpatialMovedEventHandler.cs" />
     <Compile Include="World\Map\Spatial\StaticGridSpatialCollection.cs" />
   </ItemGroup>
   <ItemGroup>

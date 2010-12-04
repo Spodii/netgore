@@ -233,16 +233,11 @@
     <Compile Include="Docking\Win32\Enums\WindowExStyles.cs" />
     <Compile Include="Docking\Win32\Enums\WindowStyles.cs" />
     <Compile Include="Docking\Win32\NativeMethods.cs" />
-    <Compile Include="EditorTool\EventHandlers\ToolEventHandler.cs" />
-    <Compile Include="EditorTool\EventHandlers\ToolManagerEventHandler.cs" />
-    <Compile Include="EditorTool\EventHandlers\ToolManagerToolEventHandler.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\IToolTargetContainer.cs" />
     <Compile Include="EditorTool\ToolSettings.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\IToolTargetContainerExtensions.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\IToolTargetMapContainer.cs" />
     <Compile Include="EditorTool\ToolTargetContainer\ToolTargetContainerCollection.cs" />
-    <Compile Include="EditorTool\EventHandlers\ToolValueChangedEventHandler.cs" />
-    <Compile Include="EditorTool\ToolTargetContainer\ToolTargetContainerCollectionEventHandler.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\MouseEventArgsExtensions.cs" />
@@ -259,7 +254,7 @@
     <Compile Include="Grh\Controls\GrhTreeView\GrhPreviewScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewEditGrhDataEventHandler.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewEditGrhDataEventArgs.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
     <Compile Include="GridAlignerBase.cs" />
     <Compile Include="Input.cs" />
@@ -323,6 +318,7 @@
     <Compile Include="WinForms\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\ParticleEffectListBoxCreateEventArgs.cs" />
     <Compile Include="WinForms\ParticleEmitterListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -338,7 +334,6 @@
     <Compile Include="WinForms\Persistable Controls\PersistableTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SelectedObjectManagerEventHandler.cs" />
     <Compile Include="SelectedObjectsManager.cs" />
     <Compile Include="UI\Editors\MusicEditor.cs" />
     <Compile Include="UI\Editors\MusicUITypeEditorForm.cs">
@@ -541,7 +536,9 @@
     <Content Include="Docking\Resources\DockPane_Option.bmp" />
     <Content Include="Docking\Resources\DockPane_OptionOverflow.bmp" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="EditorTool\EventHandlers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
