@@ -83,7 +83,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="IGameContainer.RenderWindow"/> has changed.
         /// </summary>
-        event GameContainerPropertyChangedEventHandler<RenderWindow> RenderWindowChanged;
+        event TypedEventHandler<IGameContainer, ValueChangedEventArgs<RenderWindow>> RenderWindowChanged;
 
         /// <summary>
         /// Event handler for the Resized event.

@@ -133,7 +133,8 @@ namespace NetGore.Features.PeerTrading
         /// Handles the TextChanged event of the AcceptButton control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        static void AcceptButton_TextChanged(Control sender)
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        static void AcceptButton_TextChanged(Control sender, EventArgs e)
         {
             var button = sender as Button;
             if (button == null)

@@ -192,7 +192,6 @@
     <Compile Include="Cryptography\XorCryptoProvider.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Graphics\Game Container\GameBase.cs" />
-    <Compile Include="Graphics\Game Container\GameContainerPropertyChangedEventHandler.cs" />
     <Compile Include="Graphics\Game Container\IGameContainer.cs" />
     <Compile Include="Graphics\GUI\GameControl\IKeyCodeReference.cs" />
     <Compile Include="Graphics\GUI\GameControl\SettingsKeyCodeReference.cs" />
@@ -298,7 +297,6 @@
     <Compile Include="Graphics\GUI\Controls\TextBox.cs" />
     <Compile Include="Graphics\GUI\DragDropProviderHelper.cs" />
     <Compile Include="Graphics\GUI\EditableTextHandler.cs" />
-    <Compile Include="Graphics\GUI\Control Bases\ControlEventHandler.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControl.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControlCollection.cs" />
     <Compile Include="Graphics\GUI\GameControl\GameControlEventHandler.cs" />

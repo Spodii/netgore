@@ -63,7 +63,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedOverSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler TickedOverSpriteChanged
+        public event TypedEventHandler<Control> TickedOverSpriteChanged
         {
             add { Events.AddHandler(_eventTickedOverSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventTickedOverSpriteChanged, value); }
@@ -72,7 +72,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedPressedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler TickedPressedSpriteChanged
+        public event TypedEventHandler<Control> TickedPressedSpriteChanged
         {
             add { Events.AddHandler(_eventTickedPressedSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventTickedPressedSpriteChanged, value); }
@@ -81,7 +81,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.TickedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler TickedSpriteChanged
+        public event TypedEventHandler<Control> TickedSpriteChanged
         {
             add { Events.AddHandler(_eventTickedSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventTickedSpriteChanged, value); }
@@ -90,7 +90,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.UntickedOverSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler UntickedOverSpriteChanged
+        public event TypedEventHandler<Control> UntickedOverSpriteChanged
         {
             add { Events.AddHandler(_eventUntickedOverSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventUntickedOverSpriteChanged, value); }
@@ -99,7 +99,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.UntickedPressedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler UntickedPressedSpriteChanged
+        public event TypedEventHandler<Control> UntickedPressedSpriteChanged
         {
             add { Events.AddHandler(_eventUntickedPressedSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventUntickedPressedSpriteChanged, value); }
@@ -108,7 +108,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.UntickedSprite"/> changes.
         /// </summary>
-        public event ControlEventHandler UntickedSpriteChanged
+        public event TypedEventHandler<Control> UntickedSpriteChanged
         {
             add { Events.AddHandler(_eventUntickedSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventUntickedSpriteChanged, value); }
@@ -117,7 +117,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="CheckBox.Value"/> changes.
         /// </summary>
-        public event ControlEventHandler ValueChanged
+        public event TypedEventHandler<Control> ValueChanged
         {
             add { Events.AddHandler(_eventValueChanged, value); }
             remove { Events.RemoveHandler(_eventValueChanged, value); }
@@ -315,9 +315,9 @@ namespace NetGore.Graphics.GUI
         void InvokeTickedOverSpriteChanged()
         {
             OnTickedOverSpriteChanged();
-            var handler = Events[_eventTickedOverSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventTickedOverSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -327,9 +327,9 @@ namespace NetGore.Graphics.GUI
         void InvokeTickedPressedSpriteChanged()
         {
             OnTickedPressedSpriteChanged();
-            var handler = Events[_eventTickedPressedSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventTickedPressedSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -339,9 +339,9 @@ namespace NetGore.Graphics.GUI
         void InvokeTickedSpriteChanged()
         {
             OnTickedSpriteChanged();
-            var handler = Events[_eventTickedSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventTickedSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -351,9 +351,9 @@ namespace NetGore.Graphics.GUI
         void InvokeUntickedOverSpriteChanged()
         {
             OnUntickedOverSpriteChanged();
-            var handler = Events[_eventUntickedOverSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventUntickedOverSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -363,9 +363,9 @@ namespace NetGore.Graphics.GUI
         void InvokeUntickedPressedSpriteChanged()
         {
             OnUntickedPressedSpriteChanged();
-            var handler = Events[_eventUntickedPressedSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventUntickedPressedSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -375,9 +375,9 @@ namespace NetGore.Graphics.GUI
         void InvokeUntickedSpriteChanged()
         {
             OnUntickedSpriteChanged();
-            var handler = Events[_eventUntickedSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventUntickedSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -387,9 +387,9 @@ namespace NetGore.Graphics.GUI
         void InvokeValueChanged()
         {
             OnValueChanged();
-            var handler = Events[_eventValueChanged] as ControlEventHandler;
+            var handler = Events[_eventValueChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>

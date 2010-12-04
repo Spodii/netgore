@@ -107,7 +107,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="ListBox{T}.SelectedIndex"/> changes.
         /// </summary>
-        public event ControlEventHandler SelectedIndexChanged
+        public event TypedEventHandler<Control> SelectedIndexChanged
         {
             add { Events.AddHandler(_eventSelectedIndexChanged, value); }
             remove { Events.RemoveHandler(_eventSelectedIndexChanged, value); }
@@ -116,7 +116,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="ListBox{T}.ShowPaging"/> changes.
         /// </summary>
-        public event ControlEventHandler ShowPagingChanged
+        public event TypedEventHandler<Control> ShowPagingChanged
         {
             add { Events.AddHandler(_eventShowPagingChanged, value); }
             remove { Events.RemoveHandler(_eventShowPagingChanged, value); }
@@ -397,9 +397,9 @@ namespace NetGore.Graphics.GUI
         void InvokeSelectedIndexChanged()
         {
             OnSelectedIndexChanged();
-            var handler = Events[_eventSelectedIndexChanged] as ControlEventHandler;
+            var handler = Events[_eventSelectedIndexChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -409,9 +409,9 @@ namespace NetGore.Graphics.GUI
         void InvokeShowPagingChanged()
         {
             OnShowPagingChanged();
-            var handler = Events[_eventShowPagingChanged] as ControlEventHandler;
+            var handler = Events[_eventShowPagingChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>

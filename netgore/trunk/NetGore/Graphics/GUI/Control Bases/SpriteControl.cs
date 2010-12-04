@@ -41,7 +41,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="SpriteControl.Sprite"/> has changed.
         /// </summary>
-        public event ControlEventHandler SpriteChanged
+        public event TypedEventHandler<Control> SpriteChanged
         {
             add { Events.AddHandler(_eventSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventSpriteChanged, value); }
@@ -50,7 +50,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the <see cref="SpriteControl.StretchSprite"/> value has changed.
         /// </summary>
-        public event ControlEventHandler StretchSpriteChanged
+        public event TypedEventHandler<Control> StretchSpriteChanged
         {
             add { Events.AddHandler(_eventStretchSpriteChanged, value); }
             remove { Events.RemoveHandler(_eventStretchSpriteChanged, value); }
@@ -131,9 +131,9 @@ namespace NetGore.Graphics.GUI
         void InvokeSpriteChanged()
         {
             OnSpriteChanged();
-            var handler = Events[_eventSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -143,9 +143,9 @@ namespace NetGore.Graphics.GUI
         void InvokeStretchSpriteChanged()
         {
             OnStretchSpriteChanged();
-            var handler = Events[_eventStretchSpriteChanged] as ControlEventHandler;
+            var handler = Events[_eventStretchSpriteChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this);
+                handler(this, EventArgs.Empty);
         }
 
         /// <summary>

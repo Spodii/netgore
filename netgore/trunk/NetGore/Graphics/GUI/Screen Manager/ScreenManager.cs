@@ -217,15 +217,20 @@ namespace NetGore.Graphics.GUI
                 a.GUIManager.SendEventMouseMoved(e);
         }
 
-        void _game_RenderWindowChanged(IGameContainer sender, RenderWindow oldValue, RenderWindow newValue)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ValueChangedEventArgs{T}"/> instance containing the event data.</param>
+        void _game_RenderWindowChanged(IGameContainer sender, ValueChangedEventArgs<RenderWindow> e)
         {
-            _drawingManager.RenderWindow = newValue;
+            _drawingManager.RenderWindow = e.NewValue;
 
             foreach (var gs in _screens.Values)
             {
                 var guiMan = gs.GUIManager;
                 if (guiMan != null)
-                    guiMan.Window = newValue;
+                    guiMan.Window = e.NewValue;
             }
         }
 

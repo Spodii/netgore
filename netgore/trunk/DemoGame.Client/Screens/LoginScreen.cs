@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Client.Properties;
@@ -209,7 +210,12 @@ namespace DemoGame.Client
             }
         }
 
-        void _cRememberPassword_ValueChanged(Control sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void _cRememberPassword_ValueChanged(Control sender, EventArgs e)
         {
             ClientSettings.Default.RememberPassword = _cRememberPassword.Value;
             SaveScreenSettings();
@@ -282,8 +288,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cNameText"/> control.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        void cNameText_TextChanged(Control sender)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void cNameText_TextChanged(Control sender, EventArgs e)
         {
             var c = sender as TextBox;
             if (c == null)
@@ -312,8 +319,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cPasswordText"/> control.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        void cPasswordText_TextChanged(Control sender)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void cPasswordText_TextChanged(Control sender, EventArgs e)
         {
             var c = sender as TextBox;
             if (c == null)

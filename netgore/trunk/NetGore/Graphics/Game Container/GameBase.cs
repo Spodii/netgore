@@ -554,7 +554,10 @@ namespace NetGore.Graphics
         /// </summary>
         public event EventHandler<MouseWheelEventArgs> MouseWheelMoved = null;
 
-        public event GameContainerPropertyChangedEventHandler<RenderWindow> RenderWindowChanged;
+        /// <summary>
+        /// Notifies listeners when the <see cref="IGameContainer.RenderWindow"/> has changed.
+        /// </summary>
+        public event TypedEventHandler<IGameContainer, ValueChangedEventArgs<RenderWindow>> RenderWindowChanged;
 
         /// <summary>
         /// Event handler for the Resized event.
@@ -628,7 +631,7 @@ namespace NetGore.Graphics
                 // Raise events
                 OnRenderWindowChanged(oldRW, _renderWindow);
                 if (RenderWindowChanged != null)
-                    RenderWindowChanged(this, oldRW, _renderWindow);
+                    RenderWindowChanged(this, ValueChangedEventArgs.Create(oldRW, _renderWindow));
 
                 // Dispose old RenderWindow
                 if (oldRW != null && !oldRW.IsDisposed)

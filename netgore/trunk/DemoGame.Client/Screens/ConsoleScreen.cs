@@ -141,8 +141,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles when the value changes for a <see cref="CheckBox"/> for a <see cref="Level"/>.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        void LevelCheckBox_ValueChanged(Control sender)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void LevelCheckBox_ValueChanged(Control sender, EventArgs e)
         {
             // Rebuild the list of disabled log levels
             _disabledLogLevels.Clear();
