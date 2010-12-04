@@ -20,57 +20,7 @@ namespace NetGore.Features.PeerTrading
     public abstract class ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>
         where TChar : Entity where TItem : Entity where TItemInfo : class
     {
-        /// <summary>
-        /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
-        /// <param name="isSourceSide">If true, the changed was on the source character's side.
-        /// Otherwise, it was on the target character's side.</param>
-        /// <param name="hasAccepted">If true, the status changed to accepted. If false, the status changed to not accepted.</param>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void AcceptStatusChangedEventHandler(
-            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, bool isSourceSide, bool hasAccepted);
-
-        /// <summary>
-        /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
-        /// <param name="cash">The new cash value.</param>
-        /// <param name="isSourceSide">If true, the changed cash amount was on the source character's side.
-        /// If false, it was on the target character's side.</param>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void CashUpdatedEventHandler(
-            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, int cash, bool isSourceSide);
-
-        /// <summary>
-        /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void EventHandler(ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender);
-
-        /// <summary>
-        /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
-        /// <param name="slot">The slot that changed.</param>
-        /// <param name="isSourceSide">If true, the changed slot was on the source character's side.
-        /// If false, it was on the target character's side.</param>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void SlotUpdatedEventHandler(
-            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, InventorySlot slot, bool isSourceSide);
-
-        /// <summary>
-        /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
-        /// <param name="sourceCanceled">If it was the source character who canceled the trade.</param>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void TradeCanceledEventHandler(
-            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, bool sourceCanceled);
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static readonly int _numSlots = PeerTradingSettings.Instance.MaxTradeSlots;
 
         readonly TItemInfo[] _sourceSlots;
@@ -98,37 +48,37 @@ namespace NetGore.Features.PeerTrading
         /// <summary>
         /// Notifies listeners when the trade accepting status has changed for one of the characters.
         /// </summary>
-        public event AcceptStatusChangedEventHandler AcceptStatusChanged;
+        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs> AcceptStatusChanged;
 
         /// <summary>
         /// Notifies listeners when the amount of cash a character has placed in the trade has changed.
         /// </summary>
-        public event CashUpdatedEventHandler CashUpdated;
+        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerCashChangedEventArgs> CashUpdated;
 
         /// <summary>
         /// Notifies listeners when a slot on the trade table has been updated.
         /// </summary>
-        public event SlotUpdatedEventHandler SlotUpdated;
+        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerSlotUpdatedEventArgs> SlotUpdated;
 
         /// <summary>
         /// Notifies listeners when a trade session has been canceled.
         /// </summary>
-        public event TradeCanceledEventHandler TradeCanceled;
+        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerTradeCanceledEventArgs> TradeCanceled;
 
         /// <summary>
         /// Notifies listeners when a trade session has been closed (either completed or canceled).
         /// </summary>
-        public event EventHandler TradeClosed;
+        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>> TradeClosed;
 
         /// <summary>
         /// Notifies listeners when a trade session has been completed successfully (the trade was not canceled).
         /// </summary>
-        public event EventHandler TradeCompleted;
+        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>> TradeCompleted;
 
         /// <summary>
         /// Notifies listeners when a new trade session has opened up.
         /// </summary>
-        public event EventHandler TradeOpened;
+        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>> TradeOpened;
 
         /// <summary>
         /// Gets if the source side has accepted the trade.
@@ -145,7 +95,7 @@ namespace NetGore.Features.PeerTrading
 
                 OnAcceptStatusChanged(true, _hasSourceAccepted);
                 if (AcceptStatusChanged != null)
-                    AcceptStatusChanged(this, true, _hasTargetAccepted);
+                    AcceptStatusChanged(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(true, _hasTargetAccepted));
             }
         }
 
@@ -164,7 +114,7 @@ namespace NetGore.Features.PeerTrading
 
                 OnAcceptStatusChanged(false, _hasTargetAccepted);
                 if (AcceptStatusChanged != null)
-                    AcceptStatusChanged(this, false, _hasTargetAccepted);
+                    AcceptStatusChanged(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(false, _hasTargetAccepted));
             }
         }
 
@@ -424,7 +374,7 @@ namespace NetGore.Features.PeerTrading
             // Raise events
             OnTradeCanceled(sourceCanceled);
             if (TradeCanceled != null)
-                TradeCanceled(this, sourceCanceled);
+                TradeCanceled(this, new ClientPeerTradeInfoHandlerTradeCanceledEventArgs(sourceCanceled));
         }
 
         /// <summary>
@@ -439,8 +389,8 @@ namespace NetGore.Features.PeerTrading
 
             // Raise events
             OnTradeClosed();
-            if (TradeClosed != null)
-                TradeClosed(this);
+            
+            TradeClosed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -452,8 +402,8 @@ namespace NetGore.Features.PeerTrading
 
             // Raise events
             OnTradeCompleted();
-            if (TradeCompleted != null)
-                TradeCompleted(this);
+            
+            TradeCompleted.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -482,8 +432,8 @@ namespace NetGore.Features.PeerTrading
 
             // Raise events
             OnTradeOpened();
-            if (TradeOpened != null)
-                TradeOpened(this);
+            
+            TradeOpened.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -517,7 +467,7 @@ namespace NetGore.Features.PeerTrading
 
             OnCashUpdated(cash, isSourceSide);
             if (CashUpdated != null)
-                CashUpdated(this, cash, isSourceSide);
+                CashUpdated(this, new ClientPeerTradeInfoHandlerCashChangedEventArgs(cash, isSourceSide));
         }
 
         /// <summary>
@@ -548,7 +498,7 @@ namespace NetGore.Features.PeerTrading
 
             OnSlotUpdated(slot, isSourceSide);
             if (SlotUpdated != null)
-                SlotUpdated(this, slot, isSourceSide);
+                SlotUpdated(this, new ClientPeerTradeInfoHandlerSlotUpdatedEventArgs(slot, isSourceSide));
         }
 
         /// <summary>

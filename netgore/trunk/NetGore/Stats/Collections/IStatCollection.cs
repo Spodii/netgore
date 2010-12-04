@@ -14,7 +14,7 @@ namespace NetGore.Stats
         /// <summary>
         /// Notifies listeners when the value of any of the stats in this collection have changed.
         /// </summary>
-        event StatCollectionStatChangedEventHandler<TStatType> StatChanged;
+        event TypedEventHandler<IStatCollection<TStatType>, StatCollectionStatChangedEventArgs<TStatType>> StatChanged;
 
         /// <summary>
         /// Gets or sets the value of the stat of the given <paramref name="statType"/>.

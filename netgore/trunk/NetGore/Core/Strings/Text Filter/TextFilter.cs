@@ -109,18 +109,17 @@ namespace NetGore
         /// <summary>
         /// Handles when a <see cref="TextFilter"/> type is added to the factory.
         /// </summary>
-        /// <param name="factory">The <see cref="TypeFactory"/>.</param>
-        /// <param name="type">The <see cref="Type"/> added.</param>
-        /// <param name="name">The name of the <paramref name="type"/>.</param>
-        static void FactoryTypeAdded(TypeFactory factory, Type type, string name)
+        /// <param name="factory">The factory.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        static void FactoryTypeAdded(TypeFactory factory, TypeFactoryLoadedEventArgs e)
         {
-            var instance = (TextFilter)TypeFactory.GetTypeInstance(type);
+            var instance = (TextFilter)TypeFactory.GetTypeInstance(e.LoadedType);
 
             var key = instance.DisplayName;
 
             // Ensure the name is not already in use
             if (_filterInstancesByName.ContainsKey(key))
-                throw new TypeException("A text filter with the name `" + key + "` already exists!", type);
+                throw new TypeException("A text filter with the name `" + key + "` already exists!", e.LoadedType);
 
             // Add the instace
             _filterInstancesByName.Add(key, instance);
@@ -152,7 +151,7 @@ namespace NetGore
         /// </summary>
         /// <typeparam name="T">The type of items.</typeparam>
         /// <param name="items">The items to pass through the text filter.</param>
-        /// <param name="textSelector">The <see cref="Func{T,U}"/> used to select the string for the corresponding item.
+        /// <param name="textSelector">The func used to select the string for the corresponding item.
         /// The default method is to just use <see cref="object.ToString"/>.</param>
         /// <returns>The items that passed the filter.</returns>
         public IEnumerable<T> FilterItems<T>(IEnumerable<T> items, Func<T, string> textSelector)

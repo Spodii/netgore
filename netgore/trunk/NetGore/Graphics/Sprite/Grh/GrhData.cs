@@ -64,7 +64,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s categorization has changed.
         /// </summary>
-        public event GrhDataChangeCategorizationHandler CategorizationChanged;
+        public event TypedEventHandler<GrhData, EventArgs<SpriteCategorization>> CategorizationChanged;
 
         /// <summary>
         /// Gets the <see cref="SpriteCategorization"/> for this <see cref="GrhData"/>.
@@ -194,7 +194,7 @@ namespace NetGore.Graphics
             _categorization = categorization;
 
             if (CategorizationChanged != null)
-                CategorizationChanged(this, oldCategorization);
+                CategorizationChanged(this, EventArgsHelper.Create(oldCategorization));
         }
 
         /// <summary>

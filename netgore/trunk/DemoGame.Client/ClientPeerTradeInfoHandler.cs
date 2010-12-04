@@ -1,20 +1,13 @@
 using System;
 using System.Linq;
 using DemoGame.DbObjs;
+using NetGore;
 using NetGore.Features.PeerTrading;
 using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Client
 {
-    /// <summary>
-    /// Delegate for handling the <see cref="ClientPeerTradeInfoHandler.GameMessageCallback"/> event.
-    /// </summary>
-    /// <param name="sender">The <see cref="ClientPeerTradeInfoHandler"/> this event came from.</param>
-    /// <param name="gameMessage">The <see cref="GameMessage"/>.</param>
-    /// <param name="args">The arguments for the message.</param>
-    public delegate void GameMessageCallbackHandler(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args);
-
     public class ClientPeerTradeInfoHandler : ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable>
     {
         INetworkSender _networkSender;
@@ -35,7 +28,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when this object has generated a <see cref="GameMessage"/> that needs to be displayed.
         /// </summary>
-        public event GameMessageCallbackHandler GameMessageCallback;
+        public event TypedEventHandler<ClientPeerTradeInfoHandler, ClientPeerTradeInfoHandlerEventArgs> GameMessageCallback;
 
         /// <summary>
         /// Gets or sets the <see cref="INetworkSender"/> used to communicate with the server.
@@ -79,13 +72,13 @@ namespace DemoGame.Client
             {
                 // We canceled
                 if (GameMessageCallback != null)
-                    GameMessageCallback(this, GameMessage.PeerTradingTradeCanceledByYou, new string[] { OtherCharName });
+                    GameMessageCallback(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeCanceledByYou, new string[] { OtherCharName }));
             }
             else
             {
                 // They canceled
                 if (GameMessageCallback != null)
-                    GameMessageCallback(this, GameMessage.PeerTradingTradeCanceledByOther, new string[] { OtherCharName });
+                    GameMessageCallback(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeCanceledByOther, new string[] { OtherCharName }));
             }
         }
 
@@ -98,7 +91,7 @@ namespace DemoGame.Client
             base.OnTradeCompleted();
 
             if (GameMessageCallback != null)
-                GameMessageCallback(this, GameMessage.PeerTradingTradeComplete, new string[] { OtherCharName });
+                GameMessageCallback(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeComplete, new string[] { OtherCharName }));
         }
 
         /// <summary>
@@ -110,7 +103,7 @@ namespace DemoGame.Client
             base.OnTradeOpened();
 
             if (GameMessageCallback != null)
-                GameMessageCallback(this, GameMessage.PeerTradingTradeOpened, new string[] { OtherCharName });
+                GameMessageCallback(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeOpened, new string[] { OtherCharName }));
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Notifies listeners when the <see cref="NPCChatConditionalsListBox.SelectedConditionalItem"/> has changed.
         /// </summary>
-        public event SelectedConditionalItemChangeHandler ConditionalItemChanged;
+        public event TypedEventHandler<NPCChatConditionalsListBox, EventArgs<EditorNPCChatConditionalCollectionItem>> ConditionalItemChanged;
 
         /// <summary>
         /// Gets or sets the current <see cref="EditorNPCChatConditionalCollection"/> being used.
@@ -87,7 +87,7 @@ namespace NetGore.Features.NPCChat
             get { return _selectedConditionalItem; }
         }
 
-        void ConditionalCollection_Changed(EditorNPCChatConditionalCollection source)
+        void ConditionalCollection_Changed(EditorNPCChatConditionalCollection source, EventArgs e)
         {
             RebuildItemList();
         }
@@ -135,7 +135,7 @@ namespace NetGore.Features.NPCChat
             {
                 _selectedConditionalItem = item;
                 if (ConditionalItemChanged != null)
-                    ConditionalItemChanged(this, item);
+                    ConditionalItemChanged(this, EventArgsHelper.Create(item));
             }
         }
 

@@ -256,6 +256,7 @@
     </Compile>
     <Compile Include="Grh\Controls\GrhTreeView\GrhTreeViewEditGrhDataEventArgs.cs" />
     <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
+    <Compile Include="Grh\GrhImageListAsyncCallback.cs" />
     <Compile Include="GridAlignerBase.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="MutablePair.cs" />

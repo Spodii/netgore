@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.Collections;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
@@ -28,7 +29,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Notifies listeners when the <see cref="ParticleEditorForm.ParticleEffect"/> property has changed.
         /// </summary>
-        public event ParticleEditorFormPropertyChangedEventHandler<IParticleEffect> ParticleEffectChanged;
+        public event TypedEventHandler<ParticleEditorForm, ValueChangedEventArgs<IParticleEffect>> ParticleEffectChanged;
 
         /// <summary>
         /// Gets or sets the <see cref="IParticleEffect"/> to edit.
@@ -64,7 +65,7 @@ namespace DemoGame.Editor
                 OnParticleEffectChanged(oldValue, value);
 
                 if (ParticleEffectChanged != null)
-                    ParticleEffectChanged(this, oldValue, value);
+                    ParticleEffectChanged(this, ValueChangedEventArgs.Create(oldValue, value));
             }
         }
 
@@ -123,7 +124,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="emitter">The <see cref="NetGore.EventArgs{IParticleEmitter}"/> instance containing the event data.</param>
-        void ParticleEffect_EmitterAdded(IParticleEffect sender, NetGore.EventArgs<IParticleEmitter> emitter)
+        void ParticleEffect_EmitterAdded(IParticleEffect sender, EventArgs<IParticleEmitter> emitter)
         {
             if (!lstEmitters.Items.Contains(emitter))
                 lstEmitters.AddItemAndReselect(emitter);
@@ -134,7 +135,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="emitter">The <see cref="NetGore.EventArgs{IParticleEmitter}"/> instance containing the event data.</param>
-        void ParticleEffect_EmitterRemoved(IParticleEffect sender, NetGore.EventArgs<IParticleEmitter> emitter)
+        void ParticleEffect_EmitterRemoved(IParticleEffect sender, EventArgs<IParticleEmitter> emitter)
         {
             lstEmitters.RemoveItemAndReselect(emitter);
         }
@@ -269,25 +270,30 @@ namespace DemoGame.Editor
                 lstEmitters.Items.Add(emitter);
         }
 
-        void cmbEmitterType_SelectedEmitterChanged(ParticleEmitterComboBox sender, Type newType)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{Type}"/> instance containing the event data.</param>
+        void cmbEmitterType_SelectedEmitterChanged(ParticleEmitterComboBox sender, EventArgs<Type> e)
         {
-            if (newType == null)
+            if (e.Item1 == null)
                 return;
 
             var emitter = pgEmitter.SelectedObject as ParticleEmitter;
             if (emitter == null)
                 return;
 
-            if (emitter.GetType() == newType)
+            if (emitter.GetType() == e.Item1)
                 return;
 
             const string confirmMsg = "Are you sure you wish to change the emitter type from {0} to {1}?";
             if (
-                MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, newType.Name), "Change emitter type?",
+                MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, e.Item1.Name), "Change emitter type?",
                     MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            var newEmitter = (IParticleEmitter)TypeFactory.GetTypeInstance(newType, emitter.Owner);
+            var newEmitter = (IParticleEmitter)TypeFactory.GetTypeInstance(e.Item1, emitter.Owner);
 
             emitter.CopyValuesTo(newEmitter);
 

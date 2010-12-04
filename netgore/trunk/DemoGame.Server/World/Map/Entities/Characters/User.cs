@@ -322,25 +322,25 @@ namespace DemoGame.Server
         {
             var ret = new QuestPerformerStatusHelper(this);
 
-            ret.QuestAccepted += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            ret.QuestAccepted += delegate(QuestPerformerStatusHelper<User> sender, EventArgs<IQuest<User>> e)
             {
-                OnQuestAccepted(quest);
+                OnQuestAccepted(e.Item1);
                 if (QuestAccepted != null)
-                    QuestAccepted(this, quest);
+                    QuestAccepted(this, e);
             };
 
-            ret.QuestCanceled += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            ret.QuestCanceled += delegate(QuestPerformerStatusHelper<User> sender, EventArgs<IQuest<User>> e)
             {
-                OnQuestCanceled(quest);
+                OnQuestCanceled(e.Item1);
                 if (QuestCanceled != null)
-                    QuestCanceled(this, quest);
+                    QuestCanceled(this, e);
             };
 
-            ret.QuestFinished += delegate(QuestPerformerStatusHelper<User> sender, IQuest<User> quest)
+            ret.QuestFinished += delegate(QuestPerformerStatusHelper<User> sender, EventArgs<IQuest<User>> e)
             {
-                OnQuestFinished(quest);
+                OnQuestFinished(e.Item1);
                 if (QuestFinished != null)
-                    QuestFinished(this, quest);
+                    QuestFinished(this, e);
             };
 
             return ret;
@@ -862,15 +862,15 @@ namespace DemoGame.Server
         /// Handles when an <see cref="ActiveStatusEffect"/> is added to this Character's StatusEffects.
         /// </summary>
         /// <param name="effects">The CharacterStatusEffects the event took place on.</param>
-        /// <param name="ase">The <see cref="ActiveStatusEffect"/> that was added.</param>
-        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects, ActiveStatusEffect ase)
+        /// <param name="e">The <see cref="NetGore.EventArgs{ActiveStatusEffect}"/> instance containing the event data.</param>
+        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects, EventArgs<ActiveStatusEffect> e)
         {
-            base.StatusEffects_HandleOnAdd(effects, ase);
+            base.StatusEffects_HandleOnAdd(effects, e);
 
             var currentTime = GetTime();
-            var timeLeft = ase.GetTimeRemaining(currentTime);
+            var timeLeft = e.Item1.GetTimeRemaining(currentTime);
 
-            using (var pw = ServerPacket.AddStatusEffect(ase.StatusEffect.StatusEffectType, ase.Power, timeLeft))
+            using (var pw = ServerPacket.AddStatusEffect(e.Item1.StatusEffect.StatusEffectType, e.Item1.Power, timeLeft))
             {
                 Send(pw, ServerMessageType.GUIUserStatus);
             }
@@ -880,12 +880,12 @@ namespace DemoGame.Server
         /// Handles when an <see cref="ActiveStatusEffect"/> is removed from this Character's StatusEffects.
         /// </summary>
         /// <param name="effects">The CharacterStatusEffects the event took place on.</param>
-        /// <param name="ase">The <see cref="ActiveStatusEffect"/> that was removed.</param>
-        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects effects, ActiveStatusEffect ase)
+        /// <param name="e">The <see cref="NetGore.EventArgs{ActiveStatusEffect}"/> instance containing the event data.</param>
+        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects effects, EventArgs<ActiveStatusEffect> e)
         {
-            base.StatusEffects_HandleOnRemove(effects, ase);
+            base.StatusEffects_HandleOnRemove(effects, e);
 
-            using (var pw = ServerPacket.RemoveStatusEffect(ase.StatusEffect.StatusEffectType))
+            using (var pw = ServerPacket.RemoveStatusEffect(e.Item1.StatusEffect.StatusEffectType))
             {
                 Send(pw, ServerMessageType.GUIUserStatus);
             }
@@ -1406,17 +1406,17 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has accepted a new quest.
         /// </summary>
-        public event QuestPerformerQuestEventHandler<User> QuestAccepted;
+        public event TypedEventHandler<User, EventArgs<IQuest<User>>> QuestAccepted;
 
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has canceled an active quest.
         /// </summary>
-        public event QuestPerformerQuestEventHandler<User> QuestCanceled;
+        public event TypedEventHandler<User, EventArgs<IQuest<User>>> QuestCanceled;
 
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has finished a quest.
         /// </summary>
-        public event QuestPerformerQuestEventHandler<User> QuestFinished;
+        public event TypedEventHandler<User, EventArgs<IQuest<User>>> QuestFinished;
 
         /// <summary>
         /// Gets the incomplete quests that this <see cref="IQuestPerformer{TCharacter}"/> is currently working on.

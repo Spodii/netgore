@@ -133,9 +133,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountCharacterInfos.cs" />
-    <Compile Include="AccountCharactersLoadedHandler.cs" />
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
+    <Compile Include="ClientPeerTradeInfoHandlerEventArgs.cs" />
     <Compile Include="Controls\ToolbarEventArgs.cs" />
     <Compile Include="Interface\GameControlsKeys.SideScroller.cs" />
     <Compile Include="Interface\GameControlsKeys.TopDown.cs" />
@@ -143,6 +143,7 @@
     <Compile Include="Interface\GameplayScreenControls.TopDown.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="KnownSkillsCollection.cs" />
+    <Compile Include="KnowSkillsCollectionChangedEventArgs.cs" />
     <Compile Include="Networking\ClientPacket.SideScroller.cs" />
     <Compile Include="Networking\ClientPacket.TopDown.cs" />
     <Compile Include="Networking\ClientPacketHandlerEventArgs.cs" />

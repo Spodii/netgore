@@ -111,15 +111,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollection.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollectionChangeHandler.cs" />
     <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollectionItem.cs" />
     <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialog.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogEventHandler.cs" />
     <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogItem.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogItemEventHandler.cs" />
     <Compile Include="NPCChat\ChatClasses\EditorNPCChatManager.cs" />
     <Compile Include="NPCChat\ChatClasses\EditorNPCChatResponse.cs" />
-    <Compile Include="NPCChat\ChatClasses\EditorNPCChatResponseEventHandler.cs" />
     <Compile Include="NPCChat\NPCChatConditionalEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,8 +136,6 @@
     <Compile Include="NPCChat\NPCChatParameterListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="NPCChat\NPCChatParameterListBoxChangeSelectedHandler.cs" />
-    <Compile Include="NPCChat\SelectedConditionalItemChangeHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

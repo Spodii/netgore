@@ -113,7 +113,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners when the <see cref="GameMessageCollection.CurrentLanguage"/> property has changed.
         /// </summary>
-        public static event GameMessageCollectionChangeLanguageEventHandler CurrentLanguageChanged;
+        public static event EventHandler<ValueChangedEventArgs<GameMessageCollection>> CurrentLanguageChanged;
 
         /// <summary>
         /// Gets the <see cref="GameMessageCollection"/> instance for the current language. It is highly recommended that you do not
@@ -466,7 +466,7 @@ namespace DemoGame
 
             // Raise the event
             if (CurrentLanguageChanged != null)
-                CurrentLanguageChanged(oldLanguage, _currentLanguage);
+                CurrentLanguageChanged(null, ValueChangedEventArgs.Create(oldLanguage, _currentLanguage));
 
             return true;
         }

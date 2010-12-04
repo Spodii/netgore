@@ -87,7 +87,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// An event that is raised once every time updates and draws should take place.
         /// </summary>
-        public event GlobalStateTickEventHandler Tick;
+        public event EventHandler<EventArgs<TickCount>> Tick;
 
         /// <summary>
         /// Gets the <see cref="IContentManager"/> used by all parts of the editor.
@@ -179,7 +179,7 @@ namespace DemoGame.Editor
 
             // Raise event
             if (Tick != null)
-                Tick(now);
+                Tick(this, EventArgsHelper.Create(now));
         }
 
         /// <summary>

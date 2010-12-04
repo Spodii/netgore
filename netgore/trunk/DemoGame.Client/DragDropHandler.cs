@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
@@ -279,7 +280,7 @@ namespace DemoGame.Client
 
             var src = (EquippedForm.EquippedItemPB)srcDDP;
 
-            _gps.EquippedForm_RequestUnequip(src.EquippedForm, src.Slot);
+            _gps.EquippedForm_RequestUnequip(src.EquippedForm, EventArgsHelper.Create(src.Slot));
 
             return true;
         }

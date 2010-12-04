@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -88,13 +89,14 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Handles when a EditorNPCChatDialogItem changes.
+        /// Handles when a <see cref="EditorNPCChatDialogItem"/> changes.
         /// </summary>
-        /// <param name="response">The EditorNPCChatDialogItem that changed.</param>
-        void EditorNPCChatDialogItem_Changed(EditorNPCChatDialogItem response)
+        /// <param name="sender">The <see cref="EditorNPCChatDialogItem"/> that changed.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void EditorNPCChatDialogItem_Changed(EditorNPCChatDialogItem sender, EventArgs e)
         {
             List<NPCChatDialogViewNode> l;
-            if (!_objToTreeNode.TryGetValue(response, out l))
+            if (!_objToTreeNode.TryGetValue(sender, out l))
                 return;
 
             foreach (var node in l)
@@ -104,10 +106,11 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Handles when a EditorNPCChatResponse changes.
+        /// Handles when a <see cref="EditorNPCChatResponse"/> changes.
         /// </summary>
-        /// <param name="response">The EditorNPCChatResponse that changed.</param>
-        void EditorNPCChatResponse_Changed(EditorNPCChatResponse response)
+        /// <param name="response">The <see cref="EditorNPCChatResponse"/> that changed.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void EditorNPCChatResponse_Changed(EditorNPCChatResponse response, EventArgs e)
         {
             List<NPCChatDialogViewNode> l;
             if (!_objToTreeNode.TryGetValue(response, out l))

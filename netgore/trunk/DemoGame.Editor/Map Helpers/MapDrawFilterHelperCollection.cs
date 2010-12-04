@@ -27,17 +27,17 @@ namespace DemoGame.Editor
         /// <summary>
         /// Notifies listeners when a filter has been added to this collection.
         /// </summary>
-        public event MapDrawFilterHelperCollectionEventHandler Added;
+        public event TypedEventHandler<MapDrawFilterHelperCollection, MapDrawFilterHelperCollectionEventArgs> Added;
 
         /// <summary>
         /// Notifies listeners when a filter has been removed from this collection.
         /// </summary>
-        public event MapDrawFilterHelperCollectionEventHandler Removed;
+        public event TypedEventHandler<MapDrawFilterHelperCollection, MapDrawFilterHelperCollectionEventArgs> Removed;
 
         /// <summary>
         /// Notifies listeners when a filter in this collection has been renamed.
         /// </summary>
-        public event MapDrawFilterHelperCollectionRenamedEventHandler Renamed;
+        public event TypedEventHandler<MapDrawFilterHelperCollection, MapDrawFilterHelperCollectionRenameEventArgs> Renamed;
 
         /// <summary>
         /// Gets the filters in this collection, where the key is the name and the value is the filter itself.
@@ -72,7 +72,7 @@ namespace DemoGame.Editor
 
             // Raise events
             if (Added != null)
-                Added(this, new KeyValuePair<string, MapDrawFilterHelper>(name, filter));
+                Added(this, new MapDrawFilterHelperCollectionEventArgs(name, filter));
 
             return true;
         }
@@ -115,7 +115,7 @@ namespace DemoGame.Editor
             {
                 // Raise the event
                 if (Removed != null)
-                    Removed(this, new KeyValuePair<string, MapDrawFilterHelper>(name, filter));
+                    Removed(this, new MapDrawFilterHelperCollectionEventArgs(name, filter));
             }
 
             return removed;
@@ -150,7 +150,7 @@ namespace DemoGame.Editor
 
             // Raise events
             if (Renamed != null)
-                Renamed(this, new KeyValuePair<string, MapDrawFilterHelper>(newName, filter), oldName);
+                Renamed(this, new MapDrawFilterHelperCollectionRenameEventArgs(newName, filter, oldName));
 
             return true;
         }

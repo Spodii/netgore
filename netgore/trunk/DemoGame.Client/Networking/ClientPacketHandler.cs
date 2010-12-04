@@ -200,13 +200,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the <see cref="ClientPeerTradeInfoHandler.GameMessageCallback"/> event from the <see cref="ClientPeerTradeInfoHandler"/>.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="gameMessage">The game message.</param>
-        /// <param name="args">The message arguments.</param>
-        void PeerTradeInfoHandler_GameMessageCallback(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ClientPeerTradeInfoHandlerEventArgs"/> instance containing the event data.</param>
+        void PeerTradeInfoHandler_GameMessageCallback(ClientPeerTradeInfoHandler sender, ClientPeerTradeInfoHandlerEventArgs e)
         {
             // Parse the GameMessage
-            var msg = GameMessageCollection.CurrentLanguage.GetMessage(gameMessage, args);
+            var msg = GameMessageCollection.CurrentLanguage.GetMessage(e.GameMessage, e.Args);
 
             // Display
             if (!string.IsNullOrEmpty(msg))

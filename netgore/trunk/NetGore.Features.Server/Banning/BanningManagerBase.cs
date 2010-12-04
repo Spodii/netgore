@@ -35,7 +35,7 @@ namespace NetGore.Features.Banning
         /// <summary>
         /// Notifies listeners when an account has been banned.
         /// </summary>
-        public event BanningManagerAccountBannedEventHandler<TAccountID> AccountBanned;
+        public event TypedEventHandler<IBanningManager<TAccountID>, BanningManagerAccountBannedEventArgs<TAccountID>> AccountBanned;
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling for when a ban is successfully added to an account.
@@ -199,7 +199,7 @@ namespace NetGore.Features.Banning
             OnAccountBanned(accountID);
 
             if (AccountBanned != null)
-                AccountBanned(this, accountID, length, reason, issuedBy);
+                AccountBanned(this, BanningManagerAccountBannedEventArgs.Create(accountID, length, reason, issuedBy));
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Successfully banned account `{0}` (length: {1}; reason: {2}; issuedBy: {3}).", accountID, length,

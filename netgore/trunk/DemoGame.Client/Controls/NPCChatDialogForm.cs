@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,19 +12,6 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
-    /// <summary>
-    /// Delegate for handling when the user chooses a response on a <see cref="NPCChatDialogForm"/>.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="response">The response that the user chose.</param>
-    public delegate void ChatDialogSelectResponseHandler(NPCChatDialogForm sender, NPCChatResponseBase response);
-
-    /// <summary>
-    /// Delegate for handling when the <see cref="NPCChatDialogForm"/> wants to end the chatting.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    public delegate void ChatDialogRequestEndDialogHandler(NPCChatDialogForm sender);
-
     /// <summary>
     /// A <see cref="Form"/> that is used to interact with NPCs.
     /// </summary>
@@ -51,9 +39,7 @@ namespace DemoGame.Client
 
             // NOTE: We want to use a scrollable textbox here... when we finally make one
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             float spacing = Font.GetLineSpacing();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             var responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
             var textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
@@ -73,12 +59,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when this NPCChatDialogForm wants to end the chat dialog.
         /// </summary>
-        public event ChatDialogRequestEndDialogHandler RequestEndDialog;
+        public event TypedEventHandler<NPCChatDialogForm> RequestEndDialog;
 
         /// <summary>
         /// Notifies listeners when a dialog response was chosen.
         /// </summary>
-        public event ChatDialogSelectResponseHandler SelectResponse;
+        public event TypedEventHandler<NPCChatDialogForm, EventArgs<NPCChatResponseBase>> SelectResponse;
 
         /// <summary>
         /// Gets if a dialog is currently open.
@@ -99,7 +85,7 @@ namespace DemoGame.Client
             // make a request to the server that we want to end the chat dialog. If the server allows it, then it
             // will eventually close.
             if (RequestEndDialog != null)
-                RequestEndDialog(this);
+                RequestEndDialog(this, EventArgs.Empty);
         }
 
         public void EndDialog()
@@ -121,7 +107,7 @@ namespace DemoGame.Client
             if (e.Code == KeyCode.Escape)
             {
                 if (RequestEndDialog != null)
-                    RequestEndDialog(this);
+                    RequestEndDialog(this, EventArgs.Empty);
             }
             else
             {
@@ -136,7 +122,7 @@ namespace DemoGame.Client
                 if (value < _responses.Length)
                 {
                     if (SelectResponse != null)
-                        SelectResponse(this, _responses[value]);
+                        SelectResponse(this, EventArgsHelper.Create(_responses[value]));
                 }
             }
         }
@@ -148,7 +134,7 @@ namespace DemoGame.Client
             if (response != null)
             {
                 if (SelectResponse != null)
-                    SelectResponse(this, response);
+                    SelectResponse(this, EventArgsHelper.Create(response));
             }
         }
 

@@ -417,10 +417,9 @@ namespace NetGore.Editor.EditorTool
         /// <summary>
         /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
-        /// <param name="loadedType">Type that was loaded.</param>
-        /// <param name="name">Name of the Type.</param>
-        void typeFactory_TypeLoaded(TypeFactory typeFactory, Type loadedType, string name)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        void typeFactory_TypeLoaded(TypeFactory sender, TypeFactoryLoadedEventArgs e)
         {
             try
             {
@@ -428,18 +427,18 @@ namespace NetGore.Editor.EditorTool
                 Tool tool;
                 try
                 {
-                    tool = (Tool)TypeFactory.GetTypeInstance(loadedType, this);
+                    tool = (Tool)TypeFactory.GetTypeInstance(e.LoadedType, this);
                 }
                 catch (Exception ex)
                 {
                     const string errmsg = "Failed to instantiate tool type `{0}`. Exception: {1}";
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, loadedType, ex);
-                    Debug.Fail(string.Format(errmsg, loadedType, ex));
+                        log.ErrorFormat(errmsg, e.LoadedType, ex);
+                    Debug.Fail(string.Format(errmsg, e.LoadedType, ex));
                     return;
                 }
 
-                Debug.Assert(tool.GetType() == loadedType);
+                Debug.Assert(tool.GetType() == e.LoadedType);
 
                 // Add the event hooks
                 SetToolListeners(tool, true);
@@ -447,7 +446,7 @@ namespace NetGore.Editor.EditorTool
                 // Add to the collection
                 try
                 {
-                    _tools.Add(loadedType, tool);
+                    _tools.Add(e.LoadedType, tool);
                 }
                 catch (Exception ex)
                 {
@@ -489,8 +488,8 @@ namespace NetGore.Editor.EditorTool
             {
                 const string errmsg = "Unexpected error while trying to load tool from type `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, loadedType, ex);
-                Debug.Fail(string.Format(errmsg, loadedType, ex));
+                    log.ErrorFormat(errmsg, e.LoadedType, ex);
+                Debug.Fail(string.Format(errmsg, e.LoadedType, ex));
             }
         }
 

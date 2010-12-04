@@ -8,8 +8,6 @@ using NetGore.IO;
 
 namespace NetGore.Features.NPCChat
 {
-    public delegate void EditorNPCChatConditionalCollectionItemHandler(EditorNPCChatConditionalCollectionItem sender);
-
     public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
         readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
@@ -75,7 +73,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollectionItem"/> has changed.
         /// </summary>
-        public event EditorNPCChatConditionalCollectionItemHandler Changed;
+        public event TypedEventHandler<EditorNPCChatConditionalCollectionItem> Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.
@@ -163,8 +161,7 @@ namespace NetGore.Features.NPCChat
             _parameters.Clear();
             _parameters.AddRange(newParameters);
 
-            if (Changed != null)
-                Changed(this);
+            Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -175,8 +172,7 @@ namespace NetGore.Features.NPCChat
         {
             _not = value;
 
-            if (Changed != null)
-                Changed(this);
+            Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -193,8 +189,7 @@ namespace NetGore.Features.NPCChat
             _parameters.Clear();
             _parameters.AddRange(parameters);
 
-            if (Changed != null)
-                Changed(this);
+            Changed.Raise(this,EventArgs.Empty);
         }
 
         /// <summary>
@@ -243,8 +238,7 @@ namespace NetGore.Features.NPCChat
 
             _parameters[index] = value;
 
-            if (Changed != null)
-                Changed(this);
+            Changed.Raise(this, EventArgs.Empty);
 
             return true;
         }

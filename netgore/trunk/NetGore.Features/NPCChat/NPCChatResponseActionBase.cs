@@ -120,18 +120,17 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Handles when a new type has been loaded into the <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
-        /// <param name="loadedType">Type that was loaded.</param>
-        /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        static void OnLoadTypeHandler(TypeFactory sender, TypeFactoryLoadedEventArgs e)
         {
-            var instance = (NPCChatResponseActionBase)typeFactory.GetTypeInstance(name);
+            var instance = (NPCChatResponseActionBase)sender.GetTypeInstance(e.Name);
 
             // Make sure the name is not already in use
             if (ContainsResponseAction(instance.Name))
             {
                 const string errmsg = "Could not add Type `{0}` - a response action named `{1}` already exists as Type `{2}`.";
-                var err = string.Format(errmsg, loadedType, instance.Name, _instances[instance.Name].GetType());
+                var err = string.Format(errmsg, e.LoadedType, instance.Name, _instances[instance.Name].GetType());
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
                 Debug.Fail(err);
@@ -142,7 +141,7 @@ namespace NetGore.Features.NPCChat
             _instances.Add(instance.Name, instance);
 
             if (log.IsDebugEnabled)
-                log.DebugFormat("Loaded NPC chat response action `{0}` from Type `{1}`.", instance.Name, loadedType);
+                log.DebugFormat("Loaded NPC chat response action `{0}` from Type `{1}`.", instance.Name, e.LoadedType);
         }
 
         /// <summary>

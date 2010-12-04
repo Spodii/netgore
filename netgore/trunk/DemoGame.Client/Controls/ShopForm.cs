@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
+using NetGore;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -12,13 +13,6 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
-    /// <summary>
-    /// Delegate for handling when the user wants to purchase an item from a shop.
-    /// </summary>
-    /// <param name="shopForm">The sender.</param>
-    /// <param name="slot">The slot containing the item the user wants to purchase.</param>
-    public delegate void ShopFormPurchaseHandler(ShopForm shopForm, ShopItemIndex slot);
-
     /// <summary>
     /// A <see cref="Form"/> that displays the contents of a shop.
     /// </summary>
@@ -67,7 +61,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a request has been made to purchase an item from the shop. 
         /// </summary>
-        public event ShopFormPurchaseHandler RequestPurchase;
+        public event TypedEventHandler<ShopForm, EventArgs<ShopItemIndex>> RequestPurchase;
 
         /// <summary>
         /// Gets the information for the current shop, or null if no shop is set.
@@ -136,7 +130,7 @@ namespace DemoGame.Client
             if (src.ItemInfo != null)
             {
                 if (RequestPurchase != null)
-                    RequestPurchase(this, src.Slot);
+                    RequestPurchase(this, EventArgsHelper.Create(src.Slot));
             }
         }
 

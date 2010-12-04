@@ -28,55 +28,6 @@ using log4net.Util;
 
 namespace log4net.Repository
 {
-
-    #region LoggerRepositoryShutdownEvent
-
-    /// <summary>
-    /// Delegate used to handle logger repository shutdown event notifications
-    /// </summary>
-    /// <param name="sender">The <see cref="ILoggerRepository"/> that is shutting down.</param>
-    /// <param name="e">Empty event args</param>
-    /// <remarks>
-    /// <para>
-    /// Delegate used to handle logger repository shutdown event notifications.
-    /// </para>
-    /// </remarks>
-    public delegate void LoggerRepositoryShutdownEventHandler(object sender, EventArgs e);
-
-    #endregion
-
-    #region LoggerRepositoryConfigurationResetEventHandler
-
-    /// <summary>
-    /// Delegate used to handle logger repository configuration reset event notifications
-    /// </summary>
-    /// <param name="sender">The <see cref="ILoggerRepository"/> that has had its configuration reset.</param>
-    /// <param name="e">Empty event args</param>
-    /// <remarks>
-    /// <para>
-    /// Delegate used to handle logger repository configuration reset event notifications.
-    /// </para>
-    /// </remarks>
-    public delegate void LoggerRepositoryConfigurationResetEventHandler(object sender, EventArgs e);
-
-    #endregion
-
-    #region LoggerRepositoryConfigurationChangedEventHandler
-
-    /// <summary>
-    /// Delegate used to handle event notifications for logger repository configuration changes.
-    /// </summary>
-    /// <param name="sender">The <see cref="ILoggerRepository"/> that has had its configuration changed.</param>
-    /// <param name="e">Empty event arguments.</param>
-    /// <remarks>
-    /// <para>
-    /// Delegate used to handle event notifications for logger repository configuration changes.
-    /// </para>
-    /// </remarks>
-    public delegate void LoggerRepositoryConfigurationChangedEventHandler(object sender, EventArgs e);
-
-    #endregion
-
     /// <summary>
     /// Interface implemented by logger repositories.
     /// </summary>
@@ -105,7 +56,7 @@ namespace log4net.Repository
         /// Event raised when the repository's configuration has been changed.
         /// </para>
         /// </remarks>
-        event LoggerRepositoryConfigurationChangedEventHandler ConfigurationChanged;
+        event EventHandler ConfigurationChanged;
 
         /// <summary>
         /// Event to notify that the repository has had its configuration reset.
@@ -119,7 +70,7 @@ namespace log4net.Repository
         /// reset to default.
         /// </para>
         /// </remarks>
-        event LoggerRepositoryConfigurationResetEventHandler ConfigurationReset;
+        event EventHandler ConfigurationReset;
 
         /// <summary>
         /// Event to notify that the repository has been shutdown.
@@ -132,7 +83,7 @@ namespace log4net.Repository
         /// Event raised when the repository has been shutdown.
         /// </para>
         /// </remarks>
-        event LoggerRepositoryShutdownEventHandler ShutdownEvent;
+        event EventHandler ShutdownEvent;
 
         /// <summary>
         /// Flag indicates if this repository has been configured.

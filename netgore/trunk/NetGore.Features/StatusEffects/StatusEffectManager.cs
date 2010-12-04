@@ -85,14 +85,13 @@ namespace NetGore.Features.StatusEffects
         /// Handles when a type is loaded into the <see cref="TypeFactory"/>.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="typeName">Name of the type.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffectType")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffects")]
-        void HandleLoadType(TypeFactory factory, Type type, string typeName)
+        void HandleLoadType(TypeFactory factory, TypeFactoryLoadedEventArgs e)
         {
             // Create the instance
-            var instance = (IStatusEffect<TStatType, TStatusEffectType>)TypeFactory.GetTypeInstance(type);
+            var instance = (IStatusEffect<TStatType, TStatusEffectType>)TypeFactory.GetTypeInstance(e.LoadedType);
 
             // Ensure we don't already have the StatusEffectType being handled
             if (_statusEffects.ContainsKey(instance.StatusEffectType))

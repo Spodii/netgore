@@ -111,7 +111,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="GrhData"/>'s texture has changed.
         /// </summary>
-        public event GrhDataChangeTextureHandler TextureChanged;
+        public event TypedEventHandler<GrhData, EventArgs<ContentAssetName>> TextureChanged;
 
         /// <summary>
         /// Gets or sets if this GrhData automatically finds the Size by using the whole source texture.
@@ -303,7 +303,7 @@ namespace NetGore.Graphics
             ValidateTexture();
 
             if (oldTextureName != null && TextureChanged != null)
-                TextureChanged(this, oldTextureName);
+                TextureChanged(this, EventArgsHelper.Create<ContentAssetName>(oldTextureName));
         }
 
         /// <summary>

@@ -85,7 +85,7 @@ namespace log4net.Core
             m_createWrapperHandler = createWrapperHandler;
 
             // Create the delegates for the event callbacks
-            m_shutdownHandler = new LoggerRepositoryShutdownEventHandler(ILoggerRepository_Shutdown);
+            m_shutdownHandler = new EventHandler(ILoggerRepository_Shutdown);
         }
 
         #endregion Public Instance Constructors
@@ -250,7 +250,7 @@ namespace log4net.Core
         /// <summary>
         /// Internal reference to the delegate used to register for repository shutdown events.
         /// </summary>
-        readonly LoggerRepositoryShutdownEventHandler m_shutdownHandler;
+        readonly EventHandler m_shutdownHandler;
 
         #endregion Private Instance Variables
     }

@@ -104,7 +104,7 @@ namespace NetGore.Graphics
                 _isForeground = value;
 
                 if (RenderLayerChanged != null)
-                    RenderLayerChanged(this, oldLayer);
+                    RenderLayerChanged(this, ValueChangedEventArgs.Create(oldLayer, MapRenderLayer));
             }
         }
 
@@ -217,7 +217,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.MapRenderLayer"/> property has changed.
         /// </summary>
-        public event MapRenderLayerChange RenderLayerChanged;
+        public event TypedEventHandler<IDrawable, ValueChangedEventArgs<MapRenderLayer>> RenderLayerChanged;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.

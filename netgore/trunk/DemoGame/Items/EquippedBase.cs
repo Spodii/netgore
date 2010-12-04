@@ -34,12 +34,12 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners when an item has been equipped.
         /// </summary>
-        public event EquippedEventHandler<T> Equipped;
+        public event TypedEventHandler<EquippedBase<T>, EquippedEventArgs<T>> Equipped;
 
         /// <summary>
         /// Notifies listeners when an item has been unequipped.
         /// </summary>
-        public event EquippedEventHandler<T> Unequipped;
+        public event TypedEventHandler<EquippedBase<T>, EquippedEventArgs<T>> Unequipped;
 
         /// <summary>
         /// Gets the item at the given <paramref name="slot"/>.
@@ -274,7 +274,7 @@ namespace DemoGame
                 OnEquipped(item, slot);
 
                 if (Equipped != null)
-                    Equipped(this, item, slot);
+                    Equipped(this, new EquippedEventArgs<T>(item, slot));
             }
             else
             {
@@ -295,7 +295,7 @@ namespace DemoGame
                 OnUnequipped(oldItem, slot);
 
                 if (Unequipped != null)
-                    Unequipped(this, oldItem, slot);
+                    Unequipped(this, new EquippedEventArgs<T>(oldItem, slot));
             }
 
             // Slot setting was successful (since we always aborted early with false if it wasn't)

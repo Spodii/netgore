@@ -223,19 +223,15 @@ namespace DemoGame.Server
         /// <summary>
         /// Handles the <see cref="BanningManager.AccountBanned"/> event.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="accountID">The account that was banned.</param>
-        /// <param name="length">How long the ban will last.</param>
-        /// <param name="reason">The reason for the ban.</param>
-        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
-        void BanningManager_AccountBanned(IBanningManager<AccountID> sender, AccountID accountID, TimeSpan length, string reason,
-                                          string issuedBy)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="BanningManagerAccountBannedEventArgs"/> instance containing the event data.</param>
+        void BanningManager_AccountBanned(IBanningManager<AccountID> sender, BanningManagerAccountBannedEventArgs<AccountID> e)
         {
             // If the user is online, disconnect them
 
             // Get the name of the users in the account since we have no decent way to look it up a character by AccountID in memory
             var q = DbController.GetQuery<SelectAccountCharacterNamesQuery>();
-            var accountChars = q.Execute(accountID);
+            var accountChars = q.Execute(e.AccountID);
 
             // Check for all of the users by their name and, if they are online, disconnect them after we confirm that their
             // account matches the accountID
@@ -249,10 +245,10 @@ namespace DemoGame.Server
                 if (acc == null)
                     continue;
 
-                if (acc.ID != accountID)
+                if (acc.ID != e.AccountID)
                     continue;
 
-                acc.Dispose(GameMessage.DisconnectedBanned, length.TotalMinutes, reason);
+                acc.Dispose(GameMessage.DisconnectedBanned, e.Length.TotalMinutes, e.Reason);
             }
         }
 

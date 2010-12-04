@@ -528,7 +528,7 @@ namespace NetGore.Editor.Grhs
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void tmrUpdate_Tick(object sender, EventArgs e)
         {
-            screen.InvokeDrawing(TickCount.Now);
+            screen.InvokeDrawing(sender, EventArgsHelper.Create(TickCount.Now));
         }
 
         /// <summary>

@@ -152,7 +152,7 @@ namespace DemoGame.Editor
             this.cmbEmitterType.Name = "cmbEmitterType";
             this.cmbEmitterType.Size = new System.Drawing.Size(183, 21);
             this.cmbEmitterType.TabIndex = 8;
-            this.cmbEmitterType.SelectedEmitterChanged += new NetGore.Editor.WinForms.ParticleEmitterComboBoxHandler(this.cmbEmitterType_SelectedEmitterChanged);
+            this.cmbEmitterType.SelectedEmitterChanged += this.cmbEmitterType_SelectedEmitterChanged;
             // 
             // label1
             // 

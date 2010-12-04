@@ -109,7 +109,12 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleCharInfosUpdated(AccountCharacterInfos sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void HandleCharInfosUpdated(AccountCharacterInfos sender, EventArgs e)
         {
             for (var i = 0; i < _charSlotControls.Length; i++)
             {

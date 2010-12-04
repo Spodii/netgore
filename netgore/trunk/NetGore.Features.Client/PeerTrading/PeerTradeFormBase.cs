@@ -61,12 +61,13 @@ namespace NetGore.Features.PeerTrading
         /// <summary>
         /// Notifies listeners when an item slot was clicked.
         /// </summary>
-        public event ItemSlotClickedEventHandler<TChar, TItem, TItemInfo> ItemSlotClicked;
+        public event TypedEventHandler<PeerTradeFormBase<TChar, TItem, TItemInfo>, ItemSlotClickedEventArgs> ItemSlotClicked;
 
         /// <summary>
         /// Notifies listeners when the <see cref="PeerTradeInfoHandler"/> property has changed.
         /// </summary>
-        public event PeerTradeInfoHandlerChangedEventHandler<TChar, TItem, TItemInfo> PeerTradeInfoHandlerChanged;
+        public event TypedEventHandler<PeerTradeFormBase<TChar, TItem, TItemInfo>, 
+            PeerTradeInfoHandlerChangedEventArgs<TChar, TItem, TItemInfo>> PeerTradeInfoHandlerChanged;
 
         /// <summary>
         /// Gets the <see cref="Button"/> used to accept the trade.
@@ -94,7 +95,7 @@ namespace NetGore.Features.PeerTrading
                 // Raise the event
                 OnPeerTradeInfoHandlerChanged(oldValue, value);
                 if (PeerTradeInfoHandlerChanged != null)
-                    PeerTradeInfoHandlerChanged(this, oldValue, value);
+                    PeerTradeInfoHandlerChanged(this, PeerTradeInfoHandlerChangedEventArgs.Create(oldValue, value));
             }
         }
 
@@ -154,7 +155,7 @@ namespace NetGore.Features.PeerTrading
         {
             OnItemSlotClicked(e, isSourceSide, slot);
             if (ItemSlotClicked != null)
-                ItemSlotClicked(this, e, isSourceSide, slot);
+                ItemSlotClicked(this, new ItemSlotClickedEventArgs(e, isSourceSide, slot));
         }
 
         /// <summary>

@@ -121,7 +121,6 @@
     <Compile Include="Controls\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\Screen Controls\MapScreenControlMapChangedEventHandler.cs" />
     <Compile Include="Controls\Screen Controls\ParticleEffectScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -169,7 +168,6 @@
     <Compile Include="Forms\Dockable\ParticleEditorForm.Designer.cs">
       <DependentUpon>ParticleEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Dockable\ParticleEditorFormPropertyChangedEventHandler.cs" />
     <Compile Include="Forms\InputNewMapIDForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,7 +187,6 @@
       <DependentUpon>SelectedMapObjectsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalState.cs" />
-    <Compile Include="GlobalStateTickEventHandler.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="GridAligner.cs" />
     <Compile Include="MainForm.cs">
@@ -208,8 +205,8 @@
     <Compile Include="Editor-Specific Derived Classes\EditorDynamicEntityFactory.cs" />
     <Compile Include="Map Helpers\MapDrawFilterHelper.cs" />
     <Compile Include="Map Helpers\MapDrawFilterHelperCollection.cs" />
-    <Compile Include="Map Helpers\MapDrawFilterHelperCollectionEventHandler.cs" />
-    <Compile Include="Map Helpers\MapDrawFilterHelperCollectionRenamedEventHandler.cs" />
+    <Compile Include="Map Helpers\EventArgs\MapDrawFilterHelperCollectionEventArgs.cs" />
+    <Compile Include="Map Helpers\EventArgs\MapDrawFilterHelperCollectionRenameEventArgs.cs" />
     <Compile Include="Map Helpers\MapHelper.cs" />
     <Compile Include="Map Helpers\MapPreviewer.cs" />
     <Compile Include="Map Helpers\MapSpawnDrawer.cs" />

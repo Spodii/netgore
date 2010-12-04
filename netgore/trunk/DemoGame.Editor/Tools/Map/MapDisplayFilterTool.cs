@@ -50,7 +50,7 @@ namespace DemoGame.Editor.Tools
             // haven't added the event hooks yet)
             foreach (var f in _filterCollection.Filters)
             {
-                _filterCollection_Added(_filterCollection, f);
+                _filterCollection_Added(_filterCollection, new MapDrawFilterHelperCollectionEventArgs(f));
             }
 
             // Listen to the filter collection events
@@ -180,61 +180,75 @@ namespace DemoGame.Editor.Tools
             writer.WriteEndNode(_filterCollectionNodeName);
         }
 
-        void _filterCollection_Added(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
+        /// <summary>
+        /// Handles hwen a filter is added to the collection.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MapDrawFilterHelperCollectionEventArgs"/> instance containing the event data.</param>
+        void _filterCollection_Added(MapDrawFilterHelperCollection sender, MapDrawFilterHelperCollectionEventArgs e)
         {
             // Add the new filter to the ToolBarControl's DropDownItems
 
-            var ftsi = new FilterToolStripItem(filter.Value, filter.Key);
+            var ftsi = new FilterToolStripItem(e.Filter, e.FilterName);
             ftsi.CheckedChanged += ftsi_CheckedChanged;
 
-            _tsFilters.Add(filter.Value, ftsi);
+            _tsFilters.Add(e.Filter, ftsi);
 
             var s = ToolBarControl.ControlSettings.AsSplitButtonSettings();
             s.DropDownItems.Insert(0, ftsi);
         }
 
-        void _filterCollection_Removed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
+        /// <summary>
+        /// Handles when a filter is removed from the collection.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MapDrawFilterHelperCollectionEventArgs"/> instance containing the event data.</param>
+        void _filterCollection_Removed(MapDrawFilterHelperCollection sender, MapDrawFilterHelperCollectionEventArgs e)
         {
             // Remove the filter from the ToolBarControl's DropDownItems
 
             FilterToolStripItem ftsi;
-            if (!_tsFilters.TryGetValue(filter.Value, out ftsi))
+            if (!_tsFilters.TryGetValue(e.Filter, out ftsi))
             {
                 const string errmsg = "Failed to find FilterToolStripItem for filter `{0}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, filter.Value);
-                Debug.Fail(string.Format(errmsg, filter.Value));
+                    log.ErrorFormat(errmsg, e.Filter);
+                Debug.Fail(string.Format(errmsg, e.Filter));
                 return;
             }
 
-            Debug.Assert(ftsi.Filter == filter.Value);
+            Debug.Assert(ftsi.Filter == e.Filter);
 
-            _tsFilters.Remove(filter.Value);
+            _tsFilters.Remove(e.Filter);
             ftsi.Dispose();
 
             // If the filter we just got rid of was the active one, set the active filter to null
-            if (filter.Value == _currentFilter)
+            if (e.Filter == _currentFilter)
                 _currentFilter = null;
         }
 
-        void _filterCollection_Renamed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter,
-                                       string oldName)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MapDrawFilterHelperCollectionRenameEventArgs"/> instance containing the event data.</param>
+        void _filterCollection_Renamed(MapDrawFilterHelperCollection sender, MapDrawFilterHelperCollectionRenameEventArgs e)
         {
             // Update the displayed name
 
             FilterToolStripItem ftsi;
-            if (!_tsFilters.TryGetValue(filter.Value, out ftsi))
+            if (!_tsFilters.TryGetValue(e.Filter, out ftsi))
             {
                 const string errmsg = "Failed to find FilterToolStripItem for filter `{0}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, filter.Value);
-                Debug.Fail(string.Format(errmsg, filter.Value));
+                    log.ErrorFormat(errmsg, e.Filter);
+                Debug.Fail(string.Format(errmsg, e.Filter));
                 return;
             }
 
-            Debug.Assert(ftsi.Filter == filter.Value);
+            Debug.Assert(ftsi.Filter == e.Filter);
 
-            ftsi.FilterNameChanged(filter.Key);
+            ftsi.FilterNameChanged(e.FilterName);
         }
 
         /// <summary>

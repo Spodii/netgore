@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NetGore.Graphics.ParticleEngine;
 
@@ -55,7 +56,7 @@ namespace NetGore.Graphics
         /// Notifies listeners when this <see cref="ITemporaryMapEffect"/> has died. This is only raised once per
         /// <see cref="ITemporaryMapEffect"/>, and is raised when <see cref="ITemporaryMapEffect.IsAlive"/> is set to false.
         /// </summary>
-        public event TemporaryMapEffectDiedHandler Died;
+        public event TypedEventHandler<ITemporaryMapEffect> Died;
 
         /// <summary>
         /// Gets if this map effect is still alive. When false, it will be removed from the map. Once set to false, this
@@ -105,8 +106,7 @@ namespace NetGore.Graphics
 
             _isAlive = false;
 
-            if (Died != null)
-                Died(this);
+            Died.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

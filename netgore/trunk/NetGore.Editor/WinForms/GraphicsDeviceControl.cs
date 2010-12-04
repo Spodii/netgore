@@ -155,8 +155,9 @@ namespace NetGore.Editor.WinForms
         /// <summary>
         /// Invokes this control to draw itself.
         /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        public void InvokeDrawing(TickCount currentTime)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.EventArgs{TickCount}"/> instance containing the event data.</param>
+        public void InvokeDrawing(object sender, EventArgs<TickCount> e)
         {
             if (!Visible || DesignMode)
                 return;
@@ -167,7 +168,7 @@ namespace NetGore.Editor.WinForms
                 if (_lastDrawError != null)
                     return;
 
-                HandleDraw(currentTime);
+                HandleDraw(e.Item1);
                 EndDraw();
             }
             catch (Exception ex)

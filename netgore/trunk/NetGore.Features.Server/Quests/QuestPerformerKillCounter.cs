@@ -18,7 +18,8 @@ namespace NetGore.Features.Quests
         /// if, when the target was killed, the kill count was less than the required kill count. As a result, the
         /// kill count will never be zero.
         /// </summary>
-        event QuestPerformerKillCounterKillIncrementEventHandler<TCharacter, TKillID> KillCountIncremented;
+        event TypedEventHandler<IQuestPerformerKillCounter<TCharacter, TKillID>, 
+            QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>> KillCountIncremented;
 
         /// <summary>
         /// Gets the quest performer that this collection belongs to.

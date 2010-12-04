@@ -142,7 +142,7 @@ namespace DemoGame.Editor
             Camera.CenterOn(Vector2.Zero);
 
             var t = new Timer { Interval = 1000 / 60 };
-            t.Tick += (EventHandler)((x, y) => InvokeDrawing(TickCount.Now));
+            t.Tick += (EventHandler)((x, y) => InvokeDrawing(this, EventArgsHelper.Create(TickCount.Now)));
             t.Start();
         }
 

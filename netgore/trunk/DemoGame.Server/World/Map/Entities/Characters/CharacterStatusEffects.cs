@@ -10,14 +10,6 @@ using NetGore.Stats;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Delegate for handling when an ActiveStatusEffect is added to or removed from a CharacterStatusEffects. 
-    /// </summary>
-    /// <param name="characterStatusEffects">CharacterStatusEffects the event took place on.</param>
-    /// <param name="activeStatusEffect">The ActiveStatusEffect that was added or removed.</param>
-    public delegate void CharacterStatusEffectsAddRemoveHandler(
-        CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect);
-
-    /// <summary>
     /// A collection of <see cref="ActiveStatusEffect"/>s that are currently applied to a single <see cref="Character"/>.
     /// </summary>
     public abstract class CharacterStatusEffects : IEnumerable<ActiveStatusEffect>, IGetTime, IModStatContainer<StatType>,
@@ -57,12 +49,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when an <see cref="ActiveStatusEffect"/> is added to this collection.
         /// </summary>
-        public event CharacterStatusEffectsAddRemoveHandler Added;
+        public event TypedEventHandler<CharacterStatusEffects, EventArgs<ActiveStatusEffect>> Added;
 
         /// <summary>
         /// Notifies listeners when an <see cref="ActiveStatusEffect"/> is removed from this collection.
         /// </summary>
-        public event CharacterStatusEffectsAddRemoveHandler Removed;
+        public event TypedEventHandler<CharacterStatusEffects, EventArgs<ActiveStatusEffect>> Removed;
 
         /// <summary>
         /// Gets the <see cref="Character"/> that this collection belongs to.
@@ -109,7 +101,7 @@ namespace DemoGame.Server
             statusEffect.AddBonusesTo(_modStats);
 
             if (Added != null)
-                Added(this, statusEffect);
+                Added(this, EventArgsHelper.Create(statusEffect));
 
             AssertModStatsAreCorrect();
         }
@@ -123,7 +115,7 @@ namespace DemoGame.Server
             statusEffect.SubtractBonusesFrom(_modStats);
 
             if (Removed != null)
-                Removed(this, statusEffect);
+                Removed(this, EventArgsHelper.Create(statusEffect));
 
             AssertModStatsAreCorrect();
         }

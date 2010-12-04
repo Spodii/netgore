@@ -26,9 +26,7 @@ namespace NetGore.World
         /// </summary>
         protected DynamicEntityFactoryBase()
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             var filter = GetTypeFilterCreator();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler);
         }
@@ -46,13 +44,12 @@ namespace NetGore.World
         /// <summary>
         /// Handles when a new type has been loaded into the <see cref="DynamicEntityFactoryBase"/>.
         /// </summary>
-        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
-        /// <param name="loadedType"><see cref="Type"/> that was loaded.</param>
-        /// <param name="name">Name of the Type.</param>
-        protected virtual void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
+        /// <param name="typeFactory">The type factory.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnLoadTypeHandler(TypeFactory typeFactory, TypeFactoryLoadedEventArgs e)
         {
             if (log.IsDebugEnabled)
-                log.DebugFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", name, loadedType);
+                log.DebugFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", e.Name, e.LoadedType);
         }
 
         #region IDynamicEntityFactory Members

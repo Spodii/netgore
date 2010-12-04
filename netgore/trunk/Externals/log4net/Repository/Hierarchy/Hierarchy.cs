@@ -28,20 +28,7 @@ using log4net.Util;
 
 namespace log4net.Repository.Hierarchy
 {
-
     #region LoggerCreationEvent
-
-    /// <summary>
-    /// Delegate used to handle logger creation event notifications.
-    /// </summary>
-    /// <param name="sender">The <see cref="Hierarchy"/> in which the <see cref="Logger"/> has been created.</param>
-    /// <param name="e">The <see cref="LoggerCreationEventArgs"/> event args that hold the <see cref="Logger"/> instance that has been created.</param>
-    /// <remarks>
-    /// <para>
-    /// Delegate used to handle logger creation event notifications.
-    /// </para>
-    /// </remarks>
-    public delegate void LoggerCreationEventHandler(object sender, LoggerCreationEventArgs e);
 
     /// <summary>
     /// Provides data for the <see cref="Hierarchy.LoggerCreatedEvent"/> event.
@@ -134,7 +121,7 @@ namespace log4net.Repository.Hierarchy
         /// Event raised when a logger is created.
         /// </para>
         /// </remarks>
-        public event LoggerCreationEventHandler LoggerCreatedEvent
+        public event EventHandler<LoggerCreationEventArgs> LoggerCreatedEvent
         {
             add { m_loggerCreatedEvent += value; }
             remove { m_loggerCreatedEvent -= value; }
@@ -1052,7 +1039,7 @@ namespace log4net.Repository.Hierarchy
 
         bool m_emittedNoAppenderWarning = false;
         Logger m_root;
-        event LoggerCreationEventHandler m_loggerCreatedEvent;
+        event EventHandler<LoggerCreationEventArgs> m_loggerCreatedEvent;
 
         #endregion Private Instance Fields
     }

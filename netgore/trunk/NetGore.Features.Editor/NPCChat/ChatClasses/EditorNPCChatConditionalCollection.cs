@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.Features.NPCChat.Conditionals;
@@ -54,7 +55,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Notifies listeners when this <see cref="EditorNPCChatConditionalCollection"/> has changed.
         /// </summary>
-        public event EditorNPCChatConditionalCollectionChangeHandler Changed;
+        public event TypedEventHandler<EditorNPCChatConditionalCollection> Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType
@@ -122,8 +123,7 @@ namespace NetGore.Features.NPCChat
         {
             _evaluationType = value;
 
-            if (Changed != null)
-                Changed(this);
+            Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -138,8 +138,7 @@ namespace NetGore.Features.NPCChat
             _items.Clear();
             _items.AddRange(items.Cast<EditorNPCChatConditionalCollectionItem>());
 
-            if (Changed != null)
-                Changed(this);
+            Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -174,8 +173,7 @@ namespace NetGore.Features.NPCChat
 
             _items.Add(item);
 
-            if (Changed != null)
-                Changed(this);
+            Changed.Raise(this, EventArgs.Empty);
 
             return true;
         }
@@ -192,8 +190,10 @@ namespace NetGore.Features.NPCChat
 
             var success = _items.Remove(item);
 
-            if (success && Changed != null)
-                Changed(this);
+            if (success)
+            {
+                Changed.Raise(this, EventArgs.Empty);
+            }
 
             return success;
         }

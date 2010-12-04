@@ -95,15 +95,13 @@
   <ItemGroup>
     <Compile Include="Banning\BanManagerFailReason.cs" />
     <Compile Include="Banning\BanManagerFailReasonExtensions.cs" />
-    <Compile Include="Banning\BanningManagerAccountBannedEventHandler.cs" />
+    <Compile Include="Banning\BanningManagerAccountBannedEventArgs.cs" />
     <Compile Include="Banning\BanningManagerBase.cs" />
     <Compile Include="Banning\IBanningManager.cs" />
     <Compile Include="Banning\StoredProcGetReasons.cs" />
     <Compile Include="Banning\StoredProcIsBanned.cs" />
     <Compile Include="Groups\Group.cs" />
     <Compile Include="Groups\GroupManager.cs" />
-    <Compile Include="Groups\Event Handlers\IGroupManagerEventHandler.cs" />
-    <Compile Include="Groups\Event Handlers\IGroupManagerGroupEventHandler.cs" />
     <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="Groups\IGroupManager.cs" />
     <Compile Include="Guilds\DbClassGeneratorSettings.cs" />
@@ -131,12 +129,10 @@
     <Compile Include="Quests\IQuestReward.cs" />
     <Compile Include="Quests\IQuestRewardCollection.cs" />
     <Compile Include="Quests\QuestCollection.cs" />
-    <Compile Include="Quests\Event Handlers\QuestPerformerEventHandler.cs" />
-    <Compile Include="Quests\Event Handlers\QuestPerformerQuestEventHandler.cs" />
     <Compile Include="Quests\QuestHelper.cs" />
     <Compile Include="Quests\QuestPerformerKillCounter.cs" />
     <Compile Include="Quests\QuestPerformerKillCounterBase.cs" />
-    <Compile Include="Quests\Event Handlers\QuestPerformerKillCounterKillIncrementEventHandler.cs" />
+    <Compile Include="Quests\QuestPerformerKillCounterKillIncrementEventArgs.cs" />
     <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
     <Compile Include="Quests\QuestRequirementCollection.cs" />
     <Compile Include="Quests\QuestRewardCollection.cs" />

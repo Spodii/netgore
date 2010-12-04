@@ -38,7 +38,7 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when the <see cref="GuildInfoFormBase.GuildInfo"/> value has changed.
         /// </summary>
-        public event GuildInfoFormBaseChangeGuildInfoEventHandler GuildInfoChanged;
+        public event TypedEventHandler<GuildInfoFormBase, ValueChangedEventArgs<UserGuildInformation>> GuildInfoChanged;
 
         /// <summary>
         /// Gets or sets the guild information source.
@@ -58,7 +58,7 @@ namespace NetGore.Features.Guilds
                 OnGuildInfoChanged(_guildInfo, old);
 
                 if (GuildInfoChanged != null)
-                    GuildInfoChanged(this, _guildInfo, old);
+                    GuildInfoChanged(this, ValueChangedEventArgs.Create(_guildInfo, old));
             }
         }
 
