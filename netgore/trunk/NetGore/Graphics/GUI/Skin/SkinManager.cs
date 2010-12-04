@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -179,7 +181,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the active skin has changed.
         /// </summary>
-        public event SkinChangeEventHandler SkinChanged;
+        public event TypedEventHandler<ISkinManager, ValueChangedEventArgs<string>> SkinChanged;
 
         /// <summary>
         /// Gets or sets the name of the currently active skin.
@@ -214,7 +216,7 @@ namespace NetGore.Graphics.GUI
 
                 // Only raise the change event if the skin actually changed, not the skin was just set from nothing
                 if (oldSkin != null && SkinChanged != null)
-                    SkinChanged(_currentSkin, oldSkin);
+                    SkinChanged(this, new ValueChangedEventArgs<string>(oldSkin,_currentSkin));
             }
         }
 
@@ -363,17 +365,23 @@ namespace NetGore.Graphics.GUI
             // Add the sprite to the cache, even if it is null
             try
             {
-                _spriteCache.Add(key, sprite);
+                if (sprite != null)
+                    _spriteCache.Add(key, sprite);
             }
             catch (ArgumentException ex)
             {
-                Debug.Fail(
-                    "Key already exists. Multi-threading conflict? This should never happen, but its likely not critical." + ex);
+                const string errmsg = 
+                    "Key `{0}` already exists. Multi-threading conflict? This should never happen, but its likely not critical. Exception: {1}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, key, ex);
+                Debug.Fail(string.Format(errmsg, key, ex));
             }
 
             // Return the sprite
             return sprite;
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.

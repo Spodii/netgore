@@ -201,18 +201,18 @@ namespace NetGore.Graphics
         /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.
         /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
         /// </summary>
-        public event IDrawableDrawEventHandler AfterDraw;
+        public event TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> AfterDraw;
 
         /// <summary>
         /// Notifies listeners immediately before this <see cref="IDrawable"/> is drawn.
         /// This event will be raised even if <see cref="IDrawable.IsVisible"/> is false.
         /// </summary>
-        public event IDrawableDrawEventHandler BeforeDraw;
+        public event TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> BeforeDraw;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.Color"/> property has changed.
         /// </summary>
-        public event IDrawableEventHandler ColorChanged;
+        public event TypedEventHandler<IDrawable> ColorChanged;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.MapRenderLayer"/> property has changed.
@@ -222,7 +222,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when the <see cref="IDrawable.IsVisible"/> property has changed.
         /// </summary>
-        public event IDrawableEventHandler VisibleChanged;
+        public event TypedEventHandler<IDrawable> VisibleChanged;
 
         /// <summary>
         /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
@@ -246,7 +246,7 @@ namespace NetGore.Graphics
                 _color = value;
 
                 if (ColorChanged != null)
-                    ColorChanged(this);
+                    ColorChanged(this, EventArgs.Empty);
             }
         }
 
@@ -266,7 +266,7 @@ namespace NetGore.Graphics
                 _isVisible = value;
 
                 if (VisibleChanged != null)
-                    VisibleChanged(this);
+                    VisibleChanged(this, EventArgs.Empty);
             }
         }
 
@@ -318,13 +318,13 @@ namespace NetGore.Graphics
         public void Draw(ISpriteBatch sb)
         {
             if (BeforeDraw != null)
-                BeforeDraw(this, sb);
+                BeforeDraw(this, EventArgsHelper.Create(sb));
 
             if (IsVisible)
                 HandleDrawing(sb);
 
             if (AfterDraw != null)
-                AfterDraw(this, sb);
+                AfterDraw(this, EventArgsHelper.Create(sb));
         }
 
         /// <summary>

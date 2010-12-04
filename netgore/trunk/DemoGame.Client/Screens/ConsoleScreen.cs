@@ -161,7 +161,8 @@ namespace DemoGame.Client
         /// Handles when the <see cref="ScreenManager"/> updates.
         /// </summary>
         /// <param name="screenManager">The screen manager.</param>
-        void ScreenManager_Updated(IScreenManager screenManager)
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void ScreenManager_Updated(IScreenManager screenManager, EventArgs e)
         {
             // The logger we use to grab log messages and output to the console will continue to queue messages
             // indefinitely until it is cleared. Because of this, we can't just flush the log by overriding
@@ -185,9 +186,9 @@ namespace DemoGame.Client
             // Ensure there are events
             if (events != null && events.Length > 0)
             {
-                foreach (var e in events)
+                foreach (var ev in events)
                 {
-                    var styledText = new StyledText(e.RenderedMessage, e.Level.GetColor());
+                    var styledText = new StyledText(ev.RenderedMessage, ev.Level.GetColor());
                     _txtOutput.AppendLine(styledText);
                 }
             }

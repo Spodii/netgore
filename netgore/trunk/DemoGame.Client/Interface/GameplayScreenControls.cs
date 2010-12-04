@@ -99,27 +99,27 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.PickUp, _minPickupRate, CanUserMove, HandleGameControl_PickUp);
 
             CreateAndAdd(GameControlsKeys.EmoteEllipsis, _minEmoteRate, () => true,
-                x => HandleGameControl_Emote(Emoticon.Ellipsis));
+                (x,e) => HandleGameControl_Emote(Emoticon.Ellipsis));
             CreateAndAdd(GameControlsKeys.EmoteExclamation, _minEmoteRate, () => true,
-                x => HandleGameControl_Emote(Emoticon.Exclamation));
+                (x, e) => HandleGameControl_Emote(Emoticon.Exclamation));
             CreateAndAdd(GameControlsKeys.EmoteHeartbroken, _minEmoteRate, () => true,
-                x => HandleGameControl_Emote(Emoticon.Heartbroken));
-            CreateAndAdd(GameControlsKeys.EmoteHearts, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Hearts));
-            CreateAndAdd(GameControlsKeys.EmoteMeat, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
+                (x, e) => HandleGameControl_Emote(Emoticon.Heartbroken));
+            CreateAndAdd(GameControlsKeys.EmoteHearts, _minEmoteRate, () => true, (x, e) => HandleGameControl_Emote(Emoticon.Hearts));
+            CreateAndAdd(GameControlsKeys.EmoteMeat, _minEmoteRate, () => true, (x, e) => HandleGameControl_Emote(Emoticon.Meat));
             CreateAndAdd(GameControlsKeys.EmoteQuestion, _minEmoteRate, () => true,
-                x => HandleGameControl_Emote(Emoticon.Question));
-            CreateAndAdd(GameControlsKeys.EmoteSweat, _minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Sweat));
+                (x, e) => HandleGameControl_Emote(Emoticon.Question));
+            CreateAndAdd(GameControlsKeys.EmoteSweat, _minEmoteRate, () => true, (x, e) => HandleGameControl_Emote(Emoticon.Sweat));
 
-            CreateAndAdd(GameControlsKeys.QuickBarItem0, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(0));
-            CreateAndAdd(GameControlsKeys.QuickBarItem1, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(1));
-            CreateAndAdd(GameControlsKeys.QuickBarItem2, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(2));
-            CreateAndAdd(GameControlsKeys.QuickBarItem3, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(3));
-            CreateAndAdd(GameControlsKeys.QuickBarItem4, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(4));
-            CreateAndAdd(GameControlsKeys.QuickBarItem5, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(5));
-            CreateAndAdd(GameControlsKeys.QuickBarItem6, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(6));
-            CreateAndAdd(GameControlsKeys.QuickBarItem7, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(7));
-            CreateAndAdd(GameControlsKeys.QuickBarItem8, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(8));
-            CreateAndAdd(GameControlsKeys.QuickBarItem9, _minQuickBarRate, () => true, x => HandleGameControl_QuickBar(9));
+            CreateAndAdd(GameControlsKeys.QuickBarItem0, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(0));
+            CreateAndAdd(GameControlsKeys.QuickBarItem1, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(1));
+            CreateAndAdd(GameControlsKeys.QuickBarItem2, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(2));
+            CreateAndAdd(GameControlsKeys.QuickBarItem3, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(3));
+            CreateAndAdd(GameControlsKeys.QuickBarItem4, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(4));
+            CreateAndAdd(GameControlsKeys.QuickBarItem5, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(5));
+            CreateAndAdd(GameControlsKeys.QuickBarItem6, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(6));
+            CreateAndAdd(GameControlsKeys.QuickBarItem7, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(7));
+            CreateAndAdd(GameControlsKeys.QuickBarItem8, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(8));
+            CreateAndAdd(GameControlsKeys.QuickBarItem9, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(9));
 
             // Create the controls specific to a perspective
             CreateControlsForPerspective();
@@ -143,7 +143,7 @@ namespace DemoGame.Client
             return validShopOwners.MinElement(x => x.GetDistance(source));
         }
 
-        void HandleGameControl_Attack(GameControl sender)
+        void HandleGameControl_Attack(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.Attack(TargetIndex))
             {
@@ -159,7 +159,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_MoveLeft(GameControl sender)
+        void HandleGameControl_MoveLeft(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.MoveLeft())
             {
@@ -167,7 +167,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_MoveRight(GameControl sender)
+        void HandleGameControl_MoveRight(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.MoveRight())
             {
@@ -175,7 +175,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_MoveStop(GameControl sender)
+        void HandleGameControl_MoveStop(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.MoveStop())
             {
@@ -183,7 +183,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_PickUp(GameControl sender)
+        void HandleGameControl_PickUp(GameControl sender, EventArgs e)
         {
             var pickupItem = Map.Spatial.Get<ItemEntity>(GameData.GetPickupArea(UserChar));
             if (pickupItem == null)
@@ -200,7 +200,7 @@ namespace DemoGame.Client
             GameplayScreen.QuickBarForm.UseSlot(slot);
         }
 
-        void HandleGameControl_Shop(GameControl sender)
+        void HandleGameControl_Shop(GameControl sender, EventArgs e)
         {
             var shopOwner = GetClosestValidShopOwner(UserChar);
             if (shopOwner == null)
@@ -212,7 +212,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_TalkToNPC(GameControl sender)
+        void HandleGameControl_TalkToNPC(GameControl sender, EventArgs e)
         {
             var r = UserChar.ToRectangle(GameData.MaxNPCChatDistance);
             CharacterEntity npc = Map.Spatial.Get<Character>(r, x => x.HasChatDialog || !x.ProvidedQuests.IsEmpty());
@@ -225,7 +225,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_Use(GameControl sender)
+        void HandleGameControl_Use(GameControl sender, EventArgs e)
         {
             var useEntity = Map.Spatial.Get<DynamicEntity>(UserChar.ToRectangle(), UsableEntityFilter);
             if (useEntity == null)

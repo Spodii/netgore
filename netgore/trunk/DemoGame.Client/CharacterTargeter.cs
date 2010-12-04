@@ -14,11 +14,11 @@ namespace DemoGame.Client
     /// </summary>
     public class CharacterTargeter
     {
-        readonly IDrawableDrawEventHandler _mouseOverAfterDrawHandler;
-        readonly IDrawableDrawEventHandler _mouseOverBeforeDrawHandler;
+        readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _mouseOverAfterDrawHandler;
+        readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _mouseOverBeforeDrawHandler;
         readonly Color _mouseOverColor = new Color(150, 255, 150, 255);
-        readonly IDrawableDrawEventHandler _targetAfterDrawHandler;
-        readonly IDrawableDrawEventHandler _targetBeforeDrawHandler;
+        readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _targetAfterDrawHandler;
+        readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _targetBeforeDrawHandler;
         readonly Color _targetColor = new Color(0, 255, 0, 255);
         readonly World _world;
 
@@ -136,7 +136,7 @@ namespace DemoGame.Client
             get { return _world; }
         }
 
-        void MouseOverCharacter_AfterDraw(IDrawable sender, ISpriteBatch sb)
+        void MouseOverCharacter_AfterDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
         {
             if (sender == TargetCharacter)
                 return;
@@ -144,7 +144,7 @@ namespace DemoGame.Client
             sender.Color = _oldMouseOverColor;
         }
 
-        void MouseOverCharacter_BeforeDraw(IDrawable sender, ISpriteBatch sb)
+        void MouseOverCharacter_BeforeDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
         {
             if (sender == TargetCharacter)
                 return;
@@ -153,12 +153,12 @@ namespace DemoGame.Client
             sender.Color = _mouseOverColor;
         }
 
-        void TargetCharacter_AfterDraw(IDrawable sender, ISpriteBatch sb)
+        void TargetCharacter_AfterDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
         {
             sender.Color = _oldTargetColor;
         }
 
-        void TargetCharacter_BeforeDraw(IDrawable sender, ISpriteBatch sb)
+        void TargetCharacter_BeforeDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
         {
             _oldTargetColor = sender.Color;
             sender.Color = _targetColor;

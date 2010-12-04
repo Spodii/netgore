@@ -13,7 +13,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Notifies listeners when the active skin has changed.
         /// </summary>
-        event SkinChangeEventHandler SkinChanged;
+        event TypedEventHandler<ISkinManager, ValueChangedEventArgs<string>> SkinChanged;
 
         /// <summary>
         /// Gets or sets the name of the currently active skin.
