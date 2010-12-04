@@ -487,72 +487,72 @@ namespace NetGore.Graphics
         /// <summary>
         /// Event handler for the Closed event.
         /// </summary>
-        public event EventHandler Closed = null;
+        public event TypedEventHandler<IGameContainer> Closed = null;
 
         /// <summary>
         /// Event handler for the GainedFocus event.
         /// </summary>
-        public event EventHandler GainedFocus = null;
+        public event TypedEventHandler<IGameContainer> GainedFocus = null;
 
         /// <summary>
         /// Event handler for the JoyButtonPressed event.
         /// </summary>
-        public event EventHandler<JoyButtonEventArgs> JoyButtonPressed = null;
+        public event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonPressed = null;
 
         /// <summary>
         /// Event handler for the JoyButtonReleased event.
         /// </summary>
-        public event EventHandler<JoyButtonEventArgs> JoyButtonReleased = null;
+        public event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonReleased = null;
 
         /// <summary>
         /// Event handler for the JoyMoved event.
         /// </summary>
-        public event EventHandler<JoyMoveEventArgs> JoyMoved = null;
+        public event TypedEventHandler<IGameContainer, JoyMoveEventArgs> JoyMoved = null;
 
         /// <summary>
         /// Event handler for the KeyPressed event.
         /// </summary>
-        public event EventHandler<KeyEventArgs> KeyPressed = null;
+        public event TypedEventHandler<IGameContainer, KeyEventArgs> KeyPressed = null;
 
         /// <summary>
         /// Event handler for the KeyReleased event.
         /// </summary>
-        public event EventHandler<KeyEventArgs> KeyReleased = null;
+        public event TypedEventHandler<IGameContainer, KeyEventArgs> KeyReleased = null;
 
         /// <summary>
         /// Event handler for the LostFocus event.
         /// </summary>
-        public event EventHandler LostFocus = null;
+        public event TypedEventHandler<IGameContainer> LostFocus = null;
 
         /// <summary>
         /// Event handler for the MouseButtonPressed event.
         /// </summary>
-        public event EventHandler<MouseButtonEventArgs> MouseButtonPressed = null;
+        public event TypedEventHandler<IGameContainer, MouseButtonEventArgs> MouseButtonPressed = null;
 
         /// <summary>
         /// Event handler for the MouseButtonReleased event.
         /// </summary>
-        public event EventHandler<MouseButtonEventArgs> MouseButtonReleased = null;
+        public event TypedEventHandler<IGameContainer, MouseButtonEventArgs> MouseButtonReleased = null;
 
         /// <summary>
         /// Event handler for the MouseEntered event.
         /// </summary>
-        public event EventHandler MouseEntered = null;
+        public event TypedEventHandler<IGameContainer> MouseEntered = null;
 
         /// <summary>
         /// Event handler for the MouseLeft event.
         /// </summary>
-        public event EventHandler MouseLeft = null;
+        public event TypedEventHandler<IGameContainer> MouseLeft = null;
 
         /// <summary>
         /// Event handler for the MouseMoved event.
         /// </summary>
-        public event EventHandler<MouseMoveEventArgs> MouseMoved = null;
+        public event TypedEventHandler<IGameContainer, MouseMoveEventArgs> MouseMoved = null;
 
         /// <summary>
         /// Event handler for the MouseWheelMoved event.
         /// </summary>
-        public event EventHandler<MouseWheelEventArgs> MouseWheelMoved = null;
+        public event TypedEventHandler<IGameContainer, MouseWheelEventArgs> MouseWheelMoved = null;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IGameContainer.RenderWindow"/> has changed.
@@ -562,12 +562,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Event handler for the Resized event.
         /// </summary>
-        public event EventHandler<SizeEventArgs> Resized = null;
+        public event TypedEventHandler<IGameContainer, SizeEventArgs> Resized = null;
 
         /// <summary>
         /// Event handler for the TextEntered event.
         /// </summary>
-        public event EventHandler<TextEventArgs> TextEntered = null;
+        public event TypedEventHandler<IGameContainer, TextEventArgs> TextEntered = null;
 
         /// <summary>
         /// Gets the resolution to use while in fullscreen mode.

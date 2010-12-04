@@ -13,72 +13,72 @@ namespace NetGore.Graphics
         /// <summary>
         /// Event handler for the Closed event.
         /// </summary>
-        event EventHandler Closed;
+        event TypedEventHandler<IGameContainer> Closed;
 
         /// <summary>
         /// Event handler for the GainedFocus event.
         /// </summary>
-        event EventHandler GainedFocus;
+        event TypedEventHandler<IGameContainer> GainedFocus;
 
         /// <summary>
         /// Event handler for the JoyButtonPressed event.
         /// </summary>
-        event EventHandler<JoyButtonEventArgs> JoyButtonPressed;
+        event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonPressed;
 
         /// <summary>
         /// Event handler for the JoyButtonReleased event.
         /// </summary>
-        event EventHandler<JoyButtonEventArgs> JoyButtonReleased;
+        event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonReleased;
 
         /// <summary>
         /// Event handler for the JoyMoved event.
         /// </summary>
-        event EventHandler<JoyMoveEventArgs> JoyMoved;
+        event TypedEventHandler<IGameContainer, JoyMoveEventArgs> JoyMoved;
 
         /// <summary>
         /// Event handler for the KeyPressed event.
         /// </summary>
-        event EventHandler<KeyEventArgs> KeyPressed;
+        event TypedEventHandler<IGameContainer, KeyEventArgs> KeyPressed;
 
         /// <summary>
         /// Event handler for the KeyReleased event.
         /// </summary>
-        event EventHandler<KeyEventArgs> KeyReleased;
+        event TypedEventHandler<IGameContainer, KeyEventArgs> KeyReleased;
 
         /// <summary>
         /// Event handler for the LostFocus event.
         /// </summary>
-        event EventHandler LostFocus;
+        event TypedEventHandler<IGameContainer> LostFocus;
 
         /// <summary>
         /// Event handler for the MouseButtonPressed event.
         /// </summary>
-        event EventHandler<MouseButtonEventArgs> MouseButtonPressed;
+        event TypedEventHandler<IGameContainer, MouseButtonEventArgs> MouseButtonPressed;
 
         /// <summary>
         /// Event handler for the MouseButtonReleased event.
         /// </summary>
-        event EventHandler<MouseButtonEventArgs> MouseButtonReleased;
+        event TypedEventHandler<IGameContainer, MouseButtonEventArgs> MouseButtonReleased;
 
         /// <summary>
         /// Event handler for the MouseEntered event.
         /// </summary>
-        event EventHandler MouseEntered;
+        event TypedEventHandler<IGameContainer> MouseEntered;
 
         /// <summary>
         /// Event handler for the MouseLeft event.
         /// </summary>
-        event EventHandler MouseLeft;
+        event TypedEventHandler<IGameContainer> MouseLeft;
 
         /// <summary>
         /// Event handler for the MouseMoved event.
         /// </summary>
-        event EventHandler<MouseMoveEventArgs> MouseMoved;
+        event TypedEventHandler<IGameContainer, MouseMoveEventArgs> MouseMoved;
 
         /// <summary>
         /// Event handler for the MouseWheelMoved event.
         /// </summary>
-        event EventHandler<MouseWheelEventArgs> MouseWheelMoved;
+        event TypedEventHandler<IGameContainer, MouseWheelEventArgs> MouseWheelMoved;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IGameContainer.RenderWindow"/> has changed.
@@ -88,12 +88,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Event handler for the Resized event.
         /// </summary>
-        event EventHandler<SizeEventArgs> Resized;
+        event TypedEventHandler<IGameContainer, SizeEventArgs> Resized;
 
         /// <summary>
         /// Event handler for the TextEntered event.
         /// </summary>
-        event EventHandler<TextEventArgs> TextEntered;
+        event TypedEventHandler<IGameContainer, TextEventArgs> TextEntered;
 
         /// <summary>
         /// Gets the resolution to use while in fullscreen mode.
