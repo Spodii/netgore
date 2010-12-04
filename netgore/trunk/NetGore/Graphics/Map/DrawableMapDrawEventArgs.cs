@@ -1,34 +1,26 @@
-using System;
+﻿using System;
 using System.Linq;
 
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// <see cref="EventArgs"/> for a draw event for an <see cref="IDrawableMap"/>'s layer being drawn.
+    /// <see cref="EventArgs"/> for a draw event for an <see cref="IDrawableMap"/>.
     /// </summary>
-    public class DrawableMapDrawLayerEventArgs : EventArgs
+    public class DrawableMapDrawEventArgs : EventArgs
     {
-        readonly MapRenderLayer _layer;
         readonly ISpriteBatch _spriteBatch;
         readonly ICamera2D _camera;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DrawableMapDrawLayerEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="DrawableMapDrawEventArgs"/> class.
         /// </summary>
-        /// <param name="layer">The layer that the drawing event is related to.</param>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> that was used to do the drawing.</param>
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        public DrawableMapDrawLayerEventArgs(MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera)
+        public DrawableMapDrawEventArgs(ISpriteBatch spriteBatch, ICamera2D camera)
         {
-            _layer = layer;
             _spriteBatch = spriteBatch;
             _camera = camera;
         }
-
-        /// <summary>
-        /// Gets the <see cref="MapRenderLayer"/> that the drawing event is related to.
-        /// </summary>
-        public MapRenderLayer Layer { get { return _layer; } }
 
         /// <summary>
         /// Gets the <see cref="ISpriteBatch"/> that was used to do the drawing.

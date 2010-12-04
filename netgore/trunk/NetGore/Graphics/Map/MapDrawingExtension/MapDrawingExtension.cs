@@ -17,14 +17,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles drawing to the map after the given <paramref name="layer"/> is drawn.
+        /// When overridden in the derived class, handles drawing to the map after the given <see cref="MapRenderLayer"/> is drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="layer">The layer that was just drawn.</param>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        protected virtual void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch,
-                                                    ICamera2D camera)
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> instance containing the event data.</param>
+        protected virtual void HandleDrawAfterLayer(IDrawableMap map, DrawableMapDrawLayerEventArgs e)
         {
         }
 
@@ -39,14 +36,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles drawing to the map before the given <paramref name="layer"/> is drawn.
+        /// When overridden in the derived class, handles drawing to the map before the given <see cref="MapRenderLayer"/> is drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="layer">The layer that is going to be drawn.</param>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        protected virtual void HandleDrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch,
-                                                     ICamera2D camera)
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> instance containing the event data.</param>
+        protected virtual void HandleDrawBeforeLayer(IDrawableMap map, DrawableMapDrawLayerEventArgs e)
         {
         }
 
@@ -68,14 +62,11 @@ namespace NetGore.Graphics
         public bool Enabled { get; set; }
 
         /// <summary>
-        /// Handles drawing to the map after the given <paramref name="layer"/> is drawn.
+        /// Handles drawing to the map after the given <see cref="MapRenderLayer"/> is drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="layer">The layer that was just drawn.</param>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        void IMapDrawingExtension.DrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch,
-                                                 ICamera2D camera)
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> containing the drawing event arguments.</param>
+        void IMapDrawingExtension.DrawAfterLayer(IDrawableMap map, DrawableMapDrawLayerEventArgs e)
         {
             if (!Enabled)
                 return;
@@ -86,31 +77,30 @@ namespace NetGore.Graphics
                 return;
             }
 
-            if (spriteBatch == null)
+            if (e.SpriteBatch == null)
             {
                 Debug.Fail("spriteBatch is null.");
                 return;
             }
 
-            if (camera == null)
+            if (e.Camera == null)
             {
                 Debug.Fail("camera is null.");
                 return;
             }
 
-            Debug.Assert(EnumHelper<MapRenderLayer>.IsDefined(layer), "Invalid layer specified.");
-            Debug.Assert(!spriteBatch.IsDisposed, "spriteBatch is disposed.");
+            Debug.Assert(EnumHelper<MapRenderLayer>.IsDefined(e.Layer), "Invalid layer specified.");
+            Debug.Assert(!e.SpriteBatch.IsDisposed, "spriteBatch is disposed.");
 
-            HandleDrawAfterLayer(map, layer, spriteBatch, camera);
+            HandleDrawAfterLayer(map, e);
         }
 
         /// <summary>
         /// Handles drawing to the map after any layers are drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        void IMapDrawingExtension.DrawAfterMap(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="e">The <see cref="DrawableMapDrawEventArgs"/> containing the drawing event arguments.</param>
+        void IMapDrawingExtension.DrawAfterMap(IDrawableMap map, DrawableMapDrawEventArgs e)
         {
             if (!Enabled)
                 return;
@@ -121,32 +111,29 @@ namespace NetGore.Graphics
                 return;
             }
 
-            if (spriteBatch == null)
+            if (e.SpriteBatch == null)
             {
                 Debug.Fail("spriteBatch is null.");
                 return;
             }
 
-            if (camera == null)
+            if (e.Camera == null)
             {
                 Debug.Fail("camera is null.");
                 return;
             }
 
-            Debug.Assert(!spriteBatch.IsDisposed, "spriteBatch is disposed.");
+            Debug.Assert(!e.SpriteBatch.IsDisposed, "spriteBatch is disposed.");
 
-            HandleDrawAfterMap(map, spriteBatch, camera);
+            HandleDrawAfterMap(map, e.SpriteBatch, e.Camera);
         }
 
         /// <summary>
-        /// Handles drawing to the map before the given <paramref name="layer"/> is drawn.
+        /// Handles drawing to the map before the given <see cref="MapRenderLayer"/> is drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="layer">The layer that is going to be drawn.</param>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        void IMapDrawingExtension.DrawBeforeLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch,
-                                                  ICamera2D camera)
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> containing the drawing event arguments.</param>
+        void IMapDrawingExtension.DrawBeforeLayer(IDrawableMap map, DrawableMapDrawLayerEventArgs e)
         {
             if (!Enabled)
                 return;
@@ -157,31 +144,30 @@ namespace NetGore.Graphics
                 return;
             }
 
-            if (spriteBatch == null)
+            if (e.SpriteBatch == null)
             {
                 Debug.Fail("spriteBatch is null.");
                 return;
             }
 
-            if (camera == null)
+            if (e.Camera == null)
             {
                 Debug.Fail("camera is null.");
                 return;
             }
 
-            Debug.Assert(EnumHelper<MapRenderLayer>.IsDefined(layer), "Invalid layer specified.");
-            Debug.Assert(!spriteBatch.IsDisposed, "spriteBatch is disposed.");
+            Debug.Assert(EnumHelper<MapRenderLayer>.IsDefined(e.Layer), "Invalid layer specified.");
+            Debug.Assert(!e.SpriteBatch.IsDisposed, "spriteBatch is disposed.");
 
-            HandleDrawBeforeLayer(map, layer, spriteBatch, camera);
+            HandleDrawBeforeLayer(map, e);
         }
 
         /// <summary>
         /// Handles drawing to the map before any layers are drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        void IMapDrawingExtension.DrawBeforeMap(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="e">The <see cref="DrawableMapDrawEventArgs"/> containing the drawing event arguments.</param>
+        void IMapDrawingExtension.DrawBeforeMap(IDrawableMap map, DrawableMapDrawEventArgs e)
         {
             if (!Enabled)
                 return;
@@ -192,21 +178,21 @@ namespace NetGore.Graphics
                 return;
             }
 
-            if (spriteBatch == null)
+            if (e.SpriteBatch == null)
             {
                 Debug.Fail("spriteBatch is null.");
                 return;
             }
 
-            if (camera == null)
+            if (e.Camera == null)
             {
                 Debug.Fail("camera is null.");
                 return;
             }
 
-            Debug.Assert(!spriteBatch.IsDisposed, "spriteBatch is disposed.");
+            Debug.Assert(!e.SpriteBatch.IsDisposed, "spriteBatch is disposed.");
 
-            HandleDrawBeforeMap(map, spriteBatch, camera);
+            HandleDrawBeforeMap(map, e.SpriteBatch, e.Camera);
         }
 
         #endregion

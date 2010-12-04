@@ -24,20 +24,17 @@ namespace DemoGame.Client
         static readonly IEnumerable<Type> _alwaysDrawTypes = new Type[] { typeof(TeleportEntityBase) };
 
         /// <summary>
-        /// When overridden in the derived class, handles drawing to the map after the given <paramref name="layer"/> is drawn.
+        /// When overridden in the derived class, handles drawing to the map after the given <see cref="MapRenderLayer"/> is drawn.
         /// </summary>
         /// <param name="map">The map the drawing is taking place on.</param>
-        /// <param name="layer">The layer that was just drawn.</param>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the map being drawn.</param>
-        protected override void HandleDrawAfterLayer(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch,
-                                                     ICamera2D camera)
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> instance containing the event data.</param>
+        protected override void HandleDrawAfterLayer(IDrawableMap map, DrawableMapDrawLayerEventArgs e)
         {
-            if (layer != MapRenderLayer.SpriteForeground)
+            if (e.Layer != MapRenderLayer.SpriteForeground)
                 return;
 
             // Get the visible area
-            var visibleArea = camera.GetViewArea();
+            var visibleArea = e.Camera.GetViewArea();
 
             // Get and draw all entities, skipping those that we will never draw () and those that
             // we will always draw (_alwaysDrawTypes)
@@ -49,7 +46,7 @@ namespace DemoGame.Client
             // Draw
             foreach (var entity in toDraw)
             {
-                EntityDrawer.Draw(spriteBatch, camera, entity);
+                EntityDrawer.Draw(e.SpriteBatch, e.Camera, entity);
             }
         }
 
