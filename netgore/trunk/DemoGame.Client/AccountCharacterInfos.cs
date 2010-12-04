@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when the account characters are loaded.
         /// </summary>
-        public event AccountCharactersLoadedHandler AccountCharactersLoaded;
+        public event NetGore.TypedEventHandler<AccountCharacterInfos> AccountCharactersLoaded;
 
         public AccountCharacterInfo this[byte index]
         {
@@ -48,7 +49,7 @@ namespace DemoGame.Client
             _isLoaded = true;
 
             if (AccountCharactersLoaded != null)
-                AccountCharactersLoaded(this);
+                AccountCharactersLoaded(this, EventArgs.Empty);
         }
 
         public bool TryGetInfo(byte index, out AccountCharacterInfo charInfo)

@@ -221,9 +221,14 @@ namespace DemoGame.Client
             SaveScreenSettings();
         }
 
-        void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ClientSocketManagerStatusChangedEventArgs"/> instance containing the event data.</param>
+        void _sockets_StatusChanged(IClientSocketManager sender, ClientSocketManagerStatusChangedEventArgs e)
         {
-            switch (newStatus)
+            switch (e.NewStatus)
             {
                 case NetConnectionStatus.Connected:
 
@@ -260,6 +265,7 @@ namespace DemoGame.Client
                         }
 
                         // If no reason specified, use generic one
+                        var reason = e.Reason;
                         if (string.IsNullOrEmpty(reason))
                             reason = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
 

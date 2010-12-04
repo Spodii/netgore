@@ -191,7 +191,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Unused by the <see cref="ItemEntity"/> since the layer never changes.
         /// </summary>
-        event MapRenderLayerChange IDrawable.RenderLayerChanged
+        event TypedEventHandler<IDrawable, ValueChangedEventArgs<MapRenderLayer>> IDrawable.RenderLayerChanged
         {
             add { }
             remove { }

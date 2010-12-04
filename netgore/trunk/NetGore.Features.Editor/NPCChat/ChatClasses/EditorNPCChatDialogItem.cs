@@ -65,7 +65,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Notifies listeners when any of the object's property values have changed.
         /// </summary>
-        public event EditorNPCChatDialogItemEventHandler Changed;
+        public event TypedEventHandler<EditorNPCChatDialogItem> Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
@@ -229,7 +229,7 @@ namespace NetGore.Features.NPCChat
             _conditionals = value;
 
             if (Changed != null)
-                Changed(this);
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace NetGore.Features.NPCChat
             _text = value;
 
             if (Changed != null)
-                Changed(this);
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace NetGore.Features.NPCChat
             _title = value;
 
             if (Changed != null)
-                Changed(this);
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>

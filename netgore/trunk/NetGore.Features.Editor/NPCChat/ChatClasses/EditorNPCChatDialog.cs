@@ -38,7 +38,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Notifies listeners when the <see cref="EditorNPCChatDialog"/> has changed.
         /// </summary>
-        public event EditorNPCChatDialogEventHandler Changed;
+        public event TypedEventHandler<EditorNPCChatDialog> Changed;
 
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
@@ -92,7 +92,7 @@ namespace NetGore.Features.NPCChat
             _items[(int)item.ID] = item;
 
             if (Changed != null)
-                Changed(this);
+                Changed(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace NetGore.Features.NPCChat
         /// <returns>An IEnumerable of the NPCChatDialogItemBases in this NPCChatDialogBase.</returns>
         protected override IEnumerable<NPCChatDialogItemBase> GetDialogItems()
         {
-            return Items.Cast<NPCChatDialogItemBase>();
+            return Items;
         }
 
         /// <summary>

@@ -63,7 +63,7 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Notifies listeners when a new group has been created.
         /// </summary>
-        public event IGroupManagerGroupEventHandler GroupCreated;
+        public event TypedEventHandler<IGroupManager, EventArgs<IGroup>> GroupCreated;
 
         /// <summary>
         /// Gets all of the active <see cref="IGroup"/>s managed by this <see cref="IGroupManager"/>.
@@ -104,7 +104,7 @@ namespace NetGore.Features.Groups
             OnCreateGroup(newGroup);
 
             if (GroupCreated != null)
-                GroupCreated(this, newGroup);
+                GroupCreated(this, EventArgsHelper.Create(newGroup));
 
             return newGroup;
         }

@@ -410,7 +410,7 @@ namespace DemoGame.Client
                         break;
 
                     case QuickBarItemType.Skill:
-                        QuickBarForm._gps.SkillsForm_RequestUseSkill((SkillType)QuickBarItemValue);
+                        QuickBarForm._gps.SkillsForm_RequestUseSkill(this, EventArgsHelper.Create((SkillType)QuickBarItemValue));
                         break;
                 }
             }

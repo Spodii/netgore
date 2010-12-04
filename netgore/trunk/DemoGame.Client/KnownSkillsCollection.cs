@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NetGore;
 using NetGore.Features.Skills;
 
 namespace DemoGame.Client
@@ -6,17 +7,9 @@ namespace DemoGame.Client
     public class KnownSkillsCollection : KnownSkillsCollection<SkillType>
     {
         /// <summary>
-        /// Delegate for handling the <see cref="KnownSkillsCollection.KnowSkillChanged"/> event.
-        /// </summary>
-        /// <param name="sender">The <see cref="KnownSkillsCollection"/> the event came from.</param>
-        /// <param name="skill">The skill who's known state has changed.</param>
-        /// <param name="value">The current known state (true if the skill was learned, false if it was forgotten).</param>
-        public delegate void KnowSkillChangedHandler(KnownSkillsCollection sender, SkillType skill, bool value);
-
-        /// <summary>
         /// Notifies listeners when a known skill has changed.
         /// </summary>
-        public event KnowSkillChangedHandler KnowSkillChanged;
+        public event TypedEventHandler<KnownSkillsCollection, KnowSkillsCollectionChangedEventArgs> KnowSkillChanged;
 
         /// <summary>
         /// When overridden in the derived class, allows for handling of when the known state of a skill changes.
@@ -30,7 +23,7 @@ namespace DemoGame.Client
 
             // Raise event
             if (KnowSkillChanged != null)
-                KnowSkillChanged(this, skill, value);
+                KnowSkillChanged(this, new KnowSkillsCollectionChangedEventArgs(skill, value));
         }
     }
 }

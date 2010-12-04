@@ -47,12 +47,12 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when a request to join a guild has been created from this <see cref="GuildForm"/>.
         /// </summary>
-        public event GuildFormEventHandler JoinRequested;
+        public event TypedEventHandler<GuildForm> JoinRequested;
 
         /// <summary>
         /// Notifies listeners when a request to leave a guild has been created from this <see cref="GuildForm"/>.
         /// </summary>
-        public event GuildFormEventHandler LeaveRequested;
+        public event TypedEventHandler<GuildForm> LeaveRequested;
 
         void CreateControls()
         {
@@ -223,13 +223,13 @@ namespace NetGore.Features.Guilds
             {
                 // Leave guild
                 if (LeaveRequested != null)
-                    LeaveRequested(this);
+                    LeaveRequested(this, EventArgs.Empty);
             }
             else
             {
                 // Join guild
                 if (JoinRequested != null)
-                    JoinRequested(this);
+                    JoinRequested(this, EventArgs.Empty);
             }
         }
 

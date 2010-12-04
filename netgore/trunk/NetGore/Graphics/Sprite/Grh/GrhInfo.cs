@@ -206,7 +206,9 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles when the category of a <see cref="GrhData"/> in the DArray changes.
         /// </summary>
-        static void ChangeCategorizationHandler(GrhData sender, SpriteCategorization oldCategorization)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.EventArgs{SpriteCategorization}"/> instance containing the event data.</param>
+        static void ChangeCategorizationHandler(GrhData sender, EventArgs<SpriteCategorization> e)
         {
             var gd = sender;
             if (gd == null)

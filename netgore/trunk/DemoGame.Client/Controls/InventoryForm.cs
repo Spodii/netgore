@@ -15,13 +15,6 @@ namespace DemoGame.Client
     class InventoryForm : Form, IDragDropProvider
     {
         /// <summary>
-        /// Delegate for handling events related to items in the inventory.
-        /// </summary>
-        /// <param name="inventoryForm">The <see cref="InventoryForm"/> the event came from.</param>
-        /// <param name="slot">The inventory item slot the event is related to.</param>
-        public delegate void InventoryItemHandler(InventoryForm inventoryForm, InventorySlot slot);
-
-        /// <summary>
         /// The number of items in each inventory row.
         /// </summary>
         const int _columns = 6;
@@ -56,7 +49,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
         /// <param name="dragDropHandler">The drag-drop handler.</param>
-        /// <param name="isUserInv">A <see cref="Func{T,U}"/> used to determine if an <see cref="Inventory"/> is the
+        /// <param name="isUserInv">A func used to determine if an <see cref="Inventory"/> is the
         /// user's inventory.</param>
         /// <param name="infoRequester">The item info tooltip.</param>
         /// <param name="position">The position.</param>
@@ -86,12 +79,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when an item was requested to be dropped.
         /// </summary>
-        public event InventoryItemHandler RequestDropItem;
+        public event TypedEventHandler<InventoryForm, EventArgs<InventorySlot>> RequestDropItem;
 
         /// <summary>
         /// Notifies listeners when an item was requested to be used.
         /// </summary>
-        public event InventoryItemHandler RequestUseItem;
+        public event TypedEventHandler<InventoryForm, EventArgs<InventorySlot>> RequestUseItem;
 
         public Inventory Inventory
         {
@@ -137,13 +130,13 @@ namespace DemoGame.Client
                 {
                     // Drop
                     if (RequestDropItem != null)
-                        RequestDropItem(this, itemPB.Slot);
+                        RequestDropItem(this, EventArgsHelper.Create(itemPB.Slot));
                 }
                 else
                 {
                     // Use
                     if (RequestUseItem != null)
-                        RequestUseItem(this, itemPB.Slot);
+                        RequestUseItem(this, EventArgsHelper.Create(itemPB.Slot));
                 }
             }
         }
@@ -155,7 +148,7 @@ namespace DemoGame.Client
         public void InvokeRequestUseItem(InventorySlot slot)
         {
             if (RequestUseItem != null)
-                RequestUseItem(this, slot);
+                RequestUseItem(this, EventArgsHelper.Create(slot));
         }
 
         /// <summary>

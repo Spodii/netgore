@@ -11,13 +11,6 @@ using SFML.Window;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Handles a request to raise a stat from the StatsForm.
-    /// </summary>
-    /// <param name="statsForm">StatsForm that the event came from.</param>
-    /// <param name="statType">Type of the stat requested to be raise.</param>
-    delegate void RaiseStatHandler(StatsForm statsForm, StatType statType);
-
-    /// <summary>
     /// A <see cref="Form"/> containing the stats for a user.
     /// </summary>
     class StatsForm : Form
@@ -72,7 +65,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a Stat is requested to be raised.
         /// </summary>
-        public event RaiseStatHandler RequestRaiseStat;
+        public event TypedEventHandler<StatsForm, EventArgs<StatType>> RequestRaiseStat;
 
         /// <summary>
         /// Gets the <see cref="UserInfo"/> that the <see cref="StatsForm"/> is displaying the information for.
@@ -149,7 +142,7 @@ namespace DemoGame.Client
             if (RequestRaiseStat == null)
                 return;
 
-            RequestRaiseStat(this, statPB.StatType);
+            RequestRaiseStat(this, EventArgsHelper.Create(statPB.StatType));
         }
 
         /// <summary>

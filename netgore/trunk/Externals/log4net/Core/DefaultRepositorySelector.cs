@@ -58,7 +58,7 @@ namespace log4net.Core
         /// holds the newly created <see cref="ILoggerRepository"/>.
         /// </para>
         /// </remarks>
-        public event LoggerRepositoryCreationEventHandler LoggerRepositoryCreatedEvent
+        public event EventHandler<LoggerRepositoryCreationEventArgs> LoggerRepositoryCreatedEvent
         {
             add { m_loggerRepositoryCreatedEvent += value; }
             remove { m_loggerRepositoryCreatedEvent -= value; }
@@ -814,7 +814,7 @@ namespace log4net.Core
         readonly Type m_defaultRepositoryType;
         readonly Hashtable m_name2repositoryMap = new Hashtable();
 
-        event LoggerRepositoryCreationEventHandler m_loggerRepositoryCreatedEvent;
+        event EventHandler<LoggerRepositoryCreationEventArgs> m_loggerRepositoryCreatedEvent;
 
         #endregion Private Instance Fields
     }

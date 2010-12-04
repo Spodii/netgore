@@ -54,7 +54,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Notifies listeners when the map has changed.
         /// </summary>
-        public event MapScreenControlMapChangedEventHandler MapChanged;
+        public event TypedEventHandler<MapScreenControl, ValueChangedEventArgs<EditorMap>> MapChanged;
 
         /// <summary>
         /// Gets the camera used to view the map.
@@ -92,7 +92,7 @@ namespace DemoGame.Editor
                 // Raise events
                 OnMapChanged(oldValue, value);
                 if (MapChanged != null)
-                    MapChanged(this, oldValue, value);
+                    MapChanged(this, ValueChangedEventArgs.Create(oldValue, value));
             }
         }
 

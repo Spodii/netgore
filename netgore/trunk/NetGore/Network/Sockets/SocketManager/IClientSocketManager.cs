@@ -1,18 +1,8 @@
 ﻿using System.Linq;
-using Lidgren.Network;
 using NetGore.IO;
 
 namespace NetGore.Network
 {
-    /// <summary>
-    /// Delegate for handling when the status changes in a <see cref="IClientSocketManager"/>.
-    /// </summary>
-    /// <param name="sender">The <see cref="IClientSocketManager"/> the event came from.</param>
-    /// <param name="newStatus">The new <see cref="NetConnectionStatus"/>.</param>
-    /// <param name="reason">The reason for the status change.</param>
-    public delegate void ClientSocketManagerStatusChangedEventHandler(
-        IClientSocketManager sender, NetConnectionStatus newStatus, string reason);
-
     /// <summary>
     /// Interface for a manager of client sockets. Enforces the idea of outbound connections only, does not listen, and
     /// only allows one connect to be made at a time.
@@ -23,7 +13,7 @@ namespace NetGore.Network
         /// <summary>
         /// Notifies listeners when the status of the connection has changed.
         /// </summary>
-        event ClientSocketManagerStatusChangedEventHandler StatusChanged;
+        event TypedEventHandler<IClientSocketManager, ClientSocketManagerStatusChangedEventArgs> StatusChanged;
 
         /// <summary>
         /// Gets if it was us, the client, who terminated the connection to the server. This will only be true when

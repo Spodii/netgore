@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Features.PeerTrading;
@@ -270,8 +271,9 @@ namespace DemoGame.Client
         /// Handles the <see cref="ClientPeerTradeInfoHandlerBase{Character, ItemEntity, IItemTable}.TradeOpened"/> event on a
         /// <see cref="ClientPeerTradeInfoHandlerBase{Character, ItemEntity, IItemTable}"/>.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        void PeerTradeInfoHandler_TradeOpened(ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable> sender)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void PeerTradeInfoHandler_TradeOpened(ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable> sender, EventArgs e)
         {
             // Figure out which side is for the client, and which side is for the other character
             PeerTradeSidePanel ourSide;

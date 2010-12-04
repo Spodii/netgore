@@ -77,20 +77,34 @@ namespace DemoGame.Editor
             base.OnClosing(e);
         }
 
-        void _collection_Added(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MapDrawFilterHelperCollectionEventArgs"/> instance containing the event data.</param>
+        void _collection_Added(MapDrawFilterHelperCollection sender, MapDrawFilterHelperCollectionEventArgs e)
         {
-            lstItems.Items.Add(filter.Value);
+            lstItems.Items.Add(e.Filter);
         }
 
-        void _collection_Removed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MapDrawFilterHelperCollectionEventArgs"/> instance containing the event data.</param>
+        void _collection_Removed(MapDrawFilterHelperCollection sender, MapDrawFilterHelperCollectionEventArgs e)
         {
-            lstItems.Items.Remove(filter.Value);
+            lstItems.Items.Remove(e.Filter);
         }
 
-        void _collection_Renamed(MapDrawFilterHelperCollection sender, KeyValuePair<string, MapDrawFilterHelper> filter,
-                                 string oldName)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MapDrawFilterHelperCollectionRenameEventArgs"/> instance containing the event data.</param>
+        void _collection_Renamed(MapDrawFilterHelperCollection sender, MapDrawFilterHelperCollectionRenameEventArgs e)
         {
-            var index = lstItems.Items.IndexOf(filter.Value);
+            var index = lstItems.Items.IndexOf(e.Filter);
             if (index >= 0)
                 lstItems.RefreshItemAt(index);
         }

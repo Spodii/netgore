@@ -311,21 +311,20 @@ namespace DemoGame.Server.UI
         /// <summary>
         /// Handles when a console command was executed on the server.
         /// </summary>
-        /// <param name="server">The server.</param>
-        /// <param name="command">The command.</param>
-        /// <param name="returnString">The command's return string.</param>
-        void Server_ConsoleCommandExecuted(Server server, string command, string returnString)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ServerConsoleCommandEventArgs"/> instance containing the event data.</param>
+        void Server_ConsoleCommandExecuted(Server sender, ServerConsoleCommandEventArgs e)
         {
-            var e = new EventHandler(delegate
+            var eh = new EventHandler(delegate
             {
-                AppendToConsole(command, ConsoleTextType.Input);
+                AppendToConsole(e.Command, ConsoleTextType.Input);
 
-                if (!string.IsNullOrEmpty(returnString))
-                    AppendToConsole(returnString, ConsoleTextType.InputReturn);
+                if (!string.IsNullOrEmpty(e.ReturnString))
+                    AppendToConsole(e.ReturnString, ConsoleTextType.InputReturn);
                 txtConsoleOut.ScrollToCaret();
             });
 
-            txtConsoleOut.Invoke(e);
+            txtConsoleOut.Invoke(eh);
         }
 
         /// <summary>

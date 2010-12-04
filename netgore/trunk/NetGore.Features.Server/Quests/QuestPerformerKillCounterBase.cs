@@ -121,7 +121,8 @@ namespace NetGore.Features.Quests
                     // Increment successful, so invoke events
                     OnKillCountIncremented(counter.Quest, target, count, reqCount);
                     if (KillCountIncremented != null)
-                        KillCountIncremented(this, counter.Quest, target, count, reqCount);
+                        KillCountIncremented(this, 
+                            new QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>(counter.Quest, target, count, reqCount));
                 }
             }
         }
@@ -160,59 +161,59 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Handles the <see cref="IQuestPerformer{T}.QuestAccepted"/> event.
         /// </summary>
-        /// <param name="questPerformer">The quest performer the event came from.</param>
-        /// <param name="quest">The quest that was accepted.</param>
-        void Owner_QuestAccepted(TCharacter questPerformer, IQuest<TCharacter> quest)
+        /// <param name="sender">The quest performer the event came from.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void Owner_QuestAccepted(TCharacter sender, EventArgs<IQuest<TCharacter>> e)
         {
-            Debug.Assert(Equals(questPerformer, Owner));
+            Debug.Assert(Equals(sender, Owner));
 
             // Ensure the counter does not already exist for this quest
-            var existingCounter = GetKillCounter(quest);
+            var existingCounter = GetKillCounter(e.Item1);
             if (existingCounter != null)
             {
                 const string errmsg = "Quest list already contains the quest `{0}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, quest);
-                Debug.Fail(string.Format(errmsg, quest));
+                    log.ErrorFormat(errmsg, e.Item1);
+                Debug.Fail(string.Format(errmsg, e.Item1));
                 return;
             }
 
             // Create the counter
             var counter = _counterCollectionPool.Acquire();
-            var reqKills = GetRequiredKills(quest);
-            counter.Initialize(quest, reqKills);
+            var reqKills = GetRequiredKills(e.Item1);
+            counter.Initialize(e.Item1, reqKills);
 
             _counters.Add(counter);
 
-            OnQuestAdded(quest);
+            OnQuestAdded(e.Item1);
         }
 
         /// <summary>
         /// Handles the <see cref="IQuestPerformer{T}.QuestFinished"/> and <see cref="IQuestPerformer{T}.QuestCanceled"/>
         /// events.
         /// </summary>
-        /// <param name="questPerformer">The quest performer the event came from.</param>
-        /// <param name="quest">The quest that was finished or canceled.</param>
-        void Owner_QuestFinished(TCharacter questPerformer, IQuest<TCharacter> quest)
+        /// <param name="sender">The quest performer the event came from.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void Owner_QuestFinished(TCharacter sender, EventArgs<IQuest<TCharacter>> e)
         {
-            Debug.Assert(Equals(questPerformer, Owner));
+            Debug.Assert(Equals(sender, Owner));
 
-            var counterIndex = GetKillCounterIndex(quest);
+            var counterIndex = GetKillCounterIndex(e.Item1);
 
             // Make sure the counter exists
             if (counterIndex < 0)
             {
                 const string errmsg = "Quest list does not contain the quest `{0}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, quest);
-                Debug.Fail(string.Format(errmsg, quest));
+                    log.ErrorFormat(errmsg, e.Item1);
+                Debug.Fail(string.Format(errmsg, e.Item1));
                 return;
             }
 
             // Remove the counter
             _counters.RemoveAt(counterIndex);
 
-            OnQuestRemoved(quest);
+            OnQuestRemoved(e.Item1);
         }
 
         #region IQuestPerformerKillCounter<TCharacter,TKillID> Members
@@ -222,7 +223,8 @@ namespace NetGore.Features.Quests
         /// if, when the target was killed, the kill count was less than the required kill count. As a result, the
         /// kill count will never be zero.
         /// </summary>
-        public event QuestPerformerKillCounterKillIncrementEventHandler<TCharacter, TKillID> KillCountIncremented;
+        public event TypedEventHandler<IQuestPerformerKillCounter<TCharacter, TKillID>,
+            QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>> KillCountIncremented;
 
         /// <summary>
         /// Gets the quest performer that this collection belongs to.

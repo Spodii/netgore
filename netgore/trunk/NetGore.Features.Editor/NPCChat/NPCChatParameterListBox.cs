@@ -75,7 +75,12 @@ namespace NetGore.Features.NPCChat
             }
         }
 
-        void ConditionalCollectionItem_Changed(EditorNPCChatConditionalCollectionItem sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void ConditionalCollectionItem_Changed(EditorNPCChatConditionalCollectionItem sender, EventArgs e)
         {
             RebuildItemList();
         }

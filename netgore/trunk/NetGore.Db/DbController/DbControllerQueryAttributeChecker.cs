@@ -46,20 +46,25 @@ namespace NetGore.Db
             new TypeFactory(filter.GetFilter(), LoadTypeHandler);
         }
 
-        void LoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
+        /// <summary>
+        /// Handles when a <see cref="Type"/> is loaded into the <see cref="TypeFactory"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        void LoadTypeHandler(TypeFactory sender, TypeFactoryLoadedEventArgs e)
         {
             // Skip private nested types as they cannot be called by the controller anyways
-            if (loadedType.IsNested && !loadedType.IsPublic)
+            if (e.LoadedType.IsNested && !e.LoadedType.IsPublic)
                 return;
 
             // Filter out types to ignore
-            if (_typesToIgnore != null && _typesToIgnore.Contains(loadedType))
+            if (_typesToIgnore != null && _typesToIgnore.Contains(e.LoadedType))
                 return;
 
             // Check for attribute
-            var attribs = loadedType.GetCustomAttributes(false);
+            var attribs = e.LoadedType.GetCustomAttributes(false);
             if (attribs == null || attribs.Length == 0)
-                _missingAttributeHandler(this, EventArgsHelper.Create(loadedType));
+                _missingAttributeHandler(this, EventArgsHelper.Create(e.LoadedType));
         }
     }
 }

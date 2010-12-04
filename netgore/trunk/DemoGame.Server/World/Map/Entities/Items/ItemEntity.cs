@@ -613,18 +613,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Handles the <see cref="IStatCollection{T}.StatChanged"/> event for the stat collections in this class.
         /// </summary>
-        /// <param name="statCollection">The sender.</param>
-        /// <param name="statType">Type of the stat that changed.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, StatType statType, StatValueType oldValue,
-                                        StatValueType newValue)
+        void StatCollection_StatChanged(IStatCollection<StatType> sender, StatCollectionStatChangedEventArgs<StatType> e)
         {
-            Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified,
-                "ItemEntity does not use StatCollectionType.Modified.");
+            Debug.Assert(sender.StatCollectionType != StatCollectionType.Modified, "ItemEntity does not use StatCollectionType.Modified.");
 
-            var field = statType.GetDatabaseField(statCollection.StatCollectionType);
-            SynchronizeField(field, newValue);
+            var field = e.StatType.GetDatabaseField(sender.StatCollectionType);
+            SynchronizeField(field, e.NewValue);
         }
 
         /// <summary>

@@ -25,21 +25,7 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-
     #region LoggerRepositoryCreationEvent
-
-    /// <summary>
-    /// Delegate used to handle logger repository creation event notifications
-    /// </summary>
-    /// <param name="sender">The <see cref="IRepositorySelector"/> which created the repository.</param>
-    /// <param name="e">The <see cref="LoggerRepositoryCreationEventArgs"/> event args
-    /// that holds the <see cref="ILoggerRepository"/> instance that has been created.</param>
-    /// <remarks>
-    /// <para>
-    /// Delegate used to handle logger repository creation event notifications.
-    /// </para>
-    /// </remarks>
-    public delegate void LoggerRepositoryCreationEventHandler(object sender, LoggerRepositoryCreationEventArgs e);
 
     /// <summary>
     /// Provides data for the <see cref="IRepositorySelector.LoggerRepositoryCreatedEvent"/> event.
@@ -118,7 +104,7 @@ namespace log4net.Core
         /// holds the newly created <see cref="ILoggerRepository"/>.
         /// </para>
         /// </remarks>
-        event LoggerRepositoryCreationEventHandler LoggerRepositoryCreatedEvent;
+        event EventHandler<LoggerRepositoryCreationEventArgs> LoggerRepositoryCreatedEvent;
 
         /// <summary>
         /// Creates a new repository for the assembly specified.

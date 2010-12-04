@@ -226,16 +226,15 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles when the status of the <see cref="IClientSocketManager"/> changes.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="newStatus">The new status.</param>
-        /// <param name="reason">The reason for the status change.</param>
-        void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ClientSocketManagerStatusChangedEventArgs"/> instance containing the event data.</param>
+        void _sockets_StatusChanged(IClientSocketManager sender, ClientSocketManagerStatusChangedEventArgs e)
         {
             // Make sure we are the active screen
             if (ScreenManager.ActiveNonConsoleScreen != this)
                 return;
 
-            switch (newStatus)
+            switch (e.NewStatus)
             {
                 case NetConnectionStatus.Connected:
                     SetMessage("Connected to server. Sending new account request...");
@@ -257,6 +256,7 @@ namespace DemoGame.Client
                         break;
 
                     // If no reason specified, use generic one
+                    var reason = e.Reason;
                     if (string.IsNullOrEmpty(reason))
                         reason = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
 

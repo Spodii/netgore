@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using NetGore;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
@@ -45,7 +46,12 @@ namespace DemoGame.Editor
             return MapScreenControl.Map;
         }
 
-        void MapScreenControl_MapChanged(MapScreenControl sender, EditorMap oldValue, EditorMap newValue)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ValueChangedEventArgs{EditorMap}"/> instance containing the event data.</param>
+        void MapScreenControl_MapChanged(MapScreenControl sender, ValueChangedEventArgs<EditorMap> e)
         {
             // When the map changes, and it was our map that made the ToolBar visibile, then update the reference on the ToolBar
 

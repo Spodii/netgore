@@ -375,7 +375,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Unused by the <see cref="BackgroundImage"/> since the layer never changes.
         /// </summary>
-        event MapRenderLayerChange IDrawable.RenderLayerChanged
+        event TypedEventHandler<IDrawable, ValueChangedEventArgs<MapRenderLayer>> IDrawable.RenderLayerChanged
         {
             add { }
             remove { }

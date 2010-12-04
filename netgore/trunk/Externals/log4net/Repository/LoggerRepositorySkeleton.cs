@@ -53,9 +53,9 @@ namespace log4net.Repository
         bool m_configured;
         string m_name;
         Level m_threshold;
-        event LoggerRepositoryConfigurationChangedEventHandler m_configurationChangedEvent;
-        event LoggerRepositoryConfigurationResetEventHandler m_configurationResetEvent;
-        event LoggerRepositoryShutdownEventHandler m_shutdownEvent;
+        event EventHandler m_configurationChangedEvent;
+        event EventHandler m_configurationResetEvent;
+        event EventHandler m_shutdownEvent;
 
         #endregion
 
@@ -111,7 +111,7 @@ namespace log4net.Repository
         /// Event raised when the repository's configuration has been changed.
         /// </para>
         /// </remarks>
-        public event LoggerRepositoryConfigurationChangedEventHandler ConfigurationChanged
+        public event EventHandler ConfigurationChanged
         {
             add { m_configurationChangedEvent += value; }
             remove { m_configurationChangedEvent -= value; }
@@ -129,7 +129,7 @@ namespace log4net.Repository
         /// reset to default.
         /// </para>
         /// </remarks>
-        public event LoggerRepositoryConfigurationResetEventHandler ConfigurationReset
+        public event EventHandler ConfigurationReset
         {
             add { m_configurationResetEvent += value; }
             remove { m_configurationResetEvent -= value; }
@@ -146,7 +146,7 @@ namespace log4net.Repository
         /// Event raised when the repository has been shutdown.
         /// </para>
         /// </remarks>
-        public event LoggerRepositoryShutdownEventHandler ShutdownEvent
+        public event EventHandler ShutdownEvent
         {
             add { m_shutdownEvent += value; }
             remove { m_shutdownEvent -= value; }

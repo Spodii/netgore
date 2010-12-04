@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DemoGame.DbObjs;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
@@ -9,13 +10,6 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
-    /// <summary>
-    /// Delegate for handling when the user wants to unequip and item.
-    /// </summary>
-    /// <param name="equippedForm">The sender.</param>
-    /// <param name="slot">The slot of the item the user wants to unequip.</param>
-    public delegate void RequestUnequipHandler(EquippedForm equippedForm, EquipmentSlot slot);
-
     /// <summary>
     /// A <see cref="Form"/> that dislpays the user's equipped items.
     /// </summary>
@@ -52,7 +46,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a request has been made to unequip an item.
         /// </summary>
-        public event RequestUnequipHandler RequestUnequip;
+        public event TypedEventHandler<EquippedForm, EventArgs<EquipmentSlot>> RequestUnequip;
 
         /// <summary>
         /// Gets or sets the <see cref="UserEquipped"/> containing the equipped items to display on this form.
@@ -99,7 +93,7 @@ namespace DemoGame.Client
             {
                 case MouseButton.Right:
                     if (RequestUnequip != null)
-                        RequestUnequip(this, slot);
+                        RequestUnequip(this, EventArgsHelper.Create(slot));
                     break;
             }
         }

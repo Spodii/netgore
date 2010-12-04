@@ -10,12 +10,6 @@ using SFML.Window;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Delegate for handling when a user wants to use a skill.
-    /// </summary>
-    /// <param name="skillType">The type of skill the user wants to use.</param>
-    delegate void UseSkillHandler(SkillType skillType);
-
-    /// <summary>
     /// A <see cref="Form"/> that contains the skills a user can use.
     /// </summary>
     class SkillsForm : Form
@@ -62,7 +56,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when a a request has been made to use a skill.
         /// </summary>
-        public event UseSkillHandler RequestUseSkill;
+        public event EventHandler<EventArgs<SkillType>> RequestUseSkill;
 
         public ISkillCooldownManager CooldownManager
         {
@@ -102,7 +96,7 @@ namespace DemoGame.Client
             if (RequestUseSkill != null)
             {
                 var source = (SkillLabel)sender;
-                RequestUseSkill(source.SkillInfo.Value);
+                RequestUseSkill(this, EventArgsHelper.Create(source.SkillInfo.Value));
             }
         }
 
@@ -111,7 +105,7 @@ namespace DemoGame.Client
             if (RequestUseSkill != null)
             {
                 var source = (SkillPictureBox)sender;
-                RequestUseSkill(source.SkillInfo.Value);
+                RequestUseSkill(this, EventArgsHelper.Create(source.SkillInfo.Value));
             }
         }
 

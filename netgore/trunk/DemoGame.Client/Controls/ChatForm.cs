@@ -8,13 +8,6 @@ using SFML.Window;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Delegate for handling when the user has entered text into the <see cref="ChatForm"/>.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="text">The text that was entered into the chat box.</param>
-    delegate void ChatFormSayHandler(ChatForm sender, string text);
-
-    /// <summary>
     /// A <see cref="Form"/> that displays the chat messages and allows the user to enter chat text.
     /// </summary>
     class ChatForm : Form
@@ -58,7 +51,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners that a message is trying to be sent from the ChatForm's input box.
         /// </summary>
-        public event ChatFormSayHandler Say;
+        public event TypedEventHandler<ChatForm, EventArgs<string>> Say;
 
         /// <summary>
         /// Appends a set of styled text to the output TextBox.
@@ -115,7 +108,7 @@ namespace DemoGame.Client
                     {
                         var text = _input.Text;
                         _input.Text = string.Empty;
-                        Say(this, text);
+                        Say(this, EventArgsHelper.Create(text));
                     }
                     break;
 

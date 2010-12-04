@@ -46,16 +46,15 @@ namespace NetGore.Features.ActionDisplays
         /// <summary>
         /// Handles when a type is loaded.
         /// </summary>
-        /// <param name="factory">The <see cref="TypeFactory"/>.</param>
-        /// <param name="type">The class type.</param>
-        /// <param name="typeName">The class type name.</param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
             MessageId = "ActionDisplayScriptHandlers")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
             MessageId = "ActionDisplayScriptHandler")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
             MessageId = "ActionDisplayScriptAttributes")]
-        static void TypeLoadedHandler(TypeFactory factory, Type type, string typeName)
+        static void TypeLoadedHandler(TypeFactory sender, TypeFactoryLoadedEventArgs e)
         {
             var atbType = typeof(ActionDisplayScriptAttribute);
             var mpdType = typeof(ActionDisplayScriptHandler);
@@ -64,7 +63,7 @@ namespace NetGore.Features.ActionDisplays
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
 
             // Search through every method in the class
-            foreach (var method in type.GetMethods(bindFlags))
+            foreach (var method in e.LoadedType.GetMethods(bindFlags))
             {
                 // Get all of the ActionDisplayScriptAttributes for the method (should only be one)
                 var atbs = (ActionDisplayScriptAttribute[])method.GetCustomAttributes(atbType, true);

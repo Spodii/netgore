@@ -229,6 +229,7 @@
     <Compile Include="Network\NetConnectionStatsTracker.cs" />
     <Compile Include="Network\Sockets\SocketHelper.cs" />
     <Compile Include="Network\Sockets\SocketManager\ClientSocketManager.cs" />
+    <Compile Include="Network\Sockets\SocketManager\ClientSocketManagerStatusChangedEventArgs.cs" />
     <Compile Include="Network\Sockets\SocketManager\IClientSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\IServerSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ISocketManager.cs" />
@@ -315,8 +316,7 @@
     <Compile Include="Graphics\GUI\Tooltip\Tooltip.cs" />
     <Compile Include="Graphics\GUI\Tooltip\TooltipArgs.cs" />
     <Compile Include="Graphics\GUI\Tooltip\TooltipHandler.cs" />
-    <Compile Include="Graphics\IDrawable\IDrawable.cs" />
-    <Compile Include="Graphics\IDrawable\MapRenderLayerChange.cs" />
+    <Compile Include="Graphics\IDrawable.cs" />
     <Compile Include="Graphics\Light\ILight.cs" />
     <Compile Include="Graphics\Light\ILightManager.cs" />
     <Compile Include="Graphics\Light\Light.cs" />
@@ -339,7 +339,6 @@
     <Compile Include="Graphics\Map\TemporaryEffects\Grh\MapGrhEffectTimed.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\Particle\TemporaryMapParticleEffect.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\Particle\TemporaryMapParticleEffectSeekPosition.cs" />
-    <Compile Include="Graphics\Map\TemporaryEffects\TemporaryMapEffectDiedHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifier.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifierFactory.cs" />
@@ -389,7 +388,6 @@
     <Compile Include="Graphics\Sprite\Grh\Grh.cs" />
     <Compile Include="Graphics\Sprite\Grh\GrhConverter.cs" />
     <Compile Include="Graphics\Sprite\Grh\GrhData.cs" />
-    <Compile Include="Graphics\Sprite\Grh\GrhDataChangeCategorizationHandler.cs" />
     <Compile Include="Graphics\Sprite\Grh\GrhInfo.cs" />
     <Compile Include="Graphics\Sprite\Grh\StationaryGrhData.cs" />
     <Compile Include="Graphics\Sprite\Grh\SystemGrhData.cs" />
@@ -511,7 +509,7 @@
     <Compile Include="Stats\Collections\StatCollection.cs" />
     <Compile Include="Stats\Collections\IStatCollection.cs" />
     <Compile Include="Stats\Collections\IStatCollectionExtensions.cs" />
-    <Compile Include="Stats\Collections\IStatCollectionStatEventHandler.cs" />
+    <Compile Include="Stats\Collections\StatCollectionStatChangedEventArgs.cs" />
     <Compile Include="Stats\Collections\StatCollectionType.cs" />
     <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\ModStatHelper.cs" />
@@ -525,7 +523,7 @@
     <Compile Include="Collections\Thread Safe\TSDictionary.cs" />
     <Compile Include="Collections\Thread Safe\TSList.cs" />
     <Compile Include="Collections\Type\TypeFactory.cs" />
-    <Compile Include="Collections\Type\TypeFactoryLoadedHandler.cs" />
+    <Compile Include="Collections\Type\TypeFactoryLoadedEventArgs.cs" />
     <Compile Include="Collections\VirtualList.cs" />
     <Compile Include="Core\Enum\EnumComparer.cs" />
     <Compile Include="Core\Enum\EnumHelper.cs" />

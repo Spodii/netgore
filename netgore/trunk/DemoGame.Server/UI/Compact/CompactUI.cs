@@ -59,12 +59,11 @@ namespace DemoGame.Server.UI
         /// <summary>
         /// Handles when the server creates replies from console commands.
         /// </summary>
-        /// <param name="server">The server.</param>
-        /// <param name="command">The command.</param>
-        /// <param name="returnString">The return string.</param>
-        static void Server_ConsoleCommandExecuted(Server server, string command, string returnString)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ServerConsoleCommandEventArgs"/> instance containing the event data.</param>
+        static void Server_ConsoleCommandExecuted(Server sender, ServerConsoleCommandEventArgs e)
         {
-            Console.WriteLine(returnString);
+            Console.WriteLine(e.ReturnString);
             Console.WriteLine();
         }
 

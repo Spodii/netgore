@@ -98,7 +98,7 @@ namespace NetGore.Network
         /// <summary>
         /// Notifies listeners when the status of the connection has changed.
         /// </summary>
-        public event ClientSocketManagerStatusChangedEventHandler StatusChanged;
+        public event TypedEventHandler<IClientSocketManager, ClientSocketManagerStatusChangedEventArgs> StatusChanged;
 
         /// <summary>
         /// Gets if it was us, the client, who terminated the connection to the server. This will only be true when
@@ -270,7 +270,7 @@ namespace NetGore.Network
                         OnReceiveStatusChanged(ipSocket, status, reason);
 
                         if (StatusChanged != null)
-                            StatusChanged(this, status, reason);
+                            StatusChanged(this, new ClientSocketManagerStatusChangedEventArgs(status, reason));
 
                         break;
 

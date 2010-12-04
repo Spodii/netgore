@@ -39,7 +39,7 @@ namespace NetGore.Collections
         /// <param name="useGAC">If true, Assemblies from the Global Assembly Cache will be included. If false,
         /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
         /// be found by this <see cref="TypeFactory"/>.</param>
-        public TypeFactory(Func<Type, bool> typeFilter, TypeFactoryLoadedHandler loadTypeHandler = null, bool useGAC = false)
+        public TypeFactory(Func<Type, bool> typeFilter, TypedEventHandler<TypeFactory, TypeFactoryLoadedEventArgs> loadTypeHandler = null, bool useGAC = false)
         {
             _typeFilter = typeFilter;
             _useGAC = useGAC;
@@ -60,7 +60,7 @@ namespace NetGore.Collections
         /// <summary>
         /// Notifies listeners when a <see cref="Type"/> has been loaded into this <see cref="TypeFactory"/>.
         /// </summary>
-        public event TypeFactoryLoadedHandler TypeLoaded;
+        public event TypedEventHandler<TypeFactory, TypeFactoryLoadedEventArgs> TypeLoaded;
 
         /// <summary>
         /// Gets a Type from its name.
@@ -241,7 +241,7 @@ namespace NetGore.Collections
                 OnTypeLoaded(type, typeName);
 
                 if (TypeLoaded != null)
-                    TypeLoaded(this, type, typeName);
+                    TypeLoaded(this, new TypeFactoryLoadedEventArgs(type, typeName));
             }
         }
 

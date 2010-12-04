@@ -247,7 +247,12 @@ namespace DemoGame.Client
             _chatForm.AppendToOutput(text);
         }
 
-        void ChatDialogForm_RequestEndDialog(NPCChatDialogForm sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void ChatDialogForm_RequestEndDialog(NPCChatDialogForm sender, EventArgs e)
         {
             using (var pw = ClientPacket.EndNPCChatDialog())
             {
@@ -255,16 +260,27 @@ namespace DemoGame.Client
             }
         }
 
-        void ChatDialogForm_SelectResponse(NPCChatDialogForm sender, NPCChatResponseBase response)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{NPCChatResponseBase}"/> instance containing the event data.</param>
+        void ChatDialogForm_SelectResponse(NPCChatDialogForm sender, EventArgs<NPCChatResponseBase> e)
         {
-            using (var pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
+            using (var pw = ClientPacket.SelectNPCChatDialogResponse(e.Item1.Value))
             {
                 Socket.Send(pw, ClientMessageType.GUI);
             }
         }
 
-        void ChatForm_Say(ChatForm sender, string text)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{String}"/> instance containing the event data.</param>
+        void ChatForm_Say(ChatForm sender, EventArgs<string> e)
         {
+            var text = e.Item1;
             if (string.IsNullOrEmpty(text))
                 return;
 
@@ -356,10 +372,15 @@ namespace DemoGame.Client
             DrawingManager.EndDrawGUI();
         }
 
-        public void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{EquipmentSlot}"/> instance containing the event data.</param>
+        public void EquippedForm_RequestUnequip(EquippedForm sender, EventArgs<EquipmentSlot> e)
         {
             // Send unequip request
-            using (var pw = ClientPacket.UnequipItem(slot))
+            using (var pw = ClientPacket.UnequipItem(e.Item1))
             {
                 Socket.Send(pw, ClientMessageType.GUIItems);
             }
@@ -556,12 +577,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles the <see cref="InventoryForm.RequestDropItem"/> event.
         /// </summary>
-        /// <param name="inventoryForm">The sender.</param>
-        /// <param name="slot">The slot containing the item requested to be dropped.</param>
-        void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{InventorySlot}"/> instance containing the event data.</param>
+        void InventoryForm_RequestDropItem(InventoryForm sender, EventArgs<InventorySlot> e)
         {
             // Make sure the event came from the user's inventory
-            if (inventoryForm.Inventory != UserInfo.Inventory)
+            if (sender.Inventory != UserInfo.Inventory)
                 return;
 
             // Depending on what screens are open, see if it makes sense to not just drop the item onto the ground
@@ -570,34 +591,34 @@ namespace DemoGame.Client
                 // If we are doing a peer trade, add the item into the trade instead
                 var ptih = PeerTradeForm.PeerTradeInfoHandler;
                 if (ptih != null)
-                    _peerTradeForm.AddToTrade(slot);
+                    _peerTradeForm.AddToTrade(e.Item1);
             }
             else if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
             {
                 // If we are currently shopping, try to sell the item instead
                 if (ShopForm.ShopInfo.CanBuy)
-                    UserInfo.Inventory.SellToShop(slot, GUIManager);
+                    UserInfo.Inventory.SellToShop(e.Item1, GUIManager);
             }
             else
             {
                 // Drop the item onto the ground
-                UserInfo.Inventory.Drop(slot, GUIManager);
+                UserInfo.Inventory.Drop(e.Item1, GUIManager);
             }
         }
 
         /// <summary>
         /// Handles the <see cref="InventoryForm.RequestUseItem"/> event.
         /// </summary>
-        /// <param name="inventoryForm">The sender.</param>
-        /// <param name="slot">The slot containing the item requested to be used.</param>
-        void InventoryForm_RequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{InventorySlot}"/> instance containing the event data.</param>
+        void InventoryForm_RequestUseItem(InventoryForm sender, EventArgs<InventorySlot> e)
         {
             // Make sure the event came from the user's inventory
-            if (inventoryForm.Inventory != UserInfo.Inventory)
+            if (sender.Inventory != UserInfo.Inventory)
                 return;
 
             // Send a request to use the item to the server
-            UserInfo.Inventory.Use(slot);
+            UserInfo.Inventory.Use(e.Item1);
         }
 
         /// <summary>
@@ -610,17 +631,27 @@ namespace DemoGame.Client
             _damageFont = GameScreenHelper.DefaultChatFont;
         }
 
-        void ShopForm_RequestPurchase(ShopForm shopForm, ShopItemIndex slot)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{ShopItemIndex}"/> instance containing the event data.</param>
+        void ShopForm_RequestPurchase(ShopForm sender, EventArgs<ShopItemIndex> e)
         {
-            using (var pw = ClientPacket.BuyFromShop(slot, 1))
+            using (var pw = ClientPacket.BuyFromShop(e.Item1, 1))
             {
                 Socket.Send(pw, ClientMessageType.GUI);
             }
         }
 
-        public void SkillsForm_RequestUseSkill(SkillType skillType)
+        /// <summary>
+        /// Handles the RequestUseSkill event of the SkillsForm control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.EventArgs{SkillType}"/> instance containing the event data.</param>
+        public void SkillsForm_RequestUseSkill(object sender, EventArgs<SkillType> e)
         {
-            using (var pw = ClientPacket.UseSkill(skillType, _characterTargeter.TargetCharacterIndex))
+            using (var pw = ClientPacket.UseSkill(e.Item1, _characterTargeter.TargetCharacterIndex))
             {
                 Socket.Send(pw, ClientMessageType.CharacterAction);
             }
@@ -629,11 +660,11 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles when a stat is requested to be raised.
         /// </summary>
-        /// <param name="statsForm">StatsForm that the event came from.</param>
-        /// <param name="statType">StatType requested to be raised.</param>
-        void StatsForm_RequestRaiseStat(StatsForm statsForm, StatType statType)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{StatType}"/> instance containing the event data.</param>
+        void StatsForm_RequestRaiseStat(StatsForm sender, EventArgs<StatType> e)
         {
-            using (var pw = ClientPacket.RaiseStat(statType))
+            using (var pw = ClientPacket.RaiseStat(e.Item1))
             {
                 Socket.Send(pw, ClientMessageType.GUI);
             }
@@ -792,15 +823,20 @@ namespace DemoGame.Client
             }
         }
 
-        void _guildForm_JoinRequested(GuildForm sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void _guildForm_JoinRequested(GuildForm sender, EventArgs e)
         {
             var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.",
                 MessageBoxButton.OkCancel);
 
-            ib.OptionSelected += delegate(Control s, EventArgs<MessageBoxButton> e)
+            ib.OptionSelected += delegate(Control s, EventArgs<MessageBoxButton> e2)
             {
                 var c = s as InputBox;
-                if (c == null || e.Item1 != MessageBoxButton.Ok || Socket == null)
+                if (c == null || e2.Item1 != MessageBoxButton.Ok || Socket == null)
                     return;
 
                 var input = c.InputText;
@@ -814,7 +850,12 @@ namespace DemoGame.Client
             };
         }
 
-        void _guildForm_LeaveRequested(GuildForm sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void _guildForm_LeaveRequested(GuildForm sender, EventArgs e)
         {
             using (var pw = ClientPacket.Say("/leaveguild"))
             {

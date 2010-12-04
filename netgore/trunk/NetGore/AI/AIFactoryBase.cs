@@ -51,18 +51,18 @@ namespace NetGore.AI
         /// <summary>
         /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
-        /// <param name="loadedType">Type that was loaded.</param>
-        /// <param name="name">Name of the Type.</param>
-        /// <exception cref="ArgumentException"><paramref name="loadedType"/> does not contain the <see cref="AIAttribute"/>.</exception>
-        protected virtual void OnLoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
+        /// <param name="typeFactory">The type factory.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentException"><see cref="TypeFactoryLoadedEventArgs.LoadedType"/> does not contain
+        /// the <see cref="AIAttribute"/>.</exception>
+        protected virtual void OnLoadTypeHandler(TypeFactory typeFactory, TypeFactoryLoadedEventArgs e)
         {
-            var aiAttributes = loadedType.GetCustomAttributes(typeof(AIAttribute), false).Cast<AIAttribute>();
+            var aiAttributes = e.LoadedType.GetCustomAttributes(typeof(AIAttribute), false).Cast<AIAttribute>();
 
             if (aiAttributes.Count() == 0)
             {
                 throw new ArgumentException(
-                    string.Format("Expected loaded AI Type {0} to have one or more AIAttributes.", loadedType), "loadedType");
+                    string.Format("Expected loaded AI Type {0} to have one or more AIAttributes.", e.LoadedType), "e");
             }
 
             foreach (var aiAttribute in aiAttributes)
@@ -73,17 +73,17 @@ namespace NetGore.AI
                 if (_aiByID.ContainsKey(id))
                 {
                     const string errmsg = "Failed to load AI `{0}` - AIID `{1}` is already in use by Type `{2}`";
-                    var err = string.Format(errmsg, loadedType, id, _aiByID[id]);
+                    var err = string.Format(errmsg, e.LoadedType, id, _aiByID[id]);
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     Debug.Fail(err);
                     throw new DuplicateKeyException(err);
                 }
 
-                _aiByID.Add(id, loadedType);
+                _aiByID.Add(id, e.LoadedType);
 
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Loaded AI `{0}` from Type `{1}`.", name, loadedType);
+                    log.InfoFormat("Loaded AI `{0}` from Type `{1}`.", e.Name, e.LoadedType);
             }
         }
 

@@ -673,8 +673,8 @@ namespace DemoGame.Server
             }
 
             OnAttacked();
-            if (Attacked != null)
-                Attacked(this, EventArgs.Empty);
+            
+            Attacked.Raise(this, EventArgs.Empty);
 
             AttackApplyReal(target);
         }
@@ -683,15 +683,12 @@ namespace DemoGame.Server
         /// Handles when the <see cref="Character"/>'s base stats change.
         /// </summary>
         /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
-        /// <param name="statType">The type of the stat that changed.</param>
-        /// <param name="oldValue">The old value of the stat.</param>
-        /// <param name="newValue">The new value of the stat.</param>
-        void BaseStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
-                                    StatValueType newValue)
+        /// <param name="e">The <see cref="StatCollectionStatChangedEventArgs{StatType}"/> instance containing the event data.</param>
+        void BaseStatChangedHandler(IStatCollection<StatType> sender, StatCollectionStatChangedEventArgs<StatType> e)
         {
             _updateModStats = true;
 
-            OnBaseStatChanged(statType, oldValue, newValue);
+            OnBaseStatChanged(e.StatType, e.OldValue, e.NewValue);
         }
 
         /// <summary>
@@ -929,13 +926,12 @@ namespace DemoGame.Server
         /// Handles when the <see cref="Character"/> equips an item.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="item">The <see cref="ItemEntity"/> that was equipped.</param>
-        /// <param name="slot">The slot the <paramref name="item"/> was equipped in.</param>
-        void EquippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
+        /// <param name="e">The <see cref="EquippedEventArgs{ItemEntity}"/> instance containing the event data.</param>
+        void EquippedHandler(EquippedBase<ItemEntity> sender, EquippedEventArgs<ItemEntity> e)
         {
             _updateModStats = true;
 
-            OnEquipped(item, slot);
+            OnEquipped(e.Item, e.Slot);
         }
 
         /// <summary>
@@ -1305,33 +1301,30 @@ namespace DemoGame.Server
         /// Handles when the <see cref="Character"/>'s mod stats change.
         /// </summary>
         /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
-        /// <param name="statType">The type of the stat that changed.</param>
-        /// <param name="oldValue">The old value of the stat.</param>
-        /// <param name="newValue">The new value of the stat.</param>
-        void ModStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
-                                   StatValueType newValue)
+        /// <param name="e">The <see cref="StatCollectionStatChangedEventArgs{StatType}"/> instance containing the event data.</param>
+        void ModStatChangedHandler(IStatCollection<StatType> sender, StatCollectionStatChangedEventArgs<StatType> e)
         {
             _updateModStats = true;
 
             // Ensure the HP and MP are valid
-            switch (statType)
+            switch (e.StatType)
             {
                 case StatType.MaxMP:
-                    if (MP > newValue)
-                        MP = (int)newValue;
+                    if (MP > e.NewValue)
+                        MP = (int)e.NewValue;
                     break;
 
                 case StatType.MaxHP:
-                    if (HP > newValue)
-                        HP = (int)newValue;
+                    if (HP > e.NewValue)
+                        HP = (int)e.NewValue;
                     break;
             }
 
             // Update the attack rate
-            if (statType == StatType.Agi)
+            if (e.StatType == StatType.Agi)
                 _attackTimeout = Math.Max(GameData.AttackTimeoutMin, GameData.AttackTimeoutDefault - ModStats[StatType.Agi] * 2);
 
-            OnModStatChanged(statType, oldValue, newValue);
+            OnModStatChanged(e.StatType, e.OldValue, e.NewValue);
         }
 
         /// <summary>
@@ -1666,7 +1659,7 @@ namespace DemoGame.Server
         /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
         /// <param name="activeStatusEffect">The ActiveStatusEffect that was added.</param>
         protected virtual void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects,
-                                                         ActiveStatusEffect activeStatusEffect)
+                                                         EventArgs<ActiveStatusEffect> activeStatusEffect)
         {
             _updateModStats = true;
         }
@@ -1677,7 +1670,7 @@ namespace DemoGame.Server
         /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
         /// <param name="activeStatusEffect">The ActiveStatusEffect that was removed.</param>
         protected virtual void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects,
-                                                            ActiveStatusEffect activeStatusEffect)
+                                                            EventArgs<ActiveStatusEffect> activeStatusEffect)
         {
             _updateModStats = true;
         }
@@ -1831,13 +1824,12 @@ namespace DemoGame.Server
         /// Handles when the <see cref="Character"/> unequips an item.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="item">The <see cref="ItemEntity"/> that was unequipped.</param>
-        /// <param name="slot">The slot the <paramref name="item"/> was unequipped in.</param>
-        void UnequippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
+        /// <param name="e">The <see cref="EquippedEventArgs{ItemEntity}"/> instance containing the event data.</param>
+        void UnequippedHandler(EquippedBase<ItemEntity> sender, EquippedEventArgs<ItemEntity> e)
         {
             _updateModStats = true;
 
-            OnUnequipped(item, slot);
+            OnUnequipped(e.Item, e.Slot);
         }
 
         /// <summary>

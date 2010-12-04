@@ -11,7 +11,7 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Notifies listeners when a new group has been created.
         /// </summary>
-        event IGroupManagerGroupEventHandler GroupCreated;
+        event TypedEventHandler<IGroupManager, EventArgs<IGroup>> GroupCreated;
 
         /// <summary>
         /// Gets all of the active <see cref="IGroup"/>s managed by this <see cref="IGroupManager"/>.

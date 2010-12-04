@@ -357,6 +357,7 @@
     <Compile Include="Say\SayHandlerCommands.HelperMethods.cs" />
     <Compile Include="Say\SayHandlerCommands.LesserAdmin.cs" />
     <Compile Include="Say\SayHandlerCommands.Moderator.cs" />
+    <Compile Include="ServerConsoleCommandEventArgs.cs" />
     <Compile Include="ServerGameData.cs" />
     <Compile Include="Properties\ServerSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>

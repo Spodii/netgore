@@ -18,8 +18,6 @@ using NetGore.Scripting;
 
 namespace DemoGame.Server
 {
-    public delegate void ServerConsoleCommandCallback(Server server, string command, string returnString);
-
     /// <summary>
     /// The core component of the game server.
     /// </summary>
@@ -111,7 +109,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when a console command has been executed.
         /// </summary>
-        public event ServerConsoleCommandCallback ConsoleCommandExecuted;
+        public event TypedEventHandler<Server, ServerConsoleCommandEventArgs> ConsoleCommandExecuted;
 
         /// <summary>
         /// Gets the DbController used to communicate with the database by this server.
@@ -471,8 +469,7 @@ namespace DemoGame.Server
                 {
                     var ret = _consoleCommands.ExecuteCommand(cmd);
 
-                    if (ConsoleCommandExecuted != null)
-                        ConsoleCommandExecuted.Invoke(this, cmd, ret);
+                    ConsoleCommandExecuted.Raise(this, new ServerConsoleCommandEventArgs(cmd, ret));
                 }
             }
         }

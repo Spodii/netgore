@@ -13,17 +13,17 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has accepted a new quest.
         /// </summary>
-        event QuestPerformerQuestEventHandler<TCharacter> QuestAccepted;
+        event TypedEventHandler<TCharacter, EventArgs<IQuest<TCharacter>>> QuestAccepted;
 
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has canceled an active quest.
         /// </summary>
-        event QuestPerformerQuestEventHandler<TCharacter> QuestCanceled;
+        event TypedEventHandler<TCharacter, EventArgs<IQuest<TCharacter>>> QuestCanceled;
 
         /// <summary>
         /// Notifies listeners when this <see cref="IQuestPerformer{TCharacter}"/> has finished a quest.
         /// </summary>
-        event QuestPerformerQuestEventHandler<TCharacter> QuestFinished;
+        event TypedEventHandler<TCharacter, EventArgs<IQuest<TCharacter>>> QuestFinished;
 
         /// <summary>
         /// Gets the incomplete quests that this <see cref="IQuestPerformer{TCharacter}"/> is currently working on.

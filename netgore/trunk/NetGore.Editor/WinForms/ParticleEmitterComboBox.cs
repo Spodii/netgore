@@ -5,8 +5,6 @@ using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.Editor.WinForms
 {
-    public delegate void ParticleEmitterComboBoxHandler(ParticleEmitterComboBox sender, Type emitterType);
-
     /// <summary>
     /// A <see cref="ComboBox"/> containing the <see cref="ParticleEmitter"/>s.
     /// </summary>
@@ -24,7 +22,7 @@ namespace NetGore.Editor.WinForms
         /// <summary>
         /// Notifies listeners when the selected <see cref="ParticleEmitter"/> has changed.
         /// </summary>
-        public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
+        public event TypedEventHandler<ParticleEmitterComboBox, EventArgs<Type>> SelectedEmitterChanged;
 
         /// <summary>
         /// Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
@@ -64,7 +62,7 @@ namespace NetGore.Editor.WinForms
                 return;
 
             if (SelectedEmitterChanged != null && item != null)
-                SelectedEmitterChanged(this, item);
+                SelectedEmitterChanged(this, EventArgsHelper.Create(item));
         }
     }
 }

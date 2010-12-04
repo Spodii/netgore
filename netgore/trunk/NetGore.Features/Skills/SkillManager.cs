@@ -74,13 +74,12 @@ namespace NetGore.Features.Skills
         /// <summary>
         /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
         /// </summary>
-        /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
-        /// <param name="loadedType">Type that was loaded.</param>
-        /// <param name="name">Name of the Type.</param>
+        /// <param name="typeFactory">The type factory.</param>
+        /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SkillType")]
-        void TypeFactoryLoadedHandler(TypeFactory typeFactory, Type loadedType, string name)
+        void TypeFactoryLoadedHandler(TypeFactory typeFactory, TypeFactoryLoadedEventArgs e)
         {
-            var instance = (ISkill<TSkillType, TStatType, TCharacter>)TypeFactory.GetTypeInstance(loadedType);
+            var instance = (ISkill<TSkillType, TStatType, TCharacter>)TypeFactory.GetTypeInstance(e.LoadedType);
 
             if (_skills.ContainsKey(instance.SkillType))
             {
