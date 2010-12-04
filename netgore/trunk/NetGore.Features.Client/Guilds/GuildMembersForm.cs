@@ -8,8 +8,8 @@ namespace NetGore.Features.Guilds
 {
     public class GuildMembersForm : GuildMembersFormBase
     {
-        readonly UserGuildInformationEventHandler<GuildMemberNameRank> _updateHandlerA;
-        readonly UserGuildInformationEventHandler<string> _updateHandlerB;
+        readonly TypedEventHandler<UserGuildInformation, EventArgs<GuildMemberNameRank>> _updateHandlerA;
+        readonly TypedEventHandler<UserGuildInformation, EventArgs<string>> _updateHandlerB;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildMembersForm"/> class.

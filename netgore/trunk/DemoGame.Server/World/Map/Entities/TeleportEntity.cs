@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.World;
 
 namespace DemoGame.Server
@@ -15,7 +16,7 @@ namespace DemoGame.Server
         /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
         /// that used this IUsableEntity may be null.
         /// </summary>
-        public override event EntityEventHandler<DynamicEntity> Used;
+        public override event TypedEventHandler<Entity, EventArgs<DynamicEntity>> Used;
 
         /// <summary>
         /// Client: 
@@ -80,7 +81,7 @@ namespace DemoGame.Server
 
             // Notify listeners
             if (Used != null)
-                Used(this, charEntity);
+                Used(this, EventArgsHelper.Create(charEntity));
 
             // Successfully used
             return true;

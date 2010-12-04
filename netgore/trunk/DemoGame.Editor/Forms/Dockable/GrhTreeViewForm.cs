@@ -32,17 +32,17 @@ namespace DemoGame.Editor
             gtv.EditGrhDataRequested += gtv_EditGrhDataRequested;
         }
 
-        void gtv_EditGrhDataRequested(GrhTreeView sender, TreeNode node, GrhData gd, bool deleteOnCancel)
+        static void gtv_EditGrhDataRequested(GrhTreeView sender, GrhTreeViewEditGrhDataEventArgs e)
         {
-            if (gd == null)
+            if (e.GrhData == null)
                 return;
 
-            var frm = new EditGrhForm(gd, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size),
-                deleteOnCancel);
+            var frm = new EditGrhForm(e.GrhData, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size),
+                e.DeleteOnCancel);
             frm.Show();
         }
 
-        void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
+        static void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
             GlobalState.Instance.Map.GrhToPlace.SetGrh(e.GrhData);
         }

@@ -69,7 +69,7 @@ namespace DemoGame
         /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
         /// that used this IUsableEntity may be null.
         /// </summary>
-        public abstract event EntityEventHandler<DynamicEntity> Used;
+        public abstract event TypedEventHandler<Entity, EventArgs<DynamicEntity>> Used;
 
         /// <summary>
         /// Gets if the Client should be notified when this IUsableEntity is used. If true, when this IUsableEntity is

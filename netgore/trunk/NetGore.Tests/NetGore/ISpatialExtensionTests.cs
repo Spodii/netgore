@@ -261,7 +261,7 @@ namespace NetGore.Tests.NetGore
             /// <summary>
             /// Notifies listeners when this <see cref="ISpatial"/> has moved.
             /// </summary>
-            event SpatialEventHandler<Vector2> ISpatial.Moved
+            event TypedEventHandler<ISpatial, EventArgs<Vector2>> ISpatial.Moved
             {
                 add { }
                 remove { }
@@ -270,7 +270,7 @@ namespace NetGore.Tests.NetGore
             /// <summary>
             /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
             /// </summary>
-            event SpatialEventHandler<Vector2> ISpatial.Resized
+            event TypedEventHandler<ISpatial, EventArgs<Vector2>> ISpatial.Resized
             {
                 add { }
                 remove { }

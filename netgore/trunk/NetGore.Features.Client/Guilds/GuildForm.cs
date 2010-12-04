@@ -202,7 +202,12 @@ namespace NetGore.Features.Guilds
             }
         }
 
-        void UserGuildInfo_GuildChanged(UserGuildInformation sender)
+        /// <summary>
+        /// Handles the corresponding event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void UserGuildInfo_GuildChanged(UserGuildInformation sender, EventArgs e)
         {
             UpdateGuildStatus();
         }

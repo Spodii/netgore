@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -17,22 +18,22 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Notifies listeners when a new quest has been added to the active quests list.
         /// </summary>
-        public event UserQuestInformationQuestEventHandler ActiveQuestAdded;
+        public event TypedEventHandler<UserQuestInformation, EventArgs<QuestID>> ActiveQuestAdded;
 
         /// <summary>
         /// Notifies listeners when a quest has been removed from the active quests list.
         /// </summary>
-        public event UserQuestInformationQuestEventHandler ActiveQuestRemoved;
+        public event TypedEventHandler<UserQuestInformation, EventArgs<QuestID>> ActiveQuestRemoved;
 
         /// <summary>
         /// Notifies listeners when a new quest has been added to the completed quests list.
         /// </summary>
-        public event UserQuestInformationQuestEventHandler CompletedQuestAdded;
+        public event TypedEventHandler<UserQuestInformation, EventArgs<QuestID>> CompletedQuestAdded;
 
         /// <summary>
         /// Notifies listeners when the initial quest values have been loaded.
         /// </summary>
-        public event UserQuestInformationEventHandler Loaded;
+        public event TypedEventHandler<UserQuestInformation> Loaded;
 
         /// <summary>
         /// Gets the list of active quests.
@@ -139,7 +140,7 @@ namespace NetGore.Features.Quests
             OnActiveQuestAdded(questID);
 
             if (ActiveQuestAdded != null)
-                ActiveQuestAdded(this, questID);
+                ActiveQuestAdded(this, EventArgsHelper.Create(questID));
         }
 
         /// <summary>
@@ -162,7 +163,7 @@ namespace NetGore.Features.Quests
             OnCompletedQuestAdded(questID);
 
             if (CompletedQuestAdded != null)
-                CompletedQuestAdded(this, questID);
+                CompletedQuestAdded(this, EventArgsHelper.Create(questID));
         }
 
         /// <summary>
@@ -192,7 +193,7 @@ namespace NetGore.Features.Quests
             OnLoaded();
 
             if (Loaded != null)
-                Loaded(this);
+                Loaded(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -217,7 +218,7 @@ namespace NetGore.Features.Quests
             OnActiveQuestRemoved(questID);
 
             if (ActiveQuestRemoved != null)
-                ActiveQuestRemoved(this, questID);
+                ActiveQuestRemoved(this, EventArgsHelper.Create(questID));
         }
 
         /// <summary>

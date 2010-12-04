@@ -41,32 +41,32 @@ namespace NetGore.Features.Guilds
         /// Notifies listeners when the guild has changed. This can be either the user leaving a guild, joining a new
         /// guild, or having the initial guild being set.
         /// </summary>
-        public event UserGuildInformationEventHandler GuildChanged;
+        public event TypedEventHandler<UserGuildInformation> GuildChanged;
 
         /// <summary>
         /// Notifies listeners when a guild member has been added.
         /// </summary>
-        public event UserGuildInformationEventHandler<GuildMemberNameRank> MemberAdded;
+        public event TypedEventHandler<UserGuildInformation, EventArgs<GuildMemberNameRank>> MemberAdded;
 
         /// <summary>
         /// Notifies listeners when a guild member's rank has been updated.
         /// </summary>
-        public event UserGuildInformationEventHandler<GuildMemberNameRank> MemberRankUpdated;
+        public event TypedEventHandler<UserGuildInformation, EventArgs<GuildMemberNameRank>> MemberRankUpdated;
 
         /// <summary>
         /// Notifies listeners when a guild member has been removed.
         /// </summary>
-        public event UserGuildInformationEventHandler<string> MemberRemoved;
+        public event TypedEventHandler<UserGuildInformation, EventArgs<string>> MemberRemoved;
 
         /// <summary>
         /// Notifies listeners when an offline guild member has come online.
         /// </summary>
-        public event UserGuildInformationEventHandler<string> OnlineMemberAdded;
+        public event TypedEventHandler<UserGuildInformation, EventArgs<string>> OnlineMemberAdded;
 
         /// <summary>
         /// Notifies listeners when an online guild member has gone offline.
         /// </summary>
-        public event UserGuildInformationEventHandler<string> OnlineMemberRemoved;
+        public event TypedEventHandler<UserGuildInformation, EventArgs<string>> OnlineMemberRemoved;
 
         /// <summary>
         /// Gets if the client is in a guild at all.
@@ -89,8 +89,7 @@ namespace NetGore.Features.Guilds
                     _onlineMembers.Clear();
                 }
 
-                if (GuildChanged != null)
-                    GuildChanged(this);
+                GuildChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -254,7 +253,7 @@ namespace NetGore.Features.Guilds
             OnMemberAdded(member);
 
             if (MemberAdded != null)
-                MemberAdded(this, member);
+                MemberAdded(this, EventArgsHelper.Create(member));
         }
 
         /// <summary>
@@ -269,7 +268,7 @@ namespace NetGore.Features.Guilds
             OnOnlineMemberAdded(name);
 
             if (OnlineMemberAdded != null)
-                OnlineMemberAdded(this, name);
+                OnlineMemberAdded(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -287,7 +286,7 @@ namespace NetGore.Features.Guilds
             OnMemberRemoved(name);
 
             if (MemberRemoved != null)
-                MemberRemoved(this, name);
+                MemberRemoved(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -302,7 +301,7 @@ namespace NetGore.Features.Guilds
             OnOnlineMemberRemoved(name);
 
             if (OnlineMemberRemoved != null)
-                OnlineMemberRemoved(this, name);
+                OnlineMemberRemoved(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -340,8 +339,7 @@ namespace NetGore.Features.Guilds
 
             OnGuildChanged();
 
-            if (GuildChanged != null)
-                GuildChanged(this);
+            GuildChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -368,7 +366,7 @@ namespace NetGore.Features.Guilds
             OnMemberRankUpdated(member);
 
             if (MemberRankUpdated != null)
-                MemberRankUpdated(this, member);
+                MemberRankUpdated(this, EventArgsHelper.Create(member));
         }
 
         /// <summary>

@@ -43,9 +43,9 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles when the <see cref="ILight.PositionProvider"/> moves.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        void PositionProvider_Moved(ISpatial sender, Vector2 e)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{Vector2}"/> instance containing the event data.</param>
+        void PositionProvider_Moved(ISpatial sender, EventArgs<Vector2> e)
         {
             _position = sender.Position;
         }
@@ -55,12 +55,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Moved;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Moved;
 
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Resized;
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Resized;
 
         /// <summary>
         /// Gets or sets the center position of the <see cref="ISpatial"/>.
@@ -121,7 +121,7 @@ namespace NetGore.Graphics
                 _position = value;
 
                 if (Moved != null)
-                    Moved(this, oldValue);
+                    Moved(this, EventArgsHelper.Create(oldValue));
             }
         }
 
@@ -180,7 +180,7 @@ namespace NetGore.Graphics
                 _size = value;
 
                 if (Resized != null)
-                    Resized(this, oldSize);
+                    Resized(this, EventArgsHelper.Create(oldSize));
             }
         }
 

@@ -472,7 +472,7 @@ namespace DemoGame.Editor
             Camera.Size = ClientSize.ToVector2() * Camera.Scale;
         }
 
-        void SelectedObjsManager_SelectedChanged(SelectedObjectsManager<object> sender)
+        void SelectedObjsManager_SelectedChanged(SelectedObjectsManager<object> sender, EventArgs e)
         {
             var items = sender.SelectedObjects.OfType<ISpatial>();
             TransBoxManager.SetItems(items);

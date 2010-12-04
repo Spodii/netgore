@@ -527,7 +527,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Notifies listeners when this <see cref="IParticleEmitter"/> has bene disposed.
         /// </summary>
-        public event IParticleEmitterEventHandler Disposed;
+        public event TypedEventHandler<IParticleEmitter> Disposed;
 
         /// <summary>
         /// Gets the number of living <see cref="Particle"/>s.
@@ -826,7 +826,7 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             if (Disposed != null)
-                Disposed(this);
+                Disposed(this, EventArgs.Empty);
         }
 
         /// <summary>

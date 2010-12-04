@@ -98,14 +98,15 @@ namespace NetGore.Graphics.ParticleEngine
             emitter.Disposed += emitter_Disposed;
 
             if (EmitterAdded != null)
-                EmitterAdded(this, emitter);
+                EmitterAdded(this, EventArgsHelper.Create((IParticleEmitter)emitter));
         }
 
         /// <summary>
         /// Handles when a <see cref="IParticleEmitter"/> in this <see cref="IParticleEffect"/> is disposed.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        void emitter_Disposed(IParticleEmitter sender)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        void emitter_Disposed(IParticleEmitter sender, EventArgs e)
         {
             sender.Disposed -= emitter_Disposed;
 
@@ -116,7 +117,7 @@ namespace NetGore.Graphics.ParticleEngine
             _emitters.Remove((ParticleEmitter)sender);
 
             if (EmitterRemoved != null)
-                EmitterRemoved(this, sender);
+                EmitterRemoved(this, EventArgsHelper.Create(sender));
         }
 
         #region IParticleEffect Members
@@ -124,17 +125,17 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Notifies listeners when this <see cref="IParticleEffect"/> has bene disposed.
         /// </summary>
-        public event IParticleEffectEventHandler Disposed;
+        public event TypedEventHandler<IParticleEffect> Disposed;
 
         /// <summary>
         /// Notifies listeners when an <see cref="IParticleEmitter"/> has been added to this <see cref="IParticleEffect"/>.
         /// </summary>
-        public event IParticleEffectEmitterEventHandler EmitterAdded;
+        public event TypedEventHandler<IParticleEffect, EventArgs<IParticleEmitter>> EmitterAdded;
 
         /// <summary>
         /// Notifies listeners when an <see cref="IParticleEmitter"/> has been removed from this <see cref="IParticleEffect"/>.
         /// </summary>
-        public event IParticleEffectEmitterEventHandler EmitterRemoved;
+        public event TypedEventHandler<IParticleEffect, EventArgs<IParticleEmitter>> EmitterRemoved;
 
         /// <summary>
         /// Gets the <see cref="IParticleEmitter"/>s in this <see cref="IParticleEffect"/>.
@@ -325,7 +326,7 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             if (Disposed != null)
-                Disposed(this);
+                Disposed(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -71,22 +71,22 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Notifies listeners when this group has been disbandoned.
         /// </summary>
-        public event IGroupEventHandler Disbanded;
+        public event TypedEventHandler<IGroup> Disbanded;
 
         /// <summary>
         /// Notifies listeners when a group member joins the group.
         /// </summary>
-        public event IGroupMemberEventHandler MemberJoin;
+        public event TypedEventHandler<IGroup, EventArgs<IGroupable>> MemberJoin;
 
         /// <summary>
         /// Notifies listeners when a group member leaves the group.
         /// </summary>
-        public event IGroupMemberEventHandler MemberLeave;
+        public event TypedEventHandler<IGroup, EventArgs<IGroupable>> MemberLeave;
 
         /// <summary>
         /// Notifies listeners when the <see cref="IGroup.ShareMode"/> has changed.
         /// </summary>
-        public event IGroupEventHandler ShareModeChanged;
+        public event TypedEventHandler<IGroup> ShareModeChanged;
 
         /// <summary>
         /// Gets the <see cref="IGroupable"/> that is the founder of this group. If this value is false, the group
@@ -119,7 +119,7 @@ namespace NetGore.Features.Groups
                 _shareMode = value;
 
                 if (ShareModeChanged != null)
-                    ShareModeChanged(this);
+                    ShareModeChanged(this, EventArgs.Empty);
             }
         }
 
@@ -132,7 +132,7 @@ namespace NetGore.Features.Groups
             OnDisbanded();
 
             if (Disbanded != null)
-                Disbanded(this);
+                Disbanded(this, EventArgs.Empty);
 
             // Clear the founder
             _founder = null;
@@ -209,7 +209,7 @@ namespace NetGore.Features.Groups
             OnMemberLeave(member);
 
             if (MemberLeave != null)
-                MemberLeave(this, member);
+                MemberLeave(this, EventArgsHelper.Create(member));
 
             // If they were the founder, disband the group completely
             if (member == Founder)
@@ -266,7 +266,7 @@ namespace NetGore.Features.Groups
             OnMemberJoin(groupable);
 
             if (MemberJoin != null)
-                MemberJoin(this, groupable);
+                MemberJoin(this, EventArgsHelper.Create(groupable));
 
             return true;
         }

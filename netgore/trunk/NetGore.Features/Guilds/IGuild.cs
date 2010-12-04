@@ -12,52 +12,52 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Notifies listeners when the guild has been destroyed.
         /// </summary>
-        event GuildEventHandler Destroyed;
+        event TypedEventHandler<IGuild> Destroyed;
 
         /// <summary>
         /// Notifies listeners when a new member has joined the guild.
         /// </summary>
-        event GuildMemberEventHandler MemberAdded;
+        event TypedEventHandler<IGuild, EventArgs<IGuildMember>> MemberAdded;
 
         /// <summary>
         /// Notifies listeners when a member has been demoted.
         /// </summary>
-        event GuildInvokeEventWithTargetHandler MemberDemoted;
+        event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberDemoted;
 
         /// <summary>
         /// Notifies listeners when a member has been invited into the guild.
         /// </summary>
-        event GuildInvokeEventWithTargetHandler MemberInvited;
+        event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberInvited;
 
         /// <summary>
         /// Notifies listeners when a member has been kicked from the guild.
         /// </summary>
-        event GuildInvokeEventWithTargetHandler MemberKicked;
+        event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberKicked;
 
         /// <summary>
         /// Notifies listeners when a member has been promoted.
         /// </summary>
-        event GuildInvokeEventWithTargetHandler MemberPromoted;
+        event TypedEventHandler<IGuildMember, EventArgs<IGuildMember>> MemberPromoted;
 
         /// <summary>
         /// Notifies listeners when the guild's name has been changed.
         /// </summary>
-        event GuildRenameEventHandler NameChanged;
+        event TypedEventHandler<IGuild, GuildRenameEventArgs> NameChanged;
 
         /// <summary>
         /// Notifies listeners when a member of this guild has come online.
         /// </summary>
-        event GuildMemberEventHandler OnlineUserAdded;
+        event TypedEventHandler<IGuild, EventArgs<IGuildMember>> OnlineUserAdded;
 
         /// <summary>
         /// Notifies listeners when a member of this guild has gone offline.
         /// </summary>
-        event GuildMemberEventHandler OnlineUserRemoved;
+        event TypedEventHandler<IGuild, EventArgs<IGuildMember>> OnlineUserRemoved;
 
         /// <summary>
         /// Notifies listeners when the guild's tag has been changed.
         /// </summary>
-        event GuildRenameEventHandler TagChanged;
+        event TypedEventHandler<IGuild, GuildRenameEventArgs> TagChanged;
 
         /// <summary>
         /// Gets the <see cref="IGuildManager"/> managing this guild.

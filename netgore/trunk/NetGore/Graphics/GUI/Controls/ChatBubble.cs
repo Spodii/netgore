@@ -101,7 +101,8 @@ namespace NetGore.Graphics.GUI
         /// Handles when the <see cref="Owner"/> of the <see cref="ChatBubble"/> is disposed.
         /// </summary>
         /// <param name="entity">The <see cref="Entity"/> that was disposed.</param>
-        void ChatBubble_Owner_Disposed(Entity entity)
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void ChatBubble_Owner_Disposed(Entity entity, EventArgs e)
         {
             Debug.Assert(entity == Owner);
 

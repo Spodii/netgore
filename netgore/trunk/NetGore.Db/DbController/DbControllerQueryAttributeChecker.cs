@@ -10,7 +10,7 @@ namespace NetGore.Db
     /// </summary>
     public class DbControllerQueryAttributeChecker
     {
-        readonly DbControllerQueryAttributeCheckerEventHandler _missingAttributeHandler;
+        readonly TypedEventHandler<DbControllerQueryAttributeChecker, EventArgs<Type>> _missingAttributeHandler;
         readonly Type[] _typesToIgnore;
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace NetGore.Db
         /// <exception cref="ArgumentNullException"><paramref name="missingAttributeHandler"/> is null.</exception>
         /// <param name="typesToIgnore">Optional array of types to ignore. If a type is in this collection, it will
         /// never be invoked by the <paramref name="missingAttributeHandler"/>.</param>
-        public DbControllerQueryAttributeChecker(DbControllerQueryAttributeCheckerEventHandler missingAttributeHandler,
+        public DbControllerQueryAttributeChecker(TypedEventHandler<DbControllerQueryAttributeChecker, EventArgs<Type>> missingAttributeHandler,
                                                  params Type[] typesToIgnore)
         {
             if (missingAttributeHandler == null)
@@ -59,7 +59,7 @@ namespace NetGore.Db
             // Check for attribute
             var attribs = loadedType.GetCustomAttributes(false);
             if (attribs == null || attribs.Length == 0)
-                _missingAttributeHandler(this, loadedType);
+                _missingAttributeHandler(this, EventArgsHelper.Create(loadedType));
         }
     }
 }

@@ -60,18 +60,18 @@ namespace NetGore.Graphics
         /// Notifies listeners when a <see cref="GrhData"/> has been added. This includes
         /// <see cref="GrhData"/>s added from loading.
         /// </summary>
-        public static event GrhDataEventHandler Added;
+        public static event TypedEventHandler<GrhData> Added;
 
         /// <summary>
         /// Notifies listeners when a new <see cref="GrhData"/> has been added. This does not include
         /// <see cref="GrhData"/>s added from loading.
         /// </summary>
-        public static event GrhDataEventHandler AddedNew;
+        public static event TypedEventHandler<GrhData> AddedNew;
 
         /// <summary>
         /// Notifies listeners when a <see cref="GrhData"/> has been removed.
         /// </summary>
-        public static event GrhDataEventHandler Removed;
+        public static event TypedEventHandler<GrhData> Removed;
 
         /// <summary>
         /// Gets or sets a func used to determine the <see cref="ContentLevel"/>
@@ -156,10 +156,10 @@ namespace NetGore.Graphics
             AddToDictionary(gd);
 
             if (Added != null)
-                Added(gd);
+                Added(gd, EventArgs.Empty);
 
             if (!_isLoading && AddedNew != null)
-                AddedNew(gd);
+                AddedNew(gd, EventArgs.Empty);
         }
 
         /// <summary>
@@ -717,7 +717,7 @@ namespace NetGore.Graphics
             RemoveFromDictionary(e.Item);
 
             if (Removed != null)
-                Removed(e.Item);
+                Removed(e.Item, EventArgs.Empty);
         }
 
         /// <summary>

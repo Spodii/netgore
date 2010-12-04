@@ -29,8 +29,8 @@ namespace NetGore.World
         /// </summary>
         readonly int _gridSegmentSize;
 
-        readonly SpatialEventHandler<Vector2> _spatialMoveHandler;
-        readonly SpatialEventHandler<Vector2> _spatialResizeHandler;
+        readonly TypedEventHandler<ISpatial, EventArgs<Vector2>> _spatialMoveHandler;
+        readonly TypedEventHandler<ISpatial, EventArgs<Vector2>> _spatialResizeHandler;
 
         IGridSpatialCollectionSegment[] _gridSegments;
         Point _gridSize;
@@ -165,12 +165,12 @@ namespace NetGore.World
         /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> moves.
         /// </summary>
         /// <param name="sender">The <see cref="ISpatial"/> that moved.</param>
-        /// <param name="oldPosition">The old position.</param>
-        void Spatial_Moved(ISpatial sender, Vector2 oldPosition)
+        /// <param name="e">The <see cref="EventArgs{Vector2}"/> instance containing the event data.</param>
+        void Spatial_Moved(ISpatial sender, EventArgs<Vector2> e)
         {
             // Get the grid index for the last and current positions to see if the segments have changed
             var minSegment = WorldPositionToGridSegment(sender.Position);
-            var oldMinSegment = WorldPositionToGridSegment(oldPosition);
+            var oldMinSegment = WorldPositionToGridSegment(e.Item1);
 
             if (minSegment == oldMinSegment)
                 return;
@@ -194,12 +194,12 @@ namespace NetGore.World
         /// Handles when a <see cref="ISpatial"/> in this <see cref="ISpatialCollection"/> resizes.
         /// </summary>
         /// <param name="sender">The <see cref="ISpatial"/> that resized.</param>
-        /// <param name="oldSize">The old size.</param>
-        void Spatial_Resized(ISpatial sender, Vector2 oldSize)
+        /// <param name="e">The <see cref="EventArgs{Vector2}"/> instance containing the event data.</param>
+        void Spatial_Resized(ISpatial sender, EventArgs<Vector2> e)
         {
             // Get the grid index for the last and current max positions to see if the segments have changed
             var maxSegment = WorldPositionToGridSegment(sender.Position + sender.Size);
-            var oldMaxSegment = WorldPositionToGridSegment(sender.Position + oldSize);
+            var oldMaxSegment = WorldPositionToGridSegment(sender.Position + e.Item1);
 
             if (maxSegment == oldMaxSegment)
                 return;
@@ -208,7 +208,7 @@ namespace NetGore.World
 
             // The position did change, so we have to remove the spatial from the old segments and add to the new
             var startIndex = WorldPositionToGridSegment(sender.Position);
-            var length = WorldPositionToGridSegment(sender.Position + oldSize);
+            var length = WorldPositionToGridSegment(sender.Position + e.Item1);
             foreach (var segment in GetSegments(startIndex, length))
             {
                 segment.Remove(sender);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -103,7 +104,8 @@ namespace NetGore.Editor.Grhs
         /// the walls for it.
         /// </summary>
         /// <param name="sender">The <see cref="GrhData"/> that the event is related to.</param>
-        void DeleteGrhDataWalls(GrhData sender)
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void DeleteGrhDataWalls(GrhData sender, EventArgs e)
         {
             RemoveWalls(sender);
         }

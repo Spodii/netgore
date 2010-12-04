@@ -6,13 +6,6 @@ using NetGore.Graphics.ParticleEngine;
 namespace NetGore.Editor.WinForms
 {
     /// <summary>
-    /// Handles when the <see cref="ParticleEffectListBox"/> requests to create a particle effect instance.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="effectName">The name of the particle effect to create.</param>
-    public delegate void ParticleEffectListBoxCreateEventHandler(ParticleEffectListBox sender, string effectName);
-
-    /// <summary>
     /// A list box specifically for particle effects, containing the names of all the particle effects available.
     /// </summary>
     public class ParticleEffectListBox : ListBox
@@ -21,7 +14,7 @@ namespace NetGore.Editor.WinForms
         /// Notifies listeners when this <see cref="ParticleEffectListBox"/> requests to create a particle effect
         /// instance.
         /// </summary>
-        public event ParticleEffectListBoxCreateEventHandler RequestCreateEffect;
+        public event TypedEventHandler<ParticleEffectListBox, ParticleEffectListBoxCreateEventArgs> RequestCreateEffect;
 
         /// <summary>
         /// Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
@@ -52,7 +45,7 @@ namespace NetGore.Editor.WinForms
             if (!string.IsNullOrEmpty(name))
             {
                 if (RequestCreateEffect != null)
-                    RequestCreateEffect(this, name);
+                    RequestCreateEffect(this, new ParticleEffectListBoxCreateEventArgs(name));
             }
         }
     }

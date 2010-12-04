@@ -49,7 +49,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Not used by the <see cref="ItemEntity"/> in the client.
         /// </summary>
-        public override event EntityEventHandler<CharacterEntity> PickedUp
+        public override event TypedEventHandler<Entity, EventArgs<CharacterEntity>> PickedUp
         {
             add { }
             remove { }

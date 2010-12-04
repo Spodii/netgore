@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore;
 using NetGore.World;
 
 namespace DemoGame
@@ -11,7 +12,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up
         /// </summary>
-        event EntityEventHandler<CharacterEntity> PickedUp;
+        event TypedEventHandler<Entity, EventArgs<CharacterEntity>> PickedUp;
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
