@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 #if !TOPDOWN
 #pragma warning disable 1587
@@ -51,7 +52,7 @@ namespace DemoGame.Server
             get { return new AIID(_id); }
         }
 
-        void Actor_AttackedByCharacter(Character attacker, Character attacked, int damage)
+        void Actor_AttackedByCharacter(Character attacker, CharacterAttackEventArgs e)
         {
             //Set the _target as the attacker.
             _target = attacker;
@@ -333,7 +334,7 @@ namespace DemoGame.Server
             }
         }
 
-        void _target_Killed(Character character)
+        void _target_Killed(Character character, EventArgs e)
         {
             //Stop attacking target. Job done.
             _isAttackingTarget = false;

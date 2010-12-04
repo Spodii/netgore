@@ -31,7 +31,7 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.MoveStopVertical, _minMoveRate, () => UserChar.IsMovingUp || UserChar.IsMovingDown, HandleGameControl_MoveStopVertical);
         }
 
-        void HandleGameControl_MoveUp(GameControl sender)
+        void HandleGameControl_MoveUp(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.MoveUp())
             {
@@ -39,7 +39,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_MoveStopVertical(GameControl sender)
+        void HandleGameControl_MoveStopVertical(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.MoveStopVertical())
             {
@@ -47,7 +47,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_MoveStopHorizontal(GameControl sender)
+        void HandleGameControl_MoveStopHorizontal(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.MoveStopHorizontal())
             {
@@ -55,7 +55,7 @@ namespace DemoGame.Client
             }
         }
 
-        void HandleGameControl_MoveDown(GameControl sender)
+        void HandleGameControl_MoveDown(GameControl sender, EventArgs e)
         {
             using (var pw = ClientPacket.MoveDown())
             {
