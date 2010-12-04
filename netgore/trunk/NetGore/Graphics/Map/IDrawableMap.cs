@@ -12,22 +12,22 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners immediately before any of the map's layers are drawn.
         /// </summary>
-        event MapDrawEventHandler BeginDrawMap;
+        event TypedEventHandler<IDrawableMap, DrawableMapDrawEventArgs> BeginDrawMap;
 
         /// <summary>
         /// Notifies listeners immediately before a layer has started drawing.
         /// </summary>
-        event MapDrawLayerEventHandler BeginDrawMapLayer;
+        event TypedEventHandler<IDrawableMap, DrawableMapDrawLayerEventArgs> BeginDrawMapLayer;
 
         /// <summary>
         /// Notifies listeners immediately after any of the map's layers are drawn.
         /// </summary>
-        event MapDrawEventHandler EndDrawMap;
+        event TypedEventHandler<IDrawableMap, DrawableMapDrawEventArgs> EndDrawMap;
 
         /// <summary>
         /// Notifies listeners immediately after a layer has finished drawing.
         /// </summary>
-        event MapDrawLayerEventHandler EndDrawMapLayer;
+        event TypedEventHandler<IDrawableMap, DrawableMapDrawLayerEventArgs> EndDrawMapLayer;
 
         /// <summary>
         /// Gets or sets a filter to be used when determining what components on the map will be drawn.

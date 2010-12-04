@@ -11,10 +11,10 @@ namespace NetGore.Graphics
     public class MapDrawingExtensionCollection : ICollection<IMapDrawingExtension>
     {
         readonly List<IMapDrawingExtension> _extensions = new List<IMapDrawingExtension>();
-        readonly MapDrawEventHandler _handleBeginDrawMap;
-        readonly MapDrawLayerEventHandler _handleBeginDrawMapLayer;
-        readonly MapDrawEventHandler _handleEndDrawMap;
-        readonly MapDrawLayerEventHandler _handleEndDrawMapLayer;
+        readonly TypedEventHandler<IDrawableMap, DrawableMapDrawEventArgs> _handleBeginDrawMap;
+        readonly TypedEventHandler<IDrawableMap, DrawableMapDrawLayerEventArgs> _handleBeginDrawMapLayer;
+        readonly TypedEventHandler<IDrawableMap, DrawableMapDrawEventArgs> _handleEndDrawMap;
+        readonly TypedEventHandler<IDrawableMap, DrawableMapDrawLayerEventArgs> _handleEndDrawMapLayer;
 
         IDrawableMap _map;
 
@@ -78,52 +78,48 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles the <see cref="IDrawableMap.BeginDrawMap"/> event from the current map.
         /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        void BeginDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawEventArgs"/> instance containing the event data.</param>
+        void BeginDrawMapCallback(IDrawableMap sender, DrawableMapDrawEventArgs e)
         {
-            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+            Debug.Assert(Map == sender, "How did we get an event from the wrong map?");
+            Debug.Assert(e.SpriteBatch != null && !e.SpriteBatch.IsDisposed);
 
             foreach (var extension in _extensions)
             {
-                extension.DrawBeforeMap(map, spriteBatch, camera);
+                extension.DrawBeforeMap(sender, e);
             }
         }
 
         /// <summary>
         /// Handles the <see cref="IDrawableMap.BeginDrawMapLayer"/> event from the current map.
         /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="layer">The layer.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        void BeginDrawMapLayerCallback(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> instance containing the event data.</param>
+        void BeginDrawMapLayerCallback(IDrawableMap sender, DrawableMapDrawLayerEventArgs e)
         {
-            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+            Debug.Assert(Map == sender, "How did we get an event from the wrong map?");
+            Debug.Assert(e.SpriteBatch != null && !e.SpriteBatch.IsDisposed);
 
             foreach (var extension in _extensions)
             {
-                extension.DrawBeforeLayer(map, layer, spriteBatch, camera);
+                extension.DrawBeforeLayer(sender, e);
             }
         }
 
         /// <summary>
         /// Handles the <see cref="IDrawableMap.EndDrawMap"/> event from the current map.
         /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        void EndDrawMapCallback(IDrawableMap map, ISpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawEventArgs"/> instance containing the event data.</param>
+        void EndDrawMapCallback(IDrawableMap sender, DrawableMapDrawEventArgs e)
         {
-            Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+            Debug.Assert(Map == sender, "How did we get an event from the wrong map?");
+            Debug.Assert(e.SpriteBatch != null && !e.SpriteBatch.IsDisposed);
 
             foreach (var extension in _extensions)
             {
-                extension.DrawAfterMap(map, spriteBatch, camera);
+                extension.DrawAfterMap(sender, e);
             }
         }
 
@@ -131,17 +127,15 @@ namespace NetGore.Graphics
         /// Handles the <see cref="IDrawableMap.EndDrawMapLayer"/> event from the current map.
         /// </summary>
         /// <param name="map">The map.</param>
-        /// <param name="layer">The layer.</param>
-        /// <param name="spriteBatch">The sprite batch.</param>
-        /// <param name="camera">The camera.</param>
-        void EndDrawMapLayerCallback(IDrawableMap map, MapRenderLayer layer, ISpriteBatch spriteBatch, ICamera2D camera)
+        /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> instance containing the event data.</param>
+        void EndDrawMapLayerCallback(IDrawableMap map, DrawableMapDrawLayerEventArgs e)
         {
             Debug.Assert(Map == map, "How did we get an event from the wrong map?");
-            Debug.Assert(spriteBatch != null && !spriteBatch.IsDisposed);
+            Debug.Assert(e.SpriteBatch != null && !e.SpriteBatch.IsDisposed);
 
             foreach (var extension in _extensions)
             {
-                extension.DrawAfterLayer(map, layer, spriteBatch, camera);
+                extension.DrawAfterLayer(map, e);
             }
         }
 

@@ -644,22 +644,22 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners immediately before any of the map's layers are drawn.
         /// </summary>
-        public event MapDrawEventHandler BeginDrawMap;
+        public event TypedEventHandler<IDrawableMap, DrawableMapDrawEventArgs> BeginDrawMap;
 
         /// <summary>
         /// Notifies listeners immediately before a layer has started drawing.
         /// </summary>
-        public event MapDrawLayerEventHandler BeginDrawMapLayer;
+        public event TypedEventHandler<IDrawableMap, DrawableMapDrawLayerEventArgs> BeginDrawMapLayer;
 
         /// <summary>
         /// Notifies listeners immediately after any of the map's layers are drawn.
         /// </summary>
-        public event MapDrawEventHandler EndDrawMap;
+        public event TypedEventHandler<IDrawableMap, DrawableMapDrawEventArgs> EndDrawMap;
 
         /// <summary>
         /// Notifies listeners immediately after a layer has finished drawing.
         /// </summary>
-        public event MapDrawLayerEventHandler EndDrawMapLayer;
+        public event TypedEventHandler<IDrawableMap, DrawableMapDrawLayerEventArgs> EndDrawMapLayer;
 
         /// <summary>
         /// Gets or sets the <see cref="ICamera2D"/> used to view the map.
@@ -747,14 +747,16 @@ namespace DemoGame.Client
             drawableInView = bgInView.Concat(drawableInView);
 
             if (BeginDrawMap != null)
-                BeginDrawMap(this, sb, cam);
+                BeginDrawMap(this, new DrawableMapDrawEventArgs(sb, cam));
 
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
             foreach (var layer in _drawableSorter.GetSorted(drawableInView))
             {
+                var layerEventArgs = new DrawableMapDrawLayerEventArgs(layer.Key, sb, cam);
+
                 // Notify the layer has started drawing
                 if (BeginDrawMapLayer != null)
-                    BeginDrawMapLayer(this, layer.Key, sb, cam);
+                    BeginDrawMapLayer(this, layerEventArgs);
 
                 // Draw the normal map objects
                 foreach (var drawable in layer.Value)
@@ -787,7 +789,7 @@ namespace DemoGame.Client
 
                 // Notify the layer has finished drawing
                 if (EndDrawMapLayer != null)
-                    EndDrawMapLayer(this, layer.Key, sb, cam);
+                    EndDrawMapLayer(this, layerEventArgs);
             }
 
             // Draw the particle effects
@@ -800,7 +802,7 @@ namespace DemoGame.Client
             }
 
             if (EndDrawMap != null)
-                EndDrawMap(this, sb, cam);
+                EndDrawMap(this, new DrawableMapDrawEventArgs(sb, cam));
         }
 
         #endregion
