@@ -44,8 +44,8 @@ namespace NetGore.Graphics.GUI
         static readonly object _eventTextEntered = new object();
         static readonly object _eventTooltipChanged = new object();
         static readonly object _eventVisibleChanged = new object();
-        readonly bool _alwaysOnTop;
 
+        readonly bool _alwaysOnTop;
         readonly List<Control> _controls = new List<Control>(1);
         readonly EventHandlerList _eventHandlerList = new EventHandlerList();
         readonly IGUIManager _gui;
@@ -830,7 +830,7 @@ namespace NetGore.Graphics.GUI
 
             var eventHandler = Events[_eventDisposed] as TypedEventHandler<Control>;
             if (eventHandler != null)
-                eventHandler(this, EventArgs.Empty);
+                eventHandler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1071,7 +1071,7 @@ namespace NetGore.Graphics.GUI
             OnBeginDrag();
             var handler = Events[_eventBeginDrag] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1083,7 +1083,7 @@ namespace NetGore.Graphics.GUI
             OnBorderChanged();
             var handler = Events[_eventBorderChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1095,7 +1095,7 @@ namespace NetGore.Graphics.GUI
             OnBorderColorChanged();
             var handler = Events[_eventBorderColorChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1107,7 +1107,7 @@ namespace NetGore.Graphics.GUI
             OnCanDragChanged();
             var handler = Events[_eventCanDragChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1119,7 +1119,7 @@ namespace NetGore.Graphics.GUI
             OnCanFocusChanged();
             var handler = Events[_eventCanFocusChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1132,7 +1132,7 @@ namespace NetGore.Graphics.GUI
             OnClick(e);
             var handler = Events[_eventClicked] as TypedEventHandler<Control, MouseButtonEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1144,7 +1144,7 @@ namespace NetGore.Graphics.GUI
             OnEnabledChanged();
             var handler = Events[_eventEnabledChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1156,7 +1156,7 @@ namespace NetGore.Graphics.GUI
             OnEndDrag();
             var handler = Events[_eventEndDrag] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1168,7 +1168,7 @@ namespace NetGore.Graphics.GUI
             OnFocused();
             var handler = Events[_eventFocused] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1180,7 +1180,7 @@ namespace NetGore.Graphics.GUI
             OnIsBoundToParentAreaChanged();
             var handler = Events[_eventIsBoundToParentAreaChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1193,7 +1193,7 @@ namespace NetGore.Graphics.GUI
             OnKeyPressed(e);
             var handler = Events[_eventKeyPressed] as TypedEventHandler<Control, KeyEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1206,7 +1206,7 @@ namespace NetGore.Graphics.GUI
             OnKeyReleased(e);
             var handler = Events[_eventKeyReleased] as TypedEventHandler<Control, KeyEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1218,7 +1218,7 @@ namespace NetGore.Graphics.GUI
             OnLostFocus();
             var handler = Events[_eventLostFocus] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1231,7 +1231,7 @@ namespace NetGore.Graphics.GUI
             OnMouseDown(e);
             var handler = Events[_eventMouseDown] as TypedEventHandler<Control, MouseButtonEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1244,7 +1244,7 @@ namespace NetGore.Graphics.GUI
             OnMouseEnter(e);
             var handler = Events[_eventMouseEnter] as TypedEventHandler<Control, MouseMoveEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1257,7 +1257,7 @@ namespace NetGore.Graphics.GUI
             OnMouseLeave(e);
             var handler = Events[_eventMouseLeave] as TypedEventHandler<Control, MouseMoveEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1270,7 +1270,7 @@ namespace NetGore.Graphics.GUI
             OnMouseMoved(e);
             var handler = Events[_eventMouseMoved] as TypedEventHandler<Control, MouseMoveEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1283,7 +1283,7 @@ namespace NetGore.Graphics.GUI
             OnMouseUp(e);
             var handler = Events[_eventMouseUp] as TypedEventHandler<Control, MouseButtonEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1295,7 +1295,7 @@ namespace NetGore.Graphics.GUI
             OnMoved();
             var handler = Events[_eventMoved] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1307,7 +1307,7 @@ namespace NetGore.Graphics.GUI
             OnResizeToChildrenChanged();
             var handler = Events[_eventResizeToChildrenChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1319,7 +1319,7 @@ namespace NetGore.Graphics.GUI
             OnResizeToChildrenPaddingChanged();
             var handler = Events[_eventResizeToChildrenPaddingChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1331,7 +1331,7 @@ namespace NetGore.Graphics.GUI
             OnResized();
             var handler = Events[_eventResized] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1344,7 +1344,7 @@ namespace NetGore.Graphics.GUI
             OnTextEntered(e);
             var handler = Events[_eventTextEntered] as TypedEventHandler<Control, TextEventArgs>;
             if (handler != null)
-                handler(this, e);
+                handler.Raise(this, e);
         }
 
         /// <summary>
@@ -1356,7 +1356,7 @@ namespace NetGore.Graphics.GUI
             OnTooltipChanged();
             var handler = Events[_eventTooltipChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1368,7 +1368,7 @@ namespace NetGore.Graphics.GUI
             OnVisibleChanged();
             var handler = Events[_eventVisibleChanged] as TypedEventHandler<Control>;
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
