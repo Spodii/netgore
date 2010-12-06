@@ -11,7 +11,7 @@ namespace ConsoleApplication7
     class Program
     {
         const string _eventNameFinder = @"\sevent (?<Type>[\w\<\> ,]+)? (?<Name>\w+);";
-        const string _eventCallFinder = @"(?<IfCheck>if \({0} != null\))?\s*{0}(?<UseRaise>\.Raise)?\((?<Params>.*)\);";
+        const string _eventCallFinder = @"(?<IfCheck>if \({0} != null\))?\s+{0}(?<UseRaise>\.Raise)?\((?<Params>.*)\);";
 
         static readonly string[] _ignores = new string[] { "\\bin\\","\\_dependencies\\", "\\\\.svn\\","\\_ReSharper\\.\\",
             "\\DevContent\\","\\Externals\\","\\NetGore.Tests\\", "\\Settings\\", "\\Tools\\"};
@@ -33,7 +33,9 @@ namespace ConsoleApplication7
                 while (em.Success)
                 {
                     var name = em.Groups["Name"].Value;
-                    var m = Regex.Match(text, string.Format(_eventCallFinder, name));
+                    var mPattern = string.Format(_eventCallFinder, name);
+                    var m = Regex.Match(text, mPattern);
+
                     if (IsIllegalEventCall(m))
                     {
                         if (!wroteFileName)
@@ -53,10 +55,17 @@ namespace ConsoleApplication7
             Console.ReadLine();
         }
 
+        const bool _printReason = true;
+
         static bool IsIllegalEventCall(Match m)
         {
             if (!m.Groups["UseRaise"].Success)
+            {
+                if (_printReason)
+                    Console.WriteLine("-UseRaise = False");
+
                 return true;
+            }
 
             if (!m.Groups["IfCheck"].Success)
             {
@@ -68,7 +77,12 @@ namespace ConsoleApplication7
                 }
 
                 if (paramsSplit[1].Trim() != "EventArgs.Empty")
+                {
+                    if (_printReason)
+                        Console.WriteLine("-IfCheck = False");
+
                     return true;
+                }
             }
 
             return false;
