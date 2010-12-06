@@ -575,11 +575,11 @@ namespace DemoGame.Server
             // Raise attack events
             OnAttackedCharacter(target, damage);
             if (AttackedCharacter != null)
-                AttackedCharacter(this, new CharacterAttackEventArgs(target, damage));
+                AttackedCharacter.Raise(this, new CharacterAttackEventArgs(target, damage));
 
             target.OnAttackedByCharacter(this, damage);
             if (target.AttackedByCharacter != null)
-                target.AttackedByCharacter(this, new CharacterAttackEventArgs(target, damage));
+                target.AttackedByCharacter.Raise(this, new CharacterAttackEventArgs(target, damage));
         }
 
         /// <summary>
@@ -597,7 +597,7 @@ namespace DemoGame.Server
 
             OnAttacked();
             if (Attacked != null)
-                Attacked(this, EventArgs.Empty);
+                Attacked.Raise(this, EventArgs.Empty);
 
             // If melee and no target was defined, try to find one automatically
             if (target == null)
@@ -674,7 +674,8 @@ namespace DemoGame.Server
 
             OnAttacked();
             
-            Attacked.Raise(this, EventArgs.Empty);
+            if (Attacked != null)
+                Attacked.Raise(this, EventArgs.Empty);
 
             AttackApplyReal(target);
         }
@@ -765,11 +766,11 @@ namespace DemoGame.Server
                     {
                         sourceCharacter.OnKilledCharacter(this);
                         if (sourceCharacter.KilledCharacter != null)
-                            sourceCharacter.KilledCharacter(this, new CharacterKillEventArgs(sourceCharacter));
+                            sourceCharacter.KilledCharacter.Raise(this, new CharacterKillEventArgs(sourceCharacter));
 
                         OnKilledByCharacter(sourceCharacter);
                         if (KilledByCharacter != null)
-                            KilledByCharacter(this, new CharacterKillEventArgs(sourceCharacter));
+                            KilledByCharacter.Raise(this, new CharacterKillEventArgs(sourceCharacter));
                     }
                 }
             }
@@ -823,8 +824,9 @@ namespace DemoGame.Server
             Map.AddEntity(item);
 
             OnDroppedItem(item);
+
             if (DroppedItem != null)
-                DroppedItem(this, EventArgsHelper.Create(item));
+                DroppedItem.Raise(this, EventArgsHelper.Create(item));
         }
 
         /// <summary>
@@ -850,8 +852,9 @@ namespace DemoGame.Server
             var droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
 
             OnDroppedItem(droppedItem);
+
             if (DroppedItem != null)
-                DroppedItem(this, EventArgsHelper.Create(droppedItem));
+                DroppedItem.Raise(this, EventArgsHelper.Create(droppedItem));
         }
 
         /// <summary>
@@ -1174,7 +1177,7 @@ namespace DemoGame.Server
             OnKilled();
 
             if (Killed != null)
-                Killed(this, EventArgs.Empty);
+                Killed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -1949,7 +1952,7 @@ namespace DemoGame.Server
             {
                 OnUsedItem(item);
                 if (UsedItem != null)
-                    UsedItem(this, EventArgsHelper.Create(item));
+                    UsedItem.Raise(this, EventArgsHelper.Create(item));
             }
 
             return wasUsed;
@@ -2091,7 +2094,7 @@ namespace DemoGame.Server
 
                 OnCashChanged(oldValue, _cash);
                 if (CashChanged != null)
-                    CashChanged(this, ValueChangedEventArgs.Create(oldValue, _cash));
+                    CashChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, _cash));
             }
         }
 
@@ -2112,7 +2115,7 @@ namespace DemoGame.Server
 
                 OnTemplateIDChanged();
                 if (TemplateIDChanged != null)
-                    TemplateIDChanged(this, EventArgs.Empty);
+                    TemplateIDChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -2146,7 +2149,7 @@ namespace DemoGame.Server
 
                 OnExpChanged(oldValue, _exp);
                 if (ExpChanged != null)
-                    ExpChanged(this, ValueChangedEventArgs.Create(oldValue, _exp));
+                    ExpChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, _exp));
 
                 // Check if this change in experience has made the Character level
                 while (_exp >= _nextLevelExp)
@@ -2180,8 +2183,9 @@ namespace DemoGame.Server
                 _hp = newValue;
 
                 OnHPChanged(oldValue, _hp);
+
                 if (HPChanged != null)
-                    HPChanged(this, ValueChangedEventArgs.Create(oldValue, _hp));
+                    HPChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, _hp));
 
                 if (_hp <= 0)
                     Kill();
@@ -2207,7 +2211,7 @@ namespace DemoGame.Server
 
                 OnLevelChanged(oldValue, _level);
                 if (LevelChanged != null)
-                    LevelChanged(this, ValueChangedEventArgs.Create(oldValue, _level));
+                    LevelChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, _level));
             }
         }
 
@@ -2263,7 +2267,7 @@ namespace DemoGame.Server
 
                 OnMPChanged(oldValue, _mp);
                 if (MPChanged != null)
-                    MPChanged(this, ValueChangedEventArgs.Create(oldValue, _mp));
+                    MPChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, _mp));
             }
         }
 
@@ -2357,7 +2361,7 @@ namespace DemoGame.Server
 
                 OnStatPointsChanged(oldValue, _statPoints);
                 if (StatPointsChanged != null)
-                    StatPointsChanged(this,ValueChangedEventArgs.Create( oldValue, _statPoints));
+                    StatPointsChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, _statPoints));
             }
         }
 
@@ -2512,7 +2516,7 @@ namespace DemoGame.Server
 
                 OnMapChanged(oldMap, _map);
                 if (MapChanged != null)
-                    MapChanged(this, ValueChangedEventArgs.Create(oldMap, _map));
+                    MapChanged.Raise(this, ValueChangedEventArgs.Create(oldMap, _map));
             }
         }
 

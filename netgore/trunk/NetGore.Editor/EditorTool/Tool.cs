@@ -133,7 +133,7 @@ namespace NetGore.Editor.EditorTool
                 // Raise event
                 OnIsEnabledChanged(!IsEnabled, IsEnabled);
                 if (IsEnabledChanged != null)
-                    IsEnabledChanged(this, ValueChangedEventArgs.Create(!IsEnabled, IsEnabled));
+                    IsEnabledChanged.Raise(this, ValueChangedEventArgs.Create(!IsEnabled, IsEnabled));
 
                 // Internal handling
                 HandleEnabledChangedInternal();
@@ -174,7 +174,7 @@ namespace NetGore.Editor.EditorTool
                 {
                     OnIsOnToolBarChanged(oldValue, newValue);
                     if (IsOnToolBarChanged != null)
-                        IsOnToolBarChanged(this, ValueChangedEventArgs.Create(oldValue, newValue));
+                        IsOnToolBarChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, newValue));
                 }
             }
         }
@@ -503,7 +503,7 @@ namespace NetGore.Editor.EditorTool
             Dispose(true);
 
             if (Disposed != null)
-                Disposed(this, EventArgs.Empty);
+                Disposed.Raise(this, EventArgs.Empty);
         }
 
         #endregion

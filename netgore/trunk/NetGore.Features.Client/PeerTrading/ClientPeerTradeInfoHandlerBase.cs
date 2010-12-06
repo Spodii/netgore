@@ -95,7 +95,7 @@ namespace NetGore.Features.PeerTrading
 
                 OnAcceptStatusChanged(true, _hasSourceAccepted);
                 if (AcceptStatusChanged != null)
-                    AcceptStatusChanged(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(true, _hasTargetAccepted));
+                    AcceptStatusChanged.Raise(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(true, _hasTargetAccepted));
             }
         }
 
@@ -114,7 +114,7 @@ namespace NetGore.Features.PeerTrading
 
                 OnAcceptStatusChanged(false, _hasTargetAccepted);
                 if (AcceptStatusChanged != null)
-                    AcceptStatusChanged(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(false, _hasTargetAccepted));
+                    AcceptStatusChanged.Raise(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(false, _hasTargetAccepted));
             }
         }
 
@@ -374,7 +374,7 @@ namespace NetGore.Features.PeerTrading
             // Raise events
             OnTradeCanceled(sourceCanceled);
             if (TradeCanceled != null)
-                TradeCanceled(this, new ClientPeerTradeInfoHandlerTradeCanceledEventArgs(sourceCanceled));
+                TradeCanceled.Raise(this, new ClientPeerTradeInfoHandlerTradeCanceledEventArgs(sourceCanceled));
         }
 
         /// <summary>
@@ -390,7 +390,8 @@ namespace NetGore.Features.PeerTrading
             // Raise events
             OnTradeClosed();
             
-            TradeClosed.Raise(this, EventArgs.Empty);
+            if (TradeClosed != null)
+                TradeClosed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -403,7 +404,8 @@ namespace NetGore.Features.PeerTrading
             // Raise events
             OnTradeCompleted();
             
-            TradeCompleted.Raise(this, EventArgs.Empty);
+            if (TradeCompleted != null)
+                TradeCompleted.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -433,7 +435,8 @@ namespace NetGore.Features.PeerTrading
             // Raise events
             OnTradeOpened();
             
-            TradeOpened.Raise(this, EventArgs.Empty);
+            if (TradeOpened != null)
+                TradeOpened.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -467,7 +470,7 @@ namespace NetGore.Features.PeerTrading
 
             OnCashUpdated(cash, isSourceSide);
             if (CashUpdated != null)
-                CashUpdated(this, new ClientPeerTradeInfoHandlerCashChangedEventArgs(cash, isSourceSide));
+                CashUpdated.Raise(this, new ClientPeerTradeInfoHandlerCashChangedEventArgs(cash, isSourceSide));
         }
 
         /// <summary>
@@ -498,7 +501,7 @@ namespace NetGore.Features.PeerTrading
 
             OnSlotUpdated(slot, isSourceSide);
             if (SlotUpdated != null)
-                SlotUpdated(this, new ClientPeerTradeInfoHandlerSlotUpdatedEventArgs(slot, isSourceSide));
+                SlotUpdated.Raise(this, new ClientPeerTradeInfoHandlerSlotUpdatedEventArgs(slot, isSourceSide));
         }
 
         /// <summary>

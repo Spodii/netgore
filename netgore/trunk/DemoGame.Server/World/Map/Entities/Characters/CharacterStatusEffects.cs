@@ -101,7 +101,7 @@ namespace DemoGame.Server
             statusEffect.AddBonusesTo(_modStats);
 
             if (Added != null)
-                Added(this, EventArgsHelper.Create(statusEffect));
+                Added.Raise(this, EventArgsHelper.Create(statusEffect));
 
             AssertModStatsAreCorrect();
         }
@@ -115,7 +115,7 @@ namespace DemoGame.Server
             statusEffect.SubtractBonusesFrom(_modStats);
 
             if (Removed != null)
-                Removed(this, EventArgsHelper.Create(statusEffect));
+                Removed.Raise(this, EventArgsHelper.Create(statusEffect));
 
             AssertModStatsAreCorrect();
         }

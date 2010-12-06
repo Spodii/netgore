@@ -52,7 +52,7 @@ namespace NetGore.Editor.EditorTool
 
             // Raise the event
             if (Added != null)
-                Added(this, EventArgsHelper.Create(c));
+                Added.Raise(this, EventArgsHelper.Create(c));
 
             return true;
         }
@@ -82,7 +82,7 @@ namespace NetGore.Editor.EditorTool
             {
                 // Raise the event
                 if (Removed != null)
-                    Removed(this, EventArgsHelper.Create(c));
+                    Removed.Raise(this, EventArgsHelper.Create(c));
             }
 
             return ret;

@@ -23,7 +23,7 @@ namespace DemoGame.Client
 
             // Raise event
             if (KnowSkillChanged != null)
-                KnowSkillChanged(this, new KnowSkillsCollectionChangedEventArgs(skill, value));
+                KnowSkillChanged.Raise(this, new KnowSkillsCollectionChangedEventArgs(skill, value));
         }
     }
 }

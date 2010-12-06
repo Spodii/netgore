@@ -134,7 +134,7 @@ namespace NetGore.Features.Groups
             OnMemberAdded(name);
 
             if (MemberAdded != null)
-                MemberAdded(this, EventArgsHelper.Create(name));
+                MemberAdded.Raise(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace NetGore.Features.Groups
             OnMemberRemoved(name);
 
             if (MemberRemoved != null)
-                MemberRemoved(this, EventArgsHelper.Create(name));
+                MemberRemoved.Raise(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace NetGore.Features.Groups
             OnGroupChanged();
 
             if (GroupChanged != null)
-                GroupChanged(this, EventArgs.Empty);
+                GroupChanged.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

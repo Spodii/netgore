@@ -53,7 +53,7 @@ namespace DemoGame.Client
                 _isCastingSkill = value;
 
                 if (IsCastingSkillChanged != null)
-                    IsCastingSkillChanged(this, EventArgs.Empty);
+                    IsCastingSkillChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -383,7 +383,7 @@ namespace DemoGame.Client
                 _color = value;
 
                 if (ColorChanged != null)
-                    ColorChanged(this, EventArgs.Empty);
+                    ColorChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -408,7 +408,7 @@ namespace DemoGame.Client
                 _isVisible = value;
 
                 if (VisibleChanged != null)
-                    VisibleChanged(this, EventArgs.Empty);
+                    VisibleChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -425,7 +425,7 @@ namespace DemoGame.Client
         public void Draw(ISpriteBatch sb)
         {
             if (BeforeDraw != null)
-                BeforeDraw(this, EventArgsHelper.Create(sb));
+                BeforeDraw.Raise(this, EventArgsHelper.Create(sb));
 
             var drawPos = DrawPosition;
             _lastScreenPosition = drawPos - Parent.Camera.Min;
@@ -444,7 +444,7 @@ namespace DemoGame.Client
             }
 
             if (AfterDraw != null)
-                AfterDraw(this, EventArgsHelper.Create(sb));
+                AfterDraw.Raise(this, EventArgsHelper.Create(sb));
         }
 
         /// <summary>

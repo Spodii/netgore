@@ -72,7 +72,7 @@ namespace DemoGame.Editor
 
             // Raise events
             if (Added != null)
-                Added(this, new MapDrawFilterHelperCollectionEventArgs(name, filter));
+                Added.Raise(this, new MapDrawFilterHelperCollectionEventArgs(name, filter));
 
             return true;
         }
@@ -115,7 +115,7 @@ namespace DemoGame.Editor
             {
                 // Raise the event
                 if (Removed != null)
-                    Removed(this, new MapDrawFilterHelperCollectionEventArgs(name, filter));
+                    Removed.Raise(this, new MapDrawFilterHelperCollectionEventArgs(name, filter));
             }
 
             return removed;
@@ -150,7 +150,7 @@ namespace DemoGame.Editor
 
             // Raise events
             if (Renamed != null)
-                Renamed(this, new MapDrawFilterHelperCollectionRenameEventArgs(newName, filter, oldName));
+                Renamed.Raise(this, new MapDrawFilterHelperCollectionRenameEventArgs(newName, filter, oldName));
 
             return true;
         }

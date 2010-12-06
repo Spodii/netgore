@@ -95,7 +95,7 @@ namespace NetGore.Features.PeerTrading
                 // Raise the event
                 OnPeerTradeInfoHandlerChanged(oldValue, value);
                 if (PeerTradeInfoHandlerChanged != null)
-                    PeerTradeInfoHandlerChanged(this, PeerTradeInfoHandlerChangedEventArgs.Create(oldValue, value));
+                    PeerTradeInfoHandlerChanged.Raise(this, PeerTradeInfoHandlerChangedEventArgs.Create(oldValue, value));
             }
         }
 
@@ -155,7 +155,7 @@ namespace NetGore.Features.PeerTrading
         {
             OnItemSlotClicked(e, isSourceSide, slot);
             if (ItemSlotClicked != null)
-                ItemSlotClicked(this, new ItemSlotClickedEventArgs(e, isSourceSide, slot));
+                ItemSlotClicked.Raise(this, new ItemSlotClickedEventArgs(e, isSourceSide, slot));
         }
 
         /// <summary>

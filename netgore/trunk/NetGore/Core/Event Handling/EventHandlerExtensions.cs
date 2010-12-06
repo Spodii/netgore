@@ -27,6 +27,8 @@ namespace NetGore
         /// <see cref="EventArgs"/>.</param>
         public static void Raise(this EventHandler handler, object sender, EventArgs e, bool swallowExceptions = true)
         {
+            Debug.Assert(e != null, "A null EventArgs should never be used! Use EventArgs.Empty instead.");
+
             try
             {
                 // Check for a valid handler
@@ -67,6 +69,8 @@ namespace NetGore
         public static void Raise<T>(this EventHandler<T> handler, object sender, T e, bool swallowExceptions = true)
             where T : EventArgs
         {
+            Debug.Assert(e != null, "A null EventArgs should never be used! Use EventArgs.Empty instead.");
+
             try
             {
                 // Check for a valid handler
@@ -115,6 +119,8 @@ namespace NetGore
         public static void Raise<TSender>(this TypedEventHandler<TSender> handler, TSender sender, EventArgs e,
                                           bool swallowExceptions = true)
         {
+            Debug.Assert(e != null, "A null EventArgs should never be used! Use EventArgs.Empty instead.");
+
             try
             {
                 // Check for a valid handler
@@ -156,6 +162,8 @@ namespace NetGore
         public static void Raise<TSender, TEventArgs>(this TypedEventHandler<TSender,TEventArgs> handler, TSender sender, TEventArgs e,
                                                       bool swallowExceptions = true) where TEventArgs : EventArgs
         {
+            Debug.Assert(e != null, "A null EventArgs should never be used! Use EventArgs.Empty instead.");
+
             try
             {
                 // Check for a valid handler

@@ -129,7 +129,7 @@ namespace NetGore.Features.NPCChat
             _conditionals = new EditorNPCChatConditionalCollection();
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace NetGore.Features.NPCChat
             _conditionals = value;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace NetGore.Features.NPCChat
             _page = page;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace NetGore.Features.NPCChat
             _text = value;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace NetGore.Features.NPCChat
             _value = value;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
     }
 }

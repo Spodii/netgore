@@ -337,7 +337,7 @@ namespace NetGore.Graphics.GUI
                 }
 
                 if (FocusedControlChanged != null)
-                    FocusedControlChanged(this, EventArgs.Empty);
+                    FocusedControlChanged.Raise(this, EventArgs.Empty);
             }
         }
 

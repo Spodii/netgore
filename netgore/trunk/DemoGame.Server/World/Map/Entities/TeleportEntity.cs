@@ -81,7 +81,7 @@ namespace DemoGame.Server
 
             // Notify listeners
             if (Used != null)
-                Used(this, EventArgsHelper.Create(charEntity));
+                Used.Raise(this, EventArgsHelper.Create(charEntity));
 
             // Successfully used
             return true;

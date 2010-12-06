@@ -216,7 +216,7 @@ namespace NetGore.Graphics
             {
                 var oldValue = Position;
                 _center = sender.Center;
-                Moved(this, EventArgsHelper.Create(oldValue));
+                Moved.Raise(this, EventArgsHelper.Create(oldValue));
             }
             else
                 _center = sender.Center;
@@ -317,7 +317,7 @@ namespace NetGore.Graphics
                 _center = value - (_size / 2.0f);
 
                 if (Moved != null)
-                    Moved(this, EventArgsHelper.Create(oldValue));
+                    Moved.Raise(this, EventArgsHelper.Create(oldValue));
             }
         }
 

@@ -156,10 +156,13 @@ namespace NetGore.Graphics
             AddToDictionary(gd);
 
             if (Added != null)
-                Added(gd, EventArgs.Empty);
+                Added.Raise(gd, EventArgs.Empty);
 
-            if (!_isLoading && AddedNew != null)
-                AddedNew(gd, EventArgs.Empty);
+            if (!_isLoading)
+            {
+                if (AddedNew != null)
+                    AddedNew.Raise(gd, EventArgs.Empty);
+            }
         }
 
         /// <summary>
@@ -719,7 +722,7 @@ namespace NetGore.Graphics
             RemoveFromDictionary(e.Item);
 
             if (Removed != null)
-                Removed(e.Item, EventArgs.Empty);
+                Removed.Raise(e.Item, EventArgs.Empty);
         }
 
         /// <summary>

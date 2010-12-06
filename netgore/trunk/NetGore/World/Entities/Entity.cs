@@ -130,7 +130,7 @@ namespace NetGore.World
             _isDisposed = true;
 
             if (Disposed != null)
-                Disposed(this, EventArgs.Empty);
+                Disposed.Raise(this, EventArgs.Empty);
 
             HandleDispose(false);
         }
@@ -413,7 +413,7 @@ namespace NetGore.World
             // Notify listeners
             OnMoved(oldPos);
             if (Moved != null)
-                Moved(this, EventArgsHelper.Create(oldPos));
+                Moved.Raise(this, EventArgsHelper.Create(oldPos));
         }
 
         /// <summary>
@@ -433,7 +433,7 @@ namespace NetGore.World
             // Notify listeners
             OnResized(oldSize);
             if (Resized != null)
-                Resized(this, EventArgsHelper.Create(oldSize));
+                Resized.Raise(this, EventArgsHelper.Create(oldSize));
         }
 
         /// <summary>
@@ -550,7 +550,7 @@ namespace NetGore.World
 
             // Notify listeners that the Entity is being disposed
             if (Disposed != null)
-                Disposed(this, EventArgs.Empty);
+                Disposed.Raise(this, EventArgs.Empty);
 
             // Handle the disposing
             HandleDispose(true);

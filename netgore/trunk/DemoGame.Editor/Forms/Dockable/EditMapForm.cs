@@ -100,7 +100,7 @@ If you do not save, all chances will be lost.";
             MapScreenControl.MapChanged += MapScreenControl_MapChanged;
 
             if (FormLoaded != null)
-                FormLoaded(this, e);
+                FormLoaded.Raise(this, e);
         }
     }
 }

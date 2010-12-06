@@ -199,7 +199,7 @@ namespace NetGore.Features.Banning
             OnAccountBanned(accountID);
 
             if (AccountBanned != null)
-                AccountBanned(this, BanningManagerAccountBannedEventArgs.Create(accountID, length, reason, issuedBy));
+                AccountBanned.Raise(this, BanningManagerAccountBannedEventArgs.Create(accountID, length, reason, issuedBy));
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Successfully banned account `{0}` (length: {1}; reason: {2}; issuedBy: {3}).", accountID, length,

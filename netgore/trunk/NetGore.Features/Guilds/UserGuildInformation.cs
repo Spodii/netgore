@@ -89,7 +89,8 @@ namespace NetGore.Features.Guilds
                     _onlineMembers.Clear();
                 }
 
-                GuildChanged.Raise(this, EventArgs.Empty);
+                if (GuildChanged != null)
+                    GuildChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -253,7 +254,7 @@ namespace NetGore.Features.Guilds
             OnMemberAdded(member);
 
             if (MemberAdded != null)
-                MemberAdded(this, EventArgsHelper.Create(member));
+                MemberAdded.Raise(this, EventArgsHelper.Create(member));
         }
 
         /// <summary>
@@ -268,7 +269,7 @@ namespace NetGore.Features.Guilds
             OnOnlineMemberAdded(name);
 
             if (OnlineMemberAdded != null)
-                OnlineMemberAdded(this, EventArgsHelper.Create(name));
+                OnlineMemberAdded.Raise(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -286,7 +287,7 @@ namespace NetGore.Features.Guilds
             OnMemberRemoved(name);
 
             if (MemberRemoved != null)
-                MemberRemoved(this, EventArgsHelper.Create(name));
+                MemberRemoved.Raise(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -301,7 +302,7 @@ namespace NetGore.Features.Guilds
             OnOnlineMemberRemoved(name);
 
             if (OnlineMemberRemoved != null)
-                OnlineMemberRemoved(this, EventArgsHelper.Create(name));
+                OnlineMemberRemoved.Raise(this, EventArgsHelper.Create(name));
         }
 
         /// <summary>
@@ -339,7 +340,8 @@ namespace NetGore.Features.Guilds
 
             OnGuildChanged();
 
-            GuildChanged(this, EventArgs.Empty);
+            if (GuildChanged != null)
+                GuildChanged.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -366,7 +368,7 @@ namespace NetGore.Features.Guilds
             OnMemberRankUpdated(member);
 
             if (MemberRankUpdated != null)
-                MemberRankUpdated(this, EventArgsHelper.Create(member));
+                MemberRankUpdated.Raise(this, EventArgsHelper.Create(member));
         }
 
         /// <summary>

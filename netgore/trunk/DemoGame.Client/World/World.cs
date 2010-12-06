@@ -106,7 +106,7 @@ namespace DemoGame.Client
 
                 // Add the map event hooks to the new map
                 if (MapChanged != null)
-                    MapChanged(this, ValueChangedEventArgs.Create(oldMap, Map));
+                    MapChanged.Raise(this, ValueChangedEventArgs.Create(oldMap, Map));
             }
         }
 

@@ -139,7 +139,8 @@ namespace NetGore.Graphics.GUI
             // All keys are in the needed state, so invoke the handler
             OnInvoked();
 
-            Invoked(this, EventArgs.Empty);
+            if (Invoked != null)
+                Invoked.Raise(this, EventArgs.Empty);
 
             // Set the timeout
             if (!GameControlKeys.NewKeysDown.IsEmpty())

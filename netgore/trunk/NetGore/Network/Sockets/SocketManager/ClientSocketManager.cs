@@ -270,7 +270,7 @@ namespace NetGore.Network
                         OnReceiveStatusChanged(ipSocket, status, reason);
 
                         if (StatusChanged != null)
-                            StatusChanged(this, new ClientSocketManagerStatusChangedEventArgs(status, reason));
+                            StatusChanged.Raise(this, new ClientSocketManagerStatusChangedEventArgs(status, reason));
 
                         break;
 

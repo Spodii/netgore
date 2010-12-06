@@ -92,7 +92,7 @@ namespace NetGore.Stats
                 OnStatChanged(statType, oldValue, value);
 
                 if (StatChanged != null)
-                    StatChanged(this, new StatCollectionStatChangedEventArgs<TStatType>(statType, oldValue, value));
+                    StatChanged.Raise(this, new StatCollectionStatChangedEventArgs<TStatType>(statType, oldValue, value));
             }
         }
 

@@ -130,13 +130,13 @@ namespace DemoGame.Client
                 {
                     // Drop
                     if (RequestDropItem != null)
-                        RequestDropItem(this, EventArgsHelper.Create(itemPB.Slot));
+                        RequestDropItem.Raise(this, EventArgsHelper.Create(itemPB.Slot));
                 }
                 else
                 {
                     // Use
                     if (RequestUseItem != null)
-                        RequestUseItem(this, EventArgsHelper.Create(itemPB.Slot));
+                        RequestUseItem.Raise(this, EventArgsHelper.Create(itemPB.Slot));
                 }
             }
         }
@@ -148,7 +148,7 @@ namespace DemoGame.Client
         public void InvokeRequestUseItem(InventorySlot slot)
         {
             if (RequestUseItem != null)
-                RequestUseItem(this, EventArgsHelper.Create(slot));
+                RequestUseItem.Raise(this, EventArgsHelper.Create(slot));
         }
 
         /// <summary>

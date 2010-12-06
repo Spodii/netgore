@@ -139,10 +139,8 @@ namespace DemoGame.Client
             if (!statPB.CanRaiseStat)
                 return;
 
-            if (RequestRaiseStat == null)
-                return;
-
-            RequestRaiseStat(this, EventArgsHelper.Create(statPB.StatType));
+            if (RequestRaiseStat != null)
+                RequestRaiseStat.Raise(this, EventArgsHelper.Create(statPB.StatType));
         }
 
         /// <summary>

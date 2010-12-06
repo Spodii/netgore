@@ -65,7 +65,7 @@ namespace DemoGame.Editor
                 OnParticleEffectChanged(oldValue, value);
 
                 if (ParticleEffectChanged != null)
-                    ParticleEffectChanged(this, ValueChangedEventArgs.Create(oldValue, value));
+                    ParticleEffectChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, value));
             }
         }
 

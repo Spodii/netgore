@@ -229,7 +229,7 @@ namespace NetGore.Features.NPCChat
             _conditionals = value;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace NetGore.Features.NPCChat
             _text = value;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace NetGore.Features.NPCChat
             _title = value;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

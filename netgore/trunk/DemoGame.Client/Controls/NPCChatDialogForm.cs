@@ -85,7 +85,7 @@ namespace DemoGame.Client
             // make a request to the server that we want to end the chat dialog. If the server allows it, then it
             // will eventually close.
             if (RequestEndDialog != null)
-                RequestEndDialog(this, EventArgs.Empty);
+                RequestEndDialog.Raise(this, EventArgs.Empty);
         }
 
         public void EndDialog()
@@ -107,7 +107,7 @@ namespace DemoGame.Client
             if (e.Code == KeyCode.Escape)
             {
                 if (RequestEndDialog != null)
-                    RequestEndDialog(this, EventArgs.Empty);
+                    RequestEndDialog.Raise(this, EventArgs.Empty);
             }
             else
             {
@@ -122,7 +122,7 @@ namespace DemoGame.Client
                 if (value < _responses.Length)
                 {
                     if (SelectResponse != null)
-                        SelectResponse(this, EventArgsHelper.Create(_responses[value]));
+                        SelectResponse.Raise(this, EventArgsHelper.Create(_responses[value]));
                 }
             }
         }
@@ -134,7 +134,7 @@ namespace DemoGame.Client
             if (response != null)
             {
                 if (SelectResponse != null)
-                    SelectResponse(this, EventArgsHelper.Create(response));
+                    SelectResponse.Raise(this, EventArgsHelper.Create(response));
             }
         }
 

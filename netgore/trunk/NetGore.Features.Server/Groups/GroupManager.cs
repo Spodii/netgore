@@ -104,7 +104,7 @@ namespace NetGore.Features.Groups
             OnCreateGroup(newGroup);
 
             if (GroupCreated != null)
-                GroupCreated(this, EventArgsHelper.Create(newGroup));
+                GroupCreated.Raise(this, EventArgsHelper.Create(newGroup));
 
             return newGroup;
         }

@@ -466,7 +466,7 @@ namespace DemoGame
 
             // Raise the event
             if (CurrentLanguageChanged != null)
-                CurrentLanguageChanged(null, ValueChangedEventArgs.Create(oldLanguage, _currentLanguage));
+                CurrentLanguageChanged.Raise(null, ValueChangedEventArgs.Create(oldLanguage, _currentLanguage));
 
             return true;
         }

@@ -92,7 +92,7 @@ namespace DemoGame.Editor
                 // Raise events
                 OnMapChanged(oldValue, value);
                 if (MapChanged != null)
-                    MapChanged(this, ValueChangedEventArgs.Create(oldValue, value));
+                    MapChanged.Raise(this, ValueChangedEventArgs.Create(oldValue, value));
             }
         }
 

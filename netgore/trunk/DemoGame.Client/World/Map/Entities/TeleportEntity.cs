@@ -27,7 +27,7 @@ namespace DemoGame.Client
         public override bool Use(DynamicEntity charEntity)
         {
             if (Used != null)
-                Used(this, EventArgsHelper.Create(charEntity));
+                Used.Raise(this, EventArgsHelper.Create(charEntity));
 
             return true;
         }

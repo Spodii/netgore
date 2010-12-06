@@ -98,7 +98,7 @@ namespace NetGore.Graphics.ParticleEngine
             emitter.Disposed += emitter_Disposed;
 
             if (EmitterAdded != null)
-                EmitterAdded(this, EventArgsHelper.Create((IParticleEmitter)emitter));
+                EmitterAdded.Raise(this, EventArgsHelper.Create((IParticleEmitter)emitter));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace NetGore.Graphics.ParticleEngine
             _emitters.Remove((ParticleEmitter)sender);
 
             if (EmitterRemoved != null)
-                EmitterRemoved(this, EventArgsHelper.Create(sender));
+                EmitterRemoved.Raise(this, EventArgsHelper.Create(sender));
         }
 
         #region IParticleEffect Members
@@ -326,7 +326,7 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             if (Disposed != null)
-                Disposed(this, EventArgs.Empty);
+                Disposed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

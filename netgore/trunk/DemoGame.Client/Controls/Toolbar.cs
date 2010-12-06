@@ -140,7 +140,9 @@ namespace DemoGame.Client
                 return;
 
             var item = (ToolbarItem)sender;
-            ItemClicked(this, new ToolbarEventArgs(item.ToolbarItemType, item));
+
+            if (ItemClicked != null)
+                ItemClicked.Raise(this, new ToolbarEventArgs(item.ToolbarItemType, item));
         }
 
         /// <summary>

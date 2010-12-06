@@ -826,7 +826,7 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             if (Disposed != null)
-                Disposed(this, EventArgs.Empty);
+                Disposed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

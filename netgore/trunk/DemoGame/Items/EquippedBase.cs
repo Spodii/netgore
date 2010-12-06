@@ -274,7 +274,7 @@ namespace DemoGame
                 OnEquipped(item, slot);
 
                 if (Equipped != null)
-                    Equipped(this, new EquippedEventArgs<T>(item, slot));
+                    Equipped.Raise(this, new EquippedEventArgs<T>(item, slot));
             }
             else
             {
@@ -295,7 +295,7 @@ namespace DemoGame
                 OnUnequipped(oldItem, slot);
 
                 if (Unequipped != null)
-                    Unequipped(this, new EquippedEventArgs<T>(oldItem, slot));
+                    Unequipped.Raise(this, new EquippedEventArgs<T>(oldItem, slot));
             }
 
             // Slot setting was successful (since we always aborted early with false if it wasn't)

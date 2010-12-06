@@ -400,7 +400,7 @@ namespace NetGore.Editor.EditorTool
                 if (wasRemoved)
                 {
                     if (ToolRemoved != null)
-                        ToolRemoved(this, EventArgsHelper.Create(sender));
+                        ToolRemoved.Raise(this, EventArgsHelper.Create(sender));
                 }
 
                 Debug.Assert(wasRemoved);
@@ -482,7 +482,7 @@ namespace NetGore.Editor.EditorTool
 
                 // Notify listeners
                 if (ToolAdded != null)
-                    ToolAdded(this, EventArgsHelper.Create(tool));
+                    ToolAdded.Raise(this, EventArgsHelper.Create(tool));
             }
             catch (Exception ex)
             {

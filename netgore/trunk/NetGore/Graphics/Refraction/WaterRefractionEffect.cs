@@ -246,7 +246,8 @@ namespace NetGore.Graphics
                 // Moved has listener(s)
                 var oldValue = Position;
                 _position = sender.Position;
-                Moved(this, EventArgsHelper.Create(oldValue));
+
+                Moved.Raise(this, EventArgsHelper.Create(oldValue));
             }
             else
             {
@@ -378,7 +379,7 @@ namespace NetGore.Graphics
                 _position = value;
 
                 if (Moved != null)
-                    Moved(this, EventArgsHelper.Create(oldPos));
+                    Moved.Raise(this, EventArgsHelper.Create(oldPos));
             }
         }
 
@@ -424,7 +425,7 @@ namespace NetGore.Graphics
                 _size = value;
 
                 if (Resized != null)
-                    Resized(this, EventArgsHelper.Create(oldSize));
+                    Resized.Raise(this, EventArgsHelper.Create(oldSize));
             }
         }
 

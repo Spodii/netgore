@@ -19,9 +19,7 @@ namespace DemoGame
         /// </summary>
         protected TeleportEntityBase() : base(Vector2.Zero, Vector2.One)
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Weight = 0f;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>

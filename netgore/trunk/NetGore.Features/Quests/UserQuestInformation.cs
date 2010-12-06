@@ -140,7 +140,7 @@ namespace NetGore.Features.Quests
             OnActiveQuestAdded(questID);
 
             if (ActiveQuestAdded != null)
-                ActiveQuestAdded(this, EventArgsHelper.Create(questID));
+                ActiveQuestAdded.Raise(this, EventArgsHelper.Create(questID));
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace NetGore.Features.Quests
             OnCompletedQuestAdded(questID);
 
             if (CompletedQuestAdded != null)
-                CompletedQuestAdded(this, EventArgsHelper.Create(questID));
+                CompletedQuestAdded.Raise(this, EventArgsHelper.Create(questID));
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace NetGore.Features.Quests
             OnLoaded();
 
             if (Loaded != null)
-                Loaded(this, EventArgs.Empty);
+                Loaded.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace NetGore.Features.Quests
             OnActiveQuestRemoved(questID);
 
             if (ActiveQuestRemoved != null)
-                ActiveQuestRemoved(this, EventArgsHelper.Create(questID));
+                ActiveQuestRemoved.Raise(this, EventArgsHelper.Create(questID));
         }
 
         /// <summary>

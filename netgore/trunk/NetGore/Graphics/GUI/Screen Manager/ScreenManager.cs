@@ -154,7 +154,7 @@ namespace NetGore.Graphics.GUI
 
             // Raise update event
             if (Updated != null)
-                Updated(this, EventArgs.Empty);
+                Updated.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

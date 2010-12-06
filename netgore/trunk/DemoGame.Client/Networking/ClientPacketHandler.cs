@@ -333,7 +333,8 @@ namespace DemoGame.Client
                 errorMessage = GameMessageCollection.CurrentLanguage.GetMessage(failureGameMessage);
             }
 
-            ReceivedCreateAccount.Raise(conn, new CreateAccountEventArgs(successful, errorMessage));
+            if (ReceivedCreateAccount != null)
+                ReceivedCreateAccount.Raise(conn, new CreateAccountEventArgs(successful, errorMessage));
         }
 
         [MessageHandler((uint)ServerPacketID.CreateAccountCharacter)]
@@ -342,7 +343,8 @@ namespace DemoGame.Client
             var successful = r.ReadBool();
             var errorMessage = successful ? string.Empty : r.ReadString();
 
-            ReceivedCreateAccountCharacter.Raise(conn, new CreateAccountEventArgs(successful, errorMessage));
+            if (ReceivedCreateAccountCharacter != null)
+                ReceivedCreateAccountCharacter.Raise(conn, new CreateAccountEventArgs(successful, errorMessage));
         }
 
         [MessageHandler((uint)ServerPacketID.CreateDynamicEntity)]
@@ -416,7 +418,8 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
-            ReceivedLoginSuccessful.Raise(this, new ClientPacketHandlerEventArgs(conn));
+            if (ReceivedLoginSuccessful != null)
+                ReceivedLoginSuccessful.Raise(this, new ClientPacketHandlerEventArgs(conn));
         }
 
         [MessageHandler((uint)ServerPacketID.LoginUnsuccessful)]
@@ -424,7 +427,8 @@ namespace DemoGame.Client
         {
             var message = r.ReadGameMessage(GameMessageCollection.CurrentLanguage);
 
-            ReceivedLoginUnsuccessful.Raise(this, new ClientPacketHandlerEventArgs<string>(conn, message));
+            if (ReceivedLoginUnsuccessful != null)
+                ReceivedLoginUnsuccessful.Raise(this, new ClientPacketHandlerEventArgs<string>(conn, message));
         }
 
         [MessageHandler((uint)ServerPacketID.NotifyExpCash)]

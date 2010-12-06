@@ -935,7 +935,7 @@ namespace DemoGame
             Save(path, dynamicEntityFactory);
 
             if (Saved != null)
-                Saved(this, EventArgs.Empty);
+                Saved.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

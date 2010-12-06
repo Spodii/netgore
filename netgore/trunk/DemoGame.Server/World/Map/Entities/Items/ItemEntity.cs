@@ -244,7 +244,7 @@ namespace DemoGame.Server
                 _graphicIndex = value;
 
                 if (GraphicOrAmountChanged != null)
-                    GraphicOrAmountChanged(this, EventArgs.Empty);
+                    GraphicOrAmountChanged.Raise(this, EventArgs.Empty);
 
                 SynchronizeField("graphic", _graphicIndex);
             }
@@ -573,7 +573,7 @@ namespace DemoGame.Server
 
             // Notify listeners using the item copy since that was the one actually given to them
             if (PickedUp != null)
-                PickedUp(itemCopy, EventArgsHelper.Create(charEntity));
+                PickedUp.Raise(itemCopy, EventArgsHelper.Create(charEntity));
 
             return true;
         }
@@ -718,7 +718,7 @@ namespace DemoGame.Server
                 _amount = value;
 
                 if (GraphicOrAmountChanged != null)
-                    GraphicOrAmountChanged(this, EventArgs.Empty);
+                    GraphicOrAmountChanged.Raise(this, EventArgs.Empty);
 
                 SynchronizeField("amount", _amount);
             }
