@@ -45,7 +45,7 @@ namespace NetGore.Editor.WinForms
             if (!string.IsNullOrEmpty(name))
             {
                 if (RequestCreateEffect != null)
-                    RequestCreateEffect(this, new ParticleEffectListBoxCreateEventArgs(name));
+                    RequestCreateEffect.Raise(this, new ParticleEffectListBoxCreateEventArgs(name));
             }
         }
     }

@@ -404,7 +404,7 @@ namespace DemoGame.Client
             void _deleteControl_Clicked(Control sender, MouseButtonEventArgs e)
             {
                 if (DeleteCharacterClicked != null)
-                    DeleteCharacterClicked(this, e);
+                    DeleteCharacterClicked.Raise(this, e);
             }
         }
 
@@ -448,7 +448,7 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
                 if (button == MessageBoxButton.Ok)
                 {
                     if (DeleteRequested != null)
-                        DeleteRequested(this, EventArgsHelper.Create(CharacterSlot));
+                        DeleteRequested.Raise(this, EventArgsHelper.Create(CharacterSlot));
                 }
 
                 base.OnOptionSelected(button);

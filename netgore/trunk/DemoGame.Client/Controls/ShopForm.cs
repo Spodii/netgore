@@ -130,7 +130,7 @@ namespace DemoGame.Client
             if (src.ItemInfo != null)
             {
                 if (RequestPurchase != null)
-                    RequestPurchase(this, EventArgsHelper.Create(src.Slot));
+                    RequestPurchase.Raise(this, EventArgsHelper.Create(src.Slot));
             }
         }
 

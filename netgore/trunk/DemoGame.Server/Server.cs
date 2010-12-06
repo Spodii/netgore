@@ -469,7 +469,8 @@ namespace DemoGame.Server
                 {
                     var ret = _consoleCommands.ExecuteCommand(cmd);
 
-                    ConsoleCommandExecuted.Raise(this, new ServerConsoleCommandEventArgs(cmd, ret));
+                    if (ConsoleCommandExecuted != null)
+                        ConsoleCommandExecuted.Raise(this, new ServerConsoleCommandEventArgs(cmd, ret));
                 }
             }
         }

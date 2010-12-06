@@ -119,7 +119,7 @@ namespace NetGore.Features.Groups
                 _shareMode = value;
 
                 if (ShareModeChanged != null)
-                    ShareModeChanged(this, EventArgs.Empty);
+                    ShareModeChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -132,7 +132,7 @@ namespace NetGore.Features.Groups
             OnDisbanded();
 
             if (Disbanded != null)
-                Disbanded(this, EventArgs.Empty);
+                Disbanded.Raise(this, EventArgs.Empty);
 
             // Clear the founder
             _founder = null;
@@ -209,7 +209,7 @@ namespace NetGore.Features.Groups
             OnMemberLeave(member);
 
             if (MemberLeave != null)
-                MemberLeave(this, EventArgsHelper.Create(member));
+                MemberLeave.Raise(this, EventArgsHelper.Create(member));
 
             // If they were the founder, disband the group completely
             if (member == Founder)
@@ -266,7 +266,7 @@ namespace NetGore.Features.Groups
             OnMemberJoin(groupable);
 
             if (MemberJoin != null)
-                MemberJoin(this, EventArgsHelper.Create(groupable));
+                MemberJoin.Raise(this, EventArgsHelper.Create(groupable));
 
             return true;
         }

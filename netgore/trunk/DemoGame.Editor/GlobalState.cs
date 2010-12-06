@@ -179,7 +179,7 @@ namespace DemoGame.Editor
 
             // Raise event
             if (Tick != null)
-                Tick(this, EventArgsHelper.Create(now));
+                Tick.Raise(this, EventArgsHelper.Create(now));
         }
 
         /// <summary>

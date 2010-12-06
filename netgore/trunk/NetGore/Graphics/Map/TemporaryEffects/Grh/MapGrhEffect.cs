@@ -61,7 +61,8 @@ namespace NetGore.Graphics
 
             _isAlive = false;
 
-            Died.Raise(this, EventArgs.Empty);
+            if (Died != null)
+                Died.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>

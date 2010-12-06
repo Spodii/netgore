@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 using SFML.Window;
@@ -56,7 +57,8 @@ namespace DemoGame.Client
                 return;
 
             if (ClickedLogOut != null)
-                ClickedLogOut(this, EventArgs.Empty);
+                ClickedLogOut.Raise(this, EventArgs.Empty);
+
             IsVisible = !IsVisible;
         }
 

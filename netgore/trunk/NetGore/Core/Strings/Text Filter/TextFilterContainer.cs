@@ -36,7 +36,7 @@ namespace NetGore
                 _filter = value;
 
                 if (FilterChanged != null)
-                    FilterChanged(this, EventArgs.Empty);
+                    FilterChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -93,7 +93,7 @@ namespace NetGore
             _filter = tempFilter;
 
             if (FilterChanged != null)
-                FilterChanged(this, EventArgs.Empty);
+                FilterChanged.Raise(this, EventArgs.Empty);
 
             return true;
         }

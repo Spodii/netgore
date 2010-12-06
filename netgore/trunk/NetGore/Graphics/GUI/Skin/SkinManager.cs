@@ -215,8 +215,11 @@ namespace NetGore.Graphics.GUI
                 OnSkinChanged();
 
                 // Only raise the change event if the skin actually changed, not the skin was just set from nothing
-                if (oldSkin != null && SkinChanged != null)
-                    SkinChanged(this, new ValueChangedEventArgs<string>(oldSkin,_currentSkin));
+                if (oldSkin != null)
+                {
+                    if (SkinChanged != null)
+                        SkinChanged.Raise(this, new ValueChangedEventArgs<string>(oldSkin, _currentSkin));
+                }
             }
         }
 

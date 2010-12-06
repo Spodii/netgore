@@ -61,8 +61,11 @@ namespace NetGore.Editor.WinForms
             if (DesignMode)
                 return;
 
-            if (SelectedEmitterChanged != null && item != null)
-                SelectedEmitterChanged(this, EventArgsHelper.Create(item));
+            if (item != null)
+            {
+                if (SelectedEmitterChanged != null)
+                    SelectedEmitterChanged.Raise(this, EventArgsHelper.Create(item));
+            }
         }
     }
 }

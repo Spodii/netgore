@@ -93,7 +93,7 @@ namespace DemoGame.Client
             {
                 case MouseButton.Right:
                     if (RequestUnequip != null)
-                        RequestUnequip(this, EventArgsHelper.Create(slot));
+                        RequestUnequip.Raise(this, EventArgsHelper.Create(slot));
                     break;
             }
         }

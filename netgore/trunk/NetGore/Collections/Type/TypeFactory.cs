@@ -241,7 +241,7 @@ namespace NetGore.Collections
                 OnTypeLoaded(type, typeName);
 
                 if (TypeLoaded != null)
-                    TypeLoaded(this, new TypeFactoryLoadedEventArgs(type, typeName));
+                    TypeLoaded.Raise(this, new TypeFactoryLoadedEventArgs(type, typeName));
             }
         }
 

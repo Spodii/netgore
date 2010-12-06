@@ -326,21 +326,21 @@ namespace DemoGame.Server
             {
                 OnQuestAccepted(e.Item1);
                 if (QuestAccepted != null)
-                    QuestAccepted(this, e);
+                    QuestAccepted.Raise(this, e);
             };
 
             ret.QuestCanceled += delegate(QuestPerformerStatusHelper<User> sender, EventArgs<IQuest<User>> e)
             {
                 OnQuestCanceled(e.Item1);
                 if (QuestCanceled != null)
-                    QuestCanceled(this, e);
+                    QuestCanceled.Raise(this, e);
             };
 
             ret.QuestFinished += delegate(QuestPerformerStatusHelper<User> sender, EventArgs<IQuest<User>> e)
             {
                 OnQuestFinished(e.Item1);
                 if (QuestFinished != null)
-                    QuestFinished(this, e);
+                    QuestFinished.Raise(this, e);
             };
 
             return ret;

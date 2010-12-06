@@ -104,7 +104,7 @@ namespace NetGore.Graphics
                 _isForeground = value;
 
                 if (RenderLayerChanged != null)
-                    RenderLayerChanged(this, ValueChangedEventArgs.Create(oldLayer, MapRenderLayer));
+                    RenderLayerChanged.Raise(this, ValueChangedEventArgs.Create(oldLayer, MapRenderLayer));
             }
         }
 
@@ -246,7 +246,7 @@ namespace NetGore.Graphics
                 _color = value;
 
                 if (ColorChanged != null)
-                    ColorChanged(this, EventArgs.Empty);
+                    ColorChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -266,7 +266,7 @@ namespace NetGore.Graphics
                 _isVisible = value;
 
                 if (VisibleChanged != null)
-                    VisibleChanged(this, EventArgs.Empty);
+                    VisibleChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -318,13 +318,13 @@ namespace NetGore.Graphics
         public void Draw(ISpriteBatch sb)
         {
             if (BeforeDraw != null)
-                BeforeDraw(this, EventArgsHelper.Create(sb));
+                BeforeDraw.Raise(this, EventArgsHelper.Create(sb));
 
             if (IsVisible)
                 HandleDrawing(sb);
 
             if (AfterDraw != null)
-                AfterDraw(this, EventArgsHelper.Create(sb));
+                AfterDraw.Raise(this, EventArgsHelper.Create(sb));
         }
 
         /// <summary>
@@ -425,7 +425,7 @@ namespace NetGore.Graphics
                 _position = value;
 
                 if (Moved != null)
-                    Moved(this, EventArgsHelper.Create(oldPosition));
+                    Moved.Raise(this, EventArgsHelper.Create(oldPosition));
             }
         }
 

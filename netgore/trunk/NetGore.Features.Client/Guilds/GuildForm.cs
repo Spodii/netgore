@@ -223,13 +223,13 @@ namespace NetGore.Features.Guilds
             {
                 // Leave guild
                 if (LeaveRequested != null)
-                    LeaveRequested(this, EventArgs.Empty);
+                    LeaveRequested.Raise(this, EventArgs.Empty);
             }
             else
             {
                 // Join guild
                 if (JoinRequested != null)
-                    JoinRequested(this, EventArgs.Empty);
+                    JoinRequested.Raise(this, EventArgs.Empty);
             }
         }
 

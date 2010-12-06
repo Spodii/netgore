@@ -58,7 +58,7 @@ namespace NetGore.Features.Guilds
                 OnGuildInfoChanged(_guildInfo, old);
 
                 if (GuildInfoChanged != null)
-                    GuildInfoChanged(this, ValueChangedEventArgs.Create(_guildInfo, old));
+                    GuildInfoChanged.Raise(this, ValueChangedEventArgs.Create(_guildInfo, old));
             }
         }
 

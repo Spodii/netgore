@@ -96,7 +96,7 @@ namespace DemoGame.Client
             if (RequestUseSkill != null)
             {
                 var source = (SkillLabel)sender;
-                RequestUseSkill(this, EventArgsHelper.Create(source.SkillInfo.Value));
+                RequestUseSkill.Raise(this, EventArgsHelper.Create(source.SkillInfo.Value));
             }
         }
 
@@ -105,7 +105,7 @@ namespace DemoGame.Client
             if (RequestUseSkill != null)
             {
                 var source = (SkillPictureBox)sender;
-                RequestUseSkill(this, EventArgsHelper.Create(source.SkillInfo.Value));
+                RequestUseSkill.Raise(this, EventArgsHelper.Create(source.SkillInfo.Value));
             }
         }
 

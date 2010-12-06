@@ -314,7 +314,7 @@ namespace NetGore.Graphics
         void rw_Closed(object sender, EventArgs e)
         {
             if (Closed != null)
-                Closed(this, e);
+                Closed.Raise(this, e);
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace NetGore.Graphics
         void rw_GainedFocus(object sender, EventArgs e)
         {
             if (GainedFocus != null)
-                GainedFocus(this, e);
+                GainedFocus.Raise(this, e);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace NetGore.Graphics
         void rw_JoyButtonPressed(object sender, JoyButtonEventArgs e)
         {
             if (JoyButtonPressed != null)
-                JoyButtonPressed(this, e);
+                JoyButtonPressed.Raise(this, e);
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace NetGore.Graphics
         void rw_JoyButtonReleased(object sender, JoyButtonEventArgs e)
         {
             if (JoyButtonReleased != null)
-                JoyButtonReleased(this, e);
+                JoyButtonReleased.Raise(this, e);
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace NetGore.Graphics
         void rw_JoyMoved(object sender, JoyMoveEventArgs e)
         {
             if (JoyMoved != null)
-                JoyMoved(this, e);
+                JoyMoved.Raise(this, e);
         }
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace NetGore.Graphics
         void rw_KeyPressed(object sender, KeyEventArgs e)
         {
             if (KeyPressed != null)
-                KeyPressed(this, e);
+                KeyPressed.Raise(this, e);
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace NetGore.Graphics
         void rw_KeyReleased(object sender, KeyEventArgs e)
         {
             if (KeyReleased != null)
-                KeyReleased(this, e);
+                KeyReleased.Raise(this, e);
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace NetGore.Graphics
         void rw_LostFocus(object sender, EventArgs e)
         {
             if (LostFocus != null)
-                LostFocus(this, e);
+                LostFocus.Raise(this, e);
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace NetGore.Graphics
         void rw_MouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (MouseButtonPressed != null)
-                MouseButtonPressed(this, e);
+                MouseButtonPressed.Raise(this, e);
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace NetGore.Graphics
         void rw_MouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (MouseButtonReleased != null)
-                MouseButtonReleased(this, e);
+                MouseButtonReleased.Raise(this, e);
         }
 
         /// <summary>
@@ -424,7 +424,7 @@ namespace NetGore.Graphics
         void rw_MouseEntered(object sender, EventArgs e)
         {
             if (MouseEntered != null)
-                MouseEntered(this, e);
+                MouseEntered.Raise(this, e);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace NetGore.Graphics
         void rw_MouseLeft(object sender, EventArgs e)
         {
             if (MouseLeft != null)
-                MouseLeft(this, e);
+                MouseLeft.Raise(this, e);
         }
 
         /// <summary>
@@ -446,7 +446,7 @@ namespace NetGore.Graphics
         void rw_MouseMoved(object sender, MouseMoveEventArgs e)
         {
             if (MouseMoved != null)
-                MouseMoved(this, e);
+                MouseMoved.Raise(this, e);
         }
 
         /// <summary>
@@ -457,7 +457,7 @@ namespace NetGore.Graphics
         void rw_MouseWheelMoved(object sender, MouseWheelEventArgs e)
         {
             if (MouseWheelMoved != null)
-                MouseWheelMoved(this, e);
+                MouseWheelMoved.Raise(this, e);
         }
 
         /// <summary>
@@ -468,7 +468,7 @@ namespace NetGore.Graphics
         void rw_Resized(object sender, SizeEventArgs e)
         {
             if (Resized != null)
-                Resized(this, e);
+                Resized.Raise(this, e);
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace NetGore.Graphics
         void rw_TextEntered(object sender, TextEventArgs e)
         {
             if (TextEntered != null)
-                TextEntered(this, e);
+                TextEntered.Raise(this, e);
         }
 
         #region IGameContainer Members
@@ -631,7 +631,7 @@ namespace NetGore.Graphics
                 // Raise events
                 OnRenderWindowChanged(oldRW, _renderWindow);
                 if (RenderWindowChanged != null)
-                    RenderWindowChanged(this, ValueChangedEventArgs.Create(oldRW, _renderWindow));
+                    RenderWindowChanged.Raise(this, ValueChangedEventArgs.Create(oldRW, _renderWindow));
 
                 // Dispose old RenderWindow
                 if (oldRW != null && !oldRW.IsDisposed)

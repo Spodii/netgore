@@ -125,7 +125,7 @@ namespace NetGore.Editor.Grhs
                 return false;
 
             if (EditGrhDataRequested != null)
-                EditGrhDataRequested(this, new GrhTreeViewEditGrhDataEventArgs(node, gd, deleteOnCancel));
+                EditGrhDataRequested.Raise(this, new GrhTreeViewEditGrhDataEventArgs(node, gd, deleteOnCancel));
 
             return true;
         }
@@ -653,7 +653,7 @@ namespace NetGore.Editor.Grhs
 
             var gd = GetGrhData(e.Node);
             if (gd != null)
-                GrhAfterSelect(this, new GrhTreeViewEventArgs(gd, e));
+                GrhAfterSelect.Raise(this, new GrhTreeViewEventArgs(gd, e));
         }
 
         /// <summary>
@@ -669,7 +669,7 @@ namespace NetGore.Editor.Grhs
 
             var gd = GetGrhData(e.Node);
             if (gd != null)
-                GrhBeforeSelect(this, new GrhTreeViewCancelEventArgs(gd, e));
+                GrhBeforeSelect.Raise(this, new GrhTreeViewCancelEventArgs(gd, e));
         }
 
         /// <summary>
@@ -873,7 +873,7 @@ namespace NetGore.Editor.Grhs
             // Get the GrhData for the node clicked, raising the GrhMouseClick event if valid
             var gd = GetGrhData(e.Node);
             if (gd != null)
-                GrhMouseClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
+                GrhMouseClick.Raise(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
         }
 
         /// <summary>
@@ -892,7 +892,7 @@ namespace NetGore.Editor.Grhs
             // Get the GrhData for the node double-clicked, raising the GrhMouseDoubleClick event if valid
             var gd = GetGrhData(e.Node);
             if (gd != null)
-                GrhMouseDoubleClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
+                GrhMouseDoubleClick.Raise(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
         }
 
         void RealInitializeCompact()

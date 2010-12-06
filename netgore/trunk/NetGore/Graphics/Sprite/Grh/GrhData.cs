@@ -194,7 +194,7 @@ namespace NetGore.Graphics
             _categorization = categorization;
 
             if (CategorizationChanged != null)
-                CategorizationChanged(this, EventArgsHelper.Create(oldCategorization));
+                CategorizationChanged.Raise(this, EventArgsHelper.Create(oldCategorization));
         }
 
         /// <summary>

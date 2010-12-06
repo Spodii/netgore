@@ -634,7 +634,8 @@ namespace DemoGame.Client
                 Debug.Fail(string.Format(errmsg, this, ex));
             }
 
-            Disposed.Raise(this, EventArgs.Empty);
+            if (Disposed != null)
+                Disposed.Raise(this, EventArgs.Empty);
         }
 
         #endregion
@@ -747,7 +748,7 @@ namespace DemoGame.Client
             drawableInView = bgInView.Concat(drawableInView);
 
             if (BeginDrawMap != null)
-                BeginDrawMap(this, new DrawableMapDrawEventArgs(sb, cam));
+                BeginDrawMap.Raise(this, new DrawableMapDrawEventArgs(sb, cam));
 
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
             foreach (var layer in _drawableSorter.GetSorted(drawableInView))
@@ -756,7 +757,7 @@ namespace DemoGame.Client
 
                 // Notify the layer has started drawing
                 if (BeginDrawMapLayer != null)
-                    BeginDrawMapLayer(this, layerEventArgs);
+                    BeginDrawMapLayer.Raise(this, layerEventArgs);
 
                 // Draw the normal map objects
                 foreach (var drawable in layer.Value)
@@ -789,7 +790,7 @@ namespace DemoGame.Client
 
                 // Notify the layer has finished drawing
                 if (EndDrawMapLayer != null)
-                    EndDrawMapLayer(this, layerEventArgs);
+                    EndDrawMapLayer.Raise(this, layerEventArgs);
             }
 
             // Draw the particle effects
@@ -802,7 +803,7 @@ namespace DemoGame.Client
             }
 
             if (EndDrawMap != null)
-                EndDrawMap(this, new DrawableMapDrawEventArgs(sb, cam));
+                EndDrawMap.Raise(this, new DrawableMapDrawEventArgs(sb, cam));
         }
 
         #endregion

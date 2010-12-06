@@ -302,8 +302,11 @@ namespace NetGore.Graphics
 
             ValidateTexture();
 
-            if (oldTextureName != null && TextureChanged != null)
-                TextureChanged(this, EventArgsHelper.Create<ContentAssetName>(oldTextureName));
+            if (oldTextureName != null)
+            {
+                if (TextureChanged != null)
+                    TextureChanged.Raise(this, EventArgsHelper.Create<ContentAssetName>(oldTextureName));
+            }
         }
 
         /// <summary>

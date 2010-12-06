@@ -406,7 +406,7 @@ namespace NetGore.Graphics
                 _color = value;
 
                 if (ColorChanged != null)
-                    ColorChanged(this, EventArgs.Empty);
+                    ColorChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -426,7 +426,7 @@ namespace NetGore.Graphics
                 _isVisible = value;
 
                 if (VisibleChanged != null)
-                    VisibleChanged(this, EventArgs.Empty);
+                    VisibleChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -461,7 +461,7 @@ namespace NetGore.Graphics
 
             // Pre-drawing
             if (BeforeDraw != null)
-                BeforeDraw(this, EventArgsHelper.Create(sb));
+                BeforeDraw.Raise(this, EventArgsHelper.Create(sb));
 
             // Draw
             if (IsVisible)
@@ -469,7 +469,7 @@ namespace NetGore.Graphics
 
             // Post-drawing
             if (AfterDraw != null)
-                AfterDraw(this, EventArgsHelper.Create(sb));
+                AfterDraw.Raise(this, EventArgsHelper.Create(sb));
         }
 
         /// <summary>

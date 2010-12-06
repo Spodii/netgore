@@ -264,7 +264,7 @@ namespace NetGore.Collections
             OnItemRemoved(item, index);
 
             if (ItemRemoved != null)
-                ItemRemoved(this, new DArrayEventArgs<T>(item, index));
+                ItemRemoved.Raise(this, new DArrayEventArgs<T>(item, index));
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace NetGore.Collections
             OnItemRemoved(item, index);
 
             if (ItemRemoved != null)
-                ItemRemoved(this, new DArrayEventArgs<T>(item, index));
+                ItemRemoved.Raise(this, new DArrayEventArgs<T>(item, index));
         }
 
         void ResizeBuffer(int size)
@@ -376,7 +376,7 @@ namespace NetGore.Collections
                 OnItemAdded(value, index);
 
                 if (ItemAdded != null)
-                    ItemAdded(this, new DArrayEventArgs<T>(value, index));
+                    ItemAdded.Raise(this, new DArrayEventArgs<T>(value, index));
             }
         }
 

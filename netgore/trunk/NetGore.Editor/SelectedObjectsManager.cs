@@ -68,7 +68,7 @@ namespace NetGore.Editor
 
                 ChangeFocused();
                 if (FocusedChanged != null)
-                    FocusedChanged(this, EventArgsHelper.Create(_focused));
+                    FocusedChanged.Raise(this, EventArgsHelper.Create(_focused));
             }
         }
 
@@ -149,7 +149,7 @@ namespace NetGore.Editor
 
             OnObjectAdded(obj);
             if (ObjectAdded != null)
-                ObjectAdded(this, EventArgsHelper.Create(obj));
+                ObjectAdded.Raise(this, EventArgsHelper.Create(obj));
 
             UpdateSelection();
         }
@@ -214,7 +214,7 @@ namespace NetGore.Editor
 
                 OnObjectRemoved(obj);
                 if (ObjectRemoved != null)
-                    ObjectRemoved(this, EventArgsHelper.Create(obj));
+                    ObjectRemoved.Raise(this, EventArgsHelper.Create(obj));
             }
 
             Debug.Assert(_selectedObjs.Count == 0);
@@ -275,7 +275,7 @@ namespace NetGore.Editor
 
             OnObjectRemoved(obj);
             if (ObjectRemoved != null)
-                ObjectRemoved(this, EventArgsHelper.Create(obj));
+                ObjectRemoved.Raise(this, EventArgsHelper.Create(obj));
 
             UpdateSelection();
         }
@@ -326,7 +326,7 @@ namespace NetGore.Editor
 
                 OnObjectAdded(obj);
                 if (ObjectAdded != null)
-                    ObjectAdded(this, EventArgsHelper.Create(obj));
+                    ObjectAdded.Raise(this, EventArgsHelper.Create(obj));
             }
 
             Focused = obj;
@@ -360,7 +360,7 @@ namespace NetGore.Editor
                 _selectedObjs.Add(obj);
                 OnObjectAdded(obj);
                 if (ObjectAdded != null)
-                    ObjectAdded(this, EventArgsHelper.Create(obj));
+                    ObjectAdded.Raise(this, EventArgsHelper.Create(obj));
             }
 
             UpdateSelection();
@@ -390,7 +390,7 @@ namespace NetGore.Editor
 
             OnObjectAdded(selected);
             if (ObjectAdded != null)
-                ObjectAdded(this, EventArgsHelper.Create(selected));
+                ObjectAdded.Raise(this, EventArgsHelper.Create(selected));
 
             UpdateSelection();
         }
@@ -404,7 +404,7 @@ namespace NetGore.Editor
             ChangeSelected();
 
             if (SelectedChanged != null)
-                SelectedChanged(this, EventArgs.Empty);
+                SelectedChanged.Raise(this, EventArgs.Empty);
 
             // Ensure the focused object is valid
             if (Focused == null || !_selectedObjs.Contains(Focused))

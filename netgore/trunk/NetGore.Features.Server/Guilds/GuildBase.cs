@@ -205,10 +205,10 @@ namespace NetGore.Features.Guilds
             // Log the event
             GuildManager.LogEvent(invoker, GuildEvents.Demote, target);
 
-            if (MemberDemoted != null)
-                MemberDemoted(invoker, EventArgsHelper.Create(target));
-
             OnMemberDemoted(invoker, target);
+
+            if (MemberDemoted != null)
+                MemberDemoted.Raise(invoker, EventArgsHelper.Create(target));
 
             return true;
         }
@@ -229,7 +229,7 @@ namespace NetGore.Features.Guilds
             GuildManager.LogEvent(invoker, GuildEvents.Invite, target);
 
             if (MemberInvited != null)
-                MemberInvited(invoker, EventArgsHelper.Create(target));
+                MemberInvited.Raise(invoker, EventArgsHelper.Create(target));
 
             OnMemberInvited(invoker, target);
 
@@ -252,7 +252,7 @@ namespace NetGore.Features.Guilds
             GuildManager.LogEvent(invoker, GuildEvents.Kick, target);
 
             if (MemberKicked != null)
-                MemberKicked(invoker, EventArgsHelper.Create(target));
+                MemberKicked.Raise(invoker, EventArgsHelper.Create(target));
 
             OnMemberKicked(invoker, target);
 
@@ -310,7 +310,7 @@ namespace NetGore.Features.Guilds
             GuildManager.LogEvent(invoker, GuildEvents.Promote, target);
 
             if (MemberPromoted != null)
-                MemberPromoted(invoker, EventArgsHelper.Create(target));
+                MemberPromoted.Raise(invoker, EventArgsHelper.Create(target));
 
             OnMemberPromoted(invoker, target);
 
@@ -536,7 +536,7 @@ namespace NetGore.Features.Guilds
         public void AddNewOnlineMember(IGuildMember newMember)
         {
             if (MemberAdded != null)
-                MemberAdded(this, EventArgsHelper.Create(newMember));
+                MemberAdded.Raise(this, EventArgsHelper.Create(newMember));
 
             OnMemberAdded(newMember);
 
@@ -571,7 +571,7 @@ namespace NetGore.Features.Guilds
             _onlineMembers.Add(member);
 
             if (OnlineUserAdded != null)
-                OnlineUserAdded(this, EventArgsHelper.Create(member));
+                OnlineUserAdded.Raise(this, EventArgsHelper.Create(member));
 
             OnOnlineUserAdded(member);
         }
@@ -586,7 +586,7 @@ namespace NetGore.Features.Guilds
             _isDestroyed = true;
 
             if (Destroyed != null)
-                Destroyed(this, EventArgs.Empty);
+                Destroyed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -629,7 +629,7 @@ namespace NetGore.Features.Guilds
             }
 
             if (OnlineUserRemoved != null)
-                OnlineUserRemoved(this, EventArgsHelper.Create(member));
+                OnlineUserRemoved.Raise(this, EventArgsHelper.Create(member));
 
             OnOnlineUserRemoved(member);
         }
@@ -668,7 +668,7 @@ namespace NetGore.Features.Guilds
                 OnNameChanged(invoker, oldValue, Name);
 
                 if (NameChanged != null)
-                    NameChanged(this, new GuildRenameEventArgs(invoker, oldValue, Name));
+                    NameChanged.Raise(this, new GuildRenameEventArgs(invoker, oldValue, Name));
             }
 
             return success;
@@ -703,7 +703,7 @@ namespace NetGore.Features.Guilds
                 OnTagChanged(invoker, oldValue, Tag);
 
                 if (TagChanged != null)
-                    TagChanged(this, new GuildRenameEventArgs(invoker, oldValue, Tag));
+                    TagChanged.Raise(this, new GuildRenameEventArgs(invoker, oldValue, Tag));
             }
 
             return success;

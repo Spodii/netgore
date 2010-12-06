@@ -131,7 +131,7 @@ namespace NetGore.Features.Quests
             OnQuestCanceled(quest);
 
             if (QuestCanceled != null)
-                QuestCanceled(this, EventArgsHelper.Create(quest));
+                QuestCanceled.Raise(this, EventArgsHelper.Create(quest));
 
             return true;
         }
@@ -238,7 +238,7 @@ namespace NetGore.Features.Quests
             OnQuestAccepted(quest);
 
             if (QuestAccepted != null)
-                QuestAccepted(this, EventArgsHelper.Create(quest));
+                QuestAccepted.Raise(this, EventArgsHelper.Create(quest));
 
             return true;
         }
@@ -279,7 +279,7 @@ namespace NetGore.Features.Quests
             OnQuestFinished(quest);
 
             if (QuestFinished != null)
-                QuestFinished(this, EventArgsHelper.Create(quest));
+                QuestFinished.Raise(this, EventArgsHelper.Create(quest));
 
             return true;
         }

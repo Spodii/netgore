@@ -475,8 +475,11 @@ namespace NetGore.Graphics
                     else
                     {
                         // If we have reached the first frame, raise the OnLoop event
-                        if ((int)newFrame == 0 && Looped != null)
-                            Looped(this, null);
+                        if ((int)newFrame == 0)
+                        {
+                            if (Looped != null)
+                                Looped.Raise(this, EventArgs.Empty);
+                        }
 
                         // Store the new frame references
                         _currFrame = _skelSet.KeyFrames[(int)newFrame];

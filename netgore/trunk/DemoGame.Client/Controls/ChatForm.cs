@@ -104,11 +104,15 @@ namespace DemoGame.Client
             switch (e.Code)
             {
                 case KeyCode.Return:
-                    if (Say != null && !string.IsNullOrEmpty(_input.Text))
+                    if (Say != null)
                     {
                         var text = _input.Text;
-                        _input.Text = string.Empty;
-                        Say(this, EventArgsHelper.Create(text));
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                            _input.Text = string.Empty;
+
+                            Say.Raise(this, EventArgsHelper.Create(text));
+                        }
                     }
                     break;
 

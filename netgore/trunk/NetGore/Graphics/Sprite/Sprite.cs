@@ -168,7 +168,7 @@ namespace NetGore.Graphics
 
                 _source = value;
                 if (SourceChanged != null)
-                    SourceChanged(this, null);
+                    SourceChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -185,7 +185,7 @@ namespace NetGore.Graphics
 
                 _texture = value;
                 if (TextureChanged != null)
-                    TextureChanged(this, null);
+                    TextureChanged.Raise(this, EventArgs.Empty);
             }
         }
 

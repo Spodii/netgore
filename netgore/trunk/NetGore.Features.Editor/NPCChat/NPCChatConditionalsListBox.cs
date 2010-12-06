@@ -135,7 +135,7 @@ namespace NetGore.Features.NPCChat
             {
                 _selectedConditionalItem = item;
                 if (ConditionalItemChanged != null)
-                    ConditionalItemChanged(this, EventArgsHelper.Create(item));
+                    ConditionalItemChanged.Raise(this, EventArgsHelper.Create(item));
             }
         }
 

@@ -92,7 +92,7 @@ namespace NetGore.Features.NPCChat
             _items[(int)item.ID] = item;
 
             if (Changed != null)
-                Changed(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
