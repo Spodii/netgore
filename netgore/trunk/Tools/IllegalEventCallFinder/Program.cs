@@ -14,7 +14,7 @@ namespace ConsoleApplication7
         const string _eventCallFinder = @"(?<IfCheck>if \({0} != null\))?\s*{0}(?<UseRaise>\.Raise)?\((?<Params>.*)\);";
 
         static readonly string[] _ignores = new string[] { "\\bin\\","\\_dependencies\\", "\\\\.svn\\","\\_ReSharper\\.\\",
-            "\\DevContent\\","\\Externals\\","\\Settings\\", "\\Tools\\"};
+            "\\DevContent\\","\\Externals\\","\\NetGore.Tests\\", "\\Settings\\", "\\Tools\\"};
 
         static void Main(string[] args)
         {
