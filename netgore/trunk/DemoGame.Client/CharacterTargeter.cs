@@ -136,29 +136,40 @@ namespace DemoGame.Client
             get { return _world; }
         }
 
-        void MouseOverCharacter_AfterDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
+        /// <summary>
+        /// Occurs immediately after the <see cref="MouseOverCharacter"/> is drawn.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{ISpriteBatch}"/> instance containing the event data.</param>
+        void MouseOverCharacter_AfterDraw(IDrawable sender, EventArgs<ISpriteBatch> e)
         {
-            if (sender == TargetCharacter)
-                return;
-
-            sender.Color = _oldMouseOverColor;
         }
 
-        void MouseOverCharacter_BeforeDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
+        /// <summary>
+        /// Occurs immediately before the <see cref="MouseOverCharacter"/> is drawn.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{ISpriteBatch}"/> instance containing the event data.</param>
+        void MouseOverCharacter_BeforeDraw(IDrawable sender, EventArgs<ISpriteBatch> e)
         {
-            if (sender == TargetCharacter)
-                return;
-
-            _oldMouseOverColor = sender.Color;
-            sender.Color = _mouseOverColor;
         }
 
-        void TargetCharacter_AfterDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
+        /// <summary>
+        /// Occurs immediately after the <see cref="TargetCharacter"/> is drawn.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{ISpriteBatch}"/> instance containing the event data.</param>
+        void TargetCharacter_AfterDraw(IDrawable sender, EventArgs<ISpriteBatch> e)
         {
             sender.Color = _oldTargetColor;
         }
 
-        void TargetCharacter_BeforeDraw(IDrawable sender, EventArgs<ISpriteBatch> sb)
+        /// <summary>
+        /// Occurs immediately before the <see cref="TargetCharacter"/> is drawn.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs{ISpriteBatch}"/> instance containing the event data.</param>
+        void TargetCharacter_BeforeDraw(IDrawable sender, EventArgs<ISpriteBatch> e)
         {
             _oldTargetColor = sender.Color;
             sender.Color = _targetColor;
@@ -172,11 +183,33 @@ namespace DemoGame.Client
         {
             var cursorPos = gui.CursorPosition;
 
-            MouseOverCharacter = World.Map.Spatial.Get<Character>(World.Camera.Min + cursorPos, x => x != World.UserChar);
+            // Get the character under the cursor
+            MouseOverCharacter = World.Map.Spatial.Get<Character>(World.Camera.Min + cursorPos);
 
-            if (MouseOverCharacter != null && gui.IsMouseButtonDown(MouseButton.Left))
-                TargetCharacter = MouseOverCharacter;
+            // Update the target character when the left mouse button is down
+            if (!gui.IsMouseButtonDown(MouseButton.Left))
+            {
+                if (MouseOverCharacter != null)
+                {
+                    if (MouseOverCharacter == World.UserChar)
+                    {
+                        // If the target character is the user's character, remove the targeting
+                        TargetCharacter = null;
+                    }
+                    else
+                    {
+                        // Otherwise, set the target character
+                        TargetCharacter = MouseOverCharacter;
+                    }
+                }
+                else
+                {
+                    // No target
+                    TargetCharacter = null;
+                }
+            }
 
+            // If the MouseOverCharacter or TargetCharacter have been disposed, unset them
             if (MouseOverCharacter != null && MouseOverCharacter.IsDisposed)
                 MouseOverCharacter = null;
 
