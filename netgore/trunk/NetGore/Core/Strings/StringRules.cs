@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,6 +15,7 @@ namespace NetGore
         readonly ushort _maxLength;
         readonly ushort _minLength;
         readonly Regex _regex;
+        readonly IEnumerable<Regex> _customFilters;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StringRules"/> class.
@@ -22,7 +24,17 @@ namespace NetGore
         /// <param name="maxLength">The maximum string length allowed.</param>
         /// <param name="allowedChars">The set of allowed characters.</param>
         /// <param name="regexOptions">The additional regex options to use.</param>
-        public StringRules(int minLength, int maxLength, CharType allowedChars, RegexOptions regexOptions = RegexOptions.None)
+        /// <param name="customerFilters">An optional collection of custom <see cref="Regex"/> patterns that describe
+        /// additional restrictions.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="minLength"/> is less than 0.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than
+        /// <paramref name="minLength"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="minLength"/> is greater than
+        /// <see cref="ushort.MaxValue"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxLength"/> is greater than
+        /// <see cref="ushort.MaxValue"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="allowedChars"/> contains no defined groups.</exception>
+        public StringRules(int minLength, int maxLength, CharType allowedChars, RegexOptions regexOptions = RegexOptions.None, IEnumerable<Regex> customerFilters = null)
         {
             if (minLength < 0)
                 throw new ArgumentOutOfRangeException("minLength");
@@ -42,6 +54,9 @@ namespace NetGore
             var regexStr = BuildRegexString(minLength, maxLength, allowedChars);
 
             _regex = new Regex(regexStr, RegexOptions.Compiled | regexOptions);
+
+            if (customerFilters != null)
+                _customFilters = customerFilters.ToCompact();
         }
 
         /// <summary>
@@ -124,18 +139,16 @@ namespace NetGore
             if (s.Length < MinLength || s.Length > MaxLength)
                 return false;
 
-            return _regex.IsMatch(s);
-        }
+            if (!_regex.IsMatch(s))
+                return false;
 
-        /// <summary>
-        /// Tests the given input string to see if it is valid according to the specified rules.
-        /// </summary>
-        /// <param name="s">The string to test.</param>
-        /// <param name="startAt">The character position at which to start the checking.</param>
-        /// <returns>True if <paramref name="s"/> is valid; otherwise false.</returns>
-        public bool IsValid(string s, int startAt)
-        {
-            return _regex.IsMatch(s, startAt);
+            if (_customFilters != null)
+            {
+                if (_customFilters.Any(x => x.IsMatch(s)))
+                    return false;
+            }
+
+            return true;
         }
     }
 }
