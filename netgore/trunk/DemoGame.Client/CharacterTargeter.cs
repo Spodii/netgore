@@ -16,14 +16,12 @@ namespace DemoGame.Client
     {
         readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _mouseOverAfterDrawHandler;
         readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _mouseOverBeforeDrawHandler;
-        readonly Color _mouseOverColor = new Color(150, 255, 150, 255);
         readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _targetAfterDrawHandler;
         readonly TypedEventHandler<IDrawable, EventArgs<ISpriteBatch>> _targetBeforeDrawHandler;
         readonly Color _targetColor = new Color(0, 255, 0, 255);
         readonly World _world;
 
         Character _mouseOverChar;
-        Color _oldMouseOverColor;
         Color _oldTargetColor;
         Character _targetChar;
 
