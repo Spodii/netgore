@@ -1146,16 +1146,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Checks if the given string is a valid string for a character name.
-        /// </summary>
-        /// <param name="s">The string to test.</param>
-        /// <returns>True if <paramref name="s"/> is a valid string for a character name; otherwise false.</returns>
-        public static bool IsValidName(string s)
-        {
-            return GameData.UserName.IsValid(s);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, implements the Character being killed. This 
         /// doesn't actually care how the Character was killed, it just takes the appropriate
         /// actions to kill them.
