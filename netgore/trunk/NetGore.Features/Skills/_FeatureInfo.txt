@@ -21,4 +21,4 @@ DATABASE PROCEDURES:
  * [None]
 
 CONTENT FILES:
- * [None]
+ * \Data\skills.dat
