@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -121,6 +122,15 @@ namespace NetGore.Network
         public int ConnectionsCount
         {
             get { return _local.ConnectionsCount; }
+        }
+
+        /// <summary>
+        /// Disconnects all active connections and rejects incoming connections.
+        /// </summary>
+        public void Shutdown()
+        {
+            if (_local != null)
+                _local.Shutdown(string.Empty);
         }
 
         /// <summary>

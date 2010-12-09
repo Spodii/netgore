@@ -19,5 +19,10 @@ namespace NetGore.Network
         /// Gets the number of live connections to the server.
         /// </summary>
         int ConnectionsCount { get; }
+
+        /// <summary>
+        /// Disconnects all active connections and rejects incoming connections.
+        /// </summary>
+        void Shutdown();
     }
 }
