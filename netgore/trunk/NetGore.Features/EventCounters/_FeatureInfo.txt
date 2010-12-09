@@ -9,6 +9,12 @@ This file contains information about this feature in general. One is provided fo
 folder in the NetGore.Features project.
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
+NOTICE: Since EventCounters try to run almost completely separately from the rest of the server for performance reasons, there is a
+chance that events might not be updated. This will typically only happen for a table that changes during runtime (such as `character`),
+and the event was for an object that was very recently added or removed. If the server crashes, up to the last 5 minutes (by default)
+of counter increments can fail to be inserted. This is rarely a problem since counters should not require absolutely perfect accuracy.
+If you do want absolute ACID compliance for whatever reason, you will need to use a different approach.
+
 EventCounters are similar to WorldStats, but far more simple, easier to use, and provide significantly better performance (should impose
 no noticeable performance overhead even with a large number of counters defined). While WorldStats tracks details on specific events, and
 does the default implementation does provide some counters, EventCounters is even more general. Every EventCounter is structured in the same way:

@@ -157,7 +157,19 @@ namespace NetGore.Features.EventCounters
         /// <param name="value">The <see cref="ObjectEventAmount{T,U}"/>.</param>
         void WriteValue(ObjectEventAmount<TObjectID, TEventID> value)
         {
-            _query.Execute(value);
+            try
+            {
+                _query.Execute(value);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to execute EventCounter query on `{0}` (object: {1}, event: {2})." + 
+                    " Going to drop the value (value: {3}) instead of retrying. There is a good chance that the exception was caused from"+
+                    " trying to insert a record for a foreign key that no longer exists, and a much smaller chance that we tried" +
+                    " to insert a record for a foreign key that does not yet exist. Exception: {4}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this, value.ObjectID, value.EventID, value.Amount, ex);
+            }
         }
 
         #region IEventCounter<TObjectID,TEventID> Members
