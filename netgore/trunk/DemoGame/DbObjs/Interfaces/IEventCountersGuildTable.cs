@@ -17,43 +17,37 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Linq;
+using NetGore.Features.Guilds;
+
 namespace DemoGame.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `event_counters_guild`.
-/// </summary>
-public interface IEventCountersGuildTable
-{
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-IEventCountersGuildTable DeepCopy();
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `event_counters_guild`.
+    /// </summary>
+    public interface IEventCountersGuildTable
+    {
+        /// <summary>
+        /// Gets the value of the database column `counter`.
+        /// </summary>
+        Int64 Counter { get; }
 
-/// <summary>
-/// Gets the value of the database column `counter`.
-/// </summary>
-System.Int64 Counter
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `guild_event_counter_id`.
-/// </summary>
-System.Byte GuildEventCounterId
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `guild_id`.
-/// </summary>
-NetGore.Features.Guilds.GuildID GuildID
-{
-get;
-}
-}
+        /// <summary>
+        /// Gets the value of the database column `guild_event_counter_id`.
+        /// </summary>
+        Byte GuildEventCounterId { get; }
 
+        /// <summary>
+        /// Gets the value of the database column `guild_id`.
+        /// </summary>
+        GuildID GuildID { get; }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IEventCountersGuildTable DeepCopy();
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NetGore.Features.PeerTrading
 {
@@ -18,6 +19,9 @@ namespace NetGore.Features.PeerTrading
         /// <summary>
         /// Gets if it was the source character who canceled the trade.
         /// </summary>
-        public bool SourceCanceled { get { return _sourceCanceled; } }
+        public bool SourceCanceled
+        {
+            get { return _sourceCanceled; }
+        }
     }
 }

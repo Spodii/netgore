@@ -9,8 +9,8 @@ namespace DemoGame.Editor
     /// </summary>
     public class MapDrawFilterHelperCollectionEventArgs : EventArgs
     {
-        readonly string _filterName;
         readonly MapDrawFilterHelper _filter;
+        readonly string _filterName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapDrawFilterHelperCollectionEventArgs"/> class.
@@ -34,18 +34,27 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets the <see cref="FilterName"/> and <see cref="Filter"/> as a <see cref="KeyValuePair{T,U}"/>.
+        /// Gets the <see cref="MapDrawFilterHelper"/>.
         /// </summary>
-        public KeyValuePair<string, MapDrawFilterHelper> FilterNameAndFilter { get { return new KeyValuePair<string, MapDrawFilterHelper>(FilterName, Filter); } }
+        public MapDrawFilterHelper Filter
+        {
+            get { return _filter; }
+        }
 
         /// <summary>
         /// Gets the name of the <see cref="Filter"/>.
         /// </summary>
-        public string FilterName { get { return _filterName; } }
+        public string FilterName
+        {
+            get { return _filterName; }
+        }
 
         /// <summary>
-        /// Gets the <see cref="MapDrawFilterHelper"/>.
+        /// Gets the <see cref="FilterName"/> and <see cref="Filter"/> as a <see cref="KeyValuePair{T,U}"/>.
         /// </summary>
-        public MapDrawFilterHelper Filter { get { return _filter; } }
+        public KeyValuePair<string, MapDrawFilterHelper> FilterNameAndFilter
+        {
+            get { return new KeyValuePair<string, MapDrawFilterHelper>(FilterName, Filter); }
+        }
     }
 }

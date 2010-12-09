@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Windows.Forms;
 using NetGore.Editor.Docking;
 using NetGore.Editor.Grhs;
-using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {

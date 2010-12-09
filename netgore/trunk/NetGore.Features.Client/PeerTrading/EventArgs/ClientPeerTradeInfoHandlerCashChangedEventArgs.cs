@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 
 namespace NetGore.Features.PeerTrading
 {
     public class ClientPeerTradeInfoHandlerCashChangedEventArgs : EventArgs
     {
-        readonly bool _isSourceSide;
         readonly int _cash;
+        readonly bool _isSourceSide;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandlerCashChangedEventArgs"/> class.
@@ -20,14 +21,20 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Gets the new cash value.
+        /// </summary>
+        public int Cash
+        {
+            get { return _cash; }
+        }
+
+        /// <summary>
         /// Gets if the changed cash amount was on the source character's side.
         /// If false, it was on the target character's side.
         /// </summary>
-        public bool IsSourceSide { get { return _isSourceSide; } }
-
-        /// <summary>
-        /// Gets the new cash value.
-        /// </summary>
-        public int Cash { get { return _cash; } }
+        public bool IsSourceSide
+        {
+            get { return _isSourceSide; }
+        }
     }
 }

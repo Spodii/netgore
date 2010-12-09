@@ -12,10 +12,10 @@ namespace NetGore
     public class StringRules
     {
         readonly CharType _allowedChars;
+        readonly IEnumerable<Regex> _customFilters;
         readonly ushort _maxLength;
         readonly ushort _minLength;
         readonly Regex _regex;
-        readonly IEnumerable<Regex> _customFilters;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StringRules"/> class.
@@ -34,7 +34,8 @@ namespace NetGore
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxLength"/> is greater than
         /// <see cref="ushort.MaxValue"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="allowedChars"/> contains no defined groups.</exception>
-        public StringRules(int minLength, int maxLength, CharType allowedChars, RegexOptions regexOptions = RegexOptions.None, IEnumerable<Regex> customerFilters = null)
+        public StringRules(int minLength, int maxLength, CharType allowedChars, RegexOptions regexOptions = RegexOptions.None,
+                           IEnumerable<Regex> customerFilters = null)
         {
             if (minLength < 0)
                 throw new ArgumentOutOfRangeException("minLength");

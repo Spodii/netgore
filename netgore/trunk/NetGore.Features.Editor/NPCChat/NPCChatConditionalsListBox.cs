@@ -19,7 +19,8 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Notifies listeners when the <see cref="NPCChatConditionalsListBox.SelectedConditionalItem"/> has changed.
         /// </summary>
-        public event TypedEventHandler<NPCChatConditionalsListBox, EventArgs<EditorNPCChatConditionalCollectionItem>> ConditionalItemChanged;
+        public event TypedEventHandler<NPCChatConditionalsListBox, EventArgs<EditorNPCChatConditionalCollectionItem>>
+            ConditionalItemChanged;
 
         /// <summary>
         /// Gets or sets the current <see cref="EditorNPCChatConditionalCollection"/> being used.

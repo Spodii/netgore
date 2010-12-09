@@ -673,7 +673,7 @@ namespace DemoGame.Server
             }
 
             OnAttacked();
-            
+
             if (Attacked != null)
                 Attacked.Raise(this, EventArgs.Empty);
 

@@ -56,11 +56,6 @@ namespace NetGore.IO
         public const string LanguagesFolder = "Languages";
 
         /// <summary>
-        /// The relative path to the Recycled directory from the Contents directory.
-        /// </summary>
-        public const string RecycledFolder = "Recycled";
-
-        /// <summary>
         /// The relative path to the Maps directory from the Contents directory.
         /// </summary>
         public const string MapsFolder = "Maps";
@@ -69,6 +64,11 @@ namespace NetGore.IO
         /// The relative path to the Music directory from the Contents directory.
         /// </summary>
         public const string MusicFolder = "Music";
+
+        /// <summary>
+        /// The relative path to the Recycled directory from the Contents directory.
+        /// </summary>
+        public const string RecycledFolder = "Recycled";
 
         /// <summary>
         /// The relative path to the Settings directory from the Contents directory.
@@ -181,22 +181,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets the <see cref="PathString"/> to the recycled content folder. Will return null if the <see cref="ContentPaths.Dev"/>
-        /// path cannot be found.
-        /// </summary>
-        public static PathString Recycled
-        {
-            get
-            {
-                var dev = Dev;
-                if (dev == null)
-                    return null;
-
-                return dev.Root.Join(RecycledFolder);
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="ContentPaths"/> for the Development content. Will return null if the path cannot be found.
         /// </summary>
         public static ContentPaths Dev
@@ -272,6 +256,22 @@ namespace NetGore.IO
         public PathString Music
         {
             get { return _music; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="PathString"/> to the recycled content folder. Will return null if the <see cref="ContentPaths.Dev"/>
+        /// path cannot be found.
+        /// </summary>
+        public static PathString Recycled
+        {
+            get
+            {
+                var dev = Dev;
+                if (dev == null)
+                    return null;
+
+                return dev.Root.Join(RecycledFolder);
+            }
         }
 
         /// <summary>

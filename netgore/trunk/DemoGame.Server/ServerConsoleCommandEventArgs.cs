@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Linq;
 
 namespace DemoGame.Server
 {
-    public class ServerConsoleCommandEventArgs  : EventArgs
+    public class ServerConsoleCommandEventArgs : EventArgs
     {
         readonly string _command;
         readonly string _returnString;
@@ -13,8 +14,14 @@ namespace DemoGame.Server
             _returnString = returnString;
         }
 
-        public string Command { get { return _command; } }
+        public string Command
+        {
+            get { return _command; }
+        }
 
-        public string ReturnString { get { return _returnString; } }
+        public string ReturnString
+        {
+            get { return _returnString; }
+        }
     }
 }

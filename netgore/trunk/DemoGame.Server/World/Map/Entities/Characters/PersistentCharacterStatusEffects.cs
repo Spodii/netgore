@@ -31,9 +31,9 @@ namespace DemoGame.Server
         static readonly IDbController _dbController;
         static readonly DeleteCharacterStatusEffectQuery _deleteQuery;
         static readonly InsertCharacterStatusEffectQuery _insertQuery;
-        static readonly UpdateCharacterStatusEffectQuery _updateQuery;
         static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
         static readonly IEqualityComparer<StatusEffectType> _statusEffectTypeComparer = EnumComparer<StatusEffectType>.Instance;
+        static readonly UpdateCharacterStatusEffectQuery _updateQuery;
 
         readonly List<ASEWithID> _statusEffects = new List<ASEWithID>();
 
@@ -113,6 +113,20 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the number of seconds left for an <see cref="ActiveStatusEffect"/>.
+        /// </summary>
+        /// <param name="ase">The <see cref="ActiveStatusEffect"/>.</param>
+        /// <returns>The number of seconds left for an <see cref="ActiveStatusEffect"/>.</returns>
+        int GetSecsLeft(ActiveStatusEffect ase)
+        {
+            var secsLeft = (int)Math.Round((ase.DisableTime - GetTime()) / 1000f);
+            if (secsLeft < 1)
+                secsLeft = 1;
+
+            return secsLeft;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles removing an expired StatusEffect.
         /// </summary>
         /// <param name="activeStatusEffect">StatusEffect to be removed.</param>
@@ -138,6 +152,37 @@ namespace DemoGame.Server
             }
 
             Debug.Fail("Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
+        }
+
+        /// <summary>
+        /// Inserts a new <see cref="ActiveStatusEffect"/> into the database.
+        /// </summary>
+        /// <param name="item">The <see cref="ActiveStatusEffect"/> to insert.</param>
+        /// <returns>The <see cref="ActiveStatusEffectID"/> for the <paramref name="item"/>.</returns>
+        ActiveStatusEffectID InsertInDatabase(ActiveStatusEffect item)
+        {
+            // Convert the time
+            var secsLeft = GetSecsLeft(item);
+
+            // Create the row
+            var values = new CharacterStatusEffectTable
+            {
+                CharacterID = Character.ID,
+                ID = new ActiveStatusEffectID(_dbController.ConnectionPool.AutoIncrementValue),
+                Power = item.Power,
+                TimeLeftSecs = (ushort)secsLeft,
+                StatusEffect = item.StatusEffect.StatusEffectType
+            };
+
+            // Insert the data, and get the ID
+            long id;
+            _insertQuery.ExecuteWithResult(values, out id);
+
+            Debug.Assert(id <= int.MaxValue);
+            Debug.Assert(id >= int.MinValue);
+
+            // Return the ID
+            return new ActiveStatusEffectID((int)id);
         }
 
         /// <summary>
@@ -255,51 +300,6 @@ namespace DemoGame.Server
 
             statusEffect = default(ASEWithID);
             return false;
-        }
-
-        /// <summary>
-        /// Gets the number of seconds left for an <see cref="ActiveStatusEffect"/>.
-        /// </summary>
-        /// <param name="ase">The <see cref="ActiveStatusEffect"/>.</param>
-        /// <returns>The number of seconds left for an <see cref="ActiveStatusEffect"/>.</returns>
-        int GetSecsLeft(ActiveStatusEffect ase)
-        {
-            var secsLeft = (int)Math.Round((ase.DisableTime - GetTime()) / 1000f);
-            if (secsLeft < 1)
-                secsLeft = 1;
-
-            return secsLeft;
-        }
-
-        /// <summary>
-        /// Inserts a new <see cref="ActiveStatusEffect"/> into the database.
-        /// </summary>
-        /// <param name="item">The <see cref="ActiveStatusEffect"/> to insert.</param>
-        /// <returns>The <see cref="ActiveStatusEffectID"/> for the <paramref name="item"/>.</returns>
-        ActiveStatusEffectID InsertInDatabase(ActiveStatusEffect item)
-        {
-            // Convert the time
-            var secsLeft = GetSecsLeft(item);
-
-            // Create the row
-            var values = new CharacterStatusEffectTable
-            {
-                CharacterID = Character.ID,
-                ID = new ActiveStatusEffectID(_dbController.ConnectionPool.AutoIncrementValue),
-                Power = item.Power,
-                TimeLeftSecs = (ushort)secsLeft,
-                StatusEffect = item.StatusEffect.StatusEffectType
-            };
-
-            // Insert the data, and get the ID
-            long id;
-            _insertQuery.ExecuteWithResult(values, out id);
-
-            Debug.Assert(id <= int.MaxValue);
-            Debug.Assert(id >= int.MinValue);
-
-            // Return the ID
-            return new ActiveStatusEffectID((int)id);
         }
 
         /// <summary>

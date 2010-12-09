@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client
@@ -8,8 +9,8 @@ namespace DemoGame.Client
     /// </summary>
     class ToolbarEventArgs : EventArgs
     {
-        readonly ToolbarItemType _itemType;
         readonly Control _control;
+        readonly ToolbarItemType _itemType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolbarEventArgs"/> class.
@@ -23,13 +24,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the <see cref="ToolbarItemType"/> for the Toolbar item that raised the event.
-        /// </summary>
-        public ToolbarItemType ItemType { get { return _itemType; } }
-
-        /// <summary>
         /// Gets the <see cref="Control"/> that raised the event.
         /// </summary>
-        public Control Control { get { return _control; } }
+        public Control Control
+        {
+            get { return _control; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ToolbarItemType"/> for the Toolbar item that raised the event.
+        /// </summary>
+        public ToolbarItemType ItemType
+        {
+            get { return _itemType; }
+        }
     }
 }

@@ -16,6 +16,14 @@ namespace DemoGame.Editor
             DrawMode = DrawMode.OwnerDrawFixed;
         }
 
+        protected virtual string GetDrawString(ISoundInfo item)
+        {
+            if (item == null)
+                return null;
+
+            return string.Format("{0}. {1}", item.ID, item.Name);
+        }
+
         /// <summary>
         /// Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
         /// </summary>
@@ -27,14 +35,6 @@ namespace DemoGame.Editor
                 return;
 
             UpdateList();
-        }
-
-        protected virtual string GetDrawString(ISoundInfo item)
-        {
-            if (item == null)
-                return null;
-
-            return string.Format("{0}. {1}", item.ID, item.Name);
         }
 
         /// <summary>

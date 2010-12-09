@@ -1,4 +1,6 @@
-﻿namespace NetGore.Features.EventCounters
+﻿using System.Linq;
+
+namespace NetGore.Features.EventCounters
 {
     /// <summary>
     /// A tuple of an object, event, and amount for an <see cref="IEventCounter{T,U}"/>.
@@ -27,16 +29,25 @@
         /// <summary>
         /// Gets the object for the event to be incremented.
         /// </summary>
-        public TObjectID ObjectID {get{return _objectID; }}
+        public TObjectID ObjectID
+        {
+            get { return _objectID; }
+        }
 
         /// <summary>
         /// Gets the event to be incremented.
         /// </summary>
-        public TEventID EventID {get{return _eventID; }}
+        public TEventID EventID
+        {
+            get { return _eventID; }
+        }
 
         /// <summary>
         /// Gets the amount to increment.
         /// </summary>
-        public int Amount{get{return _amount; }}
+        public int Amount
+        {
+            get { return _amount; }
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 #if !TOPDOWN
 #pragma warning disable 1587

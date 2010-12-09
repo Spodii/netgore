@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
-using NetGore.IO;
 
 namespace DemoGame.Editor.UITypeEditors
 {

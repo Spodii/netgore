@@ -8,8 +8,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class DrawableMapDrawEventArgs : EventArgs
     {
-        readonly ISpriteBatch _spriteBatch;
         readonly ICamera2D _camera;
+        readonly ISpriteBatch _spriteBatch;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawableMapDrawEventArgs"/> class.
@@ -23,13 +23,19 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="ISpriteBatch"/> that was used to do the drawing.
-        /// </summary>
-        public ISpriteBatch SpriteBatch { get { return _spriteBatch; } }
-
-        /// <summary>
         /// Gets the <see cref="ICamera2D"/> that describes the view of the map being drawn.
         /// </summary>
-        public ICamera2D Camera { get { return _camera; } }
+        public ICamera2D Camera
+        {
+            get { return _camera; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISpriteBatch"/> that was used to do the drawing.
+        /// </summary>
+        public ISpriteBatch SpriteBatch
+        {
+            get { return _spriteBatch; }
+        }
     }
 }

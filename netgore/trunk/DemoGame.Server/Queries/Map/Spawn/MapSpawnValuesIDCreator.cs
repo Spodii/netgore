@@ -11,8 +11,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="MapSpawnValuesIDCreator"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public MapSpawnValuesIDCreator(DbConnectionPool connectionPool)
-            : base(connectionPool, MapSpawnTable.TableName, "id", 1)
+        public MapSpawnValuesIDCreator(DbConnectionPool connectionPool) : base(connectionPool, MapSpawnTable.TableName, "id", 1)
         {
             QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }

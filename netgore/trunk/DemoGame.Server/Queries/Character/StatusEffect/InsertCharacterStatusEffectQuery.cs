@@ -31,8 +31,7 @@ namespace DemoGame.Server.Queries
                 INSERT INTO `{0}` {1}
             */
 
-            var q =
-                qb.Insert(CharacterStatusEffectTable.TableName).AddAutoParam(CharacterStatusEffectTable.DbColumns);
+            var q = qb.Insert(CharacterStatusEffectTable.TableName).AddAutoParam(CharacterStatusEffectTable.DbColumns);
             return q.ToString();
         }
 

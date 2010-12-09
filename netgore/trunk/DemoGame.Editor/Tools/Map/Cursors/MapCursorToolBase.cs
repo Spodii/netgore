@@ -77,6 +77,14 @@ namespace DemoGame.Editor.Tools
         public bool ShowObjectToolTip { get; set; }
 
         /// <summary>
+        /// Gets the <see cref="Font"/> to use to draw the tooltips.
+        /// </summary>
+        public Font ToolTipFont
+        {
+            get { return GlobalState.Instance.DefaultRenderFont; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets if this cursor can select the given object.
         /// </summary>
         /// <param name="map">The map containing the object to be selected.</param>
@@ -177,16 +185,9 @@ namespace DemoGame.Editor.Tools
                 // Draw the tooltip
                 var font = ToolTipFont;
                 if (_toolTipObject != null && _toolTip != null && font != null)
-                {
                     spriteBatch.DrawStringShaded(font, _toolTip, _toolTipPos, Color.White, Color.Black);
-                }
             }
         }
-
-        /// <summary>
-        /// Gets the <see cref="Font"/> to use to draw the tooltips.
-        /// </summary>
-        public Font ToolTipFont { get { return GlobalState.Instance.DefaultRenderFont; } }
 
         /// <summary>
         /// Gets if the given object is visible according to the drawing filter currently being used.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
 
@@ -11,9 +12,9 @@ namespace NetGore.Features.EventCounters
     /// </summary>
     public static class EventCounterHelper
     {
-        const string _objectParameterName = "object";
-        const string _eventParameterName = "event";
         const string _counterParameterName = "counter";
+        const string _eventParameterName = "event";
+        const string _objectParameterName = "object";
 
         /// <summary>
         /// Creates an instance of a <see cref="DbQueryNonReader{T}"/> to be used to execute the queries
@@ -27,10 +28,12 @@ namespace NetGore.Features.EventCounters
         /// <param name="eventKeyName">The name of the event key.</param>
         /// <param name="counterColumnName">The name of the counter column. Default is "counter".</param>
         /// <returns>The <see cref="DbQueryNonReader{T}"/> instance.</returns>
-        public static DbQueryNonReader<ObjectEventAmount<TObjectID, TEventID>> CreateQuery<TObjectID, TEventID>
-            (DbConnectionPool connectionPool, string tableName, string objectKeyName, string eventKeyName, string counterColumnName = "counter")
+        public static DbQueryNonReader<ObjectEventAmount<TObjectID, TEventID>> CreateQuery<TObjectID, TEventID>(
+            DbConnectionPool connectionPool, string tableName, string objectKeyName, string eventKeyName,
+            string counterColumnName = "counter")
         {
-            var queryStr = CreateQueryString(connectionPool.QueryBuilder, tableName, objectKeyName, eventKeyName, counterColumnName);
+            var queryStr = CreateQueryString(connectionPool.QueryBuilder, tableName, objectKeyName, eventKeyName,
+                counterColumnName);
             var ecq = new EventCounterQuery<TObjectID, TEventID>(connectionPool, queryStr);
             return ecq;
         }
@@ -44,7 +47,8 @@ namespace NetGore.Features.EventCounters
         /// <param name="eventKeyName">The name of the event key.</param>
         /// <param name="counterColumnName">The name of the counter column. Default is "counter".</param>
         /// <returns>The query string.</returns>
-        static string CreateQueryString(IQueryBuilder qb, string tableName, string objectKeyName, string eventKeyName, string counterColumnName)
+        static string CreateQueryString(IQueryBuilder qb, string tableName, string objectKeyName, string eventKeyName,
+                                        string counterColumnName)
         {
             /*
                 INSERT INTO [table] (`o`,`e`,`c`)
@@ -56,13 +60,10 @@ namespace NetGore.Features.EventCounters
             var f = qb.Functions;
             var s = qb.Settings;
 
-            var q = qb.Insert(tableName)
-                .AddParam(objectKeyName, _objectParameterName)
-                .AddParam(eventKeyName, _eventParameterName)
-                .AddParam(counterColumnName, _counterParameterName)
-                .ODKU()
-                .Add(_counterParameterName,
-                    f.Add(s.EscapeColumn(counterColumnName), s.Parameterize(_counterParameterName)));
+            var q =
+                qb.Insert(tableName).AddParam(objectKeyName, _objectParameterName).AddParam(eventKeyName, _eventParameterName).
+                    AddParam(counterColumnName, _counterParameterName).ODKU().Add(_counterParameterName,
+                        f.Add(s.EscapeColumn(counterColumnName), s.Parameterize(_counterParameterName)));
 
             var ret = q.ToString();
             return ret;

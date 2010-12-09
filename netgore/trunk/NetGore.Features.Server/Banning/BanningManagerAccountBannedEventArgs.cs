@@ -17,7 +17,8 @@ namespace NetGore.Features.Banning
         /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
         /// <returns>An instance of the <see cref="BanningManagerAccountBannedEventArgs{T}"/> class.</returns>
-        public static BanningManagerAccountBannedEventArgs<TAccountID> Create<TAccountID>(TAccountID accountID, TimeSpan length, string reason, string issuedBy)
+        public static BanningManagerAccountBannedEventArgs<TAccountID> Create<TAccountID>(TAccountID accountID, TimeSpan length,
+                                                                                          string reason, string issuedBy)
         {
             return new BanningManagerAccountBannedEventArgs<TAccountID>(accountID, length, reason, issuedBy);
         }
@@ -30,9 +31,9 @@ namespace NetGore.Features.Banning
     public class BanningManagerAccountBannedEventArgs<TAccountID> : EventArgs
     {
         readonly TAccountID _accountID;
+        readonly string _issuedBy;
         readonly TimeSpan _length;
         readonly string _reason;
-        readonly string _issuedBy;
 
         /// <summary>
         /// Bannings the manager account banned event handler.
@@ -52,21 +53,33 @@ namespace NetGore.Features.Banning
         /// <summary>
         /// Gets the account that was banned.
         /// </summary>
-        public TAccountID AccountID{get{return _accountID; }}
-
-        /// <summary>
-        /// Gets how long the ban will last.
-        /// </summary>
-        public TimeSpan Length{get{return _length; }}
-
-        /// <summary>
-        /// Gets the reason for the ban.
-        /// </summary>
-        public string Reason{get{return _reason; }}
+        public TAccountID AccountID
+        {
+            get { return _accountID; }
+        }
 
         /// <summary>
         /// Gets the name of the user or source that issued the ban.
         /// </summary>
-        public string IssuedBy{get{return _issuedBy ;}}
+        public string IssuedBy
+        {
+            get { return _issuedBy; }
+        }
+
+        /// <summary>
+        /// Gets how long the ban will last.
+        /// </summary>
+        public TimeSpan Length
+        {
+            get { return _length; }
+        }
+
+        /// <summary>
+        /// Gets the reason for the ban.
+        /// </summary>
+        public string Reason
+        {
+            get { return _reason; }
+        }
     }
 }

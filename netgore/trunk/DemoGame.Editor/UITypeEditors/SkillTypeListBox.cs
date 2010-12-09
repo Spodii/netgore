@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.Editor;
-using IEnumerableExtensions = NetGore.IEnumerableExtensions;
 
 namespace DemoGame.Editor.UITypeEditors
 {

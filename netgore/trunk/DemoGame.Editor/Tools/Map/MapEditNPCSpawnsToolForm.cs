@@ -8,7 +8,6 @@ using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
-using NetGore.Editor.WinForms;
 
 namespace DemoGame.Editor.Tools
 {

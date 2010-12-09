@@ -24,8 +24,8 @@ namespace DemoGame.Server.Queries
         public CreateAccountQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "name", "password", "email", "time_created",
-                "time_last_login", "creator_ip");
+            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "name", "password", "email", "time_created", "time_last_login",
+                "creator_ip");
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace DemoGame.Server.Queries
 
             var f = qb.Functions;
             var q =
-                qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam("name", "password", "email", "creator_ip").Add
-                    ("time_created", f.Now()).Add("time_last_login", f.Now());
+                qb.Insert(AccountTable.TableName).IgnoreExists().AddAutoParam("name", "password", "email", "creator_ip").Add(
+                    "time_created", f.Now()).Add("time_last_login", f.Now());
             return q.ToString();
         }
 

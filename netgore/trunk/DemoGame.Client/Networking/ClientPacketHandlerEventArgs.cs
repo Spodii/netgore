@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NetGore.Network;
 
 namespace DemoGame.Client
@@ -22,7 +23,10 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the <see cref="IIPSocket"/> related to the event.
         /// </summary>
-        public IIPSocket Socket { get { return _socket; } }
+        public IIPSocket Socket
+        {
+            get { return _socket; }
+        }
     }
 
     /// <summary>
@@ -45,6 +49,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the event arguments.
         /// </summary>
-        public T Args { get { return _args; } }
+        public T Args
+        {
+            get { return _args; }
+        }
     }
 }

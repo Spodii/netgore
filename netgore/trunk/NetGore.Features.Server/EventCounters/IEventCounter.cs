@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Features.EventCounters
 {
@@ -11,6 +10,16 @@ namespace NetGore.Features.EventCounters
     /// <typeparam name="TEventID">The type of event ID.</typeparam>
     public interface IEventCounter<in TObjectID, in TEventID> : IDisposable
     {
+        /// <summary>
+        /// Gets if this object has been disposed.
+        /// </summary>
+        bool IsDisposed { get; }
+
+        /// <summary>
+        /// Forces the internal cache to be synchronously flushed and executes the queries against the database.
+        /// </summary>
+        void Flush();
+
         /// <summary>
         /// Increments the counter.
         /// </summary>
@@ -27,15 +36,5 @@ namespace NetGore.Features.EventCounters
         /// <param name="amount">The amount to increment.</param>
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
         void Increment(TObjectID source, TEventID e, int amount);
-
-        /// <summary>
-        /// Gets if this object has been disposed.
-        /// </summary>
-        bool IsDisposed { get; }
-
-        /// <summary>
-        /// Forces the internal cache to be synchronously flushed and executes the queries against the database.
-        /// </summary>
-        void Flush();
     }
 }

@@ -35,7 +35,8 @@ namespace NetGore.Features.Banning
         /// <summary>
         /// Notifies listeners when an account has been banned.
         /// </summary>
-        public event TypedEventHandler<IBanningManager<TAccountID>, BanningManagerAccountBannedEventArgs<TAccountID>> AccountBanned;
+        public event TypedEventHandler<IBanningManager<TAccountID>, BanningManagerAccountBannedEventArgs<TAccountID>>
+            AccountBanned;
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling for when a ban is successfully added to an account.

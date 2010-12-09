@@ -9,8 +9,8 @@ namespace NetGore.Features.Guilds
     public class GuildRenameEventArgs : EventArgs
     {
         readonly IGuildMember _invoker;
-        readonly string _oldName;
         readonly string _newName;
+        readonly string _oldName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildRenameEventArgs"/> class.
@@ -28,16 +28,25 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Gets the guild member that invoked the event.
         /// </summary>
-        public IGuildMember Invoker { get { return _invoker; } }
-
-        /// <summary>
-        /// Gets the old name or tag for the <see cref="IGuild"/>.
-        /// </summary>
-        public string OldName { get { return _oldName; } }
+        public IGuildMember Invoker
+        {
+            get { return _invoker; }
+        }
 
         /// <summary>
         /// Gets the new name or tag for the <see cref="IGuild"/>.
         /// </summary>
-        public string NewName { get { return _newName; } }
+        public string NewName
+        {
+            get { return _newName; }
+        }
+
+        /// <summary>
+        /// Gets the old name or tag for the <see cref="IGuild"/>.
+        /// </summary>
+        public string OldName
+        {
+            get { return _oldName; }
+        }
     }
 }

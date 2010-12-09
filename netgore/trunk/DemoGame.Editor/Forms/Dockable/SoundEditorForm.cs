@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +7,6 @@ using System.Windows.Forms;
 using NetGore.Audio;
 using NetGore.Content;
 using NetGore.Editor.Docking;
-using NetGore.Editor.EditorTool;
 using NetGore.IO;
 
 namespace DemoGame.Editor
@@ -26,16 +22,20 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the SelectedIndexChanged event of the lstItems control.
+        /// Finds the next free <see cref="SoundID"/>.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstItems_SelectedIndexChanged(object sender, EventArgs e)
+        /// <param name="usedIDs">Collection of <see cref="SoundID"/>s already assigned.</param>
+        /// <param name="start">The <see cref="SoundID"/> to start at.</param>
+        /// <returns>The next free <see cref="SoundID"/>. The returned value will be marked as used in the
+        /// <paramref name="usedIDs"/>.</returns>
+        static SoundID NextFreeID(HashSet<SoundID> usedIDs, SoundID start)
         {
-            if (DesignMode)
-                return;
+            while (!usedIDs.Add(start))
+            {
+                start++;
+            }
 
-            pgItem.SelectedObject = lstItems.SelectedItem;
+            return start;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnUpdate_Click(object sender, EventArgs e)
+        void btnUpdate_Click(object sender, EventArgs e)
         {
             if (DesignMode)
                 return;
@@ -61,11 +61,15 @@ namespace DemoGame.Editor
             var files = Directory.GetFiles(ContentPaths.Build.Sounds);
 
             // Find the new files (file exists, but SoundInfo does not)
-            var newFiles = files.Where(f => !sm.SoundInfos.Any(si => StringComparer.OrdinalIgnoreCase.Equals(si.Name, Path.GetFileName(f)))).ToArray();
+            var newFiles =
+                files.Where(f => !sm.SoundInfos.Any(si => StringComparer.OrdinalIgnoreCase.Equals(si.Name, Path.GetFileName(f)))).
+                    ToArray();
 
             // Find the removed files (SoundInfo exists, but file does not)
-            var removedFiles = sm.SoundInfos.Where(si => !files.Any(f => StringComparer.OrdinalIgnoreCase.Equals(si.Name, Path.GetFileName(f)))).ToArray();
-        
+            var removedFiles =
+                sm.SoundInfos.Where(si => !files.Any(f => StringComparer.OrdinalIgnoreCase.Equals(si.Name, Path.GetFileName(f)))).
+                    ToArray();
+
             // Check if there are any changes
             if (newFiles.Length <= 0 && removedFiles.Length <= 0)
             {
@@ -75,11 +79,11 @@ namespace DemoGame.Editor
 
             // Display list of changes
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine(confirmMsg);
 
             const int maxLines = 25;
-            int lines = 0;
+            var lines = 0;
 
             foreach (var f in removedFiles)
             {
@@ -106,11 +110,15 @@ namespace DemoGame.Editor
             var sis = sm.SoundInfos.ToList();
 
             foreach (var toRemove in removedFiles)
+            {
                 sis.Remove(toRemove);
+            }
 
             var usedIDs = new HashSet<SoundID>();
             foreach (var si in sis)
+            {
                 usedIDs.Add(si.ID);
+            }
 
             var soundIDCounter = new SoundID(1);
 
@@ -131,20 +139,16 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Finds the next free <see cref="SoundID"/>.
+        /// Handles the SelectedIndexChanged event of the lstItems control.
         /// </summary>
-        /// <param name="usedIDs">Collection of <see cref="SoundID"/>s already assigned.</param>
-        /// <param name="start">The <see cref="SoundID"/> to start at.</param>
-        /// <returns>The next free <see cref="SoundID"/>. The returned value will be marked as used in the
-        /// <paramref name="usedIDs"/>.</returns>
-        static SoundID NextFreeID(HashSet<SoundID> usedIDs, SoundID start)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            while (!usedIDs.Add(start))
-            {
-                start++;
-            }
+            if (DesignMode)
+                return;
 
-            return start;
+            pgItem.SelectedObject = lstItems.SelectedItem;
         }
     }
 }

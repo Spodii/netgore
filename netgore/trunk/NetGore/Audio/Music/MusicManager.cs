@@ -297,7 +297,8 @@ namespace NetGore.Audio
         /// </summary>
         public void Save()
         {
-            AudioManager.WriteValues(_fileName, _rootNodeName, MusicInfos.Select(x => new KeyValuePair<string, int>(x.Name, (int)x.ID)));
+            AudioManager.WriteValues(_fileName, _rootNodeName,
+                MusicInfos.Select(x => new KeyValuePair<string, int>(x.Name, (int)x.ID)));
         }
 
         /// <summary>

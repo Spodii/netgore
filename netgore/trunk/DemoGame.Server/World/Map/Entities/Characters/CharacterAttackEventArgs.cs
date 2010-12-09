@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DemoGame.Server
 {
@@ -25,11 +26,17 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the <see cref="Character"/> that was attacked.
         /// </summary>
-        public Character Attacked { get { return _attacked; } }
+        public Character Attacked
+        {
+            get { return _attacked; }
+        }
 
         /// <summary>
         /// Gets the amount of damage inflicted on the <see cref="Attacked"/> by the attacker.
         /// </summary>
-        public int Damage { get { return _damage; } }
+        public int Damage
+        {
+            get { return _damage; }
+        }
     }
 }

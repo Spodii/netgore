@@ -58,7 +58,7 @@ namespace DemoGame.Editor.UITypeEditors
             {
                 var stringComp = StringComparer.Ordinal;
                 var asString = (string)_selected;
-                return items.FirstOrDefault(x => stringComp.Equals((object)x, asString));
+                return items.FirstOrDefault(x => stringComp.Equals(x, asString));
             }
 
             if (_selected is SkillType)

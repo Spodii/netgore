@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DemoGame.Editor
 {
@@ -28,7 +29,7 @@ namespace DemoGame.Editor
         /// <param name="filter">The name of the filter and the <see cref="MapDrawFilterHelper"/> itself.</param>
         /// <param name="oldName">The old name of the filter.</param>
         public MapDrawFilterHelperCollectionRenameEventArgs(KeyValuePair<string, MapDrawFilterHelper> filter, string oldName)
-            :base(filter)
+            : base(filter)
         {
             _oldName = oldName;
         }
@@ -36,6 +37,9 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets the old name of the filter.
         /// </summary>
-        public string OldName { get { return _oldName; } }
+        public string OldName
+        {
+            get { return _oldName; }
+        }
     }
 }

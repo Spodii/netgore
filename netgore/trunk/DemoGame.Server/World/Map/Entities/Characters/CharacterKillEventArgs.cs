@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DemoGame.Server
 {
@@ -21,6 +22,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the <see cref="Character"/> that killed the sender.
         /// </summary>
-        public Character Killer { get { return _killer; } }
+        public Character Killer
+        {
+            get { return _killer; }
+        }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 
 namespace DemoGame.Client
 {
     public class ClientPeerTradeInfoHandlerEventArgs : EventArgs
     {
-        readonly GameMessage _gameMessage;
         readonly string[] _args;
+        readonly GameMessage _gameMessage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandlerEventArgs"/> class.
@@ -19,13 +20,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the <see cref="GameMessage"/>.
-        /// </summary>
-        public GameMessage GameMessage { get { return _gameMessage; } }
-
-        /// <summary>
         /// Gets the arguments for the message.
         /// </summary>
-        public string[] Args { get { return _args; } }
+        public string[] Args
+        {
+            get { return _args; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GameMessage"/>.
+        /// </summary>
+        public GameMessage GameMessage
+        {
+            get { return _gameMessage; }
+        }
     }
 }

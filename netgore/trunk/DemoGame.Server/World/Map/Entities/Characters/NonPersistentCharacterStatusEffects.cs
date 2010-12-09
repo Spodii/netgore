@@ -55,9 +55,7 @@ namespace DemoGame.Server
 
             // Raise removal event (assuming it was properly removed like it should have been)
             if (wasRemoved)
-            {
                 OnRemoved(activeStatusEffect);
-            }
 
             Debug.Assert(wasRemoved, "Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }

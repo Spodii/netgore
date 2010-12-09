@@ -121,8 +121,11 @@ namespace NetGore.Features.Quests
                     // Increment successful, so invoke events
                     OnKillCountIncremented(counter.Quest, target, count, reqCount);
                     if (KillCountIncremented != null)
-                        KillCountIncremented(this, 
-                            new QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>(counter.Quest, target, count, reqCount));
+                    {
+                        KillCountIncremented(this,
+                            new QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>(counter.Quest, target, count,
+                                reqCount));
+                    }
                 }
             }
         }
@@ -223,8 +226,10 @@ namespace NetGore.Features.Quests
         /// if, when the target was killed, the kill count was less than the required kill count. As a result, the
         /// kill count will never be zero.
         /// </summary>
-        public event TypedEventHandler<IQuestPerformerKillCounter<TCharacter, TKillID>,
-            QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>> KillCountIncremented;
+        public event
+            TypedEventHandler
+                <IQuestPerformerKillCounter<TCharacter, TKillID>,
+                    QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>> KillCountIncremented;
 
         /// <summary>
         /// Gets the quest performer that this collection belongs to.

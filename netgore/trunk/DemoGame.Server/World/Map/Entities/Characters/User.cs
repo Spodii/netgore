@@ -1018,7 +1018,8 @@ namespace DemoGame.Server
                     if (itemEntity.ItemTemplateID.HasValue)
                     {
                         WorldStatsTracker.Instance.AddCountBuyItem((int)itemEntity.ItemTemplateID.Value, amountPurchased);
-                        EventCounterManager.ItemTemplate.Increment(itemEntity.ItemTemplateID.Value, ItemTemplateEventCounterType.BuyFromShop, amountPurchased);
+                        EventCounterManager.ItemTemplate.Increment(itemEntity.ItemTemplateID.Value,
+                            ItemTemplateEventCounterType.BuyFromShop, amountPurchased);
                     }
 
                     WorldStatsTracker.Instance.AddCountShopBuy((int)Shop.ID, amountPurchased);
@@ -1120,7 +1121,8 @@ namespace DemoGame.Server
                     if (invItem.ItemTemplateID.HasValue)
                     {
                         WorldStatsTracker.Instance.AddCountSellItem((int)invItem.ItemTemplateID.Value, amountToSell);
-                        EventCounterManager.ItemTemplate.Increment(invItem.ItemTemplateID.Value, ItemTemplateEventCounterType.SellToShop, amountToSell);
+                        EventCounterManager.ItemTemplate.Increment(invItem.ItemTemplateID.Value,
+                            ItemTemplateEventCounterType.SellToShop, amountToSell);
                     }
 
                     WorldStatsTracker.Instance.AddCountShopSell((int)Shop.ID, amountToSell);
