@@ -112,6 +112,9 @@
     <Compile Include="Controls\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\SoundInfoListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\GameMessageValueListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -137,6 +140,12 @@
     </Compile>
     <Compile Include="Forms\DisplayFilterManagerForm.Designer.cs">
       <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Dockable\SoundEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dockable\SoundEditorForm.Designer.cs">
+      <DependentUpon>SoundEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Dockable\DbEditorForm.cs">
       <SubType>Form</SubType>
@@ -430,6 +439,9 @@
     </Compile>
     <EmbeddedResource Include="Forms\DisplayFilterManagerForm.resx">
       <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dockable\SoundEditorForm.resx">
+      <DependentUpon>SoundEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\DbEditorForm.resx">
       <DependentUpon>DbEditorForm.cs</DependentUpon>
