@@ -38,6 +38,14 @@ namespace DemoGame.Server
         /// <param name="item">The item that has expired.</param>
         protected override void ExpireItem(ItemEntityBase item)
         {
+            var i = item as ItemEntity;
+            if (i != null)
+            {
+                var template = i.ItemTemplateID;
+                if (template.HasValue)
+                    EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.ExpiredOnMap, item.Amount);
+            }
+
             item.Dispose();
         }
     }

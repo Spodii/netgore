@@ -125,6 +125,7 @@ namespace DemoGame.Server.Quests
             Owner.Send(GameMessage.QuestAccepted, ServerMessageType.GUI);
 
             _worldStats.AddQuestAccept(Owner, quest.QuestID);
+            EventCounterManager.Quest.Increment(quest.QuestID, QuestEventCounterType.Accepted);
         }
 
         /// <summary>
@@ -144,6 +145,7 @@ namespace DemoGame.Server.Quests
             Owner.Send(GameMessage.QuestCanceled, ServerMessageType.GUI);
 
             _worldStats.AddQuestCancel(Owner, quest.QuestID);
+            EventCounterManager.Quest.Increment(quest.QuestID, QuestEventCounterType.Canceled);
         }
 
         /// <summary>
@@ -168,6 +170,7 @@ namespace DemoGame.Server.Quests
             Owner.Send(GameMessage.QuestFinished, ServerMessageType.GUI);
 
             _worldStats.AddQuestComplete(Owner, quest.QuestID);
+            EventCounterManager.Quest.Increment(quest.QuestID, QuestEventCounterType.Completed);
         }
     }
 }

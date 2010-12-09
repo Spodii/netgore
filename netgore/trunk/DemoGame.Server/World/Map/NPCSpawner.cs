@@ -252,6 +252,8 @@ namespace DemoGame.Server
                     // They managed to teleport to a valid position - bring to life and clear the timer
                     _reqNewPositionStartTime = TickCount.MinValue;
                     IsAlive = true;
+
+                    EventCounterManager.Map.Increment(_spawner.Map.ID, MapEventCounterType.NPCSpawned);
                 }
 
                 base.HandleUpdate(imap, deltaTime);
@@ -264,6 +266,8 @@ namespace DemoGame.Server
             /// </summary>
             protected override void OnKilled()
             {
+                EventCounterManager.Map.Increment(_spawner.Map.ID, MapEventCounterType.SpawnedNPCKilled);
+
                 var respawnPos = _spawner.RandomSpawnPosition();
 
                 RespawnMapID = _spawner.Map.ID;

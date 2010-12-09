@@ -36,5 +36,20 @@ namespace DemoGame.Server
         /// Item was equipped by a character when they died. Only valid for items that can be equipped.
         /// </summary>
         CharacterDeaths = 5,
+
+        /// <summary>
+        /// Item was dropped as loot from a NPC after it was killed.
+        /// </summary>
+        DroppedAsLoot = 6,
+
+        /// <summary>
+        /// Item was traded in a peer trading session.
+        /// </summary>
+        PeerTraded = 7,
+        
+        /// <summary>
+        /// Item expired while sitting on the map.
+        /// </summary>
+        ExpiredOnMap = 8,
     }
 }

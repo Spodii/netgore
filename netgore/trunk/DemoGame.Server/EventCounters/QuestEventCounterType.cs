@@ -7,5 +7,19 @@ namespace DemoGame.Server
     /// </summary>
     public enum QuestEventCounterType : byte
     {
+        /// <summary>
+        /// Quest was accepted.
+        /// </summary>
+        Accepted = 1,
+
+        /// <summary>
+        /// Quest was completed.
+        /// </summary>
+        Completed = 2,
+
+        /// <summary>
+        /// Quest was canceled.
+        /// </summary>
+        Canceled = 3,
     }
 }

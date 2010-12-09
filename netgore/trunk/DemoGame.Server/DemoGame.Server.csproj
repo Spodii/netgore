@@ -162,6 +162,7 @@
     <Compile Include="DbObjs\WorldStatsCountUserConsumeItemTable.cs" />
     <Compile Include="DbObjs\WorldStatsCountUserKillNpcTable.cs" />
     <Compile Include="EventCounters\EventCounterManager.cs" />
+    <Compile Include="EventCounters\NPCEventCounterType.cs" />
     <Compile Include="EventCounters\UserEventCounterType.cs" />
     <Compile Include="EventCounters\GuildEventCounterType.cs" />
     <Compile Include="EventCounters\ItemTemplateEventCounterType.cs" />

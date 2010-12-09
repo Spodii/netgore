@@ -7,5 +7,14 @@ namespace DemoGame.Server
     /// </summary>
     public enum UserEventCounterType : byte
     {
+        /// <summary>
+        /// User killed another <see cref="User"/>.
+        /// </summary>
+        KillUser = 1,
+
+        /// <summary>
+        /// User killed a <see cref="Character"/> other than a <see cref="User"/>.
+        /// </summary>
+        KillNonUser = 2,
     }
 }

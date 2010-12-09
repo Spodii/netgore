@@ -213,6 +213,8 @@ namespace DemoGame.Server
             var user = character as User;
             if (user != null)
             {
+                EventCounterManager.Map.Increment(ID, MapEventCounterType.UserAdded);
+
                 Debug.Assert(!Users.Contains(user), string.Format("Users list already contains `{0}`!", user));
                 _users.Add(user);
                 SendMapData(user);
@@ -223,6 +225,8 @@ namespace DemoGame.Server
             var npc = character as NPC;
             if (npc != null)
             {
+                EventCounterManager.Map.Increment(ID, MapEventCounterType.NPCAdded);
+
                 Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
                 _npcs.Add(npc);
                 return;
@@ -326,6 +330,8 @@ namespace DemoGame.Server
             {
                 if (item is ItemEntity)
                     ((ItemEntity)item).IsPersistent = false;
+
+                EventCounterManager.Map.Increment(ID, MapEventCounterType.ItemAdded, item.Amount);
 
                 _mapItemsCleaner.Add(item, GetTime());
             }

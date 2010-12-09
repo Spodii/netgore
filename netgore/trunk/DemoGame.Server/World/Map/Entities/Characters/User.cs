@@ -431,6 +431,13 @@ namespace DemoGame.Server
         {
             base.GiveKillReward(exp, cash);
 
+            var map = Map;
+            if (map != null)
+            {
+                EventCounterManager.Map.Increment(map.ID, MapEventCounterType.UserGainedKillExp, exp);
+                EventCounterManager.Map.Increment(map.ID, MapEventCounterType.UserGainedKillCash, cash);
+            }
+
             using (var pw = ServerPacket.NotifyExpCash(exp, cash))
             {
                 Send(pw, ServerMessageType.GUI);
@@ -517,6 +524,10 @@ namespace DemoGame.Server
         public override void Kill()
         {
             CancelPeerTradeIfTrading();
+
+            var map = Map;
+            if (map != null)
+                EventCounterManager.Map.Increment(map.ID, MapEventCounterType.UserKilled);
 
             base.Kill();
 
@@ -611,6 +622,11 @@ namespace DemoGame.Server
             base.OnKilledCharacter(killed);
 
             Debug.Assert(killed != null);
+
+            if (killed is User)
+                EventCounterManager.User.Increment(ID, UserEventCounterType.KillUser);
+            else
+                EventCounterManager.User.Increment(ID, UserEventCounterType.KillNonUser);
 
             var killedNPC = killed as NPC;
 
@@ -1009,21 +1025,27 @@ namespace DemoGame.Server
                 {
                     Send(pw, ServerMessageType.GUI);
                 }
+            }
 
-                if (ShoppingState != null && ShoppingState.ShoppingAt != null)
+            // Track event
+            if (ShoppingState != null && ShoppingState.ShoppingAt != null)
+            {
+                var shoppingAt = ShoppingState.ShoppingAt;
+
+                WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)itemEntity.ItemTemplateID, (byte)amountPurchased,
+                    chargeAmount, shoppingAt.ID);
+
+                if (itemEntity.ItemTemplateID.HasValue)
                 {
-                    WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)itemEntity.ItemTemplateID, (byte)amountPurchased,
-                        chargeAmount, ShoppingState.ShoppingAt.ID);
-
-                    if (itemEntity.ItemTemplateID.HasValue)
-                    {
-                        WorldStatsTracker.Instance.AddCountBuyItem((int)itemEntity.ItemTemplateID.Value, amountPurchased);
-                        EventCounterManager.ItemTemplate.Increment(itemEntity.ItemTemplateID.Value,
-                            ItemTemplateEventCounterType.BuyFromShop, amountPurchased);
-                    }
-
-                    WorldStatsTracker.Instance.AddCountShopBuy((int)Shop.ID, amountPurchased);
+                    WorldStatsTracker.Instance.AddCountBuyItem((int)itemEntity.ItemTemplateID.Value, amountPurchased);
+                    EventCounterManager.ItemTemplate.Increment(itemEntity.ItemTemplateID.Value,
+                        ItemTemplateEventCounterType.BuyFromShop, amountPurchased);
                 }
+
+                WorldStatsTracker.Instance.AddCountShopBuy((int)ShoppingState.ShoppingAt.ID, amountPurchased);
+                EventCounterManager.Shop.Increment(shoppingAt.ID, ShopEventCounterType.Buy);
+                EventCounterManager.Shop.Increment(shoppingAt.ID, ShopEventCounterType.BuyAmount, amountPurchased);
+                EventCounterManager.Shop.Increment(shoppingAt.ID, ShopEventCounterType.BuyValue, chargeAmount);
             }
 
             // Destroy the item entity since when we gave it to the user, we gave them a deep copy
@@ -1112,22 +1134,23 @@ namespace DemoGame.Server
                 {
                     Send(pw, ServerMessageType.GUI);
                 }
-
-                if (ShoppingState != null && ShoppingState.ShoppingAt != null)
-                {
-                    WorldStatsTracker.Instance.AddUserShopSellItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
-                        ShoppingState.ShoppingAt.ID);
-
-                    if (invItem.ItemTemplateID.HasValue)
-                    {
-                        WorldStatsTracker.Instance.AddCountSellItem((int)invItem.ItemTemplateID.Value, amountToSell);
-                        EventCounterManager.ItemTemplate.Increment(invItem.ItemTemplateID.Value,
-                            ItemTemplateEventCounterType.SellToShop, amountToSell);
-                    }
-
-                    WorldStatsTracker.Instance.AddCountShopSell((int)Shop.ID, amountToSell);
-                }
             }
+
+            // Track event
+            WorldStatsTracker.Instance.AddUserShopSellItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
+                shop.ID);
+
+            if (invItem.ItemTemplateID.HasValue)
+            {
+                WorldStatsTracker.Instance.AddCountSellItem((int)invItem.ItemTemplateID.Value, amountToSell);
+                EventCounterManager.ItemTemplate.Increment(invItem.ItemTemplateID.Value,
+                    ItemTemplateEventCounterType.SellToShop, amountToSell);
+            }
+
+            WorldStatsTracker.Instance.AddCountShopSell((int)shop.ID, amountToSell);
+            EventCounterManager.Shop.Increment(shop.ID, ShopEventCounterType.Sell);
+            EventCounterManager.Shop.Increment(shop.ID, ShopEventCounterType.SellAmount, amountToSell);
+            EventCounterManager.Shop.Increment(shop.ID, ShopEventCounterType.SellValue, totalCash);
 
             // Set the new item amount (or remove the item if the amount is 0)
             if (newItemAmount == 0)

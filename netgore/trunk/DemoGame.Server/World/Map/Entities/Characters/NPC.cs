@@ -369,8 +369,14 @@ namespace DemoGame.Server
             }
             else
             {
+                EventCounterManager.Map.Increment(Map.ID, MapEventCounterType.NPCKilled);
+
                 foreach (var item in Inventory)
                 {
+                    var template = item.Value.ItemTemplateID;
+                    if (template.HasValue)
+                        EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.DroppedAsLoot, item.Value.Amount);
+
                     DropItem(item.Value);
                 }
 
@@ -488,13 +494,66 @@ namespace DemoGame.Server
         {
             base.OnKilledCharacter(killed);
 
+            var template = CharacterTemplateID;
+
             var killedUser = killed as User;
             if (killedUser != null)
             {
                 WorldStatsTracker.Instance.AddNPCKillUser(this, killedUser);
-                if (CharacterTemplateID.HasValue)
-                    WorldStatsTracker.Instance.AddCountNPCKillUser((int)CharacterTemplateID.Value, (int)killedUser.ID);
+                if (template.HasValue)
+                    WorldStatsTracker.Instance.AddCountNPCKillUser((int)template.Value, (int)killedUser.ID);
             }
+
+            if (template.HasValue)
+            {
+                if (killed is User)
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillUser);
+                else
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillNonUser);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
+        /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
+        /// the this <see cref="Character"/>.</param>
+        protected override void OnAttackedCharacter(Character attacked, int damage)
+        {
+            var template = CharacterTemplateID;
+            if (template.HasValue)
+            {
+                if (attacked is User)
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageDealtToUser, damage);
+                else
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageDealtToNonUser, damage);
+            }
+
+            base.OnAttackedCharacter(attacked, damage);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Character"/> that attacked us.</param>
+        /// <param name="damage">The amount of damage inflicted on this <see cref="Character"/>.</param>
+        protected override void OnAttackedByCharacter(Character attacker, int damage)
+        {
+            var template = CharacterTemplateID;
+            if (template.HasValue)
+            {
+                if (attacker is User)
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromUser, damage);
+                else
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromNonUser, damage);
+            }
+
+            base.OnAttackedByCharacter(attacker, damage);
         }
 
         /// <summary>
