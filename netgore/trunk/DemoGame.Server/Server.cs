@@ -341,8 +341,14 @@ namespace DemoGame.Server
             worldStatsTracker.Update();
 
             // Dispose
-            _world.Dispose();
-            _dbController.Dispose();
+            if (ServerSockets != null)
+                ServerSockets.Shutdown();
+
+            if (World != null)
+                World.Dispose();
+
+            if (DbController != null)
+                DbController.Dispose();
         }
 
         static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)
