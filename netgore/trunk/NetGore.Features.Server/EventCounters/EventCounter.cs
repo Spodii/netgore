@@ -104,8 +104,13 @@ namespace NetGore.Features.EventCounters
         {
             foreach (var v in values)
             {
-                var value = new ObjectEventAmount<TObjectID, TEventID>(v.Key.Item1, v.Key.Item2, v.Value);
-                WriteValue(value);
+                // Only execute the query when the value is non-zero (it is possible to get a zero value when you let your
+                // counters decrement)
+                if (v.Value != 0)
+                {
+                    var value = new ObjectEventAmount<TObjectID, TEventID>(v.Key.Item1, v.Key.Item2, v.Value);
+                    WriteValue(value);
+                }
             }
         }
 
