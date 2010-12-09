@@ -1,8 +1,6 @@
-﻿using DemoGame.Editor;
-
-namespace DemoGame.Editor
+﻿namespace DemoGame.Editor
 {
-    partial class DisplayFilterManagerForm
+    partial class MusicEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,13 +30,14 @@ namespace DemoGame.Editor
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
+            this.lstItems = new DemoGame.Editor.MusicInfoListBox();
             this.pgItem = new System.Windows.Forms.PropertyGrid();
-            this.lstItems = new DemoGame.Editor.MapDrawFilterHelperListBox();
+            this.btnUpdate = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
@@ -47,8 +46,10 @@ namespace DemoGame.Editor
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(2, 2);
             this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
@@ -56,19 +57,16 @@ namespace DemoGame.Editor
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.pgItem);
-            this.splitContainer1.Size = new System.Drawing.Size(446, 316);
-            this.splitContainer1.SplitterDistance = 147;
+            this.splitContainer1.Panel2.Controls.Add(this.btnUpdate);
+            this.splitContainer1.Size = new System.Drawing.Size(375, 313);
+            this.splitContainer1.SplitterDistance = 283;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer2.IsSplitterFixed = true;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer2.Panel1
             // 
@@ -76,70 +74,58 @@ namespace DemoGame.Editor
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.btnRemove);
-            this.splitContainer2.Panel2.Controls.Add(this.btnAdd);
-            this.splitContainer2.Size = new System.Drawing.Size(147, 316);
-            this.splitContainer2.SplitterDistance = 286;
+            this.splitContainer2.Panel2.Controls.Add(this.pgItem);
+            this.splitContainer2.Size = new System.Drawing.Size(375, 283);
+            this.splitContainer2.SplitterDistance = 154;
             this.splitContainer2.TabIndex = 0;
             // 
-            // btnRemove
+            // lstItems
             // 
-            this.btnRemove.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnRemove.Location = new System.Drawing.Point(73, 0);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(73, 26);
-            this.btnRemove.TabIndex = 1;
-            this.btnRemove.Text = "Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnAdd.Location = new System.Drawing.Point(0, 0);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(73, 26);
-            this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstItems.FormattingEnabled = true;
+            this.lstItems.Location = new System.Drawing.Point(0, 0);
+            this.lstItems.Name = "lstItems";
+            this.lstItems.Size = new System.Drawing.Size(154, 283);
+            this.lstItems.TabIndex = 0;
+            this.lstItems.SelectedIndexChanged += new System.EventHandler(this.lstItems_SelectedIndexChanged);
             // 
             // pgItem
             // 
             this.pgItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgItem.Location = new System.Drawing.Point(0, 0);
             this.pgItem.Name = "pgItem";
-            this.pgItem.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.pgItem.Size = new System.Drawing.Size(295, 316);
+            this.pgItem.Size = new System.Drawing.Size(217, 283);
             this.pgItem.TabIndex = 0;
-            this.pgItem.ToolbarVisible = false;
             // 
-            // lstItems
+            // btnUpdate
             // 
-            this.lstItems.Collection = null;
-            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstItems.FormattingEnabled = true;
-            this.lstItems.Location = new System.Drawing.Point(0, 0);
-            this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(147, 286);
-            this.lstItems.Sorted = true;
-            this.lstItems.TabIndex = 1;
-            this.lstItems.SelectedValueChanged += new System.EventHandler(this.lstItems_SelectedValueChanged);
+            this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnUpdate.Location = new System.Drawing.Point(0, 0);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(75, 26);
+            this.btnUpdate.TabIndex = 0;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
-            // DisplayFilterManagerForm
+            // MusicEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 320);
+            this.ClientSize = new System.Drawing.Size(379, 317);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "DisplayFilterManagerForm";
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Name = "MusicEditorForm";
             this.Padding = new System.Windows.Forms.Padding(2);
-            this.Text = "DisplayFilterManagerForm";
+            this.Text = "Music Editor";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -148,10 +134,9 @@ namespace DemoGame.Editor
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.PropertyGrid pgItem;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private MapDrawFilterHelperListBox lstItems;
-        private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.Button btnAdd;
+        private MusicInfoListBox lstItems;
+        private System.Windows.Forms.PropertyGrid pgItem;
+        private System.Windows.Forms.Button btnUpdate;
     }
 }

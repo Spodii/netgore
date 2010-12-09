@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.IO;
 
 namespace NetGore.Audio
 {
@@ -63,9 +64,25 @@ namespace NetGore.Audio
         bool Play(MusicID id);
 
         /// <summary>
+        /// Reloads the music information.
+        /// </summary>
+        void ReloadData();
+
+        /// <summary>
+        /// Reloads the music information.
+        /// </summary>
+        /// <param name="values">All of the <see cref="IMusicInfo"/>s to load.</param>
+        void ReloadData(IEnumerable<IMusicInfo> values);
+
+        /// <summary>
         /// Resumes the currently paused music, if there is any paused music.
         /// </summary>
         void Resume();
+
+        /// <summary>
+        /// Saves the <see cref="IMusicInfo"/>s in this <see cref="IMusicManager"/> to file.
+        /// </summary>
+        void Save();
 
         /// <summary>
         /// Stops the currently playing music.

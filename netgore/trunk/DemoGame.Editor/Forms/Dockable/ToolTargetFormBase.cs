@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
@@ -10,7 +11,7 @@ namespace DemoGame.Editor
     /// Base class for a dockable <see cref="System.Windows.Forms.Form"/> in the editor that is the source of input and interaction
     /// for <see cref="Tool"/>s.
     /// </summary>
-    public abstract partial class ToolTargetFormBase : DockContent
+    public partial class ToolTargetFormBase : DockContent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolTargetFormBase"/> class.
@@ -37,7 +38,11 @@ namespace DemoGame.Editor
         /// and what the <see cref="ToolBar"/> is being displayed for.
         /// </summary>
         /// <returns>The object that represents what the <see cref="ToolBar"/> is being displayed for.</returns>
-        protected abstract object GetToolBarObject();
+        protected virtual object GetToolBarObject()
+        {
+            Debug.Fail("Derived classes should override this and return an object.");
+            return null;
+        }
 
         /// <summary>
         /// Raises the <see cref="System.Windows.Forms.Form.Activated"/> event.

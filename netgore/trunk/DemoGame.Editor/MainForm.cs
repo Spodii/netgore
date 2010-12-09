@@ -34,6 +34,7 @@ namespace DemoGame.Editor
         NPCChatEditorForm _frmNPCChatEditor;
         SelectedMapObjectsForm _frmSelectedMapObjs;
         SkeletonEditorForm _frmSkeletonEditor;
+        MusicEditorForm _frmMusicEditor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
@@ -136,6 +137,7 @@ namespace DemoGame.Editor
             GlobalState.Instance.IsTickEnabled = true;
 
             // Create the child form instances
+            // TODO: !! Lazy load all these forms
             _frmGrhTreeView = new GrhTreeViewForm();
             _frmGrhTreeView.VisibleChanged += _frmGrhTreeView_VisibleChanged;
 
@@ -165,11 +167,6 @@ namespace DemoGame.Editor
 
             // Load the settings
             LoadDockSettings("User");
-
-            // TODO: !! Temp
-            var editorFrm = new EditMapForm();
-            editorFrm.MapScreenControl.ChangeMap(new MapID(3));
-            editorFrm.Show(dockPanel);
         }
 
         void SaveDockSettings(string settingsName)
@@ -273,6 +270,38 @@ namespace DemoGame.Editor
                 _frmGrhTreeView.Show(dockPanel, DockState.Float);
             else
                 _frmGrhTreeView.Hide();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the musicEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void musicEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (musicEditorToolStripMenuItem.Checked)
+            {
+                // Close the existing form (if it exists)
+                if (_frmMusicEditor != null && !_frmMusicEditor.IsDisposed)
+                    _frmMusicEditor.Dispose();
+            }
+            else
+            {
+                // Create new instance of the form if needed
+                if (_frmMusicEditor == null || _frmMusicEditor.IsDisposed)
+                {
+                    _frmMusicEditor = new MusicEditorForm();
+                    _frmMusicEditor.Disposed += delegate(object s2, EventArgs e2)
+                    {
+                        if (_frmMusicEditor == s2)
+                            musicEditorToolStripMenuItem.Checked = false;
+                    };
+                }
+
+                // Show the form
+                musicEditorToolStripMenuItem.Checked = true;
+                _frmMusicEditor.Show(dockPanel);
+            }
         }
 
         /// <summary>

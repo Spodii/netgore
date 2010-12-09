@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Content;
 using NetGore.IO;
 using SFML.Audio;
@@ -14,6 +18,7 @@ namespace NetGore.Audio
     /// </summary>
     public class AudioManager : IAudioManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly object _instanceSync = new object();
         static readonly float _listenerDepth = EngineSettings.Instance.SoundListenerDepth;
 
@@ -92,6 +97,12 @@ namespace NetGore.Audio
             return _instance;
         }
 
+        /// <summary>
+        /// Loads audio values from file.
+        /// </summary>
+        /// <param name="fileName">The name of the file to load from.</param>
+        /// <param name="rootNode">The name of the root node.</param>
+        /// <returns>The loaded values.</returns>
         internal static IEnumerable<KeyValuePair<string, int>> LoadValues(string fileName, string rootNode)
         {
             var r = GenericValueReader.CreateFromFile(ContentPaths.Build.Data.Join(fileName + EngineSettings.DataFileSuffix),
@@ -100,12 +111,58 @@ namespace NetGore.Audio
             return ret;
         }
 
-        internal static KeyValuePair<string, int> ReadValue(IValueReader r)
+        /// <summary>
+        /// Reads an audio value from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
+        /// <returns>The read audio value.</returns>
+        static KeyValuePair<string, int> ReadValue(IValueReader r)
         {
             var file = r.ReadString("File");
             var index = r.ReadInt("Index");
 
             return new KeyValuePair<string, int>(file, index);
+        }
+
+        /// <summary>
+        /// Writes the audio values to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="w">The <see cref="IValueWriter"/> to write to.</param>
+        /// <param name="value">The value to write.</param>
+        static void WriteValue(IValueWriter w, KeyValuePair<string, int> value)
+        {
+            w.Write("File", value.Key);
+            w.Write("Index", value.Value);
+        }
+
+        /// <summary>
+        /// Writes the audio values to file.
+        /// </summary>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="rootNode">The name of the root node.</param>
+        /// <param name="values">The values to write.</param>
+        internal static void WriteValues(string fileName, string rootNode, IEnumerable<KeyValuePair<string, int>> values)
+        {
+            // Save to Dev
+            var devPath = ContentPaths.Dev.Data.Join(fileName + EngineSettings.DataFileSuffix);
+            using (var w = GenericValueWriter.Create(devPath, rootNode))
+            {
+                w.WriteManyNodes("Items", values, WriteValue);
+            }
+
+            // Copy from Dev to Build
+            var buildPath = ContentPaths.Build.Data.Join(fileName + EngineSettings.DataFileSuffix);
+            try
+            {
+                File.Copy(devPath, buildPath, true);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to copy file to ContentPaths.Build (`{0}` to `{1}`). Exception: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, devPath, buildPath, ex);
+                Debug.Fail(string.Format(errmsg, devPath, buildPath, ex));
+            }
         }
 
         #region IAudioManager Members

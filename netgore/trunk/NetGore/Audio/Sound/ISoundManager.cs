@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.IO;
 using SFML.Graphics;
 
 namespace NetGore.Audio
@@ -20,6 +21,22 @@ namespace NetGore.Audio
         /// altered to fit this range. Default is 100.
         /// </summary>
         float Volume { get; set; }
+
+        /// <summary>
+        /// Reloads the sound information.
+        /// </summary>
+        void ReloadData();
+
+        /// <summary>
+        /// Reloads the sound information.
+        /// </summary>
+        /// <param name="values">All of the <see cref="ISoundInfo"/>s to load.</param>
+        void ReloadData(IEnumerable<ISoundInfo> values);
+
+        /// <summary>
+        /// Saves the <see cref="ISoundInfo"/>s in this <see cref="ISoundManager"/> to file.
+        /// </summary>
+        void Save();
 
         /// <summary>
         /// Gets the <see cref="ISoundInfo"/> for a sound.

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using NetGore.Editor;
 using NetGore.Editor.WinForms;
 
-namespace DemoGame.Editor.Forms
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A <see cref="ListBox"/> that shows a list of <see cref="MapDrawFilterHelper"/>s and tries to show their name by

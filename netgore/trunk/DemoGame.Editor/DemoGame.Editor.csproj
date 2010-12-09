@@ -156,6 +156,15 @@
     <Compile Include="Forms\Dockable\MapPreviewForm.Designer.cs">
       <DependentUpon>MapPreviewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Dockable\MusicEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dockable\MusicEditorForm.Designer.cs">
+      <DependentUpon>MusicEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MusicInfoListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\Dockable\NPCChatEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -431,6 +440,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\MapPreviewForm.resx">
       <DependentUpon>MapPreviewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dockable\MusicEditorForm.resx">
+      <DependentUpon>MusicEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\NPCChatEditorForm.resx">
       <DependentUpon>NPCChatEditorForm.cs</DependentUpon>
