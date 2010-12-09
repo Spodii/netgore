@@ -27,17 +27,17 @@ namespace NetGore.Db
         /// </summary>
         const int _emptyQueueSleepTime = 10;
 
-        readonly IDbConnectionPool _dbConnectionPool;
         readonly DbConnection _conn;
+        readonly IDbConnectionPool _dbConnectionPool;
         readonly object _executeQuerySync = new object();
-        readonly Queue<KeyValuePair<DbCommand, DbQueryBase>> _queue = new Queue<KeyValuePair<DbCommand, DbQueryBase>>();
+        readonly Queue<QueueItem> _queue = new Queue<QueueItem>();
 
         /// <summary>
         /// A list used to hold the queued items when dumping out the queue (to prevent generating garbage). This is going to
         /// be implicitly synchronized by the <see cref="_executeQuerySync"/> lock. Because of that, we don't have to worry
         /// about this list being used by more than one thread at a time.
         /// </summary>
-        readonly List<KeyValuePair<DbCommand, DbQueryBase>> _queueDumpList = new List<KeyValuePair<DbCommand, DbQueryBase>>();
+        readonly List<QueueItem> _queueDumpList = new List<QueueItem>();
 
         readonly object _queueSync = new object();
         readonly Thread _workerThread;
@@ -125,27 +125,27 @@ namespace NetGore.Db
         /// Executes a queued job. Make sure you have the <see cref="_executeQuerySync"/> lock.
         /// </summary>
         /// <param name="job">The queued job. Passed by reference purely for performance reasons.</param>
-        void ExecuteJob(ref KeyValuePair<DbCommand, DbQueryBase> job)
+        void ExecuteJob(ref QueueItem job)
         {
-            Debug.Assert(job.Key.Connection == Connection);
+            Debug.Assert(job.Command.Connection == Connection);
 
             try
             {
                 // Execute
-                job.Key.ExecuteNonQuery();
+                job.Command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 // Exceptions must be swallowed for this to work correctly (otherwise we'll probably crash the worker thread)
                 const string errmsg = "Error executing query `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, job.Key.CommandText, ex);
-                Debug.Fail(string.Format(errmsg, job.Key.CommandText, ex));
+                    log.ErrorFormat(errmsg, job.Command.CommandText, ex);
+                Debug.Fail(string.Format(errmsg, job.Command.CommandText, ex));
             }
             finally
             {
                 // Free the command
-                job.Value.ReleaseCommand(job.Key);
+                job.Query.ReleaseCommand(job.Command);
             }
         }
 
@@ -184,7 +184,7 @@ namespace NetGore.Db
                 {
                     _queueDumpList.AddRange(_queue);
                     Debug.Assert(_queueDumpList.Count == _queue.Count);
-                    Debug.Assert(_queueDumpList[0].Value == _queue.Peek().Value);
+                    Debug.Assert(_queueDumpList[0].Query == _queue.Peek().Query);
                     _queue.Clear();
                 }
 
@@ -364,7 +364,7 @@ namespace NetGore.Db
         /// <param name="queryBase">The <see cref="DbQueryBase"/> that is executing this command.</param>
         public void ExecuteNonReader(DbCommand cmd, DbQueryBase queryBase)
         {
-            var v = new KeyValuePair<DbCommand, DbQueryBase>(cmd, queryBase);
+            var v = new QueueItem(cmd, queryBase);
 
             // Simply push the job into the queue
             lock (_queueSync)
@@ -438,5 +438,41 @@ namespace NetGore.Db
         }
 
         #endregion
+
+        /// <summary>
+        /// An item for the <see cref="_queue"/>.
+        /// </summary>
+        struct QueueItem
+        {
+            readonly DbCommand _command;
+            readonly DbQueryBase _query;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QueueItem"/> struct.
+            /// </summary>
+            /// <param name="command">The <see cref="DbCommand"/>.</param>
+            /// <param name="query">The <see cref="DbQueryBase"/>.</param>
+            public QueueItem(DbCommand command, DbQueryBase query)
+            {
+                _command = command;
+                _query = query;
+            }
+
+            /// <summary>
+            /// Gets the <see cref="DbCommand"/>.
+            /// </summary>
+            public DbCommand Command
+            {
+                get { return _command; }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="DbQueryBase"/>.
+            /// </summary>
+            public DbQueryBase Query
+            {
+                get { return _query; }
+            }
+        }
     }
 }
