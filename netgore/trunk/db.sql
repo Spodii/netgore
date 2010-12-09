@@ -34,7 +34,7 @@ CREATE TABLE `account` (
   `current_ip` int(10) unsigned DEFAULT NULL COMMENT 'IP address currently logged in to the account, or null if nobody is logged in.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='The user accounts. Multiple chars can exist per account.';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='The user accounts. Multiple chars can exist per account.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-11-27 01:45:49',16777343,NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-12-09 02:26:40',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +172,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58'),(2,1,16777343,'2010-11-26 23:20:14'),(3,1,16777343,'2010-11-27 01:29:44'),(4,1,16777343,'2010-11-27 01:31:43'),(5,1,16777343,'2010-11-27 01:32:38'),(6,1,16777343,'2010-11-27 01:34:24'),(8,1,16777343,'2010-11-27 01:45:49');
+INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58'),(2,1,16777343,'2010-11-26 23:20:14'),(3,1,16777343,'2010-11-27 01:29:44'),(4,1,16777343,'2010-11-27 01:31:43'),(5,1,16777343,'2010-11-27 01:32:38'),(6,1,16777343,'2010-11-27 01:34:24'),(8,1,16777343,'2010-11-27 01:45:49'),(9,1,16777343,'2010-11-28 15:28:17'),(10,1,16777343,'2010-11-29 01:41:54'),(11,1,16777343,'2010-11-29 01:49:37'),(12,1,16777343,'2010-11-29 09:35:05'),(13,1,16777343,'2010-11-29 09:53:51'),(14,1,16777343,'2010-11-29 10:01:28'),(15,1,16777343,'2010-11-29 10:18:45'),(16,1,16777343,'2010-11-29 10:19:40'),(17,1,16777343,'2010-11-29 10:22:02'),(18,1,16777343,'2010-11-29 10:32:04'),(19,1,16777343,'2010-11-29 10:35:13'),(20,1,16777343,'2010-11-29 10:39:52'),(21,1,16777343,'2010-11-29 10:44:09'),(22,1,16777343,'2010-12-05 19:43:09'),(23,1,16777343,'2010-12-07 22:26:29'),(24,1,16777343,'2010-12-07 22:27:51'),(25,1,16777343,'2010-12-07 22:28:51'),(26,1,16777343,'2010-12-07 22:30:53'),(27,1,16777343,'2010-12-07 22:32:12'),(28,1,16777343,'2010-12-08 15:44:02'),(29,1,16777343,'2010-12-08 15:53:31'),(30,1,16777343,'2010-12-08 15:54:00'),(31,1,16777343,'2010-12-08 15:57:44'),(32,1,16777343,'2010-12-08 15:58:23'),(33,1,16777343,'2010-12-08 16:12:08'),(34,1,16777343,'2010-12-08 16:14:31'),(35,1,16777343,'2010-12-08 16:24:07'),(36,1,16777343,'2010-12-08 17:21:40'),(37,1,16777343,'2010-12-08 17:24:10'),(38,1,16777343,'2010-12-09 02:23:45'),(39,1,16777343,'2010-12-09 02:26:40');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,7 +352,7 @@ CREATE TABLE `character` (
   CONSTRAINT `character_ibfk_3` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_4` FOREIGN KEY (`load_map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_5` FOREIGN KEY (`respawn_map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COMMENT='Persisted (users, persistent NPCs) chars.';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Persisted (users, persistent NPCs) chars.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,7 +361,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202775,76,2270,372,100,100,100,100,1,1,1,1,3,2);
+INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202775,76,2270,372,48,100,100,100,1,1,1,1,3,2);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,6 +389,7 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
+INSERT INTO `character_equipped` VALUES (1,4,0);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,7 +418,7 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
-INSERT INTO `character_inventory` VALUES (1,1,0),(1,2,1),(1,3,2);
+INSERT INTO `character_inventory` VALUES (1,1,0),(1,2,1),(1,3,2),(1,6,3);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -518,7 +519,7 @@ CREATE TABLE `character_status_effect` (
   PRIMARY KEY (`id`),
   KEY `character_id` (`character_id`),
   CONSTRAINT `character_status_effect_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='Active status effects on a character.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Active status effects on a character.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -693,6 +694,182 @@ INSERT INTO `character_template_skill` VALUES (0,0),(0,1),(2,0),(6,1);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `event_counters_guild`
+--
+
+DROP TABLE IF EXISTS `event_counters_guild`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_counters_guild` (
+  `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The guild the event occured on.',
+  `guild_event_counter_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that the counter is for.',
+  `counter` bigint(20) NOT NULL COMMENT 'The event counter.',
+  PRIMARY KEY (`guild_id`,`guild_event_counter_id`),
+  CONSTRAINT `event_counters_guild_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event counters for guilds.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_counters_guild`
+--
+
+LOCK TABLES `event_counters_guild` WRITE;
+/*!40000 ALTER TABLE `event_counters_guild` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_counters_guild` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_counters_item_template`
+--
+
+DROP TABLE IF EXISTS `event_counters_item_template`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_counters_item_template` (
+  `item_template_id` smallint(5) unsigned NOT NULL COMMENT 'The template of the item the event occured on.',
+  `item_template_event_counter_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that the counter is for.',
+  `counter` bigint(20) NOT NULL COMMENT 'The event counter.',
+  PRIMARY KEY (`item_template_id`,`item_template_event_counter_id`),
+  CONSTRAINT `event_counters_item_template_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event counters for item templates.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_counters_item_template`
+--
+
+LOCK TABLES `event_counters_item_template` WRITE;
+/*!40000 ALTER TABLE `event_counters_item_template` DISABLE KEYS */;
+INSERT INTO `event_counters_item_template` VALUES (2,1,5),(5,0,24);
+/*!40000 ALTER TABLE `event_counters_item_template` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_counters_map`
+--
+
+DROP TABLE IF EXISTS `event_counters_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_counters_map` (
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The map the event occured on.',
+  `map_event_counter_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that the counter is for.',
+  `counter` bigint(20) NOT NULL COMMENT 'The event counter.',
+  PRIMARY KEY (`map_id`,`map_event_counter_id`),
+  CONSTRAINT `event_counters_map_ibfk_1` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event counters for maps.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_counters_map`
+--
+
+LOCK TABLES `event_counters_map` WRITE;
+/*!40000 ALTER TABLE `event_counters_map` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_counters_map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_counters_npc`
+--
+
+DROP TABLE IF EXISTS `event_counters_npc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_counters_npc` (
+  `npc_template_id` smallint(5) unsigned NOT NULL COMMENT 'The character template of the NPC the event occured on.',
+  `npc_event_counter_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that the counter is for.',
+  `counter` bigint(20) NOT NULL COMMENT 'The event counter.',
+  PRIMARY KEY (`npc_template_id`,`npc_event_counter_id`),
+  CONSTRAINT `event_counters_npc_ibfk_1` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event counters for NPC templates.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_counters_npc`
+--
+
+LOCK TABLES `event_counters_npc` WRITE;
+/*!40000 ALTER TABLE `event_counters_npc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_counters_npc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_counters_quest`
+--
+
+DROP TABLE IF EXISTS `event_counters_quest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_counters_quest` (
+  `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest the event occured on.',
+  `quest_event_counter_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that the counter is for.',
+  `counter` bigint(20) NOT NULL COMMENT 'The event counter.',
+  PRIMARY KEY (`quest_id`,`quest_event_counter_id`),
+  CONSTRAINT `event_counters_quest_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event counters for quests.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_counters_quest`
+--
+
+LOCK TABLES `event_counters_quest` WRITE;
+/*!40000 ALTER TABLE `event_counters_quest` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_counters_quest` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_counters_shop`
+--
+
+DROP TABLE IF EXISTS `event_counters_shop`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_counters_shop` (
+  `shop_id` smallint(5) unsigned NOT NULL COMMENT 'The shop the event occured on.',
+  `shop_event_counter_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that the counter is for.',
+  `counter` bigint(20) NOT NULL COMMENT 'The event counter.',
+  PRIMARY KEY (`shop_id`,`shop_event_counter_id`),
+  CONSTRAINT `event_counters_shop_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event counters for shops.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_counters_shop`
+--
+
+LOCK TABLES `event_counters_shop` WRITE;
+/*!40000 ALTER TABLE `event_counters_shop` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_counters_shop` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_counters_user`
+--
+
+DROP TABLE IF EXISTS `event_counters_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_counters_user` (
+  `user_id` int(11) NOT NULL COMMENT 'The character ID for the user character the event occured on.',
+  `user_event_counter_id` tinyint(3) unsigned NOT NULL COMMENT 'The ID of the event that the counter is for.',
+  `counter` bigint(20) NOT NULL COMMENT 'The event counter.',
+  PRIMARY KEY (`user_id`,`user_event_counter_id`),
+  CONSTRAINT `event_counters_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event counters for users.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_counters_user`
+--
+
+LOCK TABLES `event_counters_user` WRITE;
+/*!40000 ALTER TABLE `event_counters_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_counters_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `guild`
 --
 
@@ -820,7 +997,7 @@ CREATE TABLE `item` (
   PRIMARY KEY (`id`),
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `item_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='The live, persisted items.';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='The live, persisted items.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -829,7 +1006,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',4,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',39,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL);
+INSERT INTO `item` VALUES (1,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',3,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',39,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(6,2,1,0,0,9,16,'Mana Potion','A mana potion',4,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1144,7 +1321,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-11-27 01:45:51');
+INSERT INTO `server_time` VALUES ('2010-12-09 12:43:14');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1302,6 +1479,7 @@ CREATE TABLE `world_stats_count_consume_item` (
 
 LOCK TABLES `world_stats_count_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_consume_item` DISABLE KEYS */;
+INSERT INTO `world_stats_count_consume_item` VALUES (2,2,'2010-12-09 10:26:49');
 /*!40000 ALTER TABLE `world_stats_count_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1352,7 +1530,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
-INSERT INTO `world_stats_count_item_create` VALUES (3,308,'2010-11-27 09:45:24'),(5,253,'2010-11-27 09:45:24'),(7,202,'2010-11-27 09:45:23');
+INSERT INTO `world_stats_count_item_create` VALUES (2,6,'2010-12-09 10:26:47'),(3,1699,'2010-12-09 20:43:14'),(5,1900,'2010-12-09 20:43:14'),(7,1506,'2010-12-09 20:43:14');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1485,6 +1663,7 @@ CREATE TABLE `world_stats_count_user_consume_item` (
 
 LOCK TABLES `world_stats_count_user_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_consume_item` DISABLE KEYS */;
+INSERT INTO `world_stats_count_user_consume_item` VALUES (1,2,2,'2010-12-09 10:26:49');
 /*!40000 ALTER TABLE `world_stats_count_user_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1564,7 +1743,7 @@ CREATE TABLE `world_stats_network` (
   `sent_packets` mediumint(8) unsigned NOT NULL COMMENT 'The average packets sent per second since the last snapshot.',
   `sent_messages` mediumint(8) unsigned NOT NULL COMMENT 'The average messages sent per second since the last snapshot.',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
+) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1573,7 +1752,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
-INSERT INTO `world_stats_network` VALUES (1,'2010-11-27 04:54:55',1,0,0,0,343,12,16),(2,'2010-11-27 09:33:36',1,0,0,0,4,0,0);
+INSERT INTO `world_stats_network` VALUES (1,'2010-11-27 04:54:55',1,0,0,0,343,12,16),(2,'2010-11-27 09:33:36',1,0,0,0,4,0,0),(3,'2010-11-29 09:42:46',1,0,0,0,217,6,9),(4,'2010-11-29 09:43:46',1,0,0,0,131,5,6),(5,'2010-11-29 09:44:46',1,0,0,0,146,6,6),(6,'2010-11-29 09:45:46',1,0,0,0,164,7,7),(7,'2010-11-29 09:46:46',1,0,0,0,138,6,6),(8,'2010-11-29 09:47:46',1,0,0,0,204,8,9),(9,'2010-11-29 09:48:46',1,0,0,0,145,6,6),(10,'2010-11-29 17:36:09',1,0,0,0,185,6,8),(11,'2010-11-29 17:38:13',1,0,0,0,1581,65,129),(12,'2010-11-29 17:38:13',1,0,0,0,1581,65,129),(13,'2010-11-29 18:02:33',1,0,0,0,44,1,2),(14,'2010-11-29 18:03:28',1,0,0,0,179,6,8),(15,'2010-11-29 18:08:38',1,0,0,0,8,0,0),(16,'2010-11-29 18:08:41',1,0,0,0,11,1,2),(17,'2010-11-29 18:09:38',1,0,0,0,132,5,6),(18,'2010-11-29 18:10:38',1,0,0,0,111,5,5),(19,'2010-11-29 18:11:38',1,0,0,0,78,3,4),(20,'2010-11-29 18:12:38',1,0,0,0,88,4,4),(21,'2010-11-29 18:13:38',1,0,0,0,134,6,6),(22,'2010-11-29 18:14:38',1,0,0,0,141,6,6),(23,'2010-11-29 18:22:58',1,0,0,0,187,7,8),(24,'2010-11-29 18:23:58',1,0,0,0,94,4,4),(25,'2010-11-29 18:24:58',1,0,0,0,141,6,6),(26,'2010-11-29 18:25:58',1,0,0,0,125,5,5),(27,'2010-11-29 18:26:58',1,0,0,0,128,5,6),(28,'2010-11-29 18:27:58',1,0,0,0,169,7,7),(29,'2010-11-29 18:28:58',1,0,0,0,133,5,6),(30,'2010-11-29 18:30:05',1,0,0,0,86,4,4),(31,'2010-11-29 18:30:58',1,0,0,0,31352,75,1306),(32,'2010-11-29 18:33:03',1,0,0,0,171,6,7),(33,'2010-11-29 18:36:41',1,0,0,0,102,4,5),(34,'2010-11-30 17:05:34',0,0,0,0,0,0,0),(35,'2010-11-30 17:06:34',0,0,0,0,0,0,0),(36,'2010-12-04 20:26:01',0,0,0,0,0,0,0),(37,'2010-12-08 06:27:16',1,0,0,0,203,6,9),(38,'2010-12-08 06:28:49',0,0,0,0,83,3,4);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1739,7 +1918,7 @@ CREATE TABLE `world_stats_user_consume_item` (
   CONSTRAINT `world_stats_user_consume_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User consumes use-once item.';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='Event log: User consumes use-once item.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1748,6 +1927,7 @@ CREATE TABLE `world_stats_user_consume_item` (
 
 LOCK TABLES `world_stats_user_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_consume_item` DISABLE KEYS */;
+INSERT INTO `world_stats_user_consume_item` VALUES (1,1,2,3,1024,594,'2010-12-09 10:24:00'),(2,1,2,3,1024,594,'2010-12-09 10:26:49');
 /*!40000 ALTER TABLE `world_stats_user_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2174,4 +2354,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-11-27  1:47:00
+-- Dump completed on 2010-12-09 13:58:17

@@ -29,7 +29,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Gets the value of the database column `counter`.
         /// </summary>
-        long? Counter { get; }
+        Int64 Counter { get; }
 
         /// <summary>
         /// Gets the value of the database column `quest_event_counter_id`.

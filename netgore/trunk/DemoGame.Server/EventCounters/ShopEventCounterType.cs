@@ -8,4 +8,10 @@ namespace DemoGame.Server
     public enum ShopEventCounterType : byte
     {
     }
+    /// <summary>
+    /// The different events for the <see cref="EventCounterManager.NPC"/>.
+    /// </summary>
+    public enum NPCEventCounterType : byte
+    {
+    }
 }

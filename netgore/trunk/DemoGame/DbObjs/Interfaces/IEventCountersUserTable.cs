@@ -26,19 +26,19 @@ namespace DemoGame.DbObjs
     public interface IEventCountersUserTable
     {
         /// <summary>
-        /// Gets the value of the database column `character_event_counter_id`.
-        /// </summary>
-        Byte CharacterEventCounterId { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `character_id`.
-        /// </summary>
-        CharacterID CharacterID { get; }
-
-        /// <summary>
         /// Gets the value of the database column `counter`.
         /// </summary>
         Int64 Counter { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `user_event_counter_id`.
+        /// </summary>
+        Byte UserEventCounterId { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `user_id`.
+        /// </summary>
+        CharacterID UserID { get; }
 
         /// <summary>
         /// Creates a deep copy of this table. All the values will be the same

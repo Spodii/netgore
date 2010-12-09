@@ -38,9 +38,9 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(this IEventCountersUserTable source, DbParameterValues paramValues)
         {
-            paramValues["character_event_counter_id"] = source.CharacterEventCounterId;
-            paramValues["character_id"] = (Int32)source.CharacterID;
             paramValues["counter"] = source.Counter;
+            paramValues["user_event_counter_id"] = source.UserEventCounterId;
+            paramValues["user_id"] = (Int32)source.UserID;
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace DemoGame.Server.DbObjs
         /// </returns>
         public static Boolean HasSameValues(this IEventCountersUserTable source, IEventCountersUserTable otherItem)
         {
-            return Equals(source.CharacterEventCounterId, otherItem.CharacterEventCounterId) &&
-                   Equals(source.CharacterID, otherItem.CharacterID) && Equals(source.Counter, otherItem.Counter);
+            return Equals(source.Counter, otherItem.Counter) && Equals(source.UserEventCounterId, otherItem.UserEventCounterId) &&
+                   Equals(source.UserID, otherItem.UserID);
         }
 
         /// <summary>
@@ -68,17 +68,17 @@ namespace DemoGame.Server.DbObjs
         {
             Int32 i;
 
-            i = dataRecord.GetOrdinal("character_event_counter_id");
-
-            source.CharacterEventCounterId = dataRecord.GetByte(i);
-
-            i = dataRecord.GetOrdinal("character_id");
-
-            source.CharacterID = (CharacterID)dataRecord.GetInt32(i);
-
             i = dataRecord.GetOrdinal("counter");
 
             source.Counter = dataRecord.GetInt64(i);
+
+            i = dataRecord.GetOrdinal("user_event_counter_id");
+
+            source.UserEventCounterId = dataRecord.GetByte(i);
+
+            i = dataRecord.GetOrdinal("user_id");
+
+            source.UserID = (CharacterID)dataRecord.GetInt32(i);
         }
 
         /// <summary>
@@ -97,16 +97,16 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (paramValues.GetParameterName(i))
                 {
-                    case "character_event_counter_id":
-                        paramValues[i] = source.CharacterEventCounterId;
-                        break;
-
-                    case "character_id":
-                        paramValues[i] = (Int32)source.CharacterID;
-                        break;
-
                     case "counter":
                         paramValues[i] = source.Counter;
+                        break;
+
+                    case "user_event_counter_id":
+                        paramValues[i] = source.UserEventCounterId;
+                        break;
+
+                    case "user_id":
+                        paramValues[i] = (Int32)source.UserID;
                         break;
                 }
             }
@@ -128,16 +128,16 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (dataRecord.GetName(i))
                 {
-                    case "character_event_counter_id":
-                        source.CharacterEventCounterId = dataRecord.GetByte(i);
-                        break;
-
-                    case "character_id":
-                        source.CharacterID = (CharacterID)dataRecord.GetInt32(i);
-                        break;
-
                     case "counter":
                         source.Counter = dataRecord.GetInt64(i);
+                        break;
+
+                    case "user_event_counter_id":
+                        source.UserEventCounterId = dataRecord.GetByte(i);
+                        break;
+
+                    case "user_id":
+                        source.UserID = (CharacterID)dataRecord.GetInt32(i);
                         break;
                 }
             }
