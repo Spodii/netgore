@@ -49,6 +49,10 @@ namespace DemoGame.Editor
                 return;
 
             const string title = "Update music";
+            const string confirmMsg = "The following changes are to be made (+ for add, - for remove):";
+            const string upToDateMsg = "The music is already up-to-date.";
+            const string acceptChangesMsg = "Accept these {0} changes and update the music?";
+            const string doneMsg = "Music successfully updated!";
 
             var cm = ContentManager.Create();
             var mm = AudioManager.GetInstance(cm).MusicManager;
@@ -65,13 +69,11 @@ namespace DemoGame.Editor
             // Check if there are any changes
             if (newFiles.Length <= 0 && removedFiles.Length <= 0)
             {
-                const string upToDateMsg = "The music is already up-to-date.";
                 MessageBox.Show(upToDateMsg, title, MessageBoxButtons.OK);
                 return;
             }
 
             // Display list of changes
-            const string confirmMsg = "The following changes are to be made (+ for add, - for remove):";
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(confirmMsg);
@@ -94,7 +96,7 @@ namespace DemoGame.Editor
             }
 
             sb.AppendLine();
-            sb.AppendLine("Accept these " + (newFiles.Length + removedFiles.Length) + " changes and update the music?");
+            sb.AppendLine(string.Format(acceptChangesMsg, newFiles.Length + removedFiles.Length));
 
             if (MessageBox.Show(sb.ToString(), title, MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
@@ -124,6 +126,8 @@ namespace DemoGame.Editor
             mm.Save();
 
             lstItems.UpdateList();
+
+            MessageBox.Show(doneMsg, title, MessageBoxButtons.OK);
         }
 
         /// <summary>
