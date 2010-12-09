@@ -138,7 +138,6 @@ namespace DemoGame.Editor
             GlobalState.Instance.IsTickEnabled = true;
 
             // Create the child form instances
-            // TODO: !! Lazy load all these forms
             _frmGrhTreeView = new GrhTreeViewForm();
             _frmGrhTreeView.VisibleChanged += _frmGrhTreeView_VisibleChanged;
 
@@ -154,6 +153,12 @@ namespace DemoGame.Editor
             _frmDbEditor = new DbEditorForm();
             _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
 
+            _frmMusicEditor = new MusicEditorForm();
+            _frmMusicEditor.VisibleChanged += _frmMusicEditor_VisibleChanged;
+
+            _frmSoundEditor = new SoundEditorForm();
+            _frmSoundEditor.VisibleChanged += _frmSoundEditor_VisibleChanged;
+
             // Set up some other stuff
             EditMapForm.FormLoaded += EditMapForm_FormLoaded;
 
@@ -168,6 +173,26 @@ namespace DemoGame.Editor
 
             // Load the settings
             LoadDockSettings("User");
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmSoundEditor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmSoundEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            soundEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmMusicEditor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmMusicEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            musicEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         void SaveDockSettings(string settingsName)
@@ -282,28 +307,9 @@ namespace DemoGame.Editor
         private void soundEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (soundEditorToolStripMenuItem.Checked)
-            {
-                // Close the existing form (if it exists)
-                if (_frmSoundEditor != null && !_frmSoundEditor.IsDisposed)
-                    _frmSoundEditor.Dispose();
-            }
+                _frmSoundEditor.Show(dockPanel, DockState.Float);
             else
-            {
-                // Create new instance of the form if needed
-                if (_frmSoundEditor == null || _frmSoundEditor.IsDisposed)
-                {
-                    _frmSoundEditor = new SoundEditorForm();
-                    _frmSoundEditor.Disposed += delegate(object s2, EventArgs e2)
-                    {
-                        if (_frmSoundEditor == s2)
-                            soundEditorToolStripMenuItem.Checked = false;
-                    };
-                }
-
-                // Show the form
-                soundEditorToolStripMenuItem.Checked = true;
-                _frmSoundEditor.Show(dockPanel);
-            }
+                _frmSoundEditor.Hide();
         }
 
         /// <summary>
@@ -314,28 +320,9 @@ namespace DemoGame.Editor
         private void musicEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (musicEditorToolStripMenuItem.Checked)
-            {
-                // Close the existing form (if it exists)
-                if (_frmMusicEditor != null && !_frmMusicEditor.IsDisposed)
-                    _frmMusicEditor.Dispose();
-            }
+                _frmMusicEditor.Show(dockPanel, DockState.Float);
             else
-            {
-                // Create new instance of the form if needed
-                if (_frmMusicEditor == null || _frmMusicEditor.IsDisposed)
-                {
-                    _frmMusicEditor = new MusicEditorForm();
-                    _frmMusicEditor.Disposed += delegate(object s2, EventArgs e2)
-                    {
-                        if (_frmMusicEditor == s2)
-                            musicEditorToolStripMenuItem.Checked = false;
-                    };
-                }
-
-                // Show the form
-                musicEditorToolStripMenuItem.Checked = true;
-                _frmMusicEditor.Show(dockPanel);
-            }
+                _frmMusicEditor.Hide();
         }
 
         /// <summary>
@@ -420,8 +407,7 @@ namespace DemoGame.Editor
             ParticleEffectManager.Instance.Save(ContentPaths.Dev);
 
             // Show the editor form
-            var editorFrm = new ParticleEditorForm();
-            editorFrm.ParticleEffect = pe;
+            var editorFrm = new ParticleEditorForm { ParticleEffect = pe };
             editorFrm.Show(dockPanel, DockState.Float);
         }
 
@@ -494,6 +480,12 @@ namespace DemoGame.Editor
 
                 if (IsNameFor(Owner._frmSkeletonEditor, name))
                     return Owner._frmSkeletonEditor;
+
+                if (IsNameFor(Owner._frmMusicEditor, name))
+                    return Owner._frmMusicEditor;
+
+                if (IsNameFor(Owner._frmSoundEditor, name))
+                    return Owner._frmSoundEditor;
 
                 return null;
             }
