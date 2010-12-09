@@ -250,6 +250,10 @@ namespace NetGore.Features.EventCounters
         /// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
         public void Increment(TObjectID source, TEventID e, int amount)
         {
+            // Do nothing when the amount is zero (no point in incrementing by zero)
+            if (amount == 0)
+                return;
+
             // Create the key
             var key = new CacheKey(source, e);
 

@@ -151,6 +151,10 @@ namespace DemoGame.Server.PeerTrading
         /// <param name="item">The item to give to the <paramref name="character"/>.</param>
         protected override void GiveItemToCharacter(User character, ItemEntity item)
         {
+            var template = item.ItemTemplateID;
+            if (template.HasValue)
+                EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.PeerTraded, item.Amount);
+
             // Give the character the item
             var giveRemainder = character.TryGiveItem(item);
 
