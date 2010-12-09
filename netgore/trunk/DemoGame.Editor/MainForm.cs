@@ -35,6 +35,7 @@ namespace DemoGame.Editor
         SelectedMapObjectsForm _frmSelectedMapObjs;
         SkeletonEditorForm _frmSkeletonEditor;
         MusicEditorForm _frmMusicEditor;
+        SoundEditorForm _frmSoundEditor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
@@ -270,6 +271,39 @@ namespace DemoGame.Editor
                 _frmGrhTreeView.Show(dockPanel, DockState.Float);
             else
                 _frmGrhTreeView.Hide();
+        }
+
+
+        /// <summary>
+        /// Handles the Click event of the soundEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void soundEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (soundEditorToolStripMenuItem.Checked)
+            {
+                // Close the existing form (if it exists)
+                if (_frmSoundEditor != null && !_frmSoundEditor.IsDisposed)
+                    _frmSoundEditor.Dispose();
+            }
+            else
+            {
+                // Create new instance of the form if needed
+                if (_frmSoundEditor == null || _frmSoundEditor.IsDisposed)
+                {
+                    _frmSoundEditor = new SoundEditorForm();
+                    _frmSoundEditor.Disposed += delegate(object s2, EventArgs e2)
+                    {
+                        if (_frmSoundEditor == s2)
+                            soundEditorToolStripMenuItem.Checked = false;
+                    };
+                }
+
+                // Show the form
+                soundEditorToolStripMenuItem.Checked = true;
+                _frmSoundEditor.Show(dockPanel);
+            }
         }
 
         /// <summary>

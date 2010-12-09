@@ -63,6 +63,7 @@ namespace DemoGame.Editor
             this.npcChatEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skeletonEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dbEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.musicEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.tssInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssWorldPos = new System.Windows.Forms.ToolStripStatusLabel();
@@ -70,7 +71,7 @@ namespace DemoGame.Editor
             this.dockPanel = new NetGore.Editor.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
-            this.musicEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.soundEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMenu.SuspendLayout();
             this.ssStatus.SuspendLayout();
             this.SuspendLayout();
@@ -146,7 +147,8 @@ namespace DemoGame.Editor
             this.npcChatEditorToolStripMenuItem,
             this.skeletonEditorToolStripMenuItem,
             this.dbEditorToolStripMenuItem,
-            this.musicEditorToolStripMenuItem});
+            this.musicEditorToolStripMenuItem,
+            this.soundEditorToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             // 
@@ -184,6 +186,12 @@ namespace DemoGame.Editor
             this.dbEditorToolStripMenuItem.Name = "dbEditorToolStripMenuItem";
             resources.ApplyResources(this.dbEditorToolStripMenuItem, "dbEditorToolStripMenuItem");
             this.dbEditorToolStripMenuItem.Click += new System.EventHandler(this.dbEditorToolStripMenuItem_Click);
+            // 
+            // musicEditorToolStripMenuItem
+            // 
+            this.musicEditorToolStripMenuItem.Name = "musicEditorToolStripMenuItem";
+            resources.ApplyResources(this.musicEditorToolStripMenuItem, "musicEditorToolStripMenuItem");
+            this.musicEditorToolStripMenuItem.Click += new System.EventHandler(this.musicEditorToolStripMenuItem_Click);
             // 
             // ssStatus
             // 
@@ -277,11 +285,11 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
             // 
-            // musicEditorToolStripMenuItem
+            // soundEditorToolStripMenuItem
             // 
-            this.musicEditorToolStripMenuItem.Name = "musicEditorToolStripMenuItem";
-            resources.ApplyResources(this.musicEditorToolStripMenuItem, "musicEditorToolStripMenuItem");
-            this.musicEditorToolStripMenuItem.Click += new System.EventHandler(this.musicEditorToolStripMenuItem_Click);
+            this.soundEditorToolStripMenuItem.Name = "soundEditorToolStripMenuItem";
+            resources.ApplyResources(this.soundEditorToolStripMenuItem, "soundEditorToolStripMenuItem");
+            this.soundEditorToolStripMenuItem.Click += new System.EventHandler(this.soundEditorToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -329,6 +337,7 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripStatusLabel tssWorldPos;
         private System.Windows.Forms.ToolStripStatusLabel tssScreenPos;
         private System.Windows.Forms.ToolStripMenuItem musicEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem soundEditorToolStripMenuItem;
     }
 }
 
