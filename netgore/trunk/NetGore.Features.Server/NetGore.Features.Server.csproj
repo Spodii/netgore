@@ -100,6 +100,10 @@
     <Compile Include="Banning\IBanningManager.cs" />
     <Compile Include="Banning\StoredProcGetReasons.cs" />
     <Compile Include="Banning\StoredProcIsBanned.cs" />
+    <Compile Include="EventCounters\EventCounter.cs" />
+    <Compile Include="EventCounters\EventCounterHelper.cs" />
+    <Compile Include="EventCounters\IEventCounter.cs" />
+    <Compile Include="EventCounters\ObjectEventAmount.cs" />
     <Compile Include="Groups\Group.cs" />
     <Compile Include="Groups\GroupManager.cs" />
     <Compile Include="Groups\GroupMemberInfo.cs" />

@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Banning\" />
+    <Folder Include="EventCounters\" />
     <Folder Include="GameTime\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />

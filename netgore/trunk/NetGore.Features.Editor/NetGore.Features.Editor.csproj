@@ -184,6 +184,7 @@
     <Folder Include="ActionDisplays\" />
     <Folder Include="Banning\" />
     <Folder Include="Emoticons\" />
+    <Folder Include="EventCounters\" />
     <Folder Include="GameTime\" />
     <Folder Include="Groups\" />
     <Folder Include="Guilds\" />
