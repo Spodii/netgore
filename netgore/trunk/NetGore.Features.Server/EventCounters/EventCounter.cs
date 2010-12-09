@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using log4net;
@@ -24,6 +25,11 @@ namespace NetGore.Features.EventCounters
         const int _flushRate = 1000 * 60 * 5; // 5 minutes
 
         /// <summary>
+        /// The <see cref="CacheKeyComparer"/> instance.
+        /// </summary>
+        static readonly CacheKeyComparer _keyComparer = new CacheKeyComparer();
+
+        /// <summary>
         /// Object used to synchronize flushing.
         /// </summary>
         readonly object _flushSync = new object();
@@ -34,7 +40,16 @@ namespace NetGore.Features.EventCounters
         readonly object _updateCacheSync = new object();
 
         bool _isDisposed = false;
-        Dictionary<Tuple<TObjectID, TEventID>, int> _updateCache = new Dictionary<Tuple<TObjectID, TEventID>, int>();
+        Dictionary<CacheKey, int> _updateCache;
+
+        /// <summary>
+        /// Creates a <see cref="Dictionary{T,U}"/> instance for the update cache.
+        /// </summary>
+        /// <returns>A <see cref="Dictionary{T,U}"/> instance for the update cache.</returns>
+        static Dictionary<CacheKey, int> CreateUpdateCache()
+        {
+            return new Dictionary<CacheKey, int>(_keyComparer);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventCounter{TObjectID, TEventID}"/> class.
@@ -46,6 +61,7 @@ namespace NetGore.Features.EventCounters
                 throw new ArgumentNullException("query");
 
             _query = query;
+            _updateCache = CreateUpdateCache();
 
             _flushTimer = new Timer(FlushTimerCallback, null, _flushRate, _flushRate);
         }
@@ -100,7 +116,7 @@ namespace NetGore.Features.EventCounters
         /// Flushes all of the items in the cache.
         /// </summary>
         /// <param name="values">The collection containing the values to flush.</param>
-        void Flush(IEnumerable<KeyValuePair<Tuple<TObjectID, TEventID>, int>> values)
+        void Flush(IEnumerable<KeyValuePair<CacheKey, int>> values)
         {
             foreach (var v in values)
             {
@@ -108,7 +124,7 @@ namespace NetGore.Features.EventCounters
                 // counters decrement)
                 if (v.Value != 0)
                 {
-                    var value = new ObjectEventAmount<TObjectID, TEventID>(v.Key.Item1, v.Key.Item2, v.Value);
+                    var value = new ObjectEventAmount<TObjectID, TEventID>(v.Key.ObjectID, v.Key.EventID, v.Value);
                     WriteValue(value);
                 }
             }
@@ -185,7 +201,7 @@ namespace NetGore.Features.EventCounters
 
                 // To very quickly swap out the cache with a new one so we can work on it without a lock, we create a new
                 // instance and just swap the references while we have the lock
-                var cache = new Dictionary<Tuple<TObjectID, TEventID>, int>();
+                var cache = CreateUpdateCache();
                 lock (_updateCacheSync)
                 {
                     // Perform the swap
@@ -223,7 +239,7 @@ namespace NetGore.Features.EventCounters
         public void Increment(TObjectID source, TEventID e, int amount)
         {
             // Create the key
-            var key = new Tuple<TObjectID, TEventID>(source, e);
+            var key = new CacheKey(source, e);
 
             var flushValue = 0;
 
@@ -283,5 +299,146 @@ namespace NetGore.Features.EventCounters
         }
 
         #endregion
+
+        /// <summary>
+        /// The struct used as the key in the cache.
+        /// </summary>
+        struct CacheKey : IEquatable<CacheKey>
+        {
+            /// <summary>
+            /// The object ID.
+            /// </summary>
+            public readonly TObjectID ObjectID;
+
+            /// <summary>
+            /// The event ID.
+            /// </summary>
+            public readonly TEventID EventID;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="EventCounter{TObjectID, TEventID}.CacheKey"/> struct.
+            /// </summary>
+            /// <param name="objectID">The object ID.</param>
+            /// <param name="eventID">The event ID.</param>
+            public CacheKey(TObjectID objectID, TEventID eventID)
+            {
+                ObjectID = objectID;
+                EventID = eventID;
+            }
+
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A 32-bit signed integer that is the hash code for this instance.
+            /// </returns>
+            public override int GetHashCode()
+            {
+                return _keyComparer.GetHashCode(this);
+            }
+
+            /// <summary>
+            /// Indicates whether this instance and a specified object are equal.
+            /// </summary>
+            /// <param name="obj">Another object to compare to.</param>
+            /// <returns>
+            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+            /// </returns>
+            public override bool Equals(object obj)
+            {
+                Debug.Fail("This shouldn't be getting called since CacheKeyComparer should be handling Equals directly.");
+
+                if (obj is CacheKey)
+                    return Equals((CacheKey)obj);
+                else
+                    return false;
+            }
+
+            /// <summary>
+            /// Indicates whether the current object is equal to another object of the same type.
+            /// </summary>
+            /// <returns>
+            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            /// </returns>
+            /// <param name="other">An object to compare with this object.</param>
+            public bool Equals(CacheKey other)
+            {
+                Debug.Fail("This shouldn't be getting called since CacheKeyComparer should be handling Equals directly.");
+
+                return _keyComparer.Equals(this, other);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="IEqualityComparer{T}"/> to use for comparing the <see cref="CacheKey"/>.
+        /// Provides significant speed improvements over the default comparer by using dynamically generated
+        /// methods to allow for equality comparison without boxing structs.
+        /// </summary>
+        class CacheKeyComparer : IEqualityComparer<CacheKey>
+        {
+            static readonly Func<CacheKey, CacheKey, bool> _equalityComparerFunc = CreateEqualityComparer();
+
+            /// <summary>
+            /// Generates the func to compare the values in the cache key.
+            /// </summary>
+            /// <returns>The func to compare the values in the cache key.</returns>
+            static Func<CacheKey, CacheKey, bool> CreateEqualityComparer()
+            {
+                /*
+                 * The generated func behaves like a method with the following code:
+                 * 
+                 *  bool Equals(CacheKey x, CacheKey y)
+                 *  {
+                 *      return x.ObjectID == y.ObjectID && x.EventID == y.EventID;
+                 *  }
+                 *  
+                 */
+
+                var xKey = Expression.Parameter(typeof(CacheKey), "x");
+                var yKey = Expression.Parameter(typeof(CacheKey), "y");
+
+                var xKeyA = Expression.PropertyOrField(xKey, "ObjectID");
+                var yKeyA = Expression.PropertyOrField(yKey, "ObjectID");
+                var eqA = Expression.Equal(xKeyA, yKeyA);
+
+                var xKeyB = Expression.PropertyOrField(xKey, "EventID");
+                var yKeyB = Expression.PropertyOrField(yKey, "EventID");
+                var eqB = Expression.Equal(xKeyB, yKeyB);
+
+                var andExp = Expression.AndAlso(eqA, eqB);
+
+                var body = Expression.Lambda<Func<CacheKey, CacheKey, bool>>(andExp, new[] { xKey, yKey });
+
+                return body.Compile();
+            }
+
+            #region IEqualityComparer<EventCounter<TObjectID,TEventID>.CacheKey> Members
+
+            /// <summary>
+            /// Determines whether the specified objects are equal.
+            /// </summary>
+            /// <param name="x">The first object to compare.</param>
+            /// <param name="y">The second object to compare.</param>
+            /// <returns>
+            /// true if the specified objects are equal; otherwise, false.
+            /// </returns>
+            public bool Equals(CacheKey x, CacheKey y)
+            {
+                return _equalityComparerFunc(x, y);
+            }
+
+            /// <summary>
+            /// Returns a hash code for the specified object.
+            /// </summary>
+            /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param>
+            /// <returns>A hash code for the specified object.</returns>
+            /// <exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
+            public int GetHashCode(CacheKey obj)
+            {
+                return obj.EventID.GetHashCode() ^ obj.ObjectID.GetHashCode();
+            }
+
+            #endregion
+        }
     }
 }
