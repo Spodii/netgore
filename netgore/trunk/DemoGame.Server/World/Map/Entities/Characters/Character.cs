@@ -1458,6 +1458,13 @@ namespace DemoGame.Server
         /// </summary>
         protected virtual void OnKilled()
         {
+            // Increment EventCounters
+            foreach (var item in Inventory.Items)
+            {
+                var template = item.ItemTemplateID;
+                if (template.HasValue)
+                    EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.CharacterDeaths);
+            }
         }
 
         /// <summary>
@@ -1478,6 +1485,16 @@ namespace DemoGame.Server
         /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
         protected virtual void OnKilledCharacter(Character killed)
         {
+            // Increment EventCounter
+            var w = Weapon;
+            if (w != null)
+            {
+                var template = w.ItemTemplateID;
+                if (template.HasValue)
+                {
+                    EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.CharactersKilled);
+                }
+            }
         }
 
         /// <summary>

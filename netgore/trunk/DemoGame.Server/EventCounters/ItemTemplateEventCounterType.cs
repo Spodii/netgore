@@ -26,5 +26,15 @@ namespace DemoGame.Server
         /// Item purchased from a shop.
         /// </summary>
         BuyFromShop = 3,
+
+        /// <summary>
+        /// Item was used to by a character to kill another character. Only valid for weapons.
+        /// </summary>
+        CharactersKilled = 4,
+
+        /// <summary>
+        /// Item was equipped by a character when they died. Only valid for items that can be equipped.
+        /// </summary>
+        CharacterDeaths = 5,
     }
 }
