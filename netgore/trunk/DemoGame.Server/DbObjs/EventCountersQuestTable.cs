@@ -17,6 +17,7 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
@@ -58,7 +59,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `counter`.
         /// </summary>
-        long? _counter;
+        Int64 _counter;
 
         /// <summary>
         /// The field that maps onto the database column `quest_event_counter_id`.
@@ -83,7 +84,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="counter">The initial value for the corresponding property.</param>
         /// <param name="questEventCounterId">The initial value for the corresponding property.</param>
         /// <param name="questID">The initial value for the corresponding property.</param>
-        public EventCountersQuestTable(long? @counter, Byte @questEventCounterId, QuestID @questID)
+        public EventCountersQuestTable(Int64 @counter, Byte @questEventCounterId, QuestID @questID)
         {
             Counter = @counter;
             QuestEventCounterId = @questEventCounterId;
@@ -171,14 +172,16 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "counter":
-                    return new ColumnMetadata("counter", "", "bigint(20)", null, typeof(long?), true, false, false);
-
-                case "quest_event_counter_id":
-                    return new ColumnMetadata("quest_event_counter_id", "", "tinyint(3) unsigned", null, typeof(Byte), false, true,
+                    return new ColumnMetadata("counter", "The event counter.", "bigint(20)", null, typeof(Int64), false, false,
                         false);
 
+                case "quest_event_counter_id":
+                    return new ColumnMetadata("quest_event_counter_id", "The ID of the event that the counter is for.",
+                        "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
+
                 case "quest_id":
-                    return new ColumnMetadata("quest_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true, false);
+                    return new ColumnMetadata("quest_id", "The quest the event occured on.", "smallint(5) unsigned", null,
+                        typeof(UInt16), false, true, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -220,7 +223,7 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "counter":
-                    Counter = (long?)value;
+                    Counter = (Int64)value;
                     break;
 
                 case "quest_event_counter_id":
@@ -240,10 +243,12 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `counter`.
-        /// The underlying database type is `bigint(20)`.
+        /// The underlying database type is `bigint(20)`.The database column contains the comment: 
+        /// "The event counter.".
         /// </summary>
+        [Description("The event counter.")]
         [SyncValue]
-        public long? Counter
+        public Int64 Counter
         {
             get { return _counter; }
             set { _counter = value; }
@@ -251,8 +256,10 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `quest_event_counter_id`.
-        /// The underlying database type is `tinyint(3) unsigned`.
+        /// The underlying database type is `tinyint(3) unsigned`.The database column contains the comment: 
+        /// "The ID of the event that the counter is for.".
         /// </summary>
+        [Description("The ID of the event that the counter is for.")]
         [SyncValue]
         public Byte QuestEventCounterId
         {
@@ -262,8 +269,10 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `quest_id`.
-        /// The underlying database type is `smallint(5) unsigned`.
+        /// The underlying database type is `smallint(5) unsigned`.The database column contains the comment: 
+        /// "The quest the event occured on.".
         /// </summary>
+        [Description("The quest the event occured on.")]
         [SyncValue]
         public QuestID QuestID
         {

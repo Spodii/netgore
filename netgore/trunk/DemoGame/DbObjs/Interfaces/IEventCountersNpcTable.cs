@@ -21,9 +21,9 @@ using System.Linq;
 namespace DemoGame.DbObjs
 {
     /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `event_counters_user`.
+    /// Interface for a class that can be used to serialize values to the database table `event_counters_npc`.
     /// </summary>
-    public interface IEventCountersUserTable
+    public interface IEventCountersNpcTable
     {
         /// <summary>
         /// Gets the value of the database column `counter`.
@@ -31,14 +31,14 @@ namespace DemoGame.DbObjs
         Int64 Counter { get; }
 
         /// <summary>
-        /// Gets the value of the database column `user_event_counter_id`.
+        /// Gets the value of the database column `npc_event_counter_id`.
         /// </summary>
-        Byte UserEventCounterId { get; }
+        Byte NPCEventCounterID { get; }
 
         /// <summary>
-        /// Gets the value of the database column `user_id`.
+        /// Gets the value of the database column `npc_template_id`.
         /// </summary>
-        CharacterID UserID { get; }
+        CharacterTemplateID NPCTemplateID { get; }
 
         /// <summary>
         /// Creates a deep copy of this table. All the values will be the same
@@ -47,6 +47,6 @@ namespace DemoGame.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        IEventCountersUserTable DeepCopy();
+        IEventCountersNpcTable DeepCopy();
     }
 }

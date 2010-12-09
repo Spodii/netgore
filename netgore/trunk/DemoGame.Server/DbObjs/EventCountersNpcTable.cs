@@ -21,15 +21,14 @@ using System.ComponentModel;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
-using NetGore.Features.Guilds;
 using NetGore.IO;
 
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Provides a strongly-typed structure for the database table `event_counters_guild`.
+    /// Provides a strongly-typed structure for the database table `event_counters_npc`.
     /// </summary>
-    public class EventCountersGuildTable : IEventCountersGuildTable, IPersistable
+    public class EventCountersNpcTable : IEventCountersNpcTable, IPersistable
     {
         /// <summary>
         /// The number of columns in the database table that this class represents.
@@ -39,17 +38,17 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The name of the database table that this class represents.
         /// </summary>
-        public const String TableName = "event_counters_guild";
+        public const String TableName = "event_counters_npc";
 
         /// <summary>
         /// Array of the database column names.
         /// </summary>
-        static readonly String[] _dbColumns = new string[] { "counter", "guild_event_counter_id", "guild_id" };
+        static readonly String[] _dbColumns = new string[] { "counter", "npc_event_counter_id", "npc_template_id" };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[] { "guild_event_counter_id", "guild_id" };
+        static readonly String[] _dbColumnsKeys = new string[] { "npc_event_counter_id", "npc_template_id" };
 
         /// <summary>
         /// Array of the database column names for columns that are not primary keys.
@@ -62,40 +61,40 @@ namespace DemoGame.Server.DbObjs
         Int64 _counter;
 
         /// <summary>
-        /// The field that maps onto the database column `guild_event_counter_id`.
+        /// The field that maps onto the database column `npc_event_counter_id`.
         /// </summary>
-        Byte _guildEventCounterId;
+        Byte _nPCEventCounterID;
 
         /// <summary>
-        /// The field that maps onto the database column `guild_id`.
+        /// The field that maps onto the database column `npc_template_id`.
         /// </summary>
-        UInt16 _guildID;
+        UInt16 _nPCTemplateID;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventCountersGuildTable"/> class.
+        /// Initializes a new instance of the <see cref="EventCountersNpcTable"/> class.
         /// </summary>
-        public EventCountersGuildTable()
+        public EventCountersNpcTable()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventCountersGuildTable"/> class.
+        /// Initializes a new instance of the <see cref="EventCountersNpcTable"/> class.
         /// </summary>
         /// <param name="counter">The initial value for the corresponding property.</param>
-        /// <param name="guildEventCounterId">The initial value for the corresponding property.</param>
-        /// <param name="guildID">The initial value for the corresponding property.</param>
-        public EventCountersGuildTable(Int64 @counter, Byte @guildEventCounterId, GuildID @guildID)
+        /// <param name="nPCEventCounterID">The initial value for the corresponding property.</param>
+        /// <param name="nPCTemplateID">The initial value for the corresponding property.</param>
+        public EventCountersNpcTable(Int64 @counter, Byte @nPCEventCounterID, CharacterTemplateID @nPCTemplateID)
         {
             Counter = @counter;
-            GuildEventCounterId = @guildEventCounterId;
-            GuildID = @guildID;
+            NPCEventCounterID = @nPCEventCounterID;
+            NPCTemplateID = @nPCTemplateID;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventCountersGuildTable"/> class.
+        /// Initializes a new instance of the <see cref="EventCountersNpcTable"/> class.
         /// </summary>
-        /// <param name="source">IEventCountersGuildTable to copy the initial values from.</param>
-        public EventCountersGuildTable(IEventCountersGuildTable source)
+        /// <param name="source">IEventCountersNpcTable to copy the initial values from.</param>
+        public EventCountersNpcTable(IEventCountersNpcTable source)
         {
             CopyValuesFrom(source);
         }
@@ -131,11 +130,11 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
-        public static void CopyValues(IEventCountersGuildTable source, IDictionary<String, Object> dic)
+        public static void CopyValues(IEventCountersNpcTable source, IDictionary<String, Object> dic)
         {
             dic["counter"] = source.Counter;
-            dic["guild_event_counter_id"] = source.GuildEventCounterId;
-            dic["guild_id"] = source.GuildID;
+            dic["npc_event_counter_id"] = source.NPCEventCounterID;
+            dic["npc_template_id"] = source.NPCTemplateID;
         }
 
         /// <summary>
@@ -150,14 +149,14 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Copies the values from the given <paramref name="source"/> into this EventCountersGuildTable.
+        /// Copies the values from the given <paramref name="source"/> into this EventCountersNpcTable.
         /// </summary>
-        /// <param name="source">The IEventCountersGuildTable to copy the values from.</param>
-        public void CopyValuesFrom(IEventCountersGuildTable source)
+        /// <param name="source">The IEventCountersNpcTable to copy the values from.</param>
+        public void CopyValuesFrom(IEventCountersNpcTable source)
         {
             Counter = source.Counter;
-            GuildEventCounterId = source.GuildEventCounterId;
-            GuildID = source.GuildID;
+            NPCEventCounterID = source.NPCEventCounterID;
+            NPCTemplateID = source.NPCTemplateID;
         }
 
         /// <summary>
@@ -175,13 +174,13 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("counter", "The event counter.", "bigint(20)", null, typeof(Int64), false, false,
                         false);
 
-                case "guild_event_counter_id":
-                    return new ColumnMetadata("guild_event_counter_id", "The ID of the event that the counter is for.",
+                case "npc_event_counter_id":
+                    return new ColumnMetadata("npc_event_counter_id", "The ID of the event that the counter is for.",
                         "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
 
-                case "guild_id":
-                    return new ColumnMetadata("guild_id", "The guild the event occured on.", "smallint(5) unsigned", null,
-                        typeof(UInt16), false, true, false);
+                case "npc_template_id":
+                    return new ColumnMetadata("npc_template_id", "The character template of the NPC the event occured on.",
+                        "smallint(5) unsigned", null, typeof(UInt16), false, true, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -202,11 +201,11 @@ namespace DemoGame.Server.DbObjs
                 case "counter":
                     return Counter;
 
-                case "guild_event_counter_id":
-                    return GuildEventCounterId;
+                case "npc_event_counter_id":
+                    return NPCEventCounterID;
 
-                case "guild_id":
-                    return GuildID;
+                case "npc_template_id":
+                    return NPCTemplateID;
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -226,12 +225,12 @@ namespace DemoGame.Server.DbObjs
                     Counter = (Int64)value;
                     break;
 
-                case "guild_event_counter_id":
-                    GuildEventCounterId = (Byte)value;
+                case "npc_event_counter_id":
+                    NPCEventCounterID = (Byte)value;
                     break;
 
-                case "guild_id":
-                    GuildID = (GuildID)value;
+                case "npc_template_id":
+                    NPCTemplateID = (CharacterTemplateID)value;
                     break;
 
                 default:
@@ -239,7 +238,7 @@ namespace DemoGame.Server.DbObjs
             }
         }
 
-        #region IEventCountersGuildTable Members
+        #region IEventCountersNpcTable Members
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `counter`.
@@ -255,29 +254,29 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `guild_event_counter_id`.
+        /// Gets or sets the value for the field that maps onto the database column `npc_event_counter_id`.
         /// The underlying database type is `tinyint(3) unsigned`.The database column contains the comment: 
         /// "The ID of the event that the counter is for.".
         /// </summary>
         [Description("The ID of the event that the counter is for.")]
         [SyncValue]
-        public Byte GuildEventCounterId
+        public Byte NPCEventCounterID
         {
-            get { return _guildEventCounterId; }
-            set { _guildEventCounterId = value; }
+            get { return _nPCEventCounterID; }
+            set { _nPCEventCounterID = value; }
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `guild_id`.
+        /// Gets or sets the value for the field that maps onto the database column `npc_template_id`.
         /// The underlying database type is `smallint(5) unsigned`.The database column contains the comment: 
-        /// "The guild the event occured on.".
+        /// "The character template of the NPC the event occured on.".
         /// </summary>
-        [Description("The guild the event occured on.")]
+        [Description("The character template of the NPC the event occured on.")]
         [SyncValue]
-        public GuildID GuildID
+        public CharacterTemplateID NPCTemplateID
         {
-            get { return (GuildID)_guildID; }
-            set { _guildID = (UInt16)value; }
+            get { return (CharacterTemplateID)_nPCTemplateID; }
+            set { _nPCTemplateID = (UInt16)value; }
         }
 
         /// <summary>
@@ -287,9 +286,9 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        public virtual IEventCountersGuildTable DeepCopy()
+        public virtual IEventCountersNpcTable DeepCopy()
         {
-            return new EventCountersGuildTable(this);
+            return new EventCountersNpcTable(this);
         }
 
         #endregion

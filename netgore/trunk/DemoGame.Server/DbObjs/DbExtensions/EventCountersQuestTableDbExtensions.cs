@@ -71,7 +71,7 @@ namespace DemoGame.Server.DbObjs
 
             i = dataRecord.GetOrdinal("counter");
 
-            source.Counter = (dataRecord.IsDBNull(i) ? (long?)null : dataRecord.GetInt64(i));
+            source.Counter = dataRecord.GetInt64(i);
 
             i = dataRecord.GetOrdinal("quest_event_counter_id");
 
@@ -130,7 +130,7 @@ namespace DemoGame.Server.DbObjs
                 switch (dataRecord.GetName(i))
                 {
                     case "counter":
-                        source.Counter = (dataRecord.IsDBNull(i) ? (long?)null : dataRecord.GetInt64(i));
+                        source.Counter = dataRecord.GetInt64(i);
                         break;
 
                     case "quest_event_counter_id":

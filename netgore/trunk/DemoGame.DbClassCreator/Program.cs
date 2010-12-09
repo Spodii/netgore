@@ -168,6 +168,7 @@ For more information on the DbClassCreator, please see:
                 generator.AddCustomType(typeof(MapEventCounterType), "*", "map_event_counter_type");
                 generator.AddCustomType(typeof(ItemTemplateEventCounterType), "*", "item_template_event_counter_type");
                 generator.AddCustomType(typeof(GuildEventCounterType), "*", "guild_event_counter_type");
+                generator.AddCustomType(typeof(NPCEventCounterType), "*", "npc_event_counter_type");
 
                 // Renaming
                 var formatter = generator.Formatter;
@@ -199,6 +200,7 @@ For more information on the DbClassCreator, please see:
                 formatter.AddAlias("skill_id", "SkillID");
                 formatter.AddAlias("npc_id", "NPCID");
                 formatter.AddAlias("user_id", "UserID");
+                formatter.AddAlias("npc_event_counter_id", "NPCEventCounterID");
 
                 formatter.AddAlias("Name");
                 formatter.AddAlias("ID");

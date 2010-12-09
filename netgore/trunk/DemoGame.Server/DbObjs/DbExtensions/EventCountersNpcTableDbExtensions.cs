@@ -24,10 +24,10 @@ using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Contains extension methods for class EventCountersUserTable that assist in performing
+    /// Contains extension methods for class EventCountersNpcTable that assist in performing
     /// reads and writes to and from a database.
     /// </summary>
-    public static class EventCountersUserTableDbExtensions
+    public static class EventCountersNpcTableDbExtensions
     {
         /// <summary>
         /// Copies the column values into the given DbParameterValues using the database column name
@@ -36,25 +36,25 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this IEventCountersUserTable source, DbParameterValues paramValues)
+        public static void CopyValues(this IEventCountersNpcTable source, DbParameterValues paramValues)
         {
             paramValues["counter"] = source.Counter;
-            paramValues["user_event_counter_id"] = source.UserEventCounterId;
-            paramValues["user_id"] = (Int32)source.UserID;
+            paramValues["npc_event_counter_id"] = source.NPCEventCounterID;
+            paramValues["npc_template_id"] = (UInt16)source.NPCTemplateID;
         }
 
         /// <summary>
-        /// Checks if this <see cref="IEventCountersUserTable"/> contains the same values as another <see cref="IEventCountersUserTable"/>.
+        /// Checks if this <see cref="IEventCountersNpcTable"/> contains the same values as another <see cref="IEventCountersNpcTable"/>.
         /// </summary>
-        /// <param name="source">The source <see cref="IEventCountersUserTable"/>.</param>
-        /// <param name="otherItem">The <see cref="IEventCountersUserTable"/> to compare the values to.</param>
+        /// <param name="source">The source <see cref="IEventCountersNpcTable"/>.</param>
+        /// <param name="otherItem">The <see cref="IEventCountersNpcTable"/> to compare the values to.</param>
         /// <returns>
-        /// True if this <see cref="IEventCountersUserTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
+        /// True if this <see cref="IEventCountersNpcTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
         /// </returns>
-        public static Boolean HasSameValues(this IEventCountersUserTable source, IEventCountersUserTable otherItem)
+        public static Boolean HasSameValues(this IEventCountersNpcTable source, IEventCountersNpcTable otherItem)
         {
-            return Equals(source.Counter, otherItem.Counter) && Equals(source.UserEventCounterId, otherItem.UserEventCounterId) &&
-                   Equals(source.UserID, otherItem.UserID);
+            return Equals(source.Counter, otherItem.Counter) && Equals(source.NPCEventCounterID, otherItem.NPCEventCounterID) &&
+                   Equals(source.NPCTemplateID, otherItem.NPCTemplateID);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this EventCountersUserTable source, IDataRecord dataRecord)
+        public static void ReadValues(this EventCountersNpcTable source, IDataRecord dataRecord)
         {
             Int32 i;
 
@@ -72,13 +72,13 @@ namespace DemoGame.Server.DbObjs
 
             source.Counter = dataRecord.GetInt64(i);
 
-            i = dataRecord.GetOrdinal("user_event_counter_id");
+            i = dataRecord.GetOrdinal("npc_event_counter_id");
 
-            source.UserEventCounterId = dataRecord.GetByte(i);
+            source.NPCEventCounterID = dataRecord.GetByte(i);
 
-            i = dataRecord.GetOrdinal("user_id");
+            i = dataRecord.GetOrdinal("npc_template_id");
 
-            source.UserID = (CharacterID)dataRecord.GetInt32(i);
+            source.NPCTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this IEventCountersUserTable source, DbParameterValues paramValues)
+        public static void TryCopyValues(this IEventCountersNpcTable source, DbParameterValues paramValues)
         {
             for (var i = 0; i < paramValues.Count; i++)
             {
@@ -101,12 +101,12 @@ namespace DemoGame.Server.DbObjs
                         paramValues[i] = source.Counter;
                         break;
 
-                    case "user_event_counter_id":
-                        paramValues[i] = source.UserEventCounterId;
+                    case "npc_event_counter_id":
+                        paramValues[i] = source.NPCEventCounterID;
                         break;
 
-                    case "user_id":
-                        paramValues[i] = (Int32)source.UserID;
+                    case "npc_template_id":
+                        paramValues[i] = (UInt16)source.NPCTemplateID;
                         break;
                 }
             }
@@ -122,7 +122,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this EventCountersUserTable source, IDataRecord dataRecord)
+        public static void TryReadValues(this EventCountersNpcTable source, IDataRecord dataRecord)
         {
             for (var i = 0; i < dataRecord.FieldCount; i++)
             {
@@ -132,12 +132,12 @@ namespace DemoGame.Server.DbObjs
                         source.Counter = dataRecord.GetInt64(i);
                         break;
 
-                    case "user_event_counter_id":
-                        source.UserEventCounterId = dataRecord.GetByte(i);
+                    case "npc_event_counter_id":
+                        source.NPCEventCounterID = dataRecord.GetByte(i);
                         break;
 
-                    case "user_id":
-                        source.UserID = (CharacterID)dataRecord.GetInt32(i);
+                    case "npc_template_id":
+                        source.NPCTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
                         break;
                 }
             }

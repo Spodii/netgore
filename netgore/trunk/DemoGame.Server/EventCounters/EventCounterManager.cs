@@ -21,7 +21,8 @@ namespace DemoGame.Server
         static readonly EventCounter<MapID, MapEventCounterType> _mapEventCounter;
         static readonly EventCounter<QuestID, QuestEventCounterType> _questEventCounter;
         static readonly EventCounter<ShopID, ShopEventCounterType> _shopEventCounter;
-        static readonly EventCounter<CharacterTemplateID, UserEventCounterType> _userEventCounter;
+        static readonly EventCounter<CharacterID, UserEventCounterType> _userEventCounter;
+        static readonly EventCounter<CharacterTemplateID, NPCEventCounterType> _npcEventCounter;
 
         /// <summary>
         /// Initializes the <see cref="EventCounterManager"/> class.
@@ -36,8 +37,8 @@ namespace DemoGame.Server
             // Create the query objects
             var pool = dbController.ConnectionPool;
 
-            var userECQuery = EventCounterHelper.CreateQuery<CharacterTemplateID, UserEventCounterType>(pool,
-                EventCountersUserTable.TableName, "character_id", "character_event_counter_id");
+            var userECQuery = EventCounterHelper.CreateQuery<CharacterID, UserEventCounterType>(pool,
+                EventCountersUserTable.TableName, "user_id", "user_event_counter_id");
 
             var guildECQuery = EventCounterHelper.CreateQuery<GuildID, GuildEventCounterType>(pool,
                 EventCountersGuildTable.TableName, "guild_id", "guild_event_counter_id");
@@ -54,13 +55,17 @@ namespace DemoGame.Server
             var itemTemplateECQuery = EventCounterHelper.CreateQuery<ItemTemplateID, ItemTemplateEventCounterType>(pool,
                 EventCountersItemTemplateTable.TableName, "item_template_id", "item_template_event_counter_id");
 
+            var npcECQuery = EventCounterHelper.CreateQuery<CharacterTemplateID, NPCEventCounterType>(pool,
+                EventCountersNpcTable.TableName, "npc_template_id", "npc_event_counter_id");
+
             // Create the event counters
-            _userEventCounter = new EventCounter<CharacterTemplateID, UserEventCounterType>(userECQuery);
+            _userEventCounter = new EventCounter<CharacterID, UserEventCounterType>(userECQuery);
             _guildEventCounter = new EventCounter<GuildID, GuildEventCounterType>(guildECQuery);
             _shopEventCounter = new EventCounter<ShopID, ShopEventCounterType>(shopECQuery);
             _mapEventCounter = new EventCounter<MapID, MapEventCounterType>(mapECQuery);
             _questEventCounter = new EventCounter<QuestID, QuestEventCounterType>(questECQuery);
             _itemTemplateEventCounter = new EventCounter<ItemTemplateID, ItemTemplateEventCounterType>(itemTemplateECQuery);
+            _npcEventCounter = new EventCounter<CharacterTemplateID, NPCEventCounterType>(npcECQuery);
         }
 
         /// <summary>
@@ -106,9 +111,17 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the <see cref="IEventCounter{T,U}"/> for <see cref="User"/> events.
         /// </summary>
-        public static EventCounter<CharacterTemplateID, UserEventCounterType> User
+        public static EventCounter<CharacterID, UserEventCounterType> User
         {
             get { return _userEventCounter; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEventCounter{T,U}"/> for <see cref="NPC"/> events.
+        /// </summary>
+        public static EventCounter<CharacterTemplateID, NPCEventCounterType> NPC
+        {
+            get { return _npcEventCounter; }
         }
 
         /// <summary>
@@ -122,6 +135,7 @@ namespace DemoGame.Server
             Quest.Flush();
             Shop.Flush();
             User.Flush();
+            NPC.Flush();
         }
     }
 }

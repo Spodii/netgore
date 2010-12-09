@@ -128,6 +128,7 @@
     <Compile Include="DbObjs\DbExtensions\EventCountersGuildTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\EventCountersItemTemplateTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\EventCountersMapTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\EventCountersNpcTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\EventCountersQuestTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\EventCountersShopTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\EventCountersUserTableDbExtensions.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="DbObjs\EventCountersGuildTable.cs" />
     <Compile Include="DbObjs\EventCountersItemTemplateTable.cs" />
     <Compile Include="DbObjs\EventCountersMapTable.cs" />
+    <Compile Include="DbObjs\EventCountersNpcTable.cs" />
     <Compile Include="DbObjs\EventCountersQuestTable.cs" />
     <Compile Include="DbObjs\EventCountersShopTable.cs" />
     <Compile Include="DbObjs\EventCountersUserTable.cs" />
