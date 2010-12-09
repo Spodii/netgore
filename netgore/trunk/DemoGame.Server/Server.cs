@@ -337,8 +337,9 @@ namespace DemoGame.Server
 
             // Once the thread reaches this point, it means it is closing since the main loop has stopped
 
-            // Update the world stats one last time before the server closes
+            // Update the world stats and events one last time before the server closes
             worldStatsTracker.Update();
+            EventCounterManager.FlushAll();
 
             // Dispose
             if (ServerSockets != null)

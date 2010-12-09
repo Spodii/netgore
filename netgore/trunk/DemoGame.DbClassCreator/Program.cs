@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using DemoGame.Server;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
@@ -160,6 +161,13 @@ For more information on the DbClassCreator, please see:
                 generator.AddCustomType(typeof(ShopID), "*", "shop_id");
                 generator.AddCustomType(typeof(ActionDisplayID), "*", "action_display_id");
                 generator.AddCustomType(typeof(SkillType), "*", "skill_id");
+
+                generator.AddCustomType(typeof(UserEventCounterType), "*", "user_event_counter_type");
+                generator.AddCustomType(typeof(ShopEventCounterType), "*", "shop_event_counter_type");
+                generator.AddCustomType(typeof(QuestEventCounterType), "*", "quest_event_counter_type");
+                generator.AddCustomType(typeof(MapEventCounterType), "*", "map_event_counter_type");
+                generator.AddCustomType(typeof(ItemTemplateEventCounterType), "*", "item_template_event_counter_type");
+                generator.AddCustomType(typeof(GuildEventCounterType), "*", "guild_event_counter_type");
 
                 // Renaming
                 var formatter = generator.Formatter;

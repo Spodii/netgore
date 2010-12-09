@@ -56,18 +56,18 @@ namespace NetGore.Features.EventCounters
             var f = qb.Functions;
             var s = qb.Settings;
 
-            qb.Insert(tableName)
-                .Add(objectKeyName, _objectParameterName)
-                .Add(eventKeyName, _eventParameterName)
-                .Add(counterColumnName, _counterParameterName)
+            var q = qb.Insert(tableName)
+                .AddParam(objectKeyName, _objectParameterName)
+                .AddParam(eventKeyName, _eventParameterName)
+                .AddParam(counterColumnName, _counterParameterName)
                 .ODKU()
                 .Add(_counterParameterName,
                     f.Add(s.EscapeColumn(counterColumnName), s.Parameterize(_counterParameterName)));
 
-            return qb.ToString();
+            var ret = q.ToString();
+            return ret;
         }
 
-        [DbControllerQuery]
         class EventCounterQuery<TObjectID, TEventID> : DbQueryNonReader<ObjectEventAmount<TObjectID, TEventID>>
         {
             /// <summary>

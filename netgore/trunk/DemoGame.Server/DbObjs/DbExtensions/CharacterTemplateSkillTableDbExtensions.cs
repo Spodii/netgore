@@ -16,117 +16,130 @@ For more information on the DbClassCreator, please see:
 ********************************************************************/
 
 using System;
-using System.Data;
 using System.Linq;
-using DemoGame.DbObjs;
+using NetGore;
+using NetGore.IO;
+using System.Collections.Generic;
+using System.Collections;
 using NetGore.Db;
-
+using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
-    /// <summary>
-    /// Contains extension methods for class CharacterTemplateSkillTable that assist in performing
-    /// reads and writes to and from a database.
-    /// </summary>
-    public static class CharacterTemplateSkillTableDbExtensions
-    {
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-        ///  this method will not create them if they are missing.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this ICharacterTemplateSkillTable source, DbParameterValues paramValues)
-        {
-            paramValues["character_template_id"] = (UInt16)source.CharacterTemplateID;
-            paramValues["skill_id"] = (Byte)source.SkillID;
-        }
+/// <summary>
+/// Contains extension methods for class CharacterTemplateSkillTable that assist in performing
+/// reads and writes to and from a database.
+/// </summary>
+public static  class CharacterTemplateSkillTableDbExtensions
+{
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+///  this method will not create them if they are missing.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void CopyValues(this ICharacterTemplateSkillTable source, NetGore.Db.DbParameterValues paramValues)
+{
+paramValues["character_template_id"] = (System.UInt16)source.CharacterTemplateID;
+paramValues["skill_id"] = (System.Byte)source.SkillID;
+}
 
-        /// <summary>
-        /// Checks if this <see cref="ICharacterTemplateSkillTable"/> contains the same values as another <see cref="ICharacterTemplateSkillTable"/>.
-        /// </summary>
-        /// <param name="source">The source <see cref="ICharacterTemplateSkillTable"/>.</param>
-        /// <param name="otherItem">The <see cref="ICharacterTemplateSkillTable"/> to compare the values to.</param>
-        /// <returns>
-        /// True if this <see cref="ICharacterTemplateSkillTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
-        /// </returns>
-        public static Boolean HasSameValues(this ICharacterTemplateSkillTable source, ICharacterTemplateSkillTable otherItem)
-        {
-            return Equals(source.CharacterTemplateID, otherItem.CharacterTemplateID) && Equals(source.SkillID, otherItem.SkillID);
-        }
+/// <summary>
+/// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
+/// object's properties. The database column's name is used to as the key, so the value
+/// will not be found if any aliases are used or not all columns were selected.
+/// </summary>
+/// <param name="source">The object to add the extension method to.</param>
+/// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this CharacterTemplateSkillTable source, System.Data.IDataRecord dataRecord)
+{
+System.Int32 i;
 
-        /// <summary>
-        /// Reads the values from an <see cref="IDataRecord"/> and assigns the read values to this
-        /// object's properties. The database column's name is used to as the key, so the value
-        /// will not be found if any aliases are used or not all columns were selected.
-        /// </summary>
-        /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataRecord">The <see cref="IDataRecord"/> to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this CharacterTemplateSkillTable source, IDataRecord dataRecord)
-        {
-            Int32 i;
+i = dataRecord.GetOrdinal("character_template_id");
 
-            i = dataRecord.GetOrdinal("character_template_id");
+source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataRecord.GetUInt16(i);
 
-            source.CharacterTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
+i = dataRecord.GetOrdinal("skill_id");
 
-            i = dataRecord.GetOrdinal("skill_id");
+source.SkillID = (DemoGame.SkillType)(DemoGame.SkillType)dataRecord.GetByte(i);
+}
 
-            source.SkillID = (SkillType)dataRecord.GetByte(i);
-        }
+/// <summary>
+/// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
+/// object's properties. Unlike ReadValues(), this method not only doesn't require
+/// all values to be in the <see cref="IDataReader"/>, but also does not require the values in
+/// the <see cref="IDataReader"/> to be a defined field for the table this class represents.
+/// Because of this, you need to be careful when using this method because values
+/// can easily be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to add the extension method to.</param>
+/// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this CharacterTemplateSkillTable source, System.Data.IDataRecord dataRecord)
+{
+for (int i = 0; i < dataRecord.FieldCount; i++)
+{
+switch (dataRecord.GetName(i))
+{
+case "character_template_id":
+source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataRecord.GetUInt16(i);
+break;
 
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
-        /// match one of the column names, or if there is no field for a key, then it will be
-        /// ignored. Because of this, it is important to be careful when using this method
-        /// since columns or keys can be skipped without any indication.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this ICharacterTemplateSkillTable source, DbParameterValues paramValues)
-        {
-            for (var i = 0; i < paramValues.Count; i++)
-            {
-                switch (paramValues.GetParameterName(i))
-                {
-                    case "character_template_id":
-                        paramValues[i] = (UInt16)source.CharacterTemplateID;
-                        break;
 
-                    case "skill_id":
-                        paramValues[i] = (Byte)source.SkillID;
-                        break;
-                }
-            }
-        }
+case "skill_id":
+source.SkillID = (DemoGame.SkillType)(DemoGame.SkillType)dataRecord.GetByte(i);
+break;
 
-        /// <summary>
-        /// Reads the values from an <see cref="IDataReader"/> and assigns the read values to this
-        /// object's properties. Unlike ReadValues(), this method not only doesn't require
-        /// all values to be in the <see cref="IDataReader"/>, but also does not require the values in
-        /// the <see cref="IDataReader"/> to be a defined field for the table this class represents.
-        /// Because of this, you need to be careful when using this method because values
-        /// can easily be skipped without any indication.
-        /// </summary>
-        /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataRecord">The <see cref="IDataReader"/> to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this CharacterTemplateSkillTable source, IDataRecord dataRecord)
-        {
-            for (var i = 0; i < dataRecord.FieldCount; i++)
-            {
-                switch (dataRecord.GetName(i))
-                {
-                    case "character_template_id":
-                        source.CharacterTemplateID = (CharacterTemplateID)dataRecord.GetUInt16(i);
-                        break;
 
-                    case "skill_id":
-                        source.SkillID = (SkillType)dataRecord.GetByte(i);
-                        break;
-                }
-            }
-        }
-    }
+}
+
+}
+}
+
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+/// for the value to be copied over. If any of the keys in the DbParameterValues do not
+/// match one of the column names, or if there is no field for a key, then it will be
+/// ignored. Because of this, it is important to be careful when using this method
+/// since columns or keys can be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void TryCopyValues(this ICharacterTemplateSkillTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "character_template_id":
+paramValues[i] = (System.UInt16)source.CharacterTemplateID;
+break;
+
+
+case "skill_id":
+paramValues[i] = (System.Byte)source.SkillID;
+break;
+
+
+}
+
+}
+}
+
+/// <summary>
+/// Checks if this <see cref="ICharacterTemplateSkillTable"/> contains the same values as another <see cref="ICharacterTemplateSkillTable"/>.
+/// </summary>
+/// <param name="source">The source <see cref="ICharacterTemplateSkillTable"/>.</param>
+/// <param name="otherItem">The <see cref="ICharacterTemplateSkillTable"/> to compare the values to.</param>
+/// <returns>
+/// True if this <see cref="ICharacterTemplateSkillTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
+/// </returns>
+public static System.Boolean HasSameValues(this ICharacterTemplateSkillTable source, ICharacterTemplateSkillTable otherItem)
+{
+return Equals(source.CharacterTemplateID, otherItem.CharacterTemplateID) && 
+Equals(source.SkillID, otherItem.SkillID);
+}
+
+}
+
 }

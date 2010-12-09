@@ -98,6 +98,10 @@
       <Project>{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}</Project>
       <Name>DemoGame.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DemoGame.Server\DemoGame.Server.csproj">
+      <Project>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</Project>
+      <Name>DemoGame.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
