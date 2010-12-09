@@ -109,6 +109,12 @@
     <Compile Include="DbObjs\Interfaces\IAccountCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterSkillTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateSkillTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IEventCountersGuildTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IEventCountersItemTemplateTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IEventCountersMapTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IEventCountersQuestTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IEventCountersShopTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IEventCountersUserTable.cs" />
     <Compile Include="DbObjs\Interfaces\IViewNpcCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\IViewUserCharacterTable.cs" />
     <Compile Include="GlobalSuppressions.cs" />

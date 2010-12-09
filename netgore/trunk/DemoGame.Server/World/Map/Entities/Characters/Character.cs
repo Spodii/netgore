@@ -1564,7 +1564,10 @@ namespace DemoGame.Server
         protected virtual void OnUsedItem(ItemEntity item)
         {
             if (item.Type == ItemType.UseOnce && item.ItemTemplateID.HasValue)
+            {
                 WorldStatsTracker.Instance.AddCountConsumeItem((int)item.ItemTemplateID.Value);
+                EventCounterManager.ItemTemplate.Increment(item.ItemTemplateID.Value, ItemTemplateEventCounterType.Consume);
+            }
         }
 
         /// <summary>

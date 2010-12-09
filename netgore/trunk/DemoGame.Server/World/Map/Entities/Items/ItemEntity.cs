@@ -121,7 +121,10 @@ namespace DemoGame.Server
                 t.ReqStats.Select(x => (Stat<StatType>)x))
         {
             if (ItemTemplateID.HasValue)
+            {
                 WorldStatsTracker.Instance.AddCountCreateItem((int)ItemTemplateID, amount);
+                EventCounterManager.ItemTemplate.Increment(ItemTemplateID.Value, ItemTemplateEventCounterType.Create, amount);
+            }
         }
 
         /// <summary>
