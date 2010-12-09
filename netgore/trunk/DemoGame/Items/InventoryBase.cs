@@ -559,6 +559,22 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the items in this collection.
+        /// </summary>
+        public IEnumerable<T> Items
+        {
+            get
+            {
+                for (var i = new InventorySlot(0); i < _buffer.Length; i++)
+                {
+                    var item = this[i];
+                    if (item != null)
+                        yield return item;
+                }
+            }
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>

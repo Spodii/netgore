@@ -23,6 +23,11 @@ namespace NetGore.World
         int FreeSlots { get; }
 
         /// <summary>
+        /// Gets the items in this collection.
+        /// </summary>
+        IEnumerable<T> Items { get; }
+
+        /// <summary>
         /// Gets the number of inventory slots that are currently occupied (contains an item).
         /// </summary>
         int OccupiedSlots { get; }
