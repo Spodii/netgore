@@ -17,9 +17,12 @@ namespace NetGore.Audio
     public class MusicManager : IMusicManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly IMusicInfo[] _infos;
+        const string _fileName = "music";
+        const string _rootNodeName = "Music";
+
         readonly Dictionary<string, IMusicInfo> _infosByName = new Dictionary<string, IMusicInfo>(StringComparer.OrdinalIgnoreCase);
 
+        IMusicInfo[] _infos;
         bool _loop = true;
         Music _playing;
         IMusicInfo _playingInfo;
@@ -31,31 +34,7 @@ namespace NetGore.Audio
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MusicInfos")]
         public MusicManager()
         {
-            // Load the values from file
-            var values = AudioManager.LoadValues("music", "Music");
-
-            // Create the _infos array large enough to hold all values
-            var max = values.Max(x => x.Value);
-            _infos = new IMusicInfo[max + 1];
-
-            // Populate both collections
-            foreach (var value in values)
-            {
-                var id = new MusicID(value.Value);
-                var musicInfo = new MusicInfo(value.Key, id);
-
-                // Ensure no duplicates
-                if (_infos[(int)id] != null)
-                    throw new DuplicateKeyException(string.Format("Two or more MusicInfos found with the ID `{0}`!", musicInfo.ID));
-
-                if (_infosByName.ContainsKey(musicInfo.Name))
-                    throw new DuplicateKeyException(string.Format("Two or more MusicInfos found with the name `{0}`!",
-                        musicInfo.Name));
-
-                // Add
-                _infosByName.Add(musicInfo.Name, musicInfo);
-                _infos[(int)musicInfo.ID] = musicInfo;
-            }
+            ReloadData();
         }
 
         /// <summary>
@@ -265,12 +244,60 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// Reloads the music information.
+        /// </summary>
+        public void ReloadData()
+        {
+            var values = AudioManager.LoadValues(_fileName, _rootNodeName);
+            var musicInfos = values.Select(x => new MusicInfo(x.Key, new MusicID(x.Value)));
+            ReloadData(musicInfos);
+        }
+
+        /// <summary>
+        /// Reloads the music information.
+        /// </summary>
+        /// <param name="values">All of the <see cref="IMusicInfo"/>s to load.</param>
+        public void ReloadData(IEnumerable<IMusicInfo> values)
+        {
+            _infosByName.Clear();
+
+            values = values.OrderBy(x => x.ID);
+
+            // Create the _infos array large enough to hold all values
+            var max = values.Max(x => (int)x.ID);
+            _infos = new IMusicInfo[max + 1];
+
+            // Populate both collections
+            foreach (var mi in values)
+            {
+                // Ensure no duplicates
+                if (_infos[(int)mi.ID] != null)
+                    throw new DuplicateKeyException(string.Format("Two or more MusicInfos found with the ID `{0}`!", mi.ID));
+
+                if (_infosByName.ContainsKey(mi.Name))
+                    throw new DuplicateKeyException(string.Format("Two or more MusicInfos found with the name `{0}`!", mi.Name));
+
+                // Add
+                _infosByName.Add(mi.Name, mi);
+                _infos[(int)mi.ID] = mi;
+            }
+        }
+
+        /// <summary>
         /// Resumes the currently paused music, if there is any paused music.
         /// </summary>
         public void Resume()
         {
             if (_playing != null && (_playing.Status == SoundStatus.Paused || _playing.Status == SoundStatus.Stopped))
                 _playing.Play();
+        }
+
+        /// <summary>
+        /// Saves the <see cref="IMusicInfo"/>s in this <see cref="IMusicManager"/> to file.
+        /// </summary>
+        public void Save()
+        {
+            AudioManager.WriteValues(_fileName, _rootNodeName, MusicInfos.Select(x => new KeyValuePair<string, int>(x.Name, (int)x.ID)));
         }
 
         /// <summary>

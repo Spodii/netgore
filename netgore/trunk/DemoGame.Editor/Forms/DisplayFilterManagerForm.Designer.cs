@@ -1,4 +1,4 @@
-﻿using DemoGame.Editor.Forms;
+﻿using DemoGame.Editor;
 
 namespace DemoGame.Editor
 {
@@ -35,7 +35,7 @@ namespace DemoGame.Editor
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.pgItem = new System.Windows.Forms.PropertyGrid();
-            this.lstItems = new DemoGame.Editor.Forms.MapDrawFilterHelperListBox();
+            this.lstItems = new DemoGame.Editor.MapDrawFilterHelperListBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();

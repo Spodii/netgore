@@ -17,14 +17,17 @@ namespace NetGore.Audio
     public class SoundManager : ISoundManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const string _fileName = "sounds";
+        const string _rootNodeName = "Sound";
         static readonly float _soundAttenuation = EngineSettings.Instance.SoundAttenuation;
         static readonly float _soundMinDistance = CalculateSoundMinDistance();
         static readonly uint _soundUpdateRate = EngineSettings.Instance.SoundUpdateRate;
 
-        readonly ISoundInfo[] _infos;
         readonly Dictionary<string, ISoundInfo> _infosByName = new Dictionary<string, ISoundInfo>(StringComparer.OrdinalIgnoreCase);
         readonly SoundBuffer[] _soundBuffers;
         readonly List<SoundInstance> _soundInstances = new List<SoundInstance>();
+
+        ISoundInfo[] _infos;
 
         /// <summary>
         /// The time at which sounds will next be updated.
@@ -40,7 +43,7 @@ namespace NetGore.Audio
         public SoundManager(IContentManager contentManager)
         {
             // Load the values from file
-            var values = AudioManager.LoadValues("sounds", "Sound");
+            var values = AudioManager.LoadValues(_fileName, _rootNodeName);
 
             // Create the _infos and _soundBuffers arrays large enough to hold all values
             var max = values.Max(x => x.Value);
@@ -400,6 +403,55 @@ namespace NetGore.Audio
             _soundInstances.Add(si);
 
             return true;
+        }
+
+        /// <summary>
+        /// Reloads the sound information.
+        /// </summary>
+        public void ReloadData()
+        {
+            var values = AudioManager.LoadValues(_fileName, _rootNodeName);
+            var soundInfos = values.Select(x => new SoundInfo(x.Key, new SoundID(x.Value)));
+            ReloadData(soundInfos);
+        }
+
+        /// <summary>
+        /// Reloads the sound information.
+        /// </summary>
+        /// <param name="values">All of the <see cref="ISoundInfo"/>s to load.</param>
+        public void ReloadData(IEnumerable<ISoundInfo> values)
+        {
+            _infosByName.Clear();
+
+            values = values.OrderBy(x => x.ID);
+
+            // Create the _infos array large enough to hold all values
+            var max = values.Max(x => (int)x.ID);
+            _infos = new ISoundInfo[max + 1];
+
+            // Populate both collections
+            foreach (var si in values)
+            {
+                // Ensure no duplicates
+                if (_infos[(int)si.ID] != null)
+                    throw new DuplicateKeyException(string.Format("Two or more SoundInfos found with the ID `{0}`!", si.ID));
+
+                if (_infosByName.ContainsKey(si.Name))
+                    throw new DuplicateKeyException(string.Format("Two or more SoundInfos found with the name `{0}`!", si.Name));
+
+                // Add
+                _infosByName.Add(si.Name, si);
+                _infos[(int)si.ID] = si;
+            }
+        }
+
+        /// <summary>
+        /// Saves the <see cref="ISoundInfo"/>s in this <see cref="ISoundManager"/> to file.
+        /// </summary>
+        public void Save()
+        {
+            AudioManager.WriteValues(_fileName, _rootNodeName,
+                SoundInfos.Select(x => new KeyValuePair<string, int>(x.Name, (int)x.ID)));
         }
 
         /// <summary>
