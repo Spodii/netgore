@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace NetGore.Collections
 {
-
     /// <summary>
     /// A semi-sorted queue that holds it's highest value at the head of the array at all times.
     /// </summary>

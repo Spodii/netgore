@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
@@ -23,6 +22,12 @@ namespace DemoGame.Server
     public class ItemEntity : ItemEntityBase, IItemTable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// The <see cref="ItemID"/> used to represent when an <see cref="ItemEntity"/> has either an invalid or unassigned
+        /// <see cref="ItemID"/>.
+        /// </summary>
+        static readonly ItemID _invalidIDValue = new ItemID(0);
 
         /// <summary>
         /// The <see cref="DeleteItemQuery"/> instance to use.
@@ -47,19 +52,13 @@ namespace DemoGame.Server
         readonly StatCollection<StatType> _baseStats;
         readonly StatCollection<StatType> _reqStats;
 
-        /// <summary>
-        /// The <see cref="ItemID"/> used to represent when an <see cref="ItemEntity"/> has either an invalid or unassigned
-        /// <see cref="ItemID"/>.
-        /// </summary>
-        static readonly ItemID _invalidIDValue = new ItemID(0);
-
-        ItemID _id = _invalidIDValue;
         ActionDisplayID? _actionDisplayID;
         byte _amount = 1;
         string _description;
         string _equippedBody;
         GrhIndex _graphicIndex;
         SPValueType _hp;
+        ItemID _id = _invalidIDValue;
         bool _isPersistent;
         SPValueType _mp;
         string _name;
@@ -618,7 +617,8 @@ namespace DemoGame.Server
         /// </summary>
         void StatCollection_StatChanged(IStatCollection<StatType> sender, StatCollectionStatChangedEventArgs<StatType> e)
         {
-            Debug.Assert(sender.StatCollectionType != StatCollectionType.Modified, "ItemEntity does not use StatCollectionType.Modified.");
+            Debug.Assert(sender.StatCollectionType != StatCollectionType.Modified,
+                "ItemEntity does not use StatCollectionType.Modified.");
 
             var field = e.StatType.GetDatabaseField(sender.StatCollectionType);
             SynchronizeField(field, e.NewValue);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NetGore.World;
 
 namespace NetGore.Features.PeerTrading
@@ -10,9 +11,7 @@ namespace NetGore.Features.PeerTrading
     /// <typeparam name="TItem">The type of the item.</typeparam>
     /// <typeparam name="TItemInfo">The type of the item info.</typeparam>
     public class PeerTradeInfoHandlerChangedEventArgs<TChar, TItem, TItemInfo> : PeerTradeInfoHandlerChangedEventArgs
-        where TChar : Entity
-        where TItem : Entity
-        where TItemInfo : class
+        where TChar : Entity where TItem : Entity where TItemInfo : class
     {
         readonly ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> _newHandler;
         readonly ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> _oldHandler;

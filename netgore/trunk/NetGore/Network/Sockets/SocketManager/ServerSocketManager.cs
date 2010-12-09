@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -125,15 +124,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Disconnects all active connections and rejects incoming connections.
-        /// </summary>
-        public void Shutdown()
-        {
-            if (_local != null)
-                _local.Shutdown(string.Empty);
-        }
-
-        /// <summary>
         /// Handles processing of the underlying connection(s) and promoting data to the upper layer to be handled
         /// by the application. Should be called once per frame.
         /// </summary>
@@ -239,6 +229,15 @@ namespace NetGore.Network
 
                 _local.Recycle(incMsg);
             }
+        }
+
+        /// <summary>
+        /// Disconnects all active connections and rejects incoming connections.
+        /// </summary>
+        public void Shutdown()
+        {
+            if (_local != null)
+                _local.Shutdown(string.Empty);
         }
 
         #endregion

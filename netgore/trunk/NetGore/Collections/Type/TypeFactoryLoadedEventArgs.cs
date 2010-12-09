@@ -25,11 +25,17 @@ namespace NetGore.Collections
         /// <summary>
         /// Gets the <see cref="Type"/> that was loaded.
         /// </summary>
-        public Type LoadedType { get { return _loadedType; } }
+        public Type LoadedType
+        {
+            get { return _loadedType; }
+        }
 
         /// <summary>
         /// Gets the name of the <see cref="Type"/>.
         /// </summary>
-        public string Name { get { return _name; } }
+        public string Name
+        {
+            get { return _name; }
+        }
     }
 }

@@ -7,11 +7,12 @@ namespace NetGore.Stats
     /// <see cref="EventArgs"/> for when the stat value in a <see cref="IStatCollection{T}"/> changes.
     /// </summary>
     /// <typeparam name="TStatType"></typeparam>
-    public class StatCollectionStatChangedEventArgs<TStatType> : EventArgs where TStatType : struct, IComparable, IConvertible, IFormattable
+    public class StatCollectionStatChangedEventArgs<TStatType> : EventArgs
+        where TStatType : struct, IComparable, IConvertible, IFormattable
     {
-        readonly TStatType _statType;
-        readonly StatValueType _oldValue;
         readonly StatValueType _newValue;
+        readonly StatValueType _oldValue;
+        readonly TStatType _statType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatCollectionStatChangedEventArgs&lt;TStatType&gt;"/> class.
@@ -27,18 +28,27 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Gets the stat that changed.
+        /// Gets the new value of the stat.
         /// </summary>
-        public TStatType StatType {get{return _statType; }}
+        public StatValueType NewValue
+        {
+            get { return _newValue; }
+        }
 
         /// <summary>
         /// Gets the old value of the stat.
         /// </summary>
-        public StatValueType OldValue {get{return _oldValue; }}
+        public StatValueType OldValue
+        {
+            get { return _oldValue; }
+        }
 
         /// <summary>
-        /// Gets the new value of the stat.
+        /// Gets the stat that changed.
         /// </summary>
-        public StatValueType NewValue {get{return _newValue; }}
+        public TStatType StatType
+        {
+            get { return _statType; }
+        }
     }
 }

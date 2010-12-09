@@ -26,11 +26,17 @@ namespace DemoGame
         /// <summary>
         /// Gets the item the event is related to.
         /// </summary>
-        public T Item { get { return _item; } }
+        public T Item
+        {
+            get { return _item; }
+        }
 
         /// <summary>
         /// Gets the slot of the item the event is related to.
         /// </summary>
-        public EquipmentSlot Slot { get { return _slot; } }
+        public EquipmentSlot Slot
+        {
+            get { return _slot; }
+        }
     }
 }

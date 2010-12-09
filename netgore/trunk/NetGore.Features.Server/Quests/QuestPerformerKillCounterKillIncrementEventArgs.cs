@@ -10,12 +10,12 @@ namespace NetGore.Features.Quests
     /// <typeparam name="TCharacter"></typeparam>
     /// <typeparam name="TKillID"></typeparam>
     public class QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID> : EventArgs
-         where TCharacter : IQuestPerformer<TCharacter>
+        where TCharacter : IQuestPerformer<TCharacter>
     {
-        readonly IQuest<TCharacter> _quest;
-        readonly TKillID _target;
         readonly ushort _count;
+        readonly IQuest<TCharacter> _quest;
         readonly ushort _reqCount;
+        readonly TKillID _target;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestPerformerKillCounterKillIncrementEventArgs{TCharacter, TKillID}"/> class.
@@ -26,7 +26,7 @@ namespace NetGore.Features.Quests
         /// <paramref name="quest"/>.</param>
         /// <param name="reqCount">The required kill count for completing the quest.</param>
         public QuestPerformerKillCounterKillIncrementEventArgs(IQuest<TCharacter> quest, TKillID target, ushort count,
-        ushort reqCount)
+                                                               ushort reqCount)
         {
             _quest = quest;
             _target = target;
@@ -35,23 +35,35 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Gets the quest that the kill count was incremented on.
-        /// </summary>
-        public IQuest<TCharacter> Quest { get { return _quest; } }
-
-        /// <summary>
-        /// Gets the target that the kill count was incremented for.
-        /// </summary>
-        public TKillID Target { get { return _target; } }
-
-        /// <summary>
         /// Gets the current kill count for the <see cref="Target"/> for the <see cref="Quest"/>.
         /// </summary>
-        public ushort Count { get { return _count; } }
+        public ushort Count
+        {
+            get { return _count; }
+        }
+
+        /// <summary>
+        /// Gets the quest that the kill count was incremented on.
+        /// </summary>
+        public IQuest<TCharacter> Quest
+        {
+            get { return _quest; }
+        }
 
         /// <summary>
         /// Gets the required kill count for completing the quest.
         /// </summary>
-        public ushort ReqCount { get { return _reqCount; } }
+        public ushort ReqCount
+        {
+            get { return _reqCount; }
+        }
+
+        /// <summary>
+        /// Gets the target that the kill count was incremented for.
+        /// </summary>
+        public TKillID Target
+        {
+            get { return _target; }
+        }
     }
 }

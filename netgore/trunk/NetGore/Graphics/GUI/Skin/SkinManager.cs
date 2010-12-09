@@ -16,6 +16,7 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class SkinManager : ISkinManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _borderStylesFileName = "BorderStyles.txt";
 
         readonly Dictionary<string, ControlBorder> _borderCache =
@@ -373,7 +374,7 @@ namespace NetGore.Graphics.GUI
             }
             catch (ArgumentException ex)
             {
-                const string errmsg = 
+                const string errmsg =
                     "Key `{0}` already exists. Multi-threading conflict? This should never happen, but its likely not critical. Exception: {1}";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, key, ex);
@@ -383,8 +384,6 @@ namespace NetGore.Graphics.GUI
             // Return the sprite
             return sprite;
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Removes an <see cref="IGUIManager"/> from this <see cref="ISkinManager"/>.

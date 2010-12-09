@@ -7,9 +7,9 @@ namespace NetGore.Editor.Grhs
 {
     public class GrhTreeViewEditGrhDataEventArgs : EventArgs
     {
-        readonly TreeNode _node;
-        readonly GrhData _grhData;
         readonly bool _deleteOnCancel;
+        readonly GrhData _grhData;
+        readonly TreeNode _node;
 
         public GrhTreeViewEditGrhDataEventArgs(TreeNode node, GrhData grhData, bool deleteOnCancel)
         {
@@ -18,10 +18,19 @@ namespace NetGore.Editor.Grhs
             _deleteOnCancel = deleteOnCancel;
         }
 
-        public TreeNode TreeNode { get { return _node; } }
+        public bool DeleteOnCancel
+        {
+            get { return _deleteOnCancel; }
+        }
 
-        public GrhData GrhData { get { return _grhData; } }
+        public GrhData GrhData
+        {
+            get { return _grhData; }
+        }
 
-        public bool DeleteOnCancel { get { return _deleteOnCancel; } }
+        public TreeNode TreeNode
+        {
+            get { return _node; }
+        }
     }
 }

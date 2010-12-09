@@ -72,13 +72,21 @@ namespace DemoGame.Client
             {
                 // We canceled
                 if (GameMessageCallback != null)
-                    GameMessageCallback.Raise(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeCanceledByYou, new string[] { OtherCharName }));
+                {
+                    GameMessageCallback.Raise(this,
+                        new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeCanceledByYou,
+                            new string[] { OtherCharName }));
+                }
             }
             else
             {
                 // They canceled
                 if (GameMessageCallback != null)
-                    GameMessageCallback.Raise(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeCanceledByOther, new string[] { OtherCharName }));
+                {
+                    GameMessageCallback.Raise(this,
+                        new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeCanceledByOther,
+                            new string[] { OtherCharName }));
+                }
             }
         }
 
@@ -91,7 +99,10 @@ namespace DemoGame.Client
             base.OnTradeCompleted();
 
             if (GameMessageCallback != null)
-                GameMessageCallback.Raise(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeComplete, new string[] { OtherCharName }));
+            {
+                GameMessageCallback.Raise(this,
+                    new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeComplete, new string[] { OtherCharName }));
+            }
         }
 
         /// <summary>
@@ -103,7 +114,10 @@ namespace DemoGame.Client
             base.OnTradeOpened();
 
             if (GameMessageCallback != null)
-                GameMessageCallback.Raise(this, new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeOpened, new string[] { OtherCharName }));
+            {
+                GameMessageCallback.Raise(this,
+                    new ClientPeerTradeInfoHandlerEventArgs(GameMessage.PeerTradingTradeOpened, new string[] { OtherCharName }));
+            }
         }
 
         /// <summary>

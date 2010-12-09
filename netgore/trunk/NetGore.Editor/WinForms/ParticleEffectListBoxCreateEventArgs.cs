@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NetGore.Editor.WinForms
 {
@@ -21,6 +22,9 @@ namespace NetGore.Editor.WinForms
         /// <summary>
         /// Gets the name of the effect.
         /// </summary>
-        public string EffectName { get { return _effectName; } }
+        public string EffectName
+        {
+            get { return _effectName; }
+        }
     }
 }

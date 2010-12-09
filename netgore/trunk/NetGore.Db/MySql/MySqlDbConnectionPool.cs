@@ -30,6 +30,16 @@ namespace NetGore.Db.MySql
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates the DbConnection to be used with this ObjectPool.
+        /// </summary>
+        /// <param name="connectionString">ConnectionString to create the DbConnection with.</param>
+        /// <returns>DbConnection to be used with this ObjectPool.</returns>
+        protected override DbConnection CreateConnection(string connectionString)
+        {
+            return new MySqlConnection(connectionString);
+        }
+
+        /// <summary>
         /// Gets the ID for the row that was inserted into the database. Only valid when the
         /// query contains an auto-increment column and the operation being performed is an insert.
         /// </summary>
@@ -48,23 +58,14 @@ namespace NetGore.Db.MySql
             var c = command as MySqlCommand;
             if (c == null)
             {
-                const string errmsg  = "Expected DbCommand `{0}` to be of type `{1}`, but was type `{2}`.";
+                const string errmsg = "Expected DbCommand `{0}` to be of type `{1}`, but was type `{2}`.";
                 throw new TypeException(string.Format(errmsg, command, typeof(MySqlCommand), command.GetType()));
             }
 
-            Debug.Assert(c.LastInsertedId != 0, "The LastInsertedId shouldn't ever be 0 for MySql since AutoIncrement starts at 1...");
+            Debug.Assert(c.LastInsertedId != 0,
+                "The LastInsertedId shouldn't ever be 0 for MySql since AutoIncrement starts at 1...");
 
             return c.LastInsertedId;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates the DbConnection to be used with this ObjectPool.
-        /// </summary>
-        /// <param name="connectionString">ConnectionString to create the DbConnection with.</param>
-        /// <returns>DbConnection to be used with this ObjectPool.</returns>
-        protected override DbConnection CreateConnection(string connectionString)
-        {
-            return new MySqlConnection(connectionString);
         }
 
         /// <summary>

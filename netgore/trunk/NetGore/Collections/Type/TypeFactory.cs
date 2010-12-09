@@ -39,7 +39,8 @@ namespace NetGore.Collections
         /// <param name="useGAC">If true, Assemblies from the Global Assembly Cache will be included. If false,
         /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
         /// be found by this <see cref="TypeFactory"/>.</param>
-        public TypeFactory(Func<Type, bool> typeFilter, TypedEventHandler<TypeFactory, TypeFactoryLoadedEventArgs> loadTypeHandler = null, bool useGAC = false)
+        public TypeFactory(Func<Type, bool> typeFilter,
+                           TypedEventHandler<TypeFactory, TypeFactoryLoadedEventArgs> loadTypeHandler = null, bool useGAC = false)
         {
             _typeFilter = typeFilter;
             _useGAC = useGAC;

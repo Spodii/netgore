@@ -6,14 +6,12 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
-using NetGore;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
-using NetGore.World;
 using SFML.Graphics;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
@@ -31,10 +29,10 @@ namespace DemoGame.Editor
 
         DbEditorForm _frmDbEditor;
         GrhTreeViewForm _frmGrhTreeView;
+        MusicEditorForm _frmMusicEditor;
         NPCChatEditorForm _frmNPCChatEditor;
         SelectedMapObjectsForm _frmSelectedMapObjs;
         SkeletonEditorForm _frmSkeletonEditor;
-        MusicEditorForm _frmMusicEditor;
         SoundEditorForm _frmSoundEditor;
 
         /// <summary>
@@ -100,21 +98,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Updates the screen and world position status bar texts.
-        /// </summary>
-        /// <param name="worldPos">The world position.</param>
-        /// <param name="screenPos">The screen position.</param>
-        public static void UpdateCursorPos(Vector2 worldPos, Vector2 screenPos)
-        {
-            var instance = _instance;
-            if (instance == null)
-                return;
-
-            instance.tssWorldPos.Text = string.Format("World: {0},{1}", worldPos.X, worldPos.Y);
-            instance.tssScreenPos.Text = string.Format("Screen: {0},{1}", screenPos.X, screenPos.Y);
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -175,30 +158,25 @@ namespace DemoGame.Editor
             LoadDockSettings("User");
         }
 
-        /// <summary>
-        /// Handles the VisibleChanged event of the _frmSoundEditor control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void _frmSoundEditor_VisibleChanged(object sender, EventArgs e)
-        {
-            soundEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
-        }
-
-        /// <summary>
-        /// Handles the VisibleChanged event of the _frmMusicEditor control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void _frmMusicEditor_VisibleChanged(object sender, EventArgs e)
-        {
-            musicEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
-        }
-
         void SaveDockSettings(string settingsName)
         {
             var filePath = GetDockSettingsFilePath(settingsName);
             dockPanel.SaveAsXml(filePath);
+        }
+
+        /// <summary>
+        /// Updates the screen and world position status bar texts.
+        /// </summary>
+        /// <param name="worldPos">The world position.</param>
+        /// <param name="screenPos">The screen position.</param>
+        public static void UpdateCursorPos(Vector2 worldPos, Vector2 screenPos)
+        {
+            var instance = _instance;
+            if (instance == null)
+                return;
+
+            instance.tssWorldPos.Text = string.Format("World: {0},{1}", worldPos.X, worldPos.Y);
+            instance.tssScreenPos.Text = string.Format("Screen: {0},{1}", screenPos.X, screenPos.Y);
         }
 
         /// <summary>
@@ -219,6 +197,16 @@ namespace DemoGame.Editor
         void _frmGrhTreeView_VisibleChanged(object sender, EventArgs e)
         {
             grhDatasToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmMusicEditor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmMusicEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            musicEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -249,6 +237,16 @@ namespace DemoGame.Editor
         void _frmSkeletonEditor_VisibleChanged(object sender, EventArgs e)
         {
             skeletonEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the _frmSoundEditor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmSoundEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            soundEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -298,33 +296,6 @@ namespace DemoGame.Editor
                 _frmGrhTreeView.Hide();
         }
 
-
-        /// <summary>
-        /// Handles the Click event of the soundEditorToolStripMenuItem control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void soundEditorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (soundEditorToolStripMenuItem.Checked)
-                _frmSoundEditor.Show(dockPanel, DockState.Float);
-            else
-                _frmSoundEditor.Hide();
-        }
-
-        /// <summary>
-        /// Handles the Click event of the musicEditorToolStripMenuItem control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void musicEditorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (musicEditorToolStripMenuItem.Checked)
-                _frmMusicEditor.Show(dockPanel, DockState.Float);
-            else
-                _frmMusicEditor.Hide();
-        }
-
         /// <summary>
         /// Handles the Click event of the <see cref="loadMapToolStripMenuItem"/> control.
         /// </summary>
@@ -370,6 +341,19 @@ namespace DemoGame.Editor
                 editorFrm.ParticleEffect = effect;
                 editorFrm.Show(dockPanel, DockState.Float);
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the musicEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void musicEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (musicEditorToolStripMenuItem.Checked)
+                _frmMusicEditor.Show(dockPanel, DockState.Float);
+            else
+                _frmMusicEditor.Hide();
         }
 
         /// <summary>
@@ -448,6 +432,19 @@ namespace DemoGame.Editor
                 _frmSkeletonEditor.Show(dockPanel, DockState.Float);
             else
                 _frmSkeletonEditor.Hide();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the soundEditorToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void soundEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (soundEditorToolStripMenuItem.Checked)
+                _frmSoundEditor.Show(dockPanel, DockState.Float);
+            else
+                _frmSoundEditor.Hide();
         }
 
         sealed class DockContentDeserializer

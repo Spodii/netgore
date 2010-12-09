@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
-using NetGore.Editor.WinForms;
 using NetGore.World;
 
 namespace NetGore.Editor.Grhs

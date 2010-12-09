@@ -66,8 +66,10 @@ namespace NetGore.Features.PeerTrading
         /// <summary>
         /// Notifies listeners when the <see cref="PeerTradeInfoHandler"/> property has changed.
         /// </summary>
-        public event TypedEventHandler<PeerTradeFormBase<TChar, TItem, TItemInfo>, 
-            PeerTradeInfoHandlerChangedEventArgs<TChar, TItem, TItemInfo>> PeerTradeInfoHandlerChanged;
+        public event
+            TypedEventHandler
+                <PeerTradeFormBase<TChar, TItem, TItemInfo>, PeerTradeInfoHandlerChangedEventArgs<TChar, TItem, TItemInfo>>
+            PeerTradeInfoHandlerChanged;
 
         /// <summary>
         /// Gets the <see cref="Button"/> used to accept the trade.

@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
-using NetGore.World;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
@@ -18,25 +17,27 @@ namespace DemoGame.Editor
 
         ICamera2D _camera = new Camera2D(Vector2.Zero);
 
+        EditorMap _map;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MapPreviewScreenControl"/> class.
         /// </summary>
         public MapPreviewScreenControl()
         {
             if (!DesignMode && LicenseManager.UsageMode == LicenseUsageMode.Runtime)
-            { 
                 _spriteBatch = new SpriteBatch(null);
-            }
         }
-
-        EditorMap _map;
 
         /// <summary>
         /// Gets or sets the camera used to view the map. The <see cref="ICamera2D.Map"/> property must be
         /// set for the map to be drawn.
         /// </summary>
         [Browsable(false)]
-        public ICamera2D Camera { get { return _camera; } set { _camera = value; } }
+        public ICamera2D Camera
+        {
+            get { return _camera; }
+            set { _camera = value; }
+        }
 
         /// <summary>
         /// Gets or sets the map to preview.
@@ -44,10 +45,19 @@ namespace DemoGame.Editor
         public EditorMap Map
         {
             get { return _map; }
-            set
-            {
-                _map = value;
-            }
+            set { _map = value; }
+        }
+
+        /// <summary>
+        /// Disposes the control
+        /// </summary>
+        /// <param name="disposing">If true, disposes of managed resources</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (!DesignMode)
+                GlobalState.Instance.Tick -= InvokeDrawing;
+
+            base.Dispose(disposing);
         }
 
         void FocusCameraAtScreenPoint(MouseEventArgs e)
@@ -65,36 +75,6 @@ namespace DemoGame.Editor
                 var worldPos = Camera.Map.Size * percent;
                 Camera.CenterOn(worldPos);
             }
-        }
-
-        /// <summary>
-        /// Disposes the control
-        /// </summary>
-        /// <param name="disposing">If true, disposes of managed resources</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (!DesignMode)
-            {
-                GlobalState.Instance.Tick -= InvokeDrawing;
-            }
-
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Derived classes override this to initialize their drawing code.
-        /// </summary>
-        protected override void Initialize()
-        {
-            base.Initialize();
-
-            // We don't want to initialize any of this stuff in the design mode
-            if (DesignMode)
-                return;
-
-            // Add an event hook to the tick timer so we can update ourself
-            GlobalState.Instance.Tick -= InvokeDrawing;
-            GlobalState.Instance.Tick += InvokeDrawing;
         }
 
         /// <summary>
@@ -151,6 +131,22 @@ namespace DemoGame.Editor
                 map.Camera = oldCamera;
                 map.DrawFilter = oldDrawFilter;
             }
+        }
+
+        /// <summary>
+        /// Derived classes override this to initialize their drawing code.
+        /// </summary>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            // We don't want to initialize any of this stuff in the design mode
+            if (DesignMode)
+                return;
+
+            // Add an event hook to the tick timer so we can update ourself
+            GlobalState.Instance.Tick -= InvokeDrawing;
+            GlobalState.Instance.Tick += InvokeDrawing;
         }
 
         /// <summary>

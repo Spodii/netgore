@@ -124,7 +124,7 @@ namespace NetGore.Features.NPCChat
             _evaluationType = value;
 
             if (Changed != null)
-            Changed.Raise(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace NetGore.Features.NPCChat
             _items.AddRange(items.Cast<EditorNPCChatConditionalCollectionItem>());
 
             if (Changed != null)
-            Changed.Raise(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace NetGore.Features.NPCChat
             _items.Add(item);
 
             if (Changed != null)
-            Changed.Raise(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
 
             return true;
         }
@@ -196,7 +196,7 @@ namespace NetGore.Features.NPCChat
             if (success)
             {
                 if (Changed != null)
-                Changed.Raise(this, EventArgs.Empty);
+                    Changed.Raise(this, EventArgs.Empty);
             }
 
             return success;

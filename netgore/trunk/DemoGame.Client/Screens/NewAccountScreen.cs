@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Lidgren.Network;
 using NetGore;
 using NetGore.Graphics.GUI;

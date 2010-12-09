@@ -74,9 +74,7 @@ namespace DemoGame.Server
             var oldValues = _modStats.DeepCopy();
             RecalculateStatBonuses();
             if (!_modStats.HasSameValues(oldValues))
-            {
                 Debug.Fail("Somehow, at some point, the ModStats became out of sync!");
-            }
         }
 
         /// <summary>

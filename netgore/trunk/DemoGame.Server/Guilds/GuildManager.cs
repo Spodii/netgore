@@ -97,16 +97,6 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets all of the guilds loaded from the database.
-        /// </summary>
-        /// <returns>All of the guilds loaded from the database.</returns>
-        protected override IEnumerable<Guild> LoadGuilds()
-        {
-            var guildValues = _dbController.GetQuery<SelectGuildsQuery>().Execute();
-            return guildValues.Select(x => new Guild(this, x));
-        }
-
-        /// <summary>
         /// Tries to create a new guild.
         /// </summary>
         /// <param name="creator">The one trying to create the guild.</param>
@@ -142,6 +132,16 @@ namespace DemoGame.Server.Guilds
 
             // Create the guild instance using the values we just inserted into the database
             return new Guild(this, values);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets all of the guilds loaded from the database.
+        /// </summary>
+        /// <returns>All of the guilds loaded from the database.</returns>
+        protected override IEnumerable<Guild> LoadGuilds()
+        {
+            var guildValues = _dbController.GetQuery<SelectGuildsQuery>().Execute();
+            return guildValues.Select(x => new Guild(this, x));
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Db.QueryBuilder;
@@ -21,11 +20,6 @@ namespace DemoGame.Server.Queries
             QueryAsserts.AreColumns(CharacterTemplateSkillTable.DbColumns, "character_template_id", "skill_id");
         }
 
-        public void Execute(CharacterTemplateID charTemplateID, SkillType skill)
-        {
-            Execute(new KeyValuePair<CharacterTemplateID, SkillType>(charTemplateID, skill));
-        }
-
         /// <summary>
         /// Creates the query for this class.
         /// </summary>
@@ -40,6 +34,11 @@ namespace DemoGame.Server.Queries
             var q =
                 qb.Insert(CharacterTemplateSkillTable.TableName).IgnoreExists().AddAutoParam(CharacterTemplateSkillTable.DbColumns);
             return q.ToString();
+        }
+
+        public void Execute(CharacterTemplateID charTemplateID, SkillType skill)
+        {
+            Execute(new KeyValuePair<CharacterTemplateID, SkillType>(charTemplateID, skill));
         }
 
         /// <summary>

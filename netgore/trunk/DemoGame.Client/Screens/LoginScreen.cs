@@ -205,9 +205,7 @@ namespace DemoGame.Client
         void _btnLogin_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (!_sockets.Connect())
-            {
                 SetError("Already attempting to connect or error occured while creating socket.");
-            }
         }
 
         /// <summary>

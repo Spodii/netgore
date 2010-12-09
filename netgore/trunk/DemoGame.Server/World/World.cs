@@ -205,7 +205,7 @@ namespace DemoGame.Server
                 if (_users.ContainsKey(name))
                 {
                     const string errmsg = "User with name `{0}` already in the _users collection! Cannot add user `{1}`.";
-                    string err = string.Format(errmsg, name, user);
+                    var err = string.Format(errmsg, name, user);
                     if (log.IsErrorEnabled)
                         log.Error(err);
                     Debug.Fail(err);

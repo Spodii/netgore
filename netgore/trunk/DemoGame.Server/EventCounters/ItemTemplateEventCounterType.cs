@@ -1,9 +1,11 @@
-﻿namespace DemoGame.Server
+﻿using System.Linq;
+
+namespace DemoGame.Server
 {
     /// <summary>
     /// The different events for the <see cref="EventCounterManager.ItemTemplate"/>.
     /// </summary>
-    public enum ItemTemplateEventCounterType:byte
+    public enum ItemTemplateEventCounterType : byte
     {
         /// <summary>
         /// Item created.

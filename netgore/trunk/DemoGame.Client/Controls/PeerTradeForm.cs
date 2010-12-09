@@ -273,7 +273,8 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        void PeerTradeInfoHandler_TradeOpened(ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable> sender, EventArgs e)
+        void PeerTradeInfoHandler_TradeOpened(ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable> sender,
+                                              EventArgs e)
         {
             // Figure out which side is for the client, and which side is for the other character
             PeerTradeSidePanel ourSide;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NetGore.Features.PeerTrading
 {
@@ -23,11 +24,17 @@ namespace NetGore.Features.PeerTrading
         /// Gets if the changed slot was on the source character's side.
         /// If false, it was on the target character's side.
         /// </summary>
-        public bool IsSourceSide { get { return _isSourceSide; } }
+        public bool IsSourceSide
+        {
+            get { return _isSourceSide; }
+        }
 
         /// <summary>
         /// Gets the slot that changed.
         /// </summary>
-        public InventorySlot Slot { get { return _slot; } }
+        public InventorySlot Slot
+        {
+            get { return _slot; }
+        }
     }
 }

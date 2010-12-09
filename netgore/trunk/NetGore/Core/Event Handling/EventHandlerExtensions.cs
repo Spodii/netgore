@@ -159,8 +159,8 @@ namespace NetGore
         /// because events typically do not care about the behavior of the listeners and do not handle <see cref="Exception"/>s
         /// created by their listeners. This is especially true for events that have a no return value and pass an immutable
         /// <see cref="EventArgs"/>.</param>
-        public static void Raise<TSender, TEventArgs>(this TypedEventHandler<TSender,TEventArgs> handler, TSender sender, TEventArgs e,
-                                                      bool swallowExceptions = true) where TEventArgs : EventArgs
+        public static void Raise<TSender, TEventArgs>(this TypedEventHandler<TSender, TEventArgs> handler, TSender sender,
+                                                      TEventArgs e, bool swallowExceptions = true) where TEventArgs : EventArgs
         {
             Debug.Assert(e != null, "A null EventArgs should never be used! Use EventArgs.Empty instead.");
 

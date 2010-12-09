@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor;
-using NetGore.Editor.WinForms;
 
 namespace DemoGame.Editor
 {

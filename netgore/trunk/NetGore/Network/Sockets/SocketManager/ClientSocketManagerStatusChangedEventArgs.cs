@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Lidgren.Network;
 
 namespace NetGore.Network
@@ -25,11 +26,17 @@ namespace NetGore.Network
         /// <summary>
         /// Gets the new <see cref="NetConnectionStatus"/>.
         /// </summary>
-        public NetConnectionStatus NewStatus { get { return _newStatus; } }
+        public NetConnectionStatus NewStatus
+        {
+            get { return _newStatus; }
+        }
 
         /// <summary>
         /// Gets the reason for the status change.
         /// </summary>
-        public string Reason { get { return _reason; } }
+        public string Reason
+        {
+            get { return _reason; }
+        }
     }
 }

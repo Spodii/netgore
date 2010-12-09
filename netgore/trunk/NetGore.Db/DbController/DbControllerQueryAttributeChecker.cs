@@ -21,8 +21,9 @@ namespace NetGore.Db
         /// <exception cref="ArgumentNullException"><paramref name="missingAttributeHandler"/> is null.</exception>
         /// <param name="typesToIgnore">Optional array of types to ignore. If a type is in this collection, it will
         /// never be invoked by the <paramref name="missingAttributeHandler"/>.</param>
-        public DbControllerQueryAttributeChecker(TypedEventHandler<DbControllerQueryAttributeChecker, EventArgs<Type>> missingAttributeHandler,
-                                                 params Type[] typesToIgnore)
+        public DbControllerQueryAttributeChecker(
+            TypedEventHandler<DbControllerQueryAttributeChecker, EventArgs<Type>> missingAttributeHandler,
+            params Type[] typesToIgnore)
         {
             if (missingAttributeHandler == null)
                 throw new ArgumentNullException("missingAttributeHandler");

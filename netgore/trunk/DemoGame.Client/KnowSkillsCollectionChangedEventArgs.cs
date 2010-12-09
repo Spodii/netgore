@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DemoGame.Client
 {
@@ -24,11 +25,17 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the skill who's known state has changed.
         /// </summary>
-        public SkillType Skill { get { return _skill; } }
+        public SkillType Skill
+        {
+            get { return _skill; }
+        }
 
         /// <summary>
         /// Gets the current known state (true if the skill was learned, false if it was forgotten).
         /// </summary>
-        public bool Value { get { return _value; } }
+        public bool Value
+        {
+            get { return _value; }
+        }
     }
 }

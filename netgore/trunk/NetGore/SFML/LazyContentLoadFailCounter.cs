@@ -84,9 +84,7 @@ namespace SFML
 
             // If multiple failures, raise a debug assertion
             if (_attempt == _attemptsBeforeAssert)
-            {
                 Debug.Fail(string.Format(errmsg, sender, _attempt, ex));
-            }
 
             // Update delay time
             var now = TickCount.Now;

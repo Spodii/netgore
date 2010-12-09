@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DemoGame.Server
 {
     /// <summary>
     /// The different events for the <see cref="EventCounterManager.User"/>.
     /// </summary>
-    public enum UserEventCounterType:byte
-    { 
+    public enum UserEventCounterType : byte
+    {
     }
 }

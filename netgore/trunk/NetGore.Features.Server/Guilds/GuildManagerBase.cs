@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.Collections;
-using NetGore.Db;
 
 namespace NetGore.Features.Guilds
 {
@@ -22,14 +21,14 @@ namespace NetGore.Features.Guilds
         readonly object _createSync = new object();
 
         /// <summary>
-        /// Object used to lock when accessing the <see cref="_guilds"/> collection.
-        /// </summary>
-        readonly object _guildsSync = new object();
-
-        /// <summary>
         /// The collection of guilds, indexed by their <see cref="GuildID"/>.
         /// </summary>
         readonly TSDictionary<GuildID, T> _guilds = new TSDictionary<GuildID, T>();
+
+        /// <summary>
+        /// Object used to lock when accessing the <see cref="_guilds"/> collection.
+        /// </summary>
+        readonly object _guildsSync = new object();
 
         /// <summary>
         /// Loads all the guild information into the guild manager. This should only be called once, preferably in
@@ -79,6 +78,16 @@ namespace NetGore.Features.Guilds
                                                  string arg0, string arg1, string arg2);
 
         /// <summary>
+        /// Tries to create a new guild.
+        /// </summary>
+        /// <param name="creator">The one trying to create the guild.</param>
+        /// <param name="name">The name of the guild to create.</param>
+        /// <param name="tag">The tag for the guild to create.</param>
+        /// <returns>The created guild instance if successfully created, or null if the guild could not
+        /// be created.</returns>
+        protected abstract T InternalTryCreateGuild(IGuildMember creator, string name, string tag);
+
+        /// <summary>
         /// Gets if the <paramref name="creator"/> is allowed to create a guild.
         /// </summary>
         /// <param name="creator">The one trying to create the guild.</param>
@@ -96,16 +105,6 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <returns>All of the guilds loaded from the database.</returns>
         protected abstract IEnumerable<T> LoadGuilds();
-
-        /// <summary>
-        /// Tries to create a new guild.
-        /// </summary>
-        /// <param name="creator">The one trying to create the guild.</param>
-        /// <param name="name">The name of the guild to create.</param>
-        /// <param name="tag">The tag for the guild to create.</param>
-        /// <returns>The created guild instance if successfully created, or null if the guild could not
-        /// be created.</returns>
-        protected abstract T InternalTryCreateGuild(IGuildMember creator, string name, string tag);
 
         #region IGuildManager<T> Members
 

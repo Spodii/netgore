@@ -162,7 +162,7 @@ namespace NetGore.Features.NPCChat
             _parameters.AddRange(newParameters);
 
             if (Changed != null)
-            Changed.Raise(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace NetGore.Features.NPCChat
             _parameters.AddRange(parameters);
 
             if (Changed != null)
-            Changed.Raise(this,EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace NetGore.Features.NPCChat
             _parameters[index] = value;
 
             if (Changed != null)
-            Changed.Raise(this, EventArgs.Empty);
+                Changed.Raise(this, EventArgs.Empty);
 
             return true;
         }

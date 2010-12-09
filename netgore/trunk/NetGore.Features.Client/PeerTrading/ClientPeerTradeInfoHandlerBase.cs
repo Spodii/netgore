@@ -48,22 +48,34 @@ namespace NetGore.Features.PeerTrading
         /// <summary>
         /// Notifies listeners when the trade accepting status has changed for one of the characters.
         /// </summary>
-        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs> AcceptStatusChanged;
+        public event
+            TypedEventHandler
+                <ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs>
+            AcceptStatusChanged;
 
         /// <summary>
         /// Notifies listeners when the amount of cash a character has placed in the trade has changed.
         /// </summary>
-        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerCashChangedEventArgs> CashUpdated;
+        public event
+            TypedEventHandler
+                <ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerCashChangedEventArgs>
+            CashUpdated;
 
         /// <summary>
         /// Notifies listeners when a slot on the trade table has been updated.
         /// </summary>
-        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerSlotUpdatedEventArgs> SlotUpdated;
+        public event
+            TypedEventHandler
+                <ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerSlotUpdatedEventArgs>
+            SlotUpdated;
 
         /// <summary>
         /// Notifies listeners when a trade session has been canceled.
         /// </summary>
-        public event TypedEventHandler<ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerTradeCanceledEventArgs> TradeCanceled;
+        public event
+            TypedEventHandler
+                <ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo>, ClientPeerTradeInfoHandlerTradeCanceledEventArgs>
+            TradeCanceled;
 
         /// <summary>
         /// Notifies listeners when a trade session has been closed (either completed or canceled).
@@ -95,7 +107,8 @@ namespace NetGore.Features.PeerTrading
 
                 OnAcceptStatusChanged(true, _hasSourceAccepted);
                 if (AcceptStatusChanged != null)
-                    AcceptStatusChanged.Raise(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(true, _hasTargetAccepted));
+                    AcceptStatusChanged.Raise(this,
+                        new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(true, _hasTargetAccepted));
             }
         }
 
@@ -114,7 +127,8 @@ namespace NetGore.Features.PeerTrading
 
                 OnAcceptStatusChanged(false, _hasTargetAccepted);
                 if (AcceptStatusChanged != null)
-                    AcceptStatusChanged.Raise(this, new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(false, _hasTargetAccepted));
+                    AcceptStatusChanged.Raise(this,
+                        new ClientPeerTradeInfoHandlerAcceptStatusChangedEventArgs(false, _hasTargetAccepted));
             }
         }
 
@@ -389,7 +403,7 @@ namespace NetGore.Features.PeerTrading
 
             // Raise events
             OnTradeClosed();
-            
+
             if (TradeClosed != null)
                 TradeClosed.Raise(this, EventArgs.Empty);
         }
@@ -403,7 +417,7 @@ namespace NetGore.Features.PeerTrading
 
             // Raise events
             OnTradeCompleted();
-            
+
             if (TradeCompleted != null)
                 TradeCompleted.Raise(this, EventArgs.Empty);
         }
@@ -434,7 +448,7 @@ namespace NetGore.Features.PeerTrading
 
             // Raise events
             OnTradeOpened();
-            
+
             if (TradeOpened != null)
                 TradeOpened.Raise(this, EventArgs.Empty);
         }
