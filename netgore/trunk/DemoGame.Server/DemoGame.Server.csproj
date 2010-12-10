@@ -476,8 +476,6 @@
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AISettings.cs" />
-    <Compile Include="World\Map\Entities\Characters\AI\StateMachine.SideScroller.cs" />
-    <Compile Include="World\Map\Entities\Characters\AI\StateMachine.TopDown.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\TestAI.SideScroller.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\TestAI.TopDown.cs" />
     <Compile Include="World\Map\Entities\Characters\Alliance\Alliance.cs" />
