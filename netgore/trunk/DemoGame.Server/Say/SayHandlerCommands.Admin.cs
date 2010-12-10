@@ -19,7 +19,7 @@ namespace DemoGame.Server
         public void CreateMapInstance(MapID mapID)
         {
             // Check for a valid map
-            if (!MapBase.IsMapIDValid(mapID))
+            if (!MapBase.MapIDExists(mapID))
             {
                 UserChat("Invalid map ID: " + mapID);
                 return;

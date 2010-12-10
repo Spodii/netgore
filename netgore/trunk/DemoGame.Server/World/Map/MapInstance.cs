@@ -50,7 +50,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="mapID">ID of the Map to create the instance of.</param>
         /// <param name="world">World that the <see cref="MapInstance"/> will be inside of.</param>
-        /// <exception cref="ArgumentException"><paramref name="mapID"/> returned false for <see cref="MapBase.IsMapIDValid"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="mapID"/> returned false for <see cref="MapBase.MapIDExists"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="world"/> is null.</exception>
         public MapInstance(MapID mapID, World world) : base(mapID, world)
         {

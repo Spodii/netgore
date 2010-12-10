@@ -188,7 +188,7 @@ namespace DemoGame.Server
         public void Warp(MapID mapID, int x, int y)
         {
             // Check for a valid map
-            if (!MapBase.IsMapIDValid(mapID))
+            if (!MapBase.MapIDExists(mapID))
             {
                 UserChat("Invalid map ID `{0}`.", mapID);
                 return;
