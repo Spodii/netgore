@@ -35,8 +35,8 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionSwallower"/> class.
         /// </summary>
-        /// <param name="rethrow">If <see cref="Exception"/>s should be rethrown. Default and recommended value is false.</param>
-        public ExceptionSwallower(bool rethrow = false)
+        /// <param name="rethrow">If <see cref="Exception"/>s should be rethrown</param>
+        public ExceptionSwallower(bool rethrow = true)
         {
             _rethrow = rethrow;
         }
@@ -58,8 +58,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets if <see cref="Exception"/>s should be re-thrown after being swallowed. This will likely always be false, but support
-        /// for rethrowing (using "throw;" inside of an exception block) should still be supported.
+        /// Gets if <see cref="Exception"/>s should be re-thrown after being swallowed.
         /// </summary>
         /// <example>
         /// try {
