@@ -72,7 +72,7 @@ namespace DemoGame.Editor
         {
             const string confirmMsg =
                 @"Do you wish to save the map ({0}) before closing?
-If you do not save, all chances will be lost.";
+If you do not save, all changes will be lost.";
 
             // Save?
             var map = mapScreen.Map;
