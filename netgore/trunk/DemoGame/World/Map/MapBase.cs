@@ -83,7 +83,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="mapID">ID of the map.</param>
         /// <param name="getTime">Interface used to get the time.</param>
-        /// <exception cref="ArgumentException"><paramref name="mapID"/> returned false for <see cref="MapBase.IsMapIDValid"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="mapID"/> returned false for <see cref="MapBase.MapIDExists"/>.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="getTime"/> is null.</exception>
         protected MapBase(MapID mapID, IGetTime getTime)
         {
@@ -562,8 +562,8 @@ namespace DemoGame
         /// Checks if a <see cref="MapID"/> is valid and a map exists with the given ID.
         /// </summary>
         /// <param name="mapID">The ID to check.</param>
-        /// <returns>True if the <paramref name="mapID"/> is valid; otherwise false.</returns>
-        public static bool IsMapIDValid(MapID mapID)
+        /// <returns>True if the <paramref name="mapID"/> is valid and exists; otherwise false.</returns>
+        public static bool MapIDExists(MapID mapID)
         {
             var path = GetMapFilePath(ContentPaths.Build, mapID);
             if (!File.Exists(path))

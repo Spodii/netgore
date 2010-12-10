@@ -13,6 +13,7 @@ using NetGore.Db;
 using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
+using NetGore.Editor.WinForms;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
@@ -174,6 +175,14 @@ namespace DemoGame.Editor
                     const string confirmMsg = "Are you sure you wish to save the changes to map `{0}`?";
                     if (MessageBox.Show(string.Format(confirmMsg, map), "Save map?", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
+
+                    // NOTE: Wasn't sure if it should go in here or outside this clause.  Just move it out if it's better there.
+                    int newId = 0;
+                    if (int.TryParse(InputBox.Show("Save as...", "Save as map id:", map.ID.ToString()), out newId))
+                    {
+
+                    }
+                    map.ChangeID((MapID)newId);
                 }
 
                 // Add the MapGrh-bound walls
@@ -227,14 +236,34 @@ namespace DemoGame.Editor
 
                 var newID = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
-                // Confirm save
-                if (showConfirmation)
+                int newSetID = 0;
+                if (int.TryParse(InputBox.Show("Save as...", "Save map ID as:", newID.ToString()), out newSetID))
                 {
-                    const string confirmMsg = "Are you sure you wish to save map `{0}` as a new map (with ID `{1}`)?";
-                    if (MessageBox.Show(string.Format(confirmMsg, map, newID), "Save map as?", MessageBoxButtons.YesNo) ==
-                        DialogResult.No)
-                        return;
+                    if (!MapBase.MapIDExists((MapID)newSetID))
+                    {
+                        newID = ((MapID)newSetID);                
+                        // Confirm save
+                        
+                        if (showConfirmation)
+                        {
+                            const string confirmMsg = "Are you sure you wish to save map `{0}` as a new map (with ID `{1}`)?";
+                            if (MessageBox.Show(string.Format(confirmMsg, map, newID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
+                                return;
+                        }
+                    }
+                    else
+                    {
+                        const string confirmMsgOverWrite = "Are you sure you wish to save map `{0}` and overwrite map (with ID `{1}`)?";
+                        if (MessageBox.Show(string.Format(confirmMsgOverWrite, map.ID, newSetID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
+                            return;
+
+                        newID = ((MapID)newSetID);
+                    }
                 }
+
+
+               
+
 
                 // Change the map ID
                 map.ChangeID(newID);
