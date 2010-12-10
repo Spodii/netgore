@@ -6,6 +6,7 @@
 
 #if TOPDOWN
 
+using System;
 using DemoGame.Server.AI;
 using NetGore;
 using NetGore.AI;
