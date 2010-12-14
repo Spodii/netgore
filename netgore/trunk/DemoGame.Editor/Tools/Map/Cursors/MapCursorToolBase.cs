@@ -168,6 +168,10 @@ namespace DemoGame.Editor.Tools
             if (camera == null)
                 return;
 
+            // Only draw for the map under the cursor
+            if (map != _mouseOverMap)
+                return;
+
             if (IsSelecting)
             {
                 // Draw the selection area
@@ -243,6 +247,12 @@ namespace DemoGame.Editor.Tools
         }
 
         /// <summary>
+        /// The map the cursor is currently or was last over. Once set, doesn't get unset, so don't rely on it telling
+        /// you that no map is under the cursor.
+        /// </summary>
+        EditorMap _mouseOverMap = null;
+
+        /// <summary>
         /// Handles when the mouse moves over a map.
         /// </summary>
         /// <param name="sender">The <see cref="IToolTargetMapContainer"/> the event came from. Cannot be null.</param>
@@ -252,6 +262,8 @@ namespace DemoGame.Editor.Tools
         protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
                                                        MouseEventArgs e)
         {
+            _mouseOverMap = map;
+
             var worldPos = camera.ToWorld(e.Position());
 
             if (IsSelecting)
