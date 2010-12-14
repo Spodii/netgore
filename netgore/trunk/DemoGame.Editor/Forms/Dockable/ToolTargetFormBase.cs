@@ -34,6 +34,27 @@ namespace DemoGame.Editor
         public ToolBarVisibility ToolBarVisibility { get; set; }
 
         /// <summary>
+        /// Handles when the form receives focus.
+        /// </summary>
+        void FormFocused()
+        {
+            if (DesignMode)
+                return;
+
+            // Set the ToolBarVisibility to that of this form
+            ToolBar.CurrentToolBarVisibility = ToolBarVisibility;
+
+            // Grab the corresponding ToolBar
+            var tb = ToolBar.GetToolBar(ToolBarVisibility);
+            if (tb != null)
+            {
+                // Set the ToolBar's object
+                var toolBarObj = GetToolBarObject();
+                tb.DisplayObject = toolBarObj;
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the object that represents the focus of this <see cref="ToolTargetFormBase"/>
         /// and what the <see cref="ToolBar"/> is being displayed for.
         /// </summary>
@@ -55,14 +76,35 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
-            ToolBar.CurrentToolBarVisibility = ToolBarVisibility;
+            FormFocused();
+        }
 
-            var tb = ToolBar.GetToolBar(ToolBarVisibility);
-            if (tb != null)
-            {
-                var toolBarObj = GetToolBarObject();
-                tb.DisplayObject = toolBarObj;
-            }
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Enter"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        protected override void OnEnter(EventArgs e)
+        {
+            base.OnEnter(e);
+
+            if (DesignMode)
+                return;
+
+            FormFocused();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.GotFocus"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+
+            if (DesignMode)
+                return;
+
+            FormFocused();
         }
     }
 }
