@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
+using NetGore;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.UI;
@@ -109,6 +110,7 @@ namespace DemoGame.Editor
                 return;
 
             tssInfo.Text = string.Empty;
+            UpdateCursorPos(Vector2.Zero, Vector2.Zero);
 
             Show();
 
@@ -175,8 +177,11 @@ namespace DemoGame.Editor
             if (instance == null)
                 return;
 
-            instance.tssWorldPos.Text = string.Format("World: {0},{1}", worldPos.X, worldPos.Y);
-            instance.tssScreenPos.Text = string.Format("Screen: {0},{1}", screenPos.X, screenPos.Y);
+            instance.tssWorldPos.Text = string.Format("World: {0}{2}{1}", Parser.Current.ToString(worldPos.X),
+                Parser.Current.ToString(worldPos.Y), Parser.Current.NumberFormatInfo.NumberGroupSeparator);
+
+            instance.tssScreenPos.Text = string.Format("Screen: {0}{2}{1}", Parser.Current.ToString(screenPos.X),
+                Parser.Current.ToString(screenPos.Y), Parser.Current.NumberFormatInfo.NumberGroupSeparator);
         }
 
         /// <summary>
