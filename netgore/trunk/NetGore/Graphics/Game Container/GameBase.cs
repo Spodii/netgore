@@ -603,11 +603,11 @@ namespace NetGore.Graphics
             private set
             {
                 // Check that the value is actually changing
-                if (_renderWindow == value)
+                if (RenderWindow == value)
                     return;
 
                 // Store old RenderWindow
-                var oldRW = _renderWindow;
+                var oldRW = RenderWindow;
 
                 // Set new RenderWindow
                 _renderWindow = value;
@@ -620,22 +620,37 @@ namespace NetGore.Graphics
                     // Destroy old custom display container
                     if (_usingCustomDisplayContainer)
                     {
-                        DestroyCustomWindowedDisplayHandle(_displayContainer);
+                        try
+                        {
+                            DestroyCustomWindowedDisplayHandle(_displayContainer);
+                        }
+                        catch (Exception ex)
+                        {
+                            const string errmsg = "Failed to dispose of custom window display handle for `{0}`. Exception: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, _displayContainer, ex);
+                            Debug.Fail(string.Format(errmsg, _displayContainer, ex));
+                        }
+
                         _displayContainer = null;
                     }
                 }
 
-                if (_renderWindow != null)
-                    SetRenderWindowListeners(_renderWindow, false);
+                if (RenderWindow != null)
+                    SetRenderWindowListeners(RenderWindow, false);
 
                 // Raise events
-                OnRenderWindowChanged(oldRW, _renderWindow);
+                OnRenderWindowChanged(oldRW, RenderWindow);
                 if (RenderWindowChanged != null)
-                    RenderWindowChanged.Raise(this, ValueChangedEventArgs.Create(oldRW, _renderWindow));
+                    RenderWindowChanged.Raise(this, ValueChangedEventArgs.Create(oldRW, RenderWindow));
 
                 // Dispose old RenderWindow
                 if (oldRW != null && !oldRW.IsDisposed)
                     oldRW.Dispose();
+
+                // Finally, ensure we are showing the new RenderWindow
+                if (RenderWindow != null)
+                    RenderWindow.Show(true);
             }
         }
 
