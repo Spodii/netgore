@@ -2,16 +2,16 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DemoGame.Client.Properties" GeneratedClassName="ClientSettings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerIP" Type="System.String" Scope="Application">
+    <Setting Name="Network_ServerIP" Type="System.String" Scope="Application">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="SyncGameTimeFrequency" Type="System.UInt32" Scope="Application">
+    <Setting Name="Network_SyncGameTimeFrequency" Type="System.UInt32" Scope="Application">
       <Value Profile="(Default)">600000</Value>
     </Setting>
-    <Setting Name="EnteredUserName" Type="System.String" Scope="User">
+    <Setting Name="UI_EnteredUserName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="EnteredPassword" Type="System.String" Scope="User">
+    <Setting Name="UI_EnteredPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Keys_MoveLeft" Type="SFML.Window.KeyCode" Scope="User">
@@ -101,8 +101,11 @@
     <Setting Name="Graphics_VSync" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="RememberPassword" Type="System.Boolean" Scope="User">
+    <Setting Name="UI_RememberPassword" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Graphics_Fullscreen" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
