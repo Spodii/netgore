@@ -26,42 +26,42 @@ namespace DemoGame.Client.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
-        public string ServerIP {
+        public string Network_ServerIP {
             get {
-                return ((string)(this["ServerIP"]));
+                return ((string)(this["Network_ServerIP"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("600000")]
-        public uint SyncGameTimeFrequency {
+        public uint Network_SyncGameTimeFrequency {
             get {
-                return ((uint)(this["SyncGameTimeFrequency"]));
+                return ((uint)(this["Network_SyncGameTimeFrequency"]));
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EnteredUserName {
+        public string UI_EnteredUserName {
             get {
-                return ((string)(this["EnteredUserName"]));
+                return ((string)(this["UI_EnteredUserName"]));
             }
             set {
-                this["EnteredUserName"] = value;
+                this["UI_EnteredUserName"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EnteredPassword {
+        public string UI_EnteredPassword {
             get {
-                return ((string)(this["EnteredPassword"]));
+                return ((string)(this["UI_EnteredPassword"]));
             }
             set {
-                this["EnteredPassword"] = value;
+                this["UI_EnteredPassword"] = value;
             }
         }
         
@@ -416,12 +416,24 @@ namespace DemoGame.Client.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool RememberPassword {
+        public bool UI_RememberPassword {
             get {
-                return ((bool)(this["RememberPassword"]));
+                return ((bool)(this["UI_RememberPassword"]));
             }
             set {
-                this["RememberPassword"] = value;
+                this["UI_RememberPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Graphics_Fullscreen {
+            get {
+                return ((bool)(this["Graphics_Fullscreen"]));
+            }
+            set {
+                this["Graphics_Fullscreen"] = value;
             }
         }
     }

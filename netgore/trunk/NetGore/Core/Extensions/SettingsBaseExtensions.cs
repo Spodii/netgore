@@ -26,6 +26,7 @@ namespace NetGore
             try
             {
 #pragma warning disable 168
+                // We need to assign the property to some value, even if we don't use the local, so suppress the warning
                 var dummy = settings[propertyName];
 #pragma warning restore 168
             }

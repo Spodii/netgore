@@ -79,7 +79,9 @@ namespace DemoGame.Client
             // Apply some of the initial settings
             ScreenManager.AudioManager.SoundManager.Volume = ClientSettings.Default.Audio_SoundVolume;
             ScreenManager.AudioManager.MusicManager.Volume = ClientSettings.Default.Audio_MusicVolume;
+
             UseVerticalSync = ClientSettings.Default.Graphics_VSync;
+            IsFullscreen = ClientSettings.Default.Graphics_Fullscreen;
 
             // Listen for changes to the settings
             ClientSettings.Default.PropertyChanged += Default_PropertyChanged;
@@ -164,10 +166,12 @@ namespace DemoGame.Client
             const string soundVolumeName = "Audio_SoundVolume";
             const string musicVolumeName = "Audio_MusicVolume";
             const string graphicsVSyncName = "Graphics_VSync";
+            const string graphicsFullscreenName = "Graphics_Fullscreen";
 
             ClientSettings.Default.AssertPropertyExists(soundVolumeName);
             ClientSettings.Default.AssertPropertyExists(musicVolumeName);
             ClientSettings.Default.AssertPropertyExists(graphicsVSyncName);
+            ClientSettings.Default.AssertPropertyExists(graphicsFullscreenName);
 
             var sc = StringComparer.Ordinal;
 
@@ -189,6 +193,12 @@ namespace DemoGame.Client
                 var value = ClientSettings.Default.Graphics_VSync;
                 UseVerticalSync = value;
             }
+            else if (sc.Equals(e.PropertyName, graphicsFullscreenName))
+            {
+                // Fullscreen
+                var value = ClientSettings.Default.Graphics_Fullscreen;
+                IsFullscreen = value;
+            }
         }
 
         /// <summary>
@@ -202,7 +212,7 @@ namespace DemoGame.Client
                 _screenManager.ShowConsole = !_screenManager.ShowConsole;
 
             if (e.Code == KeyCode.Return && e.Alt)
-                IsFullscreen = !IsFullscreen;
+                ClientSettings.Default.Graphics_Fullscreen = !ClientSettings.Default.Graphics_Fullscreen;
         }
 
         /// <summary>

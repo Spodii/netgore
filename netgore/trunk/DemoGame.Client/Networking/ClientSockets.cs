@@ -72,7 +72,7 @@ namespace DemoGame.Client
         /// just that it can be attempted. Will return false if a connection is already established or being established.</returns>
         public bool Connect()
         {
-            return Connect(ClientSettings.Default.ServerIP, CommonConfig.ServerPort);
+            return Connect(ClientSettings.Default.Network_ServerIP, CommonConfig.ServerPort);
         }
 
         /// <summary>

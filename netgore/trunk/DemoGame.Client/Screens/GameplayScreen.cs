@@ -52,7 +52,7 @@ namespace DemoGame.Client
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
         Label _latencyLabel;
-        TickCount _nextSyncGameTime = TickCount.Now + ClientSettings.Default.SyncGameTimeFrequency;
+        TickCount _nextSyncGameTime = TickCount.Now + ClientSettings.Default.Network_SyncGameTimeFrequency;
         PeerTradeForm _peerTradeForm;
         QuickBarForm _quickBarForm;
         ShopForm _shopForm;
@@ -753,7 +753,7 @@ namespace DemoGame.Client
             // Periodically synchronize the game time
             if (Socket != null && _nextSyncGameTime < gameTime)
             {
-                _nextSyncGameTime = gameTime + ClientSettings.Default.SyncGameTimeFrequency;
+                _nextSyncGameTime = gameTime + ClientSettings.Default.Network_SyncGameTimeFrequency;
                 using (var pw = ClientPacket.SynchronizeGameTime())
                 {
                     Socket.Send(pw, ClientMessageType.System);

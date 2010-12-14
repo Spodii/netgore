@@ -69,14 +69,14 @@ namespace DemoGame.Client
         {
             base.Initialize();
 
-            var decodedPass = MachineCrypto.ValidatedDecode(ClientSettings.Default.EnteredPassword) ?? string.Empty;
+            var decodedPass = MachineCrypto.ValidatedDecode(ClientSettings.Default.UI_EnteredPassword) ?? string.Empty;
 
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the login fields
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Name:");
             _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
-            { IsMultiLine = false, Text = ClientSettings.Default.EnteredUserName };
+            { IsMultiLine = false, Text = ClientSettings.Default.UI_EnteredUserName };
             _cNameText.KeyPressed += cNameText_KeyPressed;
             _cNameText.TextChanged += cNameText_TextChanged;
 
@@ -95,7 +95,7 @@ namespace DemoGame.Client
             _cRememberPassword = new CheckBox(cScreen, _cPasswordText.Position + new Vector2(50, _cPasswordText.Size.Y + 8))
             {
                 Text = "Remember Password",
-                Value = ClientSettings.Default.RememberPassword,
+                Value = ClientSettings.Default.UI_RememberPassword,
                 ForeColor = Color.White,
                 Font = GameScreenHelper.DefaultChatFont
             };
@@ -153,12 +153,12 @@ namespace DemoGame.Client
         /// </summary>
         void SaveScreenSettings()
         {
-            ClientSettings.Default.EnteredUserName = _cNameText.Text;
+            ClientSettings.Default.UI_EnteredUserName = _cNameText.Text;
 
-            if (ClientSettings.Default.RememberPassword)
-                ClientSettings.Default.EnteredPassword = MachineCrypto.Encode(_cPasswordText.Text);
+            if (ClientSettings.Default.UI_RememberPassword)
+                ClientSettings.Default.UI_EnteredPassword = MachineCrypto.Encode(_cPasswordText.Text);
             else
-                ClientSettings.Default.EnteredPassword = string.Empty;
+                ClientSettings.Default.UI_EnteredPassword = string.Empty;
 
             ClientSettings.Default.Save();
         }
@@ -215,7 +215,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void _cRememberPassword_ValueChanged(Control sender, EventArgs e)
         {
-            ClientSettings.Default.RememberPassword = _cRememberPassword.Value;
+            ClientSettings.Default.UI_RememberPassword = _cRememberPassword.Value;
             SaveScreenSettings();
         }
 

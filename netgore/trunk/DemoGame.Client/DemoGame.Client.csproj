@@ -285,6 +285,7 @@
     <EmbeddedResource Include="Properties\ClientSettingsDescriptions.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ClientSettingsDescriptions.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
