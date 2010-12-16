@@ -46,7 +46,7 @@ namespace DemoGame.Server
         /// Item was traded in a peer trading session.
         /// </summary>
         PeerTraded = 7,
-        
+
         /// <summary>
         /// Item expired while sitting on the map.
         /// </summary>

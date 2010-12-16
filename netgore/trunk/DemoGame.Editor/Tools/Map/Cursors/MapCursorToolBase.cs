@@ -42,6 +42,13 @@ namespace DemoGame.Editor.Tools
         static readonly Color _selectionAreaColorOuter = new Color(0, 150, 0, 200);
 
         bool _isSelecting = false;
+
+        /// <summary>
+        /// The map the cursor is currently or was last over. Once set, doesn't get unset, so don't rely on it telling
+        /// you that no map is under the cursor.
+        /// </summary>
+        EditorMap _mouseOverMap = null;
+
         Vector2 _selectionEnd = Vector2.Zero;
         Vector2 _selectionStart = Vector2.Zero;
         string _toolTip = string.Empty;
@@ -245,12 +252,6 @@ namespace DemoGame.Editor.Tools
 
             base.MapContainer_MouseDown(sender, map, camera, e);
         }
-
-        /// <summary>
-        /// The map the cursor is currently or was last over. Once set, doesn't get unset, so don't rely on it telling
-        /// you that no map is under the cursor.
-        /// </summary>
-        EditorMap _mouseOverMap = null;
 
         /// <summary>
         /// Handles when the mouse moves over a map.

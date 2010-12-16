@@ -43,15 +43,6 @@ namespace NetGore.Features.EventCounters
         Dictionary<CacheKey, int> _updateCache;
 
         /// <summary>
-        /// Creates a <see cref="Dictionary{T,U}"/> instance for the update cache.
-        /// </summary>
-        /// <returns>A <see cref="Dictionary{T,U}"/> instance for the update cache.</returns>
-        static Dictionary<CacheKey, int> CreateUpdateCache()
-        {
-            return new Dictionary<CacheKey, int>(_keyComparer);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EventCounter{TObjectID, TEventID}"/> class.
         /// </summary>
         /// <param name="query">The query to use to perform updates.</param>
@@ -64,6 +55,15 @@ namespace NetGore.Features.EventCounters
             _updateCache = CreateUpdateCache();
 
             _flushTimer = new Timer(FlushTimerCallback, null, _flushRate, _flushRate);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Dictionary{T,U}"/> instance for the update cache.
+        /// </summary>
+        /// <returns>A <see cref="Dictionary{T,U}"/> instance for the update cache.</returns>
+        static Dictionary<CacheKey, int> CreateUpdateCache()
+        {
+            return new Dictionary<CacheKey, int>(_keyComparer);
         }
 
         /// <summary>
@@ -163,8 +163,9 @@ namespace NetGore.Features.EventCounters
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to execute EventCounter query on `{0}` (object: {1}, event: {2})." + 
-                    " Going to drop the value (value: {3}) instead of retrying. There is a good chance that the exception was caused from"+
+                const string errmsg =
+                    "Failed to execute EventCounter query on `{0}` (object: {1}, event: {2})." +
+                    " Going to drop the value (value: {3}) instead of retrying. There is a good chance that the exception was caused from" +
                     " trying to insert a record for a foreign key that no longer exists, and a much smaller chance that we tried" +
                     " to insert a record for a foreign key that does not yet exist. Exception: {4}";
                 if (log.IsWarnEnabled)

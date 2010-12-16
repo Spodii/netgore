@@ -1491,9 +1491,7 @@ namespace DemoGame.Server
             {
                 var template = w.ItemTemplateID;
                 if (template.HasValue)
-                {
                     EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.CharactersKilled);
-                }
             }
         }
 

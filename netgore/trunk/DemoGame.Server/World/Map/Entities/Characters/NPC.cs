@@ -375,7 +375,8 @@ namespace DemoGame.Server
                 {
                     var template = item.Value.ItemTemplateID;
                     if (template.HasValue)
-                        EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.DroppedAsLoot, item.Value.Amount);
+                        EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.DroppedAsLoot,
+                            item.Value.Amount);
 
                     DropItem(item.Value);
                 }
@@ -486,31 +487,23 @@ namespace DemoGame.Server
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
+        /// <see cref="Character.AttackedByCharacter"/> event. It is recommended you override this method instead of
         /// using the corresponding event when possible.
         /// </summary>
-        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
-        protected override void OnKilledCharacter(Character killed)
+        /// <param name="attacker">The <see cref="Character"/> that attacked us.</param>
+        /// <param name="damage">The amount of damage inflicted on this <see cref="Character"/>.</param>
+        protected override void OnAttackedByCharacter(Character attacker, int damage)
         {
-            base.OnKilledCharacter(killed);
-
             var template = CharacterTemplateID;
-
-            var killedUser = killed as User;
-            if (killedUser != null)
-            {
-                WorldStatsTracker.Instance.AddNPCKillUser(this, killedUser);
-                if (template.HasValue)
-                    WorldStatsTracker.Instance.AddCountNPCKillUser((int)template.Value, (int)killedUser.ID);
-            }
-
             if (template.HasValue)
             {
-                if (killed is User)
-                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillUser);
+                if (attacker is User)
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromUser, damage);
                 else
-                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillNonUser);
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromNonUser, damage);
             }
+
+            base.OnAttackedByCharacter(attacker, damage);
         }
 
         /// <summary>
@@ -537,23 +530,31 @@ namespace DemoGame.Server
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.AttackedByCharacter"/> event. It is recommended you override this method instead of
+        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
         /// using the corresponding event when possible.
         /// </summary>
-        /// <param name="attacker">The <see cref="Character"/> that attacked us.</param>
-        /// <param name="damage">The amount of damage inflicted on this <see cref="Character"/>.</param>
-        protected override void OnAttackedByCharacter(Character attacker, int damage)
+        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
+        protected override void OnKilledCharacter(Character killed)
         {
+            base.OnKilledCharacter(killed);
+
             var template = CharacterTemplateID;
-            if (template.HasValue)
+
+            var killedUser = killed as User;
+            if (killedUser != null)
             {
-                if (attacker is User)
-                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromUser, damage);
-                else
-                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromNonUser, damage);
+                WorldStatsTracker.Instance.AddNPCKillUser(this, killedUser);
+                if (template.HasValue)
+                    WorldStatsTracker.Instance.AddCountNPCKillUser((int)template.Value, (int)killedUser.ID);
             }
 
-            base.OnAttackedByCharacter(attacker, damage);
+            if (template.HasValue)
+            {
+                if (killed is User)
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillUser);
+                else
+                    EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillNonUser);
+            }
         }
 
         /// <summary>

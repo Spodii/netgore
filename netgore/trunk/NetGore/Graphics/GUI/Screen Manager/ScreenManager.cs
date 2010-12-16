@@ -52,7 +52,7 @@ namespace NetGore.Graphics.GUI
 
             _content = ContentManager.Create();
             _drawingManager = new DrawingManager(_game.RenderWindow);
-            
+
             _audioManager = Audio.AudioManager.GetInstance(_content);
 
             // Add event listeners to the input-related events

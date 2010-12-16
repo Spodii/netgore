@@ -19,10 +19,10 @@ namespace DemoGame.Server
         static readonly EventCounter<GuildID, GuildEventCounterType> _guildEventCounter;
         static readonly EventCounter<ItemTemplateID, ItemTemplateEventCounterType> _itemTemplateEventCounter;
         static readonly EventCounter<MapID, MapEventCounterType> _mapEventCounter;
+        static readonly EventCounter<CharacterTemplateID, NPCEventCounterType> _npcEventCounter;
         static readonly EventCounter<QuestID, QuestEventCounterType> _questEventCounter;
         static readonly EventCounter<ShopID, ShopEventCounterType> _shopEventCounter;
         static readonly EventCounter<CharacterID, UserEventCounterType> _userEventCounter;
-        static readonly EventCounter<CharacterTemplateID, NPCEventCounterType> _npcEventCounter;
 
         /// <summary>
         /// Initializes the <see cref="EventCounterManager"/> class.
@@ -93,6 +93,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the <see cref="IEventCounter{T,U}"/> for <see cref="NPC"/> events.
+        /// </summary>
+        public static EventCounter<CharacterTemplateID, NPCEventCounterType> NPC
+        {
+            get { return _npcEventCounter; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="IEventCounter{T,U}"/> for <see cref="Quest"/> events.
         /// </summary>
         public static EventCounter<QuestID, QuestEventCounterType> Quest
@@ -114,14 +122,6 @@ namespace DemoGame.Server
         public static EventCounter<CharacterID, UserEventCounterType> User
         {
             get { return _userEventCounter; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IEventCounter{T,U}"/> for <see cref="NPC"/> events.
-        /// </summary>
-        public static EventCounter<CharacterTemplateID, NPCEventCounterType> NPC
-        {
-            get { return _npcEventCounter; }
         }
 
         /// <summary>

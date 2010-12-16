@@ -43,7 +43,8 @@ namespace DemoGame.Server
             {
                 var template = i.ItemTemplateID;
                 if (template.HasValue)
-                    EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.ExpiredOnMap, item.Amount);
+                    EventCounterManager.ItemTemplate.Increment(template.Value, ItemTemplateEventCounterType.ExpiredOnMap,
+                        item.Amount);
             }
 
             item.Dispose();
