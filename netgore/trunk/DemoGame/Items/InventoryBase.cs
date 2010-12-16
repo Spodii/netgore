@@ -403,6 +403,22 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the items in this collection.
+        /// </summary>
+        public IEnumerable<T> Items
+        {
+            get
+            {
+                for (var i = new InventorySlot(0); i < _buffer.Length; i++)
+                {
+                    var item = this[i];
+                    if (item != null)
+                        yield return item;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the number of inventory slots that are currently occupied (contains an item).
         /// </summary>
         public int OccupiedSlots
@@ -555,22 +571,6 @@ namespace DemoGame
                 var item = this[i];
                 if (item != null)
                     yield return new KeyValuePair<InventorySlot, T>(i, item);
-            }
-        }
-
-        /// <summary>
-        /// Gets the items in this collection.
-        /// </summary>
-        public IEnumerable<T> Items
-        {
-            get
-            {
-                for (var i = new InventorySlot(0); i < _buffer.Length; i++)
-                {
-                    var item = this[i];
-                    if (item != null)
-                        yield return item;
-                }
             }
         }
 

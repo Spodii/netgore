@@ -62,7 +62,7 @@ namespace DemoGame.Editor.UITypeEditors
             if (DesignMode)
                 return;
 
-            var v = IEnumerableExtensions.ToImmutable(Items.Cast<SkillType>());
+            var v = Items.Cast<SkillType>().ToImmutable();
             Items.Clear();
             Items.AddRange(v.OrderBy(x => x.GetValue()).Cast<object>().ToArray());
         }

@@ -1137,14 +1137,13 @@ namespace DemoGame.Server
             }
 
             // Track event
-            WorldStatsTracker.Instance.AddUserShopSellItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
-                shop.ID);
+            WorldStatsTracker.Instance.AddUserShopSellItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash, shop.ID);
 
             if (invItem.ItemTemplateID.HasValue)
             {
                 WorldStatsTracker.Instance.AddCountSellItem((int)invItem.ItemTemplateID.Value, amountToSell);
-                EventCounterManager.ItemTemplate.Increment(invItem.ItemTemplateID.Value,
-                    ItemTemplateEventCounterType.SellToShop, amountToSell);
+                EventCounterManager.ItemTemplate.Increment(invItem.ItemTemplateID.Value, ItemTemplateEventCounterType.SellToShop,
+                    amountToSell);
             }
 
             WorldStatsTracker.Instance.AddCountShopSell((int)shop.ID, amountToSell);
