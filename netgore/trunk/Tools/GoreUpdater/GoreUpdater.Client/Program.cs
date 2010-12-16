@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
-using System.Diagnostics;
 
 namespace GoreUpdater
 {
@@ -17,8 +17,8 @@ namespace GoreUpdater
         [STAThread]
         static void Main(string[] args)
         {
-            bool runUpdater = false;
-            foreach (string arg in args)
+            var runUpdater = false;
+            foreach (var arg in args)
             {
                 if (arg == "-runUpdater")
                     runUpdater = true;
@@ -26,7 +26,6 @@ namespace GoreUpdater
 
             if (runUpdater)
             {
-
                 log.Info("Starting GoreUpdater client...");
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -36,19 +35,18 @@ namespace GoreUpdater
             {
                 try
                 {
-                    
-                    ProcessStartInfo procInfo = new ProcessStartInfo();
+                    var procInfo = new ProcessStartInfo();
                     procInfo.UseShellExecute = true;
-                    procInfo.FileName = Application.ExecutablePath;  //The file in that DIR.
+                    procInfo.FileName = Application.ExecutablePath; //The file in that DIR.
                     procInfo.WorkingDirectory = ""; //The working DIR.
                     procInfo.Verb = "runas";
                     procInfo.Arguments = "-runUpdater";
-                    Process.Start(procInfo);  //Start that process.
+                    Process.Start(procInfo); //Start that process.
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message.ToString());
-                }          
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
     }
