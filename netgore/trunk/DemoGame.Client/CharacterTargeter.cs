@@ -182,10 +182,10 @@ namespace DemoGame.Client
             var cursorPos = gui.CursorPosition;
 
             // Get the character under the cursor
-            MouseOverCharacter = World.Map.Spatial.Get<Character>(World.Camera.Min + cursorPos);
+            MouseOverCharacter = World.Map.Spatial.Get<Character>(World.Camera.ToWorld(cursorPos));
 
             // Update the target character when the left mouse button is down
-            if (!gui.IsMouseButtonDown(MouseButton.Left))
+            if (gui.IsMouseButtonDown(MouseButton.Left))
             {
                 if (MouseOverCharacter != null)
                 {
