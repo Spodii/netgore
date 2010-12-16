@@ -559,20 +559,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Checks if a <see cref="MapID"/> is valid and a map exists with the given ID.
-        /// </summary>
-        /// <param name="mapID">The ID to check.</param>
-        /// <returns>True if the <paramref name="mapID"/> is valid and exists; otherwise false.</returns>
-        public static bool MapIDExists(MapID mapID)
-        {
-            var path = GetMapFilePath(ContentPaths.Build, mapID);
-            if (!File.Exists(path))
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
         /// Checks if a given file is a valid map file by taking a quick look at the file, but not
         /// actually loading it. Files that are validated by this can still fail to load if they
         /// are corrupt.
@@ -815,6 +801,20 @@ namespace DemoGame
             {
                 AddEntity(wall);
             }
+        }
+
+        /// <summary>
+        /// Checks if a <see cref="MapID"/> is valid and a map exists with the given ID.
+        /// </summary>
+        /// <param name="mapID">The ID to check.</param>
+        /// <returns>True if the <paramref name="mapID"/> is valid and exists; otherwise false.</returns>
+        public static bool MapIDExists(MapID mapID)
+        {
+            var path = GetMapFilePath(ContentPaths.Build, mapID);
+            if (!File.Exists(path))
+                return false;
+
+            return true;
         }
 
         /// <summary>
