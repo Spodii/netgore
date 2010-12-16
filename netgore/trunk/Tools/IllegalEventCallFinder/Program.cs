@@ -16,38 +16,19 @@ namespace ConsoleApplication7
 
         const bool _printReason = true;
 
+        static readonly EventIgnore[] _ignoreEvents = new EventIgnore[]
+        {
+            new EventIgnore("ChatForm.cs", "Say"), new EventIgnore("GrhTreeView.cs", "GrhMouseDoubleClick"),
+            new EventIgnore("GrhTreeView.cs", "GrhMouseClick"), new EventIgnore("GrhTreeView.cs", "GrhBeforeSelect"),
+            new EventIgnore("GrhTreeView.cs", "GrhAfterSelect"), new EventIgnore("SkillsForm.cs", "RequestUseSkill"),
+            new EventIgnore("WaterRefractionEffect.cs", "Moved"), new EventIgnore("ExplosionRefractionEffect.cs", "Moved"),
+        };
+
         static readonly string[] _ignores = new string[]
         {
             "\\bin\\", "\\_dependencies\\", "\\\\.svn\\", "\\_ReSharper\\.\\", "\\DevContent\\", "\\Externals\\",
             "\\NetGore.Tests\\", "\\Settings\\", "\\Tools\\", "\\NetGore.Editor\\Docking\\"
         };
-
-        static readonly EventIgnore[] _ignoreEvents = new EventIgnore[]
-        {
-            new EventIgnore("ChatForm.cs", "Say"),
-            new EventIgnore("GrhTreeView.cs", "GrhMouseDoubleClick"),
-            new EventIgnore("GrhTreeView.cs", "GrhMouseClick"),
-            new EventIgnore("GrhTreeView.cs", "GrhBeforeSelect"),
-            new EventIgnore("GrhTreeView.cs", "GrhAfterSelect"),
-            new EventIgnore("SkillsForm.cs", "RequestUseSkill"),
-            new EventIgnore("WaterRefractionEffect.cs", "Moved"),
-            new EventIgnore("ExplosionRefractionEffect.cs", "Moved"),
-        };
-
-        struct EventIgnore
-        {
-            readonly string _fileName;
-            readonly string _eventName;
-
-            public EventIgnore(string fileName, string eventName)
-            {
-                _fileName = fileName;
-                _eventName = eventName;
-            }
-
-            public string FileName { get { return _fileName; } }
-            public string EventName { get { return _eventName; } }
-        }
 
         static bool IsIllegalEventCall(Match m)
         {
@@ -103,8 +84,11 @@ namespace ConsoleApplication7
                 {
                     var name = em.Groups["Name"].Value;
 
-                    if (_ignoreEvents.Any(x => StringComparer.Ordinal.Equals(x.FileName, Path.GetFileName(file)) &&
-                        StringComparer.Ordinal.Equals(x.EventName, name)))
+                    if (
+                        _ignoreEvents.Any(
+                            x =>
+                            StringComparer.Ordinal.Equals(x.FileName, Path.GetFileName(file)) &&
+                            StringComparer.Ordinal.Equals(x.EventName, name)))
                         break;
 
                     var mPattern = string.Format(_eventCallFinder, name);
@@ -135,6 +119,28 @@ namespace ConsoleApplication7
             }
 
             Console.WriteLine("Done");
+        }
+
+        struct EventIgnore
+        {
+            readonly string _fileName;
+            readonly string _eventName;
+
+            public EventIgnore(string fileName, string eventName)
+            {
+                _fileName = fileName;
+                _eventName = eventName;
+            }
+
+            public string FileName
+            {
+                get { return _fileName; }
+            }
+
+            public string EventName
+            {
+                get { return _eventName; }
+            }
         }
     }
 }
