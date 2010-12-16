@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.1.51, for Win64 (unknown)
 --
--- Host: localhost    Database: demogame
+-- Host: localhost    Database: demogame_tmp
 -- ------------------------------------------------------
 -- Server version	5.1.51-community
 
@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-12-09 02:26:40',16777343,NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-12-16 12:58:55',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +172,6 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58'),(2,1,16777343,'2010-11-26 23:20:14'),(3,1,16777343,'2010-11-27 01:29:44'),(4,1,16777343,'2010-11-27 01:31:43'),(5,1,16777343,'2010-11-27 01:32:38'),(6,1,16777343,'2010-11-27 01:34:24'),(8,1,16777343,'2010-11-27 01:45:49'),(9,1,16777343,'2010-11-28 15:28:17'),(10,1,16777343,'2010-11-29 01:41:54'),(11,1,16777343,'2010-11-29 01:49:37'),(12,1,16777343,'2010-11-29 09:35:05'),(13,1,16777343,'2010-11-29 09:53:51'),(14,1,16777343,'2010-11-29 10:01:28'),(15,1,16777343,'2010-11-29 10:18:45'),(16,1,16777343,'2010-11-29 10:19:40'),(17,1,16777343,'2010-11-29 10:22:02'),(18,1,16777343,'2010-11-29 10:32:04'),(19,1,16777343,'2010-11-29 10:35:13'),(20,1,16777343,'2010-11-29 10:39:52'),(21,1,16777343,'2010-11-29 10:44:09'),(22,1,16777343,'2010-12-05 19:43:09'),(23,1,16777343,'2010-12-07 22:26:29'),(24,1,16777343,'2010-12-07 22:27:51'),(25,1,16777343,'2010-12-07 22:28:51'),(26,1,16777343,'2010-12-07 22:30:53'),(27,1,16777343,'2010-12-07 22:32:12'),(28,1,16777343,'2010-12-08 15:44:02'),(29,1,16777343,'2010-12-08 15:53:31'),(30,1,16777343,'2010-12-08 15:54:00'),(31,1,16777343,'2010-12-08 15:57:44'),(32,1,16777343,'2010-12-08 15:58:23'),(33,1,16777343,'2010-12-08 16:12:08'),(34,1,16777343,'2010-12-08 16:14:31'),(35,1,16777343,'2010-12-08 16:24:07'),(36,1,16777343,'2010-12-08 17:21:40'),(37,1,16777343,'2010-12-08 17:24:10'),(38,1,16777343,'2010-12-09 02:23:45'),(39,1,16777343,'2010-12-09 02:26:40');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,7 +360,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202775,76,2270,372,48,100,100,100,1,1,1,1,3,2);
+INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,1,1024,600,3,1024,600,1,1800,202790,77,2285,377,34,100,100,100,1,1,1,1,3,2);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +388,6 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
-INSERT INTO `character_equipped` VALUES (1,4,0);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -418,7 +416,6 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
-INSERT INTO `character_inventory` VALUES (1,1,0),(1,2,1),(1,3,2),(1,6,3);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -740,7 +737,6 @@ CREATE TABLE `event_counters_item_template` (
 
 LOCK TABLES `event_counters_item_template` WRITE;
 /*!40000 ALTER TABLE `event_counters_item_template` DISABLE KEYS */;
-INSERT INTO `event_counters_item_template` VALUES (2,1,5),(5,0,24);
 /*!40000 ALTER TABLE `event_counters_item_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -997,7 +993,7 @@ CREATE TABLE `item` (
   PRIMARY KEY (`id`),
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `item_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='The live, persisted items.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The live, persisted items.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1006,7 +1002,6 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',3,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',39,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(6,2,1,0,0,9,16,'Mana Potion','A mana potion',4,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1321,7 +1316,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-12-09 12:43:14');
+INSERT INTO `server_time` VALUES ('2010-12-16 13:00:16');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1479,7 +1474,6 @@ CREATE TABLE `world_stats_count_consume_item` (
 
 LOCK TABLES `world_stats_count_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_consume_item` DISABLE KEYS */;
-INSERT INTO `world_stats_count_consume_item` VALUES (2,2,'2010-12-09 10:26:49');
 /*!40000 ALTER TABLE `world_stats_count_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1530,7 +1524,6 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
-INSERT INTO `world_stats_count_item_create` VALUES (2,6,'2010-12-09 10:26:47'),(3,1699,'2010-12-09 20:43:14'),(5,1900,'2010-12-09 20:43:14'),(7,1506,'2010-12-09 20:43:14');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1584,7 +1577,6 @@ CREATE TABLE `world_stats_count_npc_kill_user` (
 
 LOCK TABLES `world_stats_count_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` DISABLE KEYS */;
-INSERT INTO `world_stats_count_npc_kill_user` VALUES (1,1,1,'2010-11-27 04:54:42');
 /*!40000 ALTER TABLE `world_stats_count_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1663,7 +1655,6 @@ CREATE TABLE `world_stats_count_user_consume_item` (
 
 LOCK TABLES `world_stats_count_user_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_consume_item` DISABLE KEYS */;
-INSERT INTO `world_stats_count_user_consume_item` VALUES (1,2,2,'2010-12-09 10:26:49');
 /*!40000 ALTER TABLE `world_stats_count_user_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1692,7 +1683,6 @@ CREATE TABLE `world_stats_count_user_kill_npc` (
 
 LOCK TABLES `world_stats_count_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_count_user_kill_npc` VALUES (1,1,1,'2010-11-27 07:20:24');
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1743,7 +1733,7 @@ CREATE TABLE `world_stats_network` (
   `sent_packets` mediumint(8) unsigned NOT NULL COMMENT 'The average packets sent per second since the last snapshot.',
   `sent_messages` mediumint(8) unsigned NOT NULL COMMENT 'The average messages sent per second since the last snapshot.',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Snapshots of network deltas.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1752,7 +1742,6 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
-INSERT INTO `world_stats_network` VALUES (1,'2010-11-27 04:54:55',1,0,0,0,343,12,16),(2,'2010-11-27 09:33:36',1,0,0,0,4,0,0),(3,'2010-11-29 09:42:46',1,0,0,0,217,6,9),(4,'2010-11-29 09:43:46',1,0,0,0,131,5,6),(5,'2010-11-29 09:44:46',1,0,0,0,146,6,6),(6,'2010-11-29 09:45:46',1,0,0,0,164,7,7),(7,'2010-11-29 09:46:46',1,0,0,0,138,6,6),(8,'2010-11-29 09:47:46',1,0,0,0,204,8,9),(9,'2010-11-29 09:48:46',1,0,0,0,145,6,6),(10,'2010-11-29 17:36:09',1,0,0,0,185,6,8),(11,'2010-11-29 17:38:13',1,0,0,0,1581,65,129),(12,'2010-11-29 17:38:13',1,0,0,0,1581,65,129),(13,'2010-11-29 18:02:33',1,0,0,0,44,1,2),(14,'2010-11-29 18:03:28',1,0,0,0,179,6,8),(15,'2010-11-29 18:08:38',1,0,0,0,8,0,0),(16,'2010-11-29 18:08:41',1,0,0,0,11,1,2),(17,'2010-11-29 18:09:38',1,0,0,0,132,5,6),(18,'2010-11-29 18:10:38',1,0,0,0,111,5,5),(19,'2010-11-29 18:11:38',1,0,0,0,78,3,4),(20,'2010-11-29 18:12:38',1,0,0,0,88,4,4),(21,'2010-11-29 18:13:38',1,0,0,0,134,6,6),(22,'2010-11-29 18:14:38',1,0,0,0,141,6,6),(23,'2010-11-29 18:22:58',1,0,0,0,187,7,8),(24,'2010-11-29 18:23:58',1,0,0,0,94,4,4),(25,'2010-11-29 18:24:58',1,0,0,0,141,6,6),(26,'2010-11-29 18:25:58',1,0,0,0,125,5,5),(27,'2010-11-29 18:26:58',1,0,0,0,128,5,6),(28,'2010-11-29 18:27:58',1,0,0,0,169,7,7),(29,'2010-11-29 18:28:58',1,0,0,0,133,5,6),(30,'2010-11-29 18:30:05',1,0,0,0,86,4,4),(31,'2010-11-29 18:30:58',1,0,0,0,31352,75,1306),(32,'2010-11-29 18:33:03',1,0,0,0,171,6,7),(33,'2010-11-29 18:36:41',1,0,0,0,102,4,5),(34,'2010-11-30 17:05:34',0,0,0,0,0,0,0),(35,'2010-11-30 17:06:34',0,0,0,0,0,0,0),(36,'2010-12-04 20:26:01',0,0,0,0,0,0,0),(37,'2010-12-08 06:27:16',1,0,0,0,203,6,9),(38,'2010-12-08 06:28:49',0,0,0,0,83,3,4);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1781,7 +1770,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Event log: NPC kill user.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: NPC kill user.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1790,7 +1779,6 @@ CREATE TABLE `world_stats_npc_kill_user` (
 
 LOCK TABLES `world_stats_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
-INSERT INTO `world_stats_npc_kill_user` VALUES (1,1,1,76,1024,593,39,754,3,'2010-11-27 04:54:42');
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1918,7 +1906,7 @@ CREATE TABLE `world_stats_user_consume_item` (
   CONSTRAINT `world_stats_user_consume_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='Event log: User consumes use-once item.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User consumes use-once item.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1927,7 +1915,6 @@ CREATE TABLE `world_stats_user_consume_item` (
 
 LOCK TABLES `world_stats_user_consume_item` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_consume_item` DISABLE KEYS */;
-INSERT INTO `world_stats_user_consume_item` VALUES (1,1,2,3,1024,594,'2010-12-09 10:24:00'),(2,1,2,3,1024,594,'2010-12-09 10:26:49');
 /*!40000 ALTER TABLE `world_stats_user_consume_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1956,7 +1943,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1965,7 +1952,6 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,1,76,1024,594,0,0,3,'2010-11-27 07:20:23');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2038,7 +2024,7 @@ LOCK TABLES `world_stats_user_shopping` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'demogame'
+-- Dumping routines for database 'demogame_tmp'
 --
 /*!50003 DROP FUNCTION IF EXISTS `create_user_on_account` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -2051,39 +2037,39 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `create_user_on_account`(accountName VARCHAR(50), characterName VARCHAR(30)) RETURNS varchar(100) CHARSET latin1
-BEGIN
-		
-		DECLARE character_count INT DEFAULT 0;
-		DECLARE max_character_count INT DEFAULT 9;
-		DECLARE is_name_free INT DEFAULT 0;
-		DECLARE errorMsg VARCHAR(100) DEFAULT "";
-		DECLARE accountID INT DEFAULT NULL;
-		DECLARE charID INT DEFAULT 0;
-
-		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
-
-		IF ISNULL(accountID) THEN
-			SET errorMsg = "Account with the specified name does not exist.";
-		ELSE
-			SELECT COUNT(*) INTO character_count FROM `account_character` WHERE `account_id` = accountID;
-
-			IF character_count > max_character_count THEN
-				SET errorMsg = "No free character slots available in the account.";
-			ELSE
-				SELECT COUNT(*) INTO is_name_free FROM `character` WHERE `name` = characterName LIMIT 1;
-
-				IF is_name_free > 0 THEN
-					SET errorMsg = "The specified character name is not available for use.";
-				ELSE
-					INSERT INTO `character` SET `name`	= characterName;
-					SET charID = LAST_INSERT_ID();
-					INSERT INTO `account_character` SET `character_id` = charID, `account_id` = accountID;
-				END IF;
-			END IF;
-		END IF;
-				
-		RETURN errorMsg;
-  
+BEGIN
+		
+		DECLARE character_count INT DEFAULT 0;
+		DECLARE max_character_count INT DEFAULT 9;
+		DECLARE is_name_free INT DEFAULT 0;
+		DECLARE errorMsg VARCHAR(100) DEFAULT "";
+		DECLARE accountID INT DEFAULT NULL;
+		DECLARE charID INT DEFAULT 0;
+
+		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
+
+		IF ISNULL(accountID) THEN
+			SET errorMsg = "Account with the specified name does not exist.";
+		ELSE
+			SELECT COUNT(*) INTO character_count FROM `account_character` WHERE `account_id` = accountID;
+
+			IF character_count > max_character_count THEN
+				SET errorMsg = "No free character slots available in the account.";
+			ELSE
+				SELECT COUNT(*) INTO is_name_free FROM `character` WHERE `name` = characterName LIMIT 1;
+
+				IF is_name_free > 0 THEN
+					SET errorMsg = "The specified character name is not available for use.";
+				ELSE
+					INSERT INTO `character` SET `name`	= characterName;
+					SET charID = LAST_INSERT_ID();
+					INSERT INTO `account_character` SET `character_id` = charID, `account_id` = accountID;
+				END IF;
+			END IF;
+		END IF;
+				
+		RETURN errorMsg;
+  
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2354,4 +2340,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-12-09 13:58:17
+-- Dump completed on 2010-12-16 15:33:23
