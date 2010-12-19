@@ -4,6 +4,7 @@ namespace DemoGame.Client
 {
     /// <summary>
     /// Contains the different categories of messages that the client sends to the server.
+    /// If you are not sure of which one to use, use <see cref="ClientMessageType.General"/>.
     /// </summary>
     /// <seealso cref="ClientMessageTypeExtensions"/>
     public enum ClientMessageType : byte
@@ -12,7 +13,8 @@ namespace DemoGame.Client
 
         /// <summary>
         /// A general-purpose message.
-        /// For organizational purposes, it is best to avoid this type when possible.
+        /// For organizational purposes, it is best to avoid this type when possible. Only (and always) use this
+        /// when you are not sure of which type to use so you can easily find and change it later.
         /// </summary>
         General,
 
