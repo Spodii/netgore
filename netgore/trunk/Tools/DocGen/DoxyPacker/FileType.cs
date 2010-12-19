@@ -11,6 +11,9 @@ namespace DoxyPacker
         ClassTemplate,
         SourceFile,
         Interface,
-        Package
+        Package,
+        Struct,
+        InterfaceTemplate,
+        StructTemplate
     }
 }
