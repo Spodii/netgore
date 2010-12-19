@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace DoxyPacker
 {
@@ -7,7 +8,11 @@ namespace DoxyPacker
         static void Main(string[] args)
         {
             if (args == null || args.Length == 0)
-                args = new string[] { @"E:\NetGore\Tools\DocGen\docs\html" };
+            {
+                Console.WriteLine("Usage: DoxyPacker <path>");
+                return;
+            }
+
             var p = new Packer(args[0]);
             p.Run();
         }

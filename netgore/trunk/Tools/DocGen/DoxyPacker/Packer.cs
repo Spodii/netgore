@@ -15,6 +15,14 @@ namespace DoxyPacker
         /// </summary>
         static readonly IEnumerable<string> _junkExtensions = new string[] { ".md5", ".map" };
 
+        static readonly Regex _titleGrabber =
+            new Regex(
+                @"\<title\>.*?: (?<name>.+?) (?<type>Class Template|Interface Template|Struct Template|Struct|Interface|Class|File|Directory) Reference\</title\>",
+                RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        static readonly Regex _titleGrabber2 = new Regex(@"\<title\>.*?: (?<type>Package) (?<name>.+)\</title\>",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         readonly string _rootDir;
 
         public Packer(string rootDir)
@@ -33,11 +41,14 @@ namespace DoxyPacker
         static string GetFileName(string name, FileType type)
         {
             var sb = new StringBuilder(256);
-            sb = sb.Append(GetTypePrefix(type));
             sb = sb.Append(name);
             sb = sb.Replace("\\", "-");
             sb = sb.Replace("/", "-");
             sb = sb.Replace(":", string.Empty);
+
+            if (type == FileType.Directory && sb[sb.Length - 1] != '-')
+                sb.Append('-');
+
             sb = sb.Append(".html");
 
             if (type != FileType.File && type != FileType.Directory && type != FileType.SourceFile)
@@ -48,23 +59,8 @@ namespace DoxyPacker
                 sb = sb.Replace("&gt;", ")");
             }
 
-            if (type == FileType.Directory)
-            {
-                if (sb[sb.Length - 1 - ".html".Length] == '-')
-                {
-                    sb.Length -= 1 + ".html".Length;
-                    sb.Append(".html");
-                }
-            }
-
             return sb.ToString();
         }
-
-        static readonly Regex _titleGrabber = new Regex(@"\<title\>.*?: (?<name>.+?) (?<type>Class Template|Interface|Class|File|Directory) Reference\</title\>",
-            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-        static readonly Regex _titleGrabber2 = new Regex(@"\<title\>.*?: (?<type>Package) (?<name>.+)\</title\>",
-            RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         static FileType GetFileType(string html, out string name)
         {
@@ -77,6 +73,15 @@ namespace DoxyPacker
 
             if (!m.Success)
             {
+                var expectedMiscTitles = new string[]
+                {
+                    "<title>NetGore: Member List</title>", "<title>NetGore: Class List</title>",
+                    "<title>NetGore: Alphabetical List</title>", "<title>NetGore: Directory Hierarchy</title>",
+                    "<title>NetGore: File Index</title>", "<title>NetGore: Class Members", "<title>NetGore: Graph Legend</title>",
+                    "<title>NetGore: Hierarchical Index</title>", "<title>NetGore: Main Page</title>",
+                    "<title>NetGore: Graphical Class Hierarchy</title>"
+                };
+                Debug.Assert(expectedMiscTitles.Any(html.Contains));
                 name = null;
                 return FileType.Unknown;
             }
@@ -88,6 +93,8 @@ namespace DoxyPacker
                 return FileType.Class;
             else if (StringComparer.OrdinalIgnoreCase.Equals(typeStr, "Interface"))
                 return FileType.Interface;
+            else if (StringComparer.OrdinalIgnoreCase.Equals(typeStr, "Struct"))
+                return FileType.Struct;
             else if (StringComparer.OrdinalIgnoreCase.Equals(typeStr, "Package"))
                 return FileType.Package;
             else if (StringComparer.OrdinalIgnoreCase.Equals(typeStr, "File"))
@@ -96,33 +103,14 @@ namespace DoxyPacker
                 return FileType.Directory;
             else if (StringComparer.OrdinalIgnoreCase.Equals(typeStr, "Class Template"))
                 return FileType.ClassTemplate;
+            else if (StringComparer.OrdinalIgnoreCase.Equals(typeStr, "Interface Template"))
+                return FileType.InterfaceTemplate;
+            else if (StringComparer.OrdinalIgnoreCase.Equals(typeStr, "Struct Template"))
+                return FileType.StructTemplate;
             else
             {
                 Debug.Fail(typeStr);
                 return FileType.Unknown;
-            }
-        }
-
-        static string GetTypePrefix(FileType type)
-        {
-            switch (type)
-            {
-                case FileType.Class:
-                    return "c";
-                case FileType.ClassTemplate:
-                    return "t";
-                case FileType.Directory:
-                    return "d";
-                case FileType.File:
-                    return "f";
-                case FileType.SourceFile:
-                    return "s";
-                case FileType.Interface:
-                    return "i";
-                case FileType.Package:
-                    return "p";
-                default:
-                    throw new Exception(type.ToString());
             }
         }
 
@@ -175,6 +163,7 @@ namespace DoxyPacker
                     var newName = GetFileName(name, type);
                     var newPath = Path.Combine(dir, newName);
 
+                    Debug.Assert(!File.Exists(newPath));
                     File.WriteAllText(newPath, html);
                     File.Delete(f);
 
@@ -186,8 +175,9 @@ namespace DoxyPacker
                     if (type == FileType.File)
                     {
                         var srcFileOldName = oldName.Substring(0, oldName.Length - ".html".Length) + "_source.html";
-                        var srcFileNewName = GetTypePrefix(FileType.SourceFile) +
-                                             newName.Substring(1, newName.Length - ".html".Length - 1) + ".html";
+                        var srcFileNewName = newName.Substring(0, newName.Length - ".html".Length) + "-s.html";
+
+                        Debug.Assert(!File.Exists(Path.Combine(dir, srcFileNewName)));
                         File.Move(Path.Combine(dir, srcFileOldName), Path.Combine(dir, srcFileNewName));
                         changedFileNames.Add(srcFileOldName, srcFileNewName);
                         Log("Moved: {0} -> {1}", srcFileOldName, srcFileNewName);
