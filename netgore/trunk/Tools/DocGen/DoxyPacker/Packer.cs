@@ -41,6 +41,14 @@ namespace DoxyPacker
         static string GetFileName(string name, FileType type)
         {
             var sb = new StringBuilder(256);
+
+            if (type == FileType.Package)
+                sb.Append("p_");
+            if (type == FileType.File)
+                sb.Append("f_");
+            if (type == FileType.Directory)
+                sb.Append("d_");
+
             sb = sb.Append(name);
             sb = sb.Replace("\\", "-");
             sb = sb.Replace("/", "-");
@@ -79,9 +87,11 @@ namespace DoxyPacker
                     "<title>NetGore: Alphabetical List</title>", "<title>NetGore: Directory Hierarchy</title>",
                     "<title>NetGore: File Index</title>", "<title>NetGore: Class Members", "<title>NetGore: Graph Legend</title>",
                     "<title>NetGore: Hierarchical Index</title>", "<title>NetGore: Main Page</title>",
-                    "<title>NetGore: Graphical Class Hierarchy</title>"
+                    "<title>NetGore: Graphical Class Hierarchy</title>", " Source File</title>"
                 };
+
                 Debug.Assert(expectedMiscTitles.Any(html.Contains));
+
                 name = null;
                 return FileType.Unknown;
             }
@@ -163,9 +173,12 @@ namespace DoxyPacker
                     var newName = GetFileName(name, type);
                     var newPath = Path.Combine(dir, newName);
 
-                    Debug.Assert(!File.Exists(newPath));
-                    File.WriteAllText(newPath, html);
-                    File.Delete(f);
+                    if (f != newPath)
+                    {
+                        Debug.Assert(type == FileType.Unknown || !File.Exists(newPath));
+                        File.WriteAllText(newPath, html);
+                        File.Delete(f);
+                    }
 
                     changedFileNames.Add(oldName, newName);
 
