@@ -14,10 +14,16 @@ namespace DemoGame.Server
         [SayHandlerCommand("Shout")]
         public void Shout(string message)
         {
+            if (string.IsNullOrEmpty(message))
+                return;
+
             using (var pw = ServerPacket.SendMessage(GameMessage.CommandShout, User.Name, message))
             {
                 World.Send(pw, ServerMessageType.GUIChat);
             }
+
+            EventCounterManager.User.Increment(User.ID, UserEventCounterType.ChatShoutTimes);
+            EventCounterManager.User.Increment(User.ID, UserEventCounterType.ChatLocalChars, message.Length);
         }
 
         /// <summary>
@@ -29,6 +35,9 @@ namespace DemoGame.Server
         [SayHandlerCommand("Whisper")]
         public void Tell(string userName, string message)
         {
+            if (userName != null)
+                userName = userName.Trim();
+
             // Check for a message to tell
             if (string.IsNullOrEmpty(userName))
             {
@@ -61,6 +70,9 @@ namespace DemoGame.Server
                 // User not found
                 User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat, userName);
             }
+
+            EventCounterManager.User.Increment(User.ID, UserEventCounterType.ChatTellTimes);
+            EventCounterManager.User.Increment(User.ID, UserEventCounterType.ChatTellChars, message.Length);
         }
 
         /// <summary>

@@ -501,6 +501,7 @@ namespace DemoGame.Server
                     EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromUser, damage);
                 else
                     EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageTakenFromNonUser, damage);
+                EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.Attacked);
             }
 
             base.OnAttackedByCharacter(attacker, damage);
@@ -523,9 +524,28 @@ namespace DemoGame.Server
                     EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageDealtToUser, damage);
                 else
                     EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.DamageDealtToNonUser, damage);
+                EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.Attack);
             }
 
             base.OnAttackedCharacter(attacked, damage);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was used.</param>
+        protected override void OnUsedItem(ItemEntity item)
+        {
+            base.OnUsedItem(item);
+
+            if (item.Type == ItemType.UseOnce)
+            {
+                var templateID = CharacterTemplateID;
+                if (templateID.HasValue)
+                    EventCounterManager.NPC.Increment(templateID.Value, NPCEventCounterType.ItemConsumed);
+            }
         }
 
         /// <summary>
