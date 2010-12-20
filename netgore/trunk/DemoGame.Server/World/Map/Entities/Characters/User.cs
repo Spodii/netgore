@@ -315,6 +315,43 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
+        /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
+        /// the this <see cref="Character"/>.</param>
+        protected override void OnAttackedCharacter(Character attacked, int damage)
+        {
+            if (attacked is User)
+                EventCounterManager.User.Increment(ID, UserEventCounterType.DamageDealtToUser, damage);
+            else
+                EventCounterManager.User.Increment(ID, UserEventCounterType.DamageDealtToNonUser, damage);
+            EventCounterManager.User.Increment(ID, UserEventCounterType.Attack);
+
+            base.OnAttackedCharacter(attacked, damage);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Character"/> that attacked us.</param>
+        /// <param name="damage">The amount of damage inflicted on this <see cref="Character"/>.</param>
+        protected override void OnAttackedByCharacter(Character attacker, int damage)
+        {
+            if (attacker is User)
+                EventCounterManager.User.Increment(ID, UserEventCounterType.DamageTakenFromUser, damage);
+            else
+                EventCounterManager.User.Increment(ID, UserEventCounterType.DamageTakenFromNonUser, damage);
+            EventCounterManager.User.Increment(ID, UserEventCounterType.Attacked);
+
+            base.OnAttackedByCharacter(attacker, damage);
+        }
+
+        /// <summary>
         /// Creates the <see cref="QuestPerformerStatusHelper"/> for this user.
         /// </summary>
         /// <returns>The <see cref="QuestPerformerStatusHelper"/> for this user.</returns>
@@ -738,6 +775,7 @@ namespace DemoGame.Server
             if (item.Type == ItemType.UseOnce)
             {
                 WorldStatsTracker.Instance.AddUserConsumeItem(this, item);
+                EventCounterManager.User.Increment(ID, UserEventCounterType.ItemConsumed);
 
                 if (item.ItemTemplateID.HasValue)
                     WorldStatsTracker.Instance.AddCountUserConsumeItem((int)ID, (int)item.ItemTemplateID.Value);

@@ -85,6 +85,9 @@ namespace DemoGame.Server
             {
                 user.Map.SendToArea(user, pw, ServerMessageType.GUIChat);
             }
+
+            EventCounterManager.User.Increment(user.ID, UserEventCounterType.ChatLocalTimes);
+            EventCounterManager.User.Increment(user.ID, UserEventCounterType.ChatLocalChars, text.Length);
         }
     }
 }
