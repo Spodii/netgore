@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.Properties;
 using NetGore.World;
@@ -46,14 +47,19 @@ namespace DemoGame.Server
             // Grab the position/map from the user's properties
             if (user.RespawnMapID.HasValue)
             {
-                mapID = user.RespawnMapID.Value;
-                position = user.RespawnPosition;
+                var map = user.World.GetMap(user.RespawnMapID.Value);
+                var mapPos = user.RespawnPosition;
+                if (map != null && map.Size.X < mapPos.X && map.Size.Y < mapPos.Y && mapPos.X >= 0 && mapPos.Y >= 0)
+                {
+                    mapID = user.RespawnMapID.Value;
+                    position = user.RespawnPosition;
+                    return;
+                }
             }
-            else
-            {
-                mapID = ServerSettings.Default.InvalidUserLoadMap;
-                position = ServerSettings.Default.InvalidUserLoadPosition;
-            }
+
+            // Failed to grab valid value from user's properties. Use fallback values.
+            mapID = ServerSettings.Default.InvalidUserLoadMap;
+            position = ServerSettings.Default.InvalidUserLoadPosition;
         }
     }
 }
