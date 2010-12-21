@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DemoGame.Server.Properties;
 using NetGore.World;
 using SFML.Graphics;
 
@@ -42,8 +43,17 @@ namespace DemoGame.Server
         /// <param name="position">The position to spawn the <paramref name="user"/> at.</param>
         public static void GetUserRespawnPosition(User user, out MapID mapID, out Vector2 position)
         {
-            mapID = new MapID(3);
-            position = new Vector2(1024, 600);
+            // Grab the position/map from the user's properties
+            if (user.RespawnMapID.HasValue)
+            {
+                mapID = user.RespawnMapID.Value;
+                position = user.RespawnPosition;
+            }
+            else
+            {
+                mapID = ServerSettings.Default.InvalidUserLoadMap;
+                position = ServerSettings.Default.InvalidUserLoadPosition;
+            }
         }
     }
 }
