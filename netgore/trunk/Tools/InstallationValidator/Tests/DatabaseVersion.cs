@@ -32,14 +32,8 @@ namespace InstallationValidator.Tests
         {
         }
 
-        static int IsValidVersion(int major, int minor, int revision, string version)
+        static int IsValidVersion(int major, int minor, int revision)
         {
-            if (!StringComparer.OrdinalIgnoreCase.Equals(version, "community"))
-            {
-                // Unknown version
-                return 2;
-            }
-
             if (major > 5)
                 return 0;
 
@@ -74,7 +68,7 @@ namespace InstallationValidator.Tests
                 return false;
             }
 
-            var reg = new Regex(@"(?<Major>\d+)\.(?<Minor>\d+)\.(?<Revision>\d+)-(?<Version>[a-zA-Z]+)",
+            var reg = new Regex(@"(?<Major>\d+)\.(?<Minor>\d+)\.(?<Revision>\d+)",
                 RegexOptions.CultureInvariant);
 
             var success = -1;
@@ -87,7 +81,7 @@ namespace InstallationValidator.Tests
                 int revision;
                 if (int.TryParse(m.Groups["Major"].Value, out major) && int.TryParse(m.Groups["Minor"].Value, out minor) &&
                     int.TryParse(m.Groups["Revision"].Value, out revision))
-                    success = IsValidVersion(major, minor, revision, m.Groups["Version"].Value);
+                    success = IsValidVersion(major, minor, revision);
             }
 
             var foundVersion = string.IsNullOrEmpty(output)

@@ -15,7 +15,7 @@
 	-->
   <Database>demogame</Database>
   <Host>localhost</Host>
-  <Pass></Pass>
+  <Pass>password</Pass>
   <Port>3306</Port>
   <User>root</User>
 </DbConnectionSettings>
