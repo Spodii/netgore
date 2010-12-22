@@ -72,7 +72,7 @@ namespace DemoGame.Server
                         return false;
                     }
 
-                    c.Teleport(newMap, Position);
+                    c.Teleport(newMap, Destination);
                 }
             }
 
