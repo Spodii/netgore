@@ -1407,7 +1407,12 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void GameScreen_Resize(object sender, EventArgs e)
         {
+            if (_camera == null || GameScreen == null)
+                return;
+
+            var oldCenter = _camera.Center;
             _camera.Size = new Vector2(GameScreen.ClientSize.Width, GameScreen.ClientSize.Height);
+            _camera.CenterOn(oldCenter);
         }
     }
 }
