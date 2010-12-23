@@ -313,6 +313,7 @@
     <Compile Include="UI\Editors\EntityTypeUITypeEditorForm.Designer.cs">
       <DependentUpon>EntityTypeUITypeEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetCurrentlySelectedGrhDataCallback.cs" />
     <Compile Include="WinForms\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -430,6 +431,9 @@
     <Compile Include="ImageHelper.cs" />
     <Compile Include="Extensions\TreeNodeCollectionExtensions.cs" />
     <Compile Include="Extensions\TreeNodeExtensions.cs" />
+    <Compile Include="WinForms\SelectGrhDataButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WinForms\WinFormExceptionHelper.cs" />
     <Compile Include="WinForms\GraphicsDeviceControl.cs">
       <SubType>Component</SubType>

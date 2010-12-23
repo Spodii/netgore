@@ -51,6 +51,30 @@ namespace DemoGame.Editor
             InitializeComponent();
             HookInput();
             GameScreen.SkeletonEditorForm = this;
+
+            btnSelectBodyGrhData.GrhDataSelected += btnSelectBodyGrhData_GrhDataSelected;
+            btnSelectBodyGrhData.SelectedGrhDataHandler = btnSelectBodyGrhData_SelectedGrhDataHandler;
+        }
+
+        GrhData btnSelectBodyGrhData_SelectedGrhDataHandler(object sender)
+        {
+            if (SelectedDSI == null || SelectedDSI.Grh == null)
+                return null;
+
+            return SelectedDSI.Grh.GrhData;
+        }
+
+        /// <summary>
+        /// Handles the GrhDataSelected event of the btnSelectBodyGrhData control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.EventArgs{GrhData}"/> instance containing the event data.</param>
+        void btnSelectBodyGrhData_GrhDataSelected(object sender, EventArgs<GrhData> e)
+        {
+            if (e.Item1 == null)
+                txtGrhIndex.Text = "";
+            else
+                txtGrhIndex.Text = e.Item1.GrhIndex.ToString();
         }
 
         public DrawingManager DrawingManager
