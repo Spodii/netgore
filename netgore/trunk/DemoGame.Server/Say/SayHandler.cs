@@ -1,10 +1,6 @@
 using System.Linq;
 using NetGore;
 
-// ReSharper disable SuggestBaseTypeForParameter
-// ReSharper disable UnusedMember.Local
-// ReSharper disable UnusedParameter.Local
-
 namespace DemoGame.Server
 {
     /// <summary>
