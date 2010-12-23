@@ -33,7 +33,6 @@ namespace DemoGame.Editor
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.GameScreen = new DemoGame.Editor.SkeletonEditorScreenControl();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabSkeleton = new System.Windows.Forms.TabPage();
             this.gbSkeletonActions = new System.Windows.Forms.GroupBox();
@@ -54,7 +53,6 @@ namespace DemoGame.Editor
             this.label2 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cmbSkeletonNodes = new DemoGame.Editor.SkeletonNodesComboBox();
             this.gbSkeletonIO = new System.Windows.Forms.GroupBox();
             this.btnSkeletonSaveAs = new System.Windows.Forms.Button();
             this.btnSkeletonSave = new System.Windows.Forms.Button();
@@ -77,16 +75,13 @@ namespace DemoGame.Editor
             this.tabBody = new System.Windows.Forms.TabPage();
             this.gbBodies = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstBodies = new DemoGame.Editor.SkeletonBodyItemsListBox();
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnClearTarget = new System.Windows.Forms.Button();
-            this.cmbTarget = new DemoGame.Editor.SkeletonNodesComboBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.cmbSource = new DemoGame.Editor.SkeletonNodesComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtGrhIndex = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -115,6 +110,11 @@ namespace DemoGame.Editor
             this.radioAnimate = new System.Windows.Forms.RadioButton();
             this.radioEdit = new System.Windows.Forms.RadioButton();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            this.GameScreen = new DemoGame.Editor.SkeletonEditorScreenControl();
+            this.cmbSkeletonNodes = new DemoGame.Editor.SkeletonNodesComboBox();
+            this.lstBodies = new DemoGame.Editor.SkeletonBodyItemsListBox();
+            this.cmbTarget = new DemoGame.Editor.SkeletonNodesComboBox();
+            this.cmbSource = new DemoGame.Editor.SkeletonNodesComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -143,37 +143,21 @@ namespace DemoGame.Editor
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.GameScreen);
-            this.splitContainer2.Panel1MinSize = 800;
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tcMenu);
             this.splitContainer2.Panel2.Controls.Add(this.gbState);
-            this.splitContainer2.Size = new System.Drawing.Size(1014, 575);
-            this.splitContainer2.SplitterDistance = 800;
+            this.splitContainer2.Size = new System.Drawing.Size(931, 549);
+            this.splitContainer2.SplitterDistance = 719;
             this.splitContainer2.TabIndex = 26;
-            // 
-            // GameScreen
-            // 
-            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GameScreen.Location = new System.Drawing.Point(0, 0);
-            this.GameScreen.Name = "GameScreen";
-            this.GameScreen.Size = new System.Drawing.Size(800, 575);
-            this.GameScreen.SkeletonEditorForm = null;
-            this.GameScreen.TabIndex = 2;
-            this.GameScreen.Text = "Game Screen";
-            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
-            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
-            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
-            this.GameScreen.Resize += new System.EventHandler(this.GameScreen_Resize);
             // 
             // tcMenu
             // 
@@ -185,7 +169,7 @@ namespace DemoGame.Editor
             this.tcMenu.Location = new System.Drawing.Point(0, 0);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
-            this.tcMenu.Size = new System.Drawing.Size(210, 461);
+            this.tcMenu.Size = new System.Drawing.Size(208, 435);
             this.tcMenu.TabIndex = 26;
             // 
             // tabSkeleton
@@ -198,7 +182,7 @@ namespace DemoGame.Editor
             this.tabSkeleton.Location = new System.Drawing.Point(4, 22);
             this.tabSkeleton.Name = "tabSkeleton";
             this.tabSkeleton.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSkeleton.Size = new System.Drawing.Size(202, 435);
+            this.tabSkeleton.Size = new System.Drawing.Size(200, 409);
             this.tabSkeleton.TabIndex = 0;
             this.tabSkeleton.Text = "Skeleton";
             this.tabSkeleton.UseVisualStyleBackColor = true;
@@ -211,9 +195,9 @@ namespace DemoGame.Editor
             this.gbSkeletonActions.Controls.Add(this.btnCopyRoot);
             this.gbSkeletonActions.Controls.Add(this.btnCopyLen);
             this.gbSkeletonActions.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbSkeletonActions.Location = new System.Drawing.Point(3, 287);
+            this.gbSkeletonActions.Location = new System.Drawing.Point(3, 261);
             this.gbSkeletonActions.Name = "gbSkeletonActions";
-            this.gbSkeletonActions.Size = new System.Drawing.Size(196, 102);
+            this.gbSkeletonActions.Size = new System.Drawing.Size(194, 102);
             this.gbSkeletonActions.TabIndex = 50;
             this.gbSkeletonActions.TabStop = false;
             this.gbSkeletonActions.Text = "Special Actions";
@@ -284,7 +268,7 @@ namespace DemoGame.Editor
             this.gbSelectedNode.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbSelectedNode.Location = new System.Drawing.Point(3, 37);
             this.gbSelectedNode.Name = "gbSelectedNode";
-            this.gbSelectedNode.Size = new System.Drawing.Size(196, 146);
+            this.gbSelectedNode.Size = new System.Drawing.Size(194, 146);
             this.gbSelectedNode.TabIndex = 49;
             this.gbSelectedNode.TabStop = false;
             this.gbSelectedNode.Text = "Selected Node";
@@ -390,29 +374,15 @@ namespace DemoGame.Editor
             this.label1.TabIndex = 11;
             this.label1.Text = "Name:";
             // 
-            // cmbSkeletonNodes
-            // 
-            this.cmbSkeletonNodes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cmbSkeletonNodes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbSkeletonNodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSkeletonNodes.FormattingEnabled = true;
-            this.cmbSkeletonNodes.Location = new System.Drawing.Point(3, 16);
-            this.cmbSkeletonNodes.Name = "cmbSkeletonNodes";
-            this.cmbSkeletonNodes.Size = new System.Drawing.Size(196, 21);
-            this.cmbSkeletonNodes.Sorted = true;
-            this.cmbSkeletonNodes.TabIndex = 48;
-            this.tt.SetToolTip(this.cmbSkeletonNodes, "The currently selected skeleton node (joint)");
-            this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
-            // 
             // gbSkeletonIO
             // 
             this.gbSkeletonIO.Controls.Add(this.btnSkeletonSaveAs);
             this.gbSkeletonIO.Controls.Add(this.btnSkeletonSave);
             this.gbSkeletonIO.Controls.Add(this.btnSkeletonLoad);
             this.gbSkeletonIO.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbSkeletonIO.Location = new System.Drawing.Point(3, 389);
+            this.gbSkeletonIO.Location = new System.Drawing.Point(3, 363);
             this.gbSkeletonIO.Name = "gbSkeletonIO";
-            this.gbSkeletonIO.Size = new System.Drawing.Size(196, 43);
+            this.gbSkeletonIO.Size = new System.Drawing.Size(194, 43);
             this.gbSkeletonIO.TabIndex = 31;
             this.gbSkeletonIO.TabStop = false;
             this.gbSkeletonIO.Text = "Load / Save";
@@ -466,7 +436,7 @@ namespace DemoGame.Editor
             this.tabAnimation.Location = new System.Drawing.Point(4, 22);
             this.tabAnimation.Name = "tabAnimation";
             this.tabAnimation.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAnimation.Size = new System.Drawing.Size(202, 435);
+            this.tabAnimation.Size = new System.Drawing.Size(199, 412);
             this.tabAnimation.TabIndex = 1;
             this.tabAnimation.Text = "Animation";
             this.tabAnimation.UseVisualStyleBackColor = true;
@@ -477,7 +447,7 @@ namespace DemoGame.Editor
             this.txtFrames.Location = new System.Drawing.Point(3, 16);
             this.txtFrames.Multiline = true;
             this.txtFrames.Name = "txtFrames";
-            this.txtFrames.Size = new System.Drawing.Size(196, 293);
+            this.txtFrames.Size = new System.Drawing.Size(193, 270);
             this.txtFrames.TabIndex = 36;
             this.txtFrames.TextChanged += new System.EventHandler(this.txtFrames_TextChanged);
             // 
@@ -490,9 +460,9 @@ namespace DemoGame.Editor
             this.groupBox2.Controls.Add(this.btnStand);
             this.groupBox2.Controls.Add(this.btnPlay);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(3, 309);
+            this.groupBox2.Location = new System.Drawing.Point(3, 286);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(196, 80);
+            this.groupBox2.Size = new System.Drawing.Size(193, 80);
             this.groupBox2.TabIndex = 35;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Pre-made Animations + Controls";
@@ -563,9 +533,9 @@ namespace DemoGame.Editor
             this.gbAnimIO.Controls.Add(this.btnAnimSave);
             this.gbAnimIO.Controls.Add(this.btnAnimLoad);
             this.gbAnimIO.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbAnimIO.Location = new System.Drawing.Point(3, 389);
+            this.gbAnimIO.Location = new System.Drawing.Point(3, 366);
             this.gbAnimIO.Name = "gbAnimIO";
-            this.gbAnimIO.Size = new System.Drawing.Size(196, 43);
+            this.gbAnimIO.Size = new System.Drawing.Size(193, 43);
             this.gbAnimIO.TabIndex = 30;
             this.gbAnimIO.TabStop = false;
             this.gbAnimIO.Text = "Load / Save";
@@ -617,7 +587,7 @@ namespace DemoGame.Editor
             this.tabBody.Controls.Add(this.gbBodyIO);
             this.tabBody.Location = new System.Drawing.Point(4, 22);
             this.tabBody.Name = "tabBody";
-            this.tabBody.Size = new System.Drawing.Size(202, 435);
+            this.tabBody.Size = new System.Drawing.Size(199, 412);
             this.tabBody.TabIndex = 2;
             this.tabBody.Text = "Body";
             this.tabBody.UseVisualStyleBackColor = true;
@@ -628,7 +598,7 @@ namespace DemoGame.Editor
             this.gbBodies.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbBodies.Location = new System.Drawing.Point(0, 0);
             this.gbBodies.Name = "gbBodies";
-            this.gbBodies.Size = new System.Drawing.Size(202, 239);
+            this.gbBodies.Size = new System.Drawing.Size(199, 216);
             this.gbBodies.TabIndex = 33;
             this.gbBodies.TabStop = false;
             this.gbBodies.Text = "Bone Bodies:";
@@ -652,25 +622,14 @@ namespace DemoGame.Editor
             this.splitContainer1.Panel2.Controls.Add(this.btnDown);
             this.splitContainer1.Panel2.Controls.Add(this.btnDelete);
             this.splitContainer1.Panel2.Controls.Add(this.btnAdd);
-            this.splitContainer1.Size = new System.Drawing.Size(196, 220);
-            this.splitContainer1.SplitterDistance = 189;
+            this.splitContainer1.Size = new System.Drawing.Size(193, 197);
+            this.splitContainer1.SplitterDistance = 166;
             this.splitContainer1.TabIndex = 38;
-            // 
-            // lstBodies
-            // 
-            this.lstBodies.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstBodies.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstBodies.FormattingEnabled = true;
-            this.lstBodies.Location = new System.Drawing.Point(0, 0);
-            this.lstBodies.Name = "lstBodies";
-            this.lstBodies.Size = new System.Drawing.Size(196, 189);
-            this.lstBodies.TabIndex = 35;
-            this.lstBodies.SelectedIndexChanged += new System.EventHandler(this.lstBodies_SelectedIndexChanged);
             // 
             // btnUp
             // 
             this.btnUp.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnUp.Location = new System.Drawing.Point(140, 0);
+            this.btnUp.Location = new System.Drawing.Point(137, 0);
             this.btnUp.Name = "btnUp";
             this.btnUp.Size = new System.Drawing.Size(28, 27);
             this.btnUp.TabIndex = 43;
@@ -681,7 +640,7 @@ namespace DemoGame.Editor
             // btnDown
             // 
             this.btnDown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnDown.Location = new System.Drawing.Point(168, 0);
+            this.btnDown.Location = new System.Drawing.Point(165, 0);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(28, 27);
             this.btnDown.TabIndex = 42;
@@ -731,9 +690,9 @@ namespace DemoGame.Editor
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 239);
+            this.groupBox1.Location = new System.Drawing.Point(0, 216);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(202, 153);
+            this.groupBox1.Size = new System.Drawing.Size(199, 153);
             this.groupBox1.TabIndex = 32;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selected Body";
@@ -748,18 +707,6 @@ namespace DemoGame.Editor
             this.btnClearTarget.UseVisualStyleBackColor = true;
             this.btnClearTarget.TextChanged += new System.EventHandler(this.btnClearTarget_Click);
             // 
-            // cmbTarget
-            // 
-            this.cmbTarget.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTarget.FormattingEnabled = true;
-            this.cmbTarget.Location = new System.Drawing.Point(60, 122);
-            this.cmbTarget.Name = "cmbTarget";
-            this.cmbTarget.Size = new System.Drawing.Size(99, 21);
-            this.cmbTarget.Sorted = true;
-            this.cmbTarget.TabIndex = 47;
-            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -768,18 +715,6 @@ namespace DemoGame.Editor
             this.label15.Size = new System.Drawing.Size(41, 13);
             this.label15.TabIndex = 46;
             this.label15.Text = "Target:";
-            // 
-            // cmbSource
-            // 
-            this.cmbSource.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSource.FormattingEnabled = true;
-            this.cmbSource.Location = new System.Drawing.Point(60, 95);
-            this.cmbSource.Name = "cmbSource";
-            this.cmbSource.Size = new System.Drawing.Size(124, 21);
-            this.cmbSource.Sorted = true;
-            this.cmbSource.TabIndex = 45;
-            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
             // 
             // label14
             // 
@@ -899,9 +834,9 @@ namespace DemoGame.Editor
             this.gbBodyIO.Controls.Add(this.btnBodySave);
             this.gbBodyIO.Controls.Add(this.btnBodyLoad);
             this.gbBodyIO.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbBodyIO.Location = new System.Drawing.Point(0, 392);
+            this.gbBodyIO.Location = new System.Drawing.Point(0, 369);
             this.gbBodyIO.Name = "gbBodyIO";
-            this.gbBodyIO.Size = new System.Drawing.Size(202, 43);
+            this.gbBodyIO.Size = new System.Drawing.Size(199, 43);
             this.gbBodyIO.TabIndex = 31;
             this.gbBodyIO.TabStop = false;
             this.gbBodyIO.Text = "Load / Save";
@@ -943,7 +878,7 @@ namespace DemoGame.Editor
             this.tabSettings.Controls.Add(this.chkCanTransform);
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Size = new System.Drawing.Size(202, 435);
+            this.tabSettings.Size = new System.Drawing.Size(199, 412);
             this.tabSettings.TabIndex = 3;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
@@ -954,7 +889,7 @@ namespace DemoGame.Editor
             this.gbHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbHistory.Location = new System.Drawing.Point(0, 34);
             this.gbHistory.Name = "gbHistory";
-            this.gbHistory.Size = new System.Drawing.Size(202, 401);
+            this.gbHistory.Size = new System.Drawing.Size(199, 378);
             this.gbHistory.TabIndex = 2;
             this.gbHistory.TabStop = false;
             this.gbHistory.Text = "History";
@@ -965,7 +900,7 @@ namespace DemoGame.Editor
             this.lstHistory.FormattingEnabled = true;
             this.lstHistory.Location = new System.Drawing.Point(3, 16);
             this.lstHistory.Name = "lstHistory";
-            this.lstHistory.Size = new System.Drawing.Size(196, 382);
+            this.lstHistory.Size = new System.Drawing.Size(193, 359);
             this.lstHistory.TabIndex = 0;
             // 
             // chkCanAlter
@@ -974,7 +909,7 @@ namespace DemoGame.Editor
             this.chkCanAlter.Dock = System.Windows.Forms.DockStyle.Top;
             this.chkCanAlter.Location = new System.Drawing.Point(0, 17);
             this.chkCanAlter.Name = "chkCanAlter";
-            this.chkCanAlter.Size = new System.Drawing.Size(202, 17);
+            this.chkCanAlter.Size = new System.Drawing.Size(199, 17);
             this.chkCanAlter.TabIndex = 1;
             this.chkCanAlter.Text = "Allow Joint Adding / Removal";
             this.chkCanAlter.UseVisualStyleBackColor = true;
@@ -985,7 +920,7 @@ namespace DemoGame.Editor
             this.chkCanTransform.Dock = System.Windows.Forms.DockStyle.Top;
             this.chkCanTransform.Location = new System.Drawing.Point(0, 0);
             this.chkCanTransform.Name = "chkCanTransform";
-            this.chkCanTransform.Size = new System.Drawing.Size(202, 17);
+            this.chkCanTransform.Size = new System.Drawing.Size(199, 17);
             this.chkCanTransform.TabIndex = 0;
             this.chkCanTransform.Text = "Allow Bone Length Altering";
             this.chkCanTransform.UseVisualStyleBackColor = true;
@@ -997,9 +932,9 @@ namespace DemoGame.Editor
             this.gbState.Controls.Add(this.radioAnimate);
             this.gbState.Controls.Add(this.radioEdit);
             this.gbState.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gbState.Location = new System.Drawing.Point(0, 461);
+            this.gbState.Location = new System.Drawing.Point(0, 435);
             this.gbState.Name = "gbState";
-            this.gbState.Size = new System.Drawing.Size(210, 114);
+            this.gbState.Size = new System.Drawing.Size(208, 114);
             this.gbState.TabIndex = 25;
             this.gbState.TabStop = false;
             this.gbState.Text = "Display State";
@@ -1048,11 +983,75 @@ namespace DemoGame.Editor
             this.radioEdit.Text = "Frame Editor";
             this.radioEdit.UseVisualStyleBackColor = true;
             // 
+            // GameScreen
+            // 
+            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GameScreen.Location = new System.Drawing.Point(0, 0);
+            this.GameScreen.Name = "GameScreen";
+            this.GameScreen.Size = new System.Drawing.Size(719, 549);
+            this.GameScreen.SkeletonEditorForm = null;
+            this.GameScreen.TabIndex = 2;
+            this.GameScreen.Text = "Game Screen";
+            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
+            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
+            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
+            this.GameScreen.Resize += new System.EventHandler(this.GameScreen_Resize);
+            // 
+            // cmbSkeletonNodes
+            // 
+            this.cmbSkeletonNodes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cmbSkeletonNodes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSkeletonNodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSkeletonNodes.FormattingEnabled = true;
+            this.cmbSkeletonNodes.Location = new System.Drawing.Point(3, 16);
+            this.cmbSkeletonNodes.Name = "cmbSkeletonNodes";
+            this.cmbSkeletonNodes.Size = new System.Drawing.Size(194, 21);
+            this.cmbSkeletonNodes.Sorted = true;
+            this.cmbSkeletonNodes.TabIndex = 48;
+            this.tt.SetToolTip(this.cmbSkeletonNodes, "The currently selected skeleton node (joint)");
+            this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
+            // 
+            // lstBodies
+            // 
+            this.lstBodies.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstBodies.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstBodies.FormattingEnabled = true;
+            this.lstBodies.Location = new System.Drawing.Point(0, 0);
+            this.lstBodies.Name = "lstBodies";
+            this.lstBodies.Size = new System.Drawing.Size(193, 166);
+            this.lstBodies.TabIndex = 35;
+            this.lstBodies.SelectedIndexChanged += new System.EventHandler(this.lstBodies_SelectedIndexChanged);
+            // 
+            // cmbTarget
+            // 
+            this.cmbTarget.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTarget.FormattingEnabled = true;
+            this.cmbTarget.Location = new System.Drawing.Point(60, 122);
+            this.cmbTarget.Name = "cmbTarget";
+            this.cmbTarget.Size = new System.Drawing.Size(99, 21);
+            this.cmbTarget.Sorted = true;
+            this.cmbTarget.TabIndex = 47;
+            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
+            // 
+            // cmbSource
+            // 
+            this.cmbSource.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSource.FormattingEnabled = true;
+            this.cmbSource.Location = new System.Drawing.Point(60, 95);
+            this.cmbSource.Name = "cmbSource";
+            this.cmbSource.Size = new System.Drawing.Size(124, 21);
+            this.cmbSource.Sorted = true;
+            this.cmbSource.TabIndex = 45;
+            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
+            // 
             // SkeletonEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1014, 575);
+            this.ClientSize = new System.Drawing.Size(931, 549);
             this.Controls.Add(this.splitContainer2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
