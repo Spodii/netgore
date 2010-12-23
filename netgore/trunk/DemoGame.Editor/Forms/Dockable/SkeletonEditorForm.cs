@@ -171,12 +171,16 @@ namespace DemoGame.Editor
             sb = _drawingManager.BeginDrawGUI();
             try
             {
-                var cursorPosText = _cursorPos.Round().ToString();
-                var screenSize = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
-                var strSize = _font.MeasureString(cursorPosText);
                 var fontColor = Color.White;
                 var borderColor = Color.Black;
-                sb.DrawStringShaded(_font, cursorPosText, screenSize - strSize - new Vector2(3), fontColor, borderColor);
+
+                // Cursor position text
+                sb.DrawStringShaded(_font, _cursorPos.Round().ToString(), new Vector2(2), fontColor, borderColor);
+
+                // Name of the node under the cursor
+                var nodeUnderCursor = _skeleton.RootNode.GetAllNodes().FirstOrDefault(x => x.HitTest(_camera, _cursorPos));
+                if (nodeUnderCursor != null)
+                    sb.DrawStringShaded(_font, "Node: " + nodeUnderCursor.Name, _camera.ToScreen(_cursorPos) + new Vector2(12, -12), fontColor, borderColor);
             }
             finally
             {
@@ -227,7 +231,17 @@ namespace DemoGame.Editor
                     else
                     {
                         // Create a child node
-                        SelectedNode = new SkeletonNode(SelectedNode, _cursorPos);
+                        if (SelectedNode == null)
+                        {
+                            const string errmsg = "You must first select a node before creating a new node. The selected node will be used as the new node's parent.";
+                            MessageBox.Show(errmsg, "Select a node", MessageBoxButtons.OK);
+                        }
+                        else
+                        {
+                            var newNode = new SkeletonNode(SelectedNode, _cursorPos);
+                            UpdateFrameNodeCBs();
+                            SelectedNode = newNode;
+                        }
                     }
                 }
             }
@@ -555,26 +569,45 @@ namespace DemoGame.Editor
         {
             var nodes = _skeletonAnim.Skeleton.RootNode.GetAllNodes();
 
+            var sourceSelected = cmbSource.SelectedItem;
+            var targetSelected = cmbTarget.SelectedItem;
+
             cmbSource.Items.Clear();
             cmbSource.Items.AddRange(nodes.OfType<object>().ToArray());
 
             cmbTarget.Items.Clear();
             cmbTarget.Items.AddRange(nodes.OfType<object>().ToArray());
+
+            if (sourceSelected != null && cmbSource.Items.Contains(sourceSelected))
+                cmbSource.SelectedItem = sourceSelected;
+
+            if (targetSelected != null && cmbTarget.Items.Contains(targetSelected))
+                cmbTarget.SelectedItem = targetSelected;
         }
 
         void UpdateBodyList()
         {
+            var selected = lstBodies.SelectedItem;
+
             lstBodies.Items.Clear();
             lstBodies.Items.AddRange(SkeletonBody.BodyItems.OfType<object>().ToArray());
+
+            if (selected != null && lstBodies.Items.Contains(selected))
+                lstBodies.SelectedItem = selected;
 
             UpdateAnimationNodeCBs();
         }
 
         void UpdateFrameNodeCBs()
         {
+            var selected = cmbSkeletonNodes.SelectedItem;
+
             cmbSkeletonNodes.Items.Clear();
             var nodes = _skeleton.RootNode.GetAllNodes();
             cmbSkeletonNodes.Items.AddRange(nodes.OfType<object>().ToArray());
+
+            if (selected != null && cmbSkeletonNodes.Items.Contains(selected))
+                cmbSkeletonNodes.SelectedItem = selected;
         }
 
         /// <summary>
@@ -1365,6 +1398,16 @@ namespace DemoGame.Editor
             {
                 txtY.BackColor = EditorColors.Error;
             }
+        }
+
+        /// <summary>
+        /// Handles the Resize event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void GameScreen_Resize(object sender, EventArgs e)
+        {
+            _camera.Size = new Vector2(GameScreen.ClientSize.Width, GameScreen.ClientSize.Height);
         }
     }
 }
