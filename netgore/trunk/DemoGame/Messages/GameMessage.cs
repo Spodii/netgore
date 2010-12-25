@@ -258,7 +258,7 @@ namespace DemoGame
 
         #endregion
 
-        #region Feature: Guilds
+        #region Feature: Groups
 
         InvalidCommandMustBeInGroup,
         InvalidCommandMustNotBeInGroup,
@@ -280,7 +280,7 @@ namespace DemoGame
 
         #endregion
 
-        #region Feature: Groups
+        #region Feature: Guilds
 
         /// <summary>
         /// Cannot execute command because the user is in a guild.

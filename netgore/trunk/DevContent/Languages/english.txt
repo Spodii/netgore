@@ -66,7 +66,31 @@ ShopPurchasePlural: "You purchased $0 $1s for $2 cash."
 ShopSellItemSingular: "You sell a $0 for $1 cash."
 ShopSellItemPlural: "You sell $0 $1s for $2 cash."
 
+########### Feature: Groups ###########
+InvalidCommandMustBeInGroup: "You must be in a group to do that."
+InvalidCommandMustNotBeInGroup: "You cannot do that while in a group. To leave your group, type /leavegroup."
+
+GroupCreated: "You have created a new group."
+GroupCreateFailedUnknownReason: "Failed to create a new group."
+
+GroupInvited: "You have been invited to join $0's group. Type /joingroup to join."
+GroupInvite: "$0 has invited $1 to join the group."
+GroupInviteFailedCannotInviteSelf: "You cannot invite yourself into a group."
+GroupInviteFailedInvalidUser: "Failed to invite $0 to join the group. That user is either not online or does not exist."
+GroupInviteFailedAlreadyInGroup: "Failed to invite $0 to join the group since they are already in a group."
+GroupInviteFailedUnknownReason: "Failed to invite $0 to join the group."
+
+GroupJoinFailedGroupIsFull: "Failed to join $0's group - the group is already full."
+GroupJoinFailedUnknownReason: "Failed to join $0's group."
+GroupJoined: "You have joined $0's group."
+
+GroupLeave: "You have left the group."
+GroupMemberLeft: "$0 has left the group."
+GroupMemberJoined: "$0 has joined the group."
+
 ########### Feature: Guilds ###########
+InvalidCommandMustBeInGuild: "You must be in a guild to do that."
+InvalidCommandMustNotBeInGuild: "You cannot do that while in a guild."
 GuildCreationSuccessful: "Guild \"$0\" with tag \"$1\" successfully created."
 GuildCreationFailedUnknownReason: "Could not create guild \"$0\" with tag \"$1\" for an unknown reason."
 GuildCreationFailedNameInvalid: "Could not create guild - the name \"$0\" is invalid."
@@ -110,30 +134,6 @@ GuildJoin: "You have joined guild \"$0\"."
 GuildJoinFailedInvalidOrNoInvite: "Unable to join guild \"$0\" - the guild either does not exist or you do not have an invite to this guild."
 GuildLeave: "You have left guild \"$0\"."
 GuildSay: "[Guild] $0 says: \"$1\""
-
-########### Feature: Groups ###########
-InvalidCommandMustBeInGuild: "You must be in a guild to do that."
-InvalidCommandMustNotBeInGuild: "You cannot do that while in a guild."
-InvalidCommandMustBeInGroup: "You must be in a group to do that."
-InvalidCommandMustNotBeInGroup: "You cannot do that while in a group. To leave your group, type /leavegroup."
-
-GroupCreated: "You have created a new group."
-GroupCreateFailedUnknownReason: "Failed to create a new group."
-
-GroupInvited: "You have been invited to join $0's group. Type /joingroup to join."
-GroupInvite: "$0 has invited $1 to join the group."
-GroupInviteFailedCannotInviteSelf: "You cannot invite yourself into a group."
-GroupInviteFailedInvalidUser: "Failed to invite $0 to join the group. That user is either not online or does not exist."
-GroupInviteFailedAlreadyInGroup: "Failed to invite $0 to join the group since they are already in a group."
-GroupInviteFailedUnknownReason: "Failed to invite $0 to join the group."
-
-GroupJoinFailedGroupIsFull: "Failed to join $0's group - the group is already full."
-GroupJoinFailedUnknownReason: "Failed to join $0's group."
-GroupJoined: "You have joined $0's group."
-
-GroupLeave: "You have left the group."
-GroupMemberLeft: "$0 has left the group."
-GroupMemberJoined: "$0 has joined the group."
 
 ########### Feature: PeerTrading ###########
 PeerTradingNotEnoughSpaceInInventory: "Unable to trade - you do not have enough room in your inventory!"
