@@ -10,19 +10,19 @@ using NetGore.Db;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Performs cleaning operations on a <see cref="Server"/> database.
+    /// Performs cleaning operations on a <see cref="Server"/> - namely the database.
     /// </summary>
-    class ServerRuntimeCleaner
+    class ServerCleaner
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Server _server;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerRuntimeCleaner"/> class.
+        /// Initializes a new instance of the <see cref="ServerCleaner"/> class.
         /// </summary>
         /// <param name="server">The <see cref="Server"/> instance.</param>
-        public ServerRuntimeCleaner(Server server)
+        public ServerCleaner(Server server)
         {
             if (server == null)
                 throw new ArgumentNullException("server");
