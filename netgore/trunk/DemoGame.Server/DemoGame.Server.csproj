@@ -540,7 +540,7 @@
     <Compile Include="Say\SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
-    <Compile Include="ServerRuntimeCleaner.cs" />
+    <Compile Include="ServerCleaner.cs" />
     <Compile Include="ServerTimeUpdater.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\SkillBase.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\SkillHeal.cs" />
