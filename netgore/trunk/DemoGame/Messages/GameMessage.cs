@@ -277,6 +277,7 @@ namespace DemoGame
         GroupLeave,
         GroupMemberLeft,
         GroupMemberJoined,
+        GroupSay,
 
         #endregion
 

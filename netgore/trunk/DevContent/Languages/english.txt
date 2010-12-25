@@ -88,6 +88,8 @@ GroupLeave: "You have left the group."
 GroupMemberLeft: "$0 has left the group."
 GroupMemberJoined: "$0 has joined the group."
 
+GroupSay: "[Group] $0 says: \$1\"
+
 ########### Feature: Guilds ###########
 InvalidCommandMustBeInGuild: "You must be in a guild to do that."
 InvalidCommandMustNotBeInGuild: "You cannot do that while in a guild."
