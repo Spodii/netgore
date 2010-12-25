@@ -17,6 +17,9 @@ namespace DemoGame.Server
         [SayHandlerCommand("Announce", UserPermissions.Moderator)]
         public void Announce(string message)
         {
+            if (string.IsNullOrEmpty(message))
+                return;
+
             World.Send(GameMessage.CommandAnnounce, ServerMessageType.GUIChat, message);
         }
 
