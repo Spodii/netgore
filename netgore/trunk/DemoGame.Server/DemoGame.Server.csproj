@@ -386,6 +386,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ServerSettingsDescriptions.resx</DependentUpon>
     </Compile>
+    <Compile Include="ServerSettingsValidator.cs" />
     <Compile Include="UI\Compact\CompactUI.cs" />
     <Compile Include="UI\WinForms\ConsoleWindowHider.cs" />
     <Compile Include="UI\WinForms\frmMain.cs">

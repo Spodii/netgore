@@ -102,6 +102,10 @@ namespace DemoGame.Server
             // Set the thread priority
             SetThreadPriority(ServerSettings.Default.ThreadPriority);
 
+            // Validate the server's settings
+            var ssv = new ServerSettingsValidator();
+            ssv.Check(this);
+
             if (log.IsInfoEnabled)
                 log.Info("Server loaded.");
         }
