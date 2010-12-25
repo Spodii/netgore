@@ -17,10 +17,7 @@ namespace DemoGame.Server
             if (string.IsNullOrEmpty(message))
                 return;
 
-            using (var pw = ServerPacket.SendMessage(GameMessage.CommandShout, User.Name, message))
-            {
-                World.Send(pw, ServerMessageType.GUIChat);
-            }
+            World.Send(GameMessage.CommandShout, ServerMessageType.GUIChat, User.Name, message);
 
             EventCounterManager.User.Increment(User.ID, UserEventCounterType.ChatShoutTimes);
             EventCounterManager.User.Increment(User.ID, UserEventCounterType.ChatLocalChars, message.Length);
