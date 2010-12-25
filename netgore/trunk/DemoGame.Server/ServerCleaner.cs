@@ -22,6 +22,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="ServerCleaner"/> class.
         /// </summary>
         /// <param name="server">The <see cref="Server"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="server"/> is null.</exception>
         public ServerCleaner(Server server)
         {
             if (server == null)
