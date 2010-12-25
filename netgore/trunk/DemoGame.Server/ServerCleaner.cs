@@ -12,7 +12,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Performs cleaning operations on a <see cref="Server"/> - namely the database.
     /// </summary>
-    class ServerCleaner
+    public class ServerCleaner
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
