@@ -177,6 +177,7 @@ namespace DemoGame.Server
         /// Adds an <see cref="IRespawnable"/> to the list of objects that need to respawn.
         /// </summary>
         /// <param name="respawnable">The object to respawn.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="respawnable"/> is null.</exception>
         public void AddToRespawn(IRespawnable respawnable)
         {
             if (respawnable == null)
@@ -188,14 +189,29 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Adds a <see cref="User"/> to the <see cref="World"/>.
+        /// Tries to add a <see cref="User"/> to the <see cref="World"/>.
         /// </summary>
-        public void AddUser(User user)
+        /// <param name="user">The <see cref="User"/> to add.</param>
+        /// <returns>True if the <paramref name="user"/> was successfully added to the <see cref="World"/>; otherwise false.</returns>
+        public bool TryAddUser(User user)
         {
             if (user == null)
-                throw new ArgumentNullException("user");
+            {
+                const string errmsg = "Parameter `user` is null, but logically shouldn't be.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg);
+                Debug.Fail(errmsg);
+                return false;
+            }
+
             if (string.IsNullOrEmpty(user.Name))
-                throw new ArgumentException("User contains a null or invalid name.", "user");
+            {
+                const string errmsg = "User `{0}` contains a null or invalid name (`{1}`).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user, user.Name);
+                Debug.Fail(string.Format(errmsg, user, user.Name));
+                return false;
+            }
 
             var name = user.Name;
 
@@ -205,11 +221,10 @@ namespace DemoGame.Server
                 if (_users.ContainsKey(name))
                 {
                     const string errmsg = "User with name `{0}` already in the _users collection! Cannot add user `{1}`.";
-                    var err = string.Format(errmsg, name, user);
                     if (log.IsErrorEnabled)
-                        log.Error(err);
-                    Debug.Fail(err);
-                    throw new ArgumentException(err, "user");
+                        log.ErrorFormat(errmsg, name, user);
+                    Debug.Fail(string.Format(errmsg, name, user));
+                    return false;
                 }
 
                 // Add the user to the collection
@@ -218,6 +233,8 @@ namespace DemoGame.Server
 
             // Listen for when the user is disposed
             user.Disposed += User_Disposed;
+
+            return true;
         }
 
         /// <summary>

@@ -489,6 +489,13 @@ namespace DemoGame.Server
         {
             base.HandleAdditionalLoading(v);
 
+            if (!World.TryAddUser(this))
+            {
+                // Failed to add user to the world (probably because they are already online - dispose of them
+                DelayedDispose();
+                return;
+            }
+
             // Load the guild information
             var guildInfo = _selectGuildMemberQuery.Execute(ID);
             if (guildInfo != null)
@@ -497,8 +504,6 @@ namespace DemoGame.Server
                 _guildMemberInfo.Guild = _guildManager.GetGuild(guildInfo.GuildID);
                 _guildMemberInfo.GuildRank = guildInfo.Rank;
             }
-
-            World.AddUser(this);
 
             // Restore any of the user's lost cash or items from an improperly closed trade (namely for if the server crashed)
             PeerTradingHelper.RecoverLostTradeItems(this);
