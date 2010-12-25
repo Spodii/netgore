@@ -93,5 +93,24 @@ namespace DemoGame.Server
 
             ((IGroupable)User).Group.RemoveMember(User);
         }
+
+        /// <summary>
+        /// Sends a message to all group members.
+        /// </summary>
+        /// <param name="message">The message to send.</param>
+        [SayHandlerCommand("GroupSay")]
+        public void PartySay(string message)
+        {
+            if (!RequireInGroup())
+                return;
+
+            foreach (var groupMember in User.Group.Members.OfType<User>())
+            {
+                groupMember.Send(GameMessage.GroupSay, ServerMessageType.GUIChat, User.Name, message);
+            }
+        }
+
+
+
     }
 }

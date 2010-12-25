@@ -1298,6 +1298,13 @@ namespace DemoGame.Server
             set { _groupMemberInfo.Group = value; }
         }
 
+        public IGroup Group
+        {
+            get { return _groupMemberInfo.Group; }
+            set { _groupMemberInfo.Group = value; }
+        }
+
+
         /// <summary>
         /// Gets if this <see cref="IGroupable"/> is close enough to the <paramref name="other"/> to
         /// share group-based rewards with them. This method should return the same value for two
