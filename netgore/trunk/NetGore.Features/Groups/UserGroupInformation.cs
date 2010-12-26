@@ -83,6 +83,23 @@ namespace NetGore.Features.Groups
         }
 
         /// <summary>
+        /// Clears all of the group information.
+        /// </summary>
+        public void Clear()
+        {
+            bool changed = IsInGroup;
+
+            _members.Clear();
+            _founder = null;
+
+            if (changed)
+            {
+                if (GroupChanged != null)
+                    GroupChanged.Raise(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
         /// Reads the data from the server related to the user group information. This should only be used by the client.
         /// </summary>
         /// <param name="bs">The <see cref="BitStream"/> containing the data.</param>

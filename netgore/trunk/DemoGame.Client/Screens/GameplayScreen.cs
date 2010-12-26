@@ -63,6 +63,7 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         ILight _userLight;
         World _world;
+        GroupForm _groupForm;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -304,6 +305,9 @@ namespace DemoGame.Client
             SoundManager.Stop3D();
             ControlBorder.RemoveGlobalColorTransformation(GlobalControlBorderTransformer);
 
+            if (_groupForm != null)
+                _groupForm.GroupInfo.Clear();
+
             base.Deactivate();
         }
 
@@ -533,7 +537,7 @@ namespace DemoGame.Client
             _guildForm.JoinRequested += _guildForm_JoinRequested;
             _guildForm.LeaveRequested += _guildForm_LeaveRequested;
 
-            new GroupForm(_cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
+            _groupForm = new GroupForm(_cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
             Func<QuestID, bool> questFinishReqs =
