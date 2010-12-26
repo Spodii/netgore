@@ -13,7 +13,7 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public enum KeyCode
         {
-            Nothing = 0,
+            None = 0,
             A = 'a',
             B = 'b',
             C = 'c',

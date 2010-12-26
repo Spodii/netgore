@@ -15,12 +15,14 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Creates a new <see cref="GameControl"/> and adds it to this <see cref="GameControlCollection"/>.
         /// </summary>
+        /// <param name="keys">The <see cref="GameControlKeys"/>.</param>
         /// <param name="delay">The delay.</param>
         /// <param name="additionalRequirements">The additional requirements.</param>
         /// <param name="invokeHandler">The invoke handler.</param>
-        /// <param name="keys">The GameControlKeys.</param>
-        /// <returns>The instance of the created <see cref="GameControl"/> that was added to this
-        /// <see cref="GameControlCollection"/>.</returns>
+        /// <returns>
+        /// The instance of the created <see cref="GameControl"/> that was added to this
+        /// <see cref="GameControlCollection"/>.
+        /// </returns>
         public GameControl CreateAndAdd(GameControlKeys keys, int delay, Func<bool> additionalRequirements,
                                         TypedEventHandler<GameControl> invokeHandler)
         {

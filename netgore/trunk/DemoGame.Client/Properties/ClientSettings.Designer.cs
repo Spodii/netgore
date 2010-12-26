@@ -436,5 +436,53 @@ namespace DemoGame.Client.Properties {
                 this["Graphics_Fullscreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LControl")]
+        public global::SFML.Window.KeyCode Keys_Emote_Modifier1 {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Emote_Modifier1"]));
+            }
+            set {
+                this["Keys_Emote_Modifier1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::SFML.Window.KeyCode Keys_Emote_Modifier2 {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Emote_Modifier2"]));
+            }
+            set {
+                this["Keys_Emote_Modifier2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::SFML.Window.KeyCode Keys_QuickBarItem_Modifier1 {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_QuickBarItem_Modifier1"]));
+            }
+            set {
+                this["Keys_QuickBarItem_Modifier1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::SFML.Window.KeyCode Keys_QuickBarItem_Modifier2 {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_QuickBarItem_Modifier2"]));
+            }
+            set {
+                this["Keys_QuickBarItem_Modifier2"] = value;
+            }
+        }
     }
 }

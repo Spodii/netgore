@@ -91,6 +91,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool IsKeyDown(KeyCode key)
             {
+                if (key == KeyCode.None)
+                    return false;
+
                 return sfInput_IsKeyDown(This, key);
             }
 
