@@ -107,5 +107,17 @@
     <Setting Name="Graphics_Fullscreen" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Keys_Emote_Modifier1" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">LControl</Value>
+    </Setting>
+    <Setting Name="Keys_Emote_Modifier2" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem_Modifier1" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
+    <Setting Name="Keys_QuickBarItem_Modifier2" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

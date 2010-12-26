@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Client.Properties;
 using NetGore.Graphics.GUI;
@@ -51,24 +52,24 @@ namespace DemoGame.Client
             _talkToNPC = new GameControlKeys("Talk To NPC", SKC("TalkToNPC"));
             _pickUp = new GameControlKeys("Pick Up", SKC("PickUp"));
 
-            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", SKC("EmoteEllipsis"));
-            _emoteExclamation = new GameControlKeys("Emote Exclamation", SKC("EmoteExclamation"));
-            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", SKC("EmoteHeartbroken"));
-            _emoteHearts = new GameControlKeys("Emote Hearts", SKC("EmoteHearts"));
-            _emoteMeat = new GameControlKeys("Emote Meat", SKC("EmoteMeat"));
-            _emoteQuestion = new GameControlKeys("Emote Question", SKC("EmoteQuestion"));
-            _emoteSweat = new GameControlKeys("Emote Sweat", SKC("EmoteSweat"));
+            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", SKCEmotes("EmoteEllipsis"));
+            _emoteExclamation = new GameControlKeys("Emote Exclamation", SKCEmotes("EmoteExclamation"));
+            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", SKCEmotes("EmoteHeartbroken"));
+            _emoteHearts = new GameControlKeys("Emote Hearts", SKCEmotes("EmoteHearts"));
+            _emoteMeat = new GameControlKeys("Emote Meat", SKCEmotes("EmoteMeat"));
+            _emoteQuestion = new GameControlKeys("Emote Question", SKCEmotes("EmoteQuestion"));
+            _emoteSweat = new GameControlKeys("Emote Sweat", SKCEmotes("EmoteSweat"));
 
-            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, SKC("QuickBarItem0"));
-            _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, SKC("QuickBarItem1"));
-            _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, SKC("QuickBarItem2"));
-            _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, SKC("QuickBarItem3"));
-            _quickBarItem4 = new GameControlKeys("Quick bar item 4", null, null, SKC("QuickBarItem4"));
-            _quickBarItem5 = new GameControlKeys("Quick bar item 5", null, null, SKC("QuickBarItem5"));
-            _quickBarItem6 = new GameControlKeys("Quick bar item 6", null, null, SKC("QuickBarItem6"));
-            _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, SKC("QuickBarItem7"));
-            _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, SKC("QuickBarItem8"));
-            _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, SKC("QuickBarItem9"));
+            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, SKCQuickBar("QuickBarItem0"));
+            _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, SKCQuickBar("QuickBarItem1"));
+            _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, SKCQuickBar("QuickBarItem2"));
+            _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, SKCQuickBar("QuickBarItem3"));
+            _quickBarItem4 = new GameControlKeys("Quick bar item 4", null, null, SKCQuickBar("QuickBarItem4"));
+            _quickBarItem5 = new GameControlKeys("Quick bar item 5", null, null, SKCQuickBar("QuickBarItem5"));
+            _quickBarItem6 = new GameControlKeys("Quick bar item 6", null, null, SKCQuickBar("QuickBarItem6"));
+            _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, SKCQuickBar("QuickBarItem7"));
+            _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, SKCQuickBar("QuickBarItem8"));
+            _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, SKCQuickBar("QuickBarItem9"));
 
             // Initialize the keys specific to the perspective being used
             InitPerspectiveSpecificKeys();
@@ -208,6 +209,26 @@ namespace DemoGame.Client
         {
             const string prefix = "Keys_";
             return SettingsKeyCodeReference.Create(ClientSettings.Default, prefix + settingName);
+        }
+
+        /// <summary>
+        /// Helper method to create a <see cref="SettingsKeyCodeReference"/> for an emote key.
+        /// </summary>
+        /// <param name="settingName">The setting name for the key, without the Keys_ prefix.</param>
+        /// <returns>The <see cref="IKeyCodeReference"/> instance.</returns>
+        static IEnumerable<IKeyCodeReference> SKCEmotes(string settingName)
+        {
+            return new IKeyCodeReference[] { SKC(settingName), SKC("Emote_Modifier1"), SKC("Emote_Modifier2") };
+        }
+
+        /// <summary>
+        /// Helper method to create a <see cref="SettingsKeyCodeReference"/> for a quick bar item key.
+        /// </summary>
+        /// <param name="settingName">The setting name for the key, without the Keys_ prefix.</param>
+        /// <returns>The <see cref="IKeyCodeReference"/> instance.</returns>
+        static IEnumerable<IKeyCodeReference> SKCQuickBar(string settingName)
+        {
+            return new IKeyCodeReference[] { SKC(settingName), SKC("QuickBarItem_Modifier1"), SKC("QuickBarItem_Modifier2") };
         }
     }
 }
