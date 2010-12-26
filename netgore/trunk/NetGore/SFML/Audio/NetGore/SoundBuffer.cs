@@ -148,7 +148,10 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override void Destroy(bool disposing)
             {
-                sfSoundBuffer_Destroy(This);
+                var t = ThisRaw;
+
+                if (t != IntPtr.Zero)
+                    sfSoundBuffer_Destroy(t);
             }
 
             /// <summary>

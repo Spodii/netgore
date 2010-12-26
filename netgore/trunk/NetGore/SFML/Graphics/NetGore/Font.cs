@@ -238,10 +238,15 @@ namespace SFML
             {
                 if (this != ourDefaultFont)
                 {
+                    var t = ThisRaw;
+
                     if (!disposing)
                         Context.Global.SetActive(true);
 
-                    sfFont_Destroy(This);
+                    if (t != IntPtr.Zero)
+                    {
+                        sfFont_Destroy(t);
+                    }
 
                     if (disposing)
                     {
