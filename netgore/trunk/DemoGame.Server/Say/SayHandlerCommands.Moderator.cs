@@ -36,7 +36,7 @@ namespace DemoGame.Server
             // Check that the user could be found
             if (target == null)
             {
-                User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
                 return;
             }
 
@@ -141,7 +141,7 @@ namespace DemoGame.Server
             // Check that the user could be found
             if (target == null)
             {
-                User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
                 return;
             }
 

@@ -8,15 +8,6 @@ namespace DemoGame
     /// </summary>
     public enum GameMessage : ushort
     {
-        #region Core: Misc
-
-        /// <summary>
-        /// Do not have the <see cref="UserPermissions"/> level needed to perform an action (can be any kind of action).
-        /// </summary>
-        InsufficientPermissions,
-
-        #endregion
-
         #region Core: Combat messages
 
         /// <summary>
@@ -43,6 +34,11 @@ namespace DemoGame
         #endregion
 
         #region Core: General chat command responses
+
+        /// <summary>
+        /// Do not have the <see cref="UserPermissions"/> level needed to perform an action (can be any kind of action).
+        /// </summary>
+        CommandGeneralInsufficientPermissions,
 
         /// <summary>
         /// The user the command was targeted at contain an invalid/illegal name.
@@ -103,16 +99,6 @@ namespace DemoGame
         /// Message received by the receiver of a Tell command.
         /// </summary>
         CommandTellReceiver,
-
-        /// <summary>
-        /// Tell command contains the name of a User that does not exist.
-        /// </summary>
-        CommandTellInvalidUser,
-
-        /// <summary>
-        /// Tell command contains the name of a User that exists, but is offline.
-        /// </summary>
-        CommandTellOfflineUser,
 
         /// <summary>
         /// Message received when a User shouts.
