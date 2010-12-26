@@ -237,6 +237,9 @@ namespace NetGore.Content
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <param name="loader">The loader.</param>
         /// <returns>The loaded asset.</returns>
+        /// <exception cref="ObjectDisposedException"><c>ObjectDisposedException</c>.</exception>
+        /// <exception cref="ArgumentNullException">Argument is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>level</c> is out of range.</exception>
         IMyLazyAsset Load(string assetName, ContentLevel level, Func<string, IMyLazyAsset> loader)
         {
             if (IsDisposed)
@@ -247,7 +250,7 @@ namespace NetGore.Content
 
             var levelInt = (int)level;
             if (levelInt >= _loadedAssets.Length || levelInt < 0)
-                throw new ArgumentOutOfRangeException("level", "Invalid ContentLevel value specified.");
+                throw new ArgumentOutOfRangeException("level", string.Format("Invalid ContentLevel `{0}` value specified.", level));
 
             lock (_assetSync)
             {
@@ -283,11 +286,13 @@ namespace NetGore.Content
         /// <param name="assetName">The name of the asset.</param>
         /// <param name="fontSize">The font size.</param>
         /// <returns>The loaded asset.</returns>
+        /// <exception cref="ObjectDisposedException"><c>ObjectDisposedException</c>.</exception>
+        /// <exception cref="ArgumentNullException">Argument is null.</exception>
         protected Font ReadAssetFont(string assetName, int fontSize)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(ToString());
-
+            
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
@@ -301,6 +306,8 @@ namespace NetGore.Content
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <returns>The asset instance.</returns>
+        /// <exception cref="ObjectDisposedException"><c>ObjectDisposedException</c>.</exception>
+        /// <exception cref="ArgumentNullException">Argument is null.</exception>
         protected Image ReadAssetImage(string assetName)
         {
             if (IsDisposed)
@@ -320,6 +327,8 @@ namespace NetGore.Content
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <returns>The loaded asset.</returns>
+        /// <exception cref="ObjectDisposedException"><c>ObjectDisposedException</c>.</exception>
+        /// <exception cref="ArgumentNullException">Argument is null.</exception>
         protected SoundBuffer ReadAssetSoundBuffer(string assetName)
         {
             if (IsDisposed)
@@ -421,6 +430,7 @@ namespace NetGore.Content
         /// <param name="fontSize">The size of the font.</param>
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c>.</exception>
         public Font LoadFont(string assetName, int fontSize, ContentLevel level)
         {
             if (assetName == null)
@@ -439,6 +449,7 @@ namespace NetGore.Content
         /// <param name="assetName">The name of the asset to load.</param>
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c>.</exception>
         public Image LoadImage(string assetName, ContentLevel level)
         {
             if (assetName == null)
@@ -456,9 +467,10 @@ namespace NetGore.Content
         /// <param name="assetName">The name of the asset to load.</param>
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c> or empty.</exception>
         public SoundBuffer LoadSoundBuffer(string assetName, ContentLevel level)
         {
-            if (assetName == null)
+            if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
             assetName = SanitizeAssetName(assetName);
@@ -472,9 +484,10 @@ namespace NetGore.Content
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c> or empty.</exception>
         public void SetLevel(string assetName, ContentLevel level)
         {
-            if (assetName == null)
+            if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
             assetName = SanitizeAssetName(assetName);
@@ -498,9 +511,10 @@ namespace NetGore.Content
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c> or empty.</exception>
         public void SetLevelMax(string assetName, ContentLevel level)
         {
-            if (assetName == null)
+            if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
             assetName = SanitizeAssetName(assetName);
@@ -524,9 +538,10 @@ namespace NetGore.Content
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c> or empty.</exception>
         public void SetLevelMin(string assetName, ContentLevel level)
         {
-            if (assetName == null)
+            if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
             assetName = SanitizeAssetName(assetName);
@@ -552,9 +567,10 @@ namespace NetGore.Content
         /// <param name="level">When this method returns true, contains the <see cref="ContentLevel"/>
         /// of the asset.</param>
         /// <returns>True if the asset was found; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c> or empty.</exception>
         public bool TryGetContentLevel(string assetName, out ContentLevel level)
         {
-            if (assetName == null)
+            if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
             assetName = SanitizeAssetName(assetName);

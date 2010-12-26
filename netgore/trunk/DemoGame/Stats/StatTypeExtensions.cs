@@ -16,6 +16,9 @@ namespace DemoGame
         /// <param name="statCollectionType">The <see cref="StatCollectionType"/> of the <see cref="StatType"/> to get
         /// the field for.</param>
         /// <returns>The database field name for the <paramref name="statType"/>.</returns>
+        /// <exception cref="ArgumentException">StatCollectionType.Modified is not allowed in the database.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="statCollectionType"/> is not a valid
+        /// <see cref="StatCollectionType"/> enum value.</exception>
         public static string GetDatabaseField(this StatType statType, StatCollectionType statCollectionType)
         {
             switch (statCollectionType)

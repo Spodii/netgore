@@ -13,7 +13,7 @@ namespace DemoGame.Client
     public class InfoBox
     {
         readonly List<InfoBoxItem> _items;
-        readonly Font _sf;
+        readonly Font _font;
 
         Color _defaultColor = Color.Green;
         int _maxItems = 20;
@@ -24,12 +24,12 @@ namespace DemoGame.Client
         /// InfoBox constructor
         /// </summary>
         /// <param name="position">Position of the bottom-right corner of the InfoBox</param>
-        /// <param name="sf">SpriteFont used to draw the InfoBox text</param>
-        public InfoBox(Vector2 position, Font sf)
+        /// <param name="font"><see cref="Font"/> used to draw the InfoBox text</param>
+        public InfoBox(Vector2 position, Font font)
         {
             _items = new List<InfoBoxItem>(_maxItems);
             _position = position;
-            _sf = sf;
+            _font = font;
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace DemoGame.Client
         {
             ThreadAsserts.IsMainThread();
 
-            var newItem = new InfoBoxItem(TickCount.Now, message, color, _sf);
+            var newItem = new InfoBoxItem(TickCount.Now, message, color, _font);
 
             // If we are full, remove the old messages until we have room
             while (_items.Count >= _maxItems)
@@ -118,7 +118,7 @@ namespace DemoGame.Client
             {
                 // Set the position
                 var pos = _position;
-                pos.Y -= _sf.GetLineSpacing() * (i++ + 1);
+                pos.Y -= _font.GetLineSpacing() * (i++ + 1);
                 pos.X -= item.Width;
 
                 // Set the color
@@ -127,7 +127,7 @@ namespace DemoGame.Client
                 var color = new Color(item.Color.R, item.Color.G, item.Color.B, alpha);
 
                 // Draw
-                sb.DrawString(_sf, item.Message, pos, color);
+                sb.DrawString(_font, item.Message, pos, color);
             }
         }
 
@@ -162,13 +162,13 @@ namespace DemoGame.Client
             /// <param name="time">Current time.</param>
             /// <param name="msg">Message to display.</param>
             /// <param name="color">Color of the text.</param>
-            /// <param name="sf">SpriteFont that will be used to calculate the Width.</param>
-            public InfoBoxItem(TickCount time, string msg, Color color, Font sf)
+            /// <param name="font"><see cref="Font"/> that will be used to calculate the Width.</param>
+            public InfoBoxItem(TickCount time, string msg, Color color, Font font)
             {
                 CreatedTime = time;
                 Message = msg;
                 Color = color;
-                Width = sf.MeasureString(msg).X;
+                Width = font.MeasureString(msg).X;
             }
         }
     }

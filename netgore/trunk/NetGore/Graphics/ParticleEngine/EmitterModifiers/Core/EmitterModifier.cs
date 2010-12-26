@@ -67,6 +67,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         /// <returns>The <see cref="EmitterModifier"/> instance created from the values read from the
         /// <paramref name="reader"/>.</returns>
+        /// <exception cref="ParticleEmitterLoadEmitterModifierException">The <see cref="EmitterModifier"/> could not be
+        /// loaded.</exception>
         public static EmitterModifier Read(IValueReader reader)
         {
             // Get the type

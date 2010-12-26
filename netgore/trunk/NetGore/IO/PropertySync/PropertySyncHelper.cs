@@ -36,6 +36,7 @@ namespace NetGore.IO.PropertySync
         /// <summary>
         /// Initializes the <see cref="PropertySyncHelper"/> class.
         /// </summary>
+        /// <exception cref="TypeLoadException">Multiple <see cref="PropertySyncHandlerAttribute"/>s were found on a single type.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
             MessageId = "PropertySyncHandlerAttributes")]
         static PropertySyncHelper()
@@ -229,6 +230,7 @@ namespace NetGore.IO.PropertySync
             /// Creates the <see cref="SyncValueAttributeInfo"/>s for the given <paramref name="key"/>.
             /// </summary>
             /// <param name="key">The key to create the value for.</param>
+            /// <exception cref="TypeLoadException">Multiple <see cref="SyncValueAttribute"/> found on a single type.</exception>
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SyncValueAttribute")]
             static SyncValueAttributeInfo[] CreateValue(Type key)
             {

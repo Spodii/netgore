@@ -24,6 +24,8 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="msgID">ID of the message to process. Must be non-zero.</param>
         /// <param name="methodDelegate">Delegate to the processing method.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="methodDelegate" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="msgID"/> is zero.</exception>
         public MessageProcessor(MessageProcessorID msgID, MessageProcessorHandler methodDelegate)
         {
             if (methodDelegate == null)

@@ -37,6 +37,7 @@ namespace NetGore.Db
         /// <summary>
         /// Executes the query on the database.
         /// </summary>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         public void Execute()
         {
             // Update the query stats
@@ -71,6 +72,7 @@ namespace NetGore.Db
         /// Executes the query on the database.
         /// </summary>
         /// <returns>Number of rows affected by the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         public int ExecuteWithResult()
         {
             // Update the query stats
@@ -107,6 +109,7 @@ namespace NetGore.Db
         /// <param name="lastInsertedId">Contains the ID for the row that was inserted into the database. Only valid when the
         /// query contains an auto-increment column and the operation being performed is an insert.</param>
         /// <returns>Number of rows affected by the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         public virtual int ExecuteWithResult(out long lastInsertedId)
         {
             // Update the query stats
@@ -171,6 +174,7 @@ namespace NetGore.Db
         /// Executes the query on the database using the specified <paramref name="item"/>.
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         public void Execute(T item)
         {
             // Update the query stats
@@ -214,6 +218,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>Number of rows affected by the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         public int ExecuteWithResult(T item)
         {
             // Update the query stats

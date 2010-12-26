@@ -30,6 +30,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
         /// </summary>
         /// <param name="socket">The socket.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="socket" /> is <c>null</c>.</exception>
         public UserInfo(INetworkSender socket)
         {
             if (socket == null)
@@ -160,6 +161,7 @@ namespace DemoGame.Client
             /// Initializes a new instance of the <see cref="UserQuestInformationExtended"/> class.
             /// </summary>
             /// <param name="userInfo">The user info.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="userInfo" /> is <c>null</c>.</exception>
             public UserQuestInformationExtended(UserInfo userInfo)
             {
                 if (userInfo == null)

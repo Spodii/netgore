@@ -18,6 +18,8 @@ namespace DemoGame.Server.Guilds
         /// </summary>
         /// <param name="dbController">The <see cref="IDbController"/>.</param>
         /// <param name="findGuildMember">The <see cref="Func{T,U}"/> used to find a guild member by name.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="dbController" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="findGuildMember" /> is <c>null</c>.</exception>
         public GuildMemberPerformer(IDbController dbController, Func<string, IGuildMember> findGuildMember)
             : base(GetSaveHandler(dbController))
         {

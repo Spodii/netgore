@@ -34,7 +34,7 @@ namespace NetGore.Tests
         /// </summary>
         public static string Password
         {
-            get { return ""; }
+            get { return "password"; }
         }
 
         public static uint Port

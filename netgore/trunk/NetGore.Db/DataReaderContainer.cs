@@ -12,6 +12,7 @@ namespace NetGore.Db
         /// Initializes a new instance of the <see cref="DataReaderContainer"/> class.
         /// </summary>
         /// <param name="dataReader">The <see cref="IDataReader"/> to use.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="dataReader" /> is <c>null</c>.</exception>
         public DataReaderContainer(IDataReader dataReader)
         {
             if (dataReader == null)

@@ -33,6 +33,8 @@ namespace NetGore.IO
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="FileNotFoundException">No file exists at <paramref name="filePath"/>.</exception>
+        /// <exception cref="XmlException">An error occured while reading the file.</exception>
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         XmlValueReader(string filePath, string rootNodeName, bool useEnumNames = true)
         {
@@ -73,6 +75,7 @@ namespace NetGore.IO
         /// <param name="readAllContent">If true, the XmlReader is expected to be read to the end.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="reader" /> is <c>null</c>.</exception>
         XmlValueReader(XmlReader reader, string rootNodeName, bool readAllContent, bool useEnumNames)
         {
             if (reader == null)
@@ -177,6 +180,7 @@ namespace NetGore.IO
         /// to ensure the XmlValueReader is at the expected location.</param>
         /// <param name="readAllContent">If true, the XmlReader is expected to be read to the end.</param>
         /// <returns>Dictionary containing the content of each Element node.</returns>
+        /// <exception cref="ArgumentException">Failed to read the content.</exception>
         static Dictionary<string, List<string>> ReadNodesIntoDictionary(XmlReader reader, string rootNodeName, bool readAllContent)
         {
             var ret = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
@@ -297,6 +301,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public bool ReadBool(string name)
         {
             var values = _values[name];
@@ -315,6 +321,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public byte ReadByte(string name)
         {
             var values = _values[name];
@@ -333,6 +341,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public double ReadDouble(string name)
         {
             var values = _values[name];
@@ -388,6 +398,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public float ReadFloat(string name)
         {
             var values = _values[name];
@@ -406,6 +418,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public int ReadInt(string name)
         {
             var values = _values[name];
@@ -435,6 +449,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public long ReadLong(string name)
         {
             var values = _values[name];
@@ -605,6 +621,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public sbyte ReadSByte(string name)
         {
             var values = _values[name];
@@ -623,6 +641,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public short ReadShort(string name)
         {
             var values = _values[name];
@@ -641,6 +661,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>String read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public string ReadString(string name)
         {
             var values = _values[name];
@@ -661,6 +683,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public uint ReadUInt(string name)
         {
             var values = _values[name];
@@ -690,6 +714,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public ulong ReadULong(string name)
         {
             var values = _values[name];
@@ -708,6 +734,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        /// <exception cref="KeyNotFoundException">No value could be found for the specified <paramref name="name"/>.</exception>
+        /// <exception cref="DuplicateKeyException">Duplicate values found for the specified <paramref name="name"/>.</exception>
         public ushort ReadUShort(string name)
         {
             var values = _values[name];

@@ -117,7 +117,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Adds a <see cref="GrhData"/> to the list of <see cref="GrhData"/>s at the index assigned to it.
         /// </summary>
-        /// <param name="gd"><see cref="GrhData"/> to add</param>
+        /// <param name="gd"><see cref="GrhData"/> to add.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="gd" /> is <c>null</c>.</exception>
         internal static void AddGrhData(GrhData gd)
         {
             if (gd == null)
@@ -306,6 +307,7 @@ namespace NetGore.Graphics
         /// Deletes a <see cref="GrhData"/>.
         /// </summary>
         /// <param name="grhData"><see cref="GrhData"/> to delete.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="grhData" /> is <c>null</c>.</exception>
         public static void Delete(GrhData grhData)
         {
             if (grhData == null)
@@ -553,6 +555,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to load the <see cref="GrhData"/>s from.</param>
         /// <param name="cm">The <see cref="IContentManager"/> to use for loaded <see cref="GrhData"/>s.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cm" /> is <c>null</c>.</exception>
+        /// <exception cref="FileNotFoundException">GrhData data file not found.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         public static void Load(ContentPaths contentPath, IContentManager cm)
         {
@@ -567,7 +571,7 @@ namespace NetGore.Graphics
                 throw new ArgumentNullException("cm");
 
             if (!File.Exists(path))
-                throw new FileNotFoundException("GrhData file not found.", path);
+                throw new FileNotFoundException("GrhData data file not found.", path);
 
             _isLoading = true;
 

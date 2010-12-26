@@ -47,6 +47,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="AIBase"/> class.
         /// </summary>
         /// <param name="actor">Character for this AI module to control.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="actor" /> is <c>null</c>.</exception>
         protected AIBase(Character actor)
         {
             if (actor == null)

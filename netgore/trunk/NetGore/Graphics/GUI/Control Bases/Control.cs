@@ -102,6 +102,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="parent"/> control is disposed.</exception>
         Control(Control parent, IGUIManager guiManager, Vector2 position, Vector2 clientSize)
         {
             if (guiManager == null)
@@ -123,7 +124,7 @@ namespace NetGore.Graphics.GUI
             if (Parent != null)
             {
                 // Check that the parent isn't disposed
-                if (parent._isDisposed)
+                if (Parent.IsDisposed)
                     throw new ArgumentException("Parent control is disposed and cannot be used.", "parent");
 
                 // Add the Control to the parent
@@ -839,8 +840,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         public void Draw(ISpriteBatch sb)
         {
-            if (Parent != null)
-                throw new MethodAccessException("Draw() may only be called from the root control.");
+            Debug.Assert(IsRoot, "Draw should only be called from the root control. Otherwise, you will end up not drawing all controls.");
 
             if (_isDisposed)
             {

@@ -279,6 +279,7 @@ namespace NetGore.Graphics
         /// <param name="newTexture">Name of the new texture to use.</param>
         /// <param name="source">A <see cref="Rectangle"/> describing the source area of the texture to
         /// use for this <see cref="GrhData"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="newTexture" /> is <c>null</c>.</exception>
         public void ChangeTexture(TextureAssetName newTexture, Rectangle source)
         {
             if (newTexture == null)
@@ -402,11 +403,26 @@ namespace NetGore.Graphics
             return new StationaryGrhData(r, cm, grhIndex, categorization);
         }
 
+        /// <summary>
+        /// Sets the source rectangle.
+        /// </summary>
+        /// <param name="r">The source <see cref="Rectangle"/>.</param>
         void SetSourceRect(Rectangle r)
         {
             SetSourceRect(r.X, r.Y, r.Width, r.Height);
         }
 
+        /// <summary>
+        /// Sets the source rectangle.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="x"/> is less than zero.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="y"/> is less than zero.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than zero.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="height"/> is less than zero.</exception>
         void SetSourceRect(int x, int y, int width, int height)
         {
             if (x < 0)
@@ -429,6 +445,7 @@ namespace NetGore.Graphics
         /// need to be called by editors, and never the client.
         /// </summary>
         /// <param name="newSize">The new, correct size of the texture used by the <see cref="StationaryGrhData"/>.</param>
+        /// <exception cref="InvalidOperationException">This method can only be called when <see cref="AutomaticSize"/> is set.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomaticSize")]
         public void UpdateAutomaticSize(Vector2 newSize)
         {
@@ -572,6 +589,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="texture">Texture atlas.</param>
         /// <param name="atlasSourceRect">Source rectangle in the atlas.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
         void ITextureAtlasable.SetAtlas(Image texture, Rectangle atlasSourceRect)
         {
             if (texture == null)

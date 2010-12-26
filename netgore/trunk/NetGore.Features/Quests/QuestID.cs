@@ -33,6 +33,7 @@ namespace NetGore.Features.Quests
         /// Initializes a new instance of the <see cref="QuestID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new <see cref="QuestID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public QuestID(int value)
         {
             if (value < MinValue || value > MaxValue)

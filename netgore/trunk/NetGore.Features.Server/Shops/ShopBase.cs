@@ -26,6 +26,8 @@ namespace NetGore.Features.Shops
         /// <param name="name">The name.</param>
         /// <param name="canBuy">Whether or not the shop can buy items from shoppers.</param>
         /// <param name="shopItems">The shop items.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="shopItems"/> contains more items than the max
+        /// number supported by <see cref="ShopSettings.MaxShopItems"/>.</exception>
         protected ShopBase(ShopID id, string name, bool canBuy, IEnumerable<TShopItem> shopItems)
         {
             _id = id;
@@ -39,7 +41,7 @@ namespace NetGore.Features.Shops
                 var err = string.Format(errmsg, this, _shopItems.Length, _shopSettings.MaxShopItems);
                 log.Fatal(err);
                 Debug.Fail(err);
-                throw new ArgumentException(err, "shopItems");
+                throw new ArgumentOutOfRangeException(err, "shopItems");
             }
         }
 

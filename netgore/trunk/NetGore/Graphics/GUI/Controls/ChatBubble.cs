@@ -38,6 +38,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="parent">The parent <see cref="Control"/>.</param>
         /// <param name="owner">The <see cref="Entity"/> that this <see cref="ChatBubble"/> is for.</param>
         /// <param name="text">The text to display.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="text" /> is <c>null</c>.</exception>
         public ChatBubble(Control parent, Entity owner, string text) : base(parent, Vector2.Zero, Vector2.Zero)
         {
             if (owner == null)

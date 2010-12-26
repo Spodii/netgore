@@ -19,6 +19,7 @@ namespace NetGore.Scripting
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
+
         readonly List<CompilerError> _compilerErrors = new List<CompilerError>();
         readonly string _name;
         readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
@@ -28,8 +29,8 @@ namespace NetGore.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptTypeCollection"/> class.
         /// </summary>
-        /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
-        /// ScriptTypeCollections.</param>
+        /// <param name="name">The name of this <see cref="ScriptTypeCollection"/>. This name should be unique from all other
+        /// <see cref="ScriptTypeCollection"/>s.</param>
         /// <param name="scriptDir">Directory containing the scripts to load.</param>
         public ScriptTypeCollection(string name, string scriptDir)
             : this(name, SafeGetFiles(scriptDir, "*", SearchOption.TopDirectoryOnly))
@@ -39,9 +40,10 @@ namespace NetGore.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptTypeCollection"/> class.
         /// </summary>
-        /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
-        /// ScriptTypeCollections.</param>
+        /// <param name="name">The name of this <see cref="ScriptTypeCollection"/>. This name should be unique from all other
+        /// <see cref="ScriptTypeCollection"/>s.</param>
         /// <param name="sourceFiles">IEnumerable of source code file paths.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
         public ScriptTypeCollection(string name, IEnumerable<string> sourceFiles)
         {
             if (string.IsNullOrEmpty(name))
@@ -63,7 +65,7 @@ namespace NetGore.Scripting
         }
 
         /// <summary>
-        /// Gets a Type by its name.
+        /// Gets a <see cref="Type"/> by its name.
         /// </summary>
         /// <param name="typeName">Name of the Type.</param>
         /// <returns>The Type with the specified name.</returns>
@@ -150,6 +152,8 @@ namespace NetGore.Scripting
         /// <returns>
         /// The resulting Assembly from the compiler.
         /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="language"/> is not a defined value of the
+        /// <see cref="ScriptLanguage"/> enum.</exception>
         static Assembly CompileCode(string outputFilePath, IEnumerable<string> files, ScriptLanguage language,
                                     out CompilerErrorCollection errors)
         {

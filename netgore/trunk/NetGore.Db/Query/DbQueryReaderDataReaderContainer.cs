@@ -12,7 +12,7 @@ using log4net;
 namespace NetGore.Db
 {
     /// <summary>
-    /// Container for the DbQueryReader that will allow us to safely and properly dispose of the reader and poolable
+    /// Container for the <see cref="DbQueryReader"/> that will allow us to safely and properly dispose of the reader and poolable
     /// connection by just calling Dispose() on it.
     /// </summary>
     sealed class DbQueryReaderDataReaderContainer : DataReaderContainer
@@ -31,6 +31,15 @@ namespace NetGore.Db
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="DbQueryReaderDataReaderContainer"/>.
+        /// </summary>
+        /// <param name="dbQueryBase">The <see cref="DbQueryBase"/>.</param>
+        /// <param name="command">The <see cref="DbCommand"/>.</param>
+        /// <param name="dataReader">The <see cref="IDataReader"/>.</param>
+        /// <returns>The <see cref="DbQueryReaderDataReaderContainer"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="dbQueryBase" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="command" /> is <c>null</c>.</exception>
         public static DbQueryReaderDataReaderContainer Create(DbQueryBase dbQueryBase, DbCommand command, IDataReader dataReader)
         {
             if (dbQueryBase == null)

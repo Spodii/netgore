@@ -534,9 +534,9 @@ namespace NetGore.Graphics.GUI
             /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
             /// <param name="spriteName">Name of the toolbar sprite.</param>
             /// <param name="clickAction">The action to perform when clicked.</param>
-            /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-            /// <exception cref="NullReferenceException"><paramref name="spriteName"/> is null.</exception>
-            /// <exception cref="NullReferenceException"><paramref name="clickAction"/> is null.</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="parent"/> is null.</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="spriteName"/> is null or empty.</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="clickAction"/> is null.</exception>
             public PagedListButton(Control parent, string spriteName, Action clickAction)
                 : base(parent, Vector2.Zero, new Vector2(8))
             {

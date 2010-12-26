@@ -18,6 +18,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="SayHandlerCommands"/> class.
         /// </summary>
         /// <param name="server">The Server that the commands will come from.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="server" /> is <c>null</c>.</exception>
         public SayHandlerCommands(Server server)
         {
             if (server == null)

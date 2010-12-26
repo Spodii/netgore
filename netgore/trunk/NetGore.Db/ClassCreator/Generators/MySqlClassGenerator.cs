@@ -51,6 +51,7 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="value">The value to check.</param>
         /// <returns>True if null; otherwise false.</returns>
+        /// <exception cref="ArgumentException">Unexpected argument value.</exception>
         static bool GetColumnInfoNull(string value)
         {
             if (StringComparer.OrdinalIgnoreCase.Equals(value, "YES"))
@@ -118,6 +119,7 @@ namespace NetGore.Db.ClassCreator
         /// <returns>
         /// The <see cref="DbColumnInfo"/>s for the given <paramref name="table"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">Failed to get the type for a column on a table.</exception>
         protected override IEnumerable<DbColumnInfo> GetColumns(string table)
         {
             var ret = new List<DbColumnInfo>();

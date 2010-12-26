@@ -41,6 +41,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes the <see cref="UserChatDialogState"/> class.
         /// </summary>
+        /// <exception cref="ArgumentException">The <see cref="_responseConditionalFailureType"/> is invalid.</exception>
         static UserChatDialogState()
         {
             if (!EnumHelper<ResponseConditionalFailureHandleType>.IsDefined(_responseConditionalFailureType))
@@ -90,6 +91,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="npc">The NPC to start the dialog with.</param>
         /// <returns>True if the User can start a dialog with the given <paramref name="npc"/>; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="npc" /> is <c>null</c>.</exception>
         bool CanStartChat(Character npc)
         {
             const string errmsg = "Cannot start chat between `{0}` and `{1}` - {2}.";
@@ -177,6 +179,7 @@ namespace DemoGame.Server
         /// Progresses the chat dialog by using the given <paramref name="responseIndex"/>.
         /// </summary>
         /// <param name="responseIndex">The index of the response to use for the current dialog page.</param>
+        /// <exception cref="Exception">The <see cref="_responseConditionalFailureType"/> is invalid.</exception>
         public void EnterResponse(byte responseIndex)
         {
             // Ensure there is a chat session going on

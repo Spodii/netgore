@@ -29,6 +29,7 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
         /// <param name="texture">The texture used by the Sprite.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
         public Sprite(Image texture)
         {
             if (texture == null)
@@ -43,6 +44,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="texture">The texture used by the Sprite.</param>
         /// <param name="source">Source rectangle in the texture for the Sprite.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
         public Sprite(Image texture, Rectangle source)
         {
             if (texture == null)

@@ -151,6 +151,7 @@ namespace NetGore.IO
         /// <param name="nodeName">Unused by the BitStream.</param>
         /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
         /// <returns>Array of the values read the IValueReader.</returns>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         T[] IValueReader.ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
         {
             throw CreateNodesNotSupportedException();
@@ -163,6 +164,7 @@ namespace NetGore.IO
         /// <param name="nodeName">Unused by the BitStream.</param>
         /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
         /// <returns>Array of the values read the IValueReader.</returns>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
         {
             throw CreateNodesNotSupportedException();
@@ -194,8 +196,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="key">Unused by the BitStream.</param>
         /// <returns>An IValueReader to read the child node.</returns>
-        /// <exception cref="ArgumentException">Zero or more than one values found for the given
-        /// <paramref name="key"/>.</exception>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         IValueReader IValueReader.ReadNode(string key)
         {
             throw CreateNodesNotSupportedException();
@@ -208,7 +209,7 @@ namespace NetGore.IO
         /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
         /// be thrown if this value exceeds the actual number of nodes available.</param>
         /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Count is less than 0.</exception>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         IEnumerable<IValueReader> IValueReader.ReadNodes(string name, int count)
         {
             throw CreateNodesNotSupportedException();

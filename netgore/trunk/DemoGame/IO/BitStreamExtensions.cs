@@ -27,6 +27,8 @@ namespace DemoGame
         /// <summary>
         /// Initializes the <see cref="BitStreamExtensions"/> class.
         /// </summary>
+        /// <exception cref="TypeLoadException">Invalid required bit amount on <see cref="_clientPacketIDBits"/>.</exception>
+        /// <exception cref="TypeLoadException">Invalid required bit amount on <see cref="_serverPacketIDBits"/>.</exception>
         static BitStreamExtensions()
         {
             _clientPacketIDBits = EnumHelper<ClientPacketID>.BitsRequired;
@@ -34,9 +36,9 @@ namespace DemoGame
             _gameMessageIDBits = EnumHelper<GameMessage>.BitsRequired;
 
             if (_clientPacketIDBits <= 0)
-                throw new TypeLoadException("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
+                throw new TypeLoadException("Invalid required bit amount on _clientPacketIDBits: " + _clientPacketIDBits);
             if (_serverPacketIDBits <= 0)
-                throw new TypeLoadException("Invalid required bit amount on ServerPacketIDBits: " + _serverPacketIDBits);
+                throw new TypeLoadException("Invalid required bit amount on _serverPacketIDBits: " + _serverPacketIDBits);
         }
 
         /// <summary>
@@ -45,6 +47,7 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         /// <param name="gameMessages">Collection of GameMessages to use to grab the message.</param>
         /// <returns>String of the parsed GameMessage read from the BitStream.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="gameMessages" /> is <c>null</c>.</exception>
         public static string ReadGameMessage(this BitStream bitStream, GameMessageCollection gameMessages)
         {
             if (gameMessages == null)

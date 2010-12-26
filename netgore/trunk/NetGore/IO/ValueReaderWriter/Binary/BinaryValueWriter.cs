@@ -319,15 +319,16 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes the end of a child node in this IValueWriter.
+        /// Writes the end of a child node in this <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
+        /// <exception cref="InvalidOperationException">Already at the root node.</exception>
         public void WriteEndNode(string name)
         {
             if (_nodeOffsetStack == null || _nodeOffsetStack.Count == 0)
             {
                 const string errmsg = "Already at the root node.";
-                throw new ArgumentException(errmsg);
+                throw new InvalidOperationException(errmsg);
             }
 
             var nodeStart = _nodeOffsetStack.Pop();

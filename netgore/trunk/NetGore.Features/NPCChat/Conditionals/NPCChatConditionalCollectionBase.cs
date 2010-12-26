@@ -34,6 +34,8 @@ namespace NetGore.Features.NPCChat.Conditionals
         /// <param name="user">The User.</param>
         /// <param name="npc">The NPC.</param>
         /// <returns>True if the conditionals passed; otherwise false.</returns>
+        /// <exception cref="InvalidOperationException"><see cref="EvaluationType"/> is not a defined
+        /// <see cref="NPCChatConditionalEvaluationType"/> enum value.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "EvaluateType")]
         public bool Evaluate(object user, object npc)
         {
@@ -62,9 +64,11 @@ namespace NetGore.Features.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Reads the values for this NPCChatConditionalCollectionBase from an IValueReader.
+        /// Reads the values for this <see cref="NPCChatConditionalCollectionBase"/> from an <see cref="IValueReader"/>.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read the values from.</param>
+        /// <exception cref="InvalidEnumArgumentException">The read <see cref="NPCChatConditionalEvaluationType"/>
+        /// was not a defined value of the <see cref="NPCChatConditionalEvaluationType"/> enum.</exception>
         public void Read(IValueReader reader)
         {
             var evaluationTypeValue = reader.ReadByte("EvaluationType");
@@ -83,8 +87,8 @@ namespace NetGore.Features.NPCChat.Conditionals
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        /// <param name="evaluationType">The NPCChatConditionalEvaluationType.</param>
-        /// <param name="items">The NPCChatConditionalCollectionItemBases.</param>
+        /// <param name="evaluationType">The <see cref="NPCChatConditionalEvaluationType"/>.</param>
+        /// <param name="items">The <see cref="NPCChatConditionalCollectionItemBase"/>s.</param>
         protected abstract void SetReadValues(NPCChatConditionalEvaluationType evaluationType,
                                               NPCChatConditionalCollectionItemBase[] items);
 

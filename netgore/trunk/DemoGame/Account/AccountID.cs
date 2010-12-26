@@ -35,6 +35,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="AccountID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new AccountID.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public AccountID(int value)
         {
             if (value < MinValue || value > MaxValue)

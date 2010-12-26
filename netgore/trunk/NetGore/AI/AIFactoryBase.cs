@@ -55,6 +55,7 @@ namespace NetGore.AI
         /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
         /// <exception cref="ArgumentException"><see cref="TypeFactoryLoadedEventArgs.LoadedType"/> does not contain
         /// the <see cref="AIAttribute"/>.</exception>
+        /// <exception cref="DuplicateKeyException">The loaded type in <paramref name="e"/> was already loaded.</exception>
         protected virtual void OnLoadTypeHandler(TypeFactory typeFactory, TypeFactoryLoadedEventArgs e)
         {
             var aiAttributes = e.LoadedType.GetCustomAttributes(typeof(AIAttribute), false).Cast<AIAttribute>();

@@ -71,9 +71,18 @@ namespace DemoGame.Server
         {
             var accountID = new AccountID(id);
 
-            var result = DbController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
+            var result = DbController.GetQuery<CountAccountCharactersByIDQuery>().TryExecute(accountID);
 
-            return string.Format("There are {0} characters in account ID {1}.", result, accountID);
+            if (!result.HasValue)
+            {
+                // Invalid account
+                return string.Format("Account ID `{0}` does not exist.", id);
+            }
+            else
+            {
+                // Valid account
+                return string.Format("There are {0} characters in account ID {1}.", result.Value, accountID);
+            }
         }
 
         /// <summary>

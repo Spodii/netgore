@@ -31,6 +31,10 @@ namespace DemoGame.Server
         /// <param name="equipment">The equipment.</param>
         /// <param name="quests">The quests.</param>
         /// <param name="knownSkills">The known skills.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="templateTable" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="inventory" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="equipment" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="knownSkills" /> is <c>null</c>.</exception>
         public CharacterTemplate(ICharacterTemplateTable templateTable, IEnumerable<CharacterTemplateInventoryItem> inventory,
                                  IEnumerable<CharacterTemplateEquipmentItem> equipment, IEnumerable<IQuest<User>> quests,
                                  IEnumerable<SkillType> knownSkills)

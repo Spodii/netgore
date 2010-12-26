@@ -27,6 +27,7 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <param name="owner">The <see cref="IGuildMember"/> that this <see cref="GuildMemberInfo{T}"/>
         /// will be handling the state values for.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner" /> is <c>null</c>.</exception>
         protected GuildMemberInfo(T owner)
         {
             if (owner == null)

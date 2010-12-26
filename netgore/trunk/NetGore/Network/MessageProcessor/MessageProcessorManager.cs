@@ -28,11 +28,13 @@ namespace NetGore.Network
         /// <param name="messageIDBitLength">The length of the message ID in bits. Must be between a value
         /// greater than or equal to 1, and less than or equal to 32.</param>
         /// <returns>Returns a list of all the found message processors for a given class.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>messageIDBitLength</c> is out of range.</exception>
         public MessageProcessorManager(object source, int messageIDBitLength)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (messageIDBitLength > 32 || messageIDBitLength < 1)
+            if (messageIDBitLength > (sizeof(int) * 8) || messageIDBitLength < 1)
                 throw new ArgumentOutOfRangeException("messageIDBitLength");
 
             _messageIDBitLength = (byte)messageIDBitLength;
@@ -61,6 +63,8 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static).</param>
         /// <returns>The array of <see cref="IMessageProcessor"/>s.</returns>
+        /// <exception cref="ArgumentException">Multiple <see cref="MessageHandlerAttribute"/>s found on a method.</exception>
+        /// <exception cref="DuplicateKeyException">Multiple <see cref="MessageHandlerAttribute"/> found for the same ID.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MessageHandlerAttribute")
         ]
         IMessageProcessor[] BuildMessageProcessors(object source)

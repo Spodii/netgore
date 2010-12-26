@@ -33,6 +33,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="CharacterEquipped"/> class.
         /// </summary>
         /// <param name="character">The <see cref="Character"/> the instance is for.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="character" /> is <c>null</c>.</exception>
         protected CharacterEquipped(Character character)
         {
             if (character == null)

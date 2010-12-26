@@ -20,6 +20,7 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="StyledTextsDrawer"/> class.
         /// </summary>
         /// <param name="font">The font.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="font" /> is <c>null</c>.</exception>
         public StyledTextsDrawer(Font font)
         {
             if (font == null)
@@ -29,8 +30,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the font used to draw. Cannot be null.
+        /// Gets or sets the <see cref="Font"/> used to draw. Cannot be null.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is <c>null</c>.</exception>
         public Font Font
         {
             get { return _font; }

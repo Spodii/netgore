@@ -35,6 +35,8 @@ namespace DemoGame.Server
         /// <see cref="MapID"/> of the <paramref name="mapSpawnValues"/>.</param>
         /// <exception cref="ArgumentException">The <paramref name="map"/>'s <see cref="MapID"/> does not match the
         /// <paramref name="mapSpawnValues"/>'s <see cref="MapID"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="map" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="mapSpawnValues" /> is <c>null</c>.</exception>
         public NPCSpawner(IMapSpawnTable mapSpawnValues, Map map)
         {
             if (map == null)
@@ -184,6 +186,7 @@ namespace DemoGame.Server
             /// <param name="template">NPCTemplate used to create the NPC.</param>
             /// <param name="map">The map.</param>
             /// <param name="position">The position.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="spawner" /> is <c>null</c>.</exception>
             public NPCSpawnerNPC(NPCSpawner spawner, World parent, CharacterTemplate template, Map map, Vector2 position)
                 : base(parent, template, map, position)
             {

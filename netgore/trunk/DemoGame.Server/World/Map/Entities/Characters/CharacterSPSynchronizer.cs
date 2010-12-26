@@ -12,15 +12,18 @@ namespace DemoGame.Server
     public class CharacterSPSynchronizer
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly Character _character;
         readonly bool _isUser;
+
         byte _lastSentHPPercent;
         byte _lastSentMPPercent;
 
         /// <summary>
-        /// CharacterSPSynchronizer constructor.
+        /// Initializes a new instance of the <see cref="CharacterSPSynchronizer"/> class.
         /// </summary>
         /// <param name="character">The Character to synchronize the values of.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="character" /> is <c>null</c>.</exception>
         public CharacterSPSynchronizer(Character character)
         {
             if (character == null)

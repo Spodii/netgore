@@ -147,9 +147,9 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Ensures a Type is nullable.
+        /// Ensures a <see cref="Type"/> is nullable.
         /// </summary>
-        /// <param name="type">The full name of the Type.</param>
+        /// <param name="type">The full name of the <see cref="Type"/>.</param>
         /// <returns>The name of the <paramref name="type"/> with support of being nullable.</returns>
         public string EnsureIsNullable(string type)
         {
@@ -167,12 +167,12 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the ColumnCollection for a given DbColumnInfo, or null if the DbColumnInfo is not part of
-        /// andy ColumnCollection in this table.
+        /// Gets the <see cref="ColumnCollection"/> for a given <see cref="DbColumnInfo"/>, or null if the
+        /// <see cref="DbColumnInfo"/> is not part of any <see cref="ColumnCollection"/> in this table.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the ColumnCollection for.</param>
-        /// <returns>The ColumnCollection the DbColumnInfo is part of, or null if it
-        /// is not part of a ColumnCollection.</returns>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the <see cref="ColumnCollection"/> for.</param>
+        /// <returns>The <see cref="ColumnCollection"/> the <see cref="DbColumnInfo"/> is part of, or null if it
+        /// is not part of a <see cref="ColumnCollection"/>.</returns>
         public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn)
         {
             ColumnCollectionItem item;
@@ -180,13 +180,15 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the ColumnCollection for a given DbColumnInfo, or null if the DbColumnInfo is not part of
-        /// andy ColumnCollection in this table.
+        /// Gets the <see cref="ColumnCollection"/> for a given <see cref="DbColumnInfo"/>, or null if the
+        /// <see cref="DbColumnInfo"/> is not part of any <see cref="ColumnCollection"/> in this table.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the ColumnCollection for.</param>
-        /// <param name="item">The ColumnCollectionItem for the <paramref name="dbColumn"/> in the ColumnCollection.</param>
-        /// <returns>The ColumnCollection the DbColumnInfo is part of, or null if it
-        /// is not part of a ColumnCollection.</returns>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the <see cref="ColumnCollection"/> for.</param>
+        /// <param name="item">The <see cref="ColumnCollectionItem"/> for the <paramref name="dbColumn"/> in the
+        /// <see cref="ColumnCollection"/>.</param>
+        /// <returns>The <see cref="ColumnCollection"/> the <see cref="DbColumnInfo"/> is part of, or null if it
+        /// is not part of a <see cref="ColumnCollection"/>.</returns>
+        /// <exception cref="ArgumentException">The <paramref name="dbColumn"/> matched more than one <see cref="ColumnCollection"/>.</exception>
         public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn, out ColumnCollectionItem item)
         {
             foreach (var columnCollection in ColumnCollections)
@@ -212,10 +214,10 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the code to use for the accessor for a DbColumnInfo.
+        /// Gets the code to use for the accessor for a <see cref="DbColumnInfo"/>.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the value accessor for.</param>
-        /// <returns>The code to use for the accessor for a DbColumnInfo.</returns>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the value accessor for.</param>
+        /// <returns>The code to use for the accessor for a <see cref="DbColumnInfo"/>.</returns>
         public string GetColumnValueAccessor(DbColumnInfo dbColumn)
         {
             ColumnCollectionItem item;
@@ -240,12 +242,12 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the code to use for the mutator for a DbColumnInfo.
+        /// Gets the code to use for the mutator for a <see cref="DbColumnInfo"/>.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the value mutator for.</param>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the value mutator for.</param>
         /// <param name="valueName">Code to generate for the value to set.</param>
         /// <param name="columnSource">The name of the source collection if it is not in an instanced method. Can be null.</param>
-        /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
+        /// <returns>The code to use for the mutator for a <see cref="DbColumnInfo"/>.</returns>
         public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName, string columnSource = null)
         {
             ColumnCollectionItem item;
@@ -286,14 +288,14 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the code string used for accessing a database DbColumnInfo's value from a DataReader.
+        /// Gets the code string used for accessing a database <see cref="DbColumnInfo"/>'s value from a DataReader.
         /// </summary>
-        /// <param name="column">The DbColumnInfo to get the value from.</param>
+        /// <param name="column">The <see cref="DbColumnInfo"/> to get the value from.</param>
         /// <param name="ordinalFieldName">Name of the local field used to store the ordinal. The ordinal
         /// must already be assigned to this field.</param>
         /// <param name="variableName">Name of the variable.</param>
         /// <returns>
-        /// The code string used for accessing a database DbColumnInfo's value.
+        /// The code string used for accessing a database <see cref="DbColumnInfo"/>'s value.
         /// </returns>
         public string GetDataReaderAccessor(DbColumnInfo column, string ordinalFieldName, string variableName)
         {
@@ -366,7 +368,7 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Gets a string for the Type used externally for a given column.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the external type for.</param>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the external type for.</param>
         /// <returns>A string for the Type used externally for a given column.</returns>
         public string GetExternalType(DbColumnInfo dbColumn)
         {
@@ -380,7 +382,7 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Gets a string for the Type used internally for a given column.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the internal type for.</param>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the internal type for.</param>
         /// <returns>A string for the Type used internally for a given column.</returns>
         public string GetInternalType(DbColumnInfo dbColumn)
         {
@@ -392,50 +394,50 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Gets the parameter name for a DbColumnInfo.
+        /// Gets the parameter name for a <see cref="DbColumnInfo"/>.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the parameter name for.</param>
-        /// <returns>The parameter name for the DbColumnInfo.</returns>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the parameter name for.</param>
+        /// <returns>The parameter name for the <see cref="DbColumnInfo"/>.</returns>
         public string GetParameterName(DbColumnInfo dbColumn)
         {
             return _parameterNames[dbColumn];
         }
 
         /// <summary>
-        /// Gets the private name for a DbColumnInfo.
+        /// Gets the private name for a <see cref="DbColumnInfo"/>.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the private name for.</param>
-        /// <returns>The private name for the DbColumnInfo.</returns>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the private name for.</param>
+        /// <returns>The private name for the <see cref="DbColumnInfo"/>.</returns>
         public string GetPrivateName(DbColumnInfo dbColumn)
         {
             return _privateNames[dbColumn];
         }
 
         /// <summary>
-        /// Gets the private name for a DbColumnInfo.
+        /// Gets the private name for a <see cref="DbColumnInfo"/>.
         /// </summary>
         /// <param name="columnCollection">The <see cref="ColumnCollection"/> to get the name of.</param>
-        /// <returns>The private name for the DbColumnInfo.</returns>
+        /// <returns>The private name for the <see cref="DbColumnInfo"/>.</returns>
         public string GetPrivateName(ColumnCollection columnCollection)
         {
             return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Private, columnCollection.ExternalType);
         }
 
         /// <summary>
-        /// Gets the public name for a DbColumnInfo.
+        /// Gets the public name for a <see cref="DbColumnInfo"/>.
         /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the public name for.</param>
-        /// <returns>The public name for the DbColumnInfo.</returns>
+        /// <param name="dbColumn">The <see cref="DbColumnInfo"/> to get the public name for.</param>
+        /// <returns>The public name for the <see cref="DbColumnInfo"/>.</returns>
         public string GetPublicName(DbColumnInfo dbColumn)
         {
             return _publicNames[dbColumn];
         }
 
         /// <summary>
-        /// Gets the public name for a DbColumnInfo.
+        /// Gets the public name for a <see cref="DbColumnInfo"/>.
         /// </summary>
         /// <param name="columnCollection">The <see cref="ColumnCollection"/> to get the name of.</param>
-        /// <returns>The public name for the DbColumnInfo.</returns>
+        /// <returns>The public name for the <see cref="DbColumnInfo"/>.</returns>
         public string GetPublicName(ColumnCollection columnCollection)
         {
             if (columnCollection.Name != "Stat")

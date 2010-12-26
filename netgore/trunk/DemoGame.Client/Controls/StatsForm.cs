@@ -29,6 +29,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="userInfo">The user info.</param>
         /// <param name="parent">The parent.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="userInfo" /> is <c>null</c>.</exception>
         public StatsForm(UserInfo userInfo, Control parent) : base(parent, Vector2.Zero, new Vector2(225, 275))
         {
             if (userInfo == null)
@@ -177,6 +178,8 @@ namespace DemoGame.Client
             /// <param name="sprite">The sprite.</param>
             /// <param name="parent">The parent.</param>
             /// <param name="statType">Type of the stat.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="sprite" /> is <c>null</c>.</exception>
             public RaiseStatPB(Vector2 position, ISprite sprite, StatsForm parent, StatType statType)
                 : base(parent, position, sprite.Size)
             {
@@ -275,6 +278,7 @@ namespace DemoGame.Client
             /// <param name="statsForm">The stats form.</param>
             /// <param name="statType">Type of the stat.</param>
             /// <param name="pos">The position.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="statsForm" /> is <c>null</c>.</exception>
             public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : base(statsForm, pos)
             {
                 if (statsForm == null)
@@ -337,6 +341,7 @@ namespace DemoGame.Client
             /// <param name="pos">The position.</param>
             /// <param name="title">The title.</param>
             /// <param name="valueHandler">The <see cref="UserInfoLabelValueHandler"/> describing what value to grab and how to grab it.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="valueHandler" /> is <c>null</c>.</exception>
             public UserInfoLabel(StatsForm parent, Vector2 pos, string title, UserInfoLabelValueHandler valueHandler)
                 : base(parent, pos)
             {

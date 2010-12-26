@@ -35,7 +35,7 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
         /// </summary>
         /// <param name="window">The <see cref="Window"/> that provides the input.</param>
-        /// <param name="font">Default SpriteFont to use for controls added to this <see cref="GUIManager"/>.</param>
+        /// <param name="font">Default <see cref="Font"/> to use for controls added to this <see cref="GUIManager"/>.</param>
         /// <param name="skinManager">The <see cref="ISkinManager"/> that handles the skinning for this
         /// <see cref="GUIManager"/>.</param>
         /// <param name="screenSize">The initial screen size value.</param>
@@ -53,9 +53,7 @@ namespace NetGore.Graphics.GUI
             Font = font;
 
             // Create the tooltip
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _tooltip = CreateTooltip();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>

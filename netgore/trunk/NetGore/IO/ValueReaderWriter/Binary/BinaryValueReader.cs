@@ -19,6 +19,7 @@ namespace NetGore.IO
         /// <param name="reader">BitStream that will be used to read from.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="reader" /> is <c>null</c>.</exception>
         BinaryValueReader(BitStream reader, bool useEnumNames = true)
         {
             if (reader == null)

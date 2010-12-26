@@ -46,9 +46,10 @@ namespace NetGore.Features.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Reads the values for this NPCChatConditionalCollectionItemBase from an IValueReader.
+        /// Reads the values for this <see cref="NPCChatConditionalCollectionItemBase"/> from an <see cref="IValueReader"/>.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read the values from.</param>
+        /// <exception cref="ArgumentException">The read <see cref="NPCChatConditionalBase"/> was invalid.</exception>
         protected void Read(IValueReader reader)
         {
             var not = reader.ReadBool("Not");

@@ -17,6 +17,9 @@ namespace NetGore
         /// <param name="dataRecord"><see cref="IDataRecord"/> to load the ordinal from.</param>
         /// <param name="name">The name of the field to find.</param>
         /// <returns>Index of the named field.</returns>
+        /// <exception cref="InvalidCastException">If the ordinal could for the <paramref name="name"/> could not be safely casted
+        /// into a <see cref="System.Byte"/> without data loss (ordinal is less than <see cref="byte.MinValue"/> or
+        /// greater than <see cref="byte.MaxValue"/>).</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IDataRecordSet")]
         public static byte GetOrdinalAsByte(this IDataRecord dataRecord, string name)
         {

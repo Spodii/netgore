@@ -36,6 +36,7 @@ namespace NetGore
         /// Initializes a new instance of the <see cref="GrhIndex"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new GrhIndex.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is out of range.</exception>
         public GrhIndex(int value)
         {
             if ((value < MinValue || value > MaxValue) && value != Invalid._value)

@@ -42,7 +42,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
         /// </summary>
-        /// <param name="r">The IValueReader to read from.</param>
+        /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
         public EditorNPCChatConditionalCollectionItem(IValueReader r)
         {
             Read(r);
@@ -61,6 +61,7 @@ namespace NetGore.Features.NPCChat
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
         /// </summary>
         /// <param name="conditional">The conditional to use.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="conditional" /> is <c>null</c>.</exception>
         public EditorNPCChatConditionalCollectionItem(NPCChatConditionalBase conditional)
         {
             if (conditional == null)
@@ -76,7 +77,7 @@ namespace NetGore.Features.NPCChat
         public event TypedEventHandler<EditorNPCChatConditionalCollectionItem> Changed;
 
         /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalBase.
+        /// When overridden in the derived class, gets the <see cref="NPCChatConditionalBase"/>.
         /// </summary>
         public override NPCChatConditionalBase Conditional
         {
@@ -127,7 +128,8 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Sets the Conditional.
         /// </summary>
-        /// <param name="conditional">The new NPCChatConditionalBase.</param>
+        /// <param name="conditional">The new <see cref="NPCChatConditionalBase"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="conditional" /> is <c>null</c>.</exception>
         public void SetConditional(NPCChatConditionalBase conditional)
         {
             if (conditional == null)

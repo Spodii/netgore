@@ -18,7 +18,9 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbManager"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use to create the connections managed by this DbManager.</param>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use to create the connections managed by
+        /// this <see cref="DbManager"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool" /> is <c>null</c>.</exception>
         public DbManager(DbConnectionPool connectionPool)
         {
             if (connectionPool == null)
@@ -28,7 +30,7 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the DbConnectionPool used by this DbManager.
+        /// Gets the <see cref="DbConnectionPool"/> used by this <see cref="DbManager"/>.
         /// </summary>
         public DbConnectionPool ConnectionPool
         {
@@ -119,10 +121,10 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Handles when an IDbCommand is disposed, making sure the IPoolableDbConnection for it is sent
+        /// Handles when an <see cref="IDbCommand"/> is disposed, making sure the <see cref="IPoolableDbConnection"/> for it is sent
         /// back to the pool.
         /// </summary>
-        /// <param name="sender">IDbCommand that was disposed.</param>
+        /// <param name="sender"><see cref="IDbCommand"/> that was disposed.</param>
         /// <param name="e">Event args.</param>
         void HandleIDbCommandDisposed(object sender, EventArgs e)
         {
@@ -138,11 +140,12 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Finds a IPoolableDbConnection from an IDbConnection that was added earlier with PushPoolableConnection().
+        /// Finds a <see cref="IPoolableDbConnection"/> from an <see cref="IDbConnection"/> that was added earlier with
+        /// <see cref="PushPoolableConnection"/>.
         /// </summary>
-        /// <param name="conn">IDbConnection to find the IPoolableDbConnection for.</param>
-        /// <returns>IPoolableDbConnection for the specified IDbConnection.</returns>
-        /// <exception cref="ArgumentException">IDbConnection <paramref name="conn"/> does not exist in the internal
+        /// <param name="conn"><see cref="IDbConnection"/> to find the <see cref="IPoolableDbConnection"/> for.</param>
+        /// <returns><see cref="IPoolableDbConnection"/> for the specified <see cref="IDbConnection"/>.</returns>
+        /// <exception cref="ArgumentException"><see cref="IDbConnection"/> <paramref name="conn"/> does not exist in the internal
         /// collection.</exception>
         IPoolableDbConnection PopPoolableConnection(IDbConnection conn)
         {
@@ -172,8 +175,8 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Allows an IPoolableDbConnection to be found from the IDbConnection associated with it later by using
-        /// the method PopPoolableConnection().
+        /// Allows an <see cref="IPoolableDbConnection"/> to be found from the <see cref="IDbConnection"/> associated with it later by using
+        /// the method <see cref="PopPoolableConnection"/>.
         /// </summary>
         /// <param name="poolableConn"></param>
         void PushPoolableConnection(IPoolableDbConnection poolableConn)

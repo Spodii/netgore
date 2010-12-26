@@ -86,6 +86,7 @@ namespace NetGore
         /// </returns>
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="minValue"/> is greater than
         /// <paramref name="maxValue"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxValue"/> is less than <paramref name="minValue"/>.</exception>
         public override int Next(int minValue, int maxValue)
         {
             if (minValue > maxValue)
@@ -114,7 +115,7 @@ namespace NetGore
         /// the range of return values ordinarily includes zero but not <paramref name="maxValue"/>.
         /// However, if <paramref name="maxValue"/> equals zero, <paramref name="maxValue"/> is returned.
         /// </returns>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxValue"/> is less than zero. </exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxValue"/> is less than zero.</exception>
         public override int Next(int maxValue)
         {
             if (maxValue < 0)
@@ -150,7 +151,7 @@ namespace NetGore
         /// Fills the elements of a specified array of bytes with random numbers.
         /// </summary>
         /// <param name="buffer">An array of bytes to contain random numbers.</param>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="buffer"/> is null. </exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="buffer"/> is null. </exception>
         public override void NextBytes(byte[] buffer)
         {
             if (buffer == null)

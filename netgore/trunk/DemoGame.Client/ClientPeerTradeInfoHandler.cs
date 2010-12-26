@@ -33,6 +33,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the <see cref="INetworkSender"/> used to communicate with the server.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is <c>null</c>.</exception>
         public INetworkSender NetworkSender
         {
             get { return _networkSender; }

@@ -318,6 +318,8 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="visibility">The visibility level.</param>
         /// <returns>The code.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>visibility</c> contains an undefined
+        /// <see cref="MemberVisibilityLevel"/> value.</exception>
         public override string GetVisibilityLevel(MemberVisibilityLevel visibility)
         {
             switch (visibility)

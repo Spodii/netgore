@@ -512,6 +512,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value of the string to write</param>
         /// <param name="maxLength">Maximum number of characters the string may contain</param>
+        /// <exception cref="ArgumentOutOfRangeException">The length of <paramref name="value"/> is greater than
+        /// <paramref name="maxLength"/>.</exception>
         public void Write(string value, uint maxLength = DefaultStringMaxLength)
         {
             if (string.IsNullOrEmpty(value))
@@ -685,6 +687,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value to write to the BitStream.</param>
         /// <param name="numBits">Number of bits to write (1 to 32).</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="numBits"/> is less than one or greater than
+        /// <see cref="_bitsInt"/>.</exception>
         public void Write(int value, int numBits)
         {
             if (numBits > _bitsInt || numBits < 1)
@@ -698,6 +702,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value to write to the BitStream.</param>
         /// <param name="numBits">Number of bits to write (1 to 32).</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="numBits"/> is less than one or greater than
+        /// <see cref="_bitsInt"/>.</exception>
         public void Write(int? value, int numBits)
         {
             if (numBits > _bitsInt || numBits < 1)

@@ -77,6 +77,9 @@ namespace NetGore
         /// </summary>
         /// <param name="types">IEnumerable of Types to check for methods containing an Attribute of
         /// Type <typeparamref name="T"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="types" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">A type was found that does not contain the required
+        /// <see cref="StringCommandBaseAttribute"/>.</exception>
         public StringCommandParser(IEnumerable<Type> types)
         {
             if (types == null)
@@ -143,6 +146,11 @@ namespace NetGore
         /// <param name="commandName">Name of the command.</param>
         /// <param name="methodInfo">Method for handling hte command.</param>
         /// <param name="attrib">The attribute bound to the method.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="commandName"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="methodInfo"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dict"/> is null.</exception>
+        /// <exception cref="DuplicateKeyException">Multiple methods found for the same <paramref name="commandName"/>
+        /// and same set of parameters.</exception>
         static void Add(IDictionary<string, List<StringCommandParserCommandData<T>>> dict, string commandName,
                         MethodInfo methodInfo, T attrib)
         {

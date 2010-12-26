@@ -34,6 +34,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="cameraProvider">The camera provider.</param>
         /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cameraProvider" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="map" /> is <c>null</c>.</exception>
         protected BackgroundImage(ICamera2DProvider cameraProvider, IMap map)
         {
             if (cameraProvider == null)
@@ -57,6 +59,8 @@ namespace NetGore.Graphics
         /// <param name="cameraProvider">The camera provider.</param>
         /// <param name="map">The map that this <see cref="BackgroundImage"/> is on.</param>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="cameraProvider" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="map" /> is <c>null</c>.</exception>
         protected BackgroundImage(ICamera2DProvider cameraProvider, IMap map, IValueReader reader)
         {
             if (cameraProvider == null)
@@ -173,6 +177,13 @@ namespace NetGore.Graphics
             }
         }
 
+        /// <summary>
+        /// Gets the multiplier to use to offset an <see cref="Alignment"/>.
+        /// </summary>
+        /// <param name="alignment">The <see cref="Alignment"/>.</param>
+        /// <returns>The offset to use for the <paramref name="alignment"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="alignment"/> contains a value not defined by the
+        /// <see cref="Alignment"/> enum.</exception>
         static Vector2 GetOffsetMultiplier(Alignment alignment)
         {
             switch (alignment)

@@ -24,6 +24,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="category">The category.</param>
         /// <param name="title">The title.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="category" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
         public SpriteCategorization(SpriteCategory category, SpriteTitle title)
         {
             if (category == null)
@@ -112,6 +114,8 @@ namespace NetGore.IO
         /// <param name="categoryAndTitle">The concatenated category and title.</param>
         /// <param name="category">The resulting category</param>.
         /// <param name="title">The resulting title.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="categoryAndTitle"/> is null or empty.</exception>
+        /// <exception cref="ArgumentException"><paramref name="categoryAndTitle"/> is not property formatted.</exception>
         public static void SplitCategoryAndTitle(string categoryAndTitle, out SpriteCategory category, out SpriteTitle title)
         {
             if (string.IsNullOrEmpty(categoryAndTitle))

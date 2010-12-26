@@ -52,13 +52,14 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="parameters">The parameters.</param>
+        /// <exception cref="DatabaseException">Always occurs when this method is called.</exception>
         static void Error(string message, params object[] parameters)
         {
             if (log.IsFatalEnabled)
                 log.FatalFormat(message, parameters);
 
             Debug.Fail(string.Format(message, parameters));
-
+            
             throw new DatabaseException(string.Format("Database tables validation failed. Reason: " + message, parameters));
         }
 

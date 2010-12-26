@@ -24,6 +24,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="CharacterInventory"/> class.
         /// </summary>
         /// <param name="character">The <see cref="Character"/> the inventory belongs to.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="character" /> is <c>null</c>.</exception>
         protected CharacterInventory(Character character) : base(GameData.MaxInventorySize)
         {
             if (character == null)

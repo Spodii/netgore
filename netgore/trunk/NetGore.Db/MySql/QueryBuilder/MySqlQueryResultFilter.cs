@@ -29,6 +29,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
+        /// <exception cref="InvalidQueryException">The generated query is invalid.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "OrderByType")]
         public override string ToString()
         {
@@ -67,7 +68,7 @@ namespace NetGore.Db.MySql.QueryBuilder
                             const string errmsg = "Encountered undefined OrderByType `{0}`.";
                             if (log.IsErrorEnabled)
                                 log.ErrorFormat(errmsg, ob.Value);
-                            throw new InvalidOperationException(string.Format(errmsg, ob.Value));
+                            throw new InvalidQueryException(string.Format(errmsg, ob.Value));
                     }
 
                     sb.Append(", ");

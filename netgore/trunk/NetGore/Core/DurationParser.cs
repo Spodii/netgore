@@ -33,6 +33,7 @@ namespace NetGore
         /// <param name="str">The string representation of the time duration. See <see cref="DurationParser"/> for information
         /// about the formatting.</param>
         /// <returns>The parsed duration.</returns>
+        /// <exception cref="ArgumentException">The <paramref name="str"/> failed to be parsed.</exception>
         public static TimeSpan Parse(string str)
         {
             TimeSpan ret;

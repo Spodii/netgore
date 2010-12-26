@@ -53,6 +53,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="percent">The chance, in percentage, to assign to this ItemChance, where 0.0f is 0% and 1.0f
         /// is a 100% chance. Must be between 0.0f and 1.0f.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>percent</c> is out of range.</exception>
         public ItemChance(float percent)
         {
             if (percent < 0.0f || percent > 1.0f)
@@ -104,6 +105,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="ItemChance"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new ItemChance.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public ItemChance(int value)
         {
             if (value < MinValue || value > MaxValue)

@@ -23,6 +23,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="GameplayScreenControls"/> class.
         /// </summary>
         /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="gameplayScreen" /> is <c>null</c>.</exception>
         public GameplayScreenControls(GameplayScreen gameplayScreen)
         {
             if (gameplayScreen == null)

@@ -204,6 +204,7 @@ namespace NetGore.Collections
         /// Loads the <see cref="Type"/>s of an <see cref="Assembly"/>.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> to load the Types from.</param>
+        /// <exception cref="TypeException">Duplicate <see cref="Type"/> names were found.</exception>
         void LoadAssemblyTypes(Assembly assembly)
         {
             // Check if this is from the Global Assembly Cache

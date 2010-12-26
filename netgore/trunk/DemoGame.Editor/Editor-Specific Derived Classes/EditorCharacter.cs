@@ -26,6 +26,8 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="table">The <see cref="ICharacterTable"/> describing the character.</param>
         /// <param name="map">The <see cref="Map"/> to place the character on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="table" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="map" /> is <c>null</c>.</exception>
         public EditorCharacter(ICharacterTable table, EditorMap map)
         {
             if (table == null)

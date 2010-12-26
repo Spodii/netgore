@@ -53,6 +53,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="entity"><see cref="Entity"/> that this <see cref="EntityInterpolator"/> is for.</param>
         /// <param name="deltaTime">Time elapsed since the last update.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="entity" /> is <c>null</c>.</exception>
         public void Update(Entity entity, int deltaTime)
         {
             if (entity == null)

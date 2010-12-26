@@ -30,6 +30,8 @@ namespace NetGore.Db
         /// This should only be called by the <see cref="DbConnectionPool"/>, and can only be called once.
         /// </summary>
         /// <param name="connection">Connection to be used by the <see cref="IPoolableDbConnection"/>.</param>
+        /// <exception cref="MethodAccessException">Connection already set for this <see cref="PooledDbConnection"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="connection" /> is <c>null</c>.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "PooledDbConnection")]
         internal void SetConnection(DbConnection connection)
         {

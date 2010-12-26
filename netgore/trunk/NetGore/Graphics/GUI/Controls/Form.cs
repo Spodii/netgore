@@ -188,6 +188,7 @@ namespace NetGore.Graphics.GUI
             /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
             /// <param name="spriteName">The name of the button sprite to load.</param>
             /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="spriteName"/> is null or empty.</exception>
             public FormButton(Control parent, string spriteName) : base(parent, Vector2.Zero, Vector2.One)
             {
                 if (string.IsNullOrEmpty(spriteName))

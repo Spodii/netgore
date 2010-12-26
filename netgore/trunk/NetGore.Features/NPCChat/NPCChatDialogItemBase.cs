@@ -34,35 +34,36 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
-        /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
-        /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
+        /// When overridden in the derived class, gets the <see cref="NPCChatConditionalCollectionBase"/> that contains the
+        /// conditionals used to evaluate if this <see cref="NPCChatDialogItemBase"/> may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this <see cref="NPCChatDialogItemBase"/>, and should be treated
         /// the same way as if the conditionals evaluated to true.
         /// </summary>
         public abstract NPCChatConditionalCollectionBase Conditionals { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
-        /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
+        /// When overridden in the derived class, gets the page index of this <see cref="NPCChatDialogItemBase"/> in the
+        /// <see cref="NPCChatDialogBase"/>. This value is unique to each <see cref="NPCChatDialogItemBase"/> in the
+        /// <see cref="NPCChatDialogBase"/>.
         /// </summary>
         public abstract NPCChatDialogItemID ID { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets if this NPCChatDialogItemBase is a branch dialog or not. If
-        /// true, the dialog should be automatically progressed by using EvaluateBranch() instead of waiting for
-        /// and accepting input from the user for a response.
+        /// When overridden in the derived class, gets if this <see cref="NPCChatDialogItemBase"/> is a branch dialog or not. If
+        /// true, the dialog should be automatically progressed by using <see cref="NPCChatDialogItemBase.EvaluateBranch"/>
+        /// instead of waiting for and accepting input from the user for a response.
         /// </summary>
         public abstract bool IsBranch { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets an IEnumerable of the EditorNPCChatResponses available
+        /// When overridden in the derived class, gets an IEnumerable of the <see cref="NPCChatResponseBase"/>s available
         /// for this page of dialog.
         /// </summary>
         public abstract IEnumerable<NPCChatResponseBase> Responses { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the main dialog text in this page of dialog. If IsBranch is
-        /// true, this should return an empty string.
+        /// When overridden in the derived class, gets the main dialog text in this page of dialog. If
+        /// <see cref="NPCChatDialogItemBase.IsBranch"/> is true, this should return an empty string.
         /// </summary>
         public abstract string Text { get; }
 

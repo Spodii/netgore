@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using SFML.Graphics;
 
@@ -36,6 +37,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="texture">The atlas texture.</param>
         /// <param name="atlasSourceRect">The source <see cref="Rectangle"/> for the image in the atlas texture.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
         void SetAtlas(Image texture, Rectangle atlasSourceRect);
     }
 }

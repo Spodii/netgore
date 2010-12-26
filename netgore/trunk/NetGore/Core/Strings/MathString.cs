@@ -176,6 +176,7 @@ namespace NetGore
         /// <param name="value">Value to apply to the function</param>
         /// <param name="function">Name of the function</param>
         /// <returns>Resulting value of the function as a double</returns>
+        /// <exception cref="ArgumentException"><paramref name="function"/> is not a defined math string operator.</exception>
         static double ParseFunction(double value, string function)
         {
             function = function.ToUpperInvariant();
@@ -228,6 +229,7 @@ namespace NetGore
         /// <param name="text">String for the problem to parse (in format a op b, where op is any operator, such
         /// as a+b or a*b)</param>
         /// <returns></returns>
+        /// <exception cref="ArgumentException">The operator could not be found in the <paramref name="text"/>.</exception>
         static double ParseOperation(string text)
         {
             // Find the operator used in the problem

@@ -257,6 +257,8 @@ namespace NetGore.Audio
         /// Reloads the music information.
         /// </summary>
         /// <param name="values">All of the <see cref="IMusicInfo"/>s to load.</param>
+        /// <exception cref="DuplicateKeyException">Two or more <see cref="MusicInfo"/>s found with the same ID.</exception>
+        /// <exception cref="DuplicateKeyException">Two or more <see cref="MusicInfo"/>s found with the same name.</exception>
         public void ReloadData(IEnumerable<IMusicInfo> values)
         {
             _infosByName.Clear();

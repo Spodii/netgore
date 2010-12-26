@@ -36,6 +36,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
+        /// <exception cref="InvalidQueryException">The generated query is invalid.</exception>
         public override string ToString()
         {
             var sb = new StringBuilder();

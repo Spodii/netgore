@@ -46,6 +46,8 @@ namespace NetGore.Features.StatusEffects
         /// Performs a quick check that this <see cref="StatusEffect{TStatType, TStatusEffectType}"/>
         /// is returning the same value for each <typeparamref name="TStatType"/> and power pair.
         /// </summary>
+        /// <exception cref="InvalidOperationException">The <see cref="StatusEffect{T,U}"/> doesn't always return the same
+        /// value for a given power as expected.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffectType")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffect")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatType")]

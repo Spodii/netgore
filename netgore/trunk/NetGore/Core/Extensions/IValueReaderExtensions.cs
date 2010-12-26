@@ -138,6 +138,7 @@ namespace NetGore
         /// <param name="minValue">Minimum (inclusive) value that the read value can be.</param>
         /// <param name="maxValue">Maximum (inclusive) value that the read value can be.</param>
         /// <returns>Value read from the IValueReader.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>maxValue</c> is out of range.</exception>
         public static uint ReadUInt(this IValueReader reader, string name, uint minValue, uint maxValue)
         {
             if (maxValue < minValue)
@@ -161,6 +162,7 @@ namespace NetGore
         /// <param name="minValue">Minimum (inclusive) value that the read value can be.</param>
         /// <param name="maxValue">Maximum (inclusive) value that the read value can be.</param>
         /// <returns>Value read from the IValueReader.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>maxValue</c> is out of range.</exception>
         public static int ReadUInt(this IValueReader reader, string name, int minValue, int maxValue)
         {
             if (maxValue < minValue)

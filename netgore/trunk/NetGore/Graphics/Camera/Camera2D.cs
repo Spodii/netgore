@@ -177,6 +177,7 @@ namespace NetGore.Graphics
         /// of the camera.
         /// </summary>
         /// <param name="entity">The <see cref="Entity"/> to center on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="entity" /> is <c>null</c>.</exception>
         public void CenterOn(Entity entity)
         {
             if (entity == null)

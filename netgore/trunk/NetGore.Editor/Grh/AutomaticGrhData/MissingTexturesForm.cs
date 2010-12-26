@@ -15,6 +15,15 @@ namespace NetGore.Editor.Grhs
         readonly TextureHashCollection _hashCollection;
         readonly Dictionary<string, List<GrhData>> _missingTextures;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MissingTexturesForm"/> class.
+        /// </summary>
+        /// <param name="hashCollection">The <see cref="TextureHashCollection"/>.</param>
+        /// <param name="missingTextures">The <see cref="IEnumerable{T}"/> containing the missing textures.</param>
+        /// <param name="cm">The <see cref="IContentManager"/> to use to load content.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="hashCollection" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="missingTextures" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="cm" /> is <c>null</c>.</exception>
         public MissingTexturesForm(TextureHashCollection hashCollection, IEnumerable<GrhData> missingTextures, IContentManager cm)
         {
             if (hashCollection == null)

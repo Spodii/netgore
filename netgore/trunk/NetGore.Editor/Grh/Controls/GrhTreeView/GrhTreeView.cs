@@ -495,6 +495,12 @@ namespace NetGore.Editor.Grhs
             return node is GrhTreeViewNode;
         }
 
+        /// <summary>
+        /// Handles when the Automatic Update menu item is clicked.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <exception cref="InvalidOperationException">Failed to find a ContentManager to use.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhDatas")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ContentManager")]
         void MenuClickAutomaticUpdate(object sender, EventArgs e)

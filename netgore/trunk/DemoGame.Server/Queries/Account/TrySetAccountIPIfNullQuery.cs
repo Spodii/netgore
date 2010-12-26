@@ -45,6 +45,7 @@ namespace DemoGame.Server.Queries
         /// <param name="ip">The IP.</param>
         /// <returns>True if the IP was successfully set, and the previous IP for the account was null;
         /// otherwise false.</returns>
+        /// <exception cref="DatabaseException">Unexpected number of rows were updated in the query.</exception>
         public bool Execute(AccountID accountID, uint ip)
         {
             bool ret;

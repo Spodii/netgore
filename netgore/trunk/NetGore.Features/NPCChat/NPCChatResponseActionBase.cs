@@ -52,6 +52,7 @@ namespace NetGore.Features.NPCChat
         /// </summary>
         /// <param name="name">The unique name for this <see cref="NPCChatResponseActionBase"/>.
         /// This string is case-sensitive.</param>
+        /// <exception cref="ArgumentNullException">Argument is null.</exception>
         protected NPCChatResponseActionBase(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -122,6 +123,7 @@ namespace NetGore.Features.NPCChat
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="DuplicateKeyException">The type in <paramref name="e"/> was already loaded.</exception>
         static void OnLoadTypeHandler(TypeFactory sender, TypeFactoryLoadedEventArgs e)
         {
             var instance = (NPCChatResponseActionBase)sender.GetTypeInstance(e.Name);

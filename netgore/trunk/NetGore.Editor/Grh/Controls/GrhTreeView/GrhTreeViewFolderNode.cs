@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
@@ -108,7 +109,8 @@ namespace NetGore.Editor.Grhs
                 {
                     // Uhm... too many matches?
                     const string errmsg = "Somehow we have more than one node for a single category (`{0}`).";
-                    throw new ArgumentException(string.Format(errmsg, category), "category");
+                    Debug.Fail(string.Format(errmsg, category));
+                    return matches.FirstOrDefault();
                 }
 
                 currentColl = current.Nodes;

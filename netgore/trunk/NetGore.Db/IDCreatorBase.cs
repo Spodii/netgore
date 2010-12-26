@@ -22,10 +22,14 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="IDCreatorBase{T}"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use to communicate with the database.</param>
         /// <param name="table">Table containing the column to track the values in.</param>
         /// <param name="column">Column containing the IDs to track.</param>
         /// <param name="stackSize">Maximum size of the free ID stack.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="table" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="column" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>stackSize</c> is out of range.</exception>
         protected IDCreatorBase(DbConnectionPool connectionPool, string table, string column, int stackSize)
         {
             if (connectionPool == null)
@@ -133,6 +137,7 @@ namespace NetGore.Db
         /// <returns>A collection with a total of <paramref name="amount"/> Int32s, where each value is
         /// a free index on the column in table. This
         /// collection is sorted ascending by nature.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>amount</c> is out of range.</exception>
         List<int> InternalGetFreeFromDB(int amount)
         {
             if (amount < 1)

@@ -61,6 +61,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="reader">The reader to read the values from.</param>
         /// <param name="currentTime">The current time.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="reader" /> is <c>null</c>.</exception>
         public MapGrh(IValueReader reader, TickCount currentTime)
         {
             if (reader == null)

@@ -181,6 +181,7 @@ namespace NetGore.Graphics
         /// Sets the categorization for the <see cref="GrhData"/>.
         /// </summary>
         /// <param name="categorization">The new categorization.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="categorization" /> is <c>null</c>.</exception>
         public void SetCategorization(SpriteCategorization categorization)
         {
             if (categorization == null)
@@ -210,6 +211,8 @@ namespace NetGore.Graphics
         /// Writes the <see cref="GrhData"/> to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="w"><see cref="IValueWriter"/> to write to.</param>
+        /// <exception cref="GrhDataException">The <see cref="GrhIndex"/> invalid.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="w" /> is <c>null</c>.</exception>
         public void Write(IValueWriter w)
         {
             // Check for valid data

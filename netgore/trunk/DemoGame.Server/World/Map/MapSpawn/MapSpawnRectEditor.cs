@@ -36,6 +36,7 @@ namespace DemoGame.Server
         /// </returns>
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is null. </exception>
         /// <exception cref="T:System.NotSupportedException">The conversion cannot be performed. </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="destinationType" /> is <c>null</c>.</exception>
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == null)

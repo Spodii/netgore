@@ -28,12 +28,13 @@ namespace NetGore.Graphics
         Skeleton _skeleton;
 
         /// <summary>
-        /// Skeleton frame constructor
+        /// Initializes a new instance of the <see cref="SkeletonFrame"/> class.
         /// </summary>
         /// <param name="fileName">Path to the file used to load the frame</param>
         /// <param name="skeleton">Skeleton to use for the frame</param>
         /// <param name="delay">Amount of time the animation will stay on this frame in milliseconds.
         /// A value of 0 will result in the delay being found by the other frame - useful for stopped animation frames.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="skeleton" /> is <c>null</c>.</exception>
         public SkeletonFrame(string fileName, Skeleton skeleton, float delay = 0f)
         {
             if (skeleton == null)
@@ -49,6 +50,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to use to load from.</param>
+        /// <exception cref="InvalidOperationException">The <see cref="Skeleton"/> failed to load.</exception>
         public SkeletonFrame(IValueReader reader, ContentPaths contentPath)
         {
             Read(reader, contentPath);
@@ -82,6 +84,11 @@ namespace NetGore.Graphics
             get { return _skeleton; }
         }
 
+        /// <summary>
+        /// Reads the <see cref="SkeletonFrame"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to load additional assets.</param>
         public void Read(IValueReader reader, ContentPaths contentPath)
         {
             _delay = reader.ReadFloat(_delayValueKey);
@@ -89,6 +96,10 @@ namespace NetGore.Graphics
             _skeleton = new Skeleton(_fileName, contentPath);
         }
 
+        /// <summary>
+        /// Writes the <see cref="SkeletonFrame"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         public void Write(IValueWriter writer)
         {
             writer.Write(_delayValueKey, Delay);

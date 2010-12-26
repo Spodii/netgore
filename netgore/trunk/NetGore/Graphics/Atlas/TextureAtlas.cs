@@ -48,6 +48,7 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="TextureAtlas"/> class.
         /// </summary>
         /// <param name="atlasItems">The collection of items to place into the atlas.</param>
+        /// <exception cref="ArgumentException"><paramref name="atlasItems"/> is null or empty.</exception>
         public TextureAtlas(IEnumerable<ITextureAtlasable> atlasItems)
         {
             if (atlasItems == null || atlasItems.IsEmpty())
@@ -123,7 +124,11 @@ namespace NetGore.Graphics
             {
                 // If sizes are 0, find the starting size
                 if (width == 0 || height == 0)
-                    GetStartSize(workingList, MaxTextureSize, out width, out height);
+                {
+                    var startSize = GetStartSize(workingList, MaxTextureSize);
+                    width = startSize.X;
+                    height = startSize.Y;
+                }
 
                 // Try to build the atlas
                 var isMaxSize = (width == MaxTextureSize && height == MaxTextureSize);
@@ -159,15 +164,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Combines as many ITextureAtlasable items as possible into an atlas.
+        /// Combines as many <see cref="ITextureAtlasable"/> items as possible into an atlas.
         /// </summary>
-        /// <param name="items">Collection of ITextureAtlasable items to add to the atlas.</param>
+        /// <param name="items">Collection of <see cref="ITextureAtlasable"/> items to add to the atlas.</param>
         /// <param name="width">Width of the atlas.</param>
         /// <param name="height">Height of the atlas.</param>
         /// <param name="breakOnAddFail">If true, the method will return instantly after failing to add an item.</param>
         /// <returns>Stack containing all items that were successfully added to the atlas. If the
         /// count of this return value equals the count of the <paramref name="items"/> collection,
         /// all items were successfully added to the atlas of the specified size.</returns>
+        /// <exception cref="ArgumentException"><paramref name="items"/> is null.</exception>
         static Stack<AtlasTextureItem> CombineSingleTexture(ICollection<ITextureAtlasable> items, int width, int height,
                                                             bool breakOnAddFail)
         {
@@ -216,9 +222,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Heuristic guesses for what might be a good starting size.
+        /// Performs a heuristic guess for what might be a good starting size of the atlas.
         /// </summary>
-        static void GetStartSize(IEnumerable<ITextureAtlasable> items, int maxSize, out int width, out int height)
+        /// <param name="items">The items that will be going into the atlas.</param>
+        /// <param name="maxSize">The maximum size of the atlas in either dimension.</param>
+        /// <returns>The starting size to use for the atlas.</returns>
+        /// <exception cref="ArgumentException"><paramref name="items"/> is null.</exception>
+        static Point GetStartSize(IEnumerable<ITextureAtlasable> items, int maxSize)
         {
             if (items == null)
             {
@@ -251,8 +261,8 @@ namespace NetGore.Graphics
             }
 
             // Use the higher of the two values and round to the next power of 2
-            width = BitOps.NextPowerOf2(Math.Max(guessedSize, maxWidth));
-            height = BitOps.NextPowerOf2(Math.Max(guessedSize, maxHeight));
+            var width = BitOps.NextPowerOf2(Math.Max(guessedSize, maxWidth));
+            var height = BitOps.NextPowerOf2(Math.Max(guessedSize, maxHeight));
 
             // If possible, divide one of the sizes in half
             if (width / 2 > maxWidth)
@@ -263,14 +273,18 @@ namespace NetGore.Graphics
             // Finally, force below the maximum size
             width = Math.Min(width, maxSize);
             height = Math.Min(height, maxSize);
+
+            return new Point(width, height);
         }
 
         /// <summary>
-        /// Comparison function for sorting sprites by size.
+        /// Comparison function for sorting sprites in an <see cref="ITextureAtlasable"/> by size.
         /// </summary>
         /// <returns>A signed number indicating the relative values of this instance and value.
         /// Less than zero means this instance is less than value. Zero means this instance is equal to value. 
         /// Greater than zero mean this instance is greater than value.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="a" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="b" /> is <c>null</c>.</exception>
         static int SizeCompare(ITextureAtlasable a, ITextureAtlasable b)
         {
             if (a == null)
@@ -289,6 +303,7 @@ namespace NetGore.Graphics
 
             var aSize = a.SourceRect.Height * a.SourceRect.Width;
             var bSize = b.SourceRect.Height * b.SourceRect.Width;
+
             return bSize.CompareTo(aSize);
         }
 

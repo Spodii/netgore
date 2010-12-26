@@ -84,6 +84,12 @@ namespace NetGore.Graphics
             get { return _speed; }
         }
 
+        /// <summary>
+        /// Creates the array of frames for an <see cref="AnimatedGrhData"/>.
+        /// </summary>
+        /// <param name="frameIndices">The indices of the frames.</param>
+        /// <returns>The array of <see cref="StationaryGrhData"/> frames.</returns>
+        /// <exception cref="GrhDataException">A frame in this <see cref="AnimatedGrhData"/> failed to be loaded.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
         StationaryGrhData[] CreateFrames(IList<GrhIndex> frameIndices)
         {

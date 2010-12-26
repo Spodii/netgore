@@ -62,6 +62,7 @@ namespace NetGore.Features.NPCChat.Conditionals
         /// <param name="name">The unique display name of this <see cref="NPCChatConditionalBase"/>. This name
         /// must be unique for each derived class type. This string is case-sensitive.</param>
         /// <param name="parameterTypes">The parameter types.</param>
+        /// <exception cref="ArgumentNullException">Argument is null.</exception>
         protected NPCChatConditionalBase(string name, params NPCChatConditionalParameterType[] parameterTypes)
         {
             if (string.IsNullOrEmpty(name))
@@ -210,6 +211,7 @@ namespace NetGore.Features.NPCChat.Conditionals
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="ArgumentException">The loaded type in <paramref name="e"/> was invalid or already loaded.</exception>
         static void OnLoadTypeHandler(TypeFactory sender, TypeFactoryLoadedEventArgs e)
         {
             var instance = (NPCChatConditionalBase)sender.GetTypeInstance(e.Name);

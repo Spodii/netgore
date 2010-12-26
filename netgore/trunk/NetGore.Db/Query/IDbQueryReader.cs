@@ -12,6 +12,7 @@ namespace NetGore.Db
         /// Executes the query on the database without parameters.
         /// </summary>
         /// <returns>IDataReader used to read the results of the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         IDataReader ExecuteReader();
     }
 
@@ -26,6 +27,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         /// <returns>IDataReader used to read the results of the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         IDataReader ExecuteReader(T item);
     }
 }

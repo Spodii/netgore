@@ -305,6 +305,7 @@ namespace DemoGame.Server
         /// When overridden in the derived class, gets if the CharacterEntity has a chat dialog. Do not use the setter
         /// on this property.
         /// </summary>
+        /// <exception cref="NotSupportedException">This value should never be set directly in the Server.</exception>
         public override bool HasChatDialog
         {
             get { return ChatDialog != null; }
@@ -315,6 +316,7 @@ namespace DemoGame.Server
         /// When overridden in the derived class, gets if the CharacterEntity has a shop. Do not use the setter
         /// on this property.
         /// </summary>
+        /// <exception cref="NotSupportedException">This value should never be set directly in the Server.</exception>
         public override bool HasShop
         {
             get { return Shop != null; }
@@ -942,6 +944,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="target">Character being attacked.</param>
         /// <returns>The amount of damage to inflict for a normal attack.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="target" /> is <c>null</c>.</exception>
         public int GetAttackDamage(Character target)
         {
             if (target == null)

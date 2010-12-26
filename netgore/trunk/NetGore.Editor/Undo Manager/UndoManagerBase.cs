@@ -43,9 +43,10 @@ namespace NetGore.Editor
         }
 
         /// <summary>
-        /// Pops the IUndoEvent that the cursor is currently on, but leaves it available for Redoing.
+        /// Pops the <see cref="IUndoEvent"/> that the cursor is currently on, but leaves it available for Redoing.
         /// </summary>
-        /// <returns>The IUndoEvent at the current index.</returns>
+        /// <returns>The <see cref="IUndoEvent"/> at the current index.</returns>
+        /// <exception cref="InvalidOperationException">The collection is empty.</exception>
         public IUndoEvent Pop()
         {
             //Store the current cursor index because I can't figure out a better way to do this.

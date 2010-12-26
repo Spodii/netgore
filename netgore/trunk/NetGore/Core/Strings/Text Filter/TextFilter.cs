@@ -111,6 +111,7 @@ namespace NetGore
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="TypeException">Duplicate text filter names found.</exception>
         static void FactoryTypeAdded(TypeFactory factory, TypeFactoryLoadedEventArgs e)
         {
             var instance = (TextFilter)TypeFactory.GetTypeInstance(e.LoadedType);
@@ -119,7 +120,10 @@ namespace NetGore
 
             // Ensure the name is not already in use
             if (_filterInstancesByName.ContainsKey(key))
-                throw new TypeException("A text filter with the name `" + key + "` already exists!", e.LoadedType);
+            {
+                const string errmsg = "A text filter with the name `{0}` already exists!";
+                throw new TypeException(string.Format(errmsg, key), e.LoadedType);
+            }
 
             // Add the instace
             _filterInstancesByName.Add(key, instance);

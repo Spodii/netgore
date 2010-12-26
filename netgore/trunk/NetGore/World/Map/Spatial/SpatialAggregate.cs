@@ -28,6 +28,10 @@ namespace NetGore.World
             _spatialCollections = expanded.Distinct().ToCompact();
         }
 
+        /// <summary>
+        /// Gets the <see cref="NotSupportedException"/> to use for when trying to use a method that is not supported.
+        /// </summary>
+        /// <returns>The <see cref="NotSupportedException"/> to use for when trying to use a method that is not supported.</returns>
         static NotSupportedException GetNotSupportedException()
         {
             return new NotSupportedException("This operation is not supported by an aggregate spatial.");
@@ -39,7 +43,8 @@ namespace NetGore.World
         /// Adds multiple <see cref="ISpatial"/>s to the <see cref="ISpatialCollection"/>.
         /// </summary>
         /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
-        public void Add(IEnumerable<ISpatial> spatials)
+        /// <exception cref="NotSupportedException">This operation is not supported by the <see cref="SpatialAggregate"/>.</exception>
+        void ISpatialCollection.Add(IEnumerable<ISpatial> spatials)
         {
             throw GetNotSupportedException();
         }
@@ -49,7 +54,8 @@ namespace NetGore.World
         /// </summary>
         /// <typeparam name="T">The type of <see cref="ISpatial"/>.</typeparam>
         /// <param name="spatials">The <see cref="ISpatial"/>s to add.</param>
-        public void Add<T>(IEnumerable<T> spatials) where T : class, ISpatial
+        /// <exception cref="NotSupportedException">This operation is not supported by the <see cref="SpatialAggregate"/>.</exception>
+        void ISpatialCollection.Add<T>(IEnumerable<T> spatials)
         {
             throw GetNotSupportedException();
         }
@@ -58,7 +64,8 @@ namespace NetGore.World
         /// Adds a single <see cref="ISpatial"/> to the <see cref="ISpatialCollection"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
-        public void Add(ISpatial spatial)
+        /// <exception cref="NotSupportedException">This operation is not supported by the <see cref="SpatialAggregate"/>.</exception>
+        void ISpatialCollection.Add(ISpatial spatial)
         {
             throw GetNotSupportedException();
         }
@@ -542,7 +549,8 @@ namespace NetGore.World
         /// Removes an <see cref="ISpatial"/> from the spatial collection.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
-        public void Remove(ISpatial spatial)
+        /// <exception cref="NotSupportedException">This operation is not supported by the <see cref="SpatialAggregate"/>.</exception>
+        void ISpatialCollection.Remove(ISpatial spatial)
         {
             throw GetNotSupportedException();
         }

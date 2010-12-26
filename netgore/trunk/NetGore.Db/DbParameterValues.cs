@@ -110,6 +110,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="dbParameterCollection">The <see cref="DbParameterCollection"/>.</param>
         /// <returns>The <see cref="DbParameterValues"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="dbParameterCollection" /> is <c>null</c>.</exception>
         public static DbParameterValues Create(DbParameterCollection dbParameterCollection)
         {
             if (dbParameterCollection == null)

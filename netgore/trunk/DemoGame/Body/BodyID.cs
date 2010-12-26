@@ -35,6 +35,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="BodyID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new BodyID.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public BodyID(int value)
         {
             if (value < MinValue || value > MaxValue)

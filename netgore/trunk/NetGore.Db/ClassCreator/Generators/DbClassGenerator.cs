@@ -169,6 +169,7 @@ namespace NetGore.Db.ClassCreator
         /// <param name="internalType">Type of the value and the internal storage type.</param>
         /// <param name="tables">The tables.</param>
         /// <param name="columns">The columns.</param>
+        /// <exception cref="ArgumentException">Only Enums are supported for the keyType at the present.</exception>
         public void AddColumnCollection(string name, Type keyType, Type externalType, Type internalType,
                                         IEnumerable<string> tables, IEnumerable<ColumnCollectionItem> columns)
         {
@@ -188,11 +189,15 @@ namespace NetGore.Db.ClassCreator
         /// <param name="internalType">Type of the value and the internal storage type.</param>
         /// <param name="table">The table.</param>
         /// <param name="columns">The columns.</param>
+        /// <exception cref="ArgumentException">Only Enums are supported for the keyType at the present.</exception>
         public void AddColumnCollection(string name, Type keyType, Type externalType, Type internalType, string table,
                                         IEnumerable<ColumnCollectionItem> columns)
         {
             if (!(keyType.IsEnum))
-                throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
+            {
+                const string errmsg = "Only Enums are supported for the keyType at the present.";
+                throw new ArgumentException(errmsg, "keyType");
+            }
 
             var columnCollection = new ColumnCollection(name, keyType, externalType, internalType, new string[] { table }, columns);
             _columnCollections.Add(columnCollection);
@@ -1509,11 +1514,15 @@ namespace NetGore.Db.ClassCreator
         /// Sets the database connection.
         /// </summary>
         /// <param name="dbConnection">The database connection.</param>
+        /// <exception cref="MethodAccessException">The DbConnection has already been set.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DbConnection")]
         protected void SetDbConnection(DbConnection dbConnection)
         {
             if (_dbConnction != null)
-                throw new MethodAccessException("The DbConnection has already been set!");
+            {
+                const string errmsg = "The DbConnection has already been set.";
+                throw new MethodAccessException(errmsg);
+            }
 
             _dbConnction = dbConnection;
         }
