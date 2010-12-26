@@ -146,7 +146,10 @@ namespace SFML
                 if (!disposing)
                     Context.Global.SetActive(true);
 
-                sfRenderImage_Destroy(This);
+                var t = ThisRaw;
+
+                if (t != IntPtr.Zero)
+                    sfRenderImage_Destroy(t);
 
                 if (disposing)
                 {

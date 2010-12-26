@@ -296,7 +296,10 @@ namespace SFML
                     if (!disposing)
                         Context.Global.SetActive(true);
 
-                    sfImage_Destroy(This);
+                    var t = ThisRaw;
+
+                    if (t != IntPtr.Zero)
+                        sfImage_Destroy(t);
 
                     if (!disposing)
                         Context.Global.SetActive(false);
