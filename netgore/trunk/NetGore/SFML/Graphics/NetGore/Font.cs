@@ -251,6 +251,8 @@ namespace SFML
                         }
                     }
 
+                    myImages.Clear();
+
                     if (!disposing)
                         Context.Global.SetActive(false);
                 }
@@ -313,8 +315,14 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Image GetImage(uint characterSize)
             {
-                myImages[characterSize] = new Image(sfFont_GetImage(This, characterSize));
-                return myImages[characterSize];
+                Image img;
+                if (!myImages.TryGetValue(characterSize, out img))
+                {
+                    img = new Image(sfFont_GetImage(This, characterSize));
+                    myImages[characterSize] = img;
+                }
+
+                return img;
             }
 
             ////////////////////////////////////////////////////////////
