@@ -5,9 +5,6 @@
 # and so it doesn't have to be copied to each language file. But do add comments into here if it
 # is related to the language specifically.
 
-########### Core: Misc ###########
-InsufficientPermissions: "You do not have the permissions to do that."
-
 ########### Core: Combat messages ###########
 CannotAttackWithWeapon: "You cannot attack with a $0."
 CannotAttackTooFarAway: "The target is too far away to attack."
@@ -19,13 +16,11 @@ CommandTellNoName: "Tell what to whom?"
 CommandTellNoMessage: "What do you want to say?"
 CommandTellSender: "You tell $0: \"$1\""
 CommandTellReceiver: "$0 tells you: \"$1\""
-CommandTellInvalidUser: "User $0 does not exist."
-CommandTellOfflineUser: "User $0 is currently offline."
 CommandAnnounce: "ANNOUNCEMENT: $0"
-
 CommandShout: "$0 shouts: \"$1\""
 
 ########### Core: General chat command responses ###########
+CommandGeneralInsufficientPermissions: "You do not have the permissions to do that."
 CommandGeneralInvalidUser: "$0 is not valid username."
 CommandGeneralUnknownUser: "No user with the name $0 exists."
 CommandGeneralInvalidParameter: "Invalid value `$1` entered for parameter `$0`."

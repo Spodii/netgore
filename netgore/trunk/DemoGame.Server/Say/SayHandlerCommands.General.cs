@@ -65,7 +65,7 @@ namespace DemoGame.Server
             else
             {
                 // User not found
-                User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat, userName);
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
             }
 
             EventCounterManager.User.Increment(User.ID, UserEventCounterType.ChatTellTimes);
