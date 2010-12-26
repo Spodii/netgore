@@ -43,6 +43,8 @@ namespace NetGore
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
         /// Default is false.</param>
         /// <returns>All Types that match the given conditions.</returns>
+        /// <exception cref="MissingMethodException">A <see cref="Type"/> was found that does not contain a constructor
+        /// with the required set of parameters defined by <paramref name="constructorParams"/>.</exception>
         public static IEnumerable<Type> FindTypes(Func<Type, bool> conditions, Type[] constructorParams,
                                                   bool includeGAC = _gacDefault)
         {

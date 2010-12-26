@@ -33,6 +33,7 @@ namespace NetGore.World
         /// Initializes a new instance of the <see cref="MapID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new <see cref="MapID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public MapID(int value)
         {
             if (value < MinValue || value > MaxValue)

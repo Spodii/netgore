@@ -264,6 +264,12 @@ namespace NetGore.Graphics
             return true;
         }
 
+        /// <summary>
+        /// Reads a <see cref="Skeleton"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="reader" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">The loaded <see cref="Skeleton"/> was not properly structured.</exception>
         public void Read(IValueReader reader)
         {
             if (reader == null)
@@ -315,6 +321,12 @@ namespace NetGore.Graphics
             return node;
         }
 
+        /// <summary>
+        /// Writes the <see cref="Skeleton"/> to file.
+        /// </summary>
+        /// <param name="filePath">The file to write to.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="filePath" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Skeleton returned false for IsValid().</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IsValid")]
         public void Write(string filePath)
         {
@@ -323,7 +335,7 @@ namespace NetGore.Graphics
 
             // Validate the skeleton
             if (!IsValid())
-                throw new InvalidOperationException("Skeleton returned false for IsValid() - unable to save!");
+                throw new InvalidOperationException("Skeleton returned false for IsValid().");
 
             // Write the file
             using (var writer = GenericValueWriter.Create(filePath, _rootNodeName, EncodingFormat))
@@ -332,6 +344,11 @@ namespace NetGore.Graphics
             }
         }
 
+        /// <summary>
+        /// Writes the <see cref="Skeleton"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="writer" /> is <c>null</c>.</exception>
         public void Write(IValueWriter writer)
         {
             if (writer == null)

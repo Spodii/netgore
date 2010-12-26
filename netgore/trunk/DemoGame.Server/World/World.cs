@@ -53,6 +53,8 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="World"/> class.
         /// </summary>
         /// <param name="parent">Server this world is part of.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">The unarmed weapon ID is not a valid item template ID.</exception>
         public World(Server parent)
         {
             if (parent == null)

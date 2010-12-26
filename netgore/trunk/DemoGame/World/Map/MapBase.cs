@@ -128,10 +128,11 @@ namespace DemoGame
         public MusicID? MusicID { get; set; }
 
         /// <summary>
-        /// Adds a DynamicEntity to the Map, using the pre-determined unique index.
+        /// Adds a <see cref="DynamicEntity"/> to the <see cref="MapBase"/>, using the pre-determined unique index.
         /// </summary>
-        /// <param name="entity">DynamicEntity to add to the Map.</param>
-        /// <param name="mapEntityIndex">Unique index to assign to the DynamicEntity.</param>
+        /// <param name="entity"><see cref="DynamicEntity"/> to add to the Map.</param>
+        /// <param name="mapEntityIndex">Unique index to assign to the <see cref="DynamicEntity"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="entity" /> is <c>null</c>.</exception>
         public virtual void AddDynamicEntity(DynamicEntity entity, MapEntityIndex mapEntityIndex)
         {
             if (entity == null)
@@ -171,9 +172,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Adds an Entity to the map.
+        /// Adds an <see cref="Entity"/> to the map.
         /// </summary>
-        /// <param name="entity">Entity to add to the map.</param>
+        /// <param name="entity"><see cref="Entity"/> to add to the map.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="entity" /> is <c>null</c>.</exception>
         public virtual void AddEntity(Entity entity)
         {
             if (entity == null)
@@ -710,6 +712,8 @@ namespace DemoGame
         /// all DynamicEntities will be skipped.</param>
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
         /// <see cref="DynamicEntity"/>s.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="dynamicEntityFactory" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="filePath"/> is invalid or no file exists at the path.</exception>
         protected virtual void Load(string filePath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
             if (dynamicEntityFactory == null)
@@ -747,7 +751,8 @@ namespace DemoGame
         /// <summary>
         /// Loads the header information for the map.
         /// </summary>
-        /// <param name="r">XmlReader used to load the map file.</param>
+        /// <param name="r"><see cref="IValueReader"/> used to load the map file.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="r" /> is <c>null</c>.</exception>
         void LoadHeader(IValueReader r)
         {
             if (r == null)
@@ -788,7 +793,8 @@ namespace DemoGame
         /// <summary>
         /// Loads the wall information for the map.
         /// </summary>
-        /// <param name="r">XmlReader used to load the map file.</param>
+        /// <param name="r"><see cref="IValueReader"/> used to load the map file.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="r" /> is <c>null</c>.</exception>
         void LoadWalls(IValueReader r)
         {
             if (r == null)
@@ -818,9 +824,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Removes an entity from the map.
+        /// Removes an <see cref="Entity"/> from the map.
         /// </summary>
-        /// <param name="entity">Entity to remove from the map.</param>
+        /// <param name="entity"><see cref="Entity"/> to remove from the map.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="entity" /> is <c>null</c>.</exception>
         public void RemoveEntity(Entity entity)
         {
             if (entity == null)
@@ -944,6 +951,9 @@ namespace DemoGame
         /// <param name="filePath">Path to save the map file at.</param>
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
         /// <see cref="DynamicEntity"/>s.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dynamicEntityFactory"/> is null.</exception>
+        /// <exception cref="IOException">The directory name could not be found from the <paramref name="filePath"/>.</exception>
         void Save(string filePath, IDynamicEntityFactory dynamicEntityFactory)
         {
             if (string.IsNullOrEmpty(filePath))
@@ -953,7 +963,10 @@ namespace DemoGame
 
             var dirName = Path.GetDirectoryName(filePath);
             if (dirName == null)
-                throw new IOException(string.Format("Failed to get the directory name for the path `{0}`.", filePath));
+            {
+                const string errmsg = "Failed to get the directory name for the path `{0}`.";
+                throw new IOException(string.Format(errmsg, filePath));
+            }
 
             Directory.CreateDirectory(dirName);
             using (var w = XmlValueWriter.Create(filePath, _rootNodeName))
@@ -976,7 +989,8 @@ namespace DemoGame
         /// <summary>
         /// Saves the map header
         /// </summary>
-        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="w"><see cref="IValueWriter"/> to write to.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="w" /> is <c>null</c>.</exception>
         void SaveHeader(IValueWriter w)
         {
             if (w == null)
@@ -1006,7 +1020,8 @@ namespace DemoGame
         /// <summary>
         /// Saves the map walls
         /// </summary>
-        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="w"><see cref="IValueWriter"/> to write to.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="w" /> is <c>null</c>.</exception>
         void SaveWalls(IValueWriter w)
         {
             if (w == null)
@@ -1017,10 +1032,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Sets the new dimensions of the map and trims
-        /// objects that exceed the new dimension
+        /// Sets the new dimensions of the map and trims objects that exceed the new dimension
         /// </summary>
         /// <param name="newSize">New size of the map</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>newSize</c> is out of range.</exception>
         public void SetDimensions(Vector2 newSize)
         {
             if (Size == newSize)
@@ -1100,11 +1115,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Tries to get the Map's index from the file path.
+        /// Tries to get the map's index from the file path.
         /// </summary>
         /// <param name="path">File path to the map.</param>
         /// <param name="mapID">If this method returns true, contains the index of the map.</param>
         /// <returns>True if the parsing was successful; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="path"/> is null or empty.</exception>
         public static bool TryGetIndexFromPath(string path, out MapID mapID)
         {
             if (string.IsNullOrEmpty(path))

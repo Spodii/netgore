@@ -74,7 +74,9 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="SkeletonAnimation"/> class.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        /// <param name="skeletonSet">SkeletonSet to use for the keyframes.</param>
+        /// <param name="skeletonSet"><see cref="SkeletonSet"/> to use for the keyframes.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="skeletonSet" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">skeletonSet contains no KeyFrames.</exception>
         public SkeletonAnimation(TickCount currentTime, SkeletonSet skeletonSet)
         {
             if (skeletonSet == null)
@@ -247,6 +249,9 @@ namespace NetGore.Graphics
             _currFrame = new SkeletonFrame("_worker_", _skel.DeepCopy(), delay);
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="set" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="skel" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="set"/> contians no KeyFrames.</exception>
         public static SkeletonSet CreateSmoothedSet(SkeletonSet set, Skeleton skel)
         {
             if (set == null)
@@ -281,7 +286,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// If the SkeletonAnimation is used as a modifier, this will detach it from its parent.
+        /// If the <see cref="SkeletonAnimation"/> is used as a modifier, this will detach it from its parent.
         /// </summary>
         public void Detach()
         {

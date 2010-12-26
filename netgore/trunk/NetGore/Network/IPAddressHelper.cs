@@ -101,6 +101,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="dottedAddress">The dotted IP address string, formatted as "xxx.xxx.xxx.xxx".</param>
         /// <returns>The <paramref name="dottedAddress"/> as an unsigned int.</returns>
+        /// <exception cref="ArgumentException"><paramref name="dottedAddress"/> was not in the expected format.</exception>
         public static uint IPv4AddressToUInt(string dottedAddress)
         {
             var split = dottedAddress.Split('.');

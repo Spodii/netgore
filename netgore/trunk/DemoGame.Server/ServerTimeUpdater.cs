@@ -15,6 +15,11 @@ namespace DemoGame.Server
         TickCount _lastUpdateTime;
         int _updateRate = 3000;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerTimeUpdater"/> class.
+        /// </summary>
+        /// <param name="updateQuery">The update query.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="updateQuery" /> is <c>null</c>.</exception>
         public ServerTimeUpdater(DbQueryNonReader updateQuery)
         {
             if (updateQuery == null)

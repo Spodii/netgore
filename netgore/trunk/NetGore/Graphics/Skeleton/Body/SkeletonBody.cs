@@ -30,6 +30,7 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="SkeletonBody"/> class.
         /// </summary>
         /// <param name="bodyInfo"><see cref="SkeletonBodyInfo"/> to create the <see cref="SkeletonBody"/> from.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="bodyInfo" /> is <c>null</c>.</exception>
         public SkeletonBody(SkeletonBodyInfo bodyInfo)
         {
             if (bodyInfo == null)

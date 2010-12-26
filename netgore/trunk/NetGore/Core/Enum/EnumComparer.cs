@@ -12,6 +12,10 @@ namespace NetGore
     /// <summary>
     /// Comparer that is specifically for Enums.
     /// </summary>
+    /// <remarks>
+    /// The <see cref="EnumComparer{T}"/> should always return the same comparison result as the default comparer, but uses
+    /// dynamically generated methods to implement a very fast implementation of Equals and GetHashCode.
+    /// </remarks>
     /// <typeparam name="T">Type of Enum to compare.</typeparam>
     public sealed class EnumComparer<T> : IEqualityComparer<T> where T : struct, IComparable, IConvertible, IFormattable
     {
@@ -29,6 +33,8 @@ namespace NetGore
         /// <summary>
         /// Initializes the <see cref="EnumComparer{T}"/> class.
         /// </summary>
+        /// <exception cref="NotSupportedException"><typeparamref name="T"/> is not an enum.</exception>
+        /// <exception cref="NotSupportedException"><typeparamref name="T"/> uses an underlying type that is not supported.</exception>
         static EnumComparer()
         {
             _instance = new EnumComparer<T>();

@@ -34,6 +34,10 @@ namespace NetGore.Editor.Grhs
         /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance.</param>
         /// <param name="createWall">Delegate describing how to create wall instances.</param>
         /// <param name="deleteOnCancel">If the <see cref="GrhData"/> will be deleted if the editing is canceled.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="gd" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="mapGrhWalls" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="createWall" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Cannot edit an <see cref="AutomaticAnimatedGrhData"/>.</exception>
         public EditGrhForm(GrhData gd, MapGrhWalls mapGrhWalls, CreateWallEntityHandler createWall, bool deleteOnCancel)
         {
             if (gd == null)
@@ -144,6 +148,10 @@ namespace NetGore.Editor.Grhs
             screen.Walls = BoundWalls;
         }
 
+        /// <summary>
+        /// Shows the information for the <see cref="_gd"/>.
+        /// </summary>
+        /// <exception cref="UnsupportedGrhDataTypeException">The <see cref="_gd"/> is not of a supported type.</exception>
         void ShowGrhInfo()
         {
             txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);

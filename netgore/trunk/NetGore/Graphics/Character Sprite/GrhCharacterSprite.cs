@@ -62,6 +62,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="direction">The direction.</param>
         /// <returns>The name used for the set for a given <paramref name="direction"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><see cref="direction"/> contains a value not defined by the <see cref="Direction"/>
+        /// enum.</exception>
         static string GetDirectionSetName(Direction direction)
         {
             switch (direction)

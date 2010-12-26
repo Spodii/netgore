@@ -80,7 +80,7 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets if this DbQueryBase contains a query that has any parameters.
+        /// Gets if this <see cref="DbQueryBase"/> contains a query that has any parameters.
         /// </summary>
         public bool HasParameters
         {
@@ -88,7 +88,7 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets if this DbQueryBase has been disposed.
+        /// Gets if this <see cref="DbQueryBase"/> has been disposed.
         /// </summary>
         public bool IsDisposed
         {
@@ -116,10 +116,12 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Creates a new DbParameter object from the given source DbParameter.
+        /// Creates a new <see cref="DbParameter"/> object from the given source <see cref="DbParameter"/>.
         /// </summary>
-        /// <param name="source">DbParameter to clone.</param>
-        /// <returns>Clone of the <paramref name="source"/> DbParameter.</returns>
+        /// <param name="source"><see cref="DbParameter"/> to clone.</param>
+        /// <returns>Clone of the <paramref name="source"/> <see cref="DbParameter"/>.</returns>
+        /// <exception cref="NotImplementedException">Only <see cref="DbParameter"/>s that implement
+        /// <see cref="ICloneable"/> are currently supported.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ICloneable")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DbParameters")]
         static DbParameter CloneDbParameter(DbParameter source)
@@ -141,7 +143,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="parameterName">Name of the parameter to create.
         /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
-        /// <returns>DbParameter that can be used with this DbQueryBase.</returns>
+        /// <returns><see cref="DbParameter"/> that can be used with this <see cref="DbQueryBase"/>.</returns>
         DbParameter CreateParameter(string parameterName)
         {
             if (!parameterName.StartsWith(ParameterPrefix))
@@ -231,11 +233,12 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Helps creates multiple DbParameters easily.
+        /// Helps creates multiple <see cref="DbParameter"/>s easily.
         /// </summary>
         /// <param name="parameterNames">IEnumerable of parameter names to create.
         /// The names should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
-        /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
+        /// <returns>IEnumerable of <see cref="DbParameter"/>s, one for each element in the <paramref name="parameterNames"/> array.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="parameterNames" /> is <c>null</c>.</exception>
         protected IEnumerable<DbParameter> CreateParameters(IEnumerable<string> parameterNames)
         {
             if (parameterNames == null)
@@ -305,6 +308,7 @@ namespace NetGore.Db
         /// had it's parameter values set. The returned <see cref="DbCommand"/> should not be exposed. Instead, return
         /// it back to the pool by calling <see cref="DbQueryBase.ReleaseCommand"/>.</returns>
         /// <seealso cref="DbQueryBase.ReleaseCommand"/>
+        /// <exception cref="MethodAccessException">Can not access methods on a disposed object.</exception>
         protected DbCommand GetCommand(DbConnection conn)
         {
             if (_disposed)
@@ -362,6 +366,8 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="parameterName">ParameterName to get the trimmed name of.</param>
         /// <returns>The name of a <see cref="DbParameter"/> minus the single-character prefix.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="parameterName"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="parameterName"/> is invalid.</exception>
         public static string GetParameterNameWithoutPrefix(string parameterName)
         {
             if (string.IsNullOrEmpty(parameterName))
@@ -387,6 +393,7 @@ namespace NetGore.Db
         /// Gets an available <see cref="IPoolableDbConnection"/> from the <see cref="IDbQuery.ConnectionPool"/>.
         /// </summary>
         /// <returns>A free <see cref="IPoolableDbConnection"/>.</returns>
+        /// <exception cref="MethodAccessException">Can not access methods on a disposed object.</exception>
         protected IPoolableDbConnection GetPoolableConnection()
         {
             if (_disposed)
@@ -410,6 +417,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="cmd"><see cref="DbCommand"/> to release.</param>
         /// <seealso cref="DbQueryBase.GetCommand"/>
+        /// <exception cref="MethodAccessException">Can not access methods on a disposed object.</exception>
         internal void ReleaseCommand(DbCommand cmd)
         {
             if (_disposed)
@@ -457,6 +465,7 @@ namespace NetGore.Db
         /// will use this same CommandText.
         /// </summary>
         /// <value></value>
+        /// <exception cref="MethodAccessException">Can not access methods on a disposed object.</exception>
         public string CommandText
         {
             get
@@ -471,7 +480,7 @@ namespace NetGore.Db
         /// <summary>
         /// Gets the <see cref="DbConnectionPool"/> used to manage the database connections.
         /// </summary>
-        /// <value></value>
+        /// <exception cref="MethodAccessException">Can not access methods on a disposed object.</exception>
         public IDbConnectionPool ConnectionPool
         {
             get
@@ -486,7 +495,7 @@ namespace NetGore.Db
         /// <summary>
         /// Gets the parameters used in this <see cref="IDbQuery"/>.
         /// </summary>
-        /// <value></value>
+        /// <exception cref="MethodAccessException">Can not access methods on a disposed object.</exception>
         public IEnumerable<DbParameter> Parameters
         {
             get

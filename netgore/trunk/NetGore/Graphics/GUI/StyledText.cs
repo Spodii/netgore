@@ -168,18 +168,18 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws the StyledText to the <paramref name="spriteBatch"/>.
+        /// Draws the <see cref="StyledText"/> to the <paramref name="spriteBatch"/>.
         /// </summary>
-        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw the StyledText to.</param>
-        /// <param name="spriteFont">SpriteFont to use for drawing the characters.</param>
-        /// <param name="position">Top-left corner of where to begin drawing the StyledText.</param>
+        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw the <see cref="StyledText"/> to.</param>
+        /// <param name="font"><see cref="Font"/> to use for drawing the characters.</param>
+        /// <param name="position">Top-left corner of where to begin drawing the <see cref="StyledText"/>.</param>
         /// <param name="defaultColor">The default color to use for drawing the text. Only used if the
         /// <see cref="Color"/> is equal to <see cref="ColorForDefault"/>.</param>
-        public void Draw(ISpriteBatch spriteBatch, Font spriteFont, Vector2 position, Color defaultColor)
+        public void Draw(ISpriteBatch spriteBatch, Font font, Vector2 position, Color defaultColor)
         {
             var colorToUse = (Color == ColorForDefault ? defaultColor : Color);
 
-            spriteBatch.DrawString(spriteFont, Text, position, colorToUse);
+            spriteBatch.DrawString(font, Text, position, colorToUse);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace NetGore.Graphics.GUI
         /// from the end of the line and working backwards.
         /// </summary>
         /// <param name="text">The text to check.</param>
-        /// <param name="font">The SpriteFont used to measure the length.</param>
+        /// <param name="font">The <see cref="Font"/> used to measure the length.</param>
         /// <param name="maxLineLength">The maximum allowed line length in pixels.</param>
         /// <returns>The 0-based index of the first character that will fit into a single line.</returns>
         public static int FindFirstFittingChar(string text, Font font, int maxLineLength)
@@ -228,7 +228,7 @@ namespace NetGore.Graphics.GUI
         /// Finds the 0-based index of the last character that will fit into a single line.
         /// </summary>
         /// <param name="text">The text to check.</param>
-        /// <param name="font">The SpriteFont used to measure the length.</param>
+        /// <param name="font">The <see cref="Font"/> used to measure the length.</param>
         /// <param name="maxLineLength">The maximum allowed line length in pixels.</param>
         /// <returns>The 0-based index of the last character that will fit into a single line.</returns>
         public static int FindLastFittingChar(string text, Font font, int maxLineLength)
@@ -248,10 +248,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the width of this StyledText for the given <paramref name="font"/>.
+        /// Gets the width of this <see cref="StyledText"/> for the given <paramref name="font"/>.
         /// </summary>
-        /// <param name="font">The SpriteFont to use to measure.</param>
-        /// <returns>The width of this StyledText for the given <paramref name="font"/>.</returns>
+        /// <param name="font">The <see cref="Font"/> to use to measure.</param>
+        /// <returns>The width of this <see cref="StyledText"/> for the given <paramref name="font"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="font" /> is <c>null</c>.</exception>
         public float GetWidth(Font font)
         {
             if (font == null)
@@ -268,21 +269,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets if this StyledText has the same style as another StyledText.
+        /// Gets if this <see cref="StyledText"/> has the same style as another <see cref="StyledText"/>.
         /// </summary>
-        /// <param name="other">The other StyledText.</param>
-        /// <returns>True if this StyledText has same style as the other StyledText; otherwise false.</returns>
+        /// <param name="other">The other <see cref="StyledText"/>.</param>
+        /// <returns>True if this StyledText has same style as the other <see cref="StyledText"/>; otherwise false.</returns>
         public bool HasSameStyle(StyledText other)
         {
             return Color == other.Color;
         }
 
         /// <summary>
-        /// Splits the StyledText into multiple pieces using the given <paramref name="separator"/>.
+        /// Splits the <see cref="StyledText"/> into multiple pieces using the given <paramref name="separator"/>.
         /// </summary>
-        /// <param name="separator">An array of Unicode characters that delimit the substrings in this instance,
+        /// <param name="separator">An array of unicode characters that delimit the substrings in this instance,
         /// an empty array that contains no delimiters, or null.</param>
-        /// <returns>An array containing the pieces of the StyledText split using the given
+        /// <returns>An array containing the pieces of the <see cref="StyledText"/> split using the given
         /// <paramref name="separator"/>.</returns>
         public StyledText[] Split(params char[] separator)
         {
@@ -301,12 +302,12 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Splits the StyledText into multiple pieces using the given <paramref name="separator"/>.
+        /// Splits the <see cref="StyledText"/> into multiple pieces using the given <paramref name="separator"/>.
         /// </summary>
         /// <param name="separator">An array of Unicode characters that delimit the substrings in this instance,
         /// an empty array that contains no delimiters, or null.</param>
         /// <param name="count">The maximum number of substrings to return.</param>
-        /// <returns>An array containing the pieces of the StyledText split using the given
+        /// <returns>An array containing the pieces of the <see cref="StyledText"/> split using the given
         /// <paramref name="separator"/>.</returns>
         public StyledText[] Split(char[] separator, int count)
         {
@@ -325,7 +326,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Splits the StyledText into multiple pieces using the given <paramref name="separator"/>.
+        /// Splits the <see cref="StyledText"/> into multiple pieces using the given <paramref name="separator"/>.
         /// </summary>
         /// <param name="separator">An array of Unicode characters that delimit the substrings in this instance,
         /// an empty array that contains no delimiters, or null.</param>
@@ -352,7 +353,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Splits the StyledText into multiple pieces using the given <paramref name="separator"/>.
+        /// Splits the <see cref="StyledText"/> into multiple pieces using the given <paramref name="separator"/>.
         /// </summary>
         /// <param name="separator">An array of strings that delimit the substrings in this string,
         /// an empty array that contains no delimiters, or null.</param>
@@ -379,7 +380,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Splits the StyledText into multiple pieces using the given <paramref name="separator"/>.
+        /// Splits the <see cref="StyledText"/> into multiple pieces using the given <paramref name="separator"/>.
         /// </summary>
         /// <param name="separator">An array of Unicode characters that delimit the substrings in this instance,
         /// an empty array that contains no delimiters, or null.</param>
@@ -405,7 +406,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Splits the StyledText into multiple pieces using the given <paramref name="separator"/>.
+        /// Splits the <see cref="StyledText"/> into multiple pieces using the given <paramref name="separator"/>.
         /// </summary>
         /// <param name="separator">An array of strings that delimit the substrings in this string,
         /// an empty array that contains no delimiters, or null.</param>
@@ -431,7 +432,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Splits the StyledText at the given index into two parts. The character at the given
+        /// Splits the <see cref="StyledText"/> at the given index into two parts. The character at the given
         /// <paramref name="charIndex"/> will end up in the <paramref name="right"/> side.
         /// </summary>
         /// <param name="charIndex">The 0-based character index to split at.</param>
@@ -465,8 +466,8 @@ namespace NetGore.Graphics.GUI
         /// Retrieves a substring from this instance. The substring starts at a specified character position.
         /// </summary>
         /// <param name="startIndex">The zero-based starting character position of a substring in this instance.</param>
-        /// <returns>A StyledText equivalent to the substring that begins at startIndex in this instance,
-        /// or StyledText with an empty string if startIndex is equal to the length of this instance.</returns>
+        /// <returns>A <see cref="StyledText"/> equivalent to the substring that begins at startIndex in this instance,
+        /// or <see cref="StyledText"/> with an empty string if startIndex is equal to the length of this instance.</returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="startIndex"/> is less than zero or
         /// greater than the length of this instance.</exception>
         public StyledText Substring(int startIndex)
@@ -483,8 +484,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="startIndex">The zero-based starting character position of a substring in this instance.</param>
         /// <param name="length">The number of characters in the substring.</param>
-        /// <returns>A StyledText equivalent to the substring that begins at startIndex in this instance,
-        /// or StyledText with an empty string if startIndex is equal to the length of this instance.</returns>
+        /// <returns>A <see cref="StyledText"/> equivalent to the substring that begins at startIndex in this instance,
+        /// or <see cref="StyledText"/> with an empty string if startIndex is equal to the length of this instance.</returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="startIndex"/> is less than zero or
         /// greater than the length of this instance -or- startIndex or length is less than zero.</exception>
         public StyledText Substring(int startIndex, int length)

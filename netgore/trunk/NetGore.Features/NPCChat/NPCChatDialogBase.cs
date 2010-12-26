@@ -10,6 +10,10 @@ namespace NetGore.Features.NPCChat
     /// </summary>
     public abstract class NPCChatDialogBase
     {
+        const string _nodeValueKeyID = "ID";
+        const string _nodeValueKeyItems = "Items";
+        const string _nodeValueKeyTitle = "Title";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogBase"/> class.
         /// </summary>
@@ -20,15 +24,15 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogBase"/> class.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read the values from.</param>
         protected NPCChatDialogBase(IValueReader reader)
         {
             Read(reader);
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
-        /// distinguish each NPCChatDialogBase from one another.
+        /// When overridden in the derived class, gets the unique index of this <see cref="NPCChatDialogBase"/>. This is used to
+        /// distinguish each <see cref="NPCChatDialogBase"/> from one another.
         /// </summary>
         public abstract NPCChatDialogID ID { get; }
 
@@ -39,19 +43,20 @@ namespace NetGore.Features.NPCChat
         public abstract string Title { get; }
 
         /// <summary>
-        /// When overridden in the derived class, creates an NPCChatDialogItemBase using the given IValueReader.
+        /// When overridden in the derived class, creates an <see cref="NPCChatDialogItemBase"/> using the given <see cref="IValueReader"/>.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        /// <returns>An NPCChatDialogItemBase created using the given IValueReader.</returns>
+        /// <param name="reader"><see cref="IValueReader"/> to read the values from.</param>
+        /// <returns>An <see cref="NPCChatDialogItemBase"/> created using the given <see cref="IValueReader"/>.</returns>
         protected abstract NPCChatDialogItemBase CreateDialogItem(IValueReader reader);
 
         /// <summary>
-        /// Gets all of the NPCChatDialogItemBases that <paramref name="root"/> can go to from any response
+        /// Gets all of the <see cref="NPCChatDialogItemBase"/>s that <paramref name="root"/> can go to from any response
         /// and assuming an infinite number of branches can be taken.
         /// </summary>
         /// <param name="root">The root dialog to get all the possible branches for.</param>
-        /// <returns>All of the NPCChatDialogItemBases that this NPCChatDialogItemBase can go to from any response
+        /// <returns>All of the <see cref="NPCChatDialogItemBase"/>s that this <see cref="NPCChatDialogItemBase"/> can go to from any response
         /// and assuming an infinite number of branches can be taken.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="root" /> is <c>null</c>.</exception>
         public IEnumerable<NPCChatDialogItemBase> GetChildDialogItems(NPCChatDialogItemBase root)
         {
             if (root == null)
@@ -79,33 +84,36 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
+        /// When overridden in the derived class, gets the <see cref="NPCChatDialogItemBase"/> for the given page number.
         /// </summary>
-        /// <param name="chatDialogItemID">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemID"/>, or null if
-        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemID"/> or if
+        /// <param name="chatDialogItemID">The page number of the <see cref="NPCChatDialogItemBase"/> to get.</param>
+        /// <returns>
+        /// The <see cref="NPCChatDialogItemBase"/> for the given <paramref name="chatDialogItemID"/>, or null if
+        /// no valid <see cref="NPCChatDialogItemBase"/> existed for the given <paramref name="chatDialogItemID"/> or if
         /// the <paramref name="chatDialogItemID"/> is equal to
-        /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
+        /// <see cref="NPCChatResponseBase.EndConversationPage"/>.
+        /// </returns>
         public abstract NPCChatDialogItemBase GetDialogItem(NPCChatDialogItemID chatDialogItemID);
 
         /// <summary>
-        /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
-        /// NPCChatDialogBase.
+        /// When overridden in the derived class, gets an IEnumerable of the <see cref="NPCChatDialogItemBase"/>s in this
+        /// <see cref="NPCChatDialogBase"/>.
         /// </summary>
-        /// <returns>An IEnumerable of the NPCChatDialogItemBases in this NPCChatDialogBase.</returns>
+        /// <returns>An <see cref="IEnumerable{T}"/> of the <see cref="NPCChatDialogItemBase"/>s in
+        /// this <see cref="NPCChatDialogBase"/>.</returns>
         protected abstract IEnumerable<NPCChatDialogItemBase> GetDialogItems();
 
         /// <summary>
-        /// When overridden in the derived class, gets the initial NPCChatDialogItemBase that is used at the
+        /// When overridden in the derived class, gets the initial <see cref="NPCChatDialogItemBase"/> that is used at the
         /// start of a conversation.
         /// </summary>
-        /// <returns>The initial NPCChatDialogItemBase that is used at the start of a conversation.</returns>
+        /// <returns>The initial <see cref="NPCChatDialogItemBase"/> that is used at the start of a conversation.</returns>
         public abstract NPCChatDialogItemBase GetInitialDialogItem();
 
         /// <summary>
-        /// Gets all of the NPCChatResponseBases in this NPCChatDialogBase.
+        /// Gets all of the <see cref="NPCChatResponseBase"/>s in this <see cref="NPCChatDialogBase"/>.
         /// </summary>
-        /// <returns>All of the possible NPCChatResponseBases in this NPCChatDialogBase.</returns>
+        /// <returns>All of the possible <see cref="NPCChatResponseBase"/>s in this <see cref="NPCChatDialogBase"/>.</returns>
         public IEnumerable<NPCChatResponseBase> GetResponses()
         {
             var allDialogs = GetDialogItems();
@@ -114,10 +122,10 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Gets all of the NPCChatResponseBases that direct to the given <paramref name="dialogItem"/>.
+        /// Gets all of the <see cref="NPCChatResponseBase"/>s that direct to the given <paramref name="dialogItem"/>.
         /// </summary>
-        /// <param name="dialogItem">The NPCChatDialogItemBase to find the source NPCChatResponseBase for.</param>
-        /// <returns>All of the NPCChatResponseBases that direct to the given <paramref name="dialogItem"/>.</returns>
+        /// <param name="dialogItem">The <see cref="NPCChatDialogItemBase"/> to find the source <see cref="NPCChatResponseBase"/> for.</param>
+        /// <returns>All of the <see cref="NPCChatResponseBase"/>s that direct to the given <paramref name="dialogItem"/>.</returns>
         public IEnumerable<NPCChatResponseBase> GetSourceResponses(NPCChatDialogItemBase dialogItem)
         {
             var responses = GetResponses();
@@ -125,14 +133,14 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Reads the values for this NPCChatDialogBase from an IValueReader.
+        /// Reads the values for this <see cref="NPCChatDialogBase"/> from an <see cref="IValueReader"/>.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read the values from.</param>
         protected void Read(IValueReader reader)
         {
-            var id = reader.ReadNPCChatDialogID("ID");
-            var title = reader.ReadString("Title");
-            var items = reader.ReadManyNodes("Items", CreateDialogItem);
+            var id = reader.ReadNPCChatDialogID(_nodeValueKeyID);
+            var title = reader.ReadString(_nodeValueKeyTitle);
+            var items = reader.ReadManyNodes(_nodeValueKeyItems, CreateDialogItem);
 
             SetReadValues(id, title, items);
         }
@@ -157,16 +165,16 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Writes the NPCChatDialogBase's values to an IValueWriter.
+        /// Writes the <see cref="NPCChatDialogBase"/>'s values to an <see cref="IValueWriter"/>.
         /// </summary>
-        /// <param name="writer">IValueWriter to write the values to.</param>
+        /// <param name="writer"><see cref="IValueWriter"/> to write the values to.</param>
         public void Write(IValueWriter writer)
         {
             var items = GetDialogItems();
 
-            writer.Write("ID", ID);
-            writer.Write("Title", Title);
-            writer.WriteManyNodes("Items", items, ((w, item) => item.Write(w)));
+            writer.Write(_nodeValueKeyID, ID);
+            writer.Write(_nodeValueKeyTitle, Title);
+            writer.WriteManyNodes(_nodeValueKeyItems, items, ((w, item) => item.Write(w)));
         }
     }
 }

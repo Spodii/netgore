@@ -48,6 +48,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <param name="characterID">The character ID.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
         public NPC(World parent, CharacterID characterID) : base(parent, true)
         {
             // HACK: This whole constructor is uber hax
@@ -73,6 +74,8 @@ namespace DemoGame.Server
         /// <param name="template">NPCTemplate used to create the NPC.</param>
         /// <param name="map">The map.</param>
         /// <param name="position">The position.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="template" /> is <c>null</c>.</exception>
         public NPC(World parent, CharacterTemplate template, Map map, Vector2 position) : base(parent, false)
         {
             if (parent == null)

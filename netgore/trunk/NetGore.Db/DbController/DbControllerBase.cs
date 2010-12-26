@@ -29,6 +29,8 @@ namespace NetGore.Db
         /// Initializes a new instance of the <see cref="DbControllerBase"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionString"/> is null or empty.</exception>
+        /// <exception cref="DatabaseConnectionException">The connection failed to be created.</exception>
         protected DbControllerBase(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -64,6 +66,7 @@ namespace NetGore.Db
         /// <param name="connectionString">The connection string.</param>
         /// <param name="innerException">The inner exception.</param>
         /// <returns>The <see cref="DatabaseConnectionException"/> for when the connection fails.</returns>
+        /// <exception cref="DatabaseConnectionException">The database connection failed to be created.</exception>
         static DatabaseConnectionException CreateConnectionException(string connectionString, Exception innerException)
         {
             const string errmsg = "Failed to create connection to database: {0}{1}{0}{0}Connection string:{0}{2}";
@@ -119,6 +122,7 @@ namespace NetGore.Db
         /// <summary>
         /// Populates the <see cref="_queryObjects"/> with the query objects.
         /// </summary>
+        /// <exception cref="InstantiateTypeException">A type failed to be instantiated.</exception>
         void PopulateQueryObjects()
         {
             if (log.IsInfoEnabled)
@@ -158,6 +162,7 @@ namespace NetGore.Db
         /// <param name="connectionString">The connection string used.</param>
         /// <param name="pool">The pool of connections.</param>
         /// <returns>The name of the database.</returns>
+        /// <exception cref="DatabaseConnectionException">The database connection failed to be created.</exception>
         string TestConnectionPoolAndGetDatabase(string connectionString, IObjectPool<PooledDbConnection> pool)
         {
             string database;

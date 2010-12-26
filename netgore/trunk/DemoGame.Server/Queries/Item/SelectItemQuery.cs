@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
@@ -36,10 +37,15 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
+        /// <summary>
+        /// Selects the <see cref="IItemTable"/> for the given <see cref="ItemID"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="ItemID"/> of the item to select.</param>
+        /// <returns>The <see cref="IItemTable"/> for the given <paramref name="id"/>,
+        /// or null if the <paramref name="id"/> is invalid.</returns>
         public IItemTable Execute(ItemID id)
         {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException("id");
+            Debug.Assert(id > 0, "ID should always be > 0.");
 
             ItemTable retValues;
 

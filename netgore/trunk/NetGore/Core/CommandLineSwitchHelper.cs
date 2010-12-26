@@ -40,11 +40,15 @@ namespace NetGore
         /// <typeparam name="T">The Type of Enum to use as the key.</typeparam>
         /// <param name="args">The array of strings.</param>
         /// <returns>The switches and their arguments from the given string array.</returns>
+        /// <exception cref="MethodAccessException">Generic type <typeparamref name="T"/> must be an Enum.</exception>
         public static IEnumerable<KeyValuePair<T, string[]>> GetCommandsUsingEnum<T>(string[] args)
             where T : struct, IComparable, IConvertible, IFormattable
         {
             if (!typeof(T).IsEnum)
-                throw new MethodAccessException("Generic type T must be an Enum.");
+            {
+                const string errmsg = "Generic type T (type: {0}) must be an Enum.";
+                throw new MethodAccessException(string.Format(errmsg, typeof(T)));
+            }
 
             var items = GetCommands(args);
 

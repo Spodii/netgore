@@ -137,6 +137,7 @@ namespace NetGore.IO
         /// <param name="filePath">The full path of the file to load the message from.</param>
         /// <param name="secondary">The collection of messages to add missing messages from.</param>
         /// <returns>A dictionary containing the loaded messages.</returns>
+        /// <exception cref="FileNotFoundException">No file was found at the <paramref name="filePath"/>.</exception>
         Dictionary<T, string> Load(string filePath, IEnumerable<KeyValuePair<T, string>> secondary)
         {
             // Check if the file exists

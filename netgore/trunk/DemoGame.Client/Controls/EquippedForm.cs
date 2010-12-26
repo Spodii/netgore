@@ -29,6 +29,8 @@ namespace DemoGame.Client
         /// <param name="infoRequester">The info requester.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="infoRequester" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dragDropHandler" /> is <c>null</c>.</exception>
         public EquippedForm(DragDropHandler dragDropHandler, ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position,
                             Control parent) : base(parent, position, new Vector2(200, 200))
         {
@@ -179,9 +181,8 @@ namespace DemoGame.Client
             /// <param name="parent">The parent.</param>
             /// <param name="pos">The relative position.</param>
             /// <param name="slot">The <see cref="EquipmentSlot"/>.</param>
-            // ReSharper disable SuggestBaseTypeForParameter
+            /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
             public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot) : base(parent, pos, _itemSize)
-                // ReSharper restore SuggestBaseTypeForParameter
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

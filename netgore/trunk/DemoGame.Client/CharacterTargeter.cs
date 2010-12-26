@@ -29,6 +29,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="CharacterTargeter"/> class.
         /// </summary>
         /// <param name="world">The world.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="world" /> is <c>null</c>.</exception>
         public CharacterTargeter(World world)
         {
             if (world == null)

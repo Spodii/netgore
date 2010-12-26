@@ -165,6 +165,11 @@ namespace NetGore.Features.NPCChat
         {
             readonly NPCChatConditionalParameter _parameter;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ParameterListItem"/> class.
+            /// </summary>
+            /// <param name="parameter">The <see cref="NPCChatConditionalParameter"/>.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="parameter" /> is <c>null</c>.</exception>
             public ParameterListItem(NPCChatConditionalParameter parameter)
             {
                 if (parameter == null)

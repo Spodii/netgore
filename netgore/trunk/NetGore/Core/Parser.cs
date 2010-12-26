@@ -54,6 +54,9 @@ namespace NetGore
         /// <param name="culture">The culture information.</param>
         /// <param name="info">The number format information.</param>
         /// <param name="dateTimeInfo">The date and time format information.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="culture" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="info" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dateTimeInfo" /> is <c>null</c>.</exception>
         Parser(CultureInfo culture, NumberFormatInfo info, DateTimeFormatInfo dateTimeInfo)
         {
             if (culture == null)

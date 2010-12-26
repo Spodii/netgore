@@ -252,9 +252,11 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Updates this NPCChatDialogViewNode.
+        /// Updates this <see cref="NPCChatDialogViewNode"/>.
         /// </summary>
-        /// <param name="recursive">If true, all nodes under this NPCChatDialogViewNode are updated, too.</param>
+        /// <param name="recursive">If true, all nodes under this <see cref="NPCChatDialogViewNode"/> are updated, too.</param>
+        /// <exception cref="ArgumentException">The <see cref="ChatItemType"/> is not a valid
+        /// <see cref="NPCChatDialogViewNodeItemType"/>.</exception>
         public void Update(bool recursive)
         {
             var checkToSwapRedirectNodes = false;
@@ -348,8 +350,9 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Updates the ChatItemAsDialogItem property.
+        /// Updates the <see cref="ChatItemAsDialogItem"/> property.
         /// </summary>
+        /// <exception cref="ArgumentException">The <see cref="TreeNode.Tag"/> is not of an expected type.</exception>
         void UpdateChatItemType()
         {
             if (Tag is NPCChatDialogItemBase)
@@ -368,6 +371,8 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Updates the text for this NPCChatDialogViewNode.
         /// </summary>
+        /// <exception cref="InvalidOperationException">The <see cref="ChatItemType"/> is not of a defined
+        /// <see cref="NPCChatDialogViewNodeItemType"/> value.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ChatItemType")]
         internal void UpdateText()
         {

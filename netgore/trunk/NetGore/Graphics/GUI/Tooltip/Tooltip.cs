@@ -41,7 +41,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="Tooltip"/> class.
         /// </summary>
-        /// <param name="guiManager">The GUI manager.</param>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to attach the <see cref="Tooltip"/> to.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="guiManager" /> is <c>null</c>.</exception>
         public Tooltip(IGUIManager guiManager)
         {
             if (guiManager == null)
@@ -55,7 +56,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Refreshes the text of a tooltip.
+        /// Refreshes the text of a <see cref="Tooltip"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         void RefreshText(TickCount currentTime)
@@ -143,6 +144,7 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets the <see cref="Font"/> used by this <see cref="ITooltip"/>. By default, this value will
         /// be equal to the <see cref="IGUIManager"/>'s Font. Cannot be null.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is <c>null</c>.</exception>
         public Font Font
         {
             get { return _font; }
@@ -228,6 +230,7 @@ namespace NetGore.Graphics.GUI
         /// Draws the <see cref="ITooltip"/>.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw the <see cref="ITooltip"/> with.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="sb" /> is <c>null</c>.</exception>
         public virtual void Draw(ISpriteBatch sb)
         {
             if (sb == null)

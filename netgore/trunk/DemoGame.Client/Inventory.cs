@@ -23,6 +23,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="Inventory"/> class.
         /// </summary>
         /// <param name="socket">The <see cref="INetworkSender"/> to use to communicate with the server.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="socket" /> is <c>null</c>.</exception>
         public Inventory(INetworkSender socket)
         {
             if (socket == null)

@@ -39,6 +39,8 @@ namespace NetGore.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundManager"/> class.
         /// </summary>
+        /// <exception cref="DuplicateKeyException">Two or more <see cref="SoundInfo"/>s found with the same ID.</exception>
+        /// <exception cref="DuplicateKeyException">Two or more <see cref="SoundInfo"/>s found with the same name.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SoundInfos")]
         public SoundManager(IContentManager contentManager)
         {
@@ -419,6 +421,8 @@ namespace NetGore.Audio
         /// Reloads the sound information.
         /// </summary>
         /// <param name="values">All of the <see cref="ISoundInfo"/>s to load.</param>
+        /// <exception cref="DuplicateKeyException">Two or more <see cref="SoundInfo"/>s found with the same ID.</exception>
+        /// <exception cref="DuplicateKeyException">Two or more <see cref="SoundInfo"/>s found with the same name.</exception>
         public void ReloadData(IEnumerable<ISoundInfo> values)
         {
             _infosByName.Clear();

@@ -26,6 +26,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="settings">The settings.</param>
         /// <param name="keySettingName">Name of the key setting.</param>
+        /// <exception cref="ArgumentNullException"><see cref="keySettingName"/> is null or empty.</exception>
         SettingsKeyCodeReference(ApplicationSettingsBase settings, string keySettingName)
         {
             if (string.IsNullOrEmpty(keySettingName))

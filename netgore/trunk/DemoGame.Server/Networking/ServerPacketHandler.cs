@@ -31,6 +31,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="ServerPacketHandler"/> class.
         /// </summary>
         /// <param name="server">The server.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="server" /> is <c>null</c>.</exception>
         public ServerPacketHandler(Server server)
         {
             if (server == null)

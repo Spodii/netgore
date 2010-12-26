@@ -129,7 +129,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the SpriteFont used by the TextControl.
+        /// Gets or sets the <see cref="Font"/> used by the <see cref="TextControl"/>.
         /// </summary>
         public override Font Font
         {
@@ -874,6 +874,8 @@ namespace NetGore.Graphics.GUI
         /// Moves the cursor in the specified <paramref name="direction"/> by one character.
         /// </summary>
         /// <param name="direction">The direction to move the cursor.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="direction"/> is not a defined value of the
+        /// <see cref="MoveCursorDirection"/> enum.</exception>
         void IEditableText.MoveCursor(MoveCursorDirection direction)
         {
             switch (direction)

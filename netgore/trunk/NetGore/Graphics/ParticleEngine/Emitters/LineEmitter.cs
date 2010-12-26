@@ -72,6 +72,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets or sets the length of the line.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         [Category(_emitterCategoryName)]
         [Description("The length of the line.")]
         [DisplayName("Length")]

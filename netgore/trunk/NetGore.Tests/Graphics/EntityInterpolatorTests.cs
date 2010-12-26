@@ -68,6 +68,7 @@ namespace NetGore.Tests.Graphics
             /// When overridden in the derived class, gets if this <see cref="Entity"/> will collide against
             /// walls. If false, this <see cref="Entity"/> will pass through walls and completely ignore them.
             /// </summary>
+            /// <exception cref="NotImplementedException"><c>NotImplementedException</c>.</exception>
             public override bool CollidesAgainstWalls
             {
                 get { throw new NotImplementedException(); }

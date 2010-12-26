@@ -50,6 +50,7 @@ namespace NetGore.Db
         /// Executes the query on the database.
         /// </summary>
         /// <returns>IDataReader used to read the results of the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         IDataReader IDbQueryReader.ExecuteReader()
         {
             // Update the query stats
@@ -106,6 +107,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>IDataReader used to read the results of the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         protected IDataReader ExecuteReader(T item)
         {
             // Little hack that allows us to have IDbQueryReader<T>.ExecuteReader exposed protected instead of public 
@@ -127,6 +129,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>IDataReader used to read the results of the query.</returns>
+        /// <exception cref="DuplicateKeyException">An insert is being performed using a key that already exists.</exception>
         IDataReader IDbQueryReader<T>.ExecuteReader(T item)
         {
             // Update the query stats

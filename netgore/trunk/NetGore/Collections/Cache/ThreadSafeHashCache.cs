@@ -38,6 +38,7 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
         /// <param name="keyComparer">The key comparer.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="valueCreator" /> is <c>null</c>.</exception>
         public ThreadSafeHashCache(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> keyComparer = null)
         {
             if (valueCreator == null)

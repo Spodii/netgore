@@ -77,6 +77,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the map currently being used.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is <c>null</c>.</exception>
         public Map Map
         {
             get { return _map; }

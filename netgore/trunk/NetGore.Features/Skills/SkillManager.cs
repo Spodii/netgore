@@ -76,6 +76,7 @@ namespace NetGore.Features.Skills
         /// </summary>
         /// <param name="typeFactory">The type factory.</param>
         /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="DuplicateKeyException">The loaded type in <paramref name="e"/> was already loaded.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "SkillType")]
         void TypeFactoryLoadedHandler(TypeFactory typeFactory, TypeFactoryLoadedEventArgs e)
         {

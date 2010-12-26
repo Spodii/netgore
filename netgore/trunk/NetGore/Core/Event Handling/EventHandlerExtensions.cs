@@ -25,6 +25,8 @@ namespace NetGore
         /// because events typically do not care about the behavior of the listeners and do not handle <see cref="Exception"/>s
         /// created by their listeners. This is especially true for events that have a no return value and pass an immutable
         /// <see cref="EventArgs"/>.</param>
+        /// <exception cref="Exception"><paramref name="swallowExceptions"/> is <c>false</c> and an <see cref="Exception"/> has occured
+        /// either while trying to invoke the <paramref name="handler"/>, or inside the <paramref name="handler"/> itself.</exception>
         public static void Raise(this EventHandler handler, object sender, EventArgs e, bool swallowExceptions = true)
         {
             Debug.Assert(e != null, "A null EventArgs should never be used! Use EventArgs.Empty instead.");
@@ -66,6 +68,8 @@ namespace NetGore
         /// because events typically do not care about the behavior of the listeners and do not handle <see cref="Exception"/>s
         /// created by their listeners. This is especially true for events that have a no return value and pass an immutable
         /// <see cref="EventArgs"/>.</param>
+        /// <exception cref="Exception"><paramref name="swallowExceptions"/> is <c>false</c> and an <see cref="Exception"/> has occured
+        /// either while trying to invoke the <paramref name="handler"/>, or inside the <paramref name="handler"/> itself.</exception>
         public static void Raise<T>(this EventHandler<T> handler, object sender, T e, bool swallowExceptions = true)
             where T : EventArgs
         {
@@ -116,6 +120,8 @@ namespace NetGore
         /// because events typically do not care about the behavior of the listeners and do not handle <see cref="Exception"/>s
         /// created by their listeners. This is especially true for events that have a no return value and pass an immutable
         /// <see cref="EventArgs"/>.</param>
+        /// <exception cref="Exception"><paramref name="swallowExceptions"/> is <c>false</c> and an <see cref="Exception"/> has occured
+        /// either while trying to invoke the <paramref name="handler"/>, or inside the <paramref name="handler"/> itself.</exception>
         public static void Raise<TSender>(this TypedEventHandler<TSender> handler, TSender sender, EventArgs e,
                                           bool swallowExceptions = true)
         {
@@ -159,6 +165,8 @@ namespace NetGore
         /// because events typically do not care about the behavior of the listeners and do not handle <see cref="Exception"/>s
         /// created by their listeners. This is especially true for events that have a no return value and pass an immutable
         /// <see cref="EventArgs"/>.</param>
+        /// <exception cref="Exception"><paramref name="swallowExceptions"/> is <c>false</c> and an <see cref="Exception"/> has occured
+        /// either while trying to invoke the <paramref name="handler"/>, or inside the <paramref name="handler"/> itself.</exception>
         public static void Raise<TSender, TEventArgs>(this TypedEventHandler<TSender, TEventArgs> handler, TSender sender,
                                                       TEventArgs e, bool swallowExceptions = true) where TEventArgs : EventArgs
         {

@@ -25,6 +25,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="ItemInfoRequesterBase{T}"/> class.
         /// </summary>
         /// <param name="socket">The socket.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="socket" /> is <c>null</c>.</exception>
         protected ItemInfoRequesterBase(INetworkSender socket)
         {
             if (socket == null)

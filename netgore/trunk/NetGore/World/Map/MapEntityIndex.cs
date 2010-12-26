@@ -37,6 +37,7 @@ namespace NetGore.World
         /// Initializes a new instance of the <see cref="MapEntityIndex"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new MapEntityIndex.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public MapEntityIndex(int value)
         {
             if (value < MinValue || value > MaxValue)

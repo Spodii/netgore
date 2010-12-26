@@ -25,6 +25,7 @@ namespace NetGore.Features.Groups
         /// Initializes a new instance of the <see cref="Group"/> class.
         /// </summary>
         /// <param name="founder">The group founder.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="founder" /> is <c>null</c>.</exception>
         public Group(IGroupable founder)
         {
             if (founder == null)

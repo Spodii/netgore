@@ -33,6 +33,7 @@ namespace NetGore.Audio
         /// Initializes a new instance of the <see cref="SoundID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new SoundID.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public SoundID(int value)
         {
             if (value < MinValue || value > MaxValue)

@@ -10,6 +10,14 @@ namespace NetGore.Features.NPCChat
         readonly NPCChatConditionalBase[] _conditionals;
         readonly EditorNPCChatConditionalCollectionItem _item;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatConditionalEditorForm"/> class.
+        /// </summary>
+        /// <param name="conditionalItem">The conditional item.</param>
+        /// <param name="conditionals">The conditionals.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="conditionalItem" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="conditionals" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="conditionals"/> array cannot be empty.</exception>
         public NPCChatConditionalEditorForm(EditorNPCChatConditionalCollectionItem conditionalItem,
                                             NPCChatConditionalBase[] conditionals)
         {

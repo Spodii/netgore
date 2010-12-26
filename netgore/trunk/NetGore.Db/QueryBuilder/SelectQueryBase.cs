@@ -265,6 +265,7 @@ namespace NetGore.Db.QueryBuilder
         /// <returns>The <see cref="IJoinedSelectQuery"/>.</returns>
         /// <exception cref="InvalidQueryException"><paramref name="table"/> is an invalid table name.</exception>
         /// <exception cref="InvalidQueryException"><paramref name="alias"/> is an invalid table alias.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="joinCondition"/> is null or invaild.</exception>
         public IJoinedSelectQuery InnerJoin(string table, string alias, string joinCondition)
         {
             if (string.IsNullOrEmpty(joinCondition))

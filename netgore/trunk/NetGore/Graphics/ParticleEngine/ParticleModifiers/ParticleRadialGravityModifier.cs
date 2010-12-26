@@ -48,6 +48,7 @@ namespace NetGore.Graphics.ParticleEngine.Modifiers
         /// <summary>
         /// Gets or sets the radius of the gravity well.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         [Category(_categoryName)]
         [Description("The radius of the gravity well.")]
         [DisplayName("Radius")]

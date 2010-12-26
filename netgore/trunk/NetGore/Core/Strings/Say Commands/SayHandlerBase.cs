@@ -138,6 +138,7 @@ namespace NetGore
         /// </summary>
         /// <param name="user">User that the <paramref name="text"/> came from.</param>
         /// <param name="text">Text to process.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="user" /> is <c>null</c>.</exception>
         public void Process(T user, string text)
         {
             if (user == null)

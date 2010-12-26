@@ -7,117 +7,117 @@ namespace NetGore.IO
     public partial class BitStream
     {
         /// <summary>
-        /// Reads the next bit in the BitStream as an int
+        /// Reads the next bit in the BitStream as an int.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public int ReadBit()
         {
             return ReadUnsigned(1);
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a byte
+        /// Reads the next bit in the BitStream as a byte.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public byte ReadBitAsByte()
         {
             return (byte)ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a char
+        /// Reads the next bit in the BitStream as a char.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public char ReadBitAsChar()
         {
             return (char)ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a double
+        /// Reads the next bit in the BitStream as a double.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public double ReadBitAsDouble()
         {
             return ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a float
+        /// Reads the next bit in the BitStream as a float.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public float ReadBitAsFloat()
         {
             return ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as an int
+        /// Reads the next bit in the BitStream as an int.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public int ReadBitAsInt()
         {
             return ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a long
+        /// Reads the next bit in the BitStream as a long.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public long ReadBitAsLong()
         {
             return ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a SByte
+        /// Reads the next bit in the BitStream as a SByte.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public sbyte ReadBitAsSByte()
         {
             return (sbyte)ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a short
+        /// Reads the next bit in the BitStream as a short.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public short ReadBitAsShort()
         {
             return (short)ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a string
+        /// Reads the next bit in the BitStream as a string.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public string ReadBitAsString()
         {
             return ReadBit().ToString();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a uint
+        /// Reads the next bit in the BitStream as a uint.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public uint ReadBitAsUInt()
         {
             return (uint)ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a ulong
+        /// Reads the next bit in the BitStream as a ulong.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public ulong ReadBitAsULong()
         {
             return (ulong)ReadBit();
         }
 
         /// <summary>
-        /// Reads the next bit in the BitStream as a UShort
+        /// Reads the next bit in the BitStream as a UShort.
         /// </summary>
-        /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
+        /// <returns>Value of the next bit in the BitStream (0 or 1).</returns>
         public ushort ReadBitAsUShort()
         {
             return (ushort)ReadBit();
@@ -128,6 +128,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="bitLength">The number of bits to read.</param>
         /// <returns>A BitStream filled with the bits read.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>bitLength</c> is less than zero.</exception>
         public BitStream ReadBits(int bitLength)
         {
             if (bitLength < 0)
@@ -169,20 +170,20 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a bool (one bit) from the BitStream
+        /// Reads a bool (one bit) from the BitStream.
         /// </summary>
-        /// <returns>True if the bit is set, else false</returns>
+        /// <returns>True if the bit is set, else false.</returns>
         public bool ReadBool()
         {
             return ReadBit() != 0 ? true : false;
         }
 
         /// <summary>
-        /// Reads an array of bools from the BitStream
+        /// Reads an array of bools from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadBool(bool[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -192,11 +193,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable bools from the BitStream
+        /// Reads an array of nullable bools from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadBool(bool?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -223,10 +224,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a byte  
+        /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a byte.
         /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 8)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a byte</returns>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 8).</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a byte.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is less than zero or greater than <see cref="_bitsByte"/>.</exception>
         public byte ReadByte(int numBits = 8)
         {
             if (numBits == 0)
@@ -237,11 +239,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of bytes from the BitStream
+        /// Reads an array of bytes from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadByte(byte[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -251,10 +253,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of bytes from the BitStream
+        /// Reads an array of bytes from the BitStream.
         /// </summary>
-        /// <param name="length">Number of bytes to read</param>
-        /// <returns>Array of bytes read with a length equal to <paramref name="length"/></returns>
+        /// <param name="length">Number of bytes to read.</param>
+        /// <returns>Array of bytes read with a length equal to <paramref name="length"/>.</returns>
         public byte[] ReadBytes(int length)
         {
             var b = new byte[length];
@@ -263,9 +265,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 64 bits from the BitStream and returns the result as a double 
+        /// Reads 64 bits from the BitStream and returns the result as a double.
         /// </summary>
-        /// <returns>Value of the next 64 bits in the BitStream as a double</returns>
+        /// <returns>Value of the next 64 bits in the BitStream as a double.</returns>
         public double ReadDouble()
         {
             var b = ReadBytes(sizeof(double));
@@ -273,11 +275,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of doubles from the BitStream
+        /// Reads an array of doubles from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadDouble(double[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -321,9 +323,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 32 bits from the BitStream and returns the result as a float 
+        /// Reads 32 bits from the BitStream and returns the result as a float.
         /// </summary>
-        /// <returns>Value of the next 32 bits in the BitStream as a float</returns>
+        /// <returns>Value of the next 32 bits in the BitStream as a float.</returns>
         public float ReadFloat()
         {
             var b = ReadBytes(sizeof(float));
@@ -331,11 +333,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of floats from the BitStream
+        /// Reads an array of floats from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadFloat(float[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -362,21 +364,21 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as an int  
+        /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as an int.
         /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as an int</returns>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 32).</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as an int.</returns>
         public int ReadInt(int numBits = _bitsInt)
         {
             return ReadSigned(numBits, _bitsInt);
         }
 
         /// <summary>
-        /// Reads an array of ints from the BitStream
+        /// Reads an array of ints from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadInt(int[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -403,9 +405,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 64 bits from the BitStream and returns the result as a long 
+        /// Reads 64 bits from the BitStream and returns the result as a long.
         /// </summary>
-        /// <returns>Value of the next 64 bits in the BitStream as a long</returns>
+        /// <returns>Value of the next 64 bits in the BitStream as a long.</returns>
         public long ReadLong()
         {
             var b = ReadBytes(sizeof(long));
@@ -413,11 +415,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of longs from the BitStream
+        /// Reads an array of longs from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadLong(long[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -427,11 +429,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable longs from the BitStream
+        /// Reads an array of nullable longs from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadLong(long?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -458,9 +460,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a nullable bool (one bit) from the BitStream
+        /// Reads a nullable bool (one bit) from the BitStream.
         /// </summary>
-        /// <returns>True if the bit is set, else false</returns>
+        /// <returns>True if the bit is set, else false.</returns>
         public bool? ReadNullableBool()
         {
             var hasValue = ReadBool();
@@ -471,9 +473,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a nullable byte from the BitStream and returns the result as a byte 
+        /// Reads a nullable byte from the BitStream and returns the result as a byte.
         /// </summary>
-        /// <returns>Value of the next 8 bits in the BitStream as a byte</returns>
+        /// <returns>Value of the next 8 bits in the BitStream as a byte.</returns>
         public byte? ReadNullableByte()
         {
             var hasValue = ReadBool();
@@ -484,10 +486,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a byte  
+        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a byte.
         /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 8)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a byte</returns>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 8).</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a byte.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is less than zero or greater than <see cref="_bitsByte"/>.</exception>
         public byte? ReadNullableByte(int numBits)
         {
             if (numBits == 0)
@@ -503,11 +506,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable bytes from the BitStream
+        /// Reads an array of nullable bytes from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadNullableByte(byte?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -517,10 +520,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable bytes from the BitStream
+        /// Reads an array of nullable bytes from the BitStream.
         /// </summary>
-        /// <param name="length">Number of bytes to read</param>
-        /// <returns>Array of bytes read with a length equal to <paramref name="length"/></returns>
+        /// <param name="length">Number of bytes to read.</param>
+        /// <returns>Array of bytes read with a length equal to <paramref name="length"/>.</returns>
         public byte?[] ReadNullableBytes(int length)
         {
             var b = new byte?[length];
@@ -529,9 +532,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 64 bits of a nullable value from the BitStream and returns the result as a double 
+        /// Reads 64 bits of a nullable value from the BitStream and returns the result as a double .
         /// </summary>
-        /// <returns>Value of the next 64 bits in the BitStream as a double</returns>
+        /// <returns>Value of the next 64 bits in the BitStream as a double.</returns>
         public double? ReadNullableDouble()
         {
             var hasValue = ReadBool();
@@ -542,11 +545,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable doubles from the BitStream
+        /// Reads an array of nullable doubles from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadNullableDouble(double?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -560,9 +563,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 32 bits of a nullable value from the BitStream and returns the result as a float 
+        /// Reads 32 bits of a nullable value from the BitStream and returns the result as a float.
         /// </summary>
-        /// <returns>Value of the next 32 bits in the BitStream as a float</returns>
+        /// <returns>Value of the next 32 bits in the BitStream as a float.</returns>
         public float? ReadNullableFloat()
         {
             var hasValue = ReadBool();
@@ -573,11 +576,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable floats from the BitStream
+        /// Reads an array of nullable floats from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadNullableFloat(float?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -587,10 +590,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as an int  
+        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as an int.
         /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as an int</returns>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 32).</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as an int.</returns>
         public int? ReadNullableInt(int numBits = _bitsInt)
         {
             var hasValue = ReadBool();
@@ -601,11 +604,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable ints from the BitStream
+        /// Reads an array of nullable ints from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadNullableInt(int?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -615,9 +618,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 64 bits of a nullable value from the BitStream and returns the result as a long 
+        /// Reads 64 bits of a nullable value from the BitStream and returns the result as a long.
         /// </summary>
-        /// <returns>Value of the next 64 bits in the BitStream as a long</returns>
+        /// <returns>Value of the next 64 bits in the BitStream as a long.</returns>
         public long? ReadNullableLong()
         {
             var hasValue = ReadBool();
@@ -628,10 +631,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a SByte  
+        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a SByte.
         /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 8)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a SByte</returns>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 8).</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a SByte.</returns>
         public sbyte? ReadNullableSByte(int numBits = _bitsSByte)
         {
             var hasValue = ReadBool();
@@ -642,10 +645,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a short  
+        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a short.
         /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a short</returns>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 16).</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a short.</returns>
         public short? ReadNullableShort(int numBits = _bitsShort)
         {
             var hasValue = ReadBool();
@@ -656,11 +659,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable shorts from the BitStream
+        /// Reads an array of nullable shorts from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadNullableShort(short?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -670,10 +673,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a uint  
+        /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a uint.
         /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a uint</returns>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 32).</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a uint.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is less than zero or greater than <see cref="_bitsInt"/>.</exception>
         public uint? ReadNullableUInt(int numBits = _bitsUInt)
         {
             if (numBits == 0)
@@ -689,11 +693,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an array of nullable uints from the BitStream
+        /// Reads an array of nullable uints from the BitStream.
         /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        /// <param name="dest">Array to store the read values in.</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array.</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array.</param>
         public void ReadNullableUInt(uint?[] dest, int offset, int length)
         {
             for (var i = offset; i < offset + length; i++)
@@ -703,9 +707,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 64 bits of a nullable value from the BitStream and returns the result as a ulong 
+        /// Reads 64 bits of a nullable value from the BitStream and returns the result as a ulong.
         /// </summary>
-        /// <returns>Value of the next 64 bits in the BitStream as a ulong</returns>
+        /// <returns>Value of the next 64 bits in the BitStream as a ulong.</returns>
         public ulong? ReadNullableULong()
         {
             var hasValue = ReadBool();
@@ -747,6 +751,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a ushort</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is less than zero or greater than <see cref="_bitsUShort"/>.</exception>
         public ushort? ReadNullableUShort(int numBits)
         {
             if (numBits == 0)
@@ -934,6 +939,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a uint</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is less than zero or greater than <see cref="_bitsInt"/>.</exception>
         public uint ReadUInt(int numBits = _bitsUInt)
         {
             if (numBits == 0)
@@ -1021,6 +1027,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a ushort</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is less than zero or greater than <see cref="_bitsUShort"/>.</exception>
         public ushort ReadUShort(int numBits = _bitsUShort)
         {
             if (numBits == 0)

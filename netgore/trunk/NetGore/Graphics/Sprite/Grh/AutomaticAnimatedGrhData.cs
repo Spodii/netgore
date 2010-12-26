@@ -158,6 +158,7 @@ namespace NetGore.Graphics
         /// <param name="newGrhIndex">The <see cref="GrhData.GrhIndex"/> to give to the new
         /// <see cref="GrhData"/>.</param>
         /// <returns>A deep copy of this <see cref="GrhData"/>.</returns>
+        /// <exception cref="NotSupportedException">Cannot make a copy of an <see cref="AutomaticAnimatedGrhData"/>.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomaticAnimatedGrhData"
             )]
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
@@ -215,6 +216,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <returns>The directory that contains the frames for this <see cref="AutomaticAnimatedGrhData"/>, or null
         /// if the directory could not be found.</returns>
+        /// <exception cref="GrhDataException">Multiple potential source directories found for the <see cref="AutomaticAnimatedGrhData"/>.
+        /// Make sure you don't have duplicate titles.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "AutomatedGrhData")]
         string GetFramesDirectory()
         {
@@ -242,7 +245,7 @@ namespace NetGore.Graphics
             if (potentialDirs.Count() > 1)
             {
                 const string errmsg =
-                    "Multiple potential source directories found for the AutomatedGrhData. Make sure you don't have duplicate titles.";
+                    "Multiple potential source directories found for the AutomaticAnimatedGrhData. Make sure you don't have duplicate titles.";
                 throw new GrhDataException(this, errmsg);
             }
 

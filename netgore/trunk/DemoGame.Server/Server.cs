@@ -43,6 +43,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
         /// </summary>
+        /// <exception cref="NotSupportedException">NetGore does not support systems that are not in Little Endian mode!</exception>
         public Server()
         {
             // Check for some system settings

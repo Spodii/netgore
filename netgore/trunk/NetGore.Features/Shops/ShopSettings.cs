@@ -49,6 +49,8 @@ namespace NetGore.Features.Shops
         /// Initializes the <see cref="ShopSettings"/>. This must only be called once and called as early as possible.
         /// </summary>
         /// <param name="settings">The settings instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="settings" /> is <c>null</c>.</exception>
+        /// <exception cref="MethodAccessException">This method must be called once and only once.</exception>
         public static void Initialize(ShopSettings settings)
         {
             if (settings == null)

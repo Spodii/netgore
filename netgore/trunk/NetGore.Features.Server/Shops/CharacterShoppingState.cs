@@ -25,6 +25,7 @@ namespace NetGore.Features.Shops
         /// Initializes a new instance of the <see cref="CharacterShoppingState{TShopper, TShopOwner, TShopItem}"/> class.
         /// </summary>
         /// <param name="character">The character doing the shopping.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="character" /> is <c>null</c>.</exception>
         protected CharacterShoppingState(TShopper character)
         {
             if (character == null)

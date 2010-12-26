@@ -34,6 +34,7 @@ namespace NetGore
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxLength"/> is greater than
         /// <see cref="ushort.MaxValue"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="allowedChars"/> contains no defined groups.</exception>
+        /// <exception cref="ArgumentException">At least one character group must be allowed.</exception>
         public StringRules(int minLength, int maxLength, CharType allowedChars, RegexOptions regexOptions = RegexOptions.None,
                            IEnumerable<Regex> customerFilters = null)
         {

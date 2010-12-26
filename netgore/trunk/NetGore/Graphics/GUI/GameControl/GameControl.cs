@@ -42,6 +42,7 @@ namespace NetGore.Graphics.GUI
         /// delay is greater than 0, then <see cref="Invoked"/> will never be raised until the specified amount of
         /// time has elapsed, no matter the key state. This value must be greater than or equal to zero.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public int Delay
         {
             get { return _delay; }
@@ -57,6 +58,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the <see cref="GameControlKeys"/> used for this <see cref="GameControl"/>. Cannot be null.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is <c>null</c>.</exception>
         public GameControlKeys GameControlKeys
         {
             get { return _gckeys; }

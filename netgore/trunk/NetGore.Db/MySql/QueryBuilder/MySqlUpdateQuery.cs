@@ -29,6 +29,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
+        /// <exception cref="InvalidQueryException">The generated query is invalid.</exception>
         public override string ToString()
         {
             var values = ColumnValueCollection.GetValues();

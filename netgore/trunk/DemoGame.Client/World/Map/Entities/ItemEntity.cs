@@ -94,10 +94,14 @@ namespace DemoGame.Client
         /// stat modifiers, name, description, value, and graphic index.
         /// </summary>
         /// <param name="source">Item to check if can stack on this item</param>
-        /// <returns>True if the two items can stack on each other, else false</returns>
+        /// <returns>
+        /// True if the two items can stack on each other, else false
+        /// </returns>
+        /// <exception cref="MethodAccessException">The client has no way to know if two ItemEntities can stack since
+        /// it doesn't always know everything about two items.</exception>
         public override bool CanStack(ItemEntityBase source)
         {
-            throw new MethodAccessException("Client has no way to know if two ItemEntities can stack since it doesn't" +
+            throw new MethodAccessException("The client has no way to know if two ItemEntities can stack since it doesn't" +
                                             " always know everything about two items.");
         }
 
@@ -117,6 +121,7 @@ namespace DemoGame.Client
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="pos">Position to draw at.</param>
         /// <param name="color">The color to draw the item.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="sb" /> is <c>null</c>.</exception>
         public void Draw(ISpriteBatch sb, Vector2 pos, Color color)
         {
             if (sb == null)

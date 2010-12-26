@@ -81,17 +81,17 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the DamageText.
+        /// Draws the <see cref="DamageText"/>.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="sf">SpriteFont to draw with.</param>
-        public void Draw(ISpriteBatch sb, Font sf)
+        /// <param name="font"><see cref="Font"/> to draw with.</param>
+        public void Draw(ISpriteBatch sb, Font font)
         {
-            sb.DrawString(sf, _text, _pos, new Color(255, 255, 255, (byte)_alpha));
+            sb.DrawString(font, _text, _pos, new Color(255, 255, 255, (byte)_alpha));
         }
 
         /// <summary>
-        /// Updates the DamageText.
+        /// Updates the <see cref="DamageText"/>.
         /// </summary>
         /// <param name="currTime">Current time.</param>
         public void Update(TickCount currTime)

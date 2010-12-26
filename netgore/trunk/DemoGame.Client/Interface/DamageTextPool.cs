@@ -15,11 +15,11 @@ namespace DemoGame.Client
         readonly ObjectPool<DamageText> _pool = new ObjectPool<DamageText>(x => new DamageText(), false);
 
         /// <summary>
-        /// Creates a new DamageText and places it into the pool
+        /// Creates a new <see cref="DamageText"/> and places it into the pool.
         /// </summary>
-        /// <param name="damage">Damage value</param>
-        /// <param name="entity">Entity that was damaged</param>
-        /// <param name="currTime">Current time</param>
+        /// <param name="damage">Damage value.</param>
+        /// <param name="entity"><see cref="Entity"/> that was damaged.</param>
+        /// <param name="currTime">Current time.</param>
         public void Create(int damage, Entity entity, TickCount currTime)
         {
             var obj = _pool.Acquire();
@@ -27,19 +27,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws all the DamageTexts in the pool.
+        /// Draws all the <see cref="DamageText"/>s in the pool.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="sf">SpriteFont to draw the damage text with.</param>
-        public void Draw(ISpriteBatch sb, Font sf)
+        /// <param name="font"><see cref="Font"/> to draw the damage text with.</param>
+        public void Draw(ISpriteBatch sb, Font font)
         {
-            _pool.Perform(x => x.Draw(sb, sf));
+            _pool.Perform(x => x.Draw(sb, font));
         }
 
         /// <summary>
-        /// Updates all of the DamageTexts in the pool
+        /// Updates all of the <see cref="DamageText"/>s in the pool.
         /// </summary>
-        /// <param name="currentTime">Current time</param>
+        /// <param name="currentTime">Current time.</param>
         public void Update(TickCount currentTime)
         {
             var collectGarbage = false;

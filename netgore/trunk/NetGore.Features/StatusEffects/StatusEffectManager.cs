@@ -86,6 +86,7 @@ namespace NetGore.Features.StatusEffects
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="DuplicateKeyException">The loaded type in <paramref name="e"/> was already loaded.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffectType")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "StatusEffects")]
         void HandleLoadType(TypeFactory factory, TypeFactoryLoadedEventArgs e)

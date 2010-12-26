@@ -31,6 +31,7 @@ namespace NetGore.Features.ActionDisplays
         /// Initializes a new instance of the <see cref="ActionDisplayID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new <see cref="ActionDisplayID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public ActionDisplayID(int value)
         {
             if (value < MinValue || value > MaxValue)

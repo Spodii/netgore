@@ -178,6 +178,7 @@ namespace NetGore.IO
         /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
+        /// <exception cref="ArgumentException"><paramref name="data"/> is not formatted in a known format.</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "FindFileFormat")]
         static IValueReader CreateReaderFromString(string data, string rootNodeName, bool? useEnumNames = null)
         {
@@ -203,7 +204,7 @@ namespace NetGore.IO
 
             const string errmsg = "Ran into unsupported format `{0}`. Format value was acquired from FindFileFormat().";
             Debug.Fail(string.Format(errmsg, format));
-            throw new FileLoadException(string.Format(errmsg, format));
+            throw new ArgumentException(string.Format(errmsg, format));
         }
 
         /// <summary>

@@ -20,6 +20,7 @@ namespace NetGore.Collections
         /// </summary>
         /// <typeparam name="T">Type to handle the mean for.</typeparam>
         /// <returns>MeanFinderHandler for the specified type.</returns>
+        /// <exception cref="MissingMethodException">No MeanFinderHandler method found for the desired type..</exception>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "MeanFinderHandler")]
         public static MeanFinderHandler<T> GetMeanFinder<T>()
         {

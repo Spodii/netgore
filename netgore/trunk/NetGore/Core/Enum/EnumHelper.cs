@@ -25,6 +25,7 @@ namespace NetGore
         /// <summary>
         /// Initializes the <see cref="EnumHelper{T}"/> class.
         /// </summary>
+        /// <exception cref="MethodAccessException"><typeparamref name="T"/> is not an enum.</exception>
         static EnumHelper()
         {
             var supportedCastTypes = new Type[] { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
@@ -133,12 +134,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Creates an <see cref="Exception"/> to use for when accessing a method that requires casting to/from
+        /// Creates an <see cref="MethodAccessException"/> to use for when accessing a method that requires casting to/from
         /// and int while <see cref="SupportsCastOperations"/> is false.
         /// </summary>
-        /// <returns>An <see cref="Exception"/> to use for when accessing a method that requires casting to/from
+        /// <returns>An <see cref="MethodAccessException"/> to use for when accessing a method that requires casting to/from
         /// and int while <see cref="SupportsCastOperations"/> is false.</returns>
-        static Exception CastOperationsNotSupportedException()
+        static MethodAccessException CastOperationsNotSupportedException()
         {
             return
                 new MethodAccessException("Methods that require casting the enum value to or from an Int32 are not" +
@@ -157,6 +158,10 @@ namespace NetGore
             return lambda.Compile();
         }
 
+        /// <summary>
+        /// Creates a <see cref="MethodAccessException"/> to use for when <typeparamref name="T"/> is not an enum.
+        /// </summary>
+        /// <returns>A <see cref="MethodAccessException"/> to use for when <typeparamref name="T"/> is not an enum.</returns>
         static MethodAccessException CreateGenericTypeIsNotEnumException()
         {
             const string errmsg = "Type parameter T ({0}) must be an Enum.";

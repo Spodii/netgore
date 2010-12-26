@@ -180,6 +180,7 @@ namespace NetGore.IO
         /// Unsupported by the BitStream.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         void IValueWriter.WriteEndNode(string name)
         {
             throw CreateNodesNotSupportedException();
@@ -230,6 +231,7 @@ namespace NetGore.IO
         /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
         /// the same as if it were an empty IEnumerable.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         void IValueWriter.WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
         {
             throw CreateNodesNotSupportedException();
@@ -243,6 +245,7 @@ namespace NetGore.IO
         /// <param name="values">Array of values to write. If this value is null, it will be treated
         /// the same as if it were an empty array.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         void IValueWriter.WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
         {
             throw CreateNodesNotSupportedException();
@@ -256,6 +259,7 @@ namespace NetGore.IO
         /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
         /// the same as if it were an empty IEnumerable.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         void IValueWriter.WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
         {
             throw CreateNodesNotSupportedException();
@@ -269,6 +273,7 @@ namespace NetGore.IO
         /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
         /// the same as if it were an empty IEnumerable.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         void IValueWriter.WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
         {
             throw CreateNodesNotSupportedException();
@@ -278,6 +283,7 @@ namespace NetGore.IO
         /// Unsupported by the BitStream.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
+        /// <exception cref="NotSupportedException">This method is not supported by the <see cref="BitStream"/>.</exception>
         void IValueWriter.WriteStartNode(string name)
         {
             throw CreateNodesNotSupportedException();

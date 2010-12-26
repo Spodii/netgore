@@ -210,9 +210,8 @@ namespace DemoGame.Client
             /// <param name="parent">The parent.</param>
             /// <param name="pos">The pos.</param>
             /// <param name="index">The <see cref="ShopItemIndex"/>.</param>
-            // ReSharper disable SuggestBaseTypeForParameter
+            /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
             public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index) : base(parent, pos, _itemSize)
-                // ReSharper restore SuggestBaseTypeForParameter
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

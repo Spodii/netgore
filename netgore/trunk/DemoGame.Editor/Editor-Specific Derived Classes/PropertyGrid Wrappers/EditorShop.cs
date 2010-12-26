@@ -31,6 +31,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="id">The <see cref="ShopID"/>.</param>
         /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        /// <exception cref="ArgumentException">No shop exists for the specified <paramref name="id"/>.</exception>
         public EditorShop(ShopID id, IDbController dbController)
         {
             _id = id;
@@ -38,7 +39,10 @@ namespace DemoGame.Editor
             // Grab the general shop information
             var table = dbController.GetQuery<SelectShopQuery>().Execute(id);
             if (table == null)
-                throw new ArgumentException(string.Format("No Shop with ID `{0}` exists.", id), "id");
+            {
+                const string errmsg = "No Shop with ID `{0}` exists.";
+                throw new ArgumentException(string.Format(errmsg, id), "id");
+            }
 
             Debug.Assert(id == table.ID);
 

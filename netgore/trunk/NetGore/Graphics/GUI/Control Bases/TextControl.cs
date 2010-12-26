@@ -59,7 +59,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the SpriteFont used by the TextControl.
+        /// Gets or sets the <see cref="Font"/> used by the <see cref="TextControl"/>.
         /// </summary>
         public virtual Font Font
         {
@@ -77,7 +77,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the default foreground color used by the TextControl.
+        /// Gets or sets the default foreground color used by the <see cref="TextControl"/>.
         /// </summary>
         [SyncValue]
         public Color ForeColor

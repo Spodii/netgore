@@ -33,6 +33,7 @@ namespace NetGore.Features.Guilds
         /// Initializes a new instance of the <see cref="GuildID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new <see cref="GuildID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public GuildID(int value)
         {
             if (value < MinValue || value > MaxValue)

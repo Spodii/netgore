@@ -35,7 +35,8 @@ namespace DemoGame
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterTemplateID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new CharacterTemplateID.</param>
+        /// <param name="value">Value to assign to the new <see cref="CharacterTemplateID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public CharacterTemplateID(int value)
         {
             if (value < MinValue || value > MaxValue)

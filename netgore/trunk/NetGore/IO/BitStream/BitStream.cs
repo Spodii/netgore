@@ -179,6 +179,7 @@ namespace NetGore.IO
         /// <see cref="PositionBits"/>, then the <see cref="PositionBits"/> will be changed to be equal
         /// to the new length.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public int LengthBits
         {
             get { return _lengthBits; }
@@ -381,6 +382,10 @@ namespace NetGore.IO
         /// larger than the buffer length.</exception>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="buffer"/> is null.</exception>
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset"/> or <paramref name="count"/> is negative.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="buffer" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>offset</c> is less than zero.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>count</c> is less than zero.</exception>
+        /// <exception cref="ArgumentException">The sum of the offset and count is greater than the buffer length.</exception>
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (buffer == null)
@@ -414,7 +419,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="numBits">Number of bits to read.</param>
         /// <param name="maxBits">Number of bits in the desired value type.</param>
-        /// <returns></returns>
+        /// <returns>The read value.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is out of range.</exception>
         int ReadSigned(int numBits, int maxBits)
         {
             if (numBits > maxBits)
@@ -447,10 +453,13 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads from the BitStream
+        /// Reads from the BitStream.
         /// </summary>
-        /// <param name="numBits">Number of bits to read (1 to 32 bits)</param>
-        /// <returns>Base 10 value of the bits read</returns>
+        /// <param name="numBits">Number of bits to read (1 to 32 bits).</param>
+        /// <returns>Base 10 value of the bits read.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is greater than <see cref="_bitsInt"/> or less
+        /// than one.</exception>
+        /// <exception cref="ArithmeticException">Unexpected error encountered while reading <paramref name="numBits"/>.</exception>
         int ReadUnsigned(int numBits)
         {
             if (numBits > _bitsInt || numBits < 1)
@@ -653,6 +662,12 @@ namespace NetGore.IO
             Array.Resize(ref _buffer, (int)Length);
         }
 
+        /// <summary>
+        /// Writes a signed value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="numBits">The number of bits.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is greater than <see cref="_bitsInt"/> or less than one.</exception>
         void WriteSigned(int value, int numBits)
         {
             if (numBits > _bitsInt || numBits < 1)
@@ -709,6 +724,13 @@ namespace NetGore.IO
             WriteUnsigned(value, numBits);
         }
 
+        /// <summary>
+        /// Writes an unsigned value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="numBits">The number of bits.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>numBits</c> is greater than <see cref="_bitsInt"/> or less than one.</exception>
+        /// <exception cref="ArithmeticException">Unexpected error occured when handling <paramref name="numBits"/>.</exception>
         void WriteUnsigned(int value, int numBits)
         {
             if (numBits > _bitsInt || numBits < 1)

@@ -45,6 +45,7 @@ namespace NetGore.Tests
         /// Gets the path for a temp file.
         /// </summary>
         /// <returns>The path for a temp file.</returns>
+        /// <exception cref="InvalidOperationException">Too many temp files are out. Make sure they are being released!</exception>
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect")]
         static string GetTempFile()
         {

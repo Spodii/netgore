@@ -91,6 +91,7 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets the optional name of this <see cref="GameControl"/>. This name is intended primarily for
         /// debugging purposes. Cannot be null.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is <c>null</c>.</exception>
         public string Name
         {
             get { return _name; }

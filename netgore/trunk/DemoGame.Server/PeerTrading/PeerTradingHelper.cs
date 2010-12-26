@@ -61,6 +61,7 @@ namespace DemoGame.Server.PeerTrading
         /// <param name="character">The <see cref="Character"/> to get the lost cash for.</param>
         /// <returns>The amount of cash that was restored to the <paramref name="character"/>. Will be 0 if they had no cash
         /// to be restored.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="character" /> is <c>null</c>.</exception>
         public static int RecoverLostTradeCash(User character)
         {
             if (character == null)

@@ -99,6 +99,8 @@ namespace NetGore.Features.ActionDisplays
         /// <param name="source">The <see cref="Entity"/> this action came from. Cannot be null;</param>
         /// <param name="target">The <see cref="Entity"/> this action is targeting. Can be any value, including null or equal to the
         /// <paramref name="source"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="map" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
         public virtual void Execute(IMap map, Entity source, Entity target)
         {
             if (map == null)

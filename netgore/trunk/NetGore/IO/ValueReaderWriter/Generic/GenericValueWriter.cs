@@ -297,6 +297,7 @@ namespace NetGore.IO
         /// Writes the end of a child node in this IValueWriter.
         /// </summary>
         /// <param name="name">Name of the child node.</param>
+        /// <exception cref="InvalidOperationException">Already at the root node.</exception>
         public void WriteEndNode(string name)
         {
             _writer.WriteEndNode(name);

@@ -33,6 +33,7 @@ namespace NetGore.AI
         /// Initializes a new instance of the <see cref="AIID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new AIID.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public AIID(int value)
         {
             if (value < MinValue || value > MaxValue)

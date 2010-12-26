@@ -38,6 +38,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="CharacterStatusEffects"/> class.
         /// </summary>
         /// <param name="character">The <see cref="Character"/> that this collection belongs to.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="character" /> is <c>null</c>.</exception>
         protected CharacterStatusEffects(Character character)
         {
             if (character == null)

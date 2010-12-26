@@ -68,6 +68,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>
         /// The <see cref="ParticleEmitter"/> read from the <paramref name="reader"/>.
         /// </returns>
+        /// <exception cref="ParticleEmitterLoadEmitterException">The <see cref="ParticleEmitter"/> could not be loaded.</exception>
         public static ParticleEmitter Read(IValueReader reader, IParticleEffect owner)
         {
             // Get the type name

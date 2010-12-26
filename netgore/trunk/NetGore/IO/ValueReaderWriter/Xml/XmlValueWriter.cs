@@ -41,6 +41,7 @@ namespace NetGore.IO
         /// <param name="nodeName">Name to give the root node containing the values.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="ArgumentException">Failed to create <see cref="XmlWriter"/> for the given <paramref name="filePath"/>.</exception>
         XmlValueWriter(string filePath, string nodeName, bool useEnumNames = true)
         {
             _useEnumNames = useEnumNames;
@@ -69,6 +70,7 @@ namespace NetGore.IO
         /// <param name="nodeName">Name to give the root node containing the values.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="writer" /> is <c>null</c>.</exception>
         XmlValueWriter(XmlWriter writer, string nodeName, bool useEnumNames = true)
         {
             _useEnumNames = useEnumNames;
@@ -350,15 +352,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes the end of a child node in this IValueWriter.
+        /// Writes the end of a child node in this <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="name">Name of the child node.</param>
+        /// <exception cref="InvalidOperationException">Already at the root node.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> does not match the expected node name.</exception>
         public void WriteEndNode(string name)
         {
             if (_nodeStack.Count == 0)
             {
                 const string errmsg = "Already at the root node.";
-                throw new ArgumentException(errmsg);
+                throw new InvalidOperationException(errmsg);
             }
 
             var expectedName = _nodeStack.Pop();

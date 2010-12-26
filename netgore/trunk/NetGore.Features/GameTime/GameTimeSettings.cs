@@ -31,6 +31,8 @@ namespace NetGore.Features.GameTime
         /// <param name="minAmbient">The minimum ambient darkness.</param>
         /// <param name="baseTime">The base time.</param>
         /// <param name="gameTimeMultiplier">The game time multiplier.</param>
+        /// <exception cref="ArgumentException">Night must begin on one day, and morning must begin on another day,
+        /// just like in real life.</exception>
         public GameTimeSettings(int nightStartHour, int nightEndHour, float minAmbientMultiplier, byte minAmbient,
                                 DateTime baseTime, float gameTimeMultiplier)
         {
@@ -205,6 +207,8 @@ namespace NetGore.Features.GameTime
         /// Initializes the <see cref="GameTimeSettings"/>. This must only be called once and called as early as possible.
         /// </summary>
         /// <param name="settings">The settings instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="settings" /> is <c>null</c>.</exception>
+        /// <exception cref="MethodAccessException">This method must be called once and only once.</exception>
         public static void Initialize(GameTimeSettings settings)
         {
             if (settings == null)

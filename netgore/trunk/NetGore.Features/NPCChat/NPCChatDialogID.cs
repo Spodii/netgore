@@ -28,6 +28,7 @@ namespace NetGore.Features.NPCChat
         /// Initializes a new instance of the <see cref="NPCChatDialogID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new <see cref="NPCChatDialogID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public NPCChatDialogID(int value)
         {
             if (value < MinValue || value > MaxValue)

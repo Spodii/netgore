@@ -22,6 +22,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="UpdateItemFieldQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool" /> is <c>null</c>.</exception>
         public UpdateItemFieldQuery(DbConnectionPool connectionPool)
         {
             if (connectionPool == null)

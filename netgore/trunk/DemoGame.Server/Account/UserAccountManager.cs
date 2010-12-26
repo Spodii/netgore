@@ -28,6 +28,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="UserAccountManager"/> class.
         /// </summary>
         /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="dbController" /> is <c>null</c>.</exception>
         public UserAccountManager(IDbController dbController)
         {
             if (dbController == null)
@@ -301,6 +302,8 @@ namespace DemoGame.Server
             /// <param name="accountTable">The account table.</param>
             /// <param name="socket">The socket.</param>
             /// <param name="parent">The <see cref="UserAccountManager"/>.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="socket" /> is <c>null</c>.</exception>
+            /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
             internal UserAccount(IAccountTable accountTable, IIPSocket socket, UserAccountManager parent) : base(accountTable)
             {
                 if (socket == null)

@@ -56,6 +56,7 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="initialSize">Initial size of the internal buffer (default 8)</param>
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="initialSize"/> is less than or equal to 0.</exception>
         public DArray(int initialSize, bool trackFree = false)
         {
             if (initialSize <= 0)
@@ -160,6 +161,7 @@ namespace NetGore.Collections
         /// stack instead of using Peek. Set this to true if you plan on using the index immediately
         /// after calling this.</param>
         /// <returns>Next free index that can be used.</returns>
+        /// <exception cref="InvalidOperationException">The collection has changed while enumerating over it.</exception>
         int NextFreeIndex(bool popInsteadOfPeek)
         {
             // Check if we can use the free indicies tracker
@@ -454,6 +456,10 @@ namespace NetGore.Collections
         /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied 
         /// from DArray. The System.Array must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>arrayIndex</c> is out of range.</exception>
+        /// <exception cref="ArgumentException">May not use a multi-dimensional array</exception>
+        /// <exception cref="ArgumentException">Not enough room to fit all the DArray into the Array from the specified arrayIndex</exception>
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
@@ -614,6 +620,7 @@ namespace NetGore.Collections
             /// </summary>
             /// <returns>True if the enumerator was successfully advanced to the next element; 
             /// False if the enumerator has passed the end of the collection.</returns>
+            /// <exception cref="InvalidOperationException">Enumeration failed - the DArray's contents have changed.</exception>
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DArray's")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DArray")]
             public bool MoveNext()

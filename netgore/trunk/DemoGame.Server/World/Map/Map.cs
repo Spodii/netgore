@@ -197,6 +197,7 @@ namespace DemoGame.Server
         /// special stuff just for Characters.
         /// </summary>
         /// <param name="character">The Character that was added to the map.</param>
+        /// <exception cref="TypeException">Unknown Character type - not a NPC or User...?</exception>
         void CharacterAdded(Character character)
         {
             // If the character was already on a map, so remove them from the old map

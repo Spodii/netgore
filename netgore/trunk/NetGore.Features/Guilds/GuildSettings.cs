@@ -27,6 +27,18 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildSettings"/> class.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="rankNames" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="nameRules" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="tagRules" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">There must be exactly one rank name for each rank.</exception>
+        /// <exception cref="ArgumentException">Guild rank names may not be empty or null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>inviteResponseTime</c> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>minRankRename</c> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>minRankViewLog</c> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>minRankKick</c> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>minRankInvite</c> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>minRankPromote</c> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>minRankDemote</c> is out of range.</exception>
         public GuildSettings(int inviteResponseTime, GuildRank highestRank, string[] rankNames, StringRules nameRules,
                              StringRules tagRules, GuildRank minRankRename, GuildRank minRankViewLog, GuildRank minRankKick,
                              GuildRank minRankInvite, GuildRank minRankPromote, GuildRank minRankDemote)
@@ -187,6 +199,8 @@ namespace NetGore.Features.Guilds
         /// Initializes the <see cref="GuildSettings"/>. This must only be called once and called as early as possible.
         /// </summary>
         /// <param name="settings">The settings instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="settings" /> is <c>null</c>.</exception>
+        /// <exception cref="MethodAccessException">This method must be called once and only once.</exception>
         public static void Initialize(GuildSettings settings)
         {
             if (settings == null)

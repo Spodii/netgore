@@ -102,6 +102,13 @@ namespace NetGore
         /// </summary>
         public Type Subclass { get; set; }
 
+        /// <summary>
+        /// Runs the filtering process on a single <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to filter.</param>
+        /// <returns>True if the <paramref name="type"/> is to be used; otherwise false.</returns>
+        /// <exception cref="TypeFilterException">The <paramref name="type"/> does not contain expected meta-data (e.g. attribute,
+        /// signature, return type, etc).</exception>
         bool Filter(Type type)
         {
             // Check the type of Type
@@ -151,6 +158,15 @@ namespace NetGore
             return !failed;
         }
 
+        /// <summary>
+        /// Filters <see cref="Type"/>s based on their attributes.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to filter.</param>
+        /// <param name="mustBeRequired">This check will only be performed with this argument matches the value of the
+        /// <see cref="RequireAttributes"/> property.</param>
+        /// <returns>True if the <paramref name="type"/> should be included; false if it was filtered out.</returns>
+        /// <exception cref="TypeFilterException"><paramref name="mustBeRequired"/> is true, <see cref="RequireAttributes"/>
+        /// is true, and the <paramref name="type"/> does not contain the required <see cref="Attributes"/>.</exception>
         bool FilterAttributes(ICustomAttributeProvider type, bool mustBeRequired)
         {
             if (mustBeRequired != RequireAttributes)
@@ -178,6 +194,15 @@ namespace NetGore
             return true;
         }
 
+        /// <summary>
+        /// Filters <see cref="Type"/>s based on their constructors.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to filter.</param>
+        /// <param name="mustBeRequired">This check will only be performed with this argument matches the value of the
+        /// <see cref="RequireConstructor"/> property.</param>
+        /// <returns>True if the <paramref name="type"/> should be included; false if it was filtered out.</returns>
+        /// <exception cref="TypeFilterException"><paramref name="mustBeRequired"/> is true, <see cref="RequireConstructor"/>
+        /// is true, and the <paramref name="type"/> does not contain the required <see cref="ConstructorParameters"/>.</exception>
         bool FilterConstructorParameters(Type type, bool mustBeRequired)
         {
             if (mustBeRequired != RequireConstructor)
@@ -204,6 +229,15 @@ namespace NetGore
             return true;
         }
 
+        /// <summary>
+        /// Filters <see cref="Type"/>s based on the interfaces they implement.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to filter.</param>
+        /// <param name="mustBeRequired">This check will only be performed with this argument matches the value of the
+        /// <see cref="RequireInterfaces"/> property.</param>
+        /// <returns>True if the <paramref name="type"/> should be included; false if it was filtered out.</returns>
+        /// <exception cref="TypeFilterException"><paramref name="mustBeRequired"/> is true, <see cref="RequireInterfaces"/>
+        /// is true, and the <paramref name="type"/> does not implement the required <see cref="Interfaces"/>.</exception>
         bool FilterInterfaces(Type type, bool mustBeRequired)
         {
             if (mustBeRequired != RequireInterfaces)

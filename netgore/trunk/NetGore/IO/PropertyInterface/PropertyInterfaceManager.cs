@@ -26,14 +26,27 @@ namespace NetGore.IO
         {
         }
 
+        /// <summary>
+        /// Gets the <see cref="PropertyInterface{T,U}"/> instance.
+        /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static PropertyInterface<TObj, T> Instance
         {
             get { return _instance; }
         }
 
+        /// <summary>
+        /// Gets a <see cref="IPropertyInterface{T,U}"/> by the name of the property.
+        /// </summary>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <returns>The <see cref="IPropertyInterface{T,U}"/> for the property with the given <paramref name="propertyName"/>.</returns>
+        /// <exception cref="ArgumentException">No property with the given <paramref name="propertyName"/> could be found.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="propertyName"/> is null or empty.</exception>
         public IPropertyInterface<TObj, T> GetByName(string propertyName)
         {
+            if (string.IsNullOrEmpty(propertyName))
+                throw new ArgumentNullException("propertyName");
+
             var pi = typeof(TObj).GetProperty(propertyName,
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             if (pi == null)

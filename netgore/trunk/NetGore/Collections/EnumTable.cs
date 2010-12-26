@@ -45,6 +45,7 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The table instance.</returns>
+        /// <exception cref="ArgumentException">type</exception>
         static object Create<TKey, TValue>(TableType type) where TKey : struct, IComparable, IConvertible, IFormattable
         {
             switch (type)
@@ -401,12 +402,12 @@ namespace NetGore.Collections
             }
 
             /// <summary>
-            /// Gets the <see cref="Exception"/> for when trying to use an invalid key.
+            /// Gets the <see cref="ArgumentOutOfRangeException"/> for when trying to use an invalid key.
             /// </summary>
             /// <param name="key">The key.</param>
             /// <param name="arg">The argument's name.</param>
-            /// <returns>The <see cref="Exception"/>.</returns>
-            public static Exception GetInvalidKeyException(TKey key, string arg)
+            /// <returns>The <see cref="ArgumentOutOfRangeException"/>.</returns>
+            public static ArgumentOutOfRangeException GetInvalidKeyException(TKey key, string arg)
             {
                 const string errmsg = "Invalid key `{0}` - the key is not a defined enum value.";
                 return new ArgumentOutOfRangeException(arg, string.Format(errmsg, key));

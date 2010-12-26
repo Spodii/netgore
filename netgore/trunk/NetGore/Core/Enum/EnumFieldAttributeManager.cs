@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -25,6 +26,7 @@ namespace NetGore
         /// <param name="requireAttribute">If true, all of the enum's defined values must contain the attribute
         /// <typeparamref name="TAttribute"/>. If any fields are missing this attribute, a <see cref="TypeException"/>
         /// will be thrown.</param>
+        /// <exception cref="TypeException">The enum has one or more values that do not contain the required attribute.</exception>
         public EnumFieldAttributeManager(bool requireAttribute)
         {
             var fields = typeof(TEnum).GetFields().Where(x => !x.IsSpecialName);
@@ -41,7 +43,9 @@ namespace NetGore
                     {
                         const string errmsg = "Enum `{0}`'s value `{1}` does not contain the required attribute `{2}`.";
                         var err = string.Format(errmsg, typeof(TEnum), field.Name, typeof(TAttribute));
-                        log.Fatal(err);
+                        if (log.IsFatalEnabled)
+                            log.Fatal(err);
+                        Debug.Fail(err);
                         throw new TypeException(err, typeof(TEnum));
                     }
                     else
@@ -52,9 +56,7 @@ namespace NetGore
                 _attributes.Add(value, attribute);
 
                 // Allow for additional handling
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 HandleLoadAttribute(value, attribute);
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
         }
 

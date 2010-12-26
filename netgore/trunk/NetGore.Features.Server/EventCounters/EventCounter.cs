@@ -46,6 +46,7 @@ namespace NetGore.Features.EventCounters
         /// Initializes a new instance of the <see cref="EventCounter{TObjectID, TEventID}"/> class.
         /// </summary>
         /// <param name="query">The query to use to perform updates.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="query" /> is <c>null</c>.</exception>
         public EventCounter(IDbQueryNonReader<ObjectEventAmount<TObjectID, TEventID>> query)
         {
             if (query == null)

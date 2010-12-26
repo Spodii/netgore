@@ -31,13 +31,17 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="id">The <see cref="AllianceID"/>.</param>
         /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        /// <exception cref="ArgumentException">No <see cref="Alliance"/> exists for the given <paramref name="id"/>.</exception>
         public EditorAlliance(AllianceID id, IDbController dbController)
         {
             _id = id;
 
             var table = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
             if (table == null)
-                throw new ArgumentException(string.Format("No Alliance with ID `{0}` exists.", id), "id");
+            {
+                const string errmsg = "No Alliance with ID `{0}` exists.";
+                throw new ArgumentException(string.Format(errmsg, id), "id");
+            }
 
             Debug.Assert(id == table.ID);
 

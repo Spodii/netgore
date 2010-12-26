@@ -182,6 +182,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Throws an exception if <see cref="IsBufferInitialized"/> is false.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Cannot draw to or access the internal buffer when not initialized.</exception>
         void EnsureInitialized()
         {
             if (!IsBufferInitialized)

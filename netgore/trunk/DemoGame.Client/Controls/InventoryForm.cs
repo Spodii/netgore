@@ -54,6 +54,9 @@ namespace DemoGame.Client
         /// <param name="infoRequester">The item info tooltip.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="infoRequester"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="isUserInv"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dragDropHandler"/> is null.</exception>
         public InventoryForm(DragDropHandler dragDropHandler, Func<Inventory, bool> isUserInv,
                              ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position, Control parent)
             : base(parent, position, new Vector2(200, 200))
@@ -231,9 +234,8 @@ namespace DemoGame.Client
             /// <param name="parent">The parent.</param>
             /// <param name="pos">The relative position of the control.</param>
             /// <param name="slot">The <see cref="InventorySlot"/>.</param>
-            // ReSharper disable SuggestBaseTypeForParameter
+            /// <exception cref="ArgumentNullException"><paramref name="parent" /> is <c>null</c>.</exception>
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot) : base(parent, pos, _itemSize)
-                // ReSharper restore SuggestBaseTypeForParameter
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

@@ -28,10 +28,12 @@ namespace DemoGame.Server.Queries
         /// <returns>The query for this class.</returns>
         static string CreateQuery(IQueryBuilder qb)
         {
-            // SELECT COUNT(*) FROM `account_character` a
-            //      INNER JOIN `view_user_character` u
-            //          ON a.character_id = u.id
-            //      WHERE a.account_id = @accountID
+            /*
+                SELECT COUNT(*) FROM `account_character` a
+                    INNER JOIN `view_user_character` u
+                        ON a.character_id = u.id
+                    WHERE a.account_id = @accountID
+            */
 
             var f = qb.Functions;
             var s = qb.Settings;
@@ -42,12 +44,17 @@ namespace DemoGame.Server.Queries
             return q.ToString();
         }
 
-        public int Execute(AccountID accountID)
+        /// <summary>
+        /// Gets the number of characters in the given <see cref="AccountID"/>.
+        /// </summary>
+        /// <param name="accountID">The <see cref="AccountID"/> to count the number of characters in.</param>
+        /// <returns>The number of characters in the given <paramref name="accountID"/>.</returns>
+        public int? TryExecute(AccountID accountID)
         {
             using (var r = ExecuteReader(accountID))
             {
                 if (!r.Read())
-                    throw new DatabaseException("Failed to read");
+                    return null;
 
                 return r.GetInt32(0);
             }

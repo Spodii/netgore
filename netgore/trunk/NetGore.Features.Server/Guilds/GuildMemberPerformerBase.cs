@@ -20,6 +20,7 @@ namespace NetGore.Features.Guilds
         /// <param name="saveHandler">Delegate describing how to implement the
         /// <see cref="IGuildMember.SaveGuildInformation"/> method on the <see cref="IGuildMember"/> when the
         /// <see cref="IGuildMember"/> object reference has to be constructed.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="saveHandler" /> is <c>null</c>.</exception>
         protected GuildMemberPerformerBase(Action<IGuildMember> saveHandler)
         {
             if (saveHandler == null)

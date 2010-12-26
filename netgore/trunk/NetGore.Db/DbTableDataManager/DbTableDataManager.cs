@@ -23,7 +23,8 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbTableDataManager{TID, TItem}"/> class.
         /// </summary>
-        /// <param name="dbController">The IDbController.</param>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="dbController" /> is <c>null</c>.</exception>
         protected DbTableDataManager(IDbController dbController)
         {
             if (dbController == null)
@@ -31,9 +32,7 @@ namespace NetGore.Db
 
             _dbController = dbController;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             CacheDbQueries(_dbController);
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             LoadAll();
         }

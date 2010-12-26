@@ -146,6 +146,7 @@ namespace NetGore.Features.NPCChat
         /// Sets the Conditionals property.
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="value" /> is <c>null</c>.</exception>
         public void SetConditionals(NPCChatConditionalCollectionBase value)
         {
             if (value == null)

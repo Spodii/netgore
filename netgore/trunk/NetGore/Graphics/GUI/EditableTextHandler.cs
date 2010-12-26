@@ -72,6 +72,7 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="IEditableText"/> class.
         /// </summary>
         /// <param name="source">The <see cref="IEditableText"/> to control the input of.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
         public EditableTextHandler(IEditableText source)
         {
             if (source == null)

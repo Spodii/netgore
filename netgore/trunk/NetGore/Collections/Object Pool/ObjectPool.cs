@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.Collections
 {
@@ -186,6 +188,17 @@ namespace NetGore.Collections
             _liveObjects = 0;
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Performs the actual freeing of an object from the pool.
+        /// </summary>
+        /// <param name="poolObject">The pooled object to free.</param>
+        /// <param name="throwArgumentException">When true, an <see cref="ArgumentException"/> can be thrown when the
+        /// item removed belongs to a different pool or the <see cref="IPoolable.PoolIndex"/> has changed by something other than
+        /// the pool (which it shouldn't). When false, this exception will never be raised.</param>
+        /// <exception cref="ArgumentException">The poolObject belongs to a different pool than this one, or the
+        /// <see cref="IPoolable.PoolIndex"/> was altered externally.</exception>
         void InternalFree(T poolObject, bool throwArgumentException)
         {
             // Ensure the object is in the living objects
@@ -195,14 +208,22 @@ namespace NetGore.Collections
             // Ensure that this object belongs to this pool instance
             if (_poolObjects[poolObject.PoolIndex] != poolObject)
             {
+                const string errmsg =
+                    "The poolObject `{0}` belongs to a different pool than this one, or the IPoolable.PoolIndex ({1}) was altered externally.";
+
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, poolObject, poolObject.PoolIndex);
+
+                Debug.Fail(string.Format(errmsg, poolObject, poolObject.PoolIndex));
+
+                // Throw exception?
                 if (throwArgumentException)
                 {
-                    const string errmsg =
-                        "The poolObject belongs to a different pool than this one, or the IPoolable.Index was altered externally.";
-                    throw new ArgumentException(errmsg, "poolObject");
+                    throw new ArgumentException(string.Format(errmsg, poolObject, poolObject.PoolIndex), "poolObject");
                 }
-                else
-                    return;
+
+                // If the object doesn't belong to this pool, we do NOT want to remove anything!
+                return;
             }
 
             Debug.Assert(_poolObjects[poolObject.PoolIndex] == poolObject);

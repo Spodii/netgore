@@ -363,7 +363,7 @@ namespace NetGore.Graphics
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
         /// screen position, color tint, rotation, origin, scale, effects, and depth.
         /// </summary>
-        /// <param name="spriteFont">The sprite font.</param>
+        /// <param name="font">The <see cref="Font"/> to use to draw.</param>
         /// <param name="text">The mutable (read/write) string to draw.</param>
         /// <param name="position">The location, in screen coordinates, where the text will be drawn.</param>
         /// <param name="color">The desired color of the text.</param>
@@ -372,21 +372,21 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
+        public virtual void DrawString(Font font, StringBuilder text, Vector2 position, Color color, float rotation,
                                        Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular,
                                        Shader shader = null)
         {
-            if (!IsAssetValid(spriteFont))
+            if (!IsAssetValid(font))
                 return;
 
-            DrawString(spriteFont, text.ToString(), position, color, rotation, origin, scale, style, shader);
+            DrawString(font, text.ToString(), position, color, rotation, origin, scale, style, shader);
         }
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
         /// screen position, color tint, rotation, origin, scale, effects, and depth.
         /// </summary>
-        /// <param name="spriteFont">The sprite font.</param>
+        /// <param name="font">The <see cref="Font"/> to use to draw.</param>
         /// <param name="text">The string to draw.</param>
         /// <param name="position">The location, in screen coordinates, where the text will be drawn.</param>
         /// <param name="color">The desired color of the text.</param>
@@ -395,13 +395,13 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin,
+        public virtual void DrawString(Font font, string text, Vector2 position, Color color, float rotation, Vector2 origin,
                                        Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
-            if (!IsAssetValid(spriteFont) || string.IsNullOrEmpty(text))
+            if (!IsAssetValid(font) || string.IsNullOrEmpty(text))
                 return;
 
-            _str.Font = spriteFont;
+            _str.Font = font;
             _str.DisplayedString = text;
             _str.Position = position;
             _str.Color = color;
@@ -409,7 +409,7 @@ namespace NetGore.Graphics
             _str.Origin = origin;
             _str.Scale = scale;
             _str.Style = style;
-            _str.Size = spriteFont.DefaultSize;
+            _str.Size = font.DefaultSize;
 
             _rt.Draw(_str, shader);
         }
@@ -418,7 +418,7 @@ namespace NetGore.Graphics
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
         /// screen position, color tint, rotation, origin, scale, effects, and depth.
         /// </summary>
-        /// <param name="spriteFont">The sprite font.</param>
+        /// <param name="font">The <see cref="Font"/> to use to draw.</param>
         /// <param name="text">The mutable (read/write) string to draw.</param>
         /// <param name="position">The location, in screen coordinates, where the text will be drawn.</param>
         /// <param name="color">The desired color of the text.</param>
@@ -427,20 +427,20 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
+        public virtual void DrawString(Font font, StringBuilder text, Vector2 position, Color color, float rotation,
                                        Vector2 origin, float scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
-            if (!IsAssetValid(spriteFont))
+            if (!IsAssetValid(font))
                 return;
 
-            DrawString(spriteFont, text.ToString(), position, color, rotation, origin, new Vector2(scale), style, shader);
+            DrawString(font, text.ToString(), position, color, rotation, origin, new Vector2(scale), style, shader);
         }
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
         /// screen position, color tint, rotation, origin, scale, effects, and depth.
         /// </summary>
-        /// <param name="spriteFont">The sprite font.</param>
+        /// <param name="font">The <see cref="Font"/> to use to draw.</param>
         /// <param name="text">The string to draw.</param>
         /// <param name="position">The location, in screen coordinates, where the text will be drawn.</param>
         /// <param name="color">The desired color of the text.</param>
@@ -449,45 +449,45 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin,
+        public virtual void DrawString(Font font, string text, Vector2 position, Color color, float rotation, Vector2 origin,
                                        float scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
-            if (!IsAssetValid(spriteFont))
+            if (!IsAssetValid(font))
                 return;
 
-            DrawString(spriteFont, text, position, color, rotation, origin, new Vector2(scale), style, shader);
+            DrawString(font, text, position, color, rotation, origin, new Vector2(scale), style, shader);
         }
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
         /// screen position, color tint, rotation, origin, scale, effects, and depth.
         /// </summary>
-        /// <param name="spriteFont">The sprite font.</param>
+        /// <param name="font">The <see cref="Font"/> to use to draw.</param>
         /// <param name="text">The mutable (read/write) string to draw.</param>
         /// <param name="position">The location, in screen coordinates, where the text will be drawn.</param>
         /// <param name="color">The desired color of the text.</param>
-        public virtual void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color)
+        public virtual void DrawString(Font font, StringBuilder text, Vector2 position, Color color)
         {
-            if (!IsAssetValid(spriteFont))
+            if (!IsAssetValid(font))
                 return;
 
-            DrawString(spriteFont, text.ToString(), position, color, 0.0f, Vector2.Zero, 1.0f);
+            DrawString(font, text.ToString(), position, color, 0.0f, Vector2.Zero, 1.0f);
         }
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
         /// screen position, color tint, rotation, origin, scale, effects, and depth.
         /// </summary>
-        /// <param name="spriteFont">The sprite font.</param>
+        /// <param name="font">The <see cref="Font"/> to use to draw.</param>
         /// <param name="text">The string to draw.</param>
         /// <param name="position">The location, in screen coordinates, where the text will be drawn.</param>
         /// <param name="color">The desired color of the text.</param>
-        public virtual void DrawString(Font spriteFont, string text, Vector2 position, Color color)
+        public virtual void DrawString(Font font, string text, Vector2 position, Color color)
         {
-            if (!IsAssetValid(spriteFont))
+            if (!IsAssetValid(font))
                 return;
 
-            DrawString(spriteFont, text, position, color, 0.0f, Vector2.Zero, 1.0f);
+            DrawString(font, text, position, color, 0.0f, Vector2.Zero, 1.0f);
         }
 
         /// <summary>

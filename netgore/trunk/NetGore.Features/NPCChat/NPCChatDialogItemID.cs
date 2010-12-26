@@ -29,6 +29,7 @@ namespace NetGore.Features.NPCChat
         /// Initializes a new instance of the <see cref="NPCChatDialogItemID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new <see cref="NPCChatDialogItemID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public NPCChatDialogItemID(int value)
         {
             if (value < MinValue || value > MaxValue)
@@ -82,9 +83,9 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Reads a <see cref="NPCChatDialogItemID"/> from an IValueReader.
+        /// Reads a <see cref="NPCChatDialogItemID"/> from an <see cref="IValueReader"/>.
         /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>The <see cref="NPCChatDialogItemID"/> read from the IValueReader.</returns>
         public static NPCChatDialogItemID Read(IValueReader reader, string name)
@@ -121,9 +122,9 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Reads a <see cref="NPCChatDialogItemID"/> from an BitStream.
+        /// Reads a <see cref="NPCChatDialogItemID"/> from an <see cref="BitStream"/>.
         /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
+        /// <param name="bitStream"><see cref="BitStream"/> to read from.</param>
         /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="BitStream"/>.</returns>
         public static NPCChatDialogItemID Read(BitStream bitStream)
         {
@@ -144,7 +145,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Writes the <see cref="NPCChatDialogItemID"/> to an <see cref="IValueWriter"/>.
         /// </summary>
-        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
         /// <param name="name">Unique name of the <see cref="NPCChatDialogItemID"/> that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
@@ -155,7 +156,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Writes the <see cref="NPCChatDialogItemID"/> to a <see cref="BitStream"/>.
         /// </summary>
-        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="bitStream"><see cref="BitStream"/> to write to.</param>
         public void Write(BitStream bitStream)
         {
             bitStream.Write(_value);
@@ -168,15 +169,15 @@ namespace NetGore.Features.NPCChat
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
+        /// Value
+        /// Meaning
+        /// Less than zero
+        /// This object is less than the <paramref name="other"/> parameter.
+        /// Zero
+        /// This object is equal to <paramref name="other"/>.
+        /// Greater than zero
+        /// This object is greater than <paramref name="other"/>.
         /// </returns>
         public int CompareTo(int other)
         {
@@ -193,15 +194,15 @@ namespace NetGore.Features.NPCChat
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
         /// A 32-bit signed integer that indicates the relative order of the objects being compared.
-        /// The return value has the following meanings: 
-        ///                     Value 
-        ///                     Meaning 
-        ///                     Less than zero 
-        ///                     This object is less than the <paramref name="other"/> parameter.
-        ///                     Zero 
-        ///                     This object is equal to <paramref name="other"/>. 
-        ///                     Greater than zero 
-        ///                     This object is greater than <paramref name="other"/>. 
+        /// The return value has the following meanings:
+        /// Value
+        /// Meaning
+        /// Less than zero
+        /// This object is less than the <paramref name="other"/> parameter.
+        /// Zero
+        /// This object is equal to <paramref name="other"/>.
+        /// Greater than zero
+        /// This object is greater than <paramref name="other"/>.
         /// </returns>
         public int CompareTo(NPCChatDialogItemID other)
         {

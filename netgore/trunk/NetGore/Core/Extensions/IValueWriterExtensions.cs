@@ -130,6 +130,9 @@ namespace NetGore
         /// <param name="name">Name of the value to write.</param>
         /// <param name="minValue">Minimum (inclusive) value that the written value can be.</param>
         /// <param name="maxValue">Maximum (inclusive) value that the written value can be.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is greater than <paramref name="maxValue"/>
+        /// or less than <paramref name="minValue"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxValue"/> is less than <paramref name="minValue"/>.</exception>
         public static void Write(this IValueWriter writer, string name, uint value, uint minValue, uint maxValue)
         {
             if (value < minValue || value > maxValue)
@@ -158,6 +161,9 @@ namespace NetGore
         /// <param name="name">Name of the value to write.</param>
         /// <param name="minValue">Minimum (inclusive) value that the written value can be.</param>
         /// <param name="maxValue">Maximum (inclusive) value that the written value can be.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is greater than <paramref name="maxValue"/>
+        /// or less than <paramref name="minValue"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxValue"/> is less than <paramref name="minValue"/>.</exception>
         public static void Write(this IValueWriter writer, string name, int value, int minValue, int maxValue)
         {
             if (value < minValue || value > maxValue)

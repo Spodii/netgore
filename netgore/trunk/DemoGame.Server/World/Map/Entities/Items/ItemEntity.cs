@@ -496,6 +496,8 @@ namespace DemoGame.Server
         /// <summary>
         /// Creates a <see cref="StatCollection{StatType}"/> from the given collection of stats.
         /// </summary>
+        /// <exception cref="ArgumentException">ItemEntity does not use StatCollectionType.Modified.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>statCollectionType</c> is not a defined enum value.</exception>
         StatCollection<StatType> NewItemStats(IEnumerable<Stat<StatType>> statValues, StatCollectionType statCollectionType)
         {
             var ret = new StatCollection<StatType>(statCollectionType, statValues);

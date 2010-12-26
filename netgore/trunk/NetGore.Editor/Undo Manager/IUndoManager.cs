@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.Editor
@@ -24,6 +25,7 @@ namespace NetGore.Editor
         /// Pops the IUndoEvent that the cursor is currently on, but leaves it available for Redoing.
         /// </summary>
         /// <returns>The IUndoEvent at the current index.</returns>
+        /// <exception cref="InvalidOperationException">The collection is empty.</exception>
         IUndoEvent Pop();
 
         /// <summary>

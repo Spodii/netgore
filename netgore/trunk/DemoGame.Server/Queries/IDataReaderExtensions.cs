@@ -10,10 +10,20 @@ namespace DemoGame.Server.Queries
     /// </summary>
     public static class IDataReaderExtensions
     {
+        /// <summary>
+        /// Checks if the enum value is defined.
+        /// </summary>
+        /// <typeparam name="T">The type of enum to check.</typeparam>
+        /// <param name="value">The enum value to check if defined.</param>
+        /// <exception cref="InvalidCastException">The <paramref name="value"/> is not a defined enum value for enum type
+        /// <typeparamref name="T"/>.</exception>
         static void CheckIfDefined<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
             if (!EnumHelper<T>.IsDefined(value))
-                throw new InvalidCastException(string.Format("Value `{0}` is not defined for enum `{1}`.", value, typeof(T)));
+            {
+                const string errmsg = "Value `{0}` is not defined for enum `{1}`.";
+                throw new InvalidCastException(string.Format(errmsg, value, typeof(T)));
+            }
         }
 
         /// <summary>

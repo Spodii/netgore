@@ -33,6 +33,7 @@ namespace NetGore.Features.Shops
         /// Initializes a new instance of the <see cref="ShopID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new ShopID.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public ShopID(int value)
         {
             if (value < MinValue || value > MaxValue)

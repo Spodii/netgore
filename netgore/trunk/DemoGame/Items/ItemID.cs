@@ -35,6 +35,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="ItemID"/> struct.
         /// </summary>
         /// <param name="value">Value to assign to the new ItemID.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public ItemID(int value)
         {
             if (value < MinValue || value > MaxValue)

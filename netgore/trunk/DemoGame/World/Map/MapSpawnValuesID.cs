@@ -34,7 +34,8 @@ namespace DemoGame
         /// <summary>
         /// Initializes a new instance of the <see cref="MapSpawnValuesID"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new MapSpawnValuesID.</param>
+        /// <param name="value">Value to assign to the new <see cref="MapSpawnValuesID"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><c>value</c> is out of range.</exception>
         public MapSpawnValuesID(int value)
         {
             if (value < MinValue || value > MaxValue)

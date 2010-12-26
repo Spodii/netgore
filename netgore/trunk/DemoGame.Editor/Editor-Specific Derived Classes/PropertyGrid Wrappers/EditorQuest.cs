@@ -43,6 +43,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="questID">The quest ID.</param>
         /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        /// <exception cref="ArgumentException">No quests for the given <paramref name="questID"/> exist.</exception>
         public EditorQuest(QuestID questID, IDbController dbController)
         {
             _id = questID;
@@ -50,8 +51,10 @@ namespace DemoGame.Editor
             // Get the quest database table row
             var questTable = dbController.GetQuery<SelectQuestQuery>().Execute(questID);
             if (questTable == null)
-                throw new ArgumentException(
-                    string.Format("Invalid QuestID ({0}) supplied - no quests with this ID exists.", questID), "questID");
+            {
+                const string errmsg = "Invalid QuestID ({0}) supplied - no quests with this ID exists.";
+                throw new ArgumentException(string.Format(errmsg, questID), "questID");
+            }
 
             Debug.Assert(questID == questTable.ID);
 

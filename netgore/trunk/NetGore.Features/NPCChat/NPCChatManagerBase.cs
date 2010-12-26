@@ -35,10 +35,11 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// Gets the NPCChatDialogBase at the specified index.
+        /// Gets the <see cref="NPCChatDialogBase"/> at the specified index.
         /// </summary>
-        /// <param name="id">Index of the NPCChatDialogBase.</param>
-        /// <returns>The NPCChatDialogBase at the specified index, or null if invalid.</returns>
+        /// <param name="id">Index of the <see cref="NPCChatDialogBase"/>.</param>
+        /// <returns>The <see cref="NPCChatDialogBase"/> at the specified index, or null if invalid.</returns>
+        /// <exception cref="MethodAccessException">Tried to set when <see cref="IsReadonly"/> was true.</exception>
         public NPCChatDialogBase this[NPCChatDialogID id]
         {
             get
@@ -81,16 +82,16 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.
+        /// When overridden in the derived class, creates a <see cref="NPCChatDialogBase"/> from the given <see cref="IValueReader"/>.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
+        /// <param name="reader"><see cref="IValueReader"/> to read the values from.</param>
+        /// <returns>A <see cref="NPCChatDialogBase"/> created from the given <see cref="IValueReader"/>.</returns>
         protected abstract NPCChatDialogBase CreateDialog(IValueReader reader);
 
         /// <summary>
-        /// Creates a MethodAccessException to use for when trying to access a method that is cannot be access when read-only. 
+        /// Creates a <see cref="MethodAccessException"/> to use for when trying to access a method that is cannot be access when read-only. 
         /// </summary>
-        /// <returns>A MethodAccessException to use for when trying to access a method that is cannot be
+        /// <returns>A <see cref="MethodAccessException"/> to use for when trying to access a method that is cannot be
         /// access when read-only.</returns>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NPCChatManagerBase")]
         protected static MethodAccessException CreateReadonlyException()
@@ -114,7 +115,7 @@ namespace NetGore.Features.NPCChat
         /// <summary>
         /// Gets the path for the data file.
         /// </summary>
-        /// <param name="contentPath">ContentPaths to use.</param>
+        /// <param name="contentPath"><see cref="ContentPaths"/> to use.</param>
         /// <returns>The path for the data file.</returns>
         protected static string GetFilePath(ContentPaths contentPath)
         {

@@ -38,8 +38,9 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
-        /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
+        /// When overridden in the derived class, gets the page index of this <see cref="NPCChatDialogItemBase"/> in the
+        /// <see cref="NPCChatDialogBase"/>. This value is unique to each <see cref="NPCChatDialogItemBase"/> in the
+        /// <see cref="NPCChatDialogBase"/>.
         /// </summary>
         public override NPCChatDialogItemID ID
         {
@@ -55,7 +56,7 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets an IEnumerable of the EditorNPCChatResponses available
+        /// When overridden in the derived class, gets an IEnumerable of the <see cref="NPCChatResponseBase"/>s available
         /// for this page of dialog.
         /// </summary>
         public override IEnumerable<NPCChatResponseBase> Responses
@@ -64,7 +65,8 @@ namespace NetGore.Features.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the main dialog text in this page of dialog.
+        /// When overridden in the derived class, gets the main dialog text in this page of dialog. If
+        /// <see cref="NPCChatDialogItemBase.IsBranch"/> is true, this should return an empty string.
         /// </summary>
         public override string Text
         {

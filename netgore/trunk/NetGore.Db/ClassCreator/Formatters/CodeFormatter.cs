@@ -743,6 +743,7 @@ namespace NetGore.Db.ClassCreator
         /// <param name="isVirtual">If this method will be virtual.</param>
         /// <param name="isStatic">If this method will be static.</param>
         /// <returns>The code.</returns>
+        /// <exception cref="ArgumentException">A method cannot be both virtual and static.</exception>
         public virtual string GetMethodNameAndVisibility(string methodName, MemberVisibilityLevel visibility, string returnType,
                                                          bool isVirtual, bool isStatic)
         {

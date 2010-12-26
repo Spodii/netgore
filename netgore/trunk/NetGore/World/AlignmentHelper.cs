@@ -20,6 +20,8 @@ namespace NetGore.World
         /// <param name="targetSize">The size of the object being aligned to.</param>
         /// <returns>The <see cref="Vector2"/> that represents the position to align an object
         /// to another object based on the given <paramref name="alignment"/>.</returns>
+        /// <exception cref="ArgumentException"><paramref name="alignment"/> is not a defined value of the <see cref="Alignment"/>
+        /// enum.</exception>
         public static Vector2 FindOffset(Alignment alignment, Vector2 sourceSize, Vector2 targetSize)
         {
             switch (alignment)

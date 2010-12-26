@@ -100,6 +100,7 @@ namespace DemoGame.Server
         /// <param name="disableTime">The disable time of the <see cref="ActiveStatusEffect"/> that is merging with
         /// this one.</param>
         /// <returns>True if the merge resulted in this <see cref="ActiveStatusEffect"/> changing; otherwise false.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The <see cref="StatusEffectMergeType"/> is invalid.</exception>
         public bool MergeWith(TickCount currentTime, ushort power, TickCount disableTime)
         {
             int oldPower = _power;

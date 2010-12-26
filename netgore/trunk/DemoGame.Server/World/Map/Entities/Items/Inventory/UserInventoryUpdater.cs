@@ -17,9 +17,10 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
 
         /// <summary>
-        /// UserInventoryUpdater constructor.
+        /// Initializes a new instance of the <see cref="UserInventoryUpdater"/> class.
         /// </summary>
-        /// <param name="userInventory">UserInventory that this UserInventoryUpdater will manage.</param>
+        /// <param name="userInventory"><see cref="UserInventory"/> that this UserInventoryUpdater will manage.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="userInventory"/> is <c>null</c>.</exception>
         public UserInventoryUpdater(UserInventory userInventory)
         {
             if (userInventory == null)

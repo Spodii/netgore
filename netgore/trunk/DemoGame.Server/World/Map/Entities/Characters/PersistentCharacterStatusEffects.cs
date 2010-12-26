@@ -225,6 +225,7 @@ namespace DemoGame.Server
         /// <param name="power">The power of the status effect.</param>
         /// <returns>True if the <paramref name="statusEffect"/> of the given <paramref name="power"/> was added
         /// to this collection; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="statusEffect" /> is <c>null</c>.</exception>
         public override bool TryAdd(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
         {
             if (statusEffect == null)

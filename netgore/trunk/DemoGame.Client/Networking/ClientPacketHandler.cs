@@ -52,6 +52,9 @@ namespace DemoGame.Client
         /// <param name="screenManager">The <see cref="IScreenManager"/>.</param>
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to serialize
         /// <see cref="DynamicEntity"/>s.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="dynamicEntityFactory" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="screenManager" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="networkSender" /> is <c>null</c>.</exception>
         public ClientPacketHandler(INetworkSender networkSender, IScreenManager screenManager,
                                    IDynamicEntityFactory dynamicEntityFactory)
         {
