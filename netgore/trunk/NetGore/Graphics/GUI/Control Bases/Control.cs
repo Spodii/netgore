@@ -842,7 +842,7 @@ namespace NetGore.Graphics.GUI
         {
             Debug.Assert(IsRoot, "Draw should only be called from the root control. Otherwise, you will end up not drawing all controls.");
 
-            if (_isDisposed)
+            if (IsDisposed)
             {
                 const string errmsg = "Attempted to draw disposed control `{0}`.";
                 Debug.Fail(string.Format(errmsg, this));
@@ -869,17 +869,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to</param>
         void DrawControlStart(ISpriteBatch spriteBatch)
         {
-            if (_isDisposed)
-            {
-                const string errmsg = "Attempted to draw disposed control `{0}`.";
-                Debug.Fail(string.Format(errmsg, this));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                return;
-            }
-
-            // If this control isn't visible, none of the child controls will be visible, either
-            if (!IsVisible)
+            // If this control isn't visible or is disposed, none of the child controls will be visible, either
+            if (!IsVisible || IsDisposed)
                 return;
 
             // Draw the control

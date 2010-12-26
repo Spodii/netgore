@@ -144,7 +144,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             internal Image(IntPtr thisPtr) : base(thisPtr)
             {
-                myExternal = true;
+                if (thisPtr != IntPtr.Zero)
+                    myExternal = true;
             }
 
             /// <summary>
