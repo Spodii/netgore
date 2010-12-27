@@ -12,7 +12,7 @@ namespace DemoGame.Client
     /// <summary>
     /// A <see cref="Form"/> that displays the items the user has in their inventory.
     /// </summary>
-    class InventoryForm : Form, IDragDropProvider
+    public class InventoryForm : Form, IDragDropProvider
     {
         /// <summary>
         /// The number of items in each inventory row.

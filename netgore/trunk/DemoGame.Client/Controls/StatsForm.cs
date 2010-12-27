@@ -13,7 +13,7 @@ namespace DemoGame.Client
     /// <summary>
     /// A <see cref="Form"/> containing the stats for a user.
     /// </summary>
-    class StatsForm : Form
+    public class StatsForm : Form
     {
         delegate string UserInfoLabelValueHandler(UserInfo userInfo);
 

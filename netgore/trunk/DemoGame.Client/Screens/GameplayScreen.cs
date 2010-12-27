@@ -674,6 +674,16 @@ namespace DemoGame.Client
             }
         }
 
+        public EquippedForm EquippedForm { get { return _equippedForm; } }
+
+        public InventoryForm InventoryForm { get { return _inventoryForm; } }
+
+        public StatsForm StatsForm { get { return _statsForm; } }
+
+        public SkillsForm SkillsForm { get { return _skillsForm; } }
+
+        public GuildForm GuildForm { get { return _guildForm; } }
+
         /// <summary>
         /// Handles the ItemClicked event of the Toolbar control.
         /// </summary>
