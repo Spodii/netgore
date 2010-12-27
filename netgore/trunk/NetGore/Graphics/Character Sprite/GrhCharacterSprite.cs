@@ -13,7 +13,7 @@ namespace NetGore.Graphics
     /// view, and is recommended you implement your own more powerful <see cref="ICharacterSprite"/> if you are
     /// not using skeleton sprites.
     /// </summary>
-    public class BasicGrhCharacterSprite : ICharacterSprite
+    public class GrhCharacterSprite : ICharacterSprite
     {
         readonly Entity _character;
         readonly Grh _grh = new Grh(null);
@@ -47,11 +47,11 @@ namespace NetGore.Graphics
         TickCount _currentTime;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicGrhCharacterSprite"/> class.
+        /// Initializes a new instance of the <see cref="GrhCharacterSprite"/> class.
         /// </summary>
-        /// <param name="character">The character this <see cref="BasicGrhCharacterSprite"/> is for.</param>
+        /// <param name="character">The character this <see cref="GrhCharacterSprite"/> is for.</param>
         /// <param name="rootCategory">The root category for the character sprites.</param>
-        public BasicGrhCharacterSprite(Entity character, SpriteCategory rootCategory)
+        public GrhCharacterSprite(Entity character, SpriteCategory rootCategory)
         {
             _character = character;
             _rootCategory = rootCategory;
