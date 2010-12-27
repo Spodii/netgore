@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 using NetGore;
 using NetGore.Graphics;
@@ -53,41 +54,55 @@ namespace DemoGame
         /// <remarks>
         /// The setter should only be used in the editor.
         /// </remarks>
+        [Browsable(true)]
+        [Description("The name of the SkeletonBody (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" + 
+            " to use for this body.")]
         public string Body { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the <see cref="SkeletonSet"/> (when using <see cref="SkeletonCharacterSprite"/>) or
         /// sprite category (when using <see cref="GrhCharacterSprite"/>) to use for this body when drawing
-        /// the character is falling.
+        /// the character falling.
         /// </summary>
         /// <remarks>
         /// The setter should only be used in the editor.
         /// </remarks>
+        [Browsable(true)]
+        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" + 
+            " to use for this body when drawing the character falling.")]
         public string Fall { get; set; }
 
         /// <summary>
         /// Gets the <see cref="BodyID"/> of this body.
         /// </summary>
+        [Browsable(true)]
+        [Description("The unique ID of this body.")]
         public BodyID ID { get; private set; }
 
         /// <summary>
         /// Gets or sets the name of the <see cref="SkeletonSet"/> (when using <see cref="SkeletonCharacterSprite"/>) or
         /// sprite category (when using <see cref="GrhCharacterSprite"/>) to use for this body when drawing
-        /// the character is jumping.
+        /// the character jumping.
         /// </summary>
         /// <remarks>
         /// The setter should only be used in the editor.
         /// </remarks>
+        [Browsable(true)]
+        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+            " to use for this body when drawing the character jumping.")]
         public string Jump { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the <see cref="SkeletonSet"/> (when using <see cref="SkeletonCharacterSprite"/>) or
         /// sprite category (when using <see cref="GrhCharacterSprite"/>) to use for this body when drawing
-        /// the character is punching.
+        /// the character punching.
         /// </summary>
         /// <remarks>
         /// The setter should only be used in the editor.
         /// </remarks>
+        [Browsable(true)]
+        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+            " to use for this body when drawing the character punching.")]
         public string Punch { get; set; }
 
         /// <summary>
@@ -97,26 +112,34 @@ namespace DemoGame
         /// <remarks>
         /// The setter should only be used in the editor.
         /// </remarks>
+        [Browsable(true)]
+        [Description("The size of the body in pixels.")]
         public Vector2 Size { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the <see cref="SkeletonSet"/> (when using <see cref="SkeletonCharacterSprite"/>) or
         /// sprite category (when using <see cref="GrhCharacterSprite"/>) to use for this body when drawing
-        /// the character is standing still.
+        /// the character standing still.
         /// </summary>
         /// <remarks>
         /// The setter should only be used in the editor.
         /// </remarks>
+        [Browsable(true)]
+        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+            " to use for this body when drawing the character standing still.")]
         public string Stand { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the <see cref="SkeletonSet"/> (when using <see cref="SkeletonCharacterSprite"/>) or
         /// sprite category (when using <see cref="GrhCharacterSprite"/>) to use for this body when drawing
-        /// the character is walking.
+        /// the character walking.
         /// </summary>
         /// <remarks>
         /// The setter should only be used in the editor.
         /// </remarks>
+        [Browsable(true)]
+        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+            " to use for this body when drawing the character walking.")]
         public string Walk { get; set; }
 
         /// <summary>
