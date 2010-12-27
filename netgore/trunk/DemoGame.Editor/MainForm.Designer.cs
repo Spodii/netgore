@@ -33,21 +33,21 @@ namespace DemoGame.Editor
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            NetGore.Editor.Docking.DockPanelSkin dockPanelSkin1 = new NetGore.Editor.Docking.DockPanelSkin();
-            NetGore.Editor.Docking.AutoHideStripSkin autoHideStripSkin1 = new NetGore.Editor.Docking.AutoHideStripSkin();
-            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient1 = new NetGore.Editor.Docking.DockPanelGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient1 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPaneStripSkin dockPaneStripSkin1 = new NetGore.Editor.Docking.DockPaneStripSkin();
-            NetGore.Editor.Docking.DockPaneStripGradient dockPaneStripGradient1 = new NetGore.Editor.Docking.DockPaneStripGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient2 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient2 = new NetGore.Editor.Docking.DockPanelGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient3 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPaneStripToolWindowGradient dockPaneStripToolWindowGradient1 = new NetGore.Editor.Docking.DockPaneStripToolWindowGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient4 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient5 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient3 = new NetGore.Editor.Docking.DockPanelGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient6 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient7 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPanelSkin dockPanelSkin3 = new NetGore.Editor.Docking.DockPanelSkin();
+            NetGore.Editor.Docking.AutoHideStripSkin autoHideStripSkin3 = new NetGore.Editor.Docking.AutoHideStripSkin();
+            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient7 = new NetGore.Editor.Docking.DockPanelGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient15 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPaneStripSkin dockPaneStripSkin3 = new NetGore.Editor.Docking.DockPaneStripSkin();
+            NetGore.Editor.Docking.DockPaneStripGradient dockPaneStripGradient3 = new NetGore.Editor.Docking.DockPaneStripGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient16 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient8 = new NetGore.Editor.Docking.DockPanelGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient17 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPaneStripToolWindowGradient dockPaneStripToolWindowGradient3 = new NetGore.Editor.Docking.DockPaneStripToolWindowGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient18 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient19 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient9 = new NetGore.Editor.Docking.DockPanelGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient20 = new NetGore.Editor.Docking.TabGradient();
+            NetGore.Editor.Docking.TabGradient tabGradient21 = new NetGore.Editor.Docking.TabGradient();
             this.msMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,7 @@ namespace DemoGame.Editor
             this.skeletonEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dbEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.musicEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.soundEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.tssInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssWorldPos = new System.Windows.Forms.ToolStripStatusLabel();
@@ -71,7 +72,7 @@ namespace DemoGame.Editor
             this.dockPanel = new NetGore.Editor.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
-            this.soundEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bodyEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMenu.SuspendLayout();
             this.ssStatus.SuspendLayout();
             this.SuspendLayout();
@@ -148,7 +149,8 @@ namespace DemoGame.Editor
             this.skeletonEditorToolStripMenuItem,
             this.dbEditorToolStripMenuItem,
             this.musicEditorToolStripMenuItem,
-            this.soundEditorToolStripMenuItem});
+            this.soundEditorToolStripMenuItem,
+            this.bodyEditorToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             // 
@@ -189,9 +191,17 @@ namespace DemoGame.Editor
             // 
             // musicEditorToolStripMenuItem
             // 
+            this.musicEditorToolStripMenuItem.CheckOnClick = true;
             this.musicEditorToolStripMenuItem.Name = "musicEditorToolStripMenuItem";
             resources.ApplyResources(this.musicEditorToolStripMenuItem, "musicEditorToolStripMenuItem");
             this.musicEditorToolStripMenuItem.Click += new System.EventHandler(this.musicEditorToolStripMenuItem_Click);
+            // 
+            // soundEditorToolStripMenuItem
+            // 
+            this.soundEditorToolStripMenuItem.CheckOnClick = true;
+            this.soundEditorToolStripMenuItem.Name = "soundEditorToolStripMenuItem";
+            resources.ApplyResources(this.soundEditorToolStripMenuItem, "soundEditorToolStripMenuItem");
+            this.soundEditorToolStripMenuItem.Click += new System.EventHandler(this.soundEditorToolStripMenuItem_Click);
             // 
             // ssStatus
             // 
@@ -225,50 +235,50 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.dockPanel, "dockPanel");
             this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.dockPanel.Name = "dockPanel";
-            dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
-            dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
-            autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
-            tabGradient1.EndColor = System.Drawing.SystemColors.Control;
-            tabGradient1.StartColor = System.Drawing.SystemColors.Control;
-            tabGradient1.TextColor = System.Drawing.SystemColors.ControlDarkDark;
-            autoHideStripSkin1.TabGradient = tabGradient1;
-            dockPanelSkin1.AutoHideStripSkin = autoHideStripSkin1;
-            tabGradient2.EndColor = System.Drawing.SystemColors.ControlLightLight;
-            tabGradient2.StartColor = System.Drawing.SystemColors.ControlLightLight;
-            tabGradient2.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripGradient1.ActiveTabGradient = tabGradient2;
-            dockPanelGradient2.EndColor = System.Drawing.SystemColors.Control;
-            dockPanelGradient2.StartColor = System.Drawing.SystemColors.Control;
-            dockPaneStripGradient1.DockStripGradient = dockPanelGradient2;
-            tabGradient3.EndColor = System.Drawing.SystemColors.ControlLight;
-            tabGradient3.StartColor = System.Drawing.SystemColors.ControlLight;
-            tabGradient3.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripGradient1.InactiveTabGradient = tabGradient3;
-            dockPaneStripSkin1.DocumentGradient = dockPaneStripGradient1;
-            tabGradient4.EndColor = System.Drawing.SystemColors.ActiveCaption;
-            tabGradient4.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            tabGradient4.StartColor = System.Drawing.SystemColors.GradientActiveCaption;
-            tabGradient4.TextColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dockPaneStripToolWindowGradient1.ActiveCaptionGradient = tabGradient4;
-            tabGradient5.EndColor = System.Drawing.SystemColors.Control;
-            tabGradient5.StartColor = System.Drawing.SystemColors.Control;
-            tabGradient5.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripToolWindowGradient1.ActiveTabGradient = tabGradient5;
-            dockPanelGradient3.EndColor = System.Drawing.SystemColors.ControlLight;
-            dockPanelGradient3.StartColor = System.Drawing.SystemColors.ControlLight;
-            dockPaneStripToolWindowGradient1.DockStripGradient = dockPanelGradient3;
-            tabGradient6.EndColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            tabGradient6.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            tabGradient6.StartColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            tabGradient6.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripToolWindowGradient1.InactiveCaptionGradient = tabGradient6;
-            tabGradient7.EndColor = System.Drawing.Color.Transparent;
-            tabGradient7.StartColor = System.Drawing.Color.Transparent;
-            tabGradient7.TextColor = System.Drawing.SystemColors.ControlDarkDark;
-            dockPaneStripToolWindowGradient1.InactiveTabGradient = tabGradient7;
-            dockPaneStripSkin1.ToolWindowGradient = dockPaneStripToolWindowGradient1;
-            dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
-            this.dockPanel.Skin = dockPanelSkin1;
+            dockPanelGradient7.EndColor = System.Drawing.SystemColors.ControlLight;
+            dockPanelGradient7.StartColor = System.Drawing.SystemColors.ControlLight;
+            autoHideStripSkin3.DockStripGradient = dockPanelGradient7;
+            tabGradient15.EndColor = System.Drawing.SystemColors.Control;
+            tabGradient15.StartColor = System.Drawing.SystemColors.Control;
+            tabGradient15.TextColor = System.Drawing.SystemColors.ControlDarkDark;
+            autoHideStripSkin3.TabGradient = tabGradient15;
+            dockPanelSkin3.AutoHideStripSkin = autoHideStripSkin3;
+            tabGradient16.EndColor = System.Drawing.SystemColors.ControlLightLight;
+            tabGradient16.StartColor = System.Drawing.SystemColors.ControlLightLight;
+            tabGradient16.TextColor = System.Drawing.SystemColors.ControlText;
+            dockPaneStripGradient3.ActiveTabGradient = tabGradient16;
+            dockPanelGradient8.EndColor = System.Drawing.SystemColors.Control;
+            dockPanelGradient8.StartColor = System.Drawing.SystemColors.Control;
+            dockPaneStripGradient3.DockStripGradient = dockPanelGradient8;
+            tabGradient17.EndColor = System.Drawing.SystemColors.ControlLight;
+            tabGradient17.StartColor = System.Drawing.SystemColors.ControlLight;
+            tabGradient17.TextColor = System.Drawing.SystemColors.ControlText;
+            dockPaneStripGradient3.InactiveTabGradient = tabGradient17;
+            dockPaneStripSkin3.DocumentGradient = dockPaneStripGradient3;
+            tabGradient18.EndColor = System.Drawing.SystemColors.ActiveCaption;
+            tabGradient18.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            tabGradient18.StartColor = System.Drawing.SystemColors.GradientActiveCaption;
+            tabGradient18.TextColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dockPaneStripToolWindowGradient3.ActiveCaptionGradient = tabGradient18;
+            tabGradient19.EndColor = System.Drawing.SystemColors.Control;
+            tabGradient19.StartColor = System.Drawing.SystemColors.Control;
+            tabGradient19.TextColor = System.Drawing.SystemColors.ControlText;
+            dockPaneStripToolWindowGradient3.ActiveTabGradient = tabGradient19;
+            dockPanelGradient9.EndColor = System.Drawing.SystemColors.ControlLight;
+            dockPanelGradient9.StartColor = System.Drawing.SystemColors.ControlLight;
+            dockPaneStripToolWindowGradient3.DockStripGradient = dockPanelGradient9;
+            tabGradient20.EndColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            tabGradient20.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            tabGradient20.StartColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            tabGradient20.TextColor = System.Drawing.SystemColors.ControlText;
+            dockPaneStripToolWindowGradient3.InactiveCaptionGradient = tabGradient20;
+            tabGradient21.EndColor = System.Drawing.Color.Transparent;
+            tabGradient21.StartColor = System.Drawing.Color.Transparent;
+            tabGradient21.TextColor = System.Drawing.SystemColors.ControlDarkDark;
+            dockPaneStripToolWindowGradient3.InactiveTabGradient = tabGradient21;
+            dockPaneStripSkin3.ToolWindowGradient = dockPaneStripToolWindowGradient3;
+            dockPanelSkin3.DockPaneStripSkin = dockPaneStripSkin3;
+            this.dockPanel.Skin = dockPanelSkin3;
             this.dockPanel.Click += new System.EventHandler(this.dockPanel_Click);
             // 
             // tbMap
@@ -285,11 +295,12 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
             // 
-            // soundEditorToolStripMenuItem
+            // bodyEditorToolStripMenuItem
             // 
-            this.soundEditorToolStripMenuItem.Name = "soundEditorToolStripMenuItem";
-            resources.ApplyResources(this.soundEditorToolStripMenuItem, "soundEditorToolStripMenuItem");
-            this.soundEditorToolStripMenuItem.Click += new System.EventHandler(this.soundEditorToolStripMenuItem_Click);
+            this.bodyEditorToolStripMenuItem.CheckOnClick = true;
+            this.bodyEditorToolStripMenuItem.Name = "bodyEditorToolStripMenuItem";
+            resources.ApplyResources(this.bodyEditorToolStripMenuItem, "bodyEditorToolStripMenuItem");
+            this.bodyEditorToolStripMenuItem.Click += new System.EventHandler(this.bodyEditorToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -338,6 +349,7 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripStatusLabel tssScreenPos;
         private System.Windows.Forms.ToolStripMenuItem musicEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem soundEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bodyEditorToolStripMenuItem;
     }
 }
 

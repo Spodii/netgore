@@ -31,6 +31,7 @@ namespace DemoGame.Editor
         DbEditorForm _frmDbEditor;
         GrhTreeViewForm _frmGrhTreeView;
         MusicEditorForm _frmMusicEditor;
+        BodyEditorForm _frmBodyEditor;
         NPCChatEditorForm _frmNPCChatEditor;
         SelectedMapObjectsForm _frmSelectedMapObjs;
         SkeletonEditorForm _frmSkeletonEditor;
@@ -86,6 +87,9 @@ namespace DemoGame.Editor
             // Save the GrhDatas
             GrhInfo.Save(ContentPaths.Dev);
 
+            // Save body infos
+            BodyInfoManager.Instance.Save(ContentPaths.Dev);
+
             // Save ParticleEffects
             ParticleEffectManager.Instance.Save(ContentPaths.Dev);
 
@@ -140,6 +144,9 @@ namespace DemoGame.Editor
 
             _frmMusicEditor = new MusicEditorForm();
             _frmMusicEditor.VisibleChanged += _frmMusicEditor_VisibleChanged;
+
+            _frmBodyEditor = new BodyEditorForm();
+            _frmBodyEditor.VisibleChanged += _frmBodyEditor_VisibleChanged;
 
             _frmSoundEditor = new SoundEditorForm();
             _frmSoundEditor.VisibleChanged += _frmSoundEditor_VisibleChanged;
@@ -205,13 +212,23 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the _frmMusicEditor control.
+        /// Handles the VisibleChanged event of the <see cref="_frmMusicEditor"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void _frmMusicEditor_VisibleChanged(object sender, EventArgs e)
         {
             musicEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the VisibleChanged event of the <see cref="_frmBodyEditor"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmBodyEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            bodyEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -349,7 +366,20 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the musicEditorToolStripMenuItem control.
+        /// Handles the Click event of the <see cref="bodyEditorToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void bodyEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (bodyEditorToolStripMenuItem.Checked)
+                _frmBodyEditor.Show(dockPanel, DockState.Float);
+            else
+                _frmBodyEditor.Hide();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="musicEditorToolStripMenuItem"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
@@ -488,6 +518,9 @@ namespace DemoGame.Editor
 
                 if (IsNameFor(Owner._frmSoundEditor, name))
                     return Owner._frmSoundEditor;
+
+                if (IsNameFor(Owner._frmBodyEditor, name))
+                    return Owner._frmBodyEditor;
 
                 return null;
             }

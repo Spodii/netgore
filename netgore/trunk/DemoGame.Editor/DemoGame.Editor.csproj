@@ -112,6 +112,9 @@
     <Compile Include="Controls\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\BodyInfoListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\SoundInfoListBox.cs">
       <SubType>Component</SubType>
     </Compile>
