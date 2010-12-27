@@ -1,86 +1,139 @@
-﻿using System.Linq;
+﻿using System;
 
 namespace Lidgren.Network
 {
-    public partial class NetConnection
-    {
-        float m_averageRoundtripTime;
-        int m_sentPingNumber;
-        float m_sentPingTime;
-        float m_timeoutDeadline = float.MaxValue;
+	public partial class NetConnection
+	{
+		private float m_sentPingTime;
+		private int m_sentPingNumber;
+		private float m_averageRoundtripTime;
+		private float m_timeoutDeadline = float.MaxValue;
 
-        /// <summary>
-        /// Gets the current average roundtrip time in seconds
-        /// </summary>
-        public float AverageRoundtripTime
-        {
-            get { return m_averageRoundtripTime; }
-        }
+		// local time value + m_remoteTimeOffset = remote time value
+		internal double m_remoteTimeOffset;
 
-        internal void ReceivedPong(float now, int pongNumber)
-        {
-            if (pongNumber != m_sentPingNumber)
-            {
-                m_peer.LogVerbose("Ping/Pong mismatch; dropped message?");
-                return;
-            }
+		/// <summary>
+		/// Gets the current average roundtrip time in seconds
+		/// </summary>
+		public float AverageRoundtripTime { get { return m_averageRoundtripTime; } }
+		
+		// this might happen more than once
+		internal void InitializeRemoteTimeOffset(float remoteSendTime)
+		{
+			m_remoteTimeOffset = (remoteSendTime + (m_averageRoundtripTime / 2.0)) - NetTime.Now;
+		}
+		
+		/// <summary>
+		/// Gets local time value comparable to NetTime.Now from a remote value
+		/// </summary>
+		public double GetLocalTime(double remoteTimestamp)
+		{
+			return remoteTimestamp - m_remoteTimeOffset;
+		}
 
-            m_timeoutDeadline = now + m_peerConfiguration.m_connectionTimeout;
+		/// <summary>
+		/// Gets the remote time value for a local time value produced by NetTime.Now
+		/// </summary>
+		public double GetRemoteTime(double localTimestamp)
+		{
+			return localTimestamp + m_remoteTimeOffset;
+		}
 
-            var rtt = now - m_sentPingTime;
-            NetException.Assert(rtt >= 0);
+		internal void InitializePing()
+		{
+			float now = (float)NetTime.Now;
 
-            if (m_averageRoundtripTime < 0)
-            {
-                m_averageRoundtripTime = rtt; // initial estimate
-                m_peer.LogDebug("Initiated average roundtrip time to " + NetTime.ToReadable(m_averageRoundtripTime));
-            }
-            else
-            {
-                m_averageRoundtripTime = (m_averageRoundtripTime * 0.7f) + (rtt * 0.3f);
-                m_peer.LogVerbose("Updated average roundtrip time to " + NetTime.ToReadable(m_averageRoundtripTime));
-            }
+			// randomize ping sent time (0.25 - 1.0 x ping interval)
+			m_sentPingTime = now;
+			m_sentPingTime -= (m_peerConfiguration.PingInterval * 0.25f); // delay ping for a little while
+			m_sentPingTime -= (NetRandom.Instance.NextSingle() * (m_peerConfiguration.PingInterval * 0.75f));
+			m_timeoutDeadline = now + (m_peerConfiguration.m_connectionTimeout * 2.0f); // initially allow a little more time
+		}
 
-            // update resend delay for all channels
-            var resendDelay = GetResendDelay();
-            foreach (var chan in m_sendChannels)
-            {
-                var rchan = chan as NetReliableSenderChannel;
-                if (rchan != null)
-                    rchan.m_resendDelay = resendDelay;
-            }
+		internal void SendPing()
+		{
+			m_peer.VerifyNetworkThread();
 
-            m_peer.LogVerbose("Timeout deadline pushed to  " + m_timeoutDeadline);
-        }
+			m_sentPingNumber++;
 
-        internal void SendPing()
-        {
-            m_peer.VerifyNetworkThread();
+			m_sentPingTime = (float)NetTime.Now;
+			NetOutgoingMessage om = m_peer.CreateMessage(1);
+			om.Write((byte)m_sentPingNumber); // truncating to 0-255
+			om.m_messageType = NetMessageType.Ping;
 
-            m_sentPingNumber++;
-            if (m_sentPingNumber >= 256)
-                m_sentPingNumber = 0;
-            m_sentPingTime = (float)NetTime.Now;
-            var om = m_peer.CreateMessage(1);
-            om.Write((byte)m_sentPingNumber);
-            om.m_messageType = NetMessageType.Ping;
+			int len = om.Encode(m_peer.m_sendBuffer, 0, 0);
+			bool connectionReset;
+			m_peer.SendPacket(len, m_remoteEndpoint, 1, out connectionReset);
 
-            var len = om.Encode(m_peer.m_sendBuffer, 0, 0);
-            bool connectionReset;
-            m_peer.SendPacket(len, m_remoteEndpoint, 1, out connectionReset);
-        }
+			m_statistics.PacketSent(len, 1);
+		}
 
-        internal void SendPong(int pingNumber)
-        {
-            m_peer.VerifyNetworkThread();
+		internal void SendPong(int pingNumber)
+		{
+			m_peer.VerifyNetworkThread();
 
-            var om = m_peer.CreateMessage(1);
-            om.Write((byte)pingNumber);
-            om.m_messageType = NetMessageType.Pong;
+			NetOutgoingMessage om = m_peer.CreateMessage(5);
+			om.Write((byte)pingNumber);
+			om.Write((float)NetTime.Now); // we should update this value to reflect the exact point in time the packet is SENT
+			om.m_messageType = NetMessageType.Pong;
 
-            var len = om.Encode(m_peer.m_sendBuffer, 0, 0);
-            bool connectionReset;
-            m_peer.SendPacket(len, m_remoteEndpoint, 1, out connectionReset);
-        }
-    }
+			int len = om.Encode(m_peer.m_sendBuffer, 0, 0);
+			bool connectionReset;
+
+			m_peer.SendPacket(len, m_remoteEndpoint, 1, out connectionReset);
+
+			m_statistics.PacketSent(len, 1);
+		}
+
+		internal void ReceivedPong(float now, int pongNumber, float remoteSendTime)
+		{
+			if ((byte)pongNumber != (byte)m_sentPingNumber)
+			{
+				m_peer.LogVerbose("Ping/Pong mismatch; dropped message?");
+				return;
+			}
+
+			m_timeoutDeadline = now + m_peerConfiguration.m_connectionTimeout;
+
+			float rtt = now - m_sentPingTime;
+			NetException.Assert(rtt >= 0);
+
+			double diff = (remoteSendTime + (rtt / 2.0)) - now;
+
+			if (m_averageRoundtripTime < 0)
+			{
+				m_remoteTimeOffset = diff;
+				m_averageRoundtripTime = rtt * 1.15f; // initially over-estimate
+				m_peer.LogDebug("Initiated average roundtrip time to " + NetTime.ToReadable(m_averageRoundtripTime) + " Remote time is: " + (now + diff));
+			}
+			else
+			{
+				m_averageRoundtripTime = (m_averageRoundtripTime * 0.7f) + (float)(rtt * 0.3f);
+
+				m_remoteTimeOffset = ((m_remoteTimeOffset * (double)(m_sentPingNumber - 1)) + diff) / (double)m_sentPingNumber;
+				m_peer.LogVerbose("Updated average roundtrip time to " + NetTime.ToReadable(m_averageRoundtripTime) + ", remote time to " + (now + m_remoteTimeOffset) + " (ie. diff " + m_remoteTimeOffset + ")");
+			}
+
+			// update resend delay for all channels
+			float resendDelay = GetResendDelay();
+			foreach (var chan in m_sendChannels)
+			{
+				var rchan = chan as NetReliableSenderChannel;
+				if (rchan != null)
+					rchan.m_resendDelay = resendDelay;
+			}
+
+			// m_peer.LogVerbose("Timeout deadline pushed to  " + m_timeoutDeadline);
+
+			// notify the application that average rtt changed
+			if (m_peer.m_configuration.IsMessageTypeEnabled(NetIncomingMessageType.ConnectionLatencyUpdated))
+			{
+				NetIncomingMessage update = m_peer.CreateIncomingMessage(NetIncomingMessageType.ConnectionLatencyUpdated, 4);
+				update.m_senderConnection = this;
+				update.m_senderEndpoint = this.m_remoteEndpoint;
+				update.Write(rtt);
+				m_peer.ReleaseMessage(update);
+			}
+		}
+	}
 }

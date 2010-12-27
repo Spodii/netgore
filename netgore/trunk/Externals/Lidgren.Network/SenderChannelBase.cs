@@ -1,13 +1,11 @@
-﻿using System.Linq;
+﻿using System;
 
 namespace Lidgren.Network
 {
-    abstract class SenderChannelBase
-    {
-        internal abstract void Reset();
-
-        internal abstract NetSendResult Send(float now, NetOutgoingMessage message);
-
-        internal abstract void SendQueuedMessages(float now);
-    }
+	internal abstract class SenderChannelBase
+	{
+		internal abstract NetSendResult Send(float now, NetOutgoingMessage message);
+		internal abstract void SendQueuedMessages(float now);
+		internal abstract void Reset();
+	}
 }

@@ -17,30 +17,31 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
+using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Lidgren.Network
 {
-    /// <summary>
-    /// The type of a NetIncomingMessage
-    /// </summary>
-    [SuppressMessage("Microsoft.Design", "CA1027:MarkEnumsWithFlags")]
-    public enum NetIncomingMessageType
-    {
-        // library note: values are power-of-two, but they are not flags - it's a convenience for NetPeerConfiguration.DisabledMessageTypes
-        Error = 0,
-        StatusChanged = 1 << 0, // Data (string)
-        UnconnectedData = 1 << 1, // Data					Based on data received
-        ConnectionApproval = 1 << 2, // Data
-        Data = 1 << 3, // Data					Based on data received
-        Receipt = 1 << 4, // Data
-        DiscoveryRequest = 1 << 5, // (no data)
-        DiscoveryResponse = 1 << 6, // Data
-        VerboseDebugMessage = 1 << 7, // Data (string)
-        DebugMessage = 1 << 8, // Data (string)
-        WarningMessage = 1 << 9, // Data (string)
-        ErrorMessage = 1 << 10, // Data (string)
-        NatIntroductionSuccess = 1 << 11, // Data (as passed to master server)
-    }
+	/// <summary>
+	/// The type of a NetIncomingMessage
+	/// </summary>
+	[SuppressMessage("Microsoft.Design", "CA1027:MarkEnumsWithFlags")]
+	public enum NetIncomingMessageType
+	{
+		// library note: values are power-of-two, but they are not flags - it's a convenience for NetPeerConfiguration.DisabledMessageTypes
+		Error = 0,
+		StatusChanged = 1 << 0,			// Data (string)
+		UnconnectedData = 1 << 1,		// Data					Based on data received
+		ConnectionApproval = 1 << 2,	// Data
+		Data = 1 << 3,					// Data					Based on data received
+		Receipt = 1 << 4,				// Data
+		DiscoveryRequest = 1 << 5,		// (no data)
+		DiscoveryResponse = 1 << 6,		// Data
+		VerboseDebugMessage = 1 << 7,	// Data (string)
+		DebugMessage = 1 << 8,			// Data (string)
+		WarningMessage = 1 << 9,		// Data (string)
+		ErrorMessage = 1 << 10,			// Data (string)
+		NatIntroductionSuccess = 1 << 11, // Data (as passed to master server)
+		ConnectionLatencyUpdated = 1 << 12, // Seconds as a Single
+	}
 }

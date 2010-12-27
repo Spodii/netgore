@@ -16,109 +16,111 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System.Linq;
+using System;
 using System.Net;
 
 namespace Lidgren.Network
 {
-    /// <summary>
-    /// Specialized version of NetPeer used for a "client" connection. It does not accept any incoming connections and maintains a ServerConnection property
-    /// </summary>
-    public class NetClient : NetPeer
-    {
-        public NetClient(NetPeerConfiguration config) : base(config)
-        {
-            config.AcceptIncomingConnections = false;
-        }
+	/// <summary>
+	/// Specialized version of NetPeer used for a "client" connection. It does not accept any incoming connections and maintains a ServerConnection property
+	/// </summary>
+	public class NetClient : NetPeer
+	{
+		/// <summary>
+		/// Gets the connection to the server, if any
+		/// </summary>
+		public NetConnection ServerConnection
+		{
+			get
+			{
+				NetConnection retval = null;
+				if (m_connections.Count > 0)
+				{
+					try
+					{
+						retval = m_connections[0];
+					}
+					catch
+					{
+						// preempted!
+						return null;
+					}
+				}
+				return retval;
+			}
+		}
 
-        /// <summary>
-        /// Gets the connection to the server, if any
-        /// </summary>
-        public NetConnection ServerConnection
-        {
-            get
-            {
-                NetConnection retval = null;
-                if (m_connections.Count > 0)
-                {
-                    try
-                    {
-                        retval = m_connections[0];
-                    }
-                    catch
-                    {
-                        // preempted!
-                        return null;
-                    }
-                }
-                return retval;
-            }
-        }
+		public NetClient(NetPeerConfiguration config)
+			: base(config)
+		{
+			config.AcceptIncomingConnections = false;
+		}
 
-        public override NetConnection Connect(IPEndPoint remoteEndpoint, NetOutgoingMessage hailMessage)
-        {
-            lock (m_connections)
-            {
-                if (m_connections.Count > 0)
-                {
-                    LogWarning("Connect attempt failed; Already connected");
-                    return null;
-                }
-            }
-            return base.Connect(remoteEndpoint, hailMessage);
-        }
+		public override NetConnection Connect(IPEndPoint remoteEndpoint, NetOutgoingMessage hailMessage)
+		{
+			lock (m_connections)
+			{
+				if (m_connections.Count > 0)
+				{
+					LogWarning("Connect attempt failed; Already connected");
+					return null;
+				}
+			}
+			return base.Connect(remoteEndpoint, hailMessage);
+		}
 
-        /// <summary>
-        /// Disconnect from server
-        /// </summary>
-        /// <param name="byeMessage">reason for disconnect</param>
-        public void Disconnect(string byeMessage)
-        {
-            var serverConnection = ServerConnection;
-            if (serverConnection == null)
-            {
-                LogWarning("Disconnect requested when not connected!");
-                return;
-            }
-            serverConnection.Disconnect(byeMessage);
-        }
+		/// <summary>
+		/// Disconnect from server
+		/// </summary>
+		/// <param name="byeMessage">reason for disconnect</param>
+		public void Disconnect(string byeMessage)
+		{
+			NetConnection serverConnection = ServerConnection;
+			if (serverConnection == null)
+			{
+				LogWarning("Disconnect requested when not connected!");
+				return;
+			}
+			serverConnection.Disconnect(byeMessage);
+		}
 
-        /// <summary>
-        /// Sends message to server
-        /// </summary>
-        public NetSendResult SendMessage(NetOutgoingMessage msg, NetDeliveryMethod method)
-        {
-            var serverConnection = ServerConnection;
-            if (serverConnection == null)
-            {
-                LogWarning("Cannot send message, no server connection!");
-                return NetSendResult.Failed;
-            }
+		/// <summary>
+		/// Sends message to server
+		/// </summary>
+		public NetSendResult SendMessage(NetOutgoingMessage msg, NetDeliveryMethod method)
+		{
+			NetConnection serverConnection = ServerConnection;
+			if (serverConnection == null)
+			{
+				LogWarning("Cannot send message, no server connection!");
+				return NetSendResult.Failed;
+			}
 
-            return serverConnection.SendMessage(msg, method, 0);
-        }
+			return serverConnection.SendMessage(msg, method, 0);
+		}
 
-        /// <summary>
-        /// Sends message to server
-        /// </summary>
-        public NetSendResult SendMessage(NetOutgoingMessage msg, NetDeliveryMethod method, int sequenceChannel)
-        {
-            var serverConnection = ServerConnection;
-            if (serverConnection == null)
-            {
-                LogWarning("Cannot send message, no server connection!");
-                return NetSendResult.Failed;
-            }
+		/// <summary>
+		/// Sends message to server
+		/// </summary>
+		public NetSendResult SendMessage(NetOutgoingMessage msg, NetDeliveryMethod method, int sequenceChannel)
+		{
+			NetConnection serverConnection = ServerConnection;
+			if (serverConnection == null)
+			{
+				LogWarning("Cannot send message, no server connection!");
+				return NetSendResult.Failed;
+			}
 
-            return serverConnection.SendMessage(msg, method, sequenceChannel);
-        }
+			return serverConnection.SendMessage(msg, method, sequenceChannel);
+		}
 
-        /// <summary>
-        /// Returns a string that represents this object
-        /// </summary>
-        public override string ToString()
-        {
-            return "[NetClient " + ServerConnection + "]";
-        }
-    }
+		/// <summary>
+		/// Returns a string that represents this object
+		/// </summary>
+		public override string ToString()
+		{
+			return "[NetClient " + ServerConnection + "]";
+		}
+
+	}
 }

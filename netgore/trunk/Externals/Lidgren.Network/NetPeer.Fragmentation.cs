@@ -1,147 +1,151 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Lidgren.Network
 {
-    class ReceivedFragmentGroup
-    {
-        public byte[] Data;
-        public float LastReceived;
-        public NetBitVector ReceivedChunks;
-    }
+	internal class ReceivedFragmentGroup
+	{
+		public float LastReceived;
+		public byte[] Data;
+		public NetBitVector ReceivedChunks;
+	}
 
-    public partial class NetPeer
-    {
-        readonly Dictionary<int, ReceivedFragmentGroup> m_receivedFragmentGroups;
-        int m_lastUsedFragmentGroup;
+	public partial class NetPeer
+	{
+		private int m_lastUsedFragmentGroup;
 
-        // on user thread
+		private Dictionary<int, ReceivedFragmentGroup> m_receivedFragmentGroups;
 
-        void HandleReleasedFragment(NetIncomingMessage im)
-        {
-            //
-            // read fragmentation header and combine fragments
-            //
-            int group;
-            int totalBits;
-            int chunkByteSize;
-            int chunkNumber;
-            var ptr = NetFragmentationHelper.ReadHeader(im.m_data, 0, out group, out totalBits, out chunkByteSize, out chunkNumber);
+		// on user thread
+		private void SendFragmentedMessage(NetOutgoingMessage msg, IList<NetConnection> recipients, NetDeliveryMethod method, int sequenceChannel)
+		{
+			int group = Interlocked.Increment(ref m_lastUsedFragmentGroup);
+			if (group >= NetConstants.MaxFragmentationGroups)
+			{
+				// TODO: not thread safe; but in practice probably not an issue
+				m_lastUsedFragmentGroup = 1;
+				group = 1;
+			}
+			msg.m_fragmentGroup = group;
 
-            NetException.Assert(im.LengthBytes > ptr);
+			// do not send msg; but set fragmentgroup in case user tries to recycle it immediately
 
-            NetException.Assert(group > 0);
-            NetException.Assert(totalBits > 0);
-            NetException.Assert(chunkByteSize > 0);
+			// create fragmentation specifics
+			int totalBytes = msg.LengthBytes;
 
-            var totalBytes = NetUtility.BytesToHoldBits(totalBits);
-            var totalNumChunks = totalBytes / chunkByteSize;
-            if (totalNumChunks * chunkByteSize < totalBytes)
-                totalNumChunks++;
+			// determine minimum mtu for all recipients
+			int mtu = GetMTU(recipients);
+			int bytesPerChunk = NetFragmentationHelper.GetBestChunkSize(group, totalBytes, mtu);
 
-            NetException.Assert(chunkNumber < totalNumChunks);
+			int numChunks = totalBytes / bytesPerChunk;
+			if (numChunks * bytesPerChunk < totalBytes)
+				numChunks++;
 
-            if (chunkNumber >= totalNumChunks)
-            {
-                LogWarning("Index out of bounds for chunk " + chunkNumber + " (total chunks " + totalNumChunks + ")");
-                return;
-            }
+			int bitsPerChunk = bytesPerChunk * 8;
+			int bitsLeft = msg.LengthBits;
+			for (int i = 0; i < numChunks; i++)
+			{
+				NetOutgoingMessage chunk = CreateMessage(mtu);
 
-            ReceivedFragmentGroup info;
-            if (!m_receivedFragmentGroups.TryGetValue(group, out info))
-            {
-                info = new ReceivedFragmentGroup();
-                info.Data = new byte[totalBytes];
-                info.ReceivedChunks = new NetBitVector(totalNumChunks);
-                m_receivedFragmentGroups[group] = info;
-            }
+				chunk.m_bitLength = (bitsLeft > bitsPerChunk ? bitsPerChunk : bitsLeft);
+				chunk.m_data = msg.m_data;
+				chunk.m_fragmentGroup = group;
+				chunk.m_fragmentGroupTotalBits = totalBytes * 8;
+				chunk.m_fragmentChunkByteSize = bytesPerChunk;
+				chunk.m_fragmentChunkNumber = i;
 
-            info.ReceivedChunks[chunkNumber] = true;
-            info.LastReceived = (float)NetTime.Now;
+				NetException.Assert(chunk.m_bitLength != 0);
+				NetException.Assert(chunk.GetEncodedSize() < mtu);
 
-            // copy to data
-            var offset = (chunkNumber * chunkByteSize);
-            Buffer.BlockCopy(im.m_data, ptr, info.Data, offset, im.LengthBytes - ptr);
+				Interlocked.Add(ref chunk.m_recyclingCount, recipients.Count);
 
-            var cnt = info.ReceivedChunks.Count();
-            //Console.WriteLine("Found fragment #" + chunkNumber + " in group " + group + " offset " + offset + " of total bits " + totalBits + " (total chunks done " + cnt + ")");
+				foreach (NetConnection recipient in recipients)
+					recipient.EnqueueMessage(chunk, method, sequenceChannel);
 
-            LogVerbose("Received fragment " + chunkNumber + " of " + totalNumChunks + " (" + cnt + " chunks received)");
+				bitsLeft -= bitsPerChunk;
+			}
 
-            if (info.ReceivedChunks.Count() == totalNumChunks)
-            {
-                // Done! Transform this incoming message
-                im.m_data = info.Data;
-                im.m_bitLength = totalBits;
-                im.m_isFragment = false;
+			return;
+		}
 
-                LogVerbose("Fragment group #" + group + " fully received in " + totalNumChunks + " chunks (" + totalBits +
-                           " bits)");
+		
 
-                ReleaseMessage(im);
-            }
-            else
-            {
-                // data has been copied; recycle this incoming message
-                Recycle(im);
-            }
+		private void HandleReleasedFragment(NetIncomingMessage im)
+		{
+			//
+			// read fragmentation header and combine fragments
+			//
+			int group;
+			int totalBits;
+			int chunkByteSize;
+			int chunkNumber;
+			int ptr = NetFragmentationHelper.ReadHeader(
+				im.m_data, 0,
+				out group,
+				out totalBits,
+				out chunkByteSize,
+				out chunkNumber
+			);
 
-            return;
-        }
+			NetException.Assert(im.LengthBytes > ptr);
 
-        void SendFragmentedMessage(NetOutgoingMessage msg, IList<NetConnection> recipients, NetDeliveryMethod method,
-                                   int sequenceChannel)
-        {
-            var group = Interlocked.Increment(ref m_lastUsedFragmentGroup);
-            if (group >= NetConstants.MaxFragmentationGroups)
-            {
-                // TODO: not thread safe; but in practice probably not an issue
-                m_lastUsedFragmentGroup = 1;
-                group = 1;
-            }
-            msg.m_fragmentGroup = group;
+			NetException.Assert(group > 0);
+			NetException.Assert(totalBits > 0);
+			NetException.Assert(chunkByteSize > 0);
+			
+			int totalBytes = NetUtility.BytesToHoldBits((int)totalBits);
+			int totalNumChunks = totalBytes / chunkByteSize;
+			if (totalNumChunks * chunkByteSize < totalBytes)
+				totalNumChunks++;
 
-            // do not send msg; but set fragmentgroup in case user tries to recycle it immediately
+			NetException.Assert(chunkNumber < totalNumChunks);
 
-            // create fragmentation specifics
-            var totalBytes = msg.LengthBytes;
-            var mtu = m_configuration.MaximumTransmissionUnit;
+			if (chunkNumber >= totalNumChunks)
+			{
+				LogWarning("Index out of bounds for chunk " + chunkNumber + " (total chunks " + totalNumChunks + ")");
+				return;
+			}
 
-            var bytesPerChunk = NetFragmentationHelper.GetBestChunkSize(group, totalBytes, mtu);
+			ReceivedFragmentGroup info;
+			if (!m_receivedFragmentGroups.TryGetValue(group, out info))
+			{
+				info = new ReceivedFragmentGroup();
+				info.Data = new byte[totalBytes];
+				info.ReceivedChunks = new NetBitVector(totalNumChunks);
+				m_receivedFragmentGroups[group] = info;
+			}
 
-            var numChunks = totalBytes / bytesPerChunk;
-            if (numChunks * bytesPerChunk < totalBytes)
-                numChunks++;
+			info.ReceivedChunks[chunkNumber] = true;
+			info.LastReceived = (float)NetTime.Now;
 
-            var bitsPerChunk = bytesPerChunk * 8;
-            var bitsLeft = msg.LengthBits;
-            for (var i = 0; i < numChunks; i++)
-            {
-                var chunk = CreateMessage(mtu);
+			// copy to data
+			int offset = (chunkNumber * chunkByteSize);
+			Buffer.BlockCopy(im.m_data, ptr, info.Data, offset, im.LengthBytes - ptr);
 
-                chunk.m_bitLength = (bitsLeft > bitsPerChunk ? bitsPerChunk : bitsLeft);
-                chunk.m_data = msg.m_data;
-                chunk.m_fragmentGroup = group;
-                chunk.m_fragmentGroupTotalBits = totalBytes * 8;
-                chunk.m_fragmentChunkByteSize = bytesPerChunk;
-                chunk.m_fragmentChunkNumber = i;
+			int cnt = info.ReceivedChunks.Count();
+			//LogVerbose("Found fragment #" + chunkNumber + " in group " + group + " offset " + offset + " of total bits " + totalBits + " (total chunks done " + cnt + ")");
 
-                NetException.Assert(chunk.m_bitLength != 0);
-                NetException.Assert(chunk.GetEncodedSize() < mtu);
+			LogVerbose("Received fragment " + chunkNumber + " of " + totalNumChunks + " (" + cnt + " chunks received)");
 
-                Interlocked.Add(ref chunk.m_recyclingCount, recipients.Count);
+			if (info.ReceivedChunks.Count() == totalNumChunks)
+			{
+				// Done! Transform this incoming message
+				im.m_data = info.Data;
+				im.m_bitLength = (int)totalBits;
+				im.m_isFragment = false;
 
-                foreach (var recipient in recipients)
-                {
-                    recipient.EnqueueMessage(chunk, method, sequenceChannel);
-                }
+				LogVerbose("Fragment group #" + group + " fully received in " + totalNumChunks + " chunks (" + totalBits + " bits)");
 
-                bitsLeft -= bitsPerChunk;
-            }
+				ReleaseMessage(im);
+			}
+			else
+			{
+				// data has been copied; recycle this incoming message
+				Recycle(im);
+			}
 
-            return;
-        }
-    }
+			return;
+		}
+	}
 }

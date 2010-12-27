@@ -16,43 +16,43 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System.Linq;
+using System;
 
 namespace Lidgren.Network
 {
-    /// <summary>
-    /// Status for a NetConnection instance
-    /// </summary>
-    public enum NetConnectionStatus
-    {
-        /// <summary>
-        /// No connection, or attempt, in place
-        /// </summary>
-        None,
+	/// <summary>
+	/// Status for a NetConnection instance
+	/// </summary>
+	public enum NetConnectionStatus
+	{
+		/// <summary>
+		/// No connection, or attempt, in place
+		/// </summary>
+		None,
+		
+		/// <summary>
+		/// Connect has been sent; waiting for ConnectResponse
+		/// </summary>
+		InitiatedConnect,
 
-        /// <summary>
-        /// Connect has been sent; waiting for ConnectResponse
-        /// </summary>
-        InitiatedConnect,
+		/// <summary>
+		/// Connect was received and ConnectResponse has been sent; waiting for ConnectionEstablished
+		/// </summary>
+		RespondedConnect, // we got Connect, sent ConnectResponse
 
-        /// <summary>
-        /// Connect was received and ConnectResponse has been sent; waiting for ConnectionEstablished
-        /// </summary>
-        RespondedConnect, // we got Connect, sent ConnectResponse
+		/// <summary>
+		/// Connected
+		/// </summary>
+		Connected,		  // we received ConnectResponse (if initiator) or ConnectionEstablished (if passive)
 
-        /// <summary>
-        /// Connected
-        /// </summary>
-        Connected, // we received ConnectResponse (if initiator) or ConnectionEstablished (if passive)
+		/// <summary>
+		/// In the process of disconnecting
+		/// </summary>
+		Disconnecting,
 
-        /// <summary>
-        /// In the process of disconnecting
-        /// </summary>
-        Disconnecting,
-
-        /// <summary>
-        /// Disconnected
-        /// </summary>
-        Disconnected
-    }
+		/// <summary>
+		/// Disconnected
+		/// </summary>
+		Disconnected
+	}
 }
