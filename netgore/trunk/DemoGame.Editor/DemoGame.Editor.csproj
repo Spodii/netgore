@@ -141,6 +141,12 @@
     <Compile Include="Forms\DisplayFilterManagerForm.Designer.cs">
       <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Dockable\BodyEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dockable\BodyEditorForm.Designer.cs">
+      <DependentUpon>BodyEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Dockable\SoundEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -254,13 +260,13 @@
     <Compile Include="Controls\SkeletonBodyItemsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\CharacterTemplateEquippedItem.cs" />
-    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\CharacterTemplateInventoryItem.cs" />
-    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorAlliance.cs" />
-    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorCharacterTemplate.cs" />
-    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorMapSpawnValues.cs" />
-    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorQuest.cs" />
-    <Compile Include="Editor-Specific Derived Classes\PropertyGrid Wrappers\EditorShop.cs" />
+    <Compile Include="PropertyGrid Wrappers\CharacterTemplateEquippedItem.cs" />
+    <Compile Include="PropertyGrid Wrappers\CharacterTemplateInventoryItem.cs" />
+    <Compile Include="PropertyGrid Wrappers\EditorAlliance.cs" />
+    <Compile Include="PropertyGrid Wrappers\EditorCharacterTemplate.cs" />
+    <Compile Include="PropertyGrid Wrappers\EditorMapSpawnValues.cs" />
+    <Compile Include="PropertyGrid Wrappers\EditorQuest.cs" />
+    <Compile Include="PropertyGrid Wrappers\EditorShop.cs" />
     <Compile Include="SkeletonLoader.cs" />
     <Compile Include="Controls\SkeletonNodesComboBox.cs">
       <SubType>Component</SubType>
@@ -439,6 +445,9 @@
     </Compile>
     <EmbeddedResource Include="Forms\DisplayFilterManagerForm.resx">
       <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dockable\BodyEditorForm.resx">
+      <DependentUpon>BodyEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\SoundEditorForm.resx">
       <DependentUpon>SoundEditorForm.cs</DependentUpon>
