@@ -1,19 +1,20 @@
-﻿using System.Linq;
+﻿using System;
 
 namespace Lidgren.Network
 {
-    sealed class NetUnreliableUnorderedReceiver : NetReceiverChannelBase
-    {
-        public NetUnreliableUnorderedReceiver(NetConnection connection) : base(connection)
-        {
-        }
+	internal sealed class NetUnreliableUnorderedReceiver : NetReceiverChannelBase
+	{
+		public NetUnreliableUnorderedReceiver(NetConnection connection)
+			: base(connection)
+		{
+		}
 
-        internal override void ReceiveMessage(NetIncomingMessage msg)
-        {
-            // ack no matter what
-            m_connection.QueueAck(msg.m_receivedMessageType, msg.m_sequenceNumber);
+		internal override void ReceiveMessage(NetIncomingMessage msg)
+		{
+			// ack no matter what
+			m_connection.QueueAck(msg.m_receivedMessageType, msg.m_sequenceNumber);
 
-            m_peer.ReleaseMessage(msg);
-        }
-    }
+			m_peer.ReleaseMessage(msg);
+		}
+	}
 }
