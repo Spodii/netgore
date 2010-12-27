@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NetGore;
 using NetGore.IO;
@@ -23,6 +24,52 @@ namespace DemoGame
         static BodyInfoManager()
         {
             _instance = Load(ContentPaths.Build);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BodyInfo"/> instance and adds it to this <see cref="BodyInfoManager"/>.
+        /// </summary>
+        /// <remarks>
+        /// Should only be used in the editor.
+        /// </remarks>
+        /// <returns>The new <see cref="BodyInfo"/> instance.</returns>
+        public BodyInfo CreateBody()
+        {
+            var id = GetNextFreeID();
+            var body = new BodyInfo(id);
+
+            Debug.Assert(!_bodies.ContainsKey(id));
+            _bodies.Add(id, body);
+
+            return body;
+        }
+
+        /// <summary>
+        /// Deletes a <see cref="BodyInfo"/> in this <see cref="BodyInfoManager"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="BodyID"/> of the body to remove.</param>
+        /// <returns>True if a <see cref="BodyInfo"/> was removed from the given <paramref name="id"/>; otherwise false.</returns>
+        /// <remarks>
+        /// Should only be used in the editor.
+        /// </remarks>
+        public bool RemoveBody(BodyID id)
+        {
+            return _bodies.Remove(id);
+        }
+
+        /// <summary>
+        /// Gets the next free <see cref="BodyID"/>.
+        /// </summary>
+        /// <returns>The next free <see cref="BodyID"/>.</returns>
+        BodyID GetNextFreeID()
+        {
+            BodyID i = new BodyID(1);
+            while (_bodies.ContainsKey(i))
+            {
+                i++;
+            }
+
+            return i;
         }
 
         /// <summary>
