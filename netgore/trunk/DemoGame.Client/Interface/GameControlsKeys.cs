@@ -34,6 +34,11 @@ namespace DemoGame.Client
         static readonly GameControlKeys _talkToNPC;
         static readonly GameControlKeys _useShop;
         static readonly GameControlKeys _useWorld;
+        static readonly GameControlKeys _windowEquipped;
+        static readonly GameControlKeys _windowGuild;
+        static readonly GameControlKeys _windowInventory;
+        static readonly GameControlKeys _windowSkills;
+        static readonly GameControlKeys _windowStats;
 
         static GameControlKeys _moveStop;
 
@@ -52,24 +57,33 @@ namespace DemoGame.Client
             _talkToNPC = new GameControlKeys("Talk To NPC", SKC("TalkToNPC"));
             _pickUp = new GameControlKeys("Pick Up", SKC("PickUp"));
 
-            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", SKCEmotes("EmoteEllipsis"));
-            _emoteExclamation = new GameControlKeys("Emote Exclamation", SKCEmotes("EmoteExclamation"));
-            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", SKCEmotes("EmoteHeartbroken"));
-            _emoteHearts = new GameControlKeys("Emote Hearts", SKCEmotes("EmoteHearts"));
-            _emoteMeat = new GameControlKeys("Emote Meat", SKCEmotes("EmoteMeat"));
-            _emoteQuestion = new GameControlKeys("Emote Question", SKCEmotes("EmoteQuestion"));
-            _emoteSweat = new GameControlKeys("Emote Sweat", SKCEmotes("EmoteSweat"));
+            var emoteKeysDown = SKCs("Emote_Modifier1", "Emote_Modifier2");
+            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", emoteKeysDown, null, SKCs("EmoteEllipsis"));
+            _emoteExclamation = new GameControlKeys("Emote Exclamation", emoteKeysDown, null, SKCs("EmoteExclamation"));
+            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", emoteKeysDown, null, SKCs("EmoteHeartbroken"));
+            _emoteHearts = new GameControlKeys("Emote Hearts", emoteKeysDown, null, SKCs("EmoteHearts"));
+            _emoteMeat = new GameControlKeys("Emote Meat", emoteKeysDown, null, SKCs("EmoteMeat"));
+            _emoteQuestion = new GameControlKeys("Emote Question", emoteKeysDown, null, SKCs("EmoteQuestion"));
+            _emoteSweat = new GameControlKeys("Emote Sweat", emoteKeysDown, null, SKCs("EmoteSweat"));
 
-            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, SKCQuickBar("QuickBarItem0"));
-            _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, SKCQuickBar("QuickBarItem1"));
-            _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, SKCQuickBar("QuickBarItem2"));
-            _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, SKCQuickBar("QuickBarItem3"));
-            _quickBarItem4 = new GameControlKeys("Quick bar item 4", null, null, SKCQuickBar("QuickBarItem4"));
-            _quickBarItem5 = new GameControlKeys("Quick bar item 5", null, null, SKCQuickBar("QuickBarItem5"));
-            _quickBarItem6 = new GameControlKeys("Quick bar item 6", null, null, SKCQuickBar("QuickBarItem6"));
-            _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, SKCQuickBar("QuickBarItem7"));
-            _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, SKCQuickBar("QuickBarItem8"));
-            _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, SKCQuickBar("QuickBarItem9"));
+            var quickBarKeysDown = SKCs("QuickBarItem_Modifier1", "QuickBarItem_Modifier2");
+            _quickBarItem0 = new GameControlKeys("Quick bar item 0", quickBarKeysDown, null, SKCs("QuickBarItem0"));
+            _quickBarItem1 = new GameControlKeys("Quick bar item 1", quickBarKeysDown, null, SKCs("QuickBarItem1"));
+            _quickBarItem2 = new GameControlKeys("Quick bar item 2", quickBarKeysDown, null, SKCs("QuickBarItem2"));
+            _quickBarItem3 = new GameControlKeys("Quick bar item 3", quickBarKeysDown, null, SKCs("QuickBarItem3"));
+            _quickBarItem4 = new GameControlKeys("Quick bar item 4", quickBarKeysDown, null, SKCs("QuickBarItem4"));
+            _quickBarItem5 = new GameControlKeys("Quick bar item 5", quickBarKeysDown, null, SKCs("QuickBarItem5"));
+            _quickBarItem6 = new GameControlKeys("Quick bar item 6", quickBarKeysDown, null, SKCs("QuickBarItem6"));
+            _quickBarItem7 = new GameControlKeys("Quick bar item 7", quickBarKeysDown, null, SKCs("QuickBarItem7"));
+            _quickBarItem8 = new GameControlKeys("Quick bar item 8", quickBarKeysDown, null, SKCs("QuickBarItem8"));
+            _quickBarItem9 = new GameControlKeys("Quick bar item 9", quickBarKeysDown, null, SKCs("QuickBarItem9"));
+
+            var windowKeysDown = SKCs("Window_Modifier1", "Window_Modifier2");
+            _windowStats = new GameControlKeys("Stats window", windowKeysDown, null, SKCs("Window_Stats"));
+            _windowSkills = new GameControlKeys("Skills window", windowKeysDown, null, SKCs("Window_Skills"));
+            _windowInventory = new GameControlKeys("Inventory window", windowKeysDown, null, SKCs("Window_Inventory"));
+            _windowEquipped = new GameControlKeys("Equipped window", windowKeysDown, null, SKCs("Window_Equipped"));
+            _windowGuild = new GameControlKeys("Guild window", windowKeysDown, null, SKCs("Window_Guild"));
 
             // Initialize the keys specific to the perspective being used
             InitPerspectiveSpecificKeys();
@@ -200,6 +214,31 @@ namespace DemoGame.Client
             get { return _useWorld; }
         }
 
+        public static GameControlKeys WindowEquipped
+        {
+            get { return _windowEquipped; }
+        }
+
+        public static GameControlKeys WindowGuild
+        {
+            get { return _windowGuild; }
+        }
+
+        public static GameControlKeys WindowInventory
+        {
+            get { return _windowInventory; }
+        }
+
+        public static GameControlKeys WindowSkills
+        {
+            get { return _windowSkills; }
+        }
+
+        public static GameControlKeys WindowStats
+        {
+            get { return _windowStats; }
+        }
+
         /// <summary>
         /// Helper method to create a <see cref="SettingsKeyCodeReference"/>.
         /// </summary>
@@ -212,23 +251,29 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Helper method to create a <see cref="SettingsKeyCodeReference"/> for an emote key.
+        /// Helper method to create a <see cref="SettingsKeyCodeReference"/>.
         /// </summary>
         /// <param name="settingName">The setting name for the key, without the Keys_ prefix.</param>
         /// <returns>The <see cref="IKeyCodeReference"/> instance.</returns>
-        static IEnumerable<IKeyCodeReference> SKCEmotes(string settingName)
+        static IEnumerable<IKeyCodeReference> SKCs(string settingName)
         {
-            return new IKeyCodeReference[] { SKC(settingName), SKC("Emote_Modifier1"), SKC("Emote_Modifier2") };
+            return new IKeyCodeReference[] { SKC(settingName) };
         }
 
         /// <summary>
-        /// Helper method to create a <see cref="SettingsKeyCodeReference"/> for a quick bar item key.
+        /// Helper method to create a <see cref="SettingsKeyCodeReference"/>.
         /// </summary>
         /// <param name="settingName">The setting name for the key, without the Keys_ prefix.</param>
         /// <returns>The <see cref="IKeyCodeReference"/> instance.</returns>
-        static IEnumerable<IKeyCodeReference> SKCQuickBar(string settingName)
+        static IEnumerable<IKeyCodeReference> SKCs(params string[] settingName)
         {
-            return new IKeyCodeReference[] { SKC(settingName), SKC("QuickBarItem_Modifier1"), SKC("QuickBarItem_Modifier2") };
+            var ret = new List<IKeyCodeReference>();
+            foreach (var sn in settingName)
+            {
+                ret.Add(SKC(sn));
+            }
+
+            return ret.Distinct().ToArray();
         }
     }
 }

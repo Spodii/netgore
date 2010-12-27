@@ -119,5 +119,26 @@
     <Setting Name="Keys_QuickBarItem_Modifier2" Type="SFML.Window.KeyCode" Scope="User">
       <Value Profile="(Default)">None</Value>
     </Setting>
+    <Setting Name="Keys_Window_Stats" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">S</Value>
+    </Setting>
+    <Setting Name="Keys_Window_Inventory" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">B</Value>
+    </Setting>
+    <Setting Name="Keys_Window_Equipped" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">E</Value>
+    </Setting>
+    <Setting Name="Keys_Window_Guild" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">G</Value>
+    </Setting>
+    <Setting Name="Keys_Window_Skills" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">A</Value>
+    </Setting>
+    <Setting Name="Keys_Window_Modifier1" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">LControl</Value>
+    </Setting>
+    <Setting Name="Keys_Window_Modifier2" Type="SFML.Window.KeyCode" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

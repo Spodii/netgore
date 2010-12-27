@@ -12,7 +12,7 @@ namespace DemoGame.Client
     /// <summary>
     /// A <see cref="Form"/> that contains the skills a user can use.
     /// </summary>
-    class SkillsForm : Form
+    public class SkillsForm : Form
     {
         static readonly Vector2 _iconSize = new Vector2(32, 32);
 

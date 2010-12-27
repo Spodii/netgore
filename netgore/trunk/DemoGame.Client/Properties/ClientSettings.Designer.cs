@@ -484,5 +484,89 @@ namespace DemoGame.Client.Properties {
                 this["Keys_QuickBarItem_Modifier2"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("S")]
+        public global::SFML.Window.KeyCode Keys_Window_Stats {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Window_Stats"]));
+            }
+            set {
+                this["Keys_Window_Stats"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("B")]
+        public global::SFML.Window.KeyCode Keys_Window_Inventory {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Window_Inventory"]));
+            }
+            set {
+                this["Keys_Window_Inventory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("E")]
+        public global::SFML.Window.KeyCode Keys_Window_Equipped {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Window_Equipped"]));
+            }
+            set {
+                this["Keys_Window_Equipped"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("G")]
+        public global::SFML.Window.KeyCode Keys_Window_Guild {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Window_Guild"]));
+            }
+            set {
+                this["Keys_Window_Guild"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A")]
+        public global::SFML.Window.KeyCode Keys_Window_Skills {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Window_Skills"]));
+            }
+            set {
+                this["Keys_Window_Skills"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LControl")]
+        public global::SFML.Window.KeyCode Keys_Window_Modifier1 {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Window_Modifier1"]));
+            }
+            set {
+                this["Keys_Window_Modifier1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::SFML.Window.KeyCode Keys_Window_Modifier2 {
+            get {
+                return ((global::SFML.Window.KeyCode)(this["Keys_Window_Modifier2"]));
+            }
+            set {
+                this["Keys_Window_Modifier2"] = value;
+            }
+        }
     }
 }
