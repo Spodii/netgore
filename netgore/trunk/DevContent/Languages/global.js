@@ -88,27 +88,27 @@ public function GetTimeSpanString(totalSeconds) {
 	var mins = Math.floor(secsLeft / SECS_PER_MIN);
 	secsLeft -= mins * SECS_PER_MIN;
 	
-	var secs = secsLeft;
+	var secs = Math.round(secsLeft);
 
 	var s = "";
-	if (days > 1)
-		s += days + " " + GetUserConst("STR_DAYS") + ", ";
-	else if (days == 1)
+	if (days == 1 || days == -1)
 		s += days + " " + GetUserConst("STR_DAY") + ", ";
+	else if (days != 0)
+		s += days + " " + GetUserConst("STR_DAYS") + ", ";
 
-	if (hours > 1)
-		s += hours + " " + GetUserConst("STR_HOURS") + ", ";
-	else if (hours == 1)
+	if (hours == 1 || hours == -1)
 		s += hours + " " + GetUserConst("STR_HOUR") + ", ";
+	else if (hours != 0)
+		s += hours + " " + GetUserConst("STR_HOURS") + ", ";
 
-	if (mins > 1)
-		s += mins + " " + GetUserConst("STR_MINUTES") + ", ";
-	else if (hours == 1)
+	if (mins == 1 || mins == -1)
 		s += mins + " " + GetUserConst("STR_MINUTE") + ", ";
+	else if (mins != 0)
+		s += mins + " " + GetUserConst("STR_MINUTES") + ", ";
 
-	if (secs > 1)
+	if (secs == 1 || secs == -1)
 		s += secs + " " + GetUserConst("STR_SECONDS") + ", ";
-	else if (secs == 1)
+	else if (secs != 0)
 		s += secs + " " + GetUserConst("STR_SECOND") + ", ";
 
 	if (s.length > 2)
