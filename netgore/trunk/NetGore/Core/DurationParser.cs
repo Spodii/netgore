@@ -20,7 +20,7 @@ namespace NetGore
     /// <example>
     /// 5m10s       - 5 minutes and 10 seconds
     /// 3s          - 3 seconds
-    /// 10s5y3m     - 5 years, 3 months, and 10 seconds
+    /// 10s5y3mon    - 5 years, 3 months, and 10 seconds
     /// </example>
     public static class DurationParser
     {
