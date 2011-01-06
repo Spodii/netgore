@@ -55,7 +55,8 @@ namespace DemoGame
         /// The setter should only be used in the editor.
         /// </remarks>
         [Browsable(true)]
-        [Description("The name of the SkeletonBody (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" + 
+        [Description(
+            "The name of the SkeletonBody (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
             " to use for this body.")]
         public string Body { get; set; }
 
@@ -68,7 +69,8 @@ namespace DemoGame
         /// The setter should only be used in the editor.
         /// </remarks>
         [Browsable(true)]
-        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" + 
+        [Description(
+            "The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
             " to use for this body when drawing the character falling.")]
         public string Fall { get; set; }
 
@@ -88,7 +90,8 @@ namespace DemoGame
         /// The setter should only be used in the editor.
         /// </remarks>
         [Browsable(true)]
-        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+        [Description(
+            "The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
             " to use for this body when drawing the character jumping.")]
         public string Jump { get; set; }
 
@@ -101,7 +104,8 @@ namespace DemoGame
         /// The setter should only be used in the editor.
         /// </remarks>
         [Browsable(true)]
-        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+        [Description(
+            "The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
             " to use for this body when drawing the character punching.")]
         public string Punch { get; set; }
 
@@ -125,7 +129,8 @@ namespace DemoGame
         /// The setter should only be used in the editor.
         /// </remarks>
         [Browsable(true)]
-        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+        [Description(
+            "The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
             " to use for this body when drawing the character standing still.")]
         public string Stand { get; set; }
 
@@ -138,7 +143,8 @@ namespace DemoGame
         /// The setter should only be used in the editor.
         /// </remarks>
         [Browsable(true)]
-        [Description("The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
+        [Description(
+            "The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
             " to use for this body when drawing the character walking.")]
         public string Walk { get; set; }
 

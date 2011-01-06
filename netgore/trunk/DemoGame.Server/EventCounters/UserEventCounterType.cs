@@ -8,6 +8,7 @@ namespace DemoGame.Server
     public enum UserEventCounterType : byte
     {
         #region User and NPC events
+
         /// <summary>
         /// <see cref="User"/> killed another <see cref="User"/>.
         /// </summary>
@@ -52,6 +53,7 @@ namespace DemoGame.Server
         /// The <see cref="User"/> used a use-once item.
         /// </summary>
         ItemConsumed = 9,
+
         #endregion
 
         #region User-only events

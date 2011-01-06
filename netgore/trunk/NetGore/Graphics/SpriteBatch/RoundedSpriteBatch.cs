@@ -125,8 +125,8 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public override void DrawString(Font font, string text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, float scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
+        public override void DrawString(Font font, string text, Vector2 position, Color color, float rotation, Vector2 origin,
+                                        float scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
             base.DrawString(font, text, position.Round(), color, rotation, origin, scale, style, shader);
         }
@@ -144,9 +144,8 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public override void DrawString(Font font, string text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular,
-                                        Shader shader = null)
+        public override void DrawString(Font font, string text, Vector2 position, Color color, float rotation, Vector2 origin,
+                                        Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
             base.DrawString(font, text, position.Round(), color, rotation, origin, scale, style, shader);
         }

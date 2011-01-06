@@ -191,55 +191,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Tries to add a <see cref="User"/> to the <see cref="World"/>.
-        /// </summary>
-        /// <param name="user">The <see cref="User"/> to add.</param>
-        /// <returns>True if the <paramref name="user"/> was successfully added to the <see cref="World"/>; otherwise false.</returns>
-        public bool TryAddUser(User user)
-        {
-            if (user == null)
-            {
-                const string errmsg = "Parameter `user` is null, but logically shouldn't be.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg);
-                Debug.Fail(errmsg);
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(user.Name))
-            {
-                const string errmsg = "User `{0}` contains a null or invalid name (`{1}`).";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, user, user.Name);
-                Debug.Fail(string.Format(errmsg, user, user.Name));
-                return false;
-            }
-
-            var name = user.Name;
-
-            lock (_usersSync)
-            {
-                // Make sure the user isn't already in the world
-                if (_users.ContainsKey(name))
-                {
-                    const string errmsg = "User with name `{0}` already in the _users collection! Cannot add user `{1}`.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, name, user);
-                    Debug.Fail(string.Format(errmsg, name, user));
-                    return false;
-                }
-
-                // Add the user to the collection
-                _users.Add(user.Name, user);
-            }
-
-            // Listen for when the user is disposed
-            user.Disposed += User_Disposed;
-
-            return true;
-        }
-
-        /// <summary>
         /// Handles the <see cref="BanningManager.AccountBanned"/> event.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -503,6 +454,55 @@ namespace DemoGame.Server
                     user.SynchronizeExtraUserInformation();
                 }
             }
+        }
+
+        /// <summary>
+        /// Tries to add a <see cref="User"/> to the <see cref="World"/>.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to add.</param>
+        /// <returns>True if the <paramref name="user"/> was successfully added to the <see cref="World"/>; otherwise false.</returns>
+        public bool TryAddUser(User user)
+        {
+            if (user == null)
+            {
+                const string errmsg = "Parameter `user` is null, but logically shouldn't be.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg);
+                Debug.Fail(errmsg);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(user.Name))
+            {
+                const string errmsg = "User `{0}` contains a null or invalid name (`{1}`).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, user, user.Name);
+                Debug.Fail(string.Format(errmsg, user, user.Name));
+                return false;
+            }
+
+            var name = user.Name;
+
+            lock (_usersSync)
+            {
+                // Make sure the user isn't already in the world
+                if (_users.ContainsKey(name))
+                {
+                    const string errmsg = "User with name `{0}` already in the _users collection! Cannot add user `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, name, user);
+                    Debug.Fail(string.Format(errmsg, name, user));
+                    return false;
+                }
+
+                // Add the user to the collection
+                _users.Add(user.Name, user);
+            }
+
+            // Listen for when the user is disposed
+            user.Disposed += User_Disposed;
+
+            return true;
         }
 
         /// <summary>

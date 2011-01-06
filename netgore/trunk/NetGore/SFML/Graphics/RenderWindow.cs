@@ -55,6 +55,10 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
+            static extern void sfRenderWindow_EnableVerticalSync(IntPtr This, bool Enable);
+
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfRenderWindow_GetDefaultView(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
@@ -144,10 +148,6 @@ namespace SFML
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfRenderWindow_ShowMouseCursor(IntPtr This, bool Show);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_EnableVerticalSync(IntPtr This, bool Enable);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -282,6 +282,16 @@ namespace SFML
             public override void EnableKeyRepeat(bool enable)
             {
                 sfRenderWindow_EnableKeyRepeat(This, enable);
+            }
+
+            /// <summary>
+            /// Enable / disable vertical synchronization
+            /// </summary>
+            /// <param name="enable">True to enable v-sync, false to deactivate</param>
+            ////////////////////////////////////////////////////////////
+            public override void EnableVerticalSync(bool enable)
+            {
+                sfRenderWindow_EnableVerticalSync(This, enable);
             }
 
             /// <summary>
@@ -451,16 +461,6 @@ namespace SFML
             {
                 return "[RenderWindow]" + " Width(" + Width + ")" + " Height(" + Height + ")" + " Settings(" + Settings + ")" +
                        " DefaultView(" + DefaultView + ")" + " View(" + GetView() + ")";
-            }
-
-            /// <summary>
-            /// Enable / disable vertical synchronization
-            /// </summary>
-            /// <param name="enable">True to enable v-sync, false to deactivate</param>
-            ////////////////////////////////////////////////////////////
-            public override void EnableVerticalSync(bool enable)
-            {
-                sfRenderWindow_EnableVerticalSync(This, enable);
             }
 
             /// <summary>

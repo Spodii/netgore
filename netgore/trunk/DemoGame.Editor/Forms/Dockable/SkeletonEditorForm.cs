@@ -56,27 +56,6 @@ namespace DemoGame.Editor
             btnSelectBodyGrhData.SelectedGrhDataHandler = btnSelectBodyGrhData_SelectedGrhDataHandler;
         }
 
-        GrhData btnSelectBodyGrhData_SelectedGrhDataHandler(object sender)
-        {
-            if (SelectedDSI == null || SelectedDSI.Grh == null)
-                return null;
-
-            return SelectedDSI.Grh.GrhData;
-        }
-
-        /// <summary>
-        /// Handles the GrhDataSelected event of the btnSelectBodyGrhData control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.EventArgs{GrhData}"/> instance containing the event data.</param>
-        void btnSelectBodyGrhData_GrhDataSelected(object sender, EventArgs<GrhData> e)
-        {
-            if (e.Item1 == null)
-                txtGrhIndex.Text = "";
-            else
-                txtGrhIndex.Text = e.Item1.GrhIndex.ToString();
-        }
-
         public DrawingManager DrawingManager
         {
             get { return _drawingManager; }
@@ -204,7 +183,10 @@ namespace DemoGame.Editor
                 // Name of the node under the cursor
                 var nodeUnderCursor = _skeleton.RootNode.GetAllNodes().FirstOrDefault(x => x.HitTest(_camera, _cursorPos));
                 if (nodeUnderCursor != null)
-                    sb.DrawStringShaded(_font, "Node: " + nodeUnderCursor.Name, _camera.ToScreen(_cursorPos) + new Vector2(12, -12), fontColor, borderColor);
+                {
+                    sb.DrawStringShaded(_font, "Node: " + nodeUnderCursor.Name,
+                        _camera.ToScreen(_cursorPos) + new Vector2(12, -12), fontColor, borderColor);
+                }
             }
             finally
             {
@@ -257,7 +239,8 @@ namespace DemoGame.Editor
                         // Create a child node
                         if (SelectedNode == null)
                         {
-                            const string errmsg = "You must first select a node before creating a new node. The selected node will be used as the new node's parent.";
+                            const string errmsg =
+                                "You must first select a node before creating a new node. The selected node will be used as the new node's parent.";
                             MessageBox.Show(errmsg, "Select a node", MessageBoxButtons.OK);
                         }
                         else
@@ -339,6 +322,21 @@ namespace DemoGame.Editor
             var center = _camera.Center;
             _camera.Scale += e.Delta / 1000f;
             _camera.CenterOn(center);
+        }
+
+        /// <summary>
+        /// Handles the Resize event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void GameScreen_Resize(object sender, EventArgs e)
+        {
+            if (_camera == null || GameScreen == null)
+                return;
+
+            var oldCenter = _camera.Center;
+            _camera.Size = new Vector2(GameScreen.ClientSize.Width, GameScreen.ClientSize.Height);
+            _camera.CenterOn(oldCenter);
         }
 
         static string GetLoadSkeletonDialogResult(string filter)
@@ -995,6 +993,27 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Handles the GrhDataSelected event of the btnSelectBodyGrhData control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.EventArgs{GrhData}"/> instance containing the event data.</param>
+        void btnSelectBodyGrhData_GrhDataSelected(object sender, EventArgs<GrhData> e)
+        {
+            if (e.Item1 == null)
+                txtGrhIndex.Text = "";
+            else
+                txtGrhIndex.Text = e.Item1.GrhIndex.ToString();
+        }
+
+        GrhData btnSelectBodyGrhData_SelectedGrhDataHandler(object sender)
+        {
+            if (SelectedDSI == null || SelectedDSI.Grh == null)
+                return null;
+
+            return SelectedDSI.Grh.GrhData;
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnShiftNodes control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -1422,21 +1441,6 @@ namespace DemoGame.Editor
             {
                 txtY.BackColor = EditorColors.Error;
             }
-        }
-
-        /// <summary>
-        /// Handles the Resize event of the GameScreen control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void GameScreen_Resize(object sender, EventArgs e)
-        {
-            if (_camera == null || GameScreen == null)
-                return;
-
-            var oldCenter = _camera.Center;
-            _camera.Size = new Vector2(GameScreen.ClientSize.Width, GameScreen.ClientSize.Height);
-            _camera.CenterOn(oldCenter);
         }
     }
 }

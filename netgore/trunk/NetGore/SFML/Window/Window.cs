@@ -73,6 +73,10 @@ namespace SFML
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
+            static extern void sfWindow_EnableVerticalSync(IntPtr This, bool Enable);
+
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
             static extern bool sfWindow_GetEvent(IntPtr This, out Event Evt);
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
@@ -138,10 +142,6 @@ namespace SFML
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfWindow_ShowMouseCursor(IntPtr This, bool Show);
-
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfWindow_EnableVerticalSync(IntPtr This, bool Enable);
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -465,6 +465,16 @@ namespace SFML
             }
 
             /// <summary>
+            /// Enable / disable vertical synchronization
+            /// </summary>
+            /// <param name="enable">True to enable v-sync, false to deactivate</param>
+            ////////////////////////////////////////////////////////////
+            public virtual void EnableVerticalSync(bool enable)
+            {
+                sfWindow_EnableVerticalSync(This, enable);
+            }
+
+            /// <summary>
             /// Internal function to get the next event (non-blocking)
             /// </summary>
             /// <param name="eventToFill">Variable to fill with the raw pointer to the event structure</param>
@@ -634,16 +644,6 @@ namespace SFML
             public override string ToString()
             {
                 return "[Window]" + " Width(" + Width + ")" + " Height(" + Height + ")" + " Settings(" + Settings + ")";
-            }
-
-            /// <summary>
-            /// Enable / disable vertical synchronization
-            /// </summary>
-            /// <param name="enable">True to enable v-sync, false to deactivate</param>
-            ////////////////////////////////////////////////////////////
-            public virtual void EnableVerticalSync(bool enable)
-            {
-                sfWindow_EnableVerticalSync(This, enable);
             }
 
             /// <summary>

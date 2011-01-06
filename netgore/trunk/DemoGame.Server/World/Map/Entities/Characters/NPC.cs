@@ -535,24 +535,6 @@ namespace DemoGame.Server
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="item">The item that was used.</param>
-        protected override void OnUsedItem(ItemEntity item)
-        {
-            base.OnUsedItem(item);
-
-            if (item.Type == ItemType.UseOnce)
-            {
-                var templateID = CharacterTemplateID;
-                if (templateID.HasValue)
-                    EventCounterManager.NPC.Increment(templateID.Value, NPCEventCounterType.ItemConsumed);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
         /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
         /// using the corresponding event when possible.
         /// </summary>
@@ -577,6 +559,24 @@ namespace DemoGame.Server
                     EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillUser);
                 else
                     EventCounterManager.NPC.Increment(template.Value, NPCEventCounterType.KillNonUser);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was used.</param>
+        protected override void OnUsedItem(ItemEntity item)
+        {
+            base.OnUsedItem(item);
+
+            if (item.Type == ItemType.UseOnce)
+            {
+                var templateID = CharacterTemplateID;
+                if (templateID.HasValue)
+                    EventCounterManager.NPC.Increment(templateID.Value, NPCEventCounterType.ItemConsumed);
             }
         }
 
