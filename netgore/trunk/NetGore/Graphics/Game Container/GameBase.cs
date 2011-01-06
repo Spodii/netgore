@@ -161,7 +161,7 @@ namespace NetGore.Graphics
                 return;
 
             newValue.ShowMouseCursor(ShowMouseCursor);
-            newValue.UseVerticalSync(UseVerticalSync);
+            newValue.EnableVerticalSync(UseVerticalSync);
             newValue.SetActive();
             newValue.Show(true);
         }
@@ -694,7 +694,7 @@ namespace NetGore.Graphics
                 _useVerticalSync = value;
 
                 if (RenderWindow != null)
-                    RenderWindow.UseVerticalSync(UseVerticalSync);
+                    RenderWindow.EnableVerticalSync(UseVerticalSync);
             }
         }
 

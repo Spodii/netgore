@@ -141,7 +141,7 @@ namespace SFML
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfWindow_UseVerticalSync(IntPtr This, bool Enable);
+            static extern void sfWindow_EnableVerticalSync(IntPtr This, bool Enable);
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -641,9 +641,9 @@ namespace SFML
             /// </summary>
             /// <param name="enable">True to enable v-sync, false to deactivate</param>
             ////////////////////////////////////////////////////////////
-            public virtual void UseVerticalSync(bool enable)
+            public virtual void EnableVerticalSync(bool enable)
             {
-                sfWindow_UseVerticalSync(This, enable);
+                sfWindow_EnableVerticalSync(This, enable);
             }
 
             /// <summary>
