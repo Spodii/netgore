@@ -557,8 +557,8 @@ namespace SFML
             public override string ToString()
             {
                 return "[Shape]" + " Position(" + Position + ")" + " Rotation(" + Rotation + ")" + " Scale(" + Scale + ")" +
-                       " Origin(" + Origin + ")" + " Color(" + Color + ")" + " BlendMode(" + BlendMode + ")" + " OutlineThickness(" +
-                       OutlineThickness + ")" + " PointsCount(" + PointsCount + ")";
+                       " Origin(" + Origin + ")" + " Color(" + Color + ")" + " BlendMode(" + BlendMode + ")" +
+                       " OutlineThickness(" + OutlineThickness + ")" + " PointsCount(" + PointsCount + ")";
             }
 
             /// <summary>

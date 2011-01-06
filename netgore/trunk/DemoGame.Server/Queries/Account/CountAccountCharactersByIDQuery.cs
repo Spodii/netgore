@@ -39,25 +39,8 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(AccountCharacterTable.TableName, "a").AddFunc(f.Count()).InnerJoinOnColumn(
-                    ViewUserCharacterTable.TableName, "u", "id", "a", "character_id").Where(
-                        f.Equals("a.account_id", "@accountID"));
+                    ViewUserCharacterTable.TableName, "u", "id", "a", "character_id").Where(f.Equals("a.account_id", "@accountID"));
             return q.ToString();
-        }
-
-        /// <summary>
-        /// Gets the number of characters in the given <see cref="AccountID"/>.
-        /// </summary>
-        /// <param name="accountID">The <see cref="AccountID"/> to count the number of characters in.</param>
-        /// <returns>The number of characters in the given <paramref name="accountID"/>.</returns>
-        public int? TryExecute(AccountID accountID)
-        {
-            using (var r = ExecuteReader(accountID))
-            {
-                if (!r.Read())
-                    return null;
-
-                return r.GetInt32(0);
-            }
         }
 
         /// <summary>
@@ -79,6 +62,22 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, AccountID accountID)
         {
             p["accountID"] = (int)accountID;
+        }
+
+        /// <summary>
+        /// Gets the number of characters in the given <see cref="AccountID"/>.
+        /// </summary>
+        /// <param name="accountID">The <see cref="AccountID"/> to count the number of characters in.</param>
+        /// <returns>The number of characters in the given <paramref name="accountID"/>.</returns>
+        public int? TryExecute(AccountID accountID)
+        {
+            using (var r = ExecuteReader(accountID))
+            {
+                if (!r.Read())
+                    return null;
+
+                return r.GetInt32(0);
+            }
         }
     }
 }

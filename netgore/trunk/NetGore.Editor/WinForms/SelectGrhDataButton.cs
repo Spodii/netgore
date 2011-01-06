@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -24,35 +25,7 @@ namespace DemoGame.Editor
         public SelectGrhDataButton()
         {
             Text = "...";
-            Size = new System.Drawing.Size(24, 23);
-        }
-
-        /// <summary>
-        /// Gets or sets the height and width of the control.
-        /// </summary>
-        /// <returns>The <see cref="T:System.Drawing.Size"/> that represents the height and width of the control in pixels.</returns>
-        [DefaultValue(typeof(System.Drawing.Point), "24, 23")]
-        public new System.Drawing.Size Size
-        {
-            get { return base.Size; }
-            set { base.Size = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the text associated with this control.
-        /// </summary>
-        /// <returns>The text associated with this control.</returns>
-        [DefaultValue("...")]
-        public override string Text
-        {
-            get
-            {
-                return base.Text;
-            }
-            set
-            {
-                base.Text = value;
-            }
+            Size = new Size(24, 23);
         }
 
         /// <summary>
@@ -66,6 +39,28 @@ namespace DemoGame.Editor
         /// is currently selected. Can be null.
         /// </summary>
         public GetCurrentlySelectedGrhDataCallback SelectedGrhDataHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height and width of the control.
+        /// </summary>
+        /// <returns>The <see cref="T:System.Drawing.Size"/> that represents the height and width of the control in pixels.</returns>
+        [DefaultValue(typeof(Point), "24, 23")]
+        public new Size Size
+        {
+            get { return base.Size; }
+            set { base.Size = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the text associated with this control.
+        /// </summary>
+        /// <returns>The text associated with this control.</returns>
+        [DefaultValue("...")]
+        public override string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
 
         /// <summary>
         /// Gets the currently selected <see cref="GrhData"/> using the <see cref="SelectedGrhDataHandler"/>.

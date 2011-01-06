@@ -45,6 +45,7 @@ namespace DemoGame.Client
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
         GameplayScreenControls _gameControls;
+        GroupForm _groupForm;
         Font _guiFont;
         GUIStatePersister _guiStatePersister;
         GuildForm _guildForm;
@@ -63,7 +64,6 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         ILight _userLight;
         World _world;
-        GroupForm _groupForm;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -102,12 +102,27 @@ namespace DemoGame.Client
             get { return _equipmentInfoRequester; }
         }
 
+        public EquippedForm EquippedForm
+        {
+            get { return _equippedForm; }
+        }
+
+        public GuildForm GuildForm
+        {
+            get { return _guildForm; }
+        }
+
         /// <summary>
         /// Gets the InfoBox used by the screen
         /// </summary>
         public InfoBox InfoBox
         {
             get { return _infoBox; }
+        }
+
+        public InventoryForm InventoryForm
+        {
+            get { return _inventoryForm; }
         }
 
         public InventoryInfoRequester InventoryInfoRequester
@@ -153,12 +168,22 @@ namespace DemoGame.Client
             get { return _skillCooldownManager; }
         }
 
+        public SkillsForm SkillsForm
+        {
+            get { return _skillsForm; }
+        }
+
         /// <summary>
         /// Gets the client socket system used to handle the networking for the game
         /// </summary>
         public ClientSockets Socket
         {
             get { return _socket; }
+        }
+
+        public StatsForm StatsForm
+        {
+            get { return _statsForm; }
         }
 
         public StatusEffectsForm StatusEffectsForm
@@ -673,16 +698,6 @@ namespace DemoGame.Client
                 Socket.Send(pw, ClientMessageType.GUI);
             }
         }
-
-        public EquippedForm EquippedForm { get { return _equippedForm; } }
-
-        public InventoryForm InventoryForm { get { return _inventoryForm; } }
-
-        public StatsForm StatsForm { get { return _statsForm; } }
-
-        public SkillsForm SkillsForm { get { return _skillsForm; } }
-
-        public GuildForm GuildForm { get { return _guildForm; } }
 
         /// <summary>
         /// Handles the ItemClicked event of the Toolbar control.

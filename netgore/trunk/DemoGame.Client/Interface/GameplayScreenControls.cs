@@ -124,11 +124,16 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.QuickBarItem8, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(8));
             CreateAndAdd(GameControlsKeys.QuickBarItem9, _minQuickBarRate, () => true, (x, e) => HandleGameControl_QuickBar(9));
 
-            CreateAndAdd(GameControlsKeys.WindowEquipped, _minWindowRate, () => true, (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.EquippedForm));
-            CreateAndAdd(GameControlsKeys.WindowGuild, _minWindowRate, () => true, (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.GuildForm));
-            CreateAndAdd(GameControlsKeys.WindowInventory, _minWindowRate, () => true, (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.InventoryForm));
-            CreateAndAdd(GameControlsKeys.WindowSkills, _minWindowRate, () => true, (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.SkillsForm));
-            CreateAndAdd(GameControlsKeys.WindowStats, _minWindowRate, () => true, (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.StatsForm));
+            CreateAndAdd(GameControlsKeys.WindowEquipped, _minWindowRate, () => true,
+                (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.EquippedForm));
+            CreateAndAdd(GameControlsKeys.WindowGuild, _minWindowRate, () => true,
+                (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.GuildForm));
+            CreateAndAdd(GameControlsKeys.WindowInventory, _minWindowRate, () => true,
+                (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.InventoryForm));
+            CreateAndAdd(GameControlsKeys.WindowSkills, _minWindowRate, () => true,
+                (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.SkillsForm));
+            CreateAndAdd(GameControlsKeys.WindowStats, _minWindowRate, () => true,
+                (x, e) => HandleGameControl_ToggleWindow(GameplayScreen.StatsForm));
 
             // Create the controls specific to a perspective
             CreateControlsForPerspective();
@@ -150,11 +155,6 @@ namespace DemoGame.Client
 
             // Return closest
             return validShopOwners.MinElement(x => x.GetDistance(source));
-        }
-
-        void HandleGameControl_ToggleWindow(Control c)
-        {
-            c.IsVisible = !c.IsVisible;
         }
 
         void HandleGameControl_Attack(GameControl sender, EventArgs e)
@@ -237,6 +237,11 @@ namespace DemoGame.Client
             {
                 Socket.Send(pw, ClientMessageType.CharacterInteract);
             }
+        }
+
+        void HandleGameControl_ToggleWindow(Control c)
+        {
+            c.IsVisible = !c.IsVisible;
         }
 
         void HandleGameControl_Use(GameControl sender, EventArgs e)

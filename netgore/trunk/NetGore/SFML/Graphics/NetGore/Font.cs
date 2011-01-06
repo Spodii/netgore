@@ -244,9 +244,7 @@ namespace SFML
                         Context.Global.SetActive(true);
 
                     if (t != IntPtr.Zero)
-                    {
                         sfFont_Destroy(t);
-                    }
 
                     if (disposing)
                     {

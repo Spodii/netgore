@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
-using NetGore.Audio;
-using NetGore.Content;
 using NetGore.Editor;
 
 namespace DemoGame.Editor

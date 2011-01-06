@@ -27,11 +27,11 @@ namespace DemoGame.Editor
         static MainForm _instance;
 
         readonly DockContentDeserializer _deserializer;
+        BodyEditorForm _frmBodyEditor;
 
         DbEditorForm _frmDbEditor;
         GrhTreeViewForm _frmGrhTreeView;
         MusicEditorForm _frmMusicEditor;
-        BodyEditorForm _frmBodyEditor;
         NPCChatEditorForm _frmNPCChatEditor;
         SelectedMapObjectsForm _frmSelectedMapObjs;
         SkeletonEditorForm _frmSkeletonEditor;
@@ -192,6 +192,16 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Handles the VisibleChanged event of the <see cref="_frmBodyEditor"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _frmBodyEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            bodyEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
         /// Handles the VisibleChanged event of the <see cref="_frmDbEditor"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -219,16 +229,6 @@ namespace DemoGame.Editor
         void _frmMusicEditor_VisibleChanged(object sender, EventArgs e)
         {
             musicEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
-        }
-
-        /// <summary>
-        /// Handles the VisibleChanged event of the <see cref="_frmBodyEditor"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void _frmBodyEditor_VisibleChanged(object sender, EventArgs e)
-        {
-            bodyEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
         }
 
         /// <summary>
@@ -269,6 +269,19 @@ namespace DemoGame.Editor
         void _frmSoundEditor_VisibleChanged(object sender, EventArgs e)
         {
             soundEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="bodyEditorToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void bodyEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (bodyEditorToolStripMenuItem.Checked)
+                _frmBodyEditor.Show(dockPanel, DockState.Float);
+            else
+                _frmBodyEditor.Hide();
         }
 
         /// <summary>
@@ -363,19 +376,6 @@ namespace DemoGame.Editor
                 editorFrm.ParticleEffect = effect;
                 editorFrm.Show(dockPanel, DockState.Float);
             }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the <see cref="bodyEditorToolStripMenuItem"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void bodyEditorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (bodyEditorToolStripMenuItem.Checked)
-                _frmBodyEditor.Show(dockPanel, DockState.Float);
-            else
-                _frmBodyEditor.Hide();
         }
 
         /// <summary>

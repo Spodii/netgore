@@ -12,8 +12,8 @@ namespace DemoGame.Client
     /// </summary>
     public class InfoBox
     {
-        readonly List<InfoBoxItem> _items;
         readonly Font _font;
+        readonly List<InfoBoxItem> _items;
 
         Color _defaultColor = Color.Green;
         int _maxItems = 20;

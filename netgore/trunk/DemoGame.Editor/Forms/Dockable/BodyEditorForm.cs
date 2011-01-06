@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
@@ -21,6 +17,17 @@ namespace DemoGame.Editor
         public BodyEditorForm()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            Save();
         }
 
         /// <summary>
@@ -49,17 +56,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-
-            Save();
-        }
-
-        /// <summary>
         /// Saves the <see cref="BodyInfo"/>s.
         /// </summary>
         static void Save()
@@ -73,34 +69,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the SelectedIndexChanged event of the <see cref="lstBodies"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstBodies_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            pg.SelectedObject = lstBodies.SelectedItem;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the <see cref="btnNew"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            // Create a new BodyInfo
-            var newBody = BodyInfoManager.Instance.CreateBody();
-            lstBodies.UpdateList();
-            lstBodies.SelectedItem = newBody;
-        }
-
-        /// <summary>
         /// Handles the Click event of the btnDelete control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnDelete_Click(object sender, EventArgs e)
+        void btnDelete_Click(object sender, EventArgs e)
         {
             var selected = lstBodies.SelectedItem as BodyInfo;
             if (selected == null)
@@ -118,6 +91,29 @@ namespace DemoGame.Editor
 
             if (pg.SelectedObject == selected)
                 pg.SelectedObject = null;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the <see cref="btnNew"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnNew_Click(object sender, EventArgs e)
+        {
+            // Create a new BodyInfo
+            var newBody = BodyInfoManager.Instance.CreateBody();
+            lstBodies.UpdateList();
+            lstBodies.SelectedItem = newBody;
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the <see cref="lstBodies"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstBodies_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pg.SelectedObject = lstBodies.SelectedItem;
         }
     }
 }

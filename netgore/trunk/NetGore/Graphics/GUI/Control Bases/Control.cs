@@ -840,7 +840,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         public void Draw(ISpriteBatch sb)
         {
-            Debug.Assert(IsRoot, "Draw should only be called from the root control. Otherwise, you will end up not drawing all controls.");
+            Debug.Assert(IsRoot,
+                "Draw should only be called from the root control. Otherwise, you will end up not drawing all controls.");
 
             if (IsDisposed)
             {

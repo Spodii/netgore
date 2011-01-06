@@ -57,6 +57,23 @@ namespace NetGore.Features.Groups
         }
 
         /// <summary>
+        /// Clears all of the group information.
+        /// </summary>
+        public void Clear()
+        {
+            var changed = IsInGroup;
+
+            _members.Clear();
+            _founder = null;
+
+            if (changed)
+            {
+                if (GroupChanged != null)
+                    GroupChanged.Raise(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for handling the
         /// <see cref="UserGroupInformation.GroupChanged"/> event.
         /// </summary>
@@ -80,23 +97,6 @@ namespace NetGore.Features.Groups
         /// <param name="memberName">Name of the member that was removed.</param>
         protected virtual void OnMemberRemoved(string memberName)
         {
-        }
-
-        /// <summary>
-        /// Clears all of the group information.
-        /// </summary>
-        public void Clear()
-        {
-            bool changed = IsInGroup;
-
-            _members.Clear();
-            _founder = null;
-
-            if (changed)
-            {
-                if (GroupChanged != null)
-                    GroupChanged.Raise(this, EventArgs.Empty);
-            }
         }
 
         /// <summary>

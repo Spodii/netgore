@@ -27,52 +27,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Creates a new <see cref="BodyInfo"/> instance and adds it to this <see cref="BodyInfoManager"/>.
-        /// </summary>
-        /// <remarks>
-        /// Should only be used in the editor.
-        /// </remarks>
-        /// <returns>The new <see cref="BodyInfo"/> instance.</returns>
-        public BodyInfo CreateBody()
-        {
-            var id = GetNextFreeID();
-            var body = new BodyInfo(id);
-
-            Debug.Assert(!_bodies.ContainsKey(id));
-            _bodies.Add(id, body);
-
-            return body;
-        }
-
-        /// <summary>
-        /// Deletes a <see cref="BodyInfo"/> in this <see cref="BodyInfoManager"/>.
-        /// </summary>
-        /// <param name="id">The <see cref="BodyID"/> of the body to remove.</param>
-        /// <returns>True if a <see cref="BodyInfo"/> was removed from the given <paramref name="id"/>; otherwise false.</returns>
-        /// <remarks>
-        /// Should only be used in the editor.
-        /// </remarks>
-        public bool RemoveBody(BodyID id)
-        {
-            return _bodies.Remove(id);
-        }
-
-        /// <summary>
-        /// Gets the next free <see cref="BodyID"/>.
-        /// </summary>
-        /// <returns>The next free <see cref="BodyID"/>.</returns>
-        BodyID GetNextFreeID()
-        {
-            BodyID i = new BodyID(1);
-            while (_bodies.ContainsKey(i))
-            {
-                i++;
-            }
-
-            return i;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BodyInfoManager"/> class.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the collection values from.</param>
@@ -95,6 +49,24 @@ namespace DemoGame
         public static BodyInfoManager Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BodyInfo"/> instance and adds it to this <see cref="BodyInfoManager"/>.
+        /// </summary>
+        /// <remarks>
+        /// Should only be used in the editor.
+        /// </remarks>
+        /// <returns>The new <see cref="BodyInfo"/> instance.</returns>
+        public BodyInfo CreateBody()
+        {
+            var id = GetNextFreeID();
+            var body = new BodyInfo(id);
+
+            Debug.Assert(!_bodies.ContainsKey(id));
+            _bodies.Add(id, body);
+
+            return body;
         }
 
         /// <summary>
@@ -124,6 +96,21 @@ namespace DemoGame
                 throw new ArgumentNullException("contentPath");
 
             return contentPath.Data.Join("bodies" + EngineSettings.DataFileSuffix);
+        }
+
+        /// <summary>
+        /// Gets the next free <see cref="BodyID"/>.
+        /// </summary>
+        /// <returns>The next free <see cref="BodyID"/>.</returns>
+        BodyID GetNextFreeID()
+        {
+            var i = new BodyID(1);
+            while (_bodies.ContainsKey(i))
+            {
+                i++;
+            }
+
+            return i;
         }
 
         /// <summary>
@@ -164,6 +151,19 @@ namespace DemoGame
             {
                 _bodies.Add(body.ID, body);
             }
+        }
+
+        /// <summary>
+        /// Deletes a <see cref="BodyInfo"/> in this <see cref="BodyInfoManager"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="BodyID"/> of the body to remove.</param>
+        /// <returns>True if a <see cref="BodyInfo"/> was removed from the given <paramref name="id"/>; otherwise false.</returns>
+        /// <remarks>
+        /// Should only be used in the editor.
+        /// </remarks>
+        public bool RemoveBody(BodyID id)
+        {
+            return _bodies.Remove(id);
         }
 
         /// <summary>

@@ -40,8 +40,7 @@ namespace DemoGame.Server.Queries
             var s = qb.Settings;
             var q =
                 qb.Select(AccountCharacterTable.TableName, "a").AddFunc("c.name").InnerJoinOnColumn(
-                    ViewUserCharacterTable.TableName, "c", "id", "a", "character_id").Where(
-                        f.Equals("a.account_id", "@accountID"));
+                    ViewUserCharacterTable.TableName, "c", "id", "a", "character_id").Where(f.Equals("a.account_id", "@accountID"));
             return q.ToString();
         }
 

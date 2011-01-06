@@ -12,6 +12,7 @@ namespace NetGore.Collections
     /// <typeparam name="T">The type of object to pool.</typeparam>
     public class ObjectPool<T> : IObjectPool<T> where T : class, IPoolable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly object _threadSync;
 
         ObjectPoolObjectCreator<T> _creator;
@@ -188,8 +189,6 @@ namespace NetGore.Collections
             _liveObjects = 0;
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Performs the actual freeing of an object from the pool.
         /// </summary>
@@ -218,9 +217,7 @@ namespace NetGore.Collections
 
                 // Throw exception?
                 if (throwArgumentException)
-                {
                     throw new ArgumentException(string.Format(errmsg, poolObject, poolObject.PoolIndex), "poolObject");
-                }
 
                 // If the object doesn't belong to this pool, we do NOT want to remove anything!
                 return;

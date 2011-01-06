@@ -109,8 +109,5 @@ namespace DemoGame.Server
                 groupMember.Send(GameMessage.GroupSay, ServerMessageType.GUIChat, User.Name, message);
             }
         }
-
-
-
     }
 }

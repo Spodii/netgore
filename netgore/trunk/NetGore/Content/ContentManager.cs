@@ -292,7 +292,7 @@ namespace NetGore.Content
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(ToString());
-            
+
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 

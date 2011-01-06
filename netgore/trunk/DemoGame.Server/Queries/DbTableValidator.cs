@@ -59,7 +59,7 @@ namespace DemoGame.Server.Queries
                 log.FatalFormat(message, parameters);
 
             Debug.Fail(string.Format(message, parameters));
-            
+
             throw new DatabaseException(string.Format("Database tables validation failed. Reason: " + message, parameters));
         }
 
