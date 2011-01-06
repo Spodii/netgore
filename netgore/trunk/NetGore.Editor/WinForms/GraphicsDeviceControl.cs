@@ -258,7 +258,7 @@ namespace NetGore.Editor.WinForms
             }
 
             _rw = new RenderWindow(handle);
-            _rw.UseVerticalSync(false);
+            _rw.EnableVerticalSync(false);
             _rw.Show(true);
 
             OnRenderWindowCreated(_rw);

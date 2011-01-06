@@ -118,7 +118,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern float sfShape_GetOutlineWidth(IntPtr This);
+            static extern float sfShape_GetOutlineThickness(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -170,7 +170,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfShape_SetOutlineWidth(IntPtr This, float Width);
+            static extern void sfShape_SetOutlineThickness(IntPtr This, float Thickness);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -238,13 +238,13 @@ namespace SFML
             }
 
             /// <summary>
-            /// Width of the shape outline
+            /// Thickness of the shape outline
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public float OutlineWidth
+            public float OutlineThickness
             {
-                get { return sfShape_GetOutlineWidth(This); }
-                set { sfShape_SetOutlineWidth(This, value); }
+                get { return sfShape_GetOutlineThickness(This); }
+                set { sfShape_SetOutlineThickness(This, value); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -557,8 +557,8 @@ namespace SFML
             public override string ToString()
             {
                 return "[Shape]" + " Position(" + Position + ")" + " Rotation(" + Rotation + ")" + " Scale(" + Scale + ")" +
-                       " Origin(" + Origin + ")" + " Color(" + Color + ")" + " BlendMode(" + BlendMode + ")" + " OutlineWidth(" +
-                       OutlineWidth + ")" + " PointsCount(" + PointsCount + ")";
+                       " Origin(" + Origin + ")" + " Color(" + Color + ")" + " BlendMode(" + BlendMode + ")" + " OutlineThickness(" +
+                       OutlineThickness + ")" + " PointsCount(" + PointsCount + ")";
             }
 
             /// <summary>
