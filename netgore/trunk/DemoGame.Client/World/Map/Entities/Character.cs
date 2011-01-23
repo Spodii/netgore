@@ -248,7 +248,7 @@ namespace DemoGame.Client
 #if !TOPDOWN
             return new SkeletonCharacterSprite(getTime, entity, skeletonManager, GameData.AnimationSpeedModifier);
 #else
-            return new BasicGrhCharacterSprite(entity, "Character.Top Down");
+            return new GrhCharacterSprite(entity, "Character.Top Down");
 #endif
         }
 
