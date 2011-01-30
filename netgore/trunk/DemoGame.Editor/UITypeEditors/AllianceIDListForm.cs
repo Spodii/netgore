@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.Server;
 using NetGore;
+using NetGore.Editor;
 
 namespace DemoGame.Editor.UITypeEditors
 {
@@ -118,6 +120,29 @@ namespace DemoGame.Editor.UITypeEditors
 
                 txtItem.Text = item.ID + " [" + item.Name + "]";
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (lstItems.SelectedItem == null)
+                return;
+
+            var selID = (AllianceID)lstItems.SelectedItem;
+
+            Alliance sel;
+            if (!AllianceManager.Instance.TryGetValue(selID, out sel))
+                return;
+ 
+            string msg = string.Format("Are you sure you wish to remove the alliance `{0}` from the list?", sel);
+            if (MessageBox.Show(msg, "Remove alliance from list?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            lstItems.RemoveItemAtAndReselect(lstItems.SelectedIndex);
         }
     }
 }
