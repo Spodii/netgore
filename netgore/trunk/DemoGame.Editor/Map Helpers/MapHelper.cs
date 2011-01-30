@@ -84,6 +84,14 @@ namespace DemoGame.Editor
                     if (MessageBox.Show(string.Format(confirmMsg, map), "Delete map?", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
                 }
+                
+                // If a MapScreenControl is open for this map, set the map on it to null then dispose of the control
+                var msc = MapScreenControl.TryFindInstance(map);
+                if (msc != null)
+                {
+                    msc.Map = null;
+                    msc.Dispose();
+                }
 
                 // Delete the map file
                 var path = MapBase.GetMapFilePath(ContentPaths.Dev, map.ID);
