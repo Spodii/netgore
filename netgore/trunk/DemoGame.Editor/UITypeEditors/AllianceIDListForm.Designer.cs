@@ -30,10 +30,12 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.lstItems = new DemoGame.Editor.UITypeEditors.AllianceIDListBox();
-            this.txtItem = new System.Windows.Forms.TextBox();
-            this.btnBrowse = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnBrowse = new System.Windows.Forms.Button();
+            this.txtItem = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -56,6 +58,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.txtItem);
             this.splitContainer1.Panel2.Controls.Add(this.btnBrowse);
+            this.splitContainer1.Panel2.Controls.Add(this.btnDelete);
             this.splitContainer1.Panel2.Controls.Add(this.btnAdd);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Size = new System.Drawing.Size(300, 254);
@@ -73,38 +76,6 @@
             this.lstItems.Sorted = true;
             this.lstItems.TabIndex = 0;
             // 
-            // txtItem
-            // 
-            this.txtItem.BackColor = System.Drawing.SystemColors.Window;
-            this.txtItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtItem.Location = new System.Drawing.Point(47, 0);
-            this.txtItem.Name = "txtItem";
-            this.txtItem.ReadOnly = true;
-            this.txtItem.Size = new System.Drawing.Size(192, 20);
-            this.txtItem.TabIndex = 30;
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnBrowse.Location = new System.Drawing.Point(239, 0);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(24, 25);
-            this.btnBrowse.TabIndex = 29;
-            this.btnBrowse.Text = "...";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAdd.Location = new System.Drawing.Point(263, 0);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(37, 25);
-            this.btnAdd.TabIndex = 28;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -115,6 +86,49 @@
             this.label1.Size = new System.Drawing.Size(47, 16);
             this.label1.TabIndex = 27;
             this.label1.Text = "Alliance:";
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAdd.Location = new System.Drawing.Point(263, 0);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(37, 25);
+            this.btnAdd.TabIndex = 39;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDelete.Location = new System.Drawing.Point(226, 0);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(37, 25);
+            this.btnDelete.TabIndex = 40;
+            this.btnDelete.Text = "Del";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnBrowse
+            // 
+            this.btnBrowse.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnBrowse.Location = new System.Drawing.Point(202, 0);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(24, 25);
+            this.btnBrowse.TabIndex = 41;
+            this.btnBrowse.Text = "...";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // txtItem
+            // 
+            this.txtItem.BackColor = System.Drawing.SystemColors.Window;
+            this.txtItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtItem.Location = new System.Drawing.Point(47, 0);
+            this.txtItem.Name = "txtItem";
+            this.txtItem.ReadOnly = true;
+            this.txtItem.Size = new System.Drawing.Size(155, 20);
+            this.txtItem.TabIndex = 42;
             // 
             // AllianceIDListForm
             // 
@@ -130,6 +144,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -139,9 +154,10 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private AllianceIDListBox lstItems;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtItem;
         private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Label label1;
     }
 }
