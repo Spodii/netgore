@@ -98,9 +98,21 @@ If you do not save, all changes will be lost.";
                 return;
 
             MapScreenControl.MapChanged += MapScreenControl_MapChanged;
+            MapScreenControl.Disposed += MapScreenControl_Disposed;
 
             if (FormLoaded != null)
                 FormLoaded.Raise(this, e);
+        }
+
+        /// <summary>
+        /// Handles the Disposed event of the MapScreenControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void MapScreenControl_Disposed(object sender, EventArgs e)
+        {
+            // When the MapScreenControl disposes, also close down the form
+            Close();
         }
     }
 }
