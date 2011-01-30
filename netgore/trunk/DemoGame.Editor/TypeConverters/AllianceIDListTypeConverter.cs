@@ -63,10 +63,11 @@ namespace DemoGame.Editor.TypeConverters
                         sb.Append(am[v].Name);
                         sb.Append(", ");
                     }
-                    sb.Append("}");
 
                     if (sb.Length > 2)
                         sb.Length -= 2;
+
+                    sb.Append("}");
 
                     return sb.ToString();
                 }
