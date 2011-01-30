@@ -176,12 +176,33 @@ namespace DemoGame.Editor
                     if (MessageBox.Show(string.Format(confirmMsg, map), "Save map?", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
 
-                    // NOTE: Wasn't sure if it should go in here or outside this clause.  Just move it out if it's better there.
-                    var newId = 0;
-                    if (int.TryParse(InputBox.Show("Save as...", "Save as map id:", map.ID.ToString()), out newId))
+                    // Allow specifying a new map ID
+                    bool firstEnterIDAttempt = true;
+                    while (true)
                     {
+                        string displayText = "Save as map id:";
+                        if (!firstEnterIDAttempt)
+                            displayText = "Invalid map id entered. Please enter a numeric value greater than 0." + Environment.NewLine + Environment.NewLine + displayText;
+
+                        firstEnterIDAttempt = false;
+
+                        int newId;
+                        if (int.TryParse(InputBox.Show("Save as...", displayText, map.ID.ToString()), out newId))
+                        {
+                            if (newId >= 0)
+                            {
+                                try
+                                {
+                                    map.ChangeID((MapID)newId);
+                                    break;
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(string.Format("Failed to change map ID to `{0}`. Exception: {1}", newId, ex));
+                                }
+                            }
+                        }
                     }
-                    map.ChangeID((MapID)newId);
                 }
 
                 // Add the MapGrh-bound walls
