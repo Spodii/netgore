@@ -60,10 +60,10 @@ namespace Lidgren.Network
 		/// </summary>
 		public long RemoteUniqueIdentifier { get { return m_remoteUniqueIdentifier; } }
 
-        /// <summary>
-        /// Gets the local hail message that was sent as part of the handshake
-        /// </summary>
-        public NetOutgoingMessage LocalHailMessage { get { return m_localHailMessage; } }
+		/// <summary>
+		/// Gets the local hail message that was sent as part of the handshake
+		/// </summary>
+		public NetOutgoingMessage LocalHailMessage { get { return m_localHailMessage; } }
 
 		// gets the time before automatically resending an unacked message
 		internal float GetResendDelay()

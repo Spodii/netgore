@@ -16,7 +16,9 @@ namespace Lidgren.Network
 		/// Gets the current average roundtrip time in seconds
 		/// </summary>
 		public float AverageRoundtripTime { get { return m_averageRoundtripTime; } }
-		
+
+		public float RemoteTimeOffset { get { return (float)m_remoteTimeOffset; } }
+
 		// this might happen more than once
 		internal void InitializeRemoteTimeOffset(float remoteSendTime)
 		{
@@ -48,6 +50,9 @@ namespace Lidgren.Network
 			m_sentPingTime -= (m_peerConfiguration.PingInterval * 0.25f); // delay ping for a little while
 			m_sentPingTime -= (NetRandom.Instance.NextSingle() * (m_peerConfiguration.PingInterval * 0.75f));
 			m_timeoutDeadline = now + (m_peerConfiguration.m_connectionTimeout * 2.0f); // initially allow a little more time
+
+			// make it better, quick :-)
+			SendPing();
 		}
 
 		internal void SendPing()
@@ -103,7 +108,7 @@ namespace Lidgren.Network
 			if (m_averageRoundtripTime < 0)
 			{
 				m_remoteTimeOffset = diff;
-				m_averageRoundtripTime = rtt * 1.15f; // initially over-estimate
+				m_averageRoundtripTime = rtt;
 				m_peer.LogDebug("Initiated average roundtrip time to " + NetTime.ToReadable(m_averageRoundtripTime) + " Remote time is: " + (now + diff));
 			}
 			else
