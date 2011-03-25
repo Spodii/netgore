@@ -46,6 +46,10 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_SetCurrentTexture(IntPtr Shader, string Name);
+
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
             static extern void sfShader_SetParameter1(IntPtr Shader, string Name, float X);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
@@ -98,12 +102,12 @@ namespace SFML
             }
 
             /// <summary>
-            /// Special image representing the texture used by the object being drawn
+            /// Construct the shader from a pointer
             /// </summary>
+            /// <param name="ptr">Pointer to the shader instance</param>
             ////////////////////////////////////////////////////////////
-            public static Image CurrentTexture
+            public Shader(IntPtr ptr) : base(ptr)
             {
-                get { return null; }
             }
 
             /// <summary>
@@ -143,17 +147,28 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Load the shader from a text in memory
+            /// Create a new shader from a text in memory
             /// </summary>
             /// <param name="shader">String containing the shader code</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public void LoadFromString(string shader)
+            public static Shader FromString(string shader)
             {
-                SetThis(sfShader_CreateFromMemory(shader));
-
-                if (This == IntPtr.Zero)
+                var ptr = sfShader_CreateFromMemory(shader);
+                if (ptr == IntPtr.Zero)
                     throw new LoadingFailedException("shader");
+
+                return new Shader(ptr);
+            }
+
+            /// <summary>
+            /// Set the current texture parameter
+            /// </summary>
+            /// <param name="name">Name of the texture in the shader</param>
+            ////////////////////////////////////////////////////////////
+            public void SetCurrentTexture(string name)
+            {
+                sfShader_SetCurrentTexture(This, name);
             }
 
             ////////////////////////////////////////////////////////////
@@ -227,13 +242,15 @@ namespace SFML
             /// Set a texture parameter
             /// </summary>
             /// <param name="name">Name of the texture in the shader</param>
-            /// <param name="texture">Image to set (pass null to use the texture of the object being drawn)</param>
+            /// <param name="texture">Image to set</param>
             ////////////////////////////////////////////////////////////
             public void SetTexture(string name, Image texture)
             {
                 myTextures[name] = texture;
-                sfShader_SetTexture(This, name, texture != null ? texture.This : IntPtr.Zero);
+                sfShader_SetTexture(This, name, texture.This);
             }
+
+            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
 
