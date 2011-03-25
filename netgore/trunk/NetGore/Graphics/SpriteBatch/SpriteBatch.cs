@@ -409,7 +409,7 @@ namespace NetGore.Graphics
             _str.Origin = origin;
             _str.Scale = scale;
             _str.Style = style;
-            _str.Size = font.DefaultSize;
+            _str.CharacterSize = font.DefaultSize;
 
             _rt.Draw(_str, shader);
         }

@@ -40,7 +40,7 @@ namespace NetGore.Graphics
                     Debug.Assert(_text.Style == Text.Styles.Regular);
 
                     _text.Font = font;
-                    _text.Size = fontSize;
+                    _text.CharacterSize = fontSize;
                     _text.DisplayedString = str;
 
                     var r = _text.GetRect();

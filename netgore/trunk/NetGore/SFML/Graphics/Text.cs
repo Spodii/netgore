@@ -209,13 +209,13 @@ namespace SFML
             /// </summary>
             /// <param name="str">String to display</param>
             /// <param name="font">Font to use</param>
-            /// <param name="size">Base characters size</param>
+            /// <param name="characterSize">Base characters size</param>
             ////////////////////////////////////////////////////////////
-            public Text(string str, Font font, uint size) : base(sfText_Create())
+            public Text(string str, Font font, uint characterSize) : base(sfText_Create())
             {
                 DisplayedString = str;
                 Font = font;
-                Size = size;
+                CharacterSize = characterSize;
             }
 
             ////////////////////////////////////////////////////////////
@@ -240,6 +240,16 @@ namespace SFML
             {
                 get { return sfText_GetBlendMode(This); }
                 set { sfText_SetBlendMode(This, value); }
+            }
+
+            /// <summary>
+            /// Base size of characters
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public uint CharacterSize
+            {
+                get { return sfText_GetCharacterSize(This); }
+                set { sfText_SetCharacterSize(This, value); }
             }
 
             /// <summary>
@@ -324,15 +334,6 @@ namespace SFML
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Base size of characters
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public uint Size
-            {
-                get { return sfText_GetCharacterSize(This); }
-                set { sfText_SetCharacterSize(This, value); }
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -425,8 +426,8 @@ namespace SFML
             {
                 return "[Text]" + " Position(" + Position + ")" + " Rotation(" + Rotation + ")" + " Scale(" + Scale + ")" +
                        " Origin(" + Origin + ")" + " Color(" + Color + ")" + " BlendMode(" + BlendMode + ")" + " String(" +
-                       DisplayedString + ")" + " Font(" + Font + ")" + " Size(" + Size + ")" + " Style(" + Style + ")" +
-                       " Rectangle(" + GetRect() + ")";
+                       DisplayedString + ")" + " Font(" + Font + ")" + " CharacterSize(" + CharacterSize + ")" + " Style(" + Style +
+                       ")" + " Rectangle(" + GetRect() + ")";
             }
 
             /// <summary>
