@@ -25,6 +25,14 @@ namespace Lidgren.Network
 {
 	public partial class NetIncomingMessage
 	{
+		/// <summary>
+		/// Returns the internal data buffer, don't modify
+		/// </summary>
+		public byte[] PeekDataBuffer()
+		{
+			return m_data;
+		}
+
 		//
 		// 1 bit
 		//
@@ -202,7 +210,7 @@ namespace Lidgren.Network
 		}
 
 		/// <summary>
-		/// Reads an Int32 without advancing the read pointer
+		/// Reads an Int64 without advancing the read pointer
 		/// </summary>
 		public Int64 PeekInt64()
 		{
@@ -298,22 +306,10 @@ namespace Lidgren.Network
 		/// </summary>
 		public string PeekString()
 		{
-			int byteLen = (int)ReadVariableUInt32();
-
-			if (byteLen == 0)
-				return String.Empty;
-
-			NetException.Assert(m_bitLength - m_readPosition >= (byteLen * 8), c_readOverflowError);
-
-			if ((m_readPosition & 7) == 0)
-			{
-				// read directly
-				string retval = System.Text.Encoding.UTF8.GetString(m_data, m_readPosition >> 3, byteLen);
-				return retval;
-			}
-
-			byte[] bytes = PeekBytes(byteLen);
-			return System.Text.Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+			int wasReadPosition = m_readPosition;
+			string retval = ReadString();
+			m_readPosition = wasReadPosition;
+			return retval;
 		}
 	}
 }
