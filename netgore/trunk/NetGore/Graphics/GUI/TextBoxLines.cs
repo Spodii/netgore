@@ -250,6 +250,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the length of all of the text in all of the lines.
+        /// </summary>
+        /// <returns>The length of all the characters in the text box.</returns>
+        public int GetTextLength()
+        {
+            return GetRawText().Length;
+        }
+
+        /// <summary>
         /// Inserts a line of text after the line the cursor is currently on.
         /// </summary>
         /// <param name="line">The <see cref="TextBoxLine"/> describing the line to insert.</param>
