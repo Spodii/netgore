@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using NetGore.Features.Guilds;
 
 namespace DemoGame.Server
 {
@@ -193,7 +195,7 @@ namespace DemoGame.Server
             if (!RequireUserInGuild())
                 return;
 
-            foreach (var guildMember in User.Guild.GetMembers().OfType<User>())
+            foreach (var guildMember in User.Guild.OnlineMembers.OfType<User>())
             {
                 guildMember.Send(GameMessage.GuildSay, ServerMessageType.GUIChat, User.Name, message);
             }
