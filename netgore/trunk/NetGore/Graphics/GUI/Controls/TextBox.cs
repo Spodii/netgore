@@ -260,7 +260,10 @@ namespace NetGore.Graphics.GUI
         /// can still be surpassed by manually setting the text.
         /// </summary>
         [SyncValue]
-        public int MaxInputTextLength { get; set; }
+        public int MaxInputTextLength { 
+            get; 
+            set; 
+        }
 
         /// <summary>
         /// Gets the maximum number of possible visible lines. Only valid is <see cref="IsMultiLine"/> is true.
@@ -849,7 +852,7 @@ namespace NetGore.Graphics.GUI
             var lineOldLen = _lines.CurrentLine.LineText.Length;
             var oldLine = _lines.CurrentLineIndex;
 
-            if (MaxInputTextLength > 0 && lineOldLen >= MaxInputTextLength)
+            if (MaxInputTextLength > 0 && _lines.GetTextLength() >= MaxInputTextLength)
                 return;
 
             _lines.CurrentLine.Insert(c, CursorLinePosition);
