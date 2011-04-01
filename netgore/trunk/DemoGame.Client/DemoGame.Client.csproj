@@ -215,7 +215,9 @@
     <Compile Include="Screens\NewAccountScreen.cs" />
     <Compile Include="Screens\GameScreenHelper.cs" />
     <Compile Include="Screens\OptionsScreen.cs" />
-    <Compile Include="CharacterTargeter.cs" />
+    <Compile Include="Targeting\CharacterTargeter.cs" />
+    <Compile Include="Targeting\ITargetable.cs" />
+    <Compile Include="Targeting\Targeter.cs" />
     <Compile Include="UserEquipped.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="World\Map\Entities\Character.cs" />

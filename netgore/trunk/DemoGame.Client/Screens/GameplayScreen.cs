@@ -36,7 +36,7 @@ namespace DemoGame.Client
 
         AvailableQuestsForm _availableQuestsForm;
         Panel _cScreen;
-        CharacterTargeter _characterTargeter;
+        Targeter _characterTargeter;
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
         TickCount _currentTime = 0;
@@ -680,7 +680,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="NetGore.EventArgs{SkillType}"/> instance containing the event data.</param>
         public void SkillsForm_RequestUseSkill(object sender, EventArgs<SkillType> e)
         {
-            using (var pw = ClientPacket.UseSkill(e.Item1, _characterTargeter.TargetCharacterIndex))
+            using (var pw = ClientPacket.UseSkill(e.Item1, _characterTargeter.TargetEntityIndex))
             {
                 Socket.Send(pw, ClientMessageType.CharacterAction);
             }
@@ -766,7 +766,7 @@ namespace DemoGame.Client
 
             // Update targeting
             _characterTargeter.Update(GUIManager);
-            _gameControls.TargetIndex = _characterTargeter.TargetCharacterIndex;
+            _gameControls.TargetIndex = _characterTargeter.TargetEntityIndex;
 
             // Update controls
             _gameControls.Update(GUIManager, _currentTime);
