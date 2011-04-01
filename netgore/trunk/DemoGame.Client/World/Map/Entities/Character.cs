@@ -13,8 +13,8 @@ namespace DemoGame.Client
     /// <summary>
     /// Represents a single Character on the Client.
     /// </summary>
-    public class Character : CharacterEntity, IGetTime, IDrawable
-    {
+    public class Character : CharacterEntity, IGetTime, IDrawable, IDrawableTarget  // NOTE: IDrawable is still declared for clarity.
+    {       
         static readonly IEnumerable<QuestID> _emptyQuestIDs = new QuestID[0];
 
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
