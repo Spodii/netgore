@@ -1027,8 +1027,7 @@ namespace DemoGame.Server
             var itemValue = itemEntity.Value;
 
             // Add to the inventory keeping track of the changed slots.
-            IEnumerable<InventorySlot> changedSlots;
-            var remainderItem = Inventory.TryAdd(itemEntity, out changedSlots);
+            var remainderItem = Inventory.TryAdd(itemEntity);
 
             // Find the number of remaining items (in case something went wrong and not all was added)
             var remainderAmount = 0;
@@ -1075,11 +1074,6 @@ namespace DemoGame.Server
                 {
                     Send(pw, ServerMessageType.GUI);
                 }
-            }
-
-            foreach (var inventorySlot in changedSlots)
-            {
-                SendInventoryItemStats(inventorySlot);
             }
 
             // Track event
