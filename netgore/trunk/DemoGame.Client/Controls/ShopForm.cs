@@ -218,6 +218,7 @@ namespace DemoGame.Client
 
                 _slot = index;
                 Tooltip = _tooltipHandler;
+                MouseUp += ShopForm.ShopItemPB_OnMouseUp;
             }
 
             /// <summary>
@@ -318,8 +319,7 @@ namespace DemoGame.Client
             protected override void OnMouseUp(MouseButtonEventArgs e)
             {
                 base.OnMouseUp(e);
-
-                MouseUp += ShopForm.ShopItemPB_OnMouseUp;
+                
             }
 
             /// <summary>
