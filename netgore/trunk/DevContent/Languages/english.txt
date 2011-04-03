@@ -10,6 +10,7 @@ CannotAttackWithWeapon: "You cannot attack with a $0."
 CannotAttackTooFarAway: "The target is too far away to attack."
 CannotAttackNeedTarget: "You must select a target to attack first."
 CannotAttackAllianceConflict: "You feel you shouldn't attack $0."
+CannotAttackNotInSight: "You can't see the person you are trying to attack!"
 
 ########### Core: Specialized chat command responses ###########
 CommandTellNoName: "Tell what to whom?"

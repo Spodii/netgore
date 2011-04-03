@@ -13,6 +13,7 @@ using NetGore.Db;
 using NetGore.Features.NPCChat;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
+using NetGore.Graphics.Extensions;
 using NetGore.Network;
 using NetGore.Stats;
 using NetGore.World;
@@ -640,6 +641,20 @@ namespace DemoGame.Server
             if (target == null)
             {
                 TrySend(GameMessage.CannotAttackNeedTarget, ServerMessageType.GUI);
+                return;
+            }
+
+            Ray2D ray = new Ray2D(Position, target.Position, Map.Spatial);
+
+            Vector2 rayCollide;
+
+
+            // FUTURE: Use to create some sort of wasted ammo on a wall or something.  e.g. Grenade item explodes on walls.
+            bool intersects = ray.Intersects<WallEntity>(out rayCollide);
+
+            if (intersects)
+            {
+                TrySend(GameMessage.CannotAttackNotInSight, ServerMessageType.GUI);
                 return;
             }
 

@@ -191,6 +191,7 @@
     <Compile Include="Cryptography\MachineCrypto.cs" />
     <Compile Include="Cryptography\XorCryptoProvider.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Graphics\Extensions\Ray2.cs" />
     <Compile Include="Graphics\Game Container\GameBase.cs" />
     <Compile Include="Graphics\Game Container\IGameContainer.cs" />
     <Compile Include="Graphics\GUI\GameControl\IKeyCodeReference.cs" />
