@@ -193,7 +193,7 @@ namespace DemoGame.Server
         {
             Debug.Assert(oldItem != newItem);
 
-            Debug.Assert((oldItem != null && newItem != null));
+
 
             if (newItem != null)
                 newItem.IsPersistent = IsPersistent;
