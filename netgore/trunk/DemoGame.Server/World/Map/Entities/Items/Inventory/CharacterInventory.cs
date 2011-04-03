@@ -192,7 +192,8 @@ namespace DemoGame.Server
         protected override void HandleSlotChanged(InventorySlot slot, ItemEntity newItem, ItemEntity oldItem)
         {
             Debug.Assert(oldItem != newItem);
-            Debug.Assert((oldItem != null && newItem == null) || (oldItem == null && newItem != null));
+
+            Debug.Assert((oldItem != null && newItem != null));
 
             if (newItem != null)
                 newItem.IsPersistent = IsPersistent;
