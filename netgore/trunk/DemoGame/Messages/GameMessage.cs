@@ -31,6 +31,11 @@ namespace DemoGame
         /// </summary>
         CannotAttackAllianceConflict,
 
+        /// <summary>
+        /// Cannot attack a character since the target is not in the attacker's line of sight.
+        /// </summary>
+        CannotAttackNotInSight,
+
         #endregion
 
         #region Core: General chat command responses
