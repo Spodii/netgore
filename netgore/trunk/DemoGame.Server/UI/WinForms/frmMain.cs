@@ -54,6 +54,11 @@ namespace DemoGame.Server.UI
         bool _shutdownRequested = false;
 
         /// <summary>
+        /// The cpu performance counter.
+        /// </summary>
+        PerformanceCounter _cpuCounter;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
         /// </summary>
         public frmMain()
@@ -66,6 +71,8 @@ namespace DemoGame.Server.UI
             BasicConfigurator.Configure(_logger);
 
             InitializeComponent();
+
+            _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
             _serverThread = new Thread(ServerThread) { Name = "Server Thread", IsBackground = true };
         }
@@ -455,7 +462,7 @@ namespace DemoGame.Server.UI
             // Update the CPU and memory usage values
             if (_interfaceUpdateTicker % 4 == 0)
             {
-                lblCPU.Text = Math.Round(SystemPerformance.CPU.Usage) + "%";
+                lblCPU.Text = Math.Round(_cpuCounter.NextValue()) + "%";
                 lblRAMUsed.Text = SystemPerformance.Memory.ProcessUsageMB + " MB";
                 lblRAMFree.Text = SystemPerformance.Memory.AvailableMB + " MB";
             }
