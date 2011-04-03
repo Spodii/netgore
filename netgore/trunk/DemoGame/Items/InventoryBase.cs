@@ -137,6 +137,7 @@ namespace DemoGame
         T InternalTryAdd(T item, ICollection<InventorySlot> changedSlots)
         {
             Debug.Assert(changedSlots == null || changedSlots.IsEmpty());
+
             int newItemAmount = item.Amount;
 
             // Try to stack the item in as many slots as possible until it runs out or we run out of slots
@@ -185,7 +186,10 @@ namespace DemoGame
                     Debug.Assert(newItemAmount > 0 && newItemAmount <= byte.MaxValue);
 
                     item.Amount = (byte)newItemAmount;
-                    this[slot] = item;
+
+                    // As there is nothing to stack the new item onto create a deep copy in a new slot.
+                    var copy = (T)item.DeepCopy();
+                    this[slot] = copy;
 
                     return null;
                 }
