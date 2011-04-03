@@ -1026,8 +1026,9 @@ namespace DemoGame.Server
             // Store some info about the item
             var itemValue = itemEntity.Value;
 
-            // Add to the inventory
-            var remainderItem = Inventory.TryAdd(itemEntity);
+            // Add to the inventory keeping track of the changed slots.
+            IEnumerable<InventorySlot> changedSlots;
+            var remainderItem = Inventory.TryAdd(itemEntity, out changedSlots);
 
             // Find the number of remaining items (in case something went wrong and not all was added)
             var remainderAmount = 0;
@@ -1076,6 +1077,11 @@ namespace DemoGame.Server
                 }
             }
 
+            foreach (var inventorySlot in changedSlots)
+            {
+                SendInventoryItemStats(inventorySlot);
+            }
+
             // Track event
             if (ShoppingState != null && ShoppingState.ShoppingAt != null)
             {
@@ -1097,7 +1103,7 @@ namespace DemoGame.Server
                 EventCounterManager.Shop.Increment(shoppingAt.ID, ShopEventCounterType.BuyValue, chargeAmount);
             }
 
-            // Destroy the item entity since when we gave it to the user, we gave them a deep copy
+            // Destroy the item entity since when we gave it to the user, we gave them a deep copy.
             itemEntity.Destroy();
 
             return true;
