@@ -157,7 +157,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Ensures the <see cref="GlobalState"/> is initailized.
         /// </summary>
-        public static void Initailize()
+        public static void Initialize()
         {
             // Calling this will invoke the static constructor, creating the instance, and ultimately setting everything up
         }

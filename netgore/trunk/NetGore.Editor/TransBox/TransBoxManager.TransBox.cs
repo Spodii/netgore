@@ -59,7 +59,6 @@ namespace NetGore.Editor
             /// <returns>The position for the <see cref="TransBox"/>.</returns>
             Vector2 GetPosition()
             {
-                var scale = _owner.Camera.Scale;
 
                 switch (_type)
                 {
@@ -343,7 +342,7 @@ namespace NetGore.Editor
             /// <param name="currentTime">The current time.</param>
             public void Update(TickCount currentTime)
             {
-                _position = GetPosition() / _owner.Camera.Scale;
+                _position = GetPosition();
             }
 
             #endregion
