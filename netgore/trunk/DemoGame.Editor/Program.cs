@@ -184,7 +184,7 @@ The path to the development content is required by the editor. See the file ment
 
             // Initialize stuff
             EngineSettingsInitializer.Initialize();
-            GlobalState.Initailize();
+            GlobalState.Initialize();
 
             // Get the command-line switches
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();

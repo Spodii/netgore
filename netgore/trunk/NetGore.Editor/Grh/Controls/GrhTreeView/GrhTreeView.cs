@@ -505,7 +505,17 @@ namespace NetGore.Editor.Grhs
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ContentManager")]
         void MenuClickAutomaticUpdate(object sender, EventArgs e)
         {
-            var cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
+
+            IContentManager cm = null; 
+            try
+            {
+                cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
+            }
+            catch (InvalidOperationException)
+            {
+                cm = ContentManager.Create();
+            }
+
             if (cm == null)
                 throw new InvalidOperationException("Failed to find a ContentManager to use.");
 

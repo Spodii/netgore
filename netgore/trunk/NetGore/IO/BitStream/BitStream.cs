@@ -555,6 +555,10 @@ namespace NetGore.IO
                 Debug.Assert(retPos == -1);
             }
 
+            // How'd this happen when reading an unsigned??
+            if (ret < 0)
+                ret = 0;
+
             return ret;
         }
 
