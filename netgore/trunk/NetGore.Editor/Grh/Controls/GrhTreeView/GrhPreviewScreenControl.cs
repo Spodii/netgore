@@ -168,6 +168,7 @@ namespace NetGore.Editor.Grhs
             base.Initialize();
 
             _camera.Size = ScreenSize;
+            _camera.Scale = 1.0f;
         }
 
         /// <summary>
