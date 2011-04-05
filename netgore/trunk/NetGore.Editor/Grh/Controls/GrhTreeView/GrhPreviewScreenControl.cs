@@ -25,7 +25,7 @@ namespace NetGore.Editor.Grhs
 
         public GrhPreviewScreenControl()
         {
-            m = new TransBoxManager(_camera);
+            m = new TransBoxManager();
         }
 
         /// <summary>

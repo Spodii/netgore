@@ -37,7 +37,7 @@ namespace DemoGame.Editor
                 return;
 
             _drawingManager = new DrawingManager();
-            _transBoxManager = new TransBoxManager(_camera);
+            _transBoxManager = new TransBoxManager();
             _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = true };
 
             if (DrawingManager.LightManager.DefaultSprite == null)
