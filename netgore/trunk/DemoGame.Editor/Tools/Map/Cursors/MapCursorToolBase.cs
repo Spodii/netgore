@@ -159,6 +159,61 @@ namespace DemoGame.Editor.Tools
         }
 
         /// <summary>
+        /// Handles the KeyDown event of this Cursor tool.  If the Control key is down then it will shift any selected <see cref="ISpatial"/>'s to the direction of the pressed arrow keys.
+        /// </summary>
+        protected override void MapContainer_KeyDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
+        {
+            var som = GlobalState.Instance.Map.SelectedObjsManager;
+
+            if (!e.Control) 
+                return;
+
+
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
+                    {
+                        var left = new Vector2(-1, 0);
+                        foreach (var entity in som.SelectedObjects.OfType<ISpatial>())
+                        {
+                            entity.TryMove(entity.Position + left);
+                        }
+                    }
+                    break;
+ 
+                case Keys.Right:
+                    {
+                        var right = new Vector2(1, 0);
+                        foreach (var entity in som.SelectedObjects.OfType<ISpatial>())
+                        {
+                            entity.TryMove(entity.Position + right);
+                        }
+                    }
+                    break;
+
+                case Keys.Up:
+                    {
+                        var up = new Vector2(0, -1);
+                        foreach (var entity in som.SelectedObjects.OfType<ISpatial>())
+                        {
+                            entity.TryMove(entity.Position + up);
+                        }
+                    }
+                    break;
+
+                case Keys.Down:
+                    {
+                        var down = new Vector2(0, 1);
+                        foreach (var entity in som.SelectedObjects.OfType<ISpatial>())
+                        {
+                            entity.TryMove(entity.Position + down);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles performing drawing before the GUI for a <see cref="IDrawableMap"/> has been draw.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
