@@ -51,41 +51,45 @@ namespace NetGore.Editor
                 return _owner.GridAligner.Align(v);
             }
 
+
+
             /// <summary>
             /// Gets the position to use for the <see cref="TransBox"/>.
             /// </summary>
             /// <returns>The position for the <see cref="TransBox"/>.</returns>
             Vector2 GetPosition()
             {
+                var scale = _owner.Camera.Scale;
+
                 switch (_type)
                 {
                     case TransBoxType.Bottom:
-                        return new Vector2(_spatial.Center.X - (Size.X / 2f), _spatial.Max.Y);
+                        return new Vector2((_spatial.Center.X ) - ((Size.X ) / 2f), _spatial.Max.Y );
 
                     case TransBoxType.BottomLeft:
-                        return new Vector2(_spatial.Position.X - Size.X, _spatial.Max.Y);
+                        return new Vector2((_spatial.Position.X ) - (Size.X ), _spatial.Max.Y );
 
                     case TransBoxType.BottomRight:
-                        return _spatial.Max;
+                        return _spatial.Max ;
 
                     case TransBoxType.Left:
-                        return new Vector2(_spatial.Position.X - Size.X, _spatial.Center.Y - (Size.Y / 2f));
+                        return new Vector2((_spatial.Position.X ) - (Size.X  ), (_spatial.Center.Y ) - (Size.Y  / 2f));
 
                     case TransBoxType.Move:
-                        return new Vector2(_spatial.Center.X - (Size.X / 2f),
-                            _spatial.Position.Y - Size.Y - GetTransBoxSize(TransBoxType.Top).Y);
+                        return new Vector2((_spatial.Center.X ) - (Size.X  / 2f),
+                            (_spatial.Position.Y ) - (Size.Y ) - (GetTransBoxSize(TransBoxType.Top).Y ));
 
                     case TransBoxType.Right:
-                        return new Vector2(_spatial.Max.X, _spatial.Center.Y - (Size.Y / 2f));
+                        return new Vector2(_spatial.Max.X , (_spatial.Center.Y ) - (Size.Y  / 2f));
 
                     case TransBoxType.Top:
-                        return new Vector2(_spatial.Center.X - (Size.X / 2f), _spatial.Position.Y - Size.Y);
+                        return new Vector2((_spatial.Center.X ) - ((Size.X ) / 2f), (_spatial.Position.Y ) - (Size.Y ));
 
                     case TransBoxType.TopLeft:
-                        return _spatial.Position - Size;
+                        return (_spatial.Position ) - Size ;
 
                     case TransBoxType.TopRight:
-                        return new Vector2(_spatial.Max.X, _spatial.Position.Y - Size.Y);
+                        return new Vector2(_spatial.Max.X , (_spatial.Position.Y ) - (Size.Y ));
 
                     default:
                         const string errmsg = "Unsupported TransBoxType `{0}`.";
@@ -299,7 +303,27 @@ namespace NetGore.Editor
                 var s = Size.Round();
                 var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
 
+
+                p = camera.ToScreen(GetPosition() + Vector2.One).Round();
+                bool okFlag = false;
+
+                if (ContainsPoint(camera.ToWorld(p)))   // Something went right
+                    okFlag = true;
+
+                var newR = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
+
                 sprite.Draw(spriteBatch, r, Color.White);
+
+                // Draw a marker at ACTUAL transbox positions for debug purposes.
+                if (okFlag)
+                sprite.Draw(spriteBatch, newR, Color.Green);
+                else
+                    sprite.Draw(spriteBatch, newR, Color.Red);
+
+
+
+                
+
             }
 
             /// <summary>
@@ -319,7 +343,7 @@ namespace NetGore.Editor
             /// <param name="currentTime">The current time.</param>
             public void Update(TickCount currentTime)
             {
-                _position = GetPosition();
+                _position = GetPosition() / _owner.Camera.Scale;
             }
 
             #endregion

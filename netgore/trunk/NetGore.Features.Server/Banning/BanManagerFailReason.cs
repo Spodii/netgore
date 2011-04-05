@@ -46,5 +46,12 @@ namespace NetGore.Features.Banning
         /// Tried to ban a user that does not exist.
         /// </summary>
         InvalidUser,
+
+        /// <summary>
+        /// Tried to ban yourself.
+        /// </summary>
+        SelfBan,
+
+        
     }
 }
