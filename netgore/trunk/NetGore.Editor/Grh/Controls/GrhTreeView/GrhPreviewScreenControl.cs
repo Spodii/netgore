@@ -19,7 +19,14 @@ namespace NetGore.Editor.Grhs
         readonly View _drawView = new View();
         readonly DrawingManager _drawingManager = new DrawingManager();
 
+        TransBoxManager m;
         Grh _grh;
+        private IEnumerable<WallEntityBase> _walls;
+
+        public GrhPreviewScreenControl()
+        {
+            m = new TransBoxManager(_camera);
+        }
 
         /// <summary>
         /// Gets the camera.
@@ -39,7 +46,7 @@ namespace NetGore.Editor.Grhs
             {
                 if (_grh == value)
                     return;
-
+                
                 _grh = value;
 
                 ResetCamera();
@@ -63,7 +70,15 @@ namespace NetGore.Editor.Grhs
         /// <summary>
         /// Gets or sets the collection of walls to be drawn.
         /// </summary>
-        public IEnumerable<WallEntityBase> Walls { get; set; }
+        public IEnumerable<WallEntityBase> Walls
+        {
+            get { return _walls; }
+            set
+            {
+                _walls = value;
+                m.SetItems(Walls);
+            }
+        }
 
         /// <summary>
         /// When overridden in the derived class, draws the graphics to the control.
@@ -83,6 +98,8 @@ namespace NetGore.Editor.Grhs
                 return;
 
             Grh.Update(currentTime);
+
+            m.Update(currentTime);
 
             _drawingManager.Update(currentTime);
 
@@ -116,6 +133,8 @@ namespace NetGore.Editor.Grhs
                         RenderRectangle.Draw(sb, rect, _autoWallColor);
                     }
                 }
+
+                m.Draw(sb, Camera);
             }
             finally
             {
@@ -124,6 +143,21 @@ namespace NetGore.Editor.Grhs
                 // Restore the view
                 RenderWindow.SetView(oldView);
             }
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            m.HandleMouseDown(e, Camera);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            m.HandleMouseUp(e, Camera);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            m.HandleMouseMove(e, Camera);
         }
 
         /// <summary>
@@ -173,11 +207,17 @@ namespace NetGore.Editor.Grhs
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-
+            
             _camera.Size = ScreenSize;
 
             ResetCamera();
         }
+
+        protected void MouseMove(EventArgs e)
+        {
+
+        }
+
 
         /// <summary>
         /// Resets the camera back to the default view.
