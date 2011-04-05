@@ -279,6 +279,9 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
+            if (e.Control)
+                return;
+
             // Update the camera velocity
             var s = EditorSettings.Default;
             if (e.KeyCode == s.Screen_ScrollLeft)
