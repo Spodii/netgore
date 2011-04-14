@@ -350,7 +350,7 @@ namespace DemoGame.Editor
 
                 var editorFrm = new EditMapForm();
                 editorFrm.MapScreenControl.ChangeMap(map.ID);
-
+                editorFrm.Text = "[" + map.ID + "] " + map.Name;
                 editorFrm.Show(dockPanel);
             }
         }
