@@ -77,11 +77,11 @@ namespace SFML
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern bool sfWindow_GetEvent(IntPtr This, out Event Evt);
+            static extern bool sfWindow_PollEvent(IntPtr This, out Event Evt);
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern float sfWindow_GetFrameTime(IntPtr This);
+            static extern uint sfWindow_GetFrameTime(IntPtr This);
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -145,6 +145,10 @@ namespace SFML
 
             [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
+            static extern void sfWindow_SetTitle(IntPtr This, string title);
+
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
             static extern bool sfWindow_WaitEvent(IntPtr This, out Event Evt);
 
             #endregion
@@ -155,7 +159,7 @@ namespace SFML
             /// <param name="mode">Video mode to use</param>
             /// <param name="title">Title of the window</param>
             ////////////////////////////////////////////////////////////
-            public Window(VideoMode mode, string title) : this(mode, title, Styles.Default, new ContextSettings(24, 8))
+            public Window(VideoMode mode, string title) : this(mode, title, Styles.Default, new ContextSettings(0, 0))
             {
             }
 
@@ -167,7 +171,7 @@ namespace SFML
             /// <param name="title">Title of the window</param>
             /// <param name="style">Window style (Resize | Close by default)</param>
             ////////////////////////////////////////////////////////////
-            public Window(VideoMode mode, string title, Styles style) : this(mode, title, style, new ContextSettings(24, 8))
+            public Window(VideoMode mode, string title, Styles style) : this(mode, title, style, new ContextSettings(0, 0))
             {
             }
 
@@ -192,7 +196,7 @@ namespace SFML
             /// </summary>
             /// <param name="handle">Platform-specific handle of the control</param>
             ////////////////////////////////////////////////////////////
-            public Window(IntPtr handle) : this(handle, new ContextSettings(24, 8))
+            public Window(IntPtr handle) : this(handle, new ContextSettings(0, 0))
             {
             }
 
@@ -434,7 +438,7 @@ namespace SFML
             public void DispatchEvents()
             {
                 Event e;
-                while (GetEvent(out e))
+                while (PollEvent(out e))
                 {
                     CallEventHandler(e);
                 }
@@ -480,17 +484,17 @@ namespace SFML
             /// <param name="eventToFill">Variable to fill with the raw pointer to the event structure</param>
             /// <returns>True if there was an event, false otherwise</returns>
             ////////////////////////////////////////////////////////////
-            protected virtual bool GetEvent(out Event eventToFill)
+            protected virtual bool PollEvent(out Event eventToFill)
             {
-                return sfWindow_GetEvent(This, out eventToFill);
+                return sfWindow_PollEvent(This, out eventToFill);
             }
 
             /// <summary>
             /// Get time elapsed since last frame
             /// </summary>
-            /// <returns>Time elapsed, in seconds</returns>
+            /// <returns>Time elapsed, in milliseconds</returns>
             ////////////////////////////////////////////////////////////
-            public virtual float GetFrameTime()
+            public virtual uint GetFrameTime()
             {
                 return sfWindow_GetFrameTime(This);
             }
@@ -631,6 +635,17 @@ namespace SFML
             public virtual void ShowMouseCursor(bool show)
             {
                 sfWindow_ShowMouseCursor(This, show);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change the title of the window
+            /// </summary>
+            /// <param name="title">New title</param>
+            ////////////////////////////////////////////////////////////
+            public virtual void SetTitle(string title)
+            {
+                sfWindow_SetTitle(This, title);
             }
 
             ////////////////////////////////////////////////////////////

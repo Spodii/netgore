@@ -72,7 +72,7 @@ namespace SFML
 
             [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern float sfSound_GetPlayingOffset(IntPtr Sound);
+            static extern uint sfSound_GetPlayingOffset(IntPtr Sound);
 
             [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -120,7 +120,7 @@ namespace SFML
 
             [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfSound_SetPlayingOffset(IntPtr Sound, float TimeOffset);
+            static extern void sfSound_SetPlayingOffset(IntPtr Sound, uint TimeOffset);
 
             [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -222,10 +222,10 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Current playing position of the sound, in seconds
+            /// Current playing position of the sound, in milliseconds
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public float PlayingOffset
+            public uint PlayingOffset
             {
                 get { return sfSound_GetPlayingOffset(This); }
                 set { sfSound_SetPlayingOffset(This, value); }

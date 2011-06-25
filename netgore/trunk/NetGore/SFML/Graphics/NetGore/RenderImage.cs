@@ -67,10 +67,6 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern bool sfRenderImage_IsAvailable();
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
             static extern bool sfRenderImage_RestoreGLStates(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
@@ -123,16 +119,6 @@ namespace SFML
             public Image Image
             {
                 get { return myImage; }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Tell whether or not the system supports render images
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public static bool IsAvailable
-            {
-                get { return sfRenderImage_IsAvailable(); }
             }
 
             ////////////////////////////////////////////////////////////
