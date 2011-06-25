@@ -39,6 +39,7 @@ namespace Lidgren.Network
 		internal float m_pingInterval;
 		internal bool m_useMessageRecycling;
 		internal float m_connectionTimeout;
+		internal bool m_enableUPnP;
 
 		internal NetIncomingMessageType m_disabledTypes;
 		internal int m_port;
@@ -59,6 +60,9 @@ namespace Lidgren.Network
 		internal float m_expandMTUFrequency;
 		internal int m_expandMTUFailAttempts;
 
+		/// <summary>
+		/// NetPeerConfiguration constructor
+		/// </summary>
 		public NetPeerConfiguration(string appIdentifier)
 		{
 			if (string.IsNullOrEmpty(appIdentifier))
@@ -241,6 +245,20 @@ namespace Lidgren.Network
 		}
 
 		/// <summary>
+		/// Enables UPnP support; enabling port forwarding and getting external ip
+		/// </summary>
+		public bool EnableUPnP
+		{
+			get { return m_enableUPnP; }
+			set
+			{
+				if (m_isLocked)
+					throw new NetException(c_isLockedMessage);
+				m_enableUPnP = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets or sets the local ip address to bind to. Defaults to IPAddress.Any. Cannot be changed once NetPeer is initialized.
 		/// </summary>
 		public IPAddress LocalAddress
@@ -320,7 +338,12 @@ namespace Lidgren.Network
 		public int MaximumHandshakeAttempts
 		{
 			get { return m_maximumHandshakeAttempts; }
-			set { m_maximumHandshakeAttempts = value; }
+			set
+			{
+				if (value < 1)
+					throw new NetException("MaximumHandshakeAttempts must be at least 1");
+				m_maximumHandshakeAttempts = value;
+			}
 		}
 
 		/// <summary>

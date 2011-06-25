@@ -44,8 +44,9 @@ namespace Lidgren.Network
 
 			if (msg.m_isSent)
 				throw new NetException("This message has already been sent! Use NetPeer.SendMessage() to send to multiple recipients efficiently");
+			msg.m_isSent = true;
 
-			int len = msg.LengthBytes;
+			int len = NetConstants.UnfragmentedMessageHeaderSize + msg.LengthBytes; // headers + length, faster than calling msg.GetEncodedSize
 			if (len <= recipient.m_currentMTU)
 			{
 				Interlocked.Increment(ref msg.m_recyclingCount);
@@ -71,6 +72,13 @@ namespace Lidgren.Network
 			return mtu;
 		}
 
+		/// <summary>
+		/// Send a message to a list of connections
+		/// </summary>
+		/// <param name="msg">The message to send</param>
+		/// <param name="recipients">The list of recipients to send to</param>
+		/// <param name="method">How to deliver the message</param>
+		/// <param name="sequenceChannel">Sequence channel within the delivery method</param>
 		public void SendMessage(NetOutgoingMessage msg, IList<NetConnection> recipients, NetDeliveryMethod method, int sequenceChannel)
 		{
 			if (msg == null)
@@ -83,6 +91,8 @@ namespace Lidgren.Network
 				throw new NetException("This message has already been sent! Use NetPeer.SendMessage() to send to multiple recipients efficiently");
 
 			int mtu = GetMTU(recipients);
+
+			msg.m_isSent = true;
 
 			int len = msg.LengthBytes;
 			if (len <= m_configuration.MaximumTransmissionUnit)
@@ -151,6 +161,7 @@ namespace Lidgren.Network
 				throw new NetException("Unconnected messages too long! Must be shorter than NetConfiguration.MaximumTransmissionUnit (currently " + m_configuration.MaximumTransmissionUnit + ")");
 
 			msg.m_messageType = NetMessageType.Unconnected;
+			msg.m_isSent = true;
 
 			Interlocked.Increment(ref msg.m_recyclingCount);
 			m_unsentUnconnectedMessages.Enqueue(new NetTuple<IPEndPoint, NetOutgoingMessage>(recipient, msg));
@@ -171,6 +182,7 @@ namespace Lidgren.Network
 				throw new NetException("Unconnected messages too long! Must be shorter than NetConfiguration.MaximumTransmissionUnit (currently " + m_configuration.MaximumTransmissionUnit + ")");
 
 			msg.m_messageType = NetMessageType.Unconnected;
+			msg.m_isSent = true;
 
 			Interlocked.Add(ref msg.m_recyclingCount, recipients.Count);
 			foreach(IPEndPoint ep in recipients)

@@ -104,17 +104,14 @@ namespace Lidgren.Network
 			m_isFragment = false;
 		}
 
-		public void Decrypt(NetXtea tea)
+		/// <summary>
+		/// Decrypt a message
+		/// </summary>
+		/// <param name="encryption">The encryption algorithm used to encrypt the message</param>
+		/// <returns>true on success</returns>
+		public bool Decrypt(INetEncryption encryption)
 		{
-			// requires blocks of 8 bytes
-			int blocks = m_bitLength / 64;
-			if (blocks * 64 != m_bitLength)
-				throw new NetException("Wrong message length for XTEA decrypt! Length is " + m_bitLength + " bits");
-
-			byte[] result = new byte[m_data.Length];
-			for (int i = 0; i < blocks; i++)
-				tea.DecryptBlock(m_data, (i * 8), result, (i * 8));
-			m_data = result;
+			return encryption.Decrypt(this);
 		}
 
 		/// <summary>
