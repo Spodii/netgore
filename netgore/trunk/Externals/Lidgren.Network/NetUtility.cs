@@ -15,8 +15,9 @@ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 */
+#define IS_FULL_NET_AVAILABLE
+
 using System;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -89,6 +90,8 @@ namespace Lidgren.Network
 			}
 		}
 
+#if IS_FULL_NET_AVAILABLE
+
 		private static NetworkInterface GetNetworkInterface()
 		{
 			IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
@@ -118,6 +121,9 @@ namespace Lidgren.Network
 			return best;
 		}
 
+		/// <summary>
+		/// Returns the physical (MAC) address for the first usable network interface
+		/// </summary>
 		public static PhysicalAddress GetMacAddress()
 		{
 			NetworkInterface ni = GetNetworkInterface();
@@ -125,12 +131,19 @@ namespace Lidgren.Network
 				return null;
 			return ni.GetPhysicalAddress();
 		}
+#endif
 
+		/// <summary>
+		/// Create a hex string from an Int64 value
+		/// </summary>
 		public static string ToHexString(long data)
 		{
 			return ToHexString(BitConverter.GetBytes(data));
 		}
 
+		/// <summary>
+		/// Create a hex string from an array of bytes
+		/// </summary>
 		public static string ToHexString(byte[] data)
 		{
 			char[] c = new char[data.Length * 2];
@@ -150,6 +163,7 @@ namespace Lidgren.Network
 		/// </summary>
 		public static IPAddress GetMyAddress(out IPAddress mask)
 		{
+#if IS_FULL_NET_AVAILABLE
 			NetworkInterface ni = GetNetworkInterface();
 			if (ni == null)
 			{
@@ -166,7 +180,7 @@ namespace Lidgren.Network
 					return unicastAddress.Address;
 				}
 			}
-
+#endif
 			mask = null;
 			return null;
 		}
@@ -283,6 +297,9 @@ namespace Lidgren.Network
 			return retval;
 		}
 
+		/// <summary>
+		/// Gets the window size used internally in the library for a certain delivery method
+		/// </summary>
 		public static int GetWindowSize(NetDeliveryMethod method)
 		{
 			switch (method)

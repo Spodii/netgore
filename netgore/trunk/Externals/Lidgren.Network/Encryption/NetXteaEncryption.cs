@@ -24,25 +24,29 @@ using System.Security;
 namespace Lidgren.Network
 {
 	/// <summary>
-	/// Methods to encrypt and decrypt data using the XTEA algorith
+	/// Methods to encrypt and decrypt data using the XTEA algorithm
 	/// </summary>
-	public sealed class NetXtea
+	public sealed class NetXtea : NetBlockEncryptionBase
 	{
-		private const int m_blockSize = 8;
-		private const int m_keySize = 16;
-		private const int m_delta = unchecked((int)0x9E3779B9);
+		private const int c_blockSize = 8;
+		private const int c_keySize = 16;
+		private const int c_delta = unchecked((int)0x9E3779B9);
 
 		private readonly int m_numRounds;
+		private readonly uint[] m_sum0;
+		private readonly uint[] m_sum1;
 
-		private uint[] m_sum0;
-		private uint[] m_sum1;
+		/// <summary>
+		/// Gets the block size for this cipher
+		/// </summary>
+		public override int BlockSize { get { return c_blockSize; } }
 
 		/// <summary>
 		/// 16 byte key
 		/// </summary>
 		public NetXtea(byte[] key, int rounds)
 		{
-			if (key.Length < 16)
+			if (key.Length < c_keySize)
 				throw new NetException("Key too short!");
 
 			m_numRounds = rounds;
@@ -82,14 +86,13 @@ namespace Lidgren.Network
 		{
 		}
 
-		public void EncryptBlock(
-			byte[] inBytes,
-			int inOff,
-			byte[] outBytes,
-			int outOff)
+		/// <summary>
+		/// Encrypts a block of bytes
+		/// </summary>
+		protected override void EncryptBlock(byte[] source, int sourceOffset, byte[] destination)
 		{
-			uint v0 = BytesToUInt(inBytes, inOff);
-			uint v1 = BytesToUInt(inBytes, inOff + 4);
+			uint v0 = BytesToUInt(source, sourceOffset);
+			uint v1 = BytesToUInt(source, sourceOffset + 4);
 
 			for (int i = 0; i != m_numRounds; i++)
 			{
@@ -97,21 +100,20 @@ namespace Lidgren.Network
 				v1 += (((v0 << 4) ^ (v0 >> 5)) + v0) ^ m_sum1[i];
 			}
 
-			UIntToBytes(v0, outBytes, outOff);
-			UIntToBytes(v1, outBytes, outOff + 4);
+			UIntToBytes(v0, destination, 0);
+			UIntToBytes(v1, destination, 0 + 4);
 
 			return;
 		}
 
-		public void DecryptBlock(
-			byte[] inBytes,
-			int inOff,
-			byte[] outBytes,
-			int outOff)
+		/// <summary>
+		/// Decrypts a block of bytes
+		/// </summary>
+		protected override void DecryptBlock(byte[] source, int sourceOffset, byte[] destination)
 		{
 			// Pack bytes into integers
-			uint v0 = BytesToUInt(inBytes, inOff);
-			uint v1 = BytesToUInt(inBytes, inOff + 4);
+			uint v0 = BytesToUInt(source, sourceOffset);
+			uint v1 = BytesToUInt(source, sourceOffset + 4);
 
 			for (int i = m_numRounds - 1; i >= 0; i--)
 			{
@@ -119,8 +121,8 @@ namespace Lidgren.Network
 				v0 -= (((v1 << 4) ^ (v1 >> 5)) + v1) ^ m_sum0[i];
 			}
 
-			UIntToBytes(v0, outBytes, outOff);
-			UIntToBytes(v1, outBytes, outOff + 4);
+			UIntToBytes(v0, destination, 0);
+			UIntToBytes(v1, destination, 0 + 4);
 
 			return;
 		}
