@@ -216,7 +216,7 @@ namespace NetGore.Graphics
                                   ? (IntRect)sourceRectangle
                                   : new IntRect(0, 0, (int)_sprite.Image.Width, (int)_sprite.Image.Height);
             _sprite.Color = color;
-            _sprite.Rotation = -MathHelper.ToDegrees(rotation);
+            _sprite.Rotation = MathHelper.ToDegrees(rotation);
             _sprite.Origin = origin;
             _sprite.FlipX((effects & SpriteEffects.FlipHorizontally) != 0);
             _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
@@ -299,7 +299,7 @@ namespace NetGore.Graphics
                                   ? (IntRect)sourceRectangle
                                   : new IntRect(0, 0, (int)_sprite.Image.Width, (int)_sprite.Image.Height);
             _sprite.Color = color;
-            _sprite.Rotation = -MathHelper.ToDegrees(rotation);
+            _sprite.Rotation = MathHelper.ToDegrees(rotation);
             _sprite.Origin = origin;
             _sprite.FlipX((effects & SpriteEffects.FlipHorizontally) != 0);
             _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);

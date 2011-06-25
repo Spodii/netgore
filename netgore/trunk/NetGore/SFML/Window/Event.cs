@@ -244,6 +244,9 @@ namespace SFML
 
             /// <summary>Is the Shift modifier pressed?</summary>
             public int Shift;
+            
+            /// <summary>Is the System modifier pressed?</summary>
+            public int System;
 
             /// <summary>
             /// Indicates whether the current object is equal to another object of the same type.

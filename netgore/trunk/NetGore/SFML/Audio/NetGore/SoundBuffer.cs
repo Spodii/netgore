@@ -106,10 +106,10 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Total duration of the buffer, in seconds
+            /// Total duration of the buffer, in milliseconds
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public float Duration
+            public uint Duration
             {
                 get { return sfSoundBuffer_GetDuration(This); }
             }
@@ -223,7 +223,7 @@ namespace SFML
 
             [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern float sfSoundBuffer_GetDuration(IntPtr SoundBuffer);
+            static extern uint sfSoundBuffer_GetDuration(IntPtr SoundBuffer);
 
             [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]

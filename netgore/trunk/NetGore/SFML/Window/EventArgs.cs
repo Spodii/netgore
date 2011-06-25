@@ -26,6 +26,9 @@ namespace SFML
             /// <summary>Is the Shift modifier pressed?</summary>
             public bool Shift;
 
+            /// <summary>Is the System modifier pressed?</summary>
+            public bool System;
+
             /// <summary>
             /// Construct the key arguments from a key event
             /// </summary>
@@ -37,6 +40,7 @@ namespace SFML
                 Alt = e.Alt != 0;
                 Control = e.Control != 0;
                 Shift = e.Shift != 0;
+                System = e.System != 0;
             }
 
             ////////////////////////////////////////////////////////////
@@ -48,7 +52,7 @@ namespace SFML
             public override string ToString()
             {
                 return "[KeyEventArgs]" + " Code(" + Code + ")" + " Alt(" + Alt + ")" + " Control(" + Control + ")" + " Shift(" +
-                       Shift + ")";
+                       Shift + ")" + " System(" + System + ")";
             }
         }
 

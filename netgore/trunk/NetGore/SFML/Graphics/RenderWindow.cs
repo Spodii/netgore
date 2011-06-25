@@ -63,11 +63,11 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern bool sfRenderWindow_GetEvent(IntPtr This, out Event Evt);
+            static extern bool sfRenderWindow_PollEvent(IntPtr This, out Event Evt);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern float sfRenderWindow_GetFrameTime(IntPtr This);
+            static extern uint sfRenderWindow_GetFrameTime(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -147,6 +147,10 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
+            static extern void sfRenderWindow_SetTitle(IntPtr This, string title);
+
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
             static extern void sfRenderWindow_ShowMouseCursor(IntPtr This, bool Show);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
@@ -161,7 +165,7 @@ namespace SFML
             /// <param name="mode">Video mode to use</param>
             /// <param name="title">Title of the window</param>
             ////////////////////////////////////////////////////////////
-            public RenderWindow(VideoMode mode, string title) : this(mode, title, Styles.Default, new ContextSettings(24, 8))
+            public RenderWindow(VideoMode mode, string title) : this(mode, title, Styles.Default, new ContextSettings(0, 0))
             {
             }
 
@@ -173,7 +177,7 @@ namespace SFML
             /// <param name="title">Title of the window</param>
             /// <param name="style">Window style (Resize | Close by default)</param>
             ////////////////////////////////////////////////////////////
-            public RenderWindow(VideoMode mode, string title, Styles style) : this(mode, title, style, new ContextSettings(24, 8))
+            public RenderWindow(VideoMode mode, string title, Styles style) : this(mode, title, style, new ContextSettings(0, 0))
             {
             }
 
@@ -198,7 +202,7 @@ namespace SFML
             /// </summary>
             /// <param name="handle">Platform-specific handle of the control</param>
             ////////////////////////////////////////////////////////////
-            public RenderWindow(IntPtr handle) : this(handle, new ContextSettings(24, 8))
+            public RenderWindow(IntPtr handle) : this(handle, new ContextSettings(0, 0))
             {
             }
 
@@ -300,17 +304,17 @@ namespace SFML
             /// <param name="eventToFill">Variable to fill with the raw pointer to the event structure</param>
             /// <returns>True if there was an event, false otherwise</returns>
             ////////////////////////////////////////////////////////////
-            protected override bool GetEvent(out Event eventToFill)
+            protected override bool PollEvent(out Event eventToFill)
             {
-                return sfRenderWindow_GetEvent(This, out eventToFill);
+                return sfRenderWindow_PollEvent(This, out eventToFill);
             }
 
             /// <summary>
             /// Get time elapsed since last frame
             /// </summary>
-            /// <returns>Time elapsed, in seconds</returns>
+            /// <returns>Time elapsed, in milliseconds</returns>
             ////////////////////////////////////////////////////////////
-            public override float GetFrameTime()
+            public override uint GetFrameTime()
             {
                 return sfRenderWindow_GetFrameTime(This);
             }
@@ -429,6 +433,17 @@ namespace SFML
             public override void SetSize(uint width, uint height)
             {
                 sfRenderWindow_SetSize(This, width, height);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change the title of the window
+            /// </summary>
+            /// <param name="title">New title</param>
+            ////////////////////////////////////////////////////////////
+            public override void SetTitle(string title)
+            {
+                sfRenderWindow_SetTitle(This, title);
             }
 
             ////////////////////////////////////////////////////////////
