@@ -369,6 +369,14 @@ namespace DemoGame.Client
                     dynamicEntity.GetType());
         }
 
+        [MessageHandler((uint)ServerPacketID.SynchronizeDynamicEntity)]
+        void RecvSynchronizeDynamicEntity(IIPSocket conn, BitStream r)
+        {
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            DynamicEntity e = Map.GetDynamicEntity(mapEntityIndex);
+            e.Deserialize(r);
+        }
+
         [MessageHandler((uint)ServerPacketID.Emote)]
         void RecvEmote(IIPSocket conn, BitStream r)
         {

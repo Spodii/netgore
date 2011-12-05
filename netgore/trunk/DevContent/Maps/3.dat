@@ -1957,6 +1957,7 @@
       <DestinationMap>1</DestinationMap>
       <Position>32,766</Position>
       <Velocity>0,0</Velocity>
+      <Open>false</Open>
     </Item0>
     <Item1>
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
@@ -1966,6 +1967,7 @@
       <DestinationMap>4</DestinationMap>
       <Position>1534,769</Position>
       <Velocity>0,0</Velocity>
+      <Open>false</Open>
     </Item1>
   </DynamicEntities>
   <Misc>

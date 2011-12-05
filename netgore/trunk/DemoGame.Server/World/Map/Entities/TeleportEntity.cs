@@ -56,6 +56,12 @@ namespace DemoGame.Server
             if (!CanUse(charEntity))
                 return false;
 
+            if (!Open)
+            {
+                Open = true; // For testing after we've tried it once, we'll open it!
+                return false;
+            }
+
             // Teleport to a new map
             if (DestinationMap > 0)
             {

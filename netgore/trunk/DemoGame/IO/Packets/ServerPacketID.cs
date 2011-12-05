@@ -72,6 +72,7 @@ namespace DemoGame
         StartQuestChatDialog,
         StartShopping,
         StopShopping,
+        SynchronizeDynamicEntity,
         UpdateEquipmentSlot,
         UpdateStat,
         UpdateVelocityAndPosition,
