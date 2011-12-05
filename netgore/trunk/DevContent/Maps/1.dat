@@ -67,6 +67,7 @@
       <DestinationMap>2</DestinationMap>
       <Position>771,100</Position>
       <Velocity>0,0</Velocity>
+      <Open>false</Open>
     </Item0>
     <Item1>
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
@@ -76,6 +77,7 @@
       <DestinationMap>3</DestinationMap>
       <Position>833,667</Position>
       <Velocity>0,0</Velocity>
+      <Open>false</Open>
     </Item1>
   </DynamicEntities>
   <Misc>

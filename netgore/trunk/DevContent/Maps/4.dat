@@ -342,6 +342,7 @@
       <DestinationMap>3</DestinationMap>
       <Position>65,735</Position>
       <Velocity>0,0</Velocity>
+     <Open>false</Open>
     </Item0>
   </DynamicEntities>
   <Misc>

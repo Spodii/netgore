@@ -13,6 +13,7 @@ namespace DemoGame
     {
         Vector2 _destination;
         MapID _destinationMap;
+        bool _isOpen;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
@@ -58,6 +59,20 @@ namespace DemoGame
         {
             get { return _destinationMap; }
             set { _destinationMap = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the open/closed state of this teleport, if this is false, it can't be used successfully.
+        /// </summary>
+        [SyncValue(SkipNetworkSync = false)]
+        [Category("Teleport")]
+        [DisplayName("Is Open")]
+        [Description("Is this teleport open?")]
+        [Browsable(true)]
+        public bool Open
+        {
+            get { return _isOpen; }
+            set { _isOpen = value; }
         }
 
         #region IUsableEntity Members

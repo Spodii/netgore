@@ -413,7 +413,7 @@ namespace NetGore.World
         {
             // Highest possible PropertySync index that we will be writing
             uint highestPropertyIndex = _lastNetworkSyncIndex;
-
+            
             // Find the indicies that need to be synchronized
             // Its important to note that we are iterating in ascending order and putting them in a queue, so they
             // will come out in ascending order, too
@@ -503,7 +503,7 @@ namespace NetGore.World
         }
 
         /// <summary>
-        /// Writes all of the synchrnized properties to an IValueWriter. Use in conjunction with ReadAll().
+        /// Writes all of the synchronized properties to an IValueWriter. Use in conjunction with ReadAll().
         /// </summary>
         /// <param name="writer">IValueWriter to write th property values to.</param>
         internal void WriteAll(IValueWriter writer)

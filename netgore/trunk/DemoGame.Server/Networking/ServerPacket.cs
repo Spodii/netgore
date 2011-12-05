@@ -671,7 +671,7 @@ namespace DemoGame.Server
 
         public static void SynchronizeDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)
         {
-            pw.Write(ServerPacketID.CreateDynamicEntity);
+            pw.Write(ServerPacketID.SynchronizeDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
             dynamicEntity.Serialize(pw);
         }
