@@ -96,19 +96,19 @@ namespace NetGore.Graphics.GUI
         /// <returns>True if the character <paramref name="c"/> can be inserted into the <see cref="TextBox"/>; otherwise false.</returns>
         static bool CanInsertChar(string c)
         {
-            var asciiCode = Encoding.ASCII.GetBytes(c);
+            var utf8Code = Encoding.UTF8.GetBytes(c);
 
             // Invalid length
-            if (asciiCode.Length <= 0)
+            if (utf8Code.Length <= 0)
                 return false;
 
             // Length greather than 1... foreign characters? Whatever it is, probably want to allow it.
-            if (asciiCode.Length > 1)
+            if (utf8Code.Length > 1)
                 return true;
 
-            // Do not allow ASCII characters below 32 since we either handles those on a specific
+            // Do not allow characters below 32 since we either handles those on a specific
             // case-by-case basis, or not at all
-            if (asciiCode[0] < 32)
+            if (utf8Code[0] < 32)
                 return false;
 
             return true;
