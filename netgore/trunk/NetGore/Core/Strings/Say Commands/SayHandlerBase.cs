@@ -125,8 +125,8 @@ namespace NetGore
             // Check each character in the string to make sure they are valid
             foreach (var letter in text)
             {
-                var i = Convert.ToInt32(letter);
-                if (i > 126 || i < 32)
+                // Only allow chars >= 32, and non-control chars
+                if (letter < 32 || char.IsControl(letter))
                     return false;
             }
 

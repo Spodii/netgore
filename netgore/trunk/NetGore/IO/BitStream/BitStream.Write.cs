@@ -522,11 +522,12 @@ namespace NetGore.IO
                 return;
             }
 
-            if (value.Length > maxLength)
-                throw new ArgumentOutOfRangeException("value", "String length exceeds maximum length.");
-
-            WriteUnsigned(value.Length, GetStringLengthBits(maxLength));
             var b = StringToByteArray(value);
+
+            if (b.Length > maxLength)
+                throw new ArgumentOutOfRangeException("value", "UTF8-encoded string length exceeds maximum length (note that foreign chars can take multiple bytes).");
+
+            WriteUnsigned(b.Length, GetStringLengthBits(maxLength));
             Write(b, 0, b.Length);
         }
 

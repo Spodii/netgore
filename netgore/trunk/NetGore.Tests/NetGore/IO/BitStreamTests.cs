@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -149,6 +149,20 @@ namespace NetGore.Tests.IO
         }
 
         #region Unit tests
+
+        [Test]
+        public void ForeignCharacterStringIO()
+        {
+            const string originalStr = "ěščřžýáíé";
+
+            var bs = new BitStream();
+            bs.Write(originalStr);
+
+            bs.PositionBits = 0;
+            var outStr = bs.ReadString();
+
+            Assert.AreEqual(originalStr, outStr);
+        }
 
         [Test]
         public void BitIO()
