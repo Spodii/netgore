@@ -35,7 +35,7 @@ Make sure that you re-run the DbClassCreator every time you alter your
 game's database.
 
 For more information on the DbClassCreator, please see:
-    http://www.netgore.com/wiki/dbclasscreator.html
+    http://www.netgore.com/wiki/DbClassCreator
 ********************************************************************/";
 
         const string _tempNamespaceName = "[TEMPNAMESPACENAME]";
