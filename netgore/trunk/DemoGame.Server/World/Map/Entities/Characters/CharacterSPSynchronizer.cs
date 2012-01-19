@@ -77,9 +77,9 @@ namespace DemoGame.Server
             int maxHP = _character.ModStats[StatType.MaxHP];
             int maxMP = _character.ModStats[StatType.MaxMP];
 
-            if (maxHP < 1 || maxMP < 1)
+            if (maxHP < 1)
             {
-                const string errmsg = "MaxHP or MaxMP is less than 1 for Character `{0}`!";
+                const string errmsg = "MaxHP is less than 1 for Character `{0}`!";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, _character);
                 Debug.Fail(string.Format(errmsg, _character));
@@ -87,7 +87,9 @@ namespace DemoGame.Server
             }
 
             var newHPPercent = (byte)(((float)_character.HP / maxHP) * 100.0f);
-            var newMPPercent = (byte)(((float)_character.MP / maxMP) * 100.0f);
+            byte newMPPercent = 100;
+            if (maxMP > 0)
+                newMPPercent = (byte)(((float)_character.MP / maxMP) * 100.0f);
 
             var updateHP = Math.Abs(newHPPercent - _lastSentHPPercent) >= _updatePercentDiff;
             var updateMP = Math.Abs(newMPPercent - _lastSentMPPercent) >= _updatePercentDiff;
