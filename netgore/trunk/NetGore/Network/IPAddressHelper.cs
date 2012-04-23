@@ -22,13 +22,14 @@ namespace NetGore.Network
             const string ipMatch = "(?<ip>\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})";
             const RegexOptions regOpts = RegexOptions.IgnoreCase | RegexOptions.Singleline;
 
+            var rStraightCheck = new Regex(ipMatch, regOpts);
             var rCheckMyIP = new Regex("Your local IP address is&nbsp;" + ipMatch, regOpts);
-
             var rFaqs = new Regex("Your IP address is: " + ipMatch, regOpts);
 
             _parsers = new ExternalIPParser[]
             {
-                new ExternalIPParser(new Uri("http://whatismyip.org/"), null),
+                new ExternalIPParser(new Uri("http://checkip.dyndns.org/"), rStraightCheck),
+                new ExternalIPParser(new Uri("http://whatismyip.org/"), rStraightCheck),
                 new ExternalIPParser(new Uri("http://www.faqs.org/ip.php"), rFaqs),
                 new ExternalIPParser(new Uri("http://www.checkmyip.com/"), rCheckMyIP),
                 new ExternalIPParser(new Uri("http://icanhazip.com/"), null)
