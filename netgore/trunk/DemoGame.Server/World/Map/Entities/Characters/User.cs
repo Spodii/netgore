@@ -686,8 +686,12 @@ namespace DemoGame.Server
 
                 WorldStatsTracker.Instance.AddUserKillNPC(this, killedNPC);
 
-                if (killedNPC.CharacterTemplateID.HasValue)
+                bool hasTemplateID = killedNPC.CharacterTemplateID.HasValue;
+
+                if (hasTemplateID)
+                {
                     WorldStatsTracker.Instance.AddCountUserKillNPC((int)ID, (int)killedNPC.CharacterTemplateID.Value);
+                }
 
                 // If in a group, split among the group members (as needed)
                 var group = ((IGroupable)this).Group;
@@ -695,6 +699,10 @@ namespace DemoGame.Server
                 {
                     // Not in a group or no sharing is being used in the group, give all to self
                     GiveKillReward(giveExp, giveCash);
+                    if (hasTemplateID)
+                    {
+                        _questInfo.QuestKillCounter.IncrementCounter((CharacterTemplateID)killedNPC.CharacterTemplateID);
+                    }
                 }
                 else
                 {
@@ -705,11 +713,15 @@ namespace DemoGame.Server
                     foreach (var member in members)
                     {
                         member.GiveKillReward(giveExp, giveCash);
+                        if (hasTemplateID)
+                        {
+                            member._questInfo.QuestKillCounter.IncrementCounter((CharacterTemplateID)killedNPC.CharacterTemplateID);
+                        }
                     }
                 }
             }
         }
-
+        
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of the
         /// <see cref="Character.LevelChanged"/> event. It is recommended you override this method instead of
