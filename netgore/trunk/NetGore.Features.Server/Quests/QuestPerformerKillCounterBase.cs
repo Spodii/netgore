@@ -107,7 +107,7 @@ namespace NetGore.Features.Quests
         /// This should be called once for each kill made by the owner.
         /// </summary>
         /// <param name="target">The target to increment the kill counter for.</param>
-        protected void IncrementCounter(TKillID target)
+        public void IncrementCounter(TKillID target)
         {
             // Attempt the increment on all of the quest counters
             foreach (var counter in _counters)
