@@ -26,7 +26,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_Close(IntPtr This);
+            static extern void sfWindow_Close(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -35,27 +35,27 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfRenderWindow_Create(VideoMode Mode, string Title, Styles Style, ref ContextSettings Params);
+            static extern IntPtr sfWindow_Create(VideoMode Mode, string Title, Styles Style, ref ContextSettings Params);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfRenderWindow_CreateFromHandle(IntPtr Handle, ref ContextSettings Params);
+            static extern IntPtr sfWindow_CreateFromHandle(IntPtr Handle, ref ContextSettings Params);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_Destroy(IntPtr This);
+            static extern void sfWindow_Destroy(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_Display(IntPtr This);
+            static extern void sfWindow_display(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_EnableKeyRepeat(IntPtr This, bool Enable);
+            static extern void sfWindow_setKeyRepeatEnabled(IntPtr This, bool Enable);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_EnableVerticalSync(IntPtr This, bool Enable);
+            static extern void sfWindow_setVerticalSyncEnabled(IntPtr This, bool Enable);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -63,7 +63,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern bool sfRenderWindow_PollEvent(IntPtr This, out Event Evt);
+            static extern bool sfWindow_PollEvent(IntPtr This, out Event Evt);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -79,7 +79,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern ContextSettings sfRenderWindow_GetSettings(IntPtr This);
+            static extern ContextSettings sfWindow_getSettings(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -99,7 +99,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern bool sfRenderWindow_IsOpened(IntPtr This);
+            static extern bool sfWindow_IsOpen(IntPtr This);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -111,7 +111,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern bool sfRenderWindow_SetActive(IntPtr This, bool Active);
+            static extern bool sfWindow_setActive(IntPtr This, bool Active);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -123,7 +123,7 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern unsafe void sfRenderWindow_SetIcon(IntPtr This, uint Width, uint Height, byte* Pixels);
+            static extern unsafe void sfWindow_setIcon(IntPtr This, uint Width, uint Height, byte* Pixels);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -131,11 +131,11 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_SetPosition(IntPtr This, int X, int Y);
+            static extern void sfWindow_SetPosition(IntPtr This, int X, int Y);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_SetSize(IntPtr This, uint Width, uint Height);
+            static extern void sfWindow_setSize(IntPtr This, uint Width, uint Height);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
@@ -147,15 +147,15 @@ namespace SFML
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_SetTitle(IntPtr This, string title);
+            static extern void sfWindow_setTitle(IntPtr This, string title);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_ShowMouseCursor(IntPtr This, bool Show);
+            static extern void sfWindow_setMouseCursorVisible(IntPtr This, bool Show);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern bool sfRenderWindow_WaitEvent(IntPtr This, out Event Evt);
+            static extern bool sfWindow_WaitEvent(IntPtr This, out Event Evt);
 
             #endregion
 
@@ -191,7 +191,7 @@ namespace SFML
             /// <param name="settings">Creation parameters</param>
             ////////////////////////////////////////////////////////////
             public RenderWindow(VideoMode mode, string title, Styles style, ContextSettings settings)
-                : base(sfRenderWindow_Create(mode, title, style, ref settings), 0)
+                : base(sfWindow_Create(mode, title, style, ref settings), 0)
             {
                 Initialize();
             }
@@ -214,7 +214,7 @@ namespace SFML
             /// <param name="settings">Creation parameters</param>
             ////////////////////////////////////////////////////////////
             public RenderWindow(IntPtr handle, ContextSettings settings)
-                : base(sfRenderWindow_CreateFromHandle(handle, ref settings), 0)
+                : base(sfWindow_CreateFromHandle(handle, ref settings), 0)
             {
                 Initialize();
             }
@@ -225,7 +225,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override ContextSettings Settings
             {
-                get { return sfRenderWindow_GetSettings(This); }
+                get { return sfWindow_getSettings(This); }
             }
 
             /// <summary>
@@ -248,7 +248,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void Close()
             {
-                sfRenderWindow_Close(This);
+                sfWindow_Close(This);
             }
 
             /// <summary>
@@ -258,7 +258,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override void Destroy(bool disposing)
             {
-                sfRenderWindow_Destroy(This);
+                sfWindow_Destroy(This);
 
                 if (disposing)
                     myDefaultView.Dispose();
@@ -271,7 +271,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void Display()
             {
-                sfRenderWindow_Display(This);
+                sfWindow_display(This);
             }
 
             ////////////////////////////////////////////////////////////
@@ -285,7 +285,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void EnableKeyRepeat(bool enable)
             {
-                sfRenderWindow_EnableKeyRepeat(This, enable);
+                sfWindow_setKeyRepeatEnabled(This, enable);
             }
 
             /// <summary>
@@ -295,7 +295,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void EnableVerticalSync(bool enable)
             {
-                sfRenderWindow_EnableVerticalSync(This, enable);
+                sfWindow_setVerticalSyncEnabled(This, enable);
             }
 
             /// <summary>
@@ -306,7 +306,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override bool PollEvent(out Event eventToFill)
             {
-                return sfRenderWindow_PollEvent(This, out eventToFill);
+                return sfWindow_PollEvent(This, out eventToFill);
             }
 
             /// <summary>
@@ -339,7 +339,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override bool IsOpened()
             {
-                return sfRenderWindow_IsOpened(This);
+                return sfWindow_IsOpen(This);
             }
 
             ////////////////////////////////////////////////////////////
@@ -354,7 +354,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override bool SetActive(bool active)
             {
-                return sfRenderWindow_SetActive(This, active);
+                return sfWindow_setActive(This, active);
             }
 
             /// <summary>
@@ -392,7 +392,7 @@ namespace SFML
                 {
                     fixed (byte* PixelsPtr = pixels)
                     {
-                        sfRenderWindow_SetIcon(This, width, height, PixelsPtr);
+                        sfWindow_setIcon(This, width, height, PixelsPtr);
                     }
                 }
             }
@@ -420,7 +420,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void SetPosition(int x, int y)
             {
-                sfRenderWindow_SetPosition(This, x, y);
+                sfWindow_SetPosition(This, x, y);
             }
 
             ////////////////////////////////////////////////////////////
@@ -432,7 +432,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void SetSize(uint width, uint height)
             {
-                sfRenderWindow_SetSize(This, width, height);
+                sfWindow_setSize(This, width, height);
             }
 
             ////////////////////////////////////////////////////////////
@@ -443,7 +443,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void SetTitle(string title)
             {
-                sfRenderWindow_SetTitle(This, title);
+                sfWindow_setTitle(This, title);
             }
 
             ////////////////////////////////////////////////////////////
@@ -464,7 +464,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override void ShowMouseCursor(bool show)
             {
-                sfRenderWindow_ShowMouseCursor(This, show);
+                sfWindow_setMouseCursorVisible(This, show);
             }
 
             /// <summary>
@@ -486,7 +486,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override bool WaitEvent(out Event eventToFill)
             {
-                return sfRenderWindow_WaitEvent(This, out eventToFill);
+                return sfWindow_WaitEvent(This, out eventToFill);
             }
 
             ////////////////////////////////////////////////////////////
