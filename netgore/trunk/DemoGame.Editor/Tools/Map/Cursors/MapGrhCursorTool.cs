@@ -133,7 +133,8 @@ namespace DemoGame.Editor.Tools
                 return;
 
             var grh = GlobalState.Instance.Map.GrhToPlace;
-            grh.Draw(spriteBatch, GridAligner.Instance.Align(_mousePos, TileMode));
+			var drawPos = map.Camera.ToWorld(_mousePos);
+			grh.Draw(spriteBatch, GridAligner.Instance.Align(drawPos, TileMode).Round() - map.Camera.Min);
         }
 
         /// <summary>
