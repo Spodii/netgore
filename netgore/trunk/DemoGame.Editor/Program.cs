@@ -184,16 +184,24 @@ The path to the development content is required by the editor. See the file ment
 
             // Initialize stuff
             EngineSettingsInitializer.Initialize();
-            GlobalState.Initialize();
-
-            // Get the command-line switches
-            var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
-            var showEditor = !HandleSwitches(switches);
-
-            if (showEditor)
+            try
             {
-                // Start up the application
-                Application.Run(new MainForm());
+                GlobalState.Initialize();
+
+                // Get the command-line switches
+                var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
+                var showEditor = !HandleSwitches(switches);
+
+                if (showEditor)
+                {
+                    // Start up the application
+                    Application.Run(new MainForm());
+                }
+
+            }
+            finally
+            {
+                GlobalState.Destroy();
             }
         }
     }

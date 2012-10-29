@@ -163,6 +163,41 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Cleans up the global state.
+        /// </summary>
+        public static void Destroy()
+        {
+            try
+            {
+                Instance.Dispose();
+            }
+            catch
+            {
+            }
+        }
+
+        void Dispose()
+        {
+            try
+            {
+                if (_dbController != null)
+                    _dbController.Dispose();
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (_contentManager != null)
+                    _contentManager.Dispose();
+            }
+            catch
+            {
+            }
+        }
+
+        /// <summary>
         /// Handles the Tick event of the _timer control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>

@@ -80,7 +80,10 @@ namespace NetGore.Db
             try
             {
                 if (_workerThread != null && _workerThread.IsAlive)
+                {
+                    _isDisposed = true; // Ensure _isDisposed is set, otherwise the workerThread will never terminate
                     _workerThread.Join();
+                }
             }
             catch (Exception ex)
             {
@@ -155,8 +158,6 @@ namespace NetGore.Db
         /// </summary>
         ~DbQueryRunner()
         {
-            Debug.Assert(!IsDisposed, "Destructor called even though this object was disposed...");
-
             if (IsDisposed)
                 return;
 
