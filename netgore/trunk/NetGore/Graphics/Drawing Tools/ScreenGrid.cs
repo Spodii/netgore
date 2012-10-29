@@ -141,23 +141,23 @@ namespace NetGore.Graphics
             min -= new Vector2(min.X % Size.X, min.Y % Size.Y);
 
             // Vertical lines
-            p1.Y = min.Y;
-            p2.Y = p1.Y + size.Y + 32;
+            p1.Y = (float)Math.Round(min.Y);
+            p2.Y = (float)Math.Round(p1.Y + size.Y + 32);
             for (var x = min.X; x < max.X; x += Size.X)
             {
-                p1.X = x;
-                p2.X = x;
-                RenderLine.Draw(sb, p1, p2, Color);
+                p1.X = (float)Math.Round(x);
+                p2.X = (float)Math.Round(x);
+                RenderLine.Draw(sb, p1, p2, Color, 1.1f); // Note: 1.1f is used for thickness instead of 1.0f since at 1.0f, it will sometimes vanish. The SFML implementation is buggy.
             }
 
             // Horizontal lines
-            p1.X = camera.Min.X;
-            p2.X = p1.X + size.X + 32;
+            p1.X = (float)Math.Round(camera.Min.X);
+            p2.X = (float)Math.Round(p1.X + size.X + 32);
             for (var y = min.Y; y < max.Y; y += Size.Y)
             {
-                p1.Y = y;
-                p2.Y = y;
-                RenderLine.Draw(sb, p1, p2, Color);
+                p1.Y = (float)Math.Round(y);
+                p2.Y = (float)Math.Round(y);
+                RenderLine.Draw(sb, p1, p2, Color, 1.1f);
             }
         }
 
