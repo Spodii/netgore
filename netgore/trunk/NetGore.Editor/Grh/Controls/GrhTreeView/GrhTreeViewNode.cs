@@ -213,14 +213,18 @@ namespace NetGore.Editor.Grhs
         {
             var node = (GrhTreeViewNode)userState;
 
+            var treeView = node.TreeView;
+            if (treeView == null)
+                return;
+
             // If the async callback was run on another thread, we will have to use Control.Invoke() to get it to the correct thread.
             // Unfortunately, this will result in a bit of overhead and create some garbage due to the parameter list, but
             // its the best we can do (as far as I can see) and GrhImageList avoids running a new thread when possible anyways so
             // it only really happens while loading.
-            if (!node.TreeView.InvokeRequired)
+            if (!treeView.InvokeRequired)
                 SetNodeImage(node, image);
             else
-                node.TreeView.Invoke(_setNodeImage, node, image);
+                treeView.Invoke(_setNodeImage, node, image);
         }
 
         void InsertIntoTree(GrhTreeView treeView)
@@ -275,7 +279,13 @@ namespace NetGore.Editor.Grhs
         static void SetNodeImage(GrhTreeViewNode node, Image image)
         {
             node._image = image;
-            ((GrhTreeView)node.TreeView).RefreshNodeImage(node);
+            try
+            {
+                ((GrhTreeView)node.TreeView).RefreshNodeImage(node);
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>

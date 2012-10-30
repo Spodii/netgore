@@ -40,9 +40,14 @@ namespace DemoGame.Editor
             frm.Show();
         }
 
-        static void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
+        void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
             GlobalState.Instance.Map.GrhToPlace.SetGrh(e.GrhData);
+        }
+
+        private void filterTxt_TextChanged(object sender, EventArgs e)
+        {
+            gtv.Filter = filterTxt.Text;
         }
     }
 }
