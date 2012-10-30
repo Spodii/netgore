@@ -99,7 +99,7 @@ If you do not save, all changes will be lost.";
 
             MapScreenControl.MapChanged += MapScreenControl_MapChanged;
             MapScreenControl.Disposed += MapScreenControl_Disposed;
-
+            
             if (FormLoaded != null)
                 FormLoaded.Raise(this, e);
         }
