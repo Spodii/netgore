@@ -21,6 +21,20 @@ namespace NetGore.Editor.Grhs
 
         static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
 
+        string _filter;
+        public string Filter
+        {
+            get { return _filter; }
+            set
+            {
+                if (_filter == value)
+                    return;
+
+                _filter = value;
+                RebuildTree();
+            }
+        }
+
         /// <summary>
         /// Timer to update the animated <see cref="Grh"/>s in the <see cref="GrhTreeView"/>.
         /// </summary>
@@ -310,7 +324,7 @@ namespace NetGore.Editor.Grhs
             for (var i = 0; i < categoryParts.Length; i++)
             {
                 var subCategory = categoryParts[i];
-                current = currentColl.OfType<GrhTreeViewFolderNode>().Where(x => x.SubCategory == subCategory).FirstOrDefault();
+                current = currentColl.OfType<GrhTreeViewFolderNode>().FirstOrDefault(x => x.SubCategory == subCategory);
 
                 if (current == null)
                     return null;
@@ -335,7 +349,7 @@ namespace NetGore.Editor.Grhs
             var folder = FindFolder(grhData.Categorization.Category.ToString());
             if (folder != null)
             {
-                var existingNode = folder.Nodes.OfType<GrhTreeViewNode>().Where(x => x.GrhData == grhData).FirstOrDefault();
+                var existingNode = folder.Nodes.OfType<GrhTreeViewNode>().FirstOrDefault(x => x.GrhData == grhData);
                 if (existingNode != null)
                     return existingNode;
             }
@@ -946,17 +960,48 @@ namespace NetGore.Editor.Grhs
 
             try
             {
+                // If there are any nodes already, keep track of which is selected
+                GrhData selectedGrhData = null;
+                if (SelectedNode != null && SelectedNode is GrhTreeViewNode)
+                {
+                    selectedGrhData = ((GrhTreeViewNode) SelectedNode).GrhData;
+                }
+
                 // Clear any existing nodes (probably isn't any, but just in case...)
                 Nodes.Clear();
+
+                // Set up the filter
+                string[] filterWords = (Filter ?? string.Empty).Split(',').Distinct(StringComparer.OrdinalIgnoreCase).Select(x => x.Trim()).Where(x => x.Length > 0).ToArray();
+                if (filterWords.Length == 0)
+                    filterWords = null;
 
                 // Iterate through all the GrhDatas
                 foreach (var grhData in GrhInfo.GrhDatas)
                 {
-                    AddGrhToTree(grhData);
+                    if (filterWords != null)
+                    {
+                        // With filtering
+                        string cat = grhData.Categorization.ToString();
+                        if (filterWords.Any(x => cat.Contains(x, StringComparison.OrdinalIgnoreCase)))
+                            AddGrhToTree(grhData);
+                    }
+                    else
+                    {
+                        // No filtering
+                        AddGrhToTree(grhData);
+                    }
                 }
 
                 // Perform the initial sort
                 Sort();
+
+                // If we used filtering, expand all nodes
+                if (filterWords != null)
+                    ExpandAll();
+
+                // Restore selection
+                if (selectedGrhData != null)
+                    SelectedNode = FindGrhDataNode(selectedGrhData);
             }
             finally
             {
