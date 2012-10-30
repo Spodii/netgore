@@ -29,5 +29,17 @@
     <Setting Name="MapPreview_TextureSize" Type="SFML.Graphics.Vector2" Scope="User">
       <Value Profile="(Default)">2048, 2048</Value>
     </Setting>
+    <Setting Name="Screen_ScrollLeft2" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">A</Value>
+    </Setting>
+    <Setting Name="Screen_ScrollRight2" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">D</Value>
+    </Setting>
+    <Setting Name="Screen_ScrollUp2" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">W</Value>
+    </Setting>
+    <Setting Name="Screen_ScrollDown2" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">S</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -261,9 +261,13 @@ namespace DemoGame.Editor
 
             var s = EditorSettings.Default;
 
-            if (keyData == s.Screen_ScrollLeft || keyData == s.Screen_ScrollRight || keyData == s.Screen_ScrollUp ||
-                keyData == s.Screen_ScrollDown)
+            if (keyData == s.Screen_ScrollLeft || keyData == s.Screen_ScrollLeft2 ||
+                keyData == s.Screen_ScrollRight || keyData == s.Screen_ScrollRight2 ||
+                keyData == s.Screen_ScrollUp || keyData == s.Screen_ScrollUp2 ||
+                keyData == s.Screen_ScrollDown || keyData == s.Screen_ScrollDown)
+            {
                 return true;
+            }
 
             return base.IsInputKey(keyData);
         }
@@ -284,13 +288,13 @@ namespace DemoGame.Editor
 
             // Update the camera velocity
             var s = EditorSettings.Default;
-            if (e.KeyCode == s.Screen_ScrollLeft)
+            if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollLeft2)
                 _cameraVelocity.X = -s.Screen_ScrollPixelsPerSec;
-            else if (e.KeyCode == s.Screen_ScrollRight)
+            else if (e.KeyCode == s.Screen_ScrollRight || e.KeyCode == s.Screen_ScrollRight2)
                 _cameraVelocity.X = s.Screen_ScrollPixelsPerSec;
-            else if (e.KeyCode == s.Screen_ScrollUp)
+            else if (e.KeyCode == s.Screen_ScrollUp || e.KeyCode == s.Screen_ScrollUp2)
                 _cameraVelocity.Y = -s.Screen_ScrollPixelsPerSec;
-            else if (e.KeyCode == s.Screen_ScrollDown)
+            else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollDown2)
                 _cameraVelocity.Y = s.Screen_ScrollPixelsPerSec;
         }
 
@@ -307,10 +311,16 @@ namespace DemoGame.Editor
 
             // Update the camera velocity
             var s = EditorSettings.Default;
-            if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollRight)
+            if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollLeft2 ||
+                e.KeyCode == s.Screen_ScrollRight || e.KeyCode == s.Screen_ScrollRight2)
+            {
                 _cameraVelocity.X = 0;
-            else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
+            }
+            else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollDown2 ||
+                e.KeyCode == s.Screen_ScrollUp || e.KeyCode == s.Screen_ScrollUp2)
+            {
                 _cameraVelocity.Y = 0;
+            }
         }
 
         /// <summary>
