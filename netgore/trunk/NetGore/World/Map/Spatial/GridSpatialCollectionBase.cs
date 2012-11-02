@@ -112,6 +112,38 @@ namespace NetGore.World
             }
         }
 
+        [Conditional("DEBUG")]
+        void AssertValidateSegments()
+        {
+            // TODO: !! TEMP: REMOVE THIS BEFORE RELEASE!
+            if (RandomHelper.NextInt(100) == 0)
+            {
+                foreach (var spatial in _gridSegments.SelectMany(x => x.Items))
+                {
+                    var expectedSegments = GetSegments(spatial);
+                    foreach (var segment in _gridSegments)
+                    {
+                        if (expectedSegments.Contains(segment))
+                        {
+                            if (!segment.Contains(spatial))
+                            {
+                                Debug.WriteLine("teh");
+                                Debug.Fail("teh");
+                            }
+                        }
+                        else
+                        {
+                            if (segment.Contains(spatial))
+                            {
+                                Debug.WriteLine("bleh");
+                                Debug.Fail("bleh");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the grid segments for the specified world area. Only segments in range are returned, and specifying
         /// values out of range does not throw an exception.
@@ -170,18 +202,20 @@ namespace NetGore.World
         {
             // Get the grid index for the last and current positions to see if the segments have changed
             var minSegment = WorldPositionToGridSegment(sender.Position);
+            var maxSegment = WorldPositionToGridSegment(sender.Max);
             var oldMinSegment = WorldPositionToGridSegment(e.Item1);
+            var oldMaxSegment = WorldPositionToGridSegment(e.Item1 + sender.Size);
 
-            if (minSegment == oldMinSegment)
+            if (minSegment == oldMinSegment && maxSegment == oldMaxSegment)
                 return;
 
             // The position did change, so remove the ISpatial from all segments
-            foreach (var segment in _gridSegments)
+            foreach (var segment in GetSegments(sender, e.Item1))
             {
                 segment.Remove(sender);
             }
 
-            Debug.Assert(!CollectionContains(sender), "spatial was not completely removed from the grid!");
+            Debug.Assert(!_gridSegments.Any(x => x.Contains(sender)), "spatial was not completely removed from the grid!");
 
             // Add the spatial back using the new positions
             foreach (var segment in GetSegments(sender))
@@ -305,20 +339,22 @@ namespace NetGore.World
         /// </returns>
         public bool CollectionContains(ISpatial spatial)
         {
+            bool ret = false;
+
             // First check a segment we know the spatial would occupy for a fast positive
             var gridIndex = WorldPositionToGridSegment(spatial.Position);
             if (IsLegalGridSegment(gridIndex))
             {
                 var segment = GetSegment(gridIndex);
                 if (segment.Contains(spatial))
-                    return true;
+                    ret = true;
             }
 
             // In debug mode, make sure our check we performed above returned the correct result
-            Debug.Assert(!_gridSegments.Any(x => x.Contains(spatial)),
+            Debug.Assert(ret == _gridSegments.Any(x => x.Contains(spatial)),
                 "CollectionContains() returned false when the spatial really was in the collection. May be a position updating issue...");
 
-            return false;
+            return ret;
         }
 
         /// <summary>
@@ -337,7 +373,7 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            foreach (var x in segment)
+            foreach (var x in segment.Items)
             {
                 if (x is T && x.Contains(point))
                     return true;
@@ -359,7 +395,7 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            foreach (var x in segment)
+            foreach (var x in segment.Items)
             {
                 if (x.Contains(point))
                     return true;
@@ -382,7 +418,7 @@ namespace NetGore.World
 
             foreach (var segment in _gridSegments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T && condition((T)spatial))
                         return true;
@@ -404,7 +440,7 @@ namespace NetGore.World
 
             foreach (var segment in _gridSegments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (condition(spatial))
                         return true;
@@ -430,7 +466,7 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial is T && spatial.Contains(point) && condition((T)spatial))
                     return true;
@@ -455,7 +491,7 @@ namespace NetGore.World
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T && spatial.Intersects(rect) && condition((T)spatial))
                         return true;
@@ -479,7 +515,7 @@ namespace NetGore.World
             if (segment == null)
                 return false;
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial.Contains(point) && condition(spatial))
                     return true;
@@ -504,7 +540,7 @@ namespace NetGore.World
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T && spatial.Intersects(rect))
                         return true;
@@ -527,7 +563,7 @@ namespace NetGore.World
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial.Intersects(rect))
                         return true;
@@ -551,7 +587,7 @@ namespace NetGore.World
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial.Intersects(rect) && condition(spatial))
                         return true;
@@ -572,11 +608,12 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Rectangle rect, Predicate<T> condition)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T && spatial.Intersects(rect) && condition((T)spatial))
                         return (T)spatial;
@@ -596,11 +633,12 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Rectangle rect, Predicate<ISpatial> condition)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial.Intersects(rect) && condition(spatial))
                         return spatial;
@@ -619,9 +657,10 @@ namespace NetGore.World
         /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
         public T Get<T>(Predicate<T> condition)
         {
+            AssertValidateSegments();
             foreach (var segment in _gridSegments)
             {
-                foreach (var spatial in segment.OfType<T>())
+                foreach (var spatial in segment.Items.OfType<T>())
                 {
                     if (condition(spatial))
                         return spatial;
@@ -638,9 +677,10 @@ namespace NetGore.World
         /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
         public ISpatial Get(Predicate<ISpatial> condition)
         {
+            AssertValidateSegments();
             foreach (var segment in _gridSegments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (condition(spatial))
                         return spatial;
@@ -662,11 +702,12 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Vector2 p, Predicate<T> condition)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return default(T);
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial is T && spatial.Contains(p) && condition((T)spatial))
                     return (T)spatial;
@@ -686,11 +727,12 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Vector2 p)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return default(T);
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial is T && spatial.Contains(p))
                     return (T)spatial;
@@ -708,11 +750,12 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Vector2 p)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return null;
 
-            return segment.FirstOrDefault(x => x.Contains(p));
+            return segment.Items.FirstOrDefault(x => x.Contains(p));
         }
 
         /// <summary>
@@ -725,11 +768,12 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Vector2 p, Predicate<ISpatial> condition)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return null;
 
-            return segment.FirstOrDefault(x => x.Contains(p) && condition(x));
+            return segment.Items.FirstOrDefault(x => x.Contains(p) && condition(x));
         }
 
         /// <summary>
@@ -741,10 +785,11 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Rectangle rect)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial.Intersects(rect))
                         return spatial;
@@ -764,10 +809,11 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Rectangle rect)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T && spatial.Intersects(rect))
                         return (T)spatial;
@@ -784,13 +830,14 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Vector2 p)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
             var ret = new List<ISpatial>();
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial.Contains(p))
                     ret.Add(spatial);
@@ -808,13 +855,14 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<ISpatial> GetMany(Rectangle rect)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<ISpatial>();
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial.Intersects(rect))
                         ret.Add(spatial);
@@ -834,13 +882,14 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Vector2 p)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<T>();
 
             var ret = new List<T>();
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial is T && spatial.Contains(p))
                     ret.Add((T)spatial);
@@ -859,13 +908,14 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Rectangle rect)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<T>();
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T)
                     {
@@ -886,11 +936,12 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition)
         {
+            AssertValidateSegments();
             var ret = new HashSet<ISpatial>();
 
             foreach (var segment in _gridSegments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (!ret.Contains(spatial) && condition(spatial))
                         ret.Add(spatial);
@@ -907,11 +958,12 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<T> GetMany<T>(Predicate<T> condition)
         {
+            AssertValidateSegments();
             var ret = new HashSet<T>();
 
             foreach (var segment in _gridSegments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T)
                     {
@@ -934,11 +986,12 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>()
         {
+            AssertValidateSegments();
             var ret = new HashSet<T>();
 
             foreach (var segment in _gridSegments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T)
                     {
@@ -959,13 +1012,14 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Vector2 p, Predicate<ISpatial> condition)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
 
             var ret = new List<ISpatial>();
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial.Contains(p) && condition(spatial))
                     ret.Add(spatial);
@@ -985,13 +1039,14 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Rectangle rect, Predicate<T> condition)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<T>();
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial is T)
                     {
@@ -1016,13 +1071,14 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
         {
+            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<T>();
 
             var ret = new List<T>();
 
-            foreach (var spatial in segment)
+            foreach (var spatial in segment.Items)
             {
                 if (spatial is T)
                 {
@@ -1045,13 +1101,14 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
         {
+            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<ISpatial>();
 
             foreach (var segment in segments)
             {
-                foreach (var spatial in segment)
+                foreach (var spatial in segment.Items)
                 {
                     if (spatial.Intersects(rect) && !ret.Contains(spatial) && condition(spatial))
                         ret.Add(spatial);
@@ -1071,6 +1128,8 @@ namespace NetGore.World
             spatial.Resized -= _spatialResizeHandler;
 
             // Remove the spatial from the segments
+            // We're removing from every segment here, when we could just remove from only the segments the object intersects. But removals are so infrequent in-game
+            // that it is better to play it safe and do it this way.
             foreach (var segment in _gridSegments)
             {
                 segment.Remove(spatial);
@@ -1098,7 +1157,7 @@ namespace NetGore.World
             // Grab all the spatials in the grid
             IEnumerable<ISpatial> spatials;
             if (_gridSegments != null)
-                spatials = _gridSegments.SelectMany(x => x).Distinct().ToImmutable();
+                spatials = _gridSegments.SelectMany(x => x.Items).Distinct().ToImmutable();
             else
                 spatials = Enumerable.Empty<ISpatial>();
 
@@ -1143,7 +1202,7 @@ namespace NetGore.World
         /// </summary>
         class CollectionSegment : IGridSpatialCollectionSegment
         {
-            readonly List<ISpatial> _spatials = new List<ISpatial>();
+            readonly HashSet<ISpatial> _spatials = new HashSet<ISpatial>();
 
             #region IGridSpatialCollectionSegment Members
 
@@ -1153,8 +1212,8 @@ namespace NetGore.World
             /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
             public void Add(ISpatial spatial)
             {
-                Debug.Assert(!_spatials.Contains(spatial));
-                _spatials.Add(spatial);
+                bool added = _spatials.Add(spatial);
+                Debug.Assert(added); // TODO: !! tmp
             }
 
             /// <summary>
@@ -1178,37 +1237,26 @@ namespace NetGore.World
             }
 
             /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            public IEnumerator<ISpatial> GetEnumerator()
-            {
-                return _spatials.GetEnumerator();
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>2</filterpriority>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-
-            /// <summary>
             /// Remove the <see cref="ISpatial"/> from the segment.
             /// </summary>
             /// <param name="spatial">The <see cref="ISpatial"/> to remove.</param>
             public void Remove(ISpatial spatial)
             {
                 _spatials.Remove(spatial);
-                Debug.Assert(!_spatials.Contains(spatial));
             }
+
+            /// <summary>
+            /// Gets if the given ISpatial is in this collection.
+            /// </summary>
+            public bool Contains(ISpatial spatial)
+            {
+                return _spatials.Contains(spatial);
+            }
+
+            /// <summary>
+            /// Gets the ISpatials in this collection.
+            /// </summary>
+            public IEnumerable<ISpatial> Items { get { return _spatials; } }
 
             #endregion
         }
