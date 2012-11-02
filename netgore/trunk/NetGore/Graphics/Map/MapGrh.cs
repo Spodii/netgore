@@ -54,6 +54,10 @@ namespace NetGore.Graphics
             _grh = grh;
             _position = position;
             IsForeground = isForeground;
+
+            // Set the initial size value
+            var grhSize = Grh.Size;
+            Vector2.Multiply(ref _scale, ref grhSize, out _scaledGrhSizeCache);
         }
 
         /// <summary>
@@ -70,6 +74,10 @@ namespace NetGore.Graphics
             _grh = new Grh(null, AnimType.Loop, currentTime);
 
             ReadState(reader);
+
+            // Set the initial size value
+            var grhSize = Grh.Size;
+            Vector2.Multiply(ref _scale, ref grhSize, out _scaledGrhSizeCache);
         }
 
         /// <summary>
@@ -379,14 +387,11 @@ namespace NetGore.Graphics
         /// </summary>
         public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Moved;
 
+        
         /// <summary>
         /// Unused by the <see cref="MapGrh"/>.
         /// </summary>
-        event TypedEventHandler<ISpatial, EventArgs<Vector2>> ISpatial.Resized
-        {
-            add { }
-            remove { }
-        }
+        public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Resized;
 
         /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
