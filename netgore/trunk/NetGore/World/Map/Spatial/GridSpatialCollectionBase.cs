@@ -238,17 +238,17 @@ namespace NetGore.World
             if (maxSegment == oldMaxSegment)
                 return;
 
-            // FUTURE: Can improve performance by only removing from and adding to the appropriate changed segments
-
             // The position did change, so we have to remove the spatial from the old segments and add to the new
-            var startIndex = WorldPositionToGridSegment(sender.Position);
-            var length = WorldPositionToGridSegment(sender.Position + e.Item1);
-            foreach (var segment in GetSegments(startIndex, length))
+            var min = WorldPositionToGridSegment(sender.Position);
+            var max = WorldPositionToGridSegment(sender.Position + e.Item1);
+            var length = new Point(max.X - min.X, max.Y - min.Y);
+
+            foreach (var segment in GetSegments(min, length))
             {
                 segment.Remove(sender);
             }
 
-            Debug.Assert(!CollectionContains(sender), "spatial was not completely removed from the grid!");
+            Debug.Assert(!_gridSegments.Any(x => x.Contains(sender)), "spatial was not completely removed from the grid!");
 
             // Add the spatial back using the new positions
             foreach (var segment in GetSegments(sender))
