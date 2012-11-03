@@ -399,6 +399,12 @@ namespace DemoGame.Client
             }
         }
 
+        public void RemoveBackgroundImage(IEnumerable<BackgroundImage> bgImages)
+        {
+            foreach (var bgImage in bgImages)
+                RemoveBackgroundImage(bgImage);
+        }
+
         /// <summary>
         /// Removes the <paramref name="bgImage"/> from the map.
         /// </summary>
@@ -420,6 +426,12 @@ namespace DemoGame.Client
             return _lights.Remove(light);
         }
 
+        public void RemoveLight(IEnumerable<IRefractionEffect> fxs)
+        {
+            foreach (var fx in fxs)
+                RemoveLight(fx);
+        }
+
         /// <summary>
         /// Removes a refraction effect from the map.
         /// </summary>
@@ -429,6 +441,12 @@ namespace DemoGame.Client
         public bool RemoveLight(IRefractionEffect fx)
         {
             return _refractionEffects.Remove(fx);
+        }
+
+        public void RemoveMapGrh(IEnumerable<MapGrh> mgs)
+        {
+            foreach (var mg in mgs)
+                RemoveMapGrh(mg);
         }
 
         /// <summary>

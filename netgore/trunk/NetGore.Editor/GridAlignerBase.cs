@@ -19,15 +19,15 @@ namespace NetGore.Editor
         /// </summary>
         protected GridAlignerBase()
         {
-            InvertAlignmentKey = Keys.Shift;
-            AlignByDefault = false;
+            InvertAlignmentKey = Keys.Control;
+            AlignByDefault = true;
         }
 
         /// <summary>
         /// Gets or sets if objects are aligned to the grid by default.
-        /// The default value is false.
+        /// The default value is true.
         /// </summary>
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool AlignByDefault
         {
             get { return _alignByDefault; }
@@ -87,7 +87,20 @@ namespace NetGore.Editor
             if (!WillAlign && !forceAlign)
                 return pos;
 
-            return (pos / GridSize).Round() * GridSize;
+            return (pos / GridSize).Floor() * GridSize;
+        }
+
+        /// <summary>
+        /// Gets if a position is currently aligned to the grid.
+        /// </summary>
+        /// <param name="pos">The position to check if aligned to the grid.</param>
+        /// <returns>True if aligned to the grid; otherwise false.</returns>
+        public bool IsAligned(Vector2 pos)
+        {
+            pos = pos.Abs();
+            return 
+                (int)Math.Round(pos.X) % (int)Math.Round(GridSize.X) == 0 &&
+                (int)Math.Round(pos.Y) % (int)Math.Round(GridSize.Y) == 0;
         }
 
         /// <summary>

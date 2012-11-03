@@ -155,6 +155,25 @@ namespace NetGore.Editor
         }
 
         /// <summary>
+        /// Call when the focused object has been updated so the properties in the UI are refreshed.
+        /// </summary>
+        public void UpdateFocused()
+        {
+            if (_focused != null)
+            {
+                try
+                {
+                    PropertyGrid.Refresh();
+                    if (FocusedChanged != null)
+                        FocusedChanged.Raise(this, EventArgsHelper.Create(_focused));
+                }
+                catch (NullReferenceException)
+                {
+                }
+            }
+        }
+
+        /// <summary>
         /// Handles when the focused object has changed.
         /// </summary>
         protected virtual void ChangeFocused()

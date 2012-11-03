@@ -49,17 +49,6 @@ namespace DemoGame.Editor
             _deserializer = new DockContentDeserializer(this);
         }
 
-        /// <summary>
-        /// Handles the FormLoaded event of the <see cref="EditMapForm"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void EditMapForm_FormLoaded(object sender, EventArgs e)
-        {
-            if (!_frmSelectedMapObjs.Visible)
-                _frmSelectedMapObjs.Show(dockPanel);
-        }
-
         static string GetDockSettingsFilePath(string settingsName)
         {
             return ContentPaths.Build.Settings.Join("EditorLayout." + settingsName + ".xml");
@@ -152,8 +141,6 @@ namespace DemoGame.Editor
             _frmSoundEditor.VisibleChanged += _frmSoundEditor_VisibleChanged;
 
             // Set up some other stuff
-            EditMapForm.FormLoaded += EditMapForm_FormLoaded;
-
             var mapPropertiesTool = ToolManager.Instance.TryGetTool<MapPropertiesTool>();
             if (mapPropertiesTool != null)
                 mapPropertiesTool.DockPanel = dockPanel;
@@ -165,6 +152,65 @@ namespace DemoGame.Editor
 
             // Load the settings
             LoadDockSettings("User");
+
+            // Set up map state control listeners & display initial values
+            GlobalState.Instance.Map.LayerDepthChanged += Map_LayerDepthChanged;
+            GlobalState.Instance.Map.LayerChanged += Map_LayerChanged;
+
+            Map_LayerChanged(GlobalState.Instance, EventArgs.Empty);
+            Map_LayerDepthChanged(GlobalState.Instance, EventArgs.Empty);
+
+            // Load the initial map
+            // TODO: !! Make as setting, auto-load last loaded map
+            var editorFrm = new EditMapForm();
+            editorFrm.MapScreenControl.ChangeMap(new NetGore.World.MapID(1));
+            editorFrm.Show(dockPanel);
+
+
+            // Global not currently used...
+            tbGlobal.Visible = false;
+        }
+
+        static MapRenderLayer GetLayerFromComboBoxText(string text)
+        {
+            switch (text)
+            {
+                case "Background": return MapRenderLayer.SpriteBackground;
+                case "Dynamic": return MapRenderLayer.Chararacter;
+                case "Foreground": return MapRenderLayer.SpriteForeground;
+                default: throw new ArgumentException("Invalid text: " + text);
+            }
+        }
+
+        static string GetComboBoxTextFromLayer(MapRenderLayer layer)
+        {
+            switch (layer)
+            {
+                case MapRenderLayer.SpriteBackground: return "Background";
+                case MapRenderLayer.Chararacter: return "Dynamic";
+                case MapRenderLayer.SpriteForeground: return "Foreground";
+                default: throw new InvalidEnumArgumentException("layer", (int)layer, typeof(MapRenderLayer));
+            }
+        }
+
+        void Map_LayerChanged(object sender, EventArgs e)
+        {
+            // Update layer combobox
+            var current = GlobalState.Instance.Map.Layer;
+            if (cmbLayer.SelectedItem == null || current != GetLayerFromComboBoxText(cmbLayer.SelectedItem.ToString()))
+            {
+                cmbLayer.SelectedItem = GetComboBoxTextFromLayer(current);
+            }
+        }
+
+        void Map_LayerDepthChanged(object sender, EventArgs e)
+        {
+            // Update depth value
+            var current = GlobalState.Instance.Map.LayerDepth;
+            if (trackBarDepth.Value != current)
+                trackBarDepth.Value = current.Clamp(trackBarDepth.Minimum, trackBarDepth.Maximum);
+
+            lblDepth.Text = current.ToString();
         }
 
         void SaveDockSettings(string settingsName)
@@ -529,6 +575,23 @@ namespace DemoGame.Editor
             {
                 return StringComparer.Ordinal.Equals(control.GetType().ToString(), name);
             }
+        }
+
+        private void trackBarDepth_Scroll(object sender, EventArgs e)
+        {
+            GlobalState.Instance.Map.LayerDepth = (short)trackBarDepth.Value;
+        }
+
+        private void cmbLayer_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (cmbLayer.SelectedValue != null)
+                GlobalState.Instance.Map.Layer = GetLayerFromComboBoxText(cmbLayer.SelectedValue.ToString());
+        }
+
+        private void trackBarDepth_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                GlobalState.Instance.Map.LayerDepth = 0;
         }
     }
 }

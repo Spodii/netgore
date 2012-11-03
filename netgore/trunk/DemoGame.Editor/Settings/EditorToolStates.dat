@@ -200,7 +200,7 @@
     <Item1>
       <ToolBarVisibility>Map</ToolBarVisibility>
       <Order>
-        <Count>15</Count>
+        <Count>16</Count>
         <Item0>DemoGame.Editor.Tools.MapSaveTool</Item0>
         <Item1>DemoGame.Editor.Tools.MapSaveAsTool</Item1>
         <Item2>DemoGame.Editor.Tools.MapDeleteTool</Item2>
@@ -212,10 +212,11 @@
         <Item8>DemoGame.Editor.Tools.MapGridDrawerTool</Item8>
         <Item9>DemoGame.Editor.Tools.MapDisplayFilterTool</Item9>
         <Item10>|</Item10>
-        <Item11>DemoGame.Editor.Tools.MapEntityCursorTool</Item11>
-        <Item12>DemoGame.Editor.Tools.MapWallCursorTool</Item12>
-        <Item13>DemoGame.Editor.Tools.MapGrhCursorTool</Item13>
-        <Item14>DemoGame.Editor.Tools.MapLightCursorTool</Item14>
+        <Item11>DemoGame.Editor.Tools.MapGrhPencilTool</Item11>
+        <Item12>DemoGame.Editor.Tools.MapEntityCursorTool</Item12>
+        <Item13>DemoGame.Editor.Tools.MapWallCursorTool</Item13>
+        <Item14>DemoGame.Editor.Tools.MapGrhCursorTool</Item14>
+        <Item15>DemoGame.Editor.Tools.MapLightCursorTool</Item15>
       </Order>
     </Item1>
   </ToolBarItems>
