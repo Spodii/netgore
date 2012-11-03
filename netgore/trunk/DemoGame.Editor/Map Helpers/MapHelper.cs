@@ -165,6 +165,37 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Checks if the given map differs from the copy saved on disk.
+        /// </summary>
+        public static bool DiffersFromSaved(EditorMap map)
+        {
+            // Add the MapGrh-bound walls
+            var mapGrhs = map.Spatial.GetMany<MapGrh>().Distinct();
+            var extraWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(mapGrhs);
+            foreach (var wall in extraWalls)
+            {
+                map.AddEntity(wall);
+            }
+
+            bool differs;
+            try
+            {
+                // Compare
+                differs = map.DiffersFromSaved(ContentPaths.Dev, EditorDynamicEntityFactory.Instance);
+            }
+            finally
+            {
+                // Pull the MapGrh-bound walls back out
+                foreach (var wall in extraWalls)
+                {
+                    map.RemoveEntity(wall);
+                }
+            }
+
+            return differs;
+        }
+
+        /// <summary>
         /// Saves a map.
         /// </summary>
         /// <param name="map">The map to save.</param>
@@ -221,16 +252,21 @@ namespace DemoGame.Editor
                     map.AddEntity(wall);
                 }
 
-                // Save the map
-                map.Save(ContentPaths.Dev, EditorDynamicEntityFactory.Instance);
-
-                // Update the database
-                GlobalState.Instance.DbController.GetQuery<InsertMapQuery>().Execute(map);
-
-                // Pull the MapGrh-bound walls back out
-                foreach (var wall in extraWalls)
+                try
                 {
-                    map.RemoveEntity(wall);
+                    // Save the map
+                    map.Save(ContentPaths.Dev, EditorDynamicEntityFactory.Instance);
+
+                    // Update the database
+                    GlobalState.Instance.DbController.GetQuery<InsertMapQuery>().Execute(map);
+                }
+                finally
+                {
+                    // Pull the MapGrh-bound walls back out
+                    foreach (var wall in extraWalls)
+                    {
+                        map.RemoveEntity(wall);
+                    }
                 }
 
                 // Save successful

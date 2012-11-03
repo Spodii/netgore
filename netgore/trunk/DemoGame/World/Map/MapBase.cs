@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml;
 using DemoGame.DbObjs;
 using log4net;
 using NetGore;
@@ -727,7 +728,7 @@ namespace DemoGame
                 throw new ArgumentException(string.Format(errmsg, filePath), "filePath");
             }
 
-            var r = XmlValueReader.CreateFromFile(filePath, _rootNodeName);
+            var r = GenericValueReader.CreateFromFile(filePath, _rootNodeName);
             LoadHeader(r);
             LoadWalls(r);
             LoadDynamicEntities(r, loadDynamicEntities, dynamicEntityFactory);
@@ -919,6 +920,38 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets if the map in its current state differs from the map saved to file.
+        /// </summary>
+        /// <param name="contentPath">Content path to save the map file to.</param>
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
+        /// <see cref="DynamicEntity"/>s.</param>
+        /// <returns>True if this map differs from the one on file; otherwise false.</returns>
+        public bool DiffersFromSaved(ContentPaths contentPath, IDynamicEntityFactory dynamicEntityFactory)
+        {
+            var path = contentPath.Maps.Join(ID + EngineSettings.DataFileSuffix);
+            
+            // We compare using binary instead of string. Even though we could use string comparison that is more robust at ignoring
+            // unimportant diffs, a raw binary comparison gives less false negatives, and will work if switching to save as binary.
+
+            // Get the contents on disk
+            if (!File.Exists(path))
+                return true; // File didn't exist, so it clearly differs
+
+            byte[] existingMapData = File.ReadAllBytes(path);
+
+            // Get the current map contents
+            byte[] currentMapData;
+            using (var tmpFile = new TempFile())
+            {
+                Save(tmpFile.FilePath, dynamicEntityFactory);
+                currentMapData = File.ReadAllBytes(tmpFile.FilePath);
+            }
+
+            // Compare
+            return !ByteArrayEqualityComparer.AreEqual(existingMapData, currentMapData);
+        }
+
+        /// <summary>
         /// Saves the map to a file to the specified content path.
         /// </summary>
         /// <param name="contentPath">Content path to save the map file to.</param>
@@ -969,21 +1002,40 @@ namespace DemoGame
             }
 
             Directory.CreateDirectory(dirName);
-            using (var w = XmlValueWriter.Create(filePath, _rootNodeName))
+            using (var w = GenericValueWriter.Create(filePath, _rootNodeName))
             {
-                SaveHeader(w);
-                SaveWalls(w);
-                SaveDynamicEntities(w, dynamicEntityFactory);
-
-                w.WriteStartNode(_miscNodeName);
-                SaveMisc(w);
-                w.WriteEndNode(_miscNodeName);
+                Save(w, dynamicEntityFactory);
             }
+        }
+
+        /// <summary>
+        /// Saves the map to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">The IValueWriter to save to.</param>
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
+        /// <see cref="DynamicEntity"/>s.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="dynamicEntityFactory"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
+        void Save(IValueWriter writer, IDynamicEntityFactory dynamicEntityFactory)
+        {
+            if (writer == null)
+                throw new ArgumentNullException("writer");
+            if (dynamicEntityFactory == null)
+                throw new ArgumentNullException("dynamicEntityFactory");
+
+            SaveHeader(writer);
+            SaveWalls(writer);
+            SaveDynamicEntities(writer, dynamicEntityFactory);
+
+            writer.WriteStartNode(_miscNodeName);
+            SaveMisc(writer);
+            writer.WriteEndNode(_miscNodeName);
         }
 
         void SaveDynamicEntities(IValueWriter w, IDynamicEntityFactory dynamicEntityFactory)
         {
-            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, (x, v) => dynamicEntityFactory.Write(x, v));
+            var entities = DynamicEntities.OrderBy(x => x, new BasicSpatialComparer()).ToImmutable();
+            w.WriteManyNodes(_dynamicEntitiesNodeName, entities, (x, v) => dynamicEntityFactory.Write(x, v));
         }
 
         /// <summary>
@@ -1027,8 +1079,8 @@ namespace DemoGame
             if (w == null)
                 throw new ArgumentNullException("w");
 
-            var wallsToSave = Entities.OfType<WallEntityBase>();
-            w.WriteManyNodes(_wallsNodeName, wallsToSave, ((writer, item) => item.Write(writer)));
+            var walls = Entities.OfType<WallEntityBase>().OrderBy(x => x, new BasicSpatialComparer()).ToImmutable();
+            w.WriteManyNodes(_wallsNodeName, walls, ((writer, item) => item.Write(writer)));
         }
 
         /// <summary>
@@ -1389,5 +1441,27 @@ namespace DemoGame
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets a rough (not very reliable) comparison between two spatials. Used to sort before
+        /// saving the map to help make the order more consistent (resulting in more reasonable save diffs).
+        /// </summary>
+        protected class BasicSpatialComparer : IComparer<ISpatial>
+        {
+            public int Compare(ISpatial a, ISpatial b)
+            {
+                if (a.Position.X != b.Position.X)
+                    return a.Position.X.CompareTo(b.Position.X);
+                if (a.Position.Y != b.Position.Y)
+                    return a.Position.Y.CompareTo(b.Position.Y);
+
+                if (a.Size.X != b.Size.X)
+                    return a.Size.X.CompareTo(b.Size.X);
+                if (a.Size.Y != b.Size.Y)
+                    return a.Size.Y.CompareTo(b.Size.Y);
+
+                return StringComparer.Ordinal.Compare(a.GetType().FullName ?? string.Empty, b.GetType().FullName ?? string.Empty);
+            }
+        }
     }
 }

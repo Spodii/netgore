@@ -76,11 +76,17 @@ If you do not save, all changes will be lost.";
 
             // Save?
             var map = mapScreen.Map;
-            if (map != null)
+            if (map != null && MapHelper.DiffersFromSaved(map))
             {
-                if (MessageBox.Show(string.Format(confirmMsg, map), "Save before closing?", MessageBoxButtons.YesNo) ==
-                    DialogResult.Yes)
+                var result = MessageBox.Show(string.Format(confirmMsg, map), "Save before closing?", MessageBoxButtons.YesNoCancel);
+                if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else if (result == DialogResult.Yes)
+                {
                     MapHelper.SaveMap(map);
+                }
             }
 
             base.OnClosing(e);
