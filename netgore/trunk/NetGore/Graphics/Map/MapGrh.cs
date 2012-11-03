@@ -163,8 +163,15 @@ namespace NetGore.Graphics
             get { return _scale; }
             set
             {
+                if (_scale == value)
+                    return;
+
+                var oldSize = Size;
                 _scale = value;
                 _scaledGrhSizeCache = Grh.Size * Scale;
+
+                if (Resized != null)
+                    Resized.Raise(this, EventArgsHelper.Create(oldSize));
             }
         }
 
@@ -387,7 +394,6 @@ namespace NetGore.Graphics
         /// </summary>
         public event TypedEventHandler<ISpatial, EventArgs<Vector2>> Moved;
 
-        
         /// <summary>
         /// Unused by the <see cref="MapGrh"/>.
         /// </summary>
