@@ -12,22 +12,22 @@
   <Walls>
     <Count>9</Count>
     <Item0>
-      <Position>0,736</Position>
-      <Size>1600,64</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item0>
-    <Item1>
-      <Position>6,676</Position>
-      <Size>89,60</Size>
-      <IsPlatform>False</IsPlatform>
-    </Item1>
-    <Item2>
       <Position>0,482</Position>
       <Size>93,16</Size>
       <IsPlatform>False</IsPlatform>
+    </Item0>
+    <Item1>
+      <Position>0,736</Position>
+      <Size>1600,64</Size>
+      <IsPlatform>False</IsPlatform>
+    </Item1>
+    <Item2>
+      <Position>6,676</Position>
+      <Size>89,60</Size>
+      <IsPlatform>False</IsPlatform>
     </Item2>
     <Item3>
-      <Position>1280,610</Position>
+      <Position>159,578</Position>
       <Size>93,16</Size>
       <IsPlatform>False</IsPlatform>
     </Item3>
@@ -52,7 +52,7 @@
       <IsPlatform>False</IsPlatform>
     </Item7>
     <Item8>
-      <Position>159,578</Position>
+      <Position>1280,610</Position>
       <Size>93,16</Size>
       <IsPlatform>False</IsPlatform>
     </Item8>
@@ -61,23 +61,23 @@
     <Count>2</Count>
     <Item0>
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
+      <Open>False</Open>
       <Size>23,56</Size>
       <Weight>1</Weight>
       <Destination>575,160</Destination>
       <DestinationMap>2</DestinationMap>
       <Position>771,100</Position>
       <Velocity>0,0</Velocity>
-      <Open>false</Open>
     </Item0>
     <Item1>
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
+      <Open>False</Open>
       <Size>32,64</Size>
       <Weight>0</Weight>
       <Destination>230,750</Destination>
       <DestinationMap>3</DestinationMap>
       <Position>833,667</Position>
       <Velocity>0,0</Velocity>
-      <Open>false</Open>
     </Item1>
   </DynamicEntities>
   <Misc>
@@ -99,12 +99,12 @@
       <MapGrhs>
         <Count>25</Count>
         <Item0>
-          <GrhIndex>125</GrhIndex>
+          <GrhIndex>117</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>768,96</Position>
+          <Position>0,480</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -121,23 +121,23 @@
           <SpriteEffects>None</SpriteEffects>
         </Item1>
         <Item2>
-          <GrhIndex>117</GrhIndex>
+          <GrhIndex>121</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>0,480</Position>
+          <Position>55,661</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item2>
         <Item3>
-          <GrhIndex>117</GrhIndex>
+          <GrhIndex>146</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>1280,608</Position>
+          <Position>158,576</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -148,18 +148,18 @@
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>192,384</Position>
+          <Position>159,576</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item4>
         <Item5>
-          <GrhIndex>117</GrhIndex>
+          <GrhIndex>145</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>352,320</Position>
+          <Position>189,575</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -170,78 +170,12 @@
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>544,256</Position>
+          <Position>192,384</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item6>
         <Item7>
-          <GrhIndex>117</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <IsForeground>False</IsForeground>
-          <LayerDepth>0</LayerDepth>
-          <Origin>0,0</Origin>
-          <Position>736,160</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item7>
-        <Item8>
-          <GrhIndex>120</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <IsForeground>False</IsForeground>
-          <LayerDepth>0</LayerDepth>
-          <Origin>0,0</Origin>
-          <Position>805,134</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item8>
-        <Item9>
-          <GrhIndex>121</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <IsForeground>False</IsForeground>
-          <LayerDepth>0</LayerDepth>
-          <Origin>0,0</Origin>
-          <Position>55,661</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item9>
-        <Item10>
-          <GrhIndex>114</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <IsForeground>False</IsForeground>
-          <LayerDepth>0</LayerDepth>
-          <Origin>0,0</Origin>
-          <Position>798,636</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item10>
-        <Item11>
-          <GrhIndex>117</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <IsForeground>False</IsForeground>
-          <LayerDepth>0</LayerDepth>
-          <Origin>0,0</Origin>
-          <Position>159,576</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item11>
-        <Item12>
-          <GrhIndex>145</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <IsForeground>False</IsForeground>
-          <LayerDepth>0</LayerDepth>
-          <Origin>0,0</Origin>
-          <Position>189,575</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item12>
-        <Item13>
           <GrhIndex>147</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
@@ -251,25 +185,91 @@
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
-        </Item13>
-        <Item14>
-          <GrhIndex>146</GrhIndex>
+        </Item7>
+        <Item8>
+          <GrhIndex>124</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>True</IsForeground>
+          <LayerDepth>100</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>288,704</Position>
+          <Rotation>0</Rotation>
+          <Scale>1.5,1.5</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item8>
+        <Item9>
+          <GrhIndex>117</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>158,576</Position>
+          <Position>352,320</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
-        </Item14>
-        <Item15>
+        </Item9>
+        <Item10>
+          <GrhIndex>124</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>-100</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>352,608</Position>
+          <Rotation>0</Rotation>
+          <Scale>0.5,0.5</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item10>
+        <Item11>
+          <GrhIndex>117</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>544,256</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item11>
+        <Item12>
+          <GrhIndex>124</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>576,640</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item12>
+        <Item13>
           <GrhIndex>146</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
           <Position>736,160</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item13>
+        <Item14>
+          <GrhIndex>117</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>736,160</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item14>
+        <Item15>
+          <GrhIndex>125</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>768,96</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -286,6 +286,17 @@
           <SpriteEffects>None</SpriteEffects>
         </Item16>
         <Item17>
+          <GrhIndex>114</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>798,636</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item17>
+        <Item18>
           <GrhIndex>147</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
@@ -295,38 +306,27 @@
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
-        </Item17>
-        <Item18>
-          <GrhIndex>124</GrhIndex>
+        </Item18>
+        <Item19>
+          <GrhIndex>120</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>576,640</Position>
+          <Position>805,134</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
-        </Item18>
-        <Item19>
-          <GrhIndex>124</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <IsForeground>False</IsForeground>
-          <LayerDepth>50</LayerDepth>
-          <Origin>0,0</Origin>
-          <Position>1088,672</Position>
-          <Rotation>0</Rotation>
-          <Scale>1.25,1.25</Scale>
-          <SpriteEffects>None</SpriteEffects>
         </Item19>
         <Item20>
-          <GrhIndex>124</GrhIndex>
+          <GrhIndex>125</GrhIndex>
           <Color>255,255,255,255</Color>
-          <IsForeground>True</IsForeground>
-          <LayerDepth>100</LayerDepth>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>288,704</Position>
+          <Position>832,672</Position>
           <Rotation>0</Rotation>
-          <Scale>1.5,1.5</Scale>
+          <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item20>
         <Item21>
@@ -335,20 +335,20 @@
           <IsForeground>False</IsForeground>
           <LayerDepth>-100</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>352,608</Position>
+          <Position>864,608</Position>
           <Rotation>0</Rotation>
-          <Scale>0.5,0.5</Scale>
+          <Scale>0.8,0.8</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item21>
         <Item22>
           <GrhIndex>124</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
-          <LayerDepth>-100</LayerDepth>
+          <LayerDepth>50</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>864,608</Position>
+          <Position>1088,672</Position>
           <Rotation>0</Rotation>
-          <Scale>0.8,0.8</Scale>
+          <Scale>1.25,1.25</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item22>
         <Item23>
@@ -363,12 +363,12 @@
           <SpriteEffects>None</SpriteEffects>
         </Item23>
         <Item24>
-          <GrhIndex>125</GrhIndex>
+          <GrhIndex>117</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>832,672</Position>
+          <Position>1280,608</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -411,7 +411,7 @@
           <Sprite>176</Sprite>
         </Item0>
         <Item1>
-          <Position>784,637</Position>
+          <Position>720,67</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>
@@ -419,7 +419,7 @@
           <Sprite>176</Sprite>
         </Item1>
         <Item2>
-          <Position>720,67</Position>
+          <Position>784,637</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>
