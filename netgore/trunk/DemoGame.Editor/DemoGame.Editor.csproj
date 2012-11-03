@@ -274,6 +274,7 @@
     <Compile Include="Controls\SkeletonNodesComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Tools\Map\Cursors\MapGrhPencilTool.cs" />
     <Compile Include="Tools\Map\MapEditNPCSpawnsToolForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -678,6 +679,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MapEditNPCSpawnsTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapGrhPencilTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapGrhPencilTool_Enabled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

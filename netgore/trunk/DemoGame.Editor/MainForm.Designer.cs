@@ -65,6 +65,7 @@ namespace DemoGame.Editor
             this.dbEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.musicEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.soundEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bodyEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.tssInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssWorldPos = new System.Windows.Forms.ToolStripStatusLabel();
@@ -72,9 +73,16 @@ namespace DemoGame.Editor
             this.dockPanel = new NetGore.Editor.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
-            this.bodyEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblDepth = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbLayer = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.trackBarDepth = new System.Windows.Forms.TrackBar();
             this.msMenu.SuspendLayout();
             this.ssStatus.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDepth)).BeginInit();
             this.SuspendLayout();
             // 
             // msMenu
@@ -203,6 +211,13 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.soundEditorToolStripMenuItem, "soundEditorToolStripMenuItem");
             this.soundEditorToolStripMenuItem.Click += new System.EventHandler(this.soundEditorToolStripMenuItem_Click);
             // 
+            // bodyEditorToolStripMenuItem
+            // 
+            this.bodyEditorToolStripMenuItem.CheckOnClick = true;
+            this.bodyEditorToolStripMenuItem.Name = "bodyEditorToolStripMenuItem";
+            resources.ApplyResources(this.bodyEditorToolStripMenuItem, "bodyEditorToolStripMenuItem");
+            this.bodyEditorToolStripMenuItem.Click += new System.EventHandler(this.bodyEditorToolStripMenuItem_Click);
+            // 
             // ssStatus
             // 
             this.ssStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -295,17 +310,58 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
             // 
-            // bodyEditorToolStripMenuItem
+            // panel1
             // 
-            this.bodyEditorToolStripMenuItem.CheckOnClick = true;
-            this.bodyEditorToolStripMenuItem.Name = "bodyEditorToolStripMenuItem";
-            resources.ApplyResources(this.bodyEditorToolStripMenuItem, "bodyEditorToolStripMenuItem");
-            this.bodyEditorToolStripMenuItem.Click += new System.EventHandler(this.bodyEditorToolStripMenuItem_Click);
+            this.panel1.Controls.Add(this.lblDepth);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.cmbLayer);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.trackBarDepth);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
+            // lblDepth
+            // 
+            resources.ApplyResources(this.lblDepth, "lblDepth");
+            this.lblDepth.Name = "lblDepth";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // cmbLayer
+            // 
+            this.cmbLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbLayer.Items.AddRange(new object[] {
+            resources.GetString("cmbLayer.Items"),
+            resources.GetString("cmbLayer.Items1"),
+            resources.GetString("cmbLayer.Items2")});
+            resources.ApplyResources(this.cmbLayer, "cmbLayer");
+            this.cmbLayer.Name = "cmbLayer";
+            this.cmbLayer.SelectedValueChanged += new System.EventHandler(this.cmbLayer_SelectedValueChanged);
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // trackBarDepth
+            // 
+            resources.ApplyResources(this.trackBarDepth, "trackBarDepth");
+            this.trackBarDepth.LargeChange = 100;
+            this.trackBarDepth.Maximum = 500;
+            this.trackBarDepth.Minimum = -500;
+            this.trackBarDepth.Name = "trackBarDepth";
+            this.trackBarDepth.TickFrequency = 250;
+            this.trackBarDepth.Scroll += new System.EventHandler(this.trackBarDepth_Scroll);
+            this.trackBarDepth.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBarDepth_MouseDown);
             // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.tbMap);
             this.Controls.Add(this.tbGlobal);
@@ -314,10 +370,14 @@ namespace DemoGame.Editor
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.msMenu;
             this.Name = "MainForm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.msMenu.ResumeLayout(false);
             this.msMenu.PerformLayout();
             this.ssStatus.ResumeLayout(false);
             this.ssStatus.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDepth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -350,6 +410,12 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem musicEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem soundEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bodyEditorToolStripMenuItem;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cmbLayer;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TrackBar trackBarDepth;
+        private System.Windows.Forms.Label lblDepth;
     }
 }
 

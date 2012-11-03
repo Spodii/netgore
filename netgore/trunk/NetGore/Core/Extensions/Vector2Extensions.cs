@@ -213,7 +213,8 @@ namespace NetGore
 
         /// <summary>
         /// Gets the distance between this <see cref="Vector2"/> and another <see cref="Vector2"/> by getting the
-        /// sum of the differences for the components of the <see cref="Vector2"/>s.
+        /// sum of the differences for the components of the <see cref="Vector2"/>s. This is a much quicker but less accurate
+        /// version of Distance().
         /// </summary>
         /// <param name="source">Source <see cref="Vector2"/>.</param>
         /// <param name="target">Target <see cref="Vector2"/>.</param>
@@ -223,6 +224,17 @@ namespace NetGore
         {
             var diff = source - target;
             return Abs(diff).Sum();
+        }
+
+        /// <summary>
+        /// Gets the proper distance between two vectors. Slower than QuickDistance, but more accurate.
+        /// </summary>
+        /// <param name="source">Source <see cref="Vector2"/>.</param>
+        /// <param name="target">Target <see cref="Vector2"/>.</param>
+        /// <returns>The distance between the two vectors.</returns>
+        public static float Distance(this Vector2 source, Vector2 target)
+        {
+            return Vector2.Distance(source, target);
         }
 
         /// <summary>

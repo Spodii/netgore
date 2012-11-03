@@ -226,6 +226,19 @@ namespace DemoGame.Editor
             readonly GlobalState _parent;
             readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
 
+            MapRenderLayer _layer = MapRenderLayer.SpriteBackground;
+            int _layerDepth = 0;
+
+            /// <summary>
+            /// Notifies listeners when the LayerDepth property changes.
+            /// </summary>
+            public event EventHandler LayerDepthChanged;
+
+            /// <summary>
+            /// Notifies listeners when the Layer property changes.
+            /// </summary>
+            public event EventHandler LayerChanged;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="MapState"/> class.
             /// </summary>
@@ -259,6 +272,42 @@ namespace DemoGame.Editor
             public SelectedObjectsManager<object> SelectedObjsManager
             {
                 get { return _selectedObjsManager; }
+            }
+
+            /// <summary>
+            /// Gets or sets the current map layer (used by cursors).
+            /// </summary>
+            public MapRenderLayer Layer
+            {
+                get { return _layer; }
+                set
+                {
+                    if (_layer == value)
+                        return;
+
+                    _layer = value;
+                    var e = LayerChanged;
+                    if (e != null)
+                        e(this, EventArgs.Empty);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the layer depth to place new grhs at.
+            /// </summary>
+            public int LayerDepth
+            {
+                get { return _layerDepth; }
+                set
+                {
+                    if (_layerDepth == value)
+                        return;
+
+                    _layerDepth = value;
+                    var e = LayerDepthChanged;
+                    if (e != null)
+                        e(this, EventArgs.Empty);
+                }
             }
         }
     }

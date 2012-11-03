@@ -197,7 +197,6 @@ The path to the development content is required by the editor. See the file ment
                     // Start up the application
                     Application.Run(new MainForm());
                 }
-
             }
             finally
             {
