@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor.WinForms;
@@ -15,18 +16,13 @@ namespace NetGore.Editor.Grhs
     {
         static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
 
-        readonly Camera2D _camera = new Camera2D(new Vector2(400, 300));
-        readonly View _drawView = new View();
-        readonly DrawingManager _drawingManager = new DrawingManager();
-
+        Camera2D _camera;
+        View _drawView;
+        DrawingManager _drawingManager;
         TransBoxManager m;
+
         Grh _grh;
         private IEnumerable<WallEntityBase> _walls;
-
-        public GrhPreviewScreenControl()
-        {
-            m = new TransBoxManager();
-        }
 
         /// <summary>
         /// Gets the camera.
@@ -70,6 +66,7 @@ namespace NetGore.Editor.Grhs
         /// <summary>
         /// Gets or sets the collection of walls to be drawn.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<WallEntityBase> Walls
         {
             get { return _walls; }
@@ -147,16 +144,25 @@ namespace NetGore.Editor.Grhs
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             m.HandleMouseDown(e, Camera);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             m.HandleMouseUp(e, Camera);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             m.HandleMouseMove(e, Camera);
         }
 
@@ -167,8 +173,17 @@ namespace NetGore.Editor.Grhs
         {
             base.Initialize();
 
+            if (DesignMode)
+                return;
+
+            m = new TransBoxManager();
+            _drawingManager = new DrawingManager();
+            _drawView = new View();
+            _camera = new Camera2D(new Vector2(400, 300));
+
             _camera.Size = ScreenSize;
             _camera.Scale = 1.0f;
+
         }
 
         /// <summary>
@@ -178,6 +193,9 @@ namespace NetGore.Editor.Grhs
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
+
+            if (DesignMode)
+                return;
 
             var newValue = Camera.Scale + (e.Delta / 1200f);
             if (newValue < 0.1f)
@@ -208,17 +226,14 @@ namespace NetGore.Editor.Grhs
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
+
+            if (DesignMode)
+                return;
             
             _camera.Size = ScreenSize;
 
             ResetCamera();
         }
-
-        protected void MouseMove(EventArgs e)
-        {
-
-        }
-
 
         /// <summary>
         /// Resets the camera back to the default view.

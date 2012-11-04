@@ -954,6 +954,9 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         public void RebuildTree()
         {
+            if (DesignMode)
+                return;
+
             // Suspend the layout and updating while we massively alter the collection
             BeginUpdate();
             SuspendLayout();
@@ -961,11 +964,8 @@ namespace NetGore.Editor.Grhs
             try
             {
                 // If there are any nodes already, keep track of which is selected
-                GrhData selectedGrhData = null;
-                if (SelectedNode != null && SelectedNode is GrhTreeViewNode)
-                {
-                    selectedGrhData = ((GrhTreeViewNode) SelectedNode).GrhData;
-                }
+                GrhTreeViewNode selectedGrhNode = SelectedNode as GrhTreeViewNode;
+                GrhData selectedGrhData = selectedGrhNode != null ? selectedGrhNode.GrhData : null;
 
                 // Clear any existing nodes (probably isn't any, but just in case...)
                 Nodes.Clear();

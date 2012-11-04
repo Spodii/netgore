@@ -117,6 +117,9 @@ namespace NetGore.Editor.Grhs
         {
             base.OnClosing(e);
 
+            if (DesignMode)
+                return;
+
             if (e.Cancel)
                 return;
 
@@ -143,6 +146,9 @@ namespace NetGore.Editor.Grhs
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            if (DesignMode)
+                return;
 
             screen.Grh = Grh;
             screen.Walls = BoundWalls;
