@@ -36,7 +36,6 @@
             // 
             this.mapScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mapScreen.Location = new System.Drawing.Point(0, 0);
-            this.mapScreen.Map = null;
             this.mapScreen.Name = "mapScreen";
             this.mapScreen.Size = new System.Drawing.Size(784, 562);
             this.mapScreen.TabIndex = 1;

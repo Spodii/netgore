@@ -216,12 +216,15 @@ namespace DemoGame
 
             // Add to the one-dimensional entity list
             _entities.Add(entity);
-            if (entity is IUpdateableEntity)
-                _updateableEntities.Add((IUpdateableEntity)entity);
+
+            var updateableEntity = entity as IUpdateableEntity;
+            if (updateableEntity != null)
+                _updateableEntities.Add(updateableEntity);
 
             // Check for the IUpdateableMapReference interface
-            if (entity is IUpdateableMapReference)
-                ((IUpdateableMapReference)entity).Map = this;
+            var updateableMapReference = entity as IUpdateableMapReference;
+            if (updateableMapReference != null)
+                updateableMapReference.Map = this;
 
             // Also add the entity to the grid
             Spatial.Add(entity);
@@ -645,7 +648,7 @@ namespace DemoGame
                 nearbyWalls.SelectMany(wall => GetPositionsAroundSpatial(wall, r)).Where(p => IsValidPlacementPosition(p, cbSize));
 
             // If there are 0 legal positions, we're F'd in the A
-            if (validPlacementPositions.Count() == 0)
+            if (validPlacementPositions.IsEmpty())
             {
                 // Failure :(
                 validPositionFound = false;
@@ -1199,7 +1202,6 @@ namespace DemoGame
         {
             // Update the Entities
             // We use a for loop because entities might be added/removed when they update
-            IUpdateableEntity current;
             var i = 0;
             while (true)
             {
@@ -1208,7 +1210,7 @@ namespace DemoGame
                     break;
 
                 // Get and update the current entity
-                current = _updateableEntities[i];
+                IUpdateableEntity current = _updateableEntities[i];
 
                 if (current != null)
                     current.Update(this, deltaTime);
@@ -1450,15 +1452,17 @@ namespace DemoGame
         {
             public int Compare(ISpatial a, ISpatial b)
             {
-                if (a.Position.X != b.Position.X)
-                    return a.Position.X.CompareTo(b.Position.X);
-                if (a.Position.Y != b.Position.Y)
-                    return a.Position.Y.CompareTo(b.Position.Y);
+                int tmp = a.Position.X.CompareTo(b.Position.X);
+                if (tmp != 0) return tmp;
 
-                if (a.Size.X != b.Size.X)
-                    return a.Size.X.CompareTo(b.Size.X);
-                if (a.Size.Y != b.Size.Y)
-                    return a.Size.Y.CompareTo(b.Size.Y);
+                tmp = a.Position.Y.CompareTo(b.Position.Y);
+                if (tmp != 0) return tmp;
+
+                tmp = a.Size.X.CompareTo(b.Size.X);
+                if (tmp != 0) return tmp;
+
+                tmp = a.Size.Y.CompareTo(b.Size.Y);
+                if (tmp != 0) return tmp;
 
                 return StringComparer.Ordinal.Compare(a.GetType().FullName ?? string.Empty, b.GetType().FullName ?? string.Empty);
             }

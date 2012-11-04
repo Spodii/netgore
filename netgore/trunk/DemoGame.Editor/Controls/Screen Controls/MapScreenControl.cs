@@ -99,6 +99,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets the <see cref="TransBoxManager"/> for this <see cref="MapScreenControl"/>.
         /// </summary>
+        [Browsable(false)]
         public TransBoxManager TransBoxManager
         {
             get { return _transBoxManager; }

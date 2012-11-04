@@ -17,6 +17,11 @@ namespace NetGore.Editor.Grhs
     /// </summary>
     public class GrhTreeView : TreeView, IComparer, IComparer<TreeNode>
     {
+        /// <summary>
+        /// If the EditGrhForm is enabled for individual Grhs. Default is false, and we instead rely on tags in the file names for graphics.
+        /// </summary>
+        public const bool EnableGrhEditor = false;
+
         const int _drawImageOffset = 2;
 
         static readonly IComparer<string> _nodeTextComparer = NaturalStringComparer.Instance;
@@ -54,6 +59,9 @@ namespace NetGore.Editor.Grhs
             DrawMode = TreeViewDrawMode.OwnerDrawAll;
         }
 
+        /// <summary>
+        /// Notifies listeners when a GrhData is to be edited.
+        /// </summary>
         public event TypedEventHandler<GrhTreeView, GrhTreeViewEditGrhDataEventArgs> EditGrhDataRequested;
 
         /// <summary>
@@ -481,10 +489,17 @@ namespace NetGore.Editor.Grhs
             GrhMouseDoubleClick += GrhTreeView_GrhMouseDoubleClick;
 
             // Set up the context menu for the GrhTreeView
-            _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
-            _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
-            _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
+#pragma warning disable 162
+            if (EnableGrhEditor)
+            {
+                _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
+                _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
+                _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
+            }
+#pragma warning restore 162
+
             _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
+
             ContextMenu = _contextMenu;
 
             AllowDrop = true;
@@ -520,7 +535,7 @@ namespace NetGore.Editor.Grhs
         void MenuClickAutomaticUpdate(object sender, EventArgs e)
         {
 
-            IContentManager cm = null; 
+            IContentManager cm; 
             try
             {
                 cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
