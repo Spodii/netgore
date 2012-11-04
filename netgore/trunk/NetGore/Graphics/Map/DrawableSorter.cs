@@ -62,9 +62,7 @@ namespace NetGore.Graphics
             // Return the results for each layer, making sure to sort them as we return them
             for (var i = 0; i < _layers.Length; i++)
             {
-                yield return
-                    new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i,
-                        _layers[i].OrderBy(x => x.LayerDepth));
+                yield return new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i, _layers[i].OrderBy(x => x.LayerDepth));
             }
         }
     }

@@ -204,7 +204,7 @@ namespace DemoGame.Client
         /// <param name="grhIndexes">The GrhIndexes.</param>
         void BuildAtlas(IEnumerable<GrhIndex> grhIndexes)
         {
-            if (grhIndexes == null || grhIndexes.Count() == 0)
+            if (grhIndexes == null || grhIndexes.IsEmpty())
             {
                 _mapAtlases = new List<Image>(0);
                 return;
@@ -473,7 +473,11 @@ namespace DemoGame.Client
         /// <param name="w">IValueWriter to write to..</param>
         void SaveBackgroundImages(IValueWriter w)
         {
-            var bgImagesToWrite = _backgroundImages.Where(x => x != null);
+            var bgImagesToWrite = _backgroundImages.Where(x => x != null)
+                .OrderBy(x => x.Sprite.GrhData.GrhIndex)
+                .ThenBy(x => (int)x.MapRenderLayer)
+                .ToImmutable();
+
             w.WriteManyNodes(_bgImagesNodeName, bgImagesToWrite, ((writer, item) => item.Write(writer)));
         }
 
@@ -483,24 +487,27 @@ namespace DemoGame.Client
         /// <param name="w">IValueWriter to write to.</param>
         void SaveGrhs(IValueWriter w)
         {
+            var mapGrhs = Spatial.GetMany<MapGrh>().Distinct().OrderBy(x => x, new BasicMapGrhComparer()).ToImmutable();
+
             w.WriteStartNode(_mapGrhsNodeName);
             {
                 // Used GrhIndexes
                 w.WriteMany(_usedIndiciesNodeName, GetMapGrhList(), w.Write);
 
                 // MapGrhs
-                w.WriteManyNodes(_mapGrhsNodeName, Spatial.GetMany<MapGrh>().Distinct(),
-                    ((writer, item) => item.WriteState(writer)));
+                w.WriteManyNodes(_mapGrhsNodeName, mapGrhs, ((writer, item) => item.WriteState(writer)));
             }
             w.WriteEndNode(_mapGrhsNodeName);
         }
 
         void SaveLighting(IValueWriter w)
         {
+            var lights = _lights.OrderBy(x => x, new BasicSpatialComparer()).ToImmutable();
+
             w.WriteStartNode(_lightingNodeName);
             {
                 w.Write("Ambient", AmbientLight);
-                w.WriteManyNodes(_lightsNodeName, _lights.ToArray(), (wr, l) => l.WriteState(wr));
+                w.WriteManyNodes(_lightsNodeName, lights, (wr, l) => l.WriteState(wr));
             }
             w.WriteEndNode(_lightingNodeName);
         }
@@ -520,9 +527,12 @@ namespace DemoGame.Client
 
         void SaveRefractionEffects(IValueWriter w)
         {
+            var validFx = _refractionEffects.Where(x => RefractionEffectFactory.IsValidType(x.GetType()))
+                .OrderBy(x => x, new BasicSpatialComparer())
+                .ToImmutable();
+
             w.WriteStartNode(_refractionEffectsNodeName);
             {
-                var validFx = _refractionEffects.Where(x => RefractionEffectFactory.IsValidType(x.GetType())).ToImmutable();
                 w.WriteManyNodes(_refractionEffectListNodeName, validFx, RefractionEffectFactory.Write);
             }
             w.WriteEndNode(_refractionEffectsNodeName);
@@ -825,5 +835,32 @@ namespace DemoGame.Client
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets a rough (not very reliable) comparison between two MapGrhs. Used to sort before
+        /// saving the map to help make the order more consistent (resulting in more reasonable save diffs).
+        /// </summary>
+        protected class BasicMapGrhComparer : IComparer<MapGrh>
+        {
+            public int Compare(MapGrh a, MapGrh b)
+            {
+                int tmp = a.Position.X.CompareTo(b.Position.X);
+                if (tmp != 0) return tmp;
+
+                tmp = a.Position.Y.CompareTo(b.Position.Y);
+                if (tmp != 0) return tmp;
+
+                tmp = a.Size.X.CompareTo(b.Size.X);
+                if (tmp != 0) return tmp;
+
+                tmp = a.Size.Y.CompareTo(b.Size.Y);
+                if (tmp != 0) return tmp;
+
+                tmp = a.Grh.GrhData.GrhIndex.CompareTo(b.Grh.GrhData.GrhIndex);
+                if (tmp != 0) return tmp;
+
+                return StringComparer.Ordinal.Compare(a.GetType().FullName ?? string.Empty, b.GetType().FullName ?? string.Empty);
+            }
+        }
     }
 }

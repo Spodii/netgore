@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
+using NetGore.IO;
 using log4net;
 using NetGore;
 using NetGore.Editor;
@@ -23,6 +24,76 @@ namespace DemoGame.Editor.Tools
 
         EditorMap _mouseOverMap;
         Vector2 _mousePos;
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh0
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[0]; }
+            set { GlobalState.Instance.HotkeyedGrhs[0] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh1
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[1]; }
+            set { GlobalState.Instance.HotkeyedGrhs[1] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh2
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[2]; }
+            set { GlobalState.Instance.HotkeyedGrhs[2] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh3
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[3]; }
+            set { GlobalState.Instance.HotkeyedGrhs[3] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh4
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[4]; }
+            set { GlobalState.Instance.HotkeyedGrhs[4] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh5
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[5]; }
+            set { GlobalState.Instance.HotkeyedGrhs[5] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh6
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[6]; }
+            set { GlobalState.Instance.HotkeyedGrhs[6] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh7
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[7]; }
+            set { GlobalState.Instance.HotkeyedGrhs[7] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh8
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[8]; }
+            set { GlobalState.Instance.HotkeyedGrhs[8] = value; }
+        }
+
+        [SyncValue, DefaultValue(null)]
+        public string HotkeyedGrh9
+        {
+            get { return GlobalState.Instance.HotkeyedGrhs[9]; }
+            set { GlobalState.Instance.HotkeyedGrhs[9] = value; }
+        }
 
         public MapGrhPencilTool(ToolManager toolManager)
             : base(toolManager, CreateSettings())
@@ -213,7 +284,7 @@ namespace DemoGame.Editor.Tools
                     var grhToSelect = GetGrhToSelect(map, worldPos);
                     if (grhToSelect != null)
                     {
-                        GlobalState.Instance.Map.GrhToPlace.SetGrh(grhToSelect.Grh.GrhData);
+                        GlobalState.Instance.Map.SetGrhToPlace(grhToSelect.Grh.GrhData.GrhIndex);
                         GlobalState.Instance.Map.Layer = grhToSelect.MapRenderLayer;
                         GlobalState.Instance.Map.LayerDepth = grhToSelect.LayerDepth;
                     }
@@ -305,6 +376,20 @@ namespace DemoGame.Editor.Tools
             base.OnIsEnabledChanged(oldValue, newValue);
 
             HandleResetState();
+        }
+
+        protected override void MapContainer_KeyDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
+        {
+            if (!e.Alt && !e.Shift && !e.Control)
+            {
+                int? num = e.KeyCode.GetNumericKeyAsValue();
+                if (num.HasValue && num.Value > 0 && num.Value < 10)
+                {
+                    GlobalState.Instance.SetGrhFromHotkey(num.Value);
+                }
+            }
+
+            base.MapContainer_KeyDown(sender, map, camera, e);
         }
 
         /// <summary>

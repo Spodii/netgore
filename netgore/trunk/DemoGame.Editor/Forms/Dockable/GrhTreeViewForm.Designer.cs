@@ -59,6 +59,7 @@ namespace DemoGame.Editor
             this.gtv.Size = new System.Drawing.Size(267, 307);
             this.gtv.TabIndex = 8;
             this.gtv.GrhAfterSelect += new System.EventHandler<NetGore.Editor.Grhs.GrhTreeViewEventArgs>(this.gtv_GrhAfterSelect);
+            this.gtv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gtv_KeyDown);
             // 
             // GrhTreeViewForm
             // 

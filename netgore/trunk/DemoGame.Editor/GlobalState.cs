@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
@@ -34,6 +35,9 @@ namespace DemoGame.Editor
         readonly MapGrhWalls _mapGrhWalls;
         readonly MapState _mapState;
         readonly Timer _timer;
+        readonly string[] _hotkeyedGrhs = new string[10];
+
+        public string[] HotkeyedGrhs { get { return _hotkeyedGrhs; } }
 
         /// <summary>
         /// Initializes the <see cref="GlobalState"/> class.
@@ -197,6 +201,40 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Sets the GrhToPlace from the hotkey.
+        /// </summary>
+        /// <param name="hotkeyIndex">The hotkey index.</param>
+        public void SetGrhFromHotkey(int hotkeyIndex)
+        {
+            if (hotkeyIndex >= HotkeyedGrhs.Length || hotkeyIndex < 0)
+                return;
+
+            string categorization = HotkeyedGrhs[hotkeyIndex];
+            if (string.IsNullOrEmpty(categorization))
+                return;
+
+            GrhData grhData = null;
+            try
+            {
+                SpriteCategorization cat = new SpriteCategorization(categorization);
+                grhData = GrhInfo.GetData(cat);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
+
+            if (grhData == null)
+            {
+                // No grh for categorization, so unset it
+                HotkeyedGrhs[hotkeyIndex] = null;
+                return;
+            }
+
+            Map.SetGrhToPlace(grhData.GrhIndex);
+        }
+
+        /// <summary>
         /// Handles the Tick event of the _timer control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -240,12 +278,32 @@ namespace DemoGame.Editor
             public event EventHandler LayerChanged;
 
             /// <summary>
+            /// Notifies listeners when the GrhToPlace has been changed to a different Grh.
+            /// </summary>
+            public event EventHandler GrhToPlaceChanged;
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="MapState"/> class.
             /// </summary>
             /// <param name="parent">The <see cref="GlobalState"/>.</param>
             internal MapState(GlobalState parent)
             {
                 _parent = parent;
+            }
+
+            /// <summary>
+            /// Changes the GrhToPlace and raises the GrhToPlaceChanged event.
+            /// </summary>
+            /// <param name="grhIndex"></param>
+            public void SetGrhToPlace(GrhIndex grhIndex)
+            {
+                if (GrhToPlace.GrhData != null && GrhToPlace.GrhData.GrhIndex == grhIndex)
+                    return;
+
+                GrhToPlace.SetGrh(grhIndex);
+
+                if (GrhToPlaceChanged != null)
+                    GrhToPlaceChanged.Raise(this, EventArgs.Empty);
             }
 
             /// <summary>

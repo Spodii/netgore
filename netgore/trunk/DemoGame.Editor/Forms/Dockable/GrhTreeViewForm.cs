@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using NetGore.Editor.Docking;
 using NetGore.Editor.Grhs;
+using NetGore;
+using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
@@ -27,7 +30,33 @@ namespace DemoGame.Editor
                 return;
 
             gtv.Initialize(GlobalState.Instance.ContentManager);
-            gtv.EditGrhDataRequested += gtv_EditGrhDataRequested;
+
+            GlobalState.Instance.Map.GrhToPlaceChanged += Map_GrhToPlaceChanged;
+
+#pragma warning disable 162
+            if (GrhTreeView.EnableGrhEditor)
+                gtv.EditGrhDataRequested += gtv_EditGrhDataRequested;
+#pragma warning restore 162
+        }
+
+        void Map_GrhToPlaceChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Grh grh = GlobalState.Instance.Map.GrhToPlace;
+                if (grh != null && grh.GrhData != null)
+                {
+                    GrhTreeViewNode newNode = gtv.FindGrhDataNode(grh.GrhData);
+                    if (gtv.SelectedNode != newNode)
+                    {
+                        gtv.SelectedNode = newNode;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         static void gtv_EditGrhDataRequested(GrhTreeView sender, GrhTreeViewEditGrhDataEventArgs e)
@@ -42,12 +71,37 @@ namespace DemoGame.Editor
 
         void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
-            GlobalState.Instance.Map.GrhToPlace.SetGrh(e.GrhData);
+            GlobalState.Instance.Map.SetGrhToPlace(e.GrhData.GrhIndex);
         }
 
         private void filterTxt_TextChanged(object sender, EventArgs e)
         {
             gtv.Filter = filterTxt.Text;
+        }
+
+        private void gtv_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (!e.Shift && !e.Alt)
+            {
+                int? num = e.KeyCode.GetNumericKeyAsValue();
+                if (num.HasValue && num.Value > 0 && num.Value < 10)
+                {
+                    if (e.Control)
+                    {
+                        // Set hotkey
+                        GrhTreeViewNode node = gtv.SelectedNode as GrhTreeViewNode;
+                        if (node != null && node.GrhData != null)
+                        {
+                            GlobalState.Instance.HotkeyedGrhs[num.Value] = node.GrhData.Categorization.ToString();
+                        }
+                    }
+                    else
+                    {
+                        // Use hotkey
+                        GlobalState.Instance.SetGrhFromHotkey(num.Value);
+                    }
+                }
+            }
         }
     }
 }
