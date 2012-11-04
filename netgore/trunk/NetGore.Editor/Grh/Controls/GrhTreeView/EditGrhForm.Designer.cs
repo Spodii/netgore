@@ -583,13 +583,11 @@ namespace NetGore.Editor.Grhs
             // screen
             // 
             this.screen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.screen.Grh = null;
             this.screen.Location = new System.Drawing.Point(0, 0);
             this.screen.Name = "screen";
             this.screen.Size = new System.Drawing.Size(389, 363);
             this.screen.TabIndex = 13;
             this.screen.Text = "grhPreviewScreenControl1";
-            this.screen.Walls = null;
             // 
             // tmrUpdate
             // 
