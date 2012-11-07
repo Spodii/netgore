@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace DemoGame.Editor
         readonly MapState _mapState;
         readonly Timer _timer;
         readonly string[] _hotkeyedGrhs = new string[10];
+        readonly Dictionary<GrhIndex, GrhData.FileTags> _fileTags = new Dictionary<GrhIndex, GrhData.FileTags>();
 
         public string[] HotkeyedGrhs { get { return _hotkeyedGrhs; } }
 
@@ -70,7 +72,7 @@ namespace DemoGame.Editor
             GrhInfo.Load(ContentPaths.Dev, ContentManager);
             AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
 
-            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev, x => new WallEntity(x));
+            _mapGrhWalls = new MapGrhWalls();
 
             // Load the child classes
             _mapState = new MapState(this);
@@ -91,6 +93,30 @@ namespace DemoGame.Editor
         /// An event that is raised once every time updates and draws should take place.
         /// </summary>
         public event EventHandler<EventArgs<TickCount>> Tick;
+
+        /// <summary>
+        /// Gets the dictionary containing the GrhData.FileTags for the associated GrhIndexes.
+        /// </summary>
+        public IDictionary<GrhIndex, GrhData.FileTags> FileTags { get { return _fileTags; } }
+
+        /// <summary>
+        /// Gets the GrhData.FileTags for the given GrhData.
+        /// </summary>
+        public GrhData.FileTags GetFileTags(GrhData gd)
+        {
+            return GetFileTags(gd.GrhIndex);
+        }
+
+        /// <summary>
+        /// Gets the GrhData.FileTags for the given GrhData.
+        /// </summary>
+        public GrhData.FileTags GetFileTags(GrhIndex grhIndex)
+        {
+            GrhData.FileTags ret;
+            if (!_fileTags.TryGetValue(grhIndex, out ret))
+                return null;
+            return ret;
+        }
 
         /// <summary>
         /// Gets the <see cref="IContentManager"/> used by all parts of the editor.
@@ -234,6 +260,41 @@ namespace DemoGame.Editor
             Map.SetGrhToPlace(grhData.GrhIndex);
         }
 
+        public void AutoUpdateGrhDatas()
+        {
+            GrhData[] deleted;
+            GrhData[] added;
+            Dictionary<GrhData, GrhData.FileTags> grhDataFileTags;
+            
+            AutomaticGrhDataUpdater.Update(ContentManager, ContentPaths.Dev.Grhs, out added, out deleted, out grhDataFileTags);
+            if (deleted.Length > 0 || added.Length > 0)
+            {
+                MessageBox.Show(string.Format("GrhDatas updated: {0} added, {1} deleted", added.Length, deleted.Length));
+            }
+
+            _fileTags.Clear();
+            foreach (var kvp in grhDataFileTags)
+                _fileTags.Add(kvp.Key.GrhIndex, kvp.Value);
+
+            // Update the bound walls
+            MapGrhWalls.Clear();
+
+            foreach (var kvp in grhDataFileTags)
+            {
+                if (!kvp.Value.Wall.HasValue)
+                    continue;
+
+                GrhData.BoundWallType wallType = kvp.Value.Wall.Value;
+                GrhData gd = kvp.Key;
+
+                if (wallType == GrhData.BoundWallType.Solid || wallType == GrhData.BoundWallType.Platform)
+                {
+                    WallEntity wall = new WallEntity(Vector2.Zero, Vector2.Zero) { IsPlatform = wallType == GrhData.BoundWallType.Platform };
+                    MapGrhWalls[gd] = new List<WallEntityBase> { wall };
+                }
+            }
+        }
+
         /// <summary>
         /// Handles the Tick event of the _timer control.
         /// </summary>
@@ -248,7 +309,7 @@ namespace DemoGame.Editor
             // Some manual update calls
             if (ToolManager.Instance != null)
                 ToolManager.Instance.Update(now);
-
+            
             // Raise event
             if (Tick != null)
                 Tick.Raise(this, EventArgsHelper.Create(now));
@@ -301,6 +362,10 @@ namespace DemoGame.Editor
                     return;
 
                 GrhToPlace.SetGrh(grhIndex);
+
+                GrhData.FileTags fileTags = Parent.GetFileTags(grhIndex);
+                if (fileTags != null && fileTags.Layer.HasValue)
+                    Layer = fileTags.Layer.Value;
 
                 if (GrhToPlaceChanged != null)
                     GrhToPlaceChanged.Raise(this, EventArgs.Empty);

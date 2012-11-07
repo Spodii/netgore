@@ -360,7 +360,6 @@ namespace NetGore.Editor.Grhs
             // Write
             Enabled = false;
             GrhInfo.Save(ContentPaths.Dev);
-            _mapGrhWalls.Save(ContentPaths.Dev);
             Enabled = true;
 
             WasCanceled = false;

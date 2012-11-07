@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -7,8 +8,10 @@ using System.Windows.Forms;
 using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
 using NetGore;
+using NetGore.Content;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
+using NetGore.Editor.Grhs;
 using NetGore.Editor.UI;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
@@ -112,6 +115,9 @@ namespace DemoGame.Editor
             tbGlobal.ToolBarVisibility = ToolBarVisibility.Global;
             tbMap.ToolBarVisibility = ToolBarVisibility.Map;
 
+            // Auto-update grhs
+            GlobalState.Instance.AutoUpdateGrhDatas();
+
             // Enable the update timer
             GlobalState.Instance.IsTickEnabled = true;
 
@@ -165,7 +171,6 @@ namespace DemoGame.Editor
             var editorFrm = new EditMapForm();
             editorFrm.MapScreenControl.ChangeMap(new NetGore.World.MapID(1));
             editorFrm.Show(dockPanel);
-
 
             // Global not currently used...
             tbGlobal.Visible = false;

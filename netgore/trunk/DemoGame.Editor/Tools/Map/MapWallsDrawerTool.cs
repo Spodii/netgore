@@ -6,6 +6,7 @@ using NetGore;
 using NetGore.Editor.EditorTool;
 using NetGore.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Editor.Tools
 {
@@ -133,16 +134,22 @@ namespace DemoGame.Editor.Tools
                 // Draw the MapGrh walls
                 if (p.DrawMapGrhWalls)
                 {
+                    var mapGrhWalls = GlobalState.Instance.MapGrhWalls;
                     var toDraw = clientMap.Spatial.GetMany<MapGrh>(viewArea);
+                    var tmpWall = new WallEntity(Vector2.Zero, Vector2.Zero);
+
                     foreach (var mg in toDraw)
                     {
-                        var boundWalls = GlobalState.Instance.MapGrhWalls[mg.Grh.GrhData];
+                        var boundWalls = mapGrhWalls[mg.Grh.GrhData];
                         if (boundWalls == null)
                             continue;
 
                         foreach (var wall in boundWalls)
                         {
-                            EntityDrawer.Draw(spriteBatch, camera, wall, mg.Position);
+                            tmpWall.Size = wall.Size != Vector2.Zero ? wall.Size * mg.Scale : mg.Size;
+                            tmpWall.Position = mg.Position + wall.Position;
+                            tmpWall.IsPlatform = wall.IsPlatform;
+                            EntityDrawer.Draw(spriteBatch, camera, tmpWall);
                         }
                     }
                 }

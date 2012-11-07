@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame.Editor.Tools;
 using NetGore.Editor.Docking;
+using NetGore.Editor.EditorTool;
 using NetGore.Editor.Grhs;
 using NetGore;
 using NetGore.Graphics;
@@ -72,6 +74,12 @@ namespace DemoGame.Editor
         void gtv_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
             GlobalState.Instance.Map.SetGrhToPlace(e.GrhData.GrhIndex);
+
+            var pencilTool = ToolManager.Instance.TryGetTool<MapGrhPencilTool>();
+            if (pencilTool != null && pencilTool.IsOnToolBar)
+            {
+                pencilTool.IsEnabled = true;
+            }
         }
 
         private void filterTxt_TextChanged(object sender, EventArgs e)
