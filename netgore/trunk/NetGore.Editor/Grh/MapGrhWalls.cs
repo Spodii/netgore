@@ -7,6 +7,7 @@ using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace NetGore.Editor.Grhs
 {
@@ -15,28 +16,11 @@ namespace NetGore.Editor.Grhs
     /// </summary>
     public class MapGrhWalls
     {
-        const string _grhIndexValueKey = "GrhData";
-        const string _rootNodeName = "GrhDataWalls";
-        const string _wallsNodeName = "Walls";
+        readonly Dictionary<GrhIndex, List<WallEntityBase>> _walls = new Dictionary<GrhIndex, List<WallEntityBase>>();
 
-        /// <summary>
-        /// Array containing a list of WallEntities for each valid GrhData by index
-        /// </summary>
-        readonly DArray<List<WallEntityBase>> _walls = new DArray<List<WallEntityBase>>(false);
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapGrhWalls"/> class.
-        /// </summary>
-        /// <param name="contentPath">The content path.</param>
-        /// <param name="createWall">Delegate describing how to create the <see cref="WallEntityBase"/>
-        /// from an <see cref="IValueReader"/>.</param>
-        public MapGrhWalls(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
+        public void Clear()
         {
-            Load(contentPath, createWall);
-
-            // Listen for the addition and removal of walls
-            GrhInfo.AddedNew += DeleteGrhDataWalls;
-            GrhInfo.Removed += DeleteGrhDataWalls;
+            _walls.Clear();
         }
 
         /// <summary>
@@ -50,11 +34,15 @@ namespace NetGore.Editor.Grhs
         {
             get
             {
-                if (!_walls.CanGet((int)index))
+                List<WallEntityBase> ret;
+                if (!_walls.TryGetValue(index, out ret))
                     return null;
-                return _walls[(int)index];
+                return ret;
             }
-            set { _walls[(int)index] = value; }
+            set 
+            {
+                _walls[index] = value;
+            }
         }
 
         /// <summary>
@@ -80,113 +68,28 @@ namespace NetGore.Editor.Grhs
             var ret = new List<WallEntityBase>();
 
             // Iterate through the requested MapGrhs
-            foreach (var mg in mapGrhs)
+            foreach (var mgTmp in mapGrhs)
             {
+                var mg = mgTmp;
+
                 // Grab the List for the given MapGrh
                 var mgWalls = this[mg.Grh.GrhData];
                 if (mgWalls == null)
                     continue;
 
                 // Create a new instance of each of the walls and add it to the return List
-                foreach (var wall in mgWalls)
+                foreach (var wallTmp in mgWalls)
                 {
+                    var wall = wallTmp;
+
                     var newWallEntity = wall.DeepCopy();
+                    newWallEntity.Size = wall.Size != Vector2.Zero ? wall.Size * mg.Scale : mg.Size;
                     newWallEntity.Position = mg.Position + wall.Position;
                     ret.Add(newWallEntity);
                 }
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Handles when a <see cref="GrhData"/> is removed or a new <see cref="GrhData"/> is added, and deletes
-        /// the walls for it.
-        /// </summary>
-        /// <param name="sender">The <see cref="GrhData"/> that the event is related to.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void DeleteGrhDataWalls(GrhData sender, EventArgs e)
-        {
-            RemoveWalls(sender);
-        }
-
-        public static string GetFilePath(ContentPaths contentPath)
-        {
-            return contentPath.Data.Join("grhdatawalls" + EngineSettings.DataFileSuffix);
-        }
-
-        public void Load(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
-        {
-            var filePath = GetFilePath(contentPath);
-
-            // Clear the old walls in case this isn't the first load
-            _walls.Clear();
-
-            if (!File.Exists(filePath))
-                return;
-
-            // Read the values
-            var reader = XmlValueReader.CreateFromFile(filePath, _rootNodeName);
-            var loadedWalls = reader.ReadManyNodes(_rootNodeName, x => ReadWalls(x, createWall));
-
-            foreach (var wall in loadedWalls)
-            {
-                _walls[(int)wall.Key] = wall.Value;
-            }
-        }
-
-        static KeyValuePair<GrhIndex, List<WallEntityBase>> ReadWalls(IValueReader r, CreateWallEntityFromReaderHandler createWall)
-        {
-            var grhIndex = r.ReadGrhIndex(_grhIndexValueKey);
-            var walls = r.ReadManyNodes(_wallsNodeName, x => createWall(x));
-
-            return new KeyValuePair<GrhIndex, List<WallEntityBase>>(grhIndex, walls.ToList());
-        }
-
-        /// <summary>
-        /// Removes all the walls for a <see cref="GrhData"/>.
-        /// </summary>
-        /// <param name="grhData">The <see cref="GrhData"/> to remove the walls for.</param>
-        public void RemoveWalls(GrhData grhData)
-        {
-            var index = (int)grhData.GrhIndex;
-
-            if (!_walls.CanGet(index))
-                return;
-
-            _walls.RemoveAt(index);
-        }
-
-        public void Save(ContentPaths contentPath)
-        {
-            var filePath = GetFilePath(contentPath);
-
-            // Build up a list of the valid walls, and join them with their GrhIndex
-            var wallsToWrite = new List<KeyValuePair<GrhIndex, List<WallEntityBase>>>(_walls.Count);
-            for (var i = 0; i < _walls.Length; i++)
-            {
-                var walls = _walls[i];
-                if (walls == null || walls.Count == 0)
-                    continue;
-
-                var kvp = new KeyValuePair<GrhIndex, List<WallEntityBase>>(new GrhIndex(i), walls);
-                wallsToWrite.Add(kvp);
-            }
-
-            // Write the values
-            using (var writer = XmlValueWriter.Create(filePath, _rootNodeName))
-            {
-                writer.WriteManyNodes(_rootNodeName, wallsToWrite, WriteWalls);
-            }
-        }
-
-        static void WriteWalls(IValueWriter w, KeyValuePair<GrhIndex, List<WallEntityBase>> item)
-        {
-            var grhIndex = item.Key;
-            var walls = item.Value;
-
-            w.Write(_grhIndexValueKey, grhIndex);
-            w.WriteManyNodes(_wallsNodeName, walls, ((pwriter, pitem) => pitem.Write(pwriter)));
         }
     }
 }

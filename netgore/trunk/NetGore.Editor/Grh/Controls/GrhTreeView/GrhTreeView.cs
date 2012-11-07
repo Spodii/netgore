@@ -153,43 +153,6 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        /// Checks for any missing textures, and displays the <see cref="MissingTexturesForm"/> if any are missing.
-        /// </summary>
-        void CheckForMissingTextures()
-        {
-            // We must create the hash collection since its constructor has the updating goodies, and we want
-            // to make sure that is called
-            var hashCollection = new TextureHashCollection();
-
-            // Get the GrhDatas with missing textures
-            var missing = GrhInfo.FindMissingTextures();
-            if (missing.IsEmpty())
-                return;
-
-            // Display a form showing which textures need to be fixed
-            // The GrhTreeView will be disabled until the MissingTexturesForm is closed
-            Enabled = false;
-            try
-            {
-                var frm = new MissingTexturesForm(hashCollection, missing, _contentManager);
-                frm.FormClosed += delegate
-                {
-                    RebuildTree();
-                    Enabled = true;
-                };
-                frm.Show();
-            }
-            catch (Exception)
-            {
-                // If there is an exception creating the form, make sure this control is re-enabled first
-                Enabled = true;
-
-                // Then re-throw the exception
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Deletes a node from the tree, along with any node under it.
         /// </summary>
         /// <param name="root">Root node to delete.</param>
@@ -476,9 +439,6 @@ namespace NetGore.Editor.Grhs
 
             _contentManager = cm;
 
-            // Check for missing textures
-            CheckForMissingTextures();
-
             // Perform the compact initialization
             InitializeCompact();
 
@@ -497,8 +457,6 @@ namespace NetGore.Editor.Grhs
                 _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
             }
 #pragma warning restore 162
-
-            _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
 
             ContextMenu = _contextMenu;
 
@@ -522,42 +480,6 @@ namespace NetGore.Editor.Grhs
         static bool IsGrhDataNode(TreeNode node)
         {
             return node is GrhTreeViewNode;
-        }
-
-        /// <summary>
-        /// Handles when the Automatic Update menu item is clicked.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <exception cref="InvalidOperationException">Failed to find a ContentManager to use.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhDatas")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ContentManager")]
-        void MenuClickAutomaticUpdate(object sender, EventArgs e)
-        {
-
-            IContentManager cm; 
-            try
-            {
-                cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
-            }
-            catch (InvalidOperationException)
-            {
-                cm = ContentManager.Create();
-            }
-
-            if (cm == null)
-                throw new InvalidOperationException("Failed to find a ContentManager to use.");
-
-            var newGDs = AutomaticGrhDataUpdater.Update(cm, ContentPaths.Dev.Grhs, this);
-            var newCount = newGDs.Count();
-
-            if (newCount > 0)
-            {
-                UpdateGrhDatas(newGDs);
-                MessageBox.Show(newCount + " new GrhDatas have been automatically added.");
-            }
-            else
-                MessageBox.Show("No new GrhDatas automatically added - everything is already up to date.");
         }
 
         void MenuClickDuplicate(object sender, EventArgs e)

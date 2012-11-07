@@ -232,15 +232,16 @@ namespace NetGore.Graphics
         /// <param name="contentManager">The content manager.</param>
         /// <param name="categorization">The categorization for the <see cref="AutomaticAnimatedGrhData"/>.</param>
         /// <returns>The new <see cref="AutomaticAnimatedGrhData"/>, or null if none created.</returns>
-        public static AutomaticAnimatedGrhData CreateAutomaticAnimatedGrhData(IContentManager contentManager,
-                                                                              SpriteCategorization categorization)
+        public static AutomaticAnimatedGrhData CreateAutomaticAnimatedGrhData(IContentManager contentManager, SpriteCategorization categorization, GrhIndex? index = null)
         {
             // Check if the GrhData already exists
             if (GetData(categorization) != null)
                 return null;
 
-            var index = NextFreeIndex();
-            var gd = new AutomaticAnimatedGrhData(contentManager, index, categorization);
+            if (!index.HasValue)
+                index = NextFreeIndex();
+
+            var gd = new AutomaticAnimatedGrhData(contentManager, index.Value, categorization);
             AddGrhData(gd);
             return gd;
         }
@@ -262,9 +263,9 @@ namespace NetGore.Graphics
         }
 
         public static StationaryGrhData CreateGrhData(IContentManager contentManager, SpriteCategorization categorization,
-                                                      string texture)
+                                                      string texture, GrhIndex? index = null)
         {
-            return CreateGrhData(NextFreeIndex(), contentManager, categorization, texture, null, null);
+            return CreateGrhData(index ?? NextFreeIndex(), contentManager, categorization, texture, null, null);
         }
 
         public static StationaryGrhData CreateGrhData(IContentManager contentManager, SpriteCategory category)
@@ -353,11 +354,17 @@ namespace NetGore.Graphics
                 {
                     // Make sure no other GrhData is using the texture
                     var origTexture = sgd.GetOriginalTexture();
-                    if (!GrhDatas.OfType<StationaryGrhData>().Any(x => origTexture == x.GetOriginalTexture()))
+                    if (GrhDatas.OfType<StationaryGrhData>().All(x => origTexture != x.GetOriginalTexture()))
                     {
                         // Dispose of the texture then recycle the file
                         origTexture.Dispose();
-                        sgd.TextureName.RecycleFile();
+                        try
+                        {
+                            sgd.TextureName.RecycleFile();
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
                     }
                 }
             }
@@ -368,17 +375,6 @@ namespace NetGore.Graphics
                     log.ErrorFormat(errmsg, grhData, ex);
                 Debug.Fail(string.Format(errmsg, grhData, ex));
             }
-        }
-
-        /// <summary>
-        /// Finds all of the <see cref="GrhData"/>s that reference a texture that does not exist.
-        /// </summary>
-        /// <returns>IEnumerable of all of the <see cref="GrhData"/>s that reference a texture that does not exist.</returns>
-        public static IEnumerable<StationaryGrhData> FindMissingTextures()
-        {
-            var nonanimated = GrhDatas.OfType<StationaryGrhData>();
-            var invalidTextures = nonanimated.Where(x => !x.TextureName.ContentExists());
-            return invalidTextures;
         }
 
         /// <summary>

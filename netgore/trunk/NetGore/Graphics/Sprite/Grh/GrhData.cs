@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using log4net;
 using NetGore.IO;
 using SFML.Graphics;
@@ -237,5 +238,133 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         protected abstract void WriteCustomValues(IValueWriter writer);
+
+        public enum BoundWallType : byte
+        {
+            NoWall = 0,
+            Solid = 1,
+            Platform = 2,
+        }
+
+        /// <summary>
+        /// The tags for a GrhData file. Defines certain attributes, like if the Grh should be covered by a wall, animation speed,
+        /// default layer to be placed on, etc.
+        /// </summary>
+        public class FileTags
+        {
+            static readonly Regex _tagRegex = new Regex("\\[(?<tag>\\w)(?<value>[^\\]]+)\\]");
+
+            /// <summary>
+            /// Gets the categorization title of the sprite.
+            /// </summary>
+            public string Title { get; private set; }
+
+            /// <summary>
+            /// Gets the animation speed, if specified.
+            /// </summary>
+            public ushort? AnimationSpeed { get; private set; }
+            
+            /// <summary>
+            /// Gets the bound walls flag, if specified.
+            /// </summary>
+            public BoundWallType? Wall { get; private set; }
+
+            /// <summary>
+            /// Gets the default layer to use, if specified.
+            /// </summary>
+            public MapRenderLayer? Layer { get; private set; }
+
+            /// <summary>
+            /// Creates a FileTags from a file name.
+            /// </summary>
+            public static FileTags Create(string fileNameWithoutExtension)
+            {
+                FileTags ret = new FileTags();
+
+                // Go through each tag match, and apply it
+                foreach (Match match in _tagRegex.Matches(fileNameWithoutExtension))
+                {
+                    ret.ApplyTag(match.Groups["tag"].Value, match.Groups["value"].Value, fileNameWithoutExtension);
+                }
+
+                // Get the title
+                int braceIndex = fileNameWithoutExtension.IndexOf('[');
+                if (braceIndex > 0)
+                    ret.Title = fileNameWithoutExtension.Substring(0, braceIndex).Trim();
+                else
+                    ret.Title = fileNameWithoutExtension;
+
+                if (ret.Title.Contains("[") || ret.Title.Contains("]"))
+                {
+                    throw new Exception("GrhData update failed for filename `" + fileNameWithoutExtension + "` because a [ or ] character was found in the sprite title." +
+                        " Make sure your file name is correctly formed, and each [ has a matching ].");
+                }
+
+                return ret;
+            }
+
+            /// <summary>
+            /// Apply a tag to this FileTags.
+            /// </summary>
+            /// <param name="tag">The tag character.</param>
+            /// <param name="strValue">The corresponding tag value (unparsed string).</param>
+            /// <param name="fileNameWithoutSuffix">The file name (for showing details in exception message).</param>
+            void ApplyTag(string tag, string strValue, string fileNameWithoutSuffix)
+            {
+                tag = tag.ToLowerInvariant();
+
+                if (tag == "s")
+                {
+                    // Animation speed
+                    ushort val;
+                    if (!ushort.TryParse(strValue, out val))
+                        throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, "Failed to parse the value as an ushort");
+
+                    AnimationSpeed = val;
+                }
+                else if (tag == "w")
+                {
+                    // Wall
+                    byte val;
+                    if (!byte.TryParse(strValue, out val))
+                        throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, "Failed to parse the value as a byte");
+
+                    Wall = (BoundWallType)val;
+
+                    if (!EnumHelper<BoundWallType>.IsDefined(Wall.Value))
+                        throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, string.Format("The value is not a valid BoundWallType value (use values {0} to {1})",
+                            EnumHelper<BoundWallType>.MinValue, EnumHelper<BoundWallType>.MaxValue));
+                }
+                else if (tag == "l")
+                {
+                    // Layer
+                    byte val;
+                    if (!byte.TryParse(strValue, out val))
+                        throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, "Failed to parse the value as a byte");
+
+                    if (val == 0)
+                        Layer = MapRenderLayer.SpriteBackground;
+                    else if (val == 1)
+                        Layer = MapRenderLayer.Chararacter;
+                    else if (val == 2)
+                        Layer = MapRenderLayer.SpriteForeground;
+                    else
+                    {
+                        throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, "The value is out of range (use 0 for background, 1 for dynamic, and 2 for foreground)");
+                    }
+                }
+                else
+                {
+                    // Unknown/invalid
+                    throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, "The specified tag does not exist");
+                }
+            }
+
+            static Exception CreateApplyTagException(string tag, string strValue, string fileNameWithoutSuffix, string reason)
+            {
+                return new Exception("GrhData update failed to parse the value `" + strValue + "` for tag `" + tag + "` on the file `" + fileNameWithoutSuffix +
+                    "`. Reason: " + reason + ". Please correct the corresponding Grh file name under the Grh content directory.");
+            }
+        }
     }
 }

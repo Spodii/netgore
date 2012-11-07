@@ -64,13 +64,12 @@ namespace NetGore.Graphics
         internal AutomaticAnimatedGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             var framesDir = GetFramesDirectory();
-            if (framesDir == null)
-                return;
+            var framesDirName = Path.GetFileName(framesDir).Substring(1); // Get dir name only, and skip the _ at the start
 
-            var animInfo = GetAutomaticAnimationInfo(framesDir);
-            _speed = 1f / animInfo.Speed;
+            var fileTags = FileTags.Create(framesDirName);
+            _speed = 1f / fileTags.AnimationSpeed.Value;
 
-            Debug.Assert(animInfo.Title == cat.Title);
+            Debug.Assert(fileTags.Title == cat.Title);
 
             _cm = cm;
             _frames = CreateFrames(framesDir);
@@ -145,6 +144,9 @@ namespace NetGore.Graphics
                 var frameGrhData = new StationaryGrhData(this, textureAssetName);
                 frames[i] = frameGrhData;
             }
+
+            if (frames.Length == 0)
+                throw new Exception("Animation has no frames");
 
             return frames;
         }
@@ -226,7 +228,7 @@ namespace NetGore.Graphics
             var rootDir = ContentPaths.Build.Grhs.Join(categoryAsFilePath);
 
             // Create the filter that will be used to find the directory containing the frames
-            var dirNameFilter = string.Format("{0}{1}{0}frames{0}*", DirectoryNameDelimiter, Categorization.Title);
+            var dirNameFilter = "_" + Categorization.Title + "*";
 
             // Try to find the directory
             string[] potentialDirs;
@@ -236,20 +238,23 @@ namespace NetGore.Graphics
             }
             catch (DirectoryNotFoundException)
             {
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat("Could not find the directory for AutomaticAnimatedGrhData `{0}`.", this);
-                return null;
+                potentialDirs = null;
             }
 
             // Ensure we only have one valid directory
-            if (potentialDirs.Count() > 1)
+            if (potentialDirs == null || potentialDirs.Length == 0)
+            {
+                throw new GrhDataException(this, "Could not find the directory for AutomaticAnimatedGrhData `{0}`.");
+            }
+
+            if (potentialDirs.Length > 1)
             {
                 const string errmsg =
                     "Multiple potential source directories found for the AutomaticAnimatedGrhData. Make sure you don't have duplicate titles.";
                 throw new GrhDataException(this, errmsg);
             }
 
-            return potentialDirs.FirstOrDefault();
+            return potentialDirs.First();
         }
 
         /// <summary>

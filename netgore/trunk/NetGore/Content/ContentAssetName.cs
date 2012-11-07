@@ -113,13 +113,13 @@ namespace NetGore.Content
             // If the dev path, try to find the suffix
             if (rootPath == ContentPaths.Dev)
             {
-                var files = Directory.GetFiles(rootPathStr, fileName + ".*").ToImmutable();
-                if (files.Count() == 0)
+                var files = Directory.GetFiles(rootPathStr, fileName + ".*").ToArray();
+                if (files.Length == 0)
                 {
                     throw new ArgumentException(
                         string.Format("Could not find a file named `{0}` in path `{1}` with a file suffix.", rootPathStr, fileName));
                 }
-                if (files.Count() > 1)
+                if (files.Length > 1)
                 {
                     throw new ArgumentException(
                         string.Format("Found multiple suffixes for the file named `{0}` in path `{1}`. Was expecting just one.",
