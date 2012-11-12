@@ -300,7 +300,7 @@ namespace DemoGame.Editor
 
                 var newID = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
-                var newSetID = 0;
+                int newSetID;
                 if (int.TryParse(InputBox.Show("Save as...", "Save map ID as:", newID.ToString()), out newSetID))
                 {
                     if (!MapBase.MapIDExists((MapID)newSetID))

@@ -17,12 +17,10 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="TemporaryMapParticleEffect"/> class.
         /// </summary>
         /// <param name="pe">The <see cref="IParticleEffect"/>.</param>
-        /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
-        /// it will be drawn in the background layer.</param>
         /// <param name="target">The destination position.</param>
         /// <param name="speed">How fast this object moves towards the target in pixels per second.</param>
-        public TemporaryMapParticleEffectSeekPosition(IParticleEffect pe, bool isForeground, Vector2 target, float speed)
-            : base(pe, isForeground)
+        public TemporaryMapParticleEffectSeekPosition(IParticleEffect pe, Vector2 target, float speed)
+            : base(pe)
         {
             var position = pe.Position;
 

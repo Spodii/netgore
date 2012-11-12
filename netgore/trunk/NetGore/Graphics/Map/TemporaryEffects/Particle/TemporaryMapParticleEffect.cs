@@ -10,7 +10,6 @@ namespace NetGore.Graphics
     /// </summary>
     public class TemporaryMapParticleEffect : ITemporaryMapEffect
     {
-        readonly bool _isForeground;
         readonly IParticleEffect _particleEffect;
 
         bool _isAlive = true;
@@ -19,11 +18,8 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="TemporaryMapParticleEffect"/> class.
         /// </summary>
         /// <param name="particleEffect">The <see cref="IParticleEffect"/>.</param>
-        /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
-        /// it will be drawn in the background layer.</param>
-        public TemporaryMapParticleEffect(IParticleEffect particleEffect, bool isForeground)
+        public TemporaryMapParticleEffect(IParticleEffect particleEffect)
         {
-            _isForeground = isForeground;
             _particleEffect = particleEffect;
         }
 
@@ -67,15 +63,7 @@ namespace NetGore.Graphics
             get { return _isAlive; }
         }
 
-        /// <summary>
-        /// Gets if the <see cref="ITemporaryMapEffect"/> is in the foreground. If true, it will be drawn after the
-        /// <see cref="MapRenderLayer.SpriteForeground"/> layer. If false, it will be drawn after the
-        /// <see cref="MapRenderLayer.SpriteBackground"/> layer.
-        /// </summary>
-        public bool IsForeground
-        {
-            get { return _isForeground; }
-        }
+        public MapRenderLayer MapRenderLayer { get; set; }
 
         /// <summary>
         /// Makes the object draw itself.

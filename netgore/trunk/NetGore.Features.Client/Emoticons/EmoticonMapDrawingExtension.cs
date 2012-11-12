@@ -36,7 +36,8 @@ namespace NetGore.Features.Emoticons
         /// <param name="e">The <see cref="NetGore.Graphics.DrawableMapDrawLayerEventArgs"/> instance containing the event data.</param>
         protected override void HandleDrawAfterLayer(IDrawableMap map, DrawableMapDrawLayerEventArgs e)
         {
-            if (e.Layer == MapRenderLayer.Chararacter)
+            // Draw emoticons after dynamic layer finishes
+            if (e.Layer == MapRenderLayer.Dynamic)
                 _displayManager.Draw(e.SpriteBatch);
         }
     }

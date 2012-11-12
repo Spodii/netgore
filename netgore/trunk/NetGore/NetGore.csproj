@@ -198,6 +198,7 @@
     <Compile Include="Graphics\GUI\GameControl\SettingsKeyCodeReference.cs" />
     <Compile Include="Graphics\GUI\GameControl\StaticKeyCodeReference.cs" />
     <Compile Include="Graphics\Map\DrawableMapDrawEventArgs.cs" />
+    <Compile Include="Graphics\Map\MapGrhRenderLayer.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffectConfig.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Graphics\ParticleEngine\Emitters\IParticleEmitter.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleEffectReference.cs" />
     <Compile Include="IO\BitStream\BitStream.Lidgren.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncMapRenderLayer.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncInventorySlot.cs" />
     <Compile Include="Core\Strings\CharTypeExtensions.cs" />
     <Compile Include="Core\TickCount.cs" />

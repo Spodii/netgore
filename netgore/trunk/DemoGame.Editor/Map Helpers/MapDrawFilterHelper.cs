@@ -9,6 +9,7 @@ using NetGore.IO;
 
 namespace DemoGame.Editor
 {
+    // TODO: !! Delete?
     /// <summary>
     /// Provides assistance in creating a draw filter for the <see cref="Map"/>.
     /// </summary>
@@ -207,6 +208,7 @@ namespace DemoGame.Editor
                 var mg = (MapGrh)drawable;
 
                 // Layer
+                /*
                 if (MapGrhsOnDefaultLayerOnly)
                 {
                     if (mg.IsForeground != _mapGrh_DefaultIsForeground_Cache)
@@ -225,7 +227,7 @@ namespace DemoGame.Editor
                             return false;
                     }
                 }
-
+                */
                 // Depth
                 if (MapGrhsOnDefaultDepthOnly)
                 {
@@ -251,15 +253,9 @@ namespace DemoGame.Editor
                             return false;
                         break;
 
-                    case MapRenderLayer.Chararacter:
-                        // Character layer
+                    case MapRenderLayer.Dynamic:
+                        // Dynamic layer
                         if (!DrawCharacters)
-                            return false;
-                        break;
-
-                    case MapRenderLayer.Item:
-                        // Item layer
-                        if (!DrawItems)
                             return false;
                         break;
                 }

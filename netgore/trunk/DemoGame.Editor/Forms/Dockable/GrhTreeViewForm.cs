@@ -66,8 +66,7 @@ namespace DemoGame.Editor
             if (e.GrhData == null)
                 return;
 
-            var frm = new EditGrhForm(e.GrhData, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size),
-                e.DeleteOnCancel);
+            var frm = new EditGrhForm(e.GrhData, GlobalState.Instance.MapGrhWalls, (pos, size) => new WallEntity(pos, size), e.DeleteOnCancel);
             frm.Show();
         }
 
