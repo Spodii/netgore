@@ -71,7 +71,7 @@ namespace NetGore
             var childTypes = types.Where(x => !types.Any(y => x != y && x.IsSubclassOf(y)));
 
             // Check if we have any children
-            if (childTypes.Count() > 0)
+            if (!childTypes.IsEmpty())
             {
                 var childList = new List<ClassTypeTree>();
 

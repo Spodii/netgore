@@ -84,7 +84,7 @@ namespace NetGore.Db.MySql
             // Get all of the fully-qualified foreign key columns
             var foreignKeys = GetPrimaryKeyReferences(schema, table, column);
 
-            if (foreignKeys.Count() == 0)
+            if (foreignKeys.IsEmpty())
             {
                 const string errmsg = "Aborted RemoveUnreferencedPrimaryKeys on {0}.{1}.{2} - no foreign key references found.";
                 if (log.IsWarnEnabled)

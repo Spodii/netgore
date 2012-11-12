@@ -22,7 +22,7 @@ namespace NetGore.Features.Quests
         /// <param name="questRewards">The quest rewards.</param>
         public QuestRewardCollection(IEnumerable<IQuestReward<TCharacter>> questRewards)
         {
-            if (questRewards == null || questRewards.Count() == 0)
+            if (questRewards == null || questRewards.IsEmpty())
                 _questRewards = _emptyQuestRewards;
             else
                 _questRewards = questRewards.ToCompact();

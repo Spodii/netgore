@@ -399,7 +399,7 @@ namespace DemoGame.Server
             {
                 // Get the values to send
                 var bodiesToSend = _bodies.Where(x => x != null);
-                if (bodiesToSend.Count() == 0)
+                if (bodiesToSend.IsEmpty())
                     return;
 
                 // Send the paper-doll information

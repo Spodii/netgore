@@ -96,7 +96,7 @@ namespace NetGore.Editor.WinForms
 
             // Get all the items and, if there is none, clear the list
             var allItems = GetItems();
-            if (allItems == null || allItems.Count() == 0)
+            if (allItems == null || allItems.IsEmpty())
             {
                 if (Items.Count > 0)
                     Items.Clear();
@@ -109,7 +109,7 @@ namespace NetGore.Editor.WinForms
             var toRemove = existingItems.Except(allItems).ToArray();
 
             // If nothing needs to change, return
-            if (toAdd.Count() == 0 && toRemove.Count() == 0)
+            if (toAdd.IsEmpty() && toRemove.IsEmpty())
                 return;
 
             // Remove the extra items and add the new ones

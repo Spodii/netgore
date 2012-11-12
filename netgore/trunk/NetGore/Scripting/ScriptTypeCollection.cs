@@ -161,7 +161,7 @@ namespace NetGore.Scripting
 
             try
             {
-                Debug.Assert(files.Count() > 0);
+                Debug.Assert(!files.IsEmpty());
 
                 // Set the .NET framework version
                 var providerOptions = new Dictionary<string, string> { { "CompilerVersion", "v4.0" } };

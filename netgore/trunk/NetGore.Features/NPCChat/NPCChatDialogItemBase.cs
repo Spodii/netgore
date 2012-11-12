@@ -90,8 +90,7 @@ namespace NetGore.Features.NPCChat
         void AssertNonBranchHasNoConditionals()
         {
             if (!IsBranch)
-                Debug.Assert(Conditionals == null || Conditionals.Count() == 0,
-                    "Conditionals should never be set for a non-branch.");
+                Debug.Assert(Conditionals == null || Conditionals.IsEmpty(), "Conditionals should never be set for a non-branch.");
         }
 
         [Conditional("DEBUG")]
@@ -266,7 +265,7 @@ namespace NetGore.Features.NPCChat
                 writer.WriteStartNode("Conditionals");
                 {
                     var c = Conditionals;
-                    var hasConditionals = (c != null) && (c.Count() > 0);
+                    var hasConditionals = (c != null) && (!c.IsEmpty());
                     writer.Write("HasConditionals", hasConditionals);
                     if (hasConditionals)
                         c.Write(writer);

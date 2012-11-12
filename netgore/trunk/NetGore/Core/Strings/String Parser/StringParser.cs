@@ -101,7 +101,7 @@ namespace NetGore
             var opMethods = specialMethods.Where(CastOperatorMethodInfoFilter);
             var validOps = opMethods.Where(x => x.ReturnType == handledType);
 
-            if (validOps.Count() == 0)
+            if (validOps.IsEmpty())
                 return null;
 
             return validOps.First();

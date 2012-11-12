@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using NetGore;
 using log4net;
 
 namespace DemoGame.Server
@@ -109,7 +110,7 @@ namespace DemoGame.Server
             var users = map.Users;
             if (_isUser)
                 users = users.Where(x => x != _character);
-            if (users.Count() == 0)
+            if (users.IsEmpty())
                 return;
 
             // Send the updates

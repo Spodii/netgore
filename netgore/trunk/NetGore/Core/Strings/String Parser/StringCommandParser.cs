@@ -294,7 +294,7 @@ namespace NetGore
             if (!_commands.TryGetValue(commandName, out cmdDatas))
                 return "Unknown command specified.";
 
-            if (cmdDatas.Count() == 0)
+            if (cmdDatas.IsEmpty())
             {
                 Debug.Fail("Shouldn't ever have 0 methods in the list.");
                 return "Unknown command specified.";

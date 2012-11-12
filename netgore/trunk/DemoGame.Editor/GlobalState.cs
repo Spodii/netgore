@@ -269,7 +269,22 @@ namespace DemoGame.Editor
             AutomaticGrhDataUpdater.Update(ContentManager, ContentPaths.Dev.Grhs, out added, out deleted, out grhDataFileTags);
             if (deleted.Length > 0 || added.Length > 0)
             {
-                MessageBox.Show(string.Format("GrhDatas updated: {0} added, {1} deleted", added.Length, deleted.Length));
+                string msg = string.Format("GrhDatas updated: {0} added, {1} deleted", added.Length, deleted.Length);
+
+                if (deleted.Length > 0)
+                {
+                    var removedFromMaps = MapHelper.RemoveInvalidGrhDatasFromMaps();
+                    if (removedFromMaps.Any(x => x.Value > 0))
+                    {
+                        msg += Environment.NewLine + Environment.NewLine;
+                        msg += "The following maps were altered to remove the deleted GrhIndexes:";
+                        foreach (var mapInfo in removedFromMaps.Where(x => x.Value > 0))
+                        {
+                            msg += Environment.NewLine + string.Format("{0}: {1} MapGrhs", mapInfo.Key, mapInfo.Value);
+                        }
+                    }
+                }
+                MessageBox.Show(msg);
             }
 
             _fileTags.Clear();
@@ -277,6 +292,11 @@ namespace DemoGame.Editor
                 _fileTags.Add(kvp.Key.GrhIndex, kvp.Value);
 
             // Update the bound walls
+            RebuildMapGrhWalls(grhDataFileTags);
+        }
+
+        void RebuildMapGrhWalls(IEnumerable<KeyValuePair<GrhData, GrhData.FileTags>> grhDataFileTags)
+        {
             MapGrhWalls.Clear();
 
             foreach (var kvp in grhDataFileTags)

@@ -242,7 +242,6 @@ namespace NetGore.Graphics
             if (grhData == null && grhIndex != 0)
             {
                 const string errmsg = "Failed to set Grh - GrhIndex `{0}` does not exist.";
-                Debug.Fail(string.Format(errmsg, grhIndex));
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, grhIndex);
                 return;

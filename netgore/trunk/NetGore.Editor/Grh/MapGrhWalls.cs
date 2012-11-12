@@ -72,6 +72,9 @@ namespace NetGore.Editor.Grhs
             {
                 var mg = mgTmp;
 
+                if (mg.Grh == null || mg.Grh.GrhData == null)
+                    continue;
+
                 // Grab the List for the given MapGrh
                 var mgWalls = this[mg.Grh.GrhData];
                 if (mgWalls == null)
@@ -85,6 +88,7 @@ namespace NetGore.Editor.Grhs
                     var newWallEntity = wall.DeepCopy();
                     newWallEntity.Size = wall.Size != Vector2.Zero ? wall.Size * mg.Scale : mg.Size;
                     newWallEntity.Position = mg.Position + wall.Position;
+                    newWallEntity.BoundGrhIndex = mg.Grh.GrhData.GrhIndex;
                     ret.Add(newWallEntity);
                 }
             }

@@ -122,7 +122,7 @@ namespace NetGore
             if (attributeType == null)
                 throw new ArgumentNullException("attributeType");
 
-            Func<Type, bool> func = (x => x.GetCustomAttributes(attributeType, true).Count() > 0);
+            Func<Type, bool> func = (x => !x.GetCustomAttributes(attributeType, true).IsEmpty());
             return FindTypes(func, constructorParams, includeGAC);
         }
 

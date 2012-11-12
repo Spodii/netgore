@@ -147,6 +147,29 @@ namespace NetGore.Graphics
         public SpriteEffects SpriteEffects { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="MapGrhRenderLayer"/> that this object is rendered on.
+        /// </summary>
+        [Category(_mapGrhCategoryName)]
+        [Browsable(true)]
+        [DisplayName("Layer")]
+        [Description("The layer this MapGrh is rendered on.")]
+        [DefaultValue(MapRenderLayer.SpriteBackground)]
+        public MapGrhRenderLayer MapGrhRenderLayer
+        {
+            get
+            {
+                switch (MapRenderLayer)
+                {
+                    case MapRenderLayer.SpriteBackground: return MapGrhRenderLayer.Background;
+                    case MapRenderLayer.Dynamic: return MapGrhRenderLayer.Dynamic;
+                    case MapRenderLayer.SpriteForeground: return MapGrhRenderLayer.Foreground;
+                    default: return MapGrhRenderLayer.Invalid;
+                }
+            }
+            set { MapRenderLayer = (MapRenderLayer)value; }
+        }
+
+        /// <summary>
         /// Handles the actual drawing of the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
@@ -293,29 +316,6 @@ namespace NetGore.Graphics
                 if (RenderLayerChanged != null)
                     RenderLayerChanged.Raise(this, new ValueChangedEventArgs<MapRenderLayer>(oldValue, _layer));
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="MapGrhRenderLayer"/> that this object is rendered on.
-        /// </summary>
-        [Category(_mapGrhCategoryName)]
-        [Browsable(true)]
-        [DisplayName("Layer")]
-        [Description("The layer this MapGrh is rendered on.")]
-        [DefaultValue(MapRenderLayer.SpriteBackground)]
-        public MapGrhRenderLayer MapGrhRenderLayer
-        {
-            get
-            {
-                switch (MapRenderLayer)
-                {
-                    case MapRenderLayer.SpriteBackground: return MapGrhRenderLayer.Background;
-                    case MapRenderLayer.Dynamic: return MapGrhRenderLayer.Dynamic;
-                    case MapRenderLayer.SpriteForeground: return MapGrhRenderLayer.Foreground;
-                    default: return MapGrhRenderLayer.Invalid;
-                }
-            }
-            set { MapRenderLayer = (MapRenderLayer)value; }
         }
 
         /// <summary>

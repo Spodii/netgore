@@ -83,7 +83,7 @@ namespace NetGore.Graphics.Extensions
 
                     var res = _mapSpatialCollection.GetMany(finalPoint).OfType<T>();
 
-                    if (res.Count() > 0)
+                    if (!res.IsEmpty())
                     {
                         return _mapSpatialCollection.Get(finalPoint);
                     }

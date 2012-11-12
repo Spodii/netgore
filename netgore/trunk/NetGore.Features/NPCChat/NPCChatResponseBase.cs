@@ -178,7 +178,7 @@ namespace NetGore.Features.NPCChat
             writer.WriteStartNode("Conditionals");
             {
                 var c = Conditionals;
-                var hasConditionals = (c != null) && (c.Count() > 0);
+                var hasConditionals = (c != null) && (!c.IsEmpty());
                 writer.Write("HasConditionals", hasConditionals);
                 if (hasConditionals)
                     c.Write(writer);

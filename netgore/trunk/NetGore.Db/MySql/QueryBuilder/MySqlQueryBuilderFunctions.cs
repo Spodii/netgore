@@ -178,7 +178,7 @@ namespace NetGore.Db.MySql.QueryBuilder
         /// <exception cref="ArgumentNullException"><paramref name="exprs"/> is null or empty.</exception>
         public string Coalesce(IEnumerable<string> exprs)
         {
-            if (exprs == null || exprs.Count() == 0)
+            if (exprs == null || exprs.IsEmpty())
                 throw new ArgumentNullException("exprs");
 
             var sb = new StringBuilder();

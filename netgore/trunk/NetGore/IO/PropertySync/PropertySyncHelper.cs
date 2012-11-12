@@ -245,7 +245,7 @@ namespace NetGore.IO.PropertySync
                 {
                     // Get the SyncValueAttribute for the property, skipping if none found
                     var attribs = TypeHelper.GetAllCustomAttributes<SyncValueAttribute>(property, flags).ToArray();
-                    if (attribs.Count() == 0)
+                    if (attribs.IsEmpty())
                         continue;
 
                     if (attribs.Length > 1)
