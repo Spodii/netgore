@@ -60,7 +60,7 @@ namespace NetGore.AI
         {
             var aiAttributes = e.LoadedType.GetCustomAttributes(typeof(AIAttribute), false).Cast<AIAttribute>();
 
-            if (aiAttributes.Count() == 0)
+            if (aiAttributes.IsEmpty())
                 throw new ArgumentException(
                     string.Format("Expected loaded AI Type {0} to have one or more AIAttributes.", e.LoadedType), "e");
 

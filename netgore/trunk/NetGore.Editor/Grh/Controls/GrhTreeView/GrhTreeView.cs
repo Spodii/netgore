@@ -153,50 +153,6 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        /// Deletes a node from the tree, along with any node under it.
-        /// </summary>
-        /// <param name="root">Root node to delete.</param>
-        static void DeleteNode(GrhTreeViewNode root)
-        {
-            if (root != null && root.GrhData != null)
-                GrhInfo.Delete(root.GrhData);
-        }
-
-        /// <summary>
-        /// Deletes a node from the tree, along with any node under it.
-        /// </summary>
-        /// <param name="root">Root node to delete.</param>
-        static void DeleteNode(GrhTreeViewFolderNode root)
-        {
-            if (root == null)
-                return;
-
-            var toDelete = root.GetChildGrhDataNodes(true).ToImmutable();
-
-            Debug.Assert(!toDelete.HasDuplicates());
-
-            foreach (var node in toDelete)
-            {
-                DeleteNode(node);
-            }
-        }
-
-        /// <summary>
-        /// Deletes a node from the tree, along with any node under it.
-        /// </summary>
-        /// <param name="node">Root node to delete.</param>
-        static void DeleteNode(TreeNode node)
-        {
-            if (node == null)
-                return;
-
-            if (node is GrhTreeViewNode)
-                DeleteNode((GrhTreeViewNode)node);
-            else if (node is GrhTreeViewFolderNode)
-                DeleteNode((GrhTreeViewFolderNode)node);
-        }
-
-        /// <summary>
         /// Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.TreeView"/> and optionally
         /// releases the managed resources.
         /// </summary>
@@ -206,18 +162,24 @@ namespace NetGore.Editor.Grhs
         {
             if (disposing)
             {
-                if (_animTimer != null)
-                {
-                    _animTimer.Stop();
-                    _animTimer.Dispose();
-                }
-
-                if (_contextMenu != null)
-                    _contextMenu.Dispose();
-
-                Nodes.Clear();
-
                 GrhInfo.Removed -= GrhInfo_Removed;
+
+                try
+                {
+                    if (_animTimer != null)
+                    {
+                        _animTimer.Stop();
+                        _animTimer.Dispose();
+                    }
+
+                    if (_contextMenu != null)
+                        _contextMenu.Dispose();
+
+                    Nodes.Clear();
+                }
+                catch
+                {
+                }
             }
 
             base.Dispose(disposing);
@@ -784,26 +746,6 @@ namespace NetGore.Editor.Grhs
             {
                 SelectedNode = (TreeNode)e.Item;
                 DoDragDrop(e.Item, DragDropEffects.Move);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GrhData")]
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (_compactMode)
-                return;
-
-            base.OnKeyDown(e);
-
-            if (e.KeyCode == Keys.Delete)
-            {
-                const string txt = "Are you sure you wish to delete this GrhData?";
-                if (MessageBox.Show(txt, "Delete GrhData?", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    DeleteNode(SelectedNode);
             }
         }
 

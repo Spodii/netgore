@@ -22,7 +22,7 @@ namespace NetGore.Features.Quests
         /// <param name="questRequirements">The quest requirements.</param>
         public QuestRequirementCollection(IEnumerable<IQuestRequirement<TCharacter>> questRequirements)
         {
-            if (questRequirements == null || questRequirements.Count() == 0)
+            if (questRequirements == null || questRequirements.IsEmpty())
                 _questRequirements = _emptyQuestRequirements;
             else
                 _questRequirements = questRequirements.ToCompact();

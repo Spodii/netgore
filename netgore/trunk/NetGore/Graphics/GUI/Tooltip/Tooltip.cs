@@ -70,7 +70,7 @@ namespace NetGore.Graphics.GUI
                 _startHoverTime = (TickCount)(currentTime - Delay + RetryGetTooltipDelay);
             else
             {
-                if (tooltipTexts.Count() > 0)
+                if (!tooltipTexts.IsEmpty())
                 {
                     var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
                     _drawer.SetStyledTexts(texts);

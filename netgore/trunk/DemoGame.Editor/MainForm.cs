@@ -169,7 +169,7 @@ namespace DemoGame.Editor
             // Load the initial map
             // TODO: !! Make as setting, auto-load last loaded map
             var editorFrm = new EditMapForm();
-            editorFrm.MapScreenControl.ChangeMap(new NetGore.World.MapID(5));
+            editorFrm.MapScreenControl.ChangeMap(new NetGore.World.MapID(1));
             editorFrm.Show(dockPanel);
 
             // Global not currently used...

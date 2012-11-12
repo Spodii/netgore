@@ -103,11 +103,20 @@ namespace NetGore.Editor.Grhs
                     }
 
                     // Add new
+                    string texturePath = "/" + relFilePath.Substring(0, relFilePath.Length - Path.GetExtension(absFilePath).Length);
                     if (grhData == null)
                     {
-                        string texturePath = "/" + relFilePath.Substring(0, relFilePath.Length - Path.GetExtension(absFilePath).Length);
                         grhData = GrhInfo.CreateGrhData(cm, cat, texturePath, grhIndex);
                         addedGrhDatas.Add(grhData);
+                    }
+                    else
+                    {
+                        // Make sure the texture is correct
+                        string currTextureName = "/" + ((StationaryGrhData)grhData).TextureName.ToString().TrimStart('/', '\\');
+                        if (currTextureName != texturePath)
+                        {
+                            ((StationaryGrhData)grhData).ChangeTexture(texturePath);
+                        }
                     }
 
                     // Ensure set to auto-size

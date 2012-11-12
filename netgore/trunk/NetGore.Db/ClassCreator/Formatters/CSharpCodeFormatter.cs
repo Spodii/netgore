@@ -103,8 +103,7 @@ namespace NetGore.Db.ClassCreator
         /// <param name="isStatic">Whether or not it is a static class.</param>
         /// <param name="interfaces">The interfaces.</param>
         /// <returns>The code.</returns>
-        public override string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic,
-                                        IEnumerable<string> interfaces)
+        public override string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic, IEnumerable<string> interfaces)
         {
             var sb = new StringBuilder();
             sb.Append(GetVisibilityLevel(visibility));
@@ -113,7 +112,7 @@ namespace NetGore.Db.ClassCreator
             sb.Append(" class ");
             sb.Append(className);
 
-            if (interfaces != null && interfaces.Count() > 0)
+            if (interfaces != null && !interfaces.IsEmpty())
             {
                 sb.Append(" : ");
                 foreach (var i in interfaces)
@@ -255,7 +254,7 @@ namespace NetGore.Db.ClassCreator
                 sb.Append(ParameterSpacer);
             }
 
-            if (strings.Count() > 0)
+            if (!strings.IsEmpty())
                 sb.Length -= ParameterSpacer.Length;
 
             sb.Append(" ");

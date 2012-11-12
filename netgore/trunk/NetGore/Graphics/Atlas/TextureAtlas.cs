@@ -51,14 +51,6 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentException"><paramref name="atlasItems"/> is null or empty.</exception>
         public TextureAtlas(IEnumerable<ITextureAtlasable> atlasItems)
         {
-            if (atlasItems == null || atlasItems.IsEmpty())
-            {
-                const string errmsg = "atlasItems is null or empty.";
-                if (log.IsFatalEnabled)
-                    log.Fatal(errmsg);
-                throw new ArgumentException(errmsg, "atlasItems");
-            }
-
             UpdateMaxTextureSize();
 
             // Build the layout for all the items that will be in the atlas
@@ -110,7 +102,7 @@ namespace NetGore.Graphics
             var atlasInfos = new List<AtlasTextureInfo>();
 
             // Ensure we even have anything to work with
-            if (atlasItems.Count() == 0)
+            if (atlasItems.IsEmpty())
                 return atlasInfos;
 
             // Build the working list and sort it

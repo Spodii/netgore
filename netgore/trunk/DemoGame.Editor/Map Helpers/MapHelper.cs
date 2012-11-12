@@ -23,6 +23,69 @@ namespace DemoGame.Editor
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// Goes through each map and removes invalid GrhData references.
+        /// </summary>
+        public static List<KeyValuePair<MapID, int>> RemoveInvalidGrhDatasFromMaps()
+        {
+            var ret = new List<KeyValuePair<MapID, int>>();
+
+            var grhIndexes = new HashSet<int>(GrhInfo.GrhDatas.Select(x => (int)x.GrhIndex));
+
+            foreach (var mapId in FindAllMaps().Select(x => x.ID))
+            {
+                // Load the map
+                EditorMap map = new EditorMap(mapId, new Camera2D(new Vector2(800, 600)), GetTimeDummy.Instance);
+                map.Load(ContentPaths.Dev, true, EditorDynamicEntityFactory.Instance);
+                RemoveBoundWalls(map);
+
+                // Remove invalid
+                var removed = RemoveInvalidGrhDatasFromMap(map, grhIndexes);
+
+                if (removed > 0)
+                {
+                    // Save
+                    SaveMap(map, false);
+                    ret.Add(new KeyValuePair<MapID, int>(mapId, removed));
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Removes the invalid GrhData references in a map.
+        /// </summary>
+        /// <param name="map">The map to remove the invalid GrhData references from.</param>
+        /// <returns>Number of MapGrhs removed.</returns>
+        public static int RemoveInvalidGrhDatasFromMap(EditorMap map)
+        {
+            return RemoveInvalidGrhDatasFromMap(map, new HashSet<int>(GrhInfo.GrhDatas.Select(x => (int)x.GrhIndex)));
+        }
+
+        /// <summary>
+        /// Removes the invalid GrhData references in a map.
+        /// </summary>
+        /// <param name="map">The map to remove the invalid GrhData references from.</param>
+        /// <param name="grhIndexes">HashSet of the GrhIndexes that exist.</param>
+        /// <returns>Number of MapGrhs removed.</returns>
+        static int RemoveInvalidGrhDatasFromMap(EditorMap map, HashSet<int> grhIndexes)
+        {
+            int removed = 0;
+
+            foreach (MapGrh mg in map.Spatial.GetMany<MapGrh>().Distinct().ToArray())
+            {
+                if (mg.Grh == null || mg.Grh.GrhData == null || !grhIndexes.Contains((int)mg.Grh.GrhData.GrhIndex))
+                {
+                    // Remove
+                    map.Spatial.Remove(mg);
+                    ++removed;
+                }
+            }
+
+            return removed;
+        }
+
+        /// <summary>
         /// Creates a new map.
         /// </summary>
         /// <param name="showConfirmation">If true, a confirmation will be shown to make sure the user wants to
@@ -44,8 +107,7 @@ namespace DemoGame.Editor
                 var id = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
                 // Create the map and save it
-                using (
-                    var map = new EditorMap(id, new Camera2D(new Vector2(800, 600)), GetTimeDummy.Instance) { Name = "New map" })
+                using (var map = new EditorMap(id, new Camera2D(new Vector2(800, 600)), GetTimeDummy.Instance) { Name = "New map" })
                 {
                     map.SetDimensions(new Vector2(960, 960));
                     SaveMap(map, false);
@@ -165,6 +227,16 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Removes the MapGrh bound walls from a map.
+        /// </summary>
+        public static void RemoveBoundWalls(EditorMap map)
+        {
+            var toRemove = map.Spatial.GetMany<WallEntityBase>(x => x.BoundGrhIndex > 0).Distinct().ToArray();
+            foreach (var wall in toRemove)
+                map.RemoveEntity(wall);
+        }
+
+        /// <summary>
         /// Checks if the given map differs from the copy saved on disk.
         /// </summary>
         public static bool DiffersFromSaved(EditorMap map)
@@ -265,6 +337,7 @@ namespace DemoGame.Editor
                     // Pull the MapGrh-bound walls back out
                     foreach (var wall in extraWalls)
                     {
+                        Debug.Assert(wall.BoundGrhIndex > 0);
                         map.RemoveEntity(wall);
                     }
                 }
@@ -318,11 +391,8 @@ namespace DemoGame.Editor
                     }
                     else
                     {
-                        const string confirmMsgOverWrite =
-                            "Are you sure you wish to save map `{0}` and overwrite map (with ID `{1}`)?";
-                        if (
-                            MessageBox.Show(string.Format(confirmMsgOverWrite, map.ID, newSetID), "Save map as?",
-                                MessageBoxButtons.YesNo) == DialogResult.No)
+                        const string confirmMsgOverWrite = "Are you sure you wish to save map `{0}` and overwrite map (with ID `{1}`)?";
+                        if (MessageBox.Show(string.Format(confirmMsgOverWrite, map.ID, newSetID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
                             return;
 
                         newID = ((MapID)newSetID);

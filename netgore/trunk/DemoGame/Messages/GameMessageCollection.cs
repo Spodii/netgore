@@ -83,7 +83,7 @@ namespace DemoGame
 
             // Ensure we have all the messages loaded
             var missingKeys = EnumHelper<GameMessage>.Values.Except(this.Select(y => y.Key));
-            if (missingKeys.Count() > 0)
+            if (!missingKeys.IsEmpty())
             {
                 // One or more keys are missing
                 if (StringComparer.OrdinalIgnoreCase.Equals(_defaultLanguageName, language))

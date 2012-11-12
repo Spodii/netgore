@@ -351,13 +351,7 @@ namespace DemoGame.Editor
             // Remove all of the walls previously created from the MapGrhs
             if (newValue != null)
             {
-                var newMapGrhs = newValue.Spatial.GetMany<MapGrh>().Distinct();
-                var grhWalls = GlobalState.Instance.MapGrhWalls.CreateWallList(newMapGrhs);
-                var dupeWalls = newValue.FindDuplicateWalls(grhWalls);
-                foreach (var dupeWall in dupeWalls)
-                {
-                    newValue.RemoveEntity(dupeWall);
-                }
+                MapHelper.RemoveBoundWalls(newValue);
             }
 
             // Reset some of the state values

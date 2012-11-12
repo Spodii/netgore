@@ -87,7 +87,7 @@ namespace NetGore.Graphics.GUI
         /// is the lines and the inner collection is the <see cref="StyledText"/>s on each line.</param>
         public void SetStyledTexts(IEnumerable<IEnumerable<StyledText>> styledTexts)
         {
-            if (styledTexts == null || styledTexts.Count() == 0)
+            if (styledTexts == null || styledTexts.IsEmpty())
                 _texts = null;
             else
             {
@@ -112,7 +112,7 @@ namespace NetGore.Graphics.GUI
         /// is the lines and the inner collection is the <see cref="StyledText"/>s on each line.</param>
         public void SetStyledTexts(IEnumerable<List<StyledText>> styledTexts)
         {
-            if (styledTexts == null || styledTexts.Count() == 0)
+            if (styledTexts == null || styledTexts.IsEmpty())
                 _texts = null;
             else
             {
@@ -146,7 +146,7 @@ namespace NetGore.Graphics.GUI
             {
                 pos.X = 0;
 
-                if (line.Count() > 0)
+                if (!line.IsEmpty())
                 {
                     var last = line.Last();
                     foreach (var item in line)

@@ -15,12 +15,14 @@ namespace NetGore
     /// <exception cref="TypeInitializationException"><typeparamref name="T"/> is not an Enum.</exception>
     public static class EnumHelper<T> where T : struct, IComparable, IConvertible, IFormattable
     {
+        // ReSharper disable StaticFieldInGenericType
         static readonly byte _bitsRequired;
         static readonly Func<int, T> _fromInt;
         static readonly int _maxValue;
         static readonly int _minValue;
         static readonly Func<T, int> _toInt;
         static readonly IEnumerable<T> _values;
+        // ReSharper restore StaticFieldInGenericType
 
         /// <summary>
         /// Initializes the <see cref="EnumHelper{T}"/> class.

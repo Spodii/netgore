@@ -419,7 +419,7 @@ namespace NetGore.Db.ClassCreator
 
                         var currColl = coll;
                         var columnsInCollection = cd.Columns.Where(x => cd.GetCollectionForColumn(x) == currColl);
-                        if (columnsInCollection.Count() == 0)
+                        if (columnsInCollection.IsEmpty())
                             continue;
 
                         // Getter
@@ -1373,7 +1373,7 @@ namespace NetGore.Db.ClassCreator
         {
             LoadDbContent();
 
-            var isFilteringTables = (TablesToGenerate != null && TablesToGenerate.Count() > 0);
+            var isFilteringTables = (TablesToGenerate != null && !TablesToGenerate.IsEmpty());
 
             foreach (var table in _dbTables)
             {

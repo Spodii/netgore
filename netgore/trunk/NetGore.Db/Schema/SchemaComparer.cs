@@ -62,7 +62,7 @@ namespace NetGore.Db.Schema
         /// <returns>The <see cref="ColumnSchema"/>s concatenated a comma-delimited string.</returns>
         static string Concat(IEnumerable<ColumnSchema> columns)
         {
-            if (columns.Count() == 0)
+            if (columns.IsEmpty())
                 return string.Empty;
 
             if (columns.Count() == 1)

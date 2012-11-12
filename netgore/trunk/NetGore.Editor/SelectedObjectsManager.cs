@@ -359,7 +359,7 @@ namespace NetGore.Editor
         public void SetManySelected(IEnumerable<T> selectedObjs)
         {
             // Check if to clear instead
-            if (selectedObjs == null || selectedObjs.Count() == 0)
+            if (selectedObjs == null || selectedObjs.IsEmpty())
             {
                 Clear();
                 return;

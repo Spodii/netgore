@@ -191,7 +191,7 @@ namespace NetGore.Db.ClassCreator
         protected virtual string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value,
                                                         string currentParameter = null)
         {
-            if (paramNames == null || paramNames.Count() == 0)
+            if (paramNames == null || paramNames.IsEmpty())
                 return value;
 
             foreach (var parameter in paramNames)

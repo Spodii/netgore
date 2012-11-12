@@ -172,11 +172,11 @@ namespace NetGore
             if (mustBeRequired != RequireAttributes)
                 return true;
 
-            if (Attributes == null || Attributes.Count() <= 0)
+            if (Attributes == null || Attributes.IsEmpty())
                 return true;
 
             var a = type.GetCustomAttributes(true).Select(x => x.GetType());
-            var isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
+            var isValid = (MatchAllAttributes ? Attributes.All(a.Contains) : Attributes.Any(a.Contains));
             if (!isValid)
             {
                 if (RequireAttributes)
@@ -243,11 +243,11 @@ namespace NetGore
             if (mustBeRequired != RequireInterfaces)
                 return true;
 
-            if (Interfaces == null || Interfaces.Count() <= 0)
+            if (Interfaces == null || Interfaces.IsEmpty())
                 return true;
 
             var i = type.GetInterfaces();
-            var isValid = (MatchAllInterfaces ? Interfaces.All(x => i.Contains(x)) : Interfaces.Any(x => i.Contains(x)));
+            var isValid = (MatchAllInterfaces ? Interfaces.All(i.Contains) : Interfaces.Any(i.Contains));
             if (!isValid)
             {
                 if (RequireInterfaces)

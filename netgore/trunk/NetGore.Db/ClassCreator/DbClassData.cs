@@ -50,20 +50,15 @@ namespace NetGore.Db.ClassCreator
             _extensionClassName = ClassName + "DbExtensions";
 
             // Custom types filter
-            _customTypes =
-                customTypes.Where(
-                    x =>
-                    x.Columns.Count() > 0 &&
-                    (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
-                    ToCompact();
+            _customTypes = customTypes.Where(x =>
+                !x.Columns.IsEmpty() && (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
+                ToCompact();
 
             // Column collections filter
-            _columnCollections =
-                columnCollections.Where(
-                    x =>
-                    x.Columns.Count() > 0 &&
-                    (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
-                    OrderBy(x => x.CollectionPropertyName).ToCompact();
+            _columnCollections = columnCollections.Where(x =>
+                !x.Columns.IsEmpty() &&
+                (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
+                OrderBy(x => x.CollectionPropertyName).ToCompact();
 
             // Populate the external types dictionary
             foreach (var column in columns)
@@ -82,10 +77,8 @@ namespace NetGore.Db.ClassCreator
             // Populate the naming dictionaries
             foreach (var column in columns)
             {
-                _privateNames.Add(column,
-                    formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
-                _publicNames.Add(column,
-                    formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
+                _privateNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
+                _publicNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
                 _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
             }
         }

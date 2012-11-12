@@ -514,7 +514,7 @@ namespace DemoGame.Editor
             var redirectedToItems =
                 dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag).Where(x => CurrentDialog.GetSourceResponses(x).Count() > 1);
 
-            if (redirectedToItems.Count() > 0)
+            if (!redirectedToItems.IsEmpty())
             {
                 var sb = new StringBuilder();
                 sb.AppendLine("Cannot delete this node because the following child node(s) are being redirect to:");

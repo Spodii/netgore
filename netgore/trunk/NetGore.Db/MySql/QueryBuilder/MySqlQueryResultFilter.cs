@@ -46,7 +46,7 @@ namespace NetGore.Db.MySql.QueryBuilder
             }
 
             var orderBys = OrderByValues;
-            if (orderBys != null && orderBys.Count() > 0)
+            if (orderBys != null && !orderBys.IsEmpty())
             {
                 sb.Append("ORDER BY ");
 

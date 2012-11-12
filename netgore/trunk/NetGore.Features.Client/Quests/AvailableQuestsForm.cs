@@ -234,7 +234,7 @@ namespace NetGore.Features.Quests
             base.UpdateControl(currentTime);
 
             // If there are no quests listed, close the form
-            if (AvailableQuests.Count() == 0)
+            if (AvailableQuests.IsEmpty())
                 IsVisible = false;
         }
 

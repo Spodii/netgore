@@ -157,7 +157,7 @@ namespace NetGore.Graphics
         /// <returns>The largest size of all the <see cref="GrhData"/>s.</returns>
         protected static Vector2 GetMaxSize(IEnumerable<GrhData> grhDatas)
         {
-            if (grhDatas == null || grhDatas.Count() == 0)
+            if (grhDatas == null || grhDatas.IsEmpty())
                 return Vector2.Zero;
 
             var ret = Vector2.Zero;

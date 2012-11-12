@@ -16,6 +16,9 @@ namespace NetGore.World
     public abstract class WallEntityBase : Entity
     {
         const string _isPlatformValueKey = "IsPlatform";
+        const string _positionValueKey = "Position";
+        const string _sizeValueKey = "Size";
+        const string _boundGrhIndexValueKey = "BoundGrhindex";
 
         /// <summary>
         /// Platforms will only prevent someone from falling down through a platform if they started above the platform.
@@ -26,9 +29,6 @@ namespace NetGore.World
         /// of a pixel below the top of the platform, which we don't want. A recommended value is around 2-4.
         /// </summary>
         const float _platformYPositionLeniency = 3;
-
-        const string _positionValueKey = "Position";
-        const string _sizeValueKey = "Size";
 
         /// <summary>
         /// Local cache of the <see cref="EngineSettings.MaxWallStepUpHeight"/> value.
@@ -73,6 +73,15 @@ namespace NetGore.World
         [DefaultValue(false)]
         [SyncValue]
         public bool IsPlatform { get; set; }
+
+        /// <summary>
+        /// Gets or sets if this wall was created as a wall bound to a MapGrh. If so, contains the GrhIndex it was created from.
+        /// Only used by the editor.
+        /// </summary>
+        [Browsable(false)]
+        [Description("If this wall was created as a wall bound to a MapGrh. If so, contains the GrhIndex it was bound to.")]
+        [DefaultValue(false)]
+        public GrhIndex BoundGrhIndex { get; set; }
 
         /// <summary>
         /// Gets or sets the weight of the Entity (used in gravity calculations).
@@ -236,6 +245,7 @@ namespace NetGore.World
             var position = r.ReadVector2(_positionValueKey);
             var size = r.ReadVector2(_sizeValueKey);
             IsPlatform = r.ReadBool(_isPlatformValueKey);
+            BoundGrhIndex = r.ReadGrhIndex(_boundGrhIndexValueKey);
 
             SetPositionRaw(position);
             SetSizeRaw(size);
@@ -246,6 +256,7 @@ namespace NetGore.World
             w.Write(_positionValueKey, Position);
             w.Write(_sizeValueKey, Size);
             w.Write(_isPlatformValueKey, IsPlatform);
+            w.Write(_boundGrhIndexValueKey, BoundGrhIndex);
         }
     }
 }
