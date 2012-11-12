@@ -82,8 +82,8 @@ namespace DemoGame.Client
             {
                 const string errmsg = "AD_CastingSkill requires a Character as the source, but the source ({0}) is type `{1}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, sourceAsCharacter, source.GetType());
-                Debug.Fail(string.Format(errmsg, sourceAsCharacter, source.GetType()));
+                    log.ErrorFormat(errmsg, source, source.GetType());
+                Debug.Fail(string.Format(errmsg, source, source.GetType()));
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace DemoGame.Client
                     {
                         // Make the effect loop indefinitely
                         var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                        var effect = new MapGrhEffectTimed(grh, source.Center, true, maxEffectLife);
+                        var effect = new MapGrhEffectTimed(grh, source.Center, maxEffectLife) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                         drawableMap.AddTemporaryMapEffect(effect);
                         castingEffects.Add(effect);
                     }
@@ -114,7 +114,7 @@ namespace DemoGame.Client
                     // Effect that just takes place on the caster
                     pe.Position = source.Center;
                     pe.Life = maxEffectLife;
-                    var effect = new TemporaryMapParticleEffect(pe, true);
+                    var effect = new TemporaryMapParticleEffect(pe) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                     drawableMap.AddTemporaryMapEffect(effect);
                     castingEffects.Add(effect);
                 }
@@ -194,7 +194,7 @@ namespace DemoGame.Client
                     if (gd != null)
                     {
                         var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                        var effect = new MapGrhEffectLoopOnce(grh, source.Center, true);
+                        var effect = new MapGrhEffectLoopOnce(grh, source.Center) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                         drawableMap.AddTemporaryMapEffect(effect);
                     }
                 }
@@ -206,7 +206,7 @@ namespace DemoGame.Client
                     // Effect that just takes place on the target and dies very quickly
                     pe.Position = target.Center;
                     pe.Life = 100;
-                    var effect = new TemporaryMapParticleEffect(pe, true);
+                    var effect = new TemporaryMapParticleEffect(pe) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }
@@ -243,7 +243,7 @@ namespace DemoGame.Client
                     if (gd != null)
                     {
                         var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                        var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 750f);
+                        var effect = new MapGrhEffectSeekPosition(grh, source.Center, target.Center, 750f) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                         drawableMap.AddTemporaryMapEffect(effect);
                     }
                 }
@@ -255,7 +255,7 @@ namespace DemoGame.Client
                     // Effect that just takes place on the target and dies very quickly
                     pe.Position = target.Center;
                     pe.Life = 100;
-                    var effect = new TemporaryMapParticleEffect(pe, true);
+                    var effect = new TemporaryMapParticleEffect(pe) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }
@@ -289,7 +289,7 @@ namespace DemoGame.Client
                         if (gd != null)
                         {
                             var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                            var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 750f);
+                            var effect = new MapGrhEffectSeekPosition(grh, source.Center, target.Center, 750f) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                             drawableMap.AddTemporaryMapEffect(effect);
                         }
                     }
@@ -300,7 +300,7 @@ namespace DemoGame.Client
                         if (gd != null)
                         {
                             var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                            var effect = new MapGrhEffectLoopOnce(grh, source.Center, true);
+                            var effect = new MapGrhEffectLoopOnce(grh, source.Center) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                             drawableMap.AddTemporaryMapEffect(effect);
                         }
                     }
@@ -316,12 +316,12 @@ namespace DemoGame.Client
                     if (target != null && target != source)
                     {
                         // Effect that seeks out the position of the target
-                        effect = new TemporaryMapParticleEffectSeekPosition(pe, true, target.Center, 250f);
+                        effect = new TemporaryMapParticleEffectSeekPosition(pe, target.Center, 250f) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                     }
                     else
                     {
                         // Effect that takes place at the source
-                        effect = new TemporaryMapParticleEffect(pe, true);
+                        effect = new TemporaryMapParticleEffect(pe) { MapRenderLayer = MapRenderLayer.SpriteForeground };
                     }
 
                     // Add the effect to the map

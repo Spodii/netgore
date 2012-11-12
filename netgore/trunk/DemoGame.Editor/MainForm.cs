@@ -169,7 +169,7 @@ namespace DemoGame.Editor
             // Load the initial map
             // TODO: !! Make as setting, auto-load last loaded map
             var editorFrm = new EditMapForm();
-            editorFrm.MapScreenControl.ChangeMap(new NetGore.World.MapID(1));
+            editorFrm.MapScreenControl.ChangeMap(new NetGore.World.MapID(5));
             editorFrm.Show(dockPanel);
 
             // Global not currently used...
@@ -181,7 +181,7 @@ namespace DemoGame.Editor
             switch (text)
             {
                 case "Background": return MapRenderLayer.SpriteBackground;
-                case "Dynamic": return MapRenderLayer.Chararacter;
+                case "Dynamic": return MapRenderLayer.Dynamic;
                 case "Foreground": return MapRenderLayer.SpriteForeground;
                 default: throw new ArgumentException("Invalid text: " + text);
             }
@@ -192,7 +192,7 @@ namespace DemoGame.Editor
             switch (layer)
             {
                 case MapRenderLayer.SpriteBackground: return "Background";
-                case MapRenderLayer.Chararacter: return "Dynamic";
+                case MapRenderLayer.Dynamic: return "Dynamic";
                 case MapRenderLayer.SpriteForeground: return "Foreground";
                 default: throw new InvalidEnumArgumentException("layer", (int)layer, typeof(MapRenderLayer));
             }

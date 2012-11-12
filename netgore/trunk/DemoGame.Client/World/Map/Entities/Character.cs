@@ -13,7 +13,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Represents a single Character on the Client.
     /// </summary>
-    public class Character : CharacterEntity, IGetTime, IDrawable, IDrawableTarget  // NOTE: IDrawable is still declared for clarity.
+    public class Character : CharacterEntity, IGetTime, IDrawableTarget  // NOTE: IDrawable is still declared for clarity.
     {       
         static readonly IEnumerable<QuestID> _emptyQuestIDs = new QuestID[0];
 
@@ -21,8 +21,6 @@ namespace DemoGame.Client
 
         IEnumerable<QuestID> _providedQuests = _emptyQuestIDs;
         ICharacterSprite _characterSprite;
-        bool _hasChatDialog;
-        bool _hasShop;
         TickCount _lastDrawnTime;
         Color _color = Color.White;
         bool _isVisible = true;
@@ -91,21 +89,13 @@ namespace DemoGame.Client
         /// When overridden in the derived class, gets or protected sets if the CharacterEntity
         /// has a chat dialog. The setter for this method should never be called directly.
         /// </summary>
-        public override bool HasChatDialog
-        {
-            get { return _hasChatDialog; }
-            protected set { _hasChatDialog = value; }
-        }
+        public override bool HasChatDialog { get; protected set; }
 
         /// <summary>
         /// When overridden in the derived class, gets or protected sets if the CharacterEntity
         /// has a shop. The setter for this method should never be called directly.
         /// </summary>
-        public override bool HasShop
-        {
-            get { return _hasShop; }
-            protected set { _hasShop = value; }
-        }
+        public override bool HasShop { get; protected set; }
 
         /// <summary>
         /// Gets or sets the percent of HP the Character has remaining, where 0 is 0% and 100 is 100%.
@@ -475,8 +465,8 @@ namespace DemoGame.Client
         {
             get
             {
-                // Characters are always on the Character layer
-                return MapRenderLayer.Chararacter;
+                // Characters are always on the Dynamic layer
+                return MapRenderLayer.Dynamic;
             }
         }
 

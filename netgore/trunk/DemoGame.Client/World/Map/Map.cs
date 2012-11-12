@@ -779,8 +779,10 @@ namespace DemoGame.Client
                 BeginDrawMap.Raise(this, new DrawableMapDrawEventArgs(sb, cam));
 
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
-            foreach (var layer in _drawableSorter.GetSorted(drawableInView))
+            foreach (var tmpLayer in _drawableSorter.GetSorted(drawableInView))
             {
+                var layer = tmpLayer;
+
                 var layerEventArgs = new DrawableMapDrawLayerEventArgs(layer.Key, sb, cam);
 
                 // Notify the layer has started drawing
@@ -794,26 +796,10 @@ namespace DemoGame.Client
                 }
 
                 // Get the effects to draw, then draw them (if possible)
-                IEnumerable<ITemporaryMapEffect> tempMapEffects;
-                switch (layer.Key)
+                IEnumerable<ITemporaryMapEffect> tempMapEffects = _mapEffects.Where(x => x.MapRenderLayer == layer.Key);
+                foreach (var mapEffect in tempMapEffects)
                 {
-                    case MapRenderLayer.SpriteBackground:
-                        tempMapEffects = _mapEffects.Where(x => !x.IsForeground);
-                        break;
-                    case MapRenderLayer.SpriteForeground:
-                        tempMapEffects = _mapEffects.Where(x => x.IsForeground);
-                        break;
-                    default:
-                        tempMapEffects = null;
-                        break;
-                }
-
-                if (tempMapEffects != null)
-                {
-                    foreach (var mapEffect in tempMapEffects)
-                    {
-                        mapEffect.Draw(sb);
-                    }
+                    mapEffect.Draw(sb);
                 }
 
                 // Notify the layer has finished drawing

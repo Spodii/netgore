@@ -20,12 +20,10 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="grh">Grh to draw.</param>
         /// <param name="position">Position to draw on the map.</param>
-        /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
-        /// it will be drawn in the background layer.</param>
         /// <param name="target">The destination position.</param>
         /// <param name="speed">How fast this object moves towards the target in pixels per second.</param>
-        public MapGrhEffectSeekPosition(Grh grh, Vector2 position, bool isForeground, Vector2 target, float speed)
-            : base(grh, position, isForeground)
+        public MapGrhEffectSeekPosition(Grh grh, Vector2 position, Vector2 target, float speed)
+            : base(grh, position)
         {
             speed = speed / 1000f;
 

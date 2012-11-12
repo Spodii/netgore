@@ -20,13 +20,11 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="grh">Grh to draw.</param>
         /// <param name="position">Position to draw on the map.</param>
-        /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
-        /// it will be drawn in the background layer.</param>
         /// <param name="target">The <see cref="ISpatial"/> to seek out.</param>
         /// <param name="speed">How fast this object moves towards the target in pixels per second.</param>
         /// <exception cref="ArgumentNullException"><paramref name="target"/> is null.</exception>
-        public MapGrhEffectSeekSpatial(Grh grh, Vector2 position, bool isForeground, ISpatial target, float speed)
-            : base(grh, position, isForeground)
+        public MapGrhEffectSeekSpatial(Grh grh, Vector2 position, ISpatial target, float speed)
+            : base(grh, position)
         {
             if (target == null)
                 throw new ArgumentNullException("target");

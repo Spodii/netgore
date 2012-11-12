@@ -253,7 +253,7 @@ namespace DemoGame.Client
         [Browsable(false)]
         public int LayerDepth
         {
-            get { return 0; }
+            get { return -100; }
         }
 
         /// <summary>
@@ -263,8 +263,8 @@ namespace DemoGame.Client
         {
             get
             {
-                // Items are always on the Item layer
-                return MapRenderLayer.Item;
+                // Items are always on the Dynamic layer
+                return MapRenderLayer.Dynamic;
             }
         }
 

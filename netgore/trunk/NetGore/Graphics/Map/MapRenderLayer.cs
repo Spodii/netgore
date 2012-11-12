@@ -13,22 +13,18 @@ namespace NetGore.Graphics
         Background,
 
         /// <summary>
-        /// Back-most layer for Map sprites. These will appear behind the Character and Item.
+        /// Back-most layer for Map sprites. These will always appear behind the Dynamic layer.
         /// </summary>
         SpriteBackground,
 
         /// <summary>
-        /// Character layer.
+        /// Sprites on this layer draw in an order that depends on the Y axis and the height of the sprite. Formally known as the
+        /// Character and Item layers.
         /// </summary>
-        Chararacter,
+        Dynamic,
 
         /// <summary>
-        /// Item layer.
-        /// </summary>
-        Item,
-
-        /// <summary>
-        /// Front-most layer for Map sprites. These will appear in front of the Character and Item.
+        /// Front-most layer for Map sprites. These will always appear in front of the Dynamic layer.
         /// </summary>
         SpriteForeground
     }

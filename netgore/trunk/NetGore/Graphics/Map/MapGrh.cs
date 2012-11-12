@@ -21,29 +21,23 @@ namespace NetGore.Graphics
         readonly Grh _grh;
 
         Color _color = Color.White;
-        bool _isForeground;
         bool _isVisible = true;
         short _layerDepth;
-        Vector2 _origin = Vector2.Zero;
         Vector2 _position;
-        float _rotation = 0f;
         Vector2 _scale = Vector2.One;
+        MapRenderLayer _layer = MapRenderLayer.SpriteBackground;
 
         /// <summary>
         /// Cache of the <see cref="Grh"/>.Size * <see cref="Scale"/>.
         /// </summary>
         Vector2 _scaledGrhSizeCache;
 
-        SpriteEffects _spriteEffects;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrh"/> class.
         /// </summary>
         /// <param name="grh">Grh to draw.</param>
         /// <param name="position">Position to draw on the map.</param>
-        /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
-        /// it will be drawn in the background layer.</param>
-        public MapGrh(Grh grh, Vector2 position, bool isForeground)
+        public MapGrh(Grh grh, Vector2 position)
         {
             if (grh == null)
             {
@@ -53,7 +47,6 @@ namespace NetGore.Graphics
 
             _grh = grh;
             _position = position;
-            IsForeground = isForeground;
 
             // Set the initial size value
             var grhSize = Grh.Size;
@@ -93,31 +86,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets if the <see cref="MapGrh"/> is in the foreground layer, in front of characters and items.
-        /// </summary>
-        [Category(_mapGrhCategoryName)]
-        [Browsable(true)]
-        [DisplayName("IsForeground")]
-        [Description("If the MapGrh is in the foreground layer, in front of characters and items.")]
-        [DefaultValue(false)]
-        [SyncValue]
-        public bool IsForeground
-        {
-            get { return _isForeground; }
-            set
-            {
-                if (_isForeground == value)
-                    return;
-
-                var oldLayer = MapRenderLayer;
-                _isForeground = value;
-
-                if (RenderLayerChanged != null)
-                    RenderLayerChanged.Raise(this, ValueChangedEventArgs.Create(oldLayer, MapRenderLayer));
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the origin of the sprite in pixels, where (0,0) is the top-left corner of the sprite.
         /// </summary>
         [Category(_distortionCategoryName)]
@@ -126,11 +94,7 @@ namespace NetGore.Graphics
         [Description("The origin of the sprite, in pixels, where (0,0) is the top-left corner.")]
         [DefaultValue(typeof(Vector2), "0, 0")]
         [SyncValue]
-        public Vector2 Origin
-        {
-            get { return _origin; }
-            set { _origin = value; }
-        }
+        public Vector2 Origin { get; set; }
 
         /// <summary>
         /// Gets or sets the rotation of the sprite in radians.
@@ -141,11 +105,7 @@ namespace NetGore.Graphics
         [Description("The rotation of the sprite in radians.")]
         [DefaultValue(0f)]
         [SyncValue]
-        public float Rotation
-        {
-            get { return _rotation; }
-            set { _rotation = value; }
-        }
+        public float Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the percent to scale the <see cref="MapGrh"/>, where <see cref="Vector2.One"/> is equal to the
@@ -184,11 +144,7 @@ namespace NetGore.Graphics
         [Description("The effects to apply to the sprite when drawing.")]
         [DefaultValue(SpriteEffects.None)]
         [SyncValue]
-        public SpriteEffects SpriteEffects
-        {
-            get { return _spriteEffects; }
-            set { _spriteEffects = value; }
-        }
+        public SpriteEffects SpriteEffects { get; set; }
 
         /// <summary>
         /// Handles the actual drawing of the <see cref="MapGrh"/>.
@@ -312,19 +268,54 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
+        /// Gets or sets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
+        [Category(_mapGrhCategoryName)]
         [Browsable(false)]
+        [DisplayName("MapRenderLayer")]
+        [Description("The layer this object is rendered on.")]
+        [DefaultValue(MapRenderLayer.SpriteBackground)]
+        [SyncValue]
         public MapRenderLayer MapRenderLayer
         {
             get
             {
-                // MapGrhs can be either foreground or background
-                if (IsForeground)
-                    return MapRenderLayer.SpriteForeground;
-                else
-                    return MapRenderLayer.SpriteBackground;
+                return _layer;
             }
+            set
+            {
+                if (_layer == value)
+                    return;
+
+                var oldValue = _layer;
+                _layer = value;
+
+                if (RenderLayerChanged != null)
+                    RenderLayerChanged.Raise(this, new ValueChangedEventArgs<MapRenderLayer>(oldValue, _layer));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="MapGrhRenderLayer"/> that this object is rendered on.
+        /// </summary>
+        [Category(_mapGrhCategoryName)]
+        [Browsable(true)]
+        [DisplayName("Layer")]
+        [Description("The layer this MapGrh is rendered on.")]
+        [DefaultValue(MapRenderLayer.SpriteBackground)]
+        public MapGrhRenderLayer MapGrhRenderLayer
+        {
+            get
+            {
+                switch (MapRenderLayer)
+                {
+                    case MapRenderLayer.SpriteBackground: return MapGrhRenderLayer.Background;
+                    case MapRenderLayer.Dynamic: return MapGrhRenderLayer.Dynamic;
+                    case MapRenderLayer.SpriteForeground: return MapGrhRenderLayer.Foreground;
+                    default: return MapGrhRenderLayer.Invalid;
+                }
+            }
+            set { MapRenderLayer = (MapRenderLayer)value; }
         }
 
         /// <summary>

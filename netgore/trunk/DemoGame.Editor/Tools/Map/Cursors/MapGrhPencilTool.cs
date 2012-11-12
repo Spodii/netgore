@@ -177,7 +177,7 @@ namespace DemoGame.Editor.Tools
 
             // Get all at position
             var allGrhs = map.Spatial.GetMany<MapGrh>(worldPos, filter)
-                .Where(x => x.MapRenderLayer == MapRenderLayer.Chararacter || x.MapRenderLayer == MapRenderLayer.SpriteBackground || x.MapRenderLayer == MapRenderLayer.SpriteForeground)
+                .Where(x => x.MapRenderLayer == MapRenderLayer.Dynamic || x.MapRenderLayer == MapRenderLayer.SpriteBackground || x.MapRenderLayer == MapRenderLayer.SpriteForeground)
                 .ToImmutable();
 
             // Check for any at the current layer depth, prioritizing by the distance from the current layer depth
@@ -249,7 +249,7 @@ namespace DemoGame.Editor.Tools
 
             // Get all at position & filter
             return map.Spatial.GetMany<MapGrh>(worldPos, x =>
-                (x.MapRenderLayer == MapRenderLayer.Chararacter || x.MapRenderLayer == MapRenderLayer.SpriteBackground || x.MapRenderLayer == MapRenderLayer.SpriteForeground) &&
+                (x.MapRenderLayer == MapRenderLayer.Dynamic || x.MapRenderLayer == MapRenderLayer.SpriteBackground || x.MapRenderLayer == MapRenderLayer.SpriteForeground) &&
                 (!mustBeSnappedToGrid || GridAligner.Instance.IsAligned(x.Position)) &&
                 (!mustMatchLayer || x.MapRenderLayer == currentLayer)
             ).ToImmutable();
@@ -419,15 +419,15 @@ namespace DemoGame.Editor.Tools
 
             // Cache some other values
             var selGrhGrhIndex = gd.GrhIndex;
-            var isForeground = EditorSettings.Default.MapGrh_DefaultIsForeground;
-            var depth = EditorSettings.Default.MapGrh_DefaultDepth;
+            var layer = GlobalState.Instance.Map.Layer;
+            var depth = GlobalState.Instance.Map.LayerDepth;
             var drawPosArea = drawPos.ToRectangle(new Vector2(2), true);
 
             if (!useTileMode)
             {
                 // Make sure the same MapGrh doesn't already exist at that position
                 if (map.Spatial.Contains<MapGrh>(drawPosArea, x =>
-                    x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground &&
+                    x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.MapRenderLayer == layer &&
                     Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
                 {
                     return null;
@@ -437,7 +437,7 @@ namespace DemoGame.Editor.Tools
             {
                 // Make sure the same MapGrh doesn't already exist at that position on the same layer
                 if (map.Spatial.Contains<MapGrh>(drawPosArea, x =>
-                    x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.IsForeground == isForeground &&
+                    x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.MapRenderLayer == layer &&
                     Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
                 {
                     return null;
@@ -446,8 +446,7 @@ namespace DemoGame.Editor.Tools
                 // In TileMode, do not allow ANY MapGrh at the same position and layer depth. And if it does exist, instead of aborting,
                 // delete the existing one.
                 var existingMapGrhs = map.Spatial.GetMany<MapGrh>(drawPosArea, x =>
-                    (x.MapRenderLayer == MapRenderLayer.Chararacter || x.MapRenderLayer == MapRenderLayer.SpriteBackground || x.MapRenderLayer == MapRenderLayer.SpriteForeground) &&
-                    x.LayerDepth == depth && x.IsForeground == isForeground && Math.Round(x.Position.QuickDistance(drawPos)) <= 1);
+                    x.LayerDepth == depth && x.MapRenderLayer == layer && Math.Round(x.Position.QuickDistance(drawPos)) <= 1);
 
                 foreach (var toDelete in existingMapGrhs)
                 {
@@ -457,15 +456,11 @@ namespace DemoGame.Editor.Tools
 
                     map.RemoveMapGrh(toDelete);
                 }
-
-                Debug.Assert(!map.Spatial.Contains<MapGrh>(drawPosArea, x =>
-                    x.LayerDepth == depth && x.IsForeground == isForeground &&
-                    Math.Round(x.Position.QuickDistance(drawPos)) <= 1));
             }
 
             // Create the new MapGrh and add it to the map
             var g = new Grh(gd, AnimType.Loop, map.GetTime());
-            var mg = new MapGrh(g, drawPos, isForeground) { LayerDepth = depth };
+            var mg = new MapGrh(g, drawPos) { LayerDepth = depth, MapRenderLayer = layer };
             map.AddMapGrh(mg);
 
             return mg;

@@ -345,7 +345,7 @@ namespace NetGore.Graphics
                     if (val == 0)
                         Layer = MapRenderLayer.SpriteBackground;
                     else if (val == 1)
-                        Layer = MapRenderLayer.Chararacter;
+                        Layer = MapRenderLayer.Dynamic;
                     else if (val == 2)
                         Layer = MapRenderLayer.SpriteForeground;
                     else

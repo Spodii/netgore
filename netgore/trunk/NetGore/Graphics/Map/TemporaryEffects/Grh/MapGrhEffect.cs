@@ -17,9 +17,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="grh">Grh to draw.</param>
         /// <param name="position">Position to draw on the map.</param>
-        /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
-        /// it will be drawn in the background layer.</param>
-        protected MapGrhEffect(Grh grh, Vector2 position, bool isForeground) : base(grh, position, isForeground)
+        protected MapGrhEffect(Grh grh, Vector2 position) : base(grh, position)
         {
         }
 
