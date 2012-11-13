@@ -69,6 +69,9 @@ namespace NetGore.Editor.Grhs
 
                 // Grab some stuff based on the file path
                 string absDir = Path.GetDirectoryName(absFilePath);
+                if (rootGrhDir.Length >= absDir.Length)
+                    continue;
+
                 string relDir = absDir.Substring(rootGrhDir.Length);
                 string parentDirName = absDir.Substring(Path.GetDirectoryName(absDir).Length + 1);
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(relFilePath);
