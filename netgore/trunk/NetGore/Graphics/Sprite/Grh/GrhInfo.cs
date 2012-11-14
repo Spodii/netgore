@@ -648,10 +648,8 @@ namespace NetGore.Graphics
             if (failedLoads.Count > 0)
             {
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(),
-                        typeof(T).Name);
-                Debug.Fail(string.Format(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(),
-                    typeof(T).Name));
+                    log.ErrorFormat(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(), typeof(T).Name);
+                Debug.Fail(string.Format(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(), typeof(T).Name));
                 failedLoads.Clear();
             }
         }

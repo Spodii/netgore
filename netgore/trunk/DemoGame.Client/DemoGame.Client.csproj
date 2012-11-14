@@ -303,7 +303,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)DevContent\CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content" --clean="[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]"</PreBuildEvent>
+    <PreBuildEvent>RMDIR /S /Q "$(TargetDir)Content\Grh\"
+"$(SolutionDir)DevContent\CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content" --clean="[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]"</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

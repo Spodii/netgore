@@ -625,6 +625,7 @@
     <Compile Include="World\Map\Spatial\DynamicGridSpatialCollection.cs" />
     <Compile Include="World\Map\Spatial\GridSpatialCollectionBase.cs" />
     <Compile Include="World\Map\Spatial\IGridSpatialCollectionSegment.cs" />
+    <Compile Include="World\Map\Spatial\IPositionable.cs" />
     <Compile Include="World\Map\Spatial\ISpatial.cs" />
     <Compile Include="World\Map\Spatial\ISpatialCollection.cs" />
     <Compile Include="World\Map\Spatial\ISpatialCollectionExtensions.cs" />
