@@ -16,7 +16,7 @@ namespace NetGore.Graphics
     public class GrhCharacterSprite : ICharacterSprite
     {
         readonly Entity _character;
-        readonly Grh _grh = new Grh(null);
+        readonly Grh _bodyGrh = new Grh(null);
         readonly SpriteCategory _rootCategory;
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace NetGore.Graphics
             if (grhData == null)
                 return;
 
-            _grh.SetGrh(grhData, AnimType.Loop, _currentTime);
+            _bodyGrh.SetGrh(grhData, AnimType.Loop, _currentTime);
         }
 
         #region ICharacterSprite Members
@@ -138,7 +138,7 @@ namespace NetGore.Graphics
                 return;
 
             // Update the sprite
-            var grhData = GetSetGrhData(_bodyName, bodyModifierName + " " + GetDirectionSetName(_currentHeading));
+            var grhData = GetSetGrhData(_bodyName, bodyModifierName + " " + GetDirectionSetName(_currentHeading)); // TODO: !! Use 'walk' to animate attack
             if (grhData == null)
                 return;
 
@@ -147,7 +147,7 @@ namespace NetGore.Graphics
             _bodyModifierDirection = _currentHeading;
 
             // Set the animation to loop once
-            _grh.SetGrh(grhData, AnimType.LoopOnce, _currentTime);
+            _bodyGrh.SetGrh(grhData, AnimType.LoopOnce, _currentTime);
         }
 
         /// <summary>
@@ -172,12 +172,12 @@ namespace NetGore.Graphics
             // If the body modifier is set, check if it needs to be unset
             if (_currentBodyModifier != null)
             {
-                if (_grh.AnimType == AnimType.None || _bodyModifierDirection != heading)
+                if (_bodyGrh.AnimType == AnimType.None || _bodyModifierDirection != heading)
                     _currentBodyModifier = null;
             }
 
             // If we are moving, the body modifier is not set, or the sprite is invalid, use the non-modifier set
-            if (Character.Velocity != Vector2.Zero || _currentBodyModifier == null || _grh.GrhData == null)
+            if (Character.Velocity != Vector2.Zero || _currentBodyModifier == null || _bodyGrh.GrhData == null)
             {
                 var prefix = (Character.Velocity == Vector2.Zero ? string.Empty : "Walk ");
                 var directionSuffix = GetDirectionSetName(heading);
@@ -187,12 +187,44 @@ namespace NetGore.Graphics
             }
 
             // Ensure the sprite is valid before trying to update and draw it
-            if (_grh.GrhData == null)
+            if (_bodyGrh.GrhData == null)
                 return;
 
-            // Update and draw the sprite
-            _grh.Update(_currentTime);
-            _grh.Draw(spriteBatch, position, color);
+            // Update
+            _bodyGrh.Update(_currentTime);
+
+            // Get the GrhDatas to draw, along with their draw order
+            List<KeyValuePair<int, GrhData>> grhDatas = new List<KeyValuePair<int, GrhData>>();
+            grhDatas.Add(new KeyValuePair<int, GrhData>(GetLayerOrder(PaperDollLayerType.Body, heading), _bodyGrh.GrhData));
+
+            string setSuffix = !string.IsNullOrEmpty(_currentSet) ? "." + _currentSet : "";
+            if (_layers != null)
+            {
+                foreach (var layerName in _layers)
+                {
+                    GrhData gd = GrhInfo.GetData(new SpriteCategorization("Character." + layerName + setSuffix));
+                    if (gd == null)
+                        continue;
+
+                    grhDatas.Add(new KeyValuePair<int, GrhData>(GetLayerOrder(layerName, heading), gd));
+                }
+            }
+
+            // Sort
+            grhDatas = grhDatas.OrderBy(x => x.Key).ToList();
+
+            // Draw in order
+            var drawingGrh = _bodyGrh.DeepCopy();
+            for (int i = 0; i < grhDatas.Count; i++)
+            {
+                GrhData gd = grhDatas[i].Value;
+                GrhData gdFrame = gd.GetFrame((int)Math.Floor(_bodyGrh.Frame)) ?? gd.Frames.LastOrDefault();
+                if (gdFrame == null)
+                    continue;
+
+                drawingGrh.SetGrh(gdFrame);
+                drawingGrh.Draw(spriteBatch, position, color);
+            }
         }
 
         /// <summary>
@@ -208,6 +240,8 @@ namespace NetGore.Graphics
             _currentSet = string.Empty;
         }
 
+        string[] _layers;
+
         /// <summary>
         /// Sets the sprite's paper doll layers. This will set all of the layers at once. Layers that are not in the
         /// <paramref name="layers"/> collection should be treated as they are not used and be removed, not be treated
@@ -216,6 +250,8 @@ namespace NetGore.Graphics
         /// <param name="layers">The name of the paper doll layers.</param>
         public void SetPaperDollLayers(IEnumerable<string> layers)
         {
+            // Store the list of the layers to be used later when drawing
+            _layers = layers == null ? null : layers.ToArray();
         }
 
         /// <summary>
@@ -237,5 +273,89 @@ namespace NetGore.Graphics
         }
 
         #endregion
+
+        /// <summary>
+        /// Enum of the different layer types.
+        /// </summary>
+        enum PaperDollLayerType
+        {
+            Weapon,
+            Hat,
+            Body,
+        }
+
+        /// <summary>
+        /// Uses the layer name to figure out the layer type.
+        /// </summary>
+        static PaperDollLayerType GetPaperDollLayerType(string layerName)
+        {
+            if (layerName.StartsWith("Weapon", StringComparison.OrdinalIgnoreCase))
+                return PaperDollLayerType.Weapon;
+            else if (layerName.StartsWith("Hat", StringComparison.OrdinalIgnoreCase))
+                return PaperDollLayerType.Hat;
+            else
+                return PaperDollLayerType.Body;
+        }
+
+        /// <summary>
+        /// Uses the layer type and direction to determine the draw order. A lower draw order gets drawn first (behind), while a higher draw
+        /// order gets drawn last (on top).
+        /// </summary>
+        static int GetLayerOrder(string layer, Direction heading)
+        {
+            return GetLayerOrder(GetPaperDollLayerType(layer), heading);
+        }
+
+        /// <summary>
+        /// Uses the layer type and direction to determine the draw order. A lower draw order gets drawn first (behind), while a higher draw
+        /// order gets drawn last (on top).
+        /// </summary>
+        static int GetLayerOrder(PaperDollLayerType layerType, Direction heading)
+        {
+            switch (heading)
+            {
+                case Direction.North:
+                case Direction.NorthWest:
+                case Direction.NorthEast:
+                    switch (layerType)
+                    {
+                        case PaperDollLayerType.Hat: return 30;
+                        case PaperDollLayerType.Body: return 20;
+                        case PaperDollLayerType.Weapon: return 10;
+                    }
+                    break;
+
+                case Direction.South:
+                case Direction.SouthWest:
+                case Direction.SouthEast:
+                    switch (layerType)
+                    {
+                        case PaperDollLayerType.Weapon: return 30;
+                        case PaperDollLayerType.Hat: return 20;
+                        case PaperDollLayerType.Body: return 10;
+                    }
+                    break;
+
+                case Direction.East:
+                    switch (layerType)
+                    {
+                        case PaperDollLayerType.Weapon: return 30;
+                        case PaperDollLayerType.Body: return 20;
+                        case PaperDollLayerType.Hat: return 10;
+                    }
+                    break;
+
+                case Direction.West:
+                    switch (layerType)
+                    {
+                        case PaperDollLayerType.Body: return 30;
+                        case PaperDollLayerType.Weapon: return 20;
+                        case PaperDollLayerType.Hat: return 10;
+                    }
+                    break;
+            }
+
+            return 0;
+        }
     }
 }
