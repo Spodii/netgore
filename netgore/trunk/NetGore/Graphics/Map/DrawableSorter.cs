@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -62,7 +63,22 @@ namespace NetGore.Graphics
             // Return the results for each layer, making sure to sort them as we return them
             for (var i = 0; i < _layers.Length; i++)
             {
-                yield return new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i, _layers[i].OrderBy(x => x.LayerDepth));
+                IEnumerable<IDrawable> sorted;
+                if (i == (int)MapRenderLayer.Dynamic)
+                {
+                    // Sort by Y (bottom), then X (left), then depth (making depth quite useless)
+                    sorted = _layers[i]
+                        .OrderBy(obj => obj.Position.Y + obj.Size.Y)
+                        .ThenBy(obj => obj.Position.X)
+                        .ThenBy(obj => obj.LayerDepth);
+                }
+                else
+                {
+                    // Sort just by depth
+                    sorted = _layers[i].OrderBy(obj => obj.LayerDepth);
+                }
+
+                yield return new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i, sorted);
             }
         }
     }

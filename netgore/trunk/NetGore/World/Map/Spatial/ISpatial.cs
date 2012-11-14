@@ -6,7 +6,7 @@ namespace NetGore.World
     /// <summary>
     /// Interface for an object that occupies space in the world.
     /// </summary>
-    public interface ISpatial
+    public interface ISpatial : IPositionable
     {
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has moved.
@@ -19,24 +19,14 @@ namespace NetGore.World
         event TypedEventHandler<ISpatial, EventArgs<Vector2>> Resized;
 
         /// <summary>
-        /// Gets the center position of the <see cref="ISpatial"/>.
-        /// </summary>
-        Vector2 Center { get; }
-
-        /// <summary>
         /// Gets the world coordinates of the bottom-right corner of this <see cref="ISpatial"/>.
         /// </summary>
         Vector2 Max { get; }
 
         /// <summary>
-        /// Gets the world coordinates of the top-left corner of this <see cref="ISpatial"/>.
+        /// Gets the center position of the <see cref="ISpatial"/>.
         /// </summary>
-        Vector2 Position { get; }
-
-        /// <summary>
-        /// Gets the size of this <see cref="ISpatial"/>.
-        /// </summary>
-        Vector2 Size { get; }
+        Vector2 Center { get; }
 
         /// <summary>
         /// Gets if this <see cref="ISpatial"/> can ever be moved with <see cref="ISpatial.TryMove"/>.

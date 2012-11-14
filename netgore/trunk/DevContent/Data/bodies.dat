@@ -10,7 +10,7 @@
       <Punch>punch</Punch>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>30,78</Size>
+      <Size>44,54</Size>
     </Item0>
     <Item1>
       <ID>2</ID>
@@ -20,7 +20,7 @@
       <Punch>punch</Punch>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>30,78</Size>
+      <Size>44,54</Size>
     </Item1>
   </Body>
 </Bodies>

@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.World;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -6,7 +7,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Interface for an object that support drawing itself.
     /// </summary>
-    public interface IDrawable
+    public interface IDrawable : IPositionable
     {
         /// <summary>
         /// Notifies listeners immediately after this <see cref="IDrawable"/> is drawn.

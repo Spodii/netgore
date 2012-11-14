@@ -510,5 +510,15 @@ namespace NetGore.Graphics
         }
 
         #endregion
+
+        /// <summary>
+        /// Not supported by BackgroundImage. Always returns Vector2.Zero.
+        /// </summary>
+        Vector2 IPositionable.Position { get { return Vector2.Zero; } }
+
+        /// <summary>
+        /// Not supported by BackgroundImage. Always returns Vector2.Zero.
+        /// </summary>
+        Vector2 IPositionable.Size { get { return Vector2.Zero; } }
     }
 }
