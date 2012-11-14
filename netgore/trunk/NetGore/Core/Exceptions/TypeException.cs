@@ -40,7 +40,7 @@ namespace NetGore
         /// <param name="message">The message that describes the error.</param>
         /// <param name="type">The type that caused the exception.</param>
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "TypeException")]
-        public TypeException(string message, Type type) : base("TypeException from `" + type + "`. " + message ?? string.Empty)
+        public TypeException(string message, Type type) : base("TypeException from `" + type + "`. " + (message ?? string.Empty))
         {
         }
 

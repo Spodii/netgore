@@ -20,8 +20,6 @@ namespace DemoGame.Client
         readonly DragDropHandler _dragDropHandler;
         readonly ItemInfoRequesterBase<EquipmentSlot> _infoRequester;
 
-        UserEquipped _userEquipped;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EquippedForm"/> class.
         /// </summary>
@@ -53,11 +51,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the <see cref="UserEquipped"/> containing the equipped items to display on this form.
         /// </summary>
-        public UserEquipped UserEquipped
-        {
-            get { return _userEquipped; }
-            set { _userEquipped = value; }
-        }
+        public UserEquipped UserEquipped { get; set; }
 
         void CreateItemSlots()
         {

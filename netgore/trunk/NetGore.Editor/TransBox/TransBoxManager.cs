@@ -335,7 +335,7 @@ namespace NetGore.Editor
 
             // Get the items to add
             // If it doesn't support moving, don't add it, even if it supports resizing since a lot of our resizing requires moving
-            var toAdd = items.Where(x => x.SupportsMove && !TypesToIgnore.Any(y => x.GetType() == y));
+            var toAdd = items.Where(x => x.SupportsMove && TypesToIgnore.All(y => x.GetType() != y));
 
             if (toAdd.IsEmpty())
                 return;

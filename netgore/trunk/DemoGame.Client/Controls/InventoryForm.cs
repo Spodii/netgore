@@ -43,8 +43,6 @@ namespace DemoGame.Client
         readonly ItemInfoRequesterBase<InventorySlot> _infoRequester;
         readonly Func<Inventory, bool> _isUserInv;
 
-        Inventory _inventory;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
@@ -89,11 +87,7 @@ namespace DemoGame.Client
         /// </summary>
         public event TypedEventHandler<InventoryForm, EventArgs<InventorySlot>> RequestUseItem;
 
-        public Inventory Inventory
-        {
-            get { return _inventory; }
-            set { _inventory = value; }
-        }
+        public Inventory Inventory { get; set; }
 
         /// <summary>
         /// Gets if this <see cref="InventoryForm"/> is for the inventory for the user.

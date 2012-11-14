@@ -275,6 +275,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\Map\Cursors\MapGrhPencilTool.cs" />
+    <Compile Include="Tools\Map\MapDisplayBackgroundTool.cs" />
+    <Compile Include="Tools\Map\MapDisplayDynamicTool.cs" />
+    <Compile Include="Tools\Map\MapDisplayForegroundTool.cs" />
     <Compile Include="Tools\Map\MapEditNPCSpawnsToolForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -685,6 +688,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MapGrhPencilTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayBackgroundTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayBackgroundTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayDynamicTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayDynamicTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayForegroundTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapDisplayForegroundTool_Enabled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

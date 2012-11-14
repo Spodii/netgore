@@ -86,7 +86,7 @@ namespace NetGore.Editor.UI
         /// </returns>
         protected override object[] GetItems(object editValue)
         {
-            return ((ParticleModifierCollection)editValue).ToArray();
+            return ((ParticleModifierCollection)editValue).Cast<object>().ToArray();
         }
 
         /// <summary>

@@ -59,8 +59,8 @@ namespace NetGore.Graphics.Extensions
             int dx = Math.Abs(x1 - x0);
             int dy = Math.Abs(y1 - y0);
 
-            int sx = 0;
-            int sy = 0;
+            int sx;
+            int sy;
 
             if (x0 < x1)
                 sx = 1;

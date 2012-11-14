@@ -10,8 +10,6 @@ namespace DemoGame.Client
     /// </summary>
     public class EquipmentInfoRequester : ItemInfoRequesterBase<EquipmentSlot>
     {
-        UserEquipped _equipment;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EquipmentInfoRequester"/> class.
         /// </summary>
@@ -19,17 +17,13 @@ namespace DemoGame.Client
         /// <param name="socket">The socket.</param>
         public EquipmentInfoRequester(UserEquipped equipment, INetworkSender socket) : base(socket)
         {
-            _equipment = equipment;
+            Equipment = equipment;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="UserEquipped"/> the requests are being made for.
         /// </summary>
-        public UserEquipped Equipment
-        {
-            get { return _equipment; }
-            set { _equipment = value; }
-        }
+        public UserEquipped Equipment { get; set; }
 
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="BitStream"/> containing the data

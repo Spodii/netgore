@@ -29,7 +29,6 @@ namespace NetGore.Graphics.GUI
         Control _lastPressedControl;
         Vector2 _screenSize;
         Control _underCursor;
-        Window _window;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
@@ -47,7 +46,7 @@ namespace NetGore.Graphics.GUI
 
             ScreenSize = screenSize;
 
-            _window = window;
+            Window = window;
             _skinManager = skinManager;
 
             Font = font;
@@ -452,11 +451,7 @@ namespace NetGore.Graphics.GUI
             get { return _underCursor; }
         }
 
-        public Window Window
-        {
-            get { return _window; }
-            set { _window = value; }
-        }
+        public Window Window { get; set; }
 
         /// <summary>
         /// Adds a <see cref="Control"/> to this <see cref="IGUIManager"/> at the root level. This should only be called

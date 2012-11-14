@@ -103,7 +103,7 @@ namespace NetGore.Editor.UI
                 ret.Add(propertyDescriptor);
             }
 
-            return new PropertyDescriptorCollection(ret.ToArray());
+            return new PropertyDescriptorCollection(ret.Cast<PropertyDescriptor>().ToArray());
         }
 
         /// <summary>

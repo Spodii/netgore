@@ -193,7 +193,7 @@ namespace NetGore.IO.PropertySync
         /// <returns>Comparison of the two PropertyInfoDatas.</returns>
         static int PropertyInfoAndAttributeComparer(SyncValueAttributeInfo a, SyncValueAttributeInfo b)
         {
-            return a.Name.CompareTo(b.Name);
+            return String.Compare(a.Name, b.Name, StringComparison.Ordinal);
         }
 
         /// <summary>

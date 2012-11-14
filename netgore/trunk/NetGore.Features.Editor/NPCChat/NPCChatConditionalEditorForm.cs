@@ -50,7 +50,7 @@ namespace NetGore.Features.NPCChat
         void NPCChatConditionalEditorForm_Load(object sender, EventArgs e)
         {
             cmbConditionalType.Items.Clear();
-            cmbConditionalType.Items.AddRange(_conditionals);
+            cmbConditionalType.Items.AddRange(_conditionals.Cast<object>().ToArray());
 
             InitGUI(_item);
         }

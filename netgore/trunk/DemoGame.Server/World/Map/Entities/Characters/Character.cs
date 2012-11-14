@@ -55,22 +55,12 @@ namespace DemoGame.Server
         readonly CharacterStatusEffects _statusEffects;
         readonly World _world;
 
-        /// <summary>
-        /// Character's alliance.
-        /// </summary>
-        Alliance _alliance;
-
         int _attackTimeout = 500;
 
         int _cash;
         int _exp;
         SPValueType _hp;
         CharacterID _id;
-
-        /// <summary>
-        /// If the character is alive or not.
-        /// </summary>
-        bool _isAlive = false;
 
         bool _isLoaded = false;
         KnownSkillsCollection _knownSkills;
@@ -129,6 +119,7 @@ namespace DemoGame.Server
         /// at some point during the Character's constructor!</param>
         protected Character(World world, bool isPersistent) : base(Vector2.Zero, Vector2.One)
         {
+            IsAlive = false;
             _skillCaster = new CharacterSkillCaster(this);
 
             _world = world;
@@ -246,11 +237,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets (protected) the Character's alliance.
         /// </summary>
-        public Alliance Alliance
-        {
-            get { return _alliance; }
-            protected set { _alliance = value; }
-        }
+        public Alliance Alliance { get; protected set; }
 
         /// <summary>
         /// Gets the <see cref="AllianceManager"/> instance to be used by the <see cref="Character"/>s.
@@ -335,11 +322,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets (protected) if the Character is currently alive.
         /// </summary>
-        public bool IsAlive
-        {
-            get { return _isAlive; }
-            protected set { _isAlive = value; }
-        }
+        public bool IsAlive { get; protected set; }
 
         /// <summary>
         /// Gets if the Character has been loaded. If this is false, the Character has either not been loaded or is

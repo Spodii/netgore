@@ -13,7 +13,7 @@ using NetGore.IO;
 
 namespace DemoGame.Editor.Tools
 {
-    public class MapDisplayFilterTool : Tool
+    public class MapDisplayFilterTool : Tool // TODO: !! Delete
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const string _filterCollectionNodeName = "FilterCollection";
@@ -86,7 +86,7 @@ namespace DemoGame.Editor.Tools
                 EnabledImage = Resources.MapDisplayFilterTool_Enabled,
                 DisabledImage = Resources.MapDisplayFilterTool_Disabled,
                 EnabledByDefault = false,
-                OnToolBarByDefault = true,
+                OnToolBarByDefault = false,
             };
         }
 

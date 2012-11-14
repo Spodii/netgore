@@ -11,8 +11,6 @@ namespace DemoGame.Client
     /// </summary>
     public class InventoryInfoRequester : ItemInfoRequesterBase<InventorySlot>
     {
-        Inventory _inventory;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryInfoRequester"/> class.
         /// </summary>
@@ -20,17 +18,13 @@ namespace DemoGame.Client
         /// <param name="socket">The socket.</param>
         public InventoryInfoRequester(Inventory inventory, INetworkSender socket) : base(socket)
         {
-            _inventory = inventory;
+            Inventory = inventory;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="Inventory"/> the requests are being made for.
         /// </summary>
-        public Inventory Inventory
-        {
-            get { return _inventory; }
-            set { _inventory = value; }
-        }
+        public Inventory Inventory { get; set; }
 
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="BitStream"/> containing the data

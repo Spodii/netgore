@@ -93,7 +93,7 @@ namespace NetGore.Editor
                         // Select many
                         var objs = new List<T>(SelectedListBox.SelectedItems.OfType<T>());
                         if (objs.Count > 0)
-                            PropertyGrid.SelectedObjects = objs.ToArray();
+                            PropertyGrid.SelectedObjects = objs.Cast<object>().ToArray();
                     }
                     else
                     {
@@ -319,7 +319,7 @@ namespace NetGore.Editor
             {
                 var objs = new List<T>(SelectedListBox.SelectedItems.OfType<T>());
                 if (objs.Count > 0)
-                    PropertyGrid.SelectedObjects = objs.ToArray();
+                    PropertyGrid.SelectedObjects = objs.Cast<object>().ToArray();
             }
         }
 

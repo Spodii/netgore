@@ -131,7 +131,7 @@ namespace NetGore.Graphics
             _grhDatas[(int)index] = gd;
 
             // Make sure the GrhData is only in the list once
-            Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1,
+            Debug.Assert(GrhDatas.Count(x => x == gd) == 1,
                 "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
         }
 
@@ -231,6 +231,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="contentManager">The content manager.</param>
         /// <param name="categorization">The categorization for the <see cref="AutomaticAnimatedGrhData"/>.</param>
+        /// <param name="index">If specified, the GrhIndex to use for the new GrhData.</param>
         /// <returns>The new <see cref="AutomaticAnimatedGrhData"/>, or null if none created.</returns>
         public static AutomaticAnimatedGrhData CreateAutomaticAnimatedGrhData(IContentManager contentManager, SpriteCategorization categorization, GrhIndex? index = null)
         {

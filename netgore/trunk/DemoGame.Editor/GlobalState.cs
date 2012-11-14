@@ -344,6 +344,8 @@ namespace DemoGame.Editor
             readonly Grh _grhToPlace = new Grh();
             readonly GlobalState _parent;
             readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
+            readonly HashSet<Func<IDrawable, bool>> _mapDrawFilters = new HashSet<Func<IDrawable, bool>>();
+            readonly Func<IDrawable, bool> _mapDrawFilter;
 
             MapRenderLayer _layer = MapRenderLayer.SpriteBackground;
             int _layerDepth = 0;
@@ -363,6 +365,15 @@ namespace DemoGame.Editor
             /// </summary>
             public event EventHandler GrhToPlaceChanged;
 
+            public HashSet<Func<IDrawable, bool>> MapDrawFilters { get { return _mapDrawFilters; } }
+
+            bool MapDrawFilterInternal(IDrawable drawable)
+            {
+                return MapDrawFilters.All(x => x(drawable));
+            }
+
+            public Func<IDrawable, bool> MapDrawFilter { get { return _mapDrawFilter; } }
+
             /// <summary>
             /// Initializes a new instance of the <see cref="MapState"/> class.
             /// </summary>
@@ -370,6 +381,7 @@ namespace DemoGame.Editor
             internal MapState(GlobalState parent)
             {
                 _parent = parent;
+                _mapDrawFilter = MapDrawFilterInternal;
             }
 
             /// <summary>

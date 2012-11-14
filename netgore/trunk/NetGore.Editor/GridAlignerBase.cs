@@ -12,8 +12,6 @@ namespace NetGore.Editor
     /// </summary>
     public abstract class GridAlignerBase
     {
-        bool _alignByDefault;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GridAlignerBase"/> class.
         /// </summary>
@@ -28,11 +26,7 @@ namespace NetGore.Editor
         /// The default value is true.
         /// </summary>
         [DefaultValue(true)]
-        public bool AlignByDefault
-        {
-            get { return _alignByDefault; }
-            set { _alignByDefault = value; }
-        }
+        public bool AlignByDefault { get; set; }
 
         /// <summary>
         /// Gets the size of the grid.

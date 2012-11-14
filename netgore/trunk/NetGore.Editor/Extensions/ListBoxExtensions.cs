@@ -146,7 +146,7 @@ namespace NetGore.Editor
                         buffer.Add(item);
                 }
 
-                listBox.Items.AddRange(buffer.ToArray());
+                listBox.Items.AddRange(buffer.Cast<object>().ToArray());
             }
             finally
             {

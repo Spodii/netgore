@@ -122,7 +122,7 @@ namespace NetGore.Features.Guilds
             UpdateInvites(currentTime);
 
             // Make sure there is an invite to this guild
-            if (!_invites.Any(x => x.Guild == guild))
+            if (_invites.All(x => x.Guild != guild))
                 return false;
 
             // Join the guild

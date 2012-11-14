@@ -11,7 +11,6 @@ namespace NetGore.Features.ActionDisplays
     /// </summary>
     public class ActionDisplay : IPersistable
     {
-        GrhIndex _grhIndex;
         ActionDisplayID _id;
         string _particleEffect;
         string _script;
@@ -40,11 +39,7 @@ namespace NetGore.Features.ActionDisplays
         /// will be displayed.
         /// </summary>
         [SyncValue]
-        public GrhIndex GrhIndex
-        {
-            get { return _grhIndex; }
-            set { _grhIndex = value; }
-        }
+        public GrhIndex GrhIndex { get; set; }
 
         /// <summary>
         /// Gets the ID of this <see cref="ActionDisplay"/>.

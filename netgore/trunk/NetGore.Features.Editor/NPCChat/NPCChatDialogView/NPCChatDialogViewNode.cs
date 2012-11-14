@@ -377,7 +377,6 @@ namespace NetGore.Features.NPCChat
         internal void UpdateText()
         {
             EditorNPCChatDialogItem asDialogItem;
-            EditorNPCChatResponse asResponse;
 
             string text;
             Color foreColor;
@@ -397,7 +396,7 @@ namespace NetGore.Features.NPCChat
                     break;
 
                 case NPCChatDialogViewNodeItemType.Response:
-                    asResponse = ChatItemAsResponse;
+                    EditorNPCChatResponse asResponse = ChatItemAsResponse;
                     text = "[" + asResponse.Value + ": " + asResponse.Text + "]";
                     foreColor = TreeViewCasted.NodeForeColorResponse;
                     break;

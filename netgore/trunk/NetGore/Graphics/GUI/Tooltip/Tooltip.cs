@@ -16,7 +16,6 @@ namespace NetGore.Graphics.GUI
         readonly IGUIManager _guiManager;
 
         Color _bgColor = new Color(0, 0, 0, 200);
-        ControlBorder _border;
         Vector2 _borderPadding = new Vector2(4, 4);
         Vector2 _borderSize;
         int _delay = 800;
@@ -104,11 +103,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the <see cref="ControlBorder"/> for this <see cref="ITooltip"/>. Can be null.
         /// </summary>
-        public ControlBorder Border
-        {
-            get { return _border; }
-            set { _border = value; }
-        }
+        public ControlBorder Border { get; set; }
 
         /// <summary>
         /// Gets or sets number of pixels the border is padded on each side, where the X value corresponds to the

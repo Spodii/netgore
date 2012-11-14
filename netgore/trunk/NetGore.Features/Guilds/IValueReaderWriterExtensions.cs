@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Features.Guilds
@@ -34,7 +35,7 @@ namespace NetGore.Features.Guilds
                 else
                 {
                     var s = reader.ReadString(name);
-                    var lastDelimiter = s.LastIndexOf(_concatDelimiter);
+                    var lastDelimiter = s.LastIndexOf(_concatDelimiter, StringComparison.Ordinal);
                     memberName = s.Substring(0, lastDelimiter);
                     var sRank = s.Substring(lastDelimiter + 1);
                     rank = byte.Parse(sRank);

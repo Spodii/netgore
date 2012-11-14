@@ -33,7 +33,6 @@ namespace DemoGame.Editor
         List<MutablePair<ItemTemplateID, byte>> _finishItems;
         List<QuestID> _finishQuests;
         List<MutablePair<CharacterTemplateID, ushort>> _kills;
-        bool _repeatable;
         List<MutablePair<ItemTemplateID, byte>> _rewardItems;
         List<MutablePair<ItemTemplateID, byte>> _startItems;
         List<QuestID> _startQuests;
@@ -262,11 +261,7 @@ namespace DemoGame.Editor
         [Browsable(true)]
         [Description("If the quest can be repeated by someone multiple times. If false, this quest can only be done once.")]
         [Category(_categoryQuest)]
-        public bool Repeatable
-        {
-            get { return _repeatable; }
-            set { _repeatable = value; }
-        }
+        public bool Repeatable { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of cash given as a reward for finishing this quest.

@@ -20,5 +20,13 @@ namespace DemoGame.Editor
         public EditorMap(MapID mapID, ICamera2D camera, IGetTime getTime) : base(mapID, camera, getTime)
         {
         }
+
+        public override void Update(int deltaTime)
+        {
+            base.Update(deltaTime);
+
+            // Ensure the filter is set
+            DrawFilter = GlobalState.Instance.Map.MapDrawFilter;
+        }
     }
 }
