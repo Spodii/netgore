@@ -302,12 +302,12 @@ namespace NetGore
                 var t = match.Value;
 
                 // Get the function name, if any, and cut it out
-                var f = t.Substring(0, t.IndexOf("("));
+                var f = t.Substring(0, t.IndexOf("(", StringComparison.Ordinal));
                 t = t.Remove(0, f.Length);
 
                 // Remove the first and last paranthesis
-                t = t.Remove(t.IndexOf("("), 1);
-                t = t.Remove(t.LastIndexOf(")"), 1);
+                t = t.Remove(t.IndexOf("(", StringComparison.Ordinal), 1);
+                t = t.Remove(t.LastIndexOf(")", StringComparison.Ordinal), 1);
 
                 // Find the result of the function
                 var result = ParseSubString(t, f);

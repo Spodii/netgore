@@ -262,7 +262,7 @@ namespace DemoGame.Server.UI
             try
             {
                 lstLog.Items.Clear();
-                lstLog.Items.AddRange(events);
+                lstLog.Items.AddRange(events.Cast<object>().ToArray());
 
                 // If too long, truncate
                 while (lstLog.Items.Count > _maxLogDisplayLines)
@@ -430,7 +430,7 @@ namespace DemoGame.Server.UI
                     try
                     {
                         // Add the events
-                        lstLog.Items.AddRange(events);
+                        lstLog.Items.AddRange(events.Cast<object>().ToArray());
 
                         // If too long, truncate
                         while (lstLog.Items.Count > _maxLogDisplayLines)

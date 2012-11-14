@@ -11,10 +11,6 @@ namespace DemoGame
     /// </summary>
     public abstract class TeleportEntityBase : DynamicEntity, IUsableEntity
     {
-        Vector2 _destination;
-        MapID _destinationMap;
-        bool _isOpen;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
         /// </summary>
@@ -41,11 +37,7 @@ namespace DemoGame
         [DisplayName("Destination")]
         [Description("Position to teleport the Entity that uses this Teleport to.")]
         [Browsable(true)]
-        public Vector2 Destination
-        {
-            get { return _destination; }
-            set { _destination = value; }
-        }
+        public Vector2 Destination { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the map that the Entity will be teleported to upon use.
@@ -55,11 +47,7 @@ namespace DemoGame
         [DisplayName("DestinationMap")]
         [Description("Map to teleport the Entity that uses this Teleport to.")]
         [Browsable(true)]
-        public MapID DestinationMap
-        {
-            get { return _destinationMap; }
-            set { _destinationMap = value; }
-        }
+        public MapID DestinationMap { get; set; }
 
         /// <summary>
         /// Gets or sets the open/closed state of this teleport, if this is false, it can't be used successfully.
@@ -69,11 +57,7 @@ namespace DemoGame
         [DisplayName("Is Open")]
         [Description("Is this teleport open?")]
         [Browsable(true)]
-        public bool Open
-        {
-            get { return _isOpen; }
-            set { _isOpen = value; }
-        }
+        public bool Open { get; set; }
 
         #region IUsableEntity Members
 

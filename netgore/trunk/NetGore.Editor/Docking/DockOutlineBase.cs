@@ -9,7 +9,6 @@ namespace NetGore.Editor.Docking
         int m_contentIndex;
         DockStyle m_dock;
         Control m_dockTo;
-        bool m_flagTestDrop = false;
         Rectangle m_floatWindowBounds;
         int m_oldContentIndex;
         DockStyle m_oldDock;
@@ -18,6 +17,7 @@ namespace NetGore.Editor.Docking
 
         protected DockOutlineBase()
         {
+            FlagTestDrop = false;
             Init();
         }
 
@@ -41,11 +41,7 @@ namespace NetGore.Editor.Docking
             get { return m_contentIndex != 0; }
         }
 
-        public bool FlagTestDrop
-        {
-            get { return m_flagTestDrop; }
-            set { m_flagTestDrop = value; }
-        }
+        public bool FlagTestDrop { get; set; }
 
         public Rectangle FloatWindowBounds
         {

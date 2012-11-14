@@ -13,15 +13,14 @@ namespace NetGore.Graphics
     {
         readonly AtlasTextureItem _atlasNode;
 
-        AtlasTreeNode _left = null;
-        AtlasTreeNode _right = null;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AtlasTreeNode"/> class.
         /// </summary>
         /// <param name="node">The <see cref="AtlasTextureItem"/> that this <see cref="AtlasTreeNode"/> is for.</param>
         public AtlasTreeNode(AtlasTextureItem node)
         {
+            Right = null;
+            Left = null;
             _atlasNode = node;
         }
 
@@ -32,6 +31,8 @@ namespace NetGore.Graphics
         /// <see cref="AtlasTreeNode"/>.</param>
         AtlasTreeNode(Rectangle rect)
         {
+            Right = null;
+            Left = null;
             _atlasNode = new AtlasTextureItem(rect);
         }
 
@@ -64,11 +65,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the child <see cref="AtlasTreeNode"/> from this <see cref="AtlasTreeNode"/> to the left.
         /// </summary>
-        public AtlasTreeNode Left
-        {
-            get { return _left; }
-            private set { _left = value; }
-        }
+        public AtlasTreeNode Left { get; private set; }
 
         Rectangle Rect
         {
@@ -78,11 +75,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the child <see cref="AtlasTreeNode"/> from this <see cref="AtlasTreeNode"/> to the right.
         /// </summary>
-        public AtlasTreeNode Right
-        {
-            get { return _right; }
-            private set { _right = value; }
-        }
+        public AtlasTreeNode Right { get; private set; }
 
         /// <summary>
         /// Inserts a <see cref="ITextureAtlasable"/> into the tree from this <see cref="AtlasTreeNode"/>.

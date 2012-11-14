@@ -10,7 +10,6 @@ namespace NetGore.Graphics
     class AtlasTextureItem
     {
         readonly Rectangle _rect;
-        ITextureAtlasable _iTextureAtlasable = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AtlasTextureItem"/> class.
@@ -19,6 +18,7 @@ namespace NetGore.Graphics
         /// <param name="height">Height of the rectangular area the tree nodes can occupy.</param>
         public AtlasTextureItem(int width, int height)
         {
+            ITextureAtlasable = null;
             _rect = new Rectangle(0, 0, width, height);
         }
 
@@ -28,6 +28,7 @@ namespace NetGore.Graphics
         /// <param name="rect">The <see cref="Rectangle"/> describing where to put this item.</param>
         internal AtlasTextureItem(Rectangle rect)
         {
+            ITextureAtlasable = null;
             _rect = rect;
         }
 
@@ -42,11 +43,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the <see cref="ITextureAtlasable"/> associated with the node (leaf nodes only).
         /// </summary>
-        public ITextureAtlasable ITextureAtlasable
-        {
-            get { return _iTextureAtlasable; }
-            internal set { _iTextureAtlasable = value; }
-        }
+        public ITextureAtlasable ITextureAtlasable { get; internal set; }
 
         /// <summary>
         /// Gets the rectangular area of the node.

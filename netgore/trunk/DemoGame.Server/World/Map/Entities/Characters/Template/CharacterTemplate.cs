@@ -57,9 +57,9 @@ namespace DemoGame.Server
             _knownSkills = knownSkills.ToCompact();
 
             // Assert values are valid
-            Debug.Assert(!_inventory.Any(x => x == null));
-            Debug.Assert(!_equipment.Any(x => x == null));
-            Debug.Assert(!_quests.Any(x => x == null));
+            Debug.Assert(_inventory.All(x => x != null));
+            Debug.Assert(_equipment.All(x => x != null));
+            Debug.Assert(_quests.All(x => x != null));
             Debug.Assert(_knownSkills.All(EnumHelper<SkillType>.IsDefined),
                 string.Format("One or more SkillTypes for CharacterTemplate `{0}` are invalid!", this));
 

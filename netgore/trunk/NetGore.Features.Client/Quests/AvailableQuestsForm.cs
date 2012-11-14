@@ -265,7 +265,6 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Handles when the available quests list's index changes.
         /// </summary>
-        /// <param name="sender">The sender.</param>
         void lstQuests_SelectedIndexChanged(Control sender, EventArgs e)
         {
             // Get the selected item

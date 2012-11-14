@@ -10,7 +10,6 @@ namespace NetGore.Editor.Docking
         abstract class DragHandler : DragHandlerBase
         {
             readonly DockPanel m_dockPanel;
-            IDragSource m_dragSource;
 
             protected DragHandler(DockPanel dockPanel)
             {
@@ -27,11 +26,7 @@ namespace NetGore.Editor.Docking
                 get { return DragSource == null ? null : DragSource.DragControl; }
             }
 
-            protected IDragSource DragSource
-            {
-                get { return m_dragSource; }
-                set { m_dragSource = value; }
-            }
+            protected IDragSource DragSource { get; set; }
 
             protected override sealed bool OnPreFilterMessage(ref Message m)
             {

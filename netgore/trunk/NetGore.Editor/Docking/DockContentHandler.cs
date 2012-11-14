@@ -1047,25 +1047,21 @@ namespace NetGore.Editor.Docking
             if (panel != DockPanel)
                 throw new ArgumentException(Strings.IDockDragSource_DockTo_InvalidPanel, "panel");
 
-            DockPane pane;
-
             if (dockStyle == DockStyle.Top)
-                pane = DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockTop, true);
+                DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockTop, true);
             else if (dockStyle == DockStyle.Bottom)
-                pane = DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockBottom, true);
+                DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockBottom, true);
             else if (dockStyle == DockStyle.Left)
-                pane = DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockLeft, true);
+                DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockLeft, true);
             else if (dockStyle == DockStyle.Right)
-                pane = DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockRight, true);
+                DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.DockRight, true);
             else if (dockStyle == DockStyle.Fill)
-                pane = DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.Document, true);
-            else
-                return;
+                DockPanel.DockPaneFactory.CreateDockPane(Content, DockState.Document, true);
         }
 
         public void FloatAt(Rectangle floatWindowBounds)
         {
-            var pane = DockPanel.DockPaneFactory.CreateDockPane(Content, floatWindowBounds, true);
+            DockPanel.DockPaneFactory.CreateDockPane(Content, floatWindowBounds, true);
         }
 
         public bool IsDockStateValid(DockState dockState)

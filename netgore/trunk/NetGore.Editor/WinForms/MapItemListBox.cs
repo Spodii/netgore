@@ -124,7 +124,7 @@ namespace NetGore.Editor.WinForms
                 }
 
                 // Add the new items
-                Items.AddRange(toAdd);
+                Items.AddRange(toAdd.Cast<object>().ToArray());
 
                 // Refresh the items
                 RefreshItems();

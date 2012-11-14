@@ -589,8 +589,8 @@ namespace DemoGame.Editor
 
         private void cmbLayer_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (cmbLayer.SelectedValue != null)
-                GlobalState.Instance.Map.Layer = GetLayerFromComboBoxText(cmbLayer.SelectedValue.ToString());
+            if (cmbLayer.SelectedItem != null)
+                GlobalState.Instance.Map.Layer = GetLayerFromComboBoxText(cmbLayer.SelectedItem.ToString());
         }
 
         private void trackBarDepth_MouseDown(object sender, MouseEventArgs e)

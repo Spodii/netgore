@@ -339,7 +339,7 @@ namespace NetGore.Db.ClassCreator
         public virtual string GetComplexTypeString(Type baseType, params Type[] genericTypes)
         {
             var baseTypeWithoutGenerics = GetTypeString(baseType);
-            var start = baseTypeWithoutGenerics.LastIndexOf(OpenGeneric);
+            var start = baseTypeWithoutGenerics.LastIndexOf(OpenGeneric, StringComparison.Ordinal);
             baseTypeWithoutGenerics = baseTypeWithoutGenerics.Substring(0, start);
 
             var sb = new StringBuilder();
@@ -995,8 +995,8 @@ namespace NetGore.Db.ClassCreator
             if (type.IsGenericType)
             {
                 s = type.ToString();
-                var firstBracket = s.IndexOf("[") - 1;
-                var start = s.IndexOf("`");
+                var firstBracket = s.IndexOf("[", StringComparison.Ordinal) - 1;
+                var start = s.IndexOf("`", StringComparison.Ordinal);
                 s = s.Remove(start, firstBracket - start + 1);
                 s = s.Replace("[", OpenGeneric);
                 s = s.Replace("]", CloseGeneric);

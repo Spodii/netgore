@@ -73,6 +73,46 @@ namespace DemoGame.Editor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap MapDisplayBackgroundTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayBackgroundTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap MapDisplayBackgroundTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayBackgroundTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap MapDisplayDynamicTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayDynamicTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap MapDisplayDynamicTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayDynamicTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap MapDisplayFilterTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapDisplayFilterTool_Disabled", resourceCulture);
@@ -86,6 +126,26 @@ namespace DemoGame.Editor.Properties {
         public static System.Drawing.Bitmap MapDisplayFilterTool_Enabled {
             get {
                 object obj = ResourceManager.GetObject("MapDisplayFilterTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap MapDisplayForegroundTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayForegroundTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap MapDisplayForegroundTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapDisplayForegroundTool_Enabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

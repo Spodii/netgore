@@ -160,7 +160,7 @@ namespace NetGore.Tests.Collections
                 objs[i] = null;
             }
 
-            var remainingObjs = objs.Where(obj => obj != null).Count();
+            var remainingObjs = objs.Count(obj => obj != null);
             Assert.AreEqual(0, remainingObjs,
                 "One or more items failed to be enumerated since all enumerated " + "items should have been removed from objs[].");
         }

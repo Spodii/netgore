@@ -447,11 +447,13 @@ namespace DemoGame.Server
         /// <returns>The persistent <see cref="NPC"/>s that were loaded.</returns>
         protected virtual IEnumerable<NPC> LoadPersistentNPCs()
         {
+            List<NPC> ret = new List<NPC>();
             var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsByRespawnMapQuery>().Execute(ID);
             foreach (var characterID in persistentNPCIDs)
             {
-                yield return new NPC(World, characterID);
+                ret.Add(new NPC(World, characterID));
             }
+            return ret;
         }
 
         /// <summary>

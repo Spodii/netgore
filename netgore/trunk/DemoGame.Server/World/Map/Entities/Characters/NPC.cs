@@ -39,7 +39,6 @@ namespace DemoGame.Server
         ushort _giveCash;
         ushort _giveExp;
         IEnumerable<IQuest<User>> _quests;
-        ushort _respawnSecs;
 
         IShop<ShopItem> _shop;
 
@@ -87,7 +86,7 @@ namespace DemoGame.Server
 
             // Set the rest of the template stuff
             Load(template);
-            _respawnSecs = v.Respawn;
+            RespawnSecs = v.Respawn;
             _giveExp = v.GiveExp;
             _giveCash = v.GiveCash;
             _quests = GetProvidedQuests(template) ?? _emptyQuests;
@@ -157,11 +156,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn.
         /// </summary>
-        public ushort RespawnSecs
-        {
-            get { return _respawnSecs; }
-            protected set { _respawnSecs = value; }
-        }
+        public ushort RespawnSecs { get; protected set; }
 
         /// <summary>
         /// Gets or sets the game time at which the NPC will respawn.

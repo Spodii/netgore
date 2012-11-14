@@ -294,7 +294,7 @@ namespace DemoGame.Editor
                 EditingObjAsResponse.SetConditionals(lstConditionals.ConditionalCollection);
 
                 lstActions.Items.Clear();
-                lstActions.Items.AddRange(EditingObjAsResponse.Actions.ToArray());
+                lstActions.Items.AddRange(EditingObjAsResponse.Actions.Cast<object>().ToArray());
             }
             else if (obj is TreeNode)
             {

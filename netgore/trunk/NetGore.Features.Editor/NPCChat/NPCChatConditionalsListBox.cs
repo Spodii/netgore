@@ -43,7 +43,7 @@ namespace NetGore.Features.NPCChat
 
                 if (_conditionalCollection != null)
                 {
-                    Items.AddRange(_conditionalCollection.ToArray());
+                    Items.AddRange(_conditionalCollection.Cast<object>().ToArray());
                     _conditionalCollection.Changed += ConditionalCollection_Changed;
 
                     if (EvaluationTypeComboBox != null)

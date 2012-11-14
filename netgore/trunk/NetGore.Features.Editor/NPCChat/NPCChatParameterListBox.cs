@@ -119,7 +119,7 @@ namespace NetGore.Features.NPCChat
             Items.Clear();
             if (ConditionalCollectionItem != null)
             {
-                Items.AddRange(ConditionalCollectionItem.Parameters.Select(x => new ParameterListItem(x)).ToArray());
+                Items.AddRange(ConditionalCollectionItem.Parameters.Select(x => new ParameterListItem(x)).Cast<object>().ToArray());
                 if (si < Items.Count && si >= 0)
                     SelectedIndex = si;
             }

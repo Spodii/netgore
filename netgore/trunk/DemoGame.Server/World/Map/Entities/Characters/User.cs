@@ -54,8 +54,6 @@ namespace DemoGame.Server
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
 
-        IPeerTradeSession<User, ItemEntity> _peerTradeSession;
-
         /// <summary>
         /// Initializes the <see cref="User"/> class.
         /// </summary>
@@ -177,11 +175,7 @@ namespace DemoGame.Server
         /// Gets or sets the peer trade session that this <see cref="User"/> is currently participating in, or null if they
         /// are not currently trading. This should only be set by the <see cref="PeerTradeSession"/> class!
         /// </summary>
-        public IPeerTradeSession<User, ItemEntity> PeerTradeSession
-        {
-            get { return _peerTradeSession; }
-            set { _peerTradeSession = value; }
-        }
+        public IPeerTradeSession<User, ItemEntity> PeerTradeSession { get; set; }
 
         /// <summary>
         /// Gets the <see cref="UserPermissions"/> level for this user.

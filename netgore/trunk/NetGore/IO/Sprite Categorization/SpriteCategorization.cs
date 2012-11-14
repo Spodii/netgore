@@ -123,7 +123,7 @@ namespace NetGore.IO
 
             categoryAndTitle = categoryAndTitle.Replace("\\", Delimiter).Replace("/", Delimiter);
 
-            var lastSep = categoryAndTitle.LastIndexOf(Delimiter);
+            var lastSep = categoryAndTitle.LastIndexOf(Delimiter, StringComparison.Ordinal);
             if (lastSep == -1)
                 throw new ArgumentException("No delimiters found.", "categoryAndTitle");
 

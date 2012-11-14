@@ -17,7 +17,6 @@ namespace NetGore.Graphics
         readonly List<ILight> _list = new List<ILight>();
 
         Grh _defaultSprite;
-        bool _isEnabled;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LightManager"/> class.
@@ -129,11 +128,7 @@ namespace NetGore.Graphics
         /// Gets or sets if this <see cref="ILightManager"/> is enabled.
         /// If <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this will always be false.
         /// </summary>
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { _isEnabled = value; }
-        }
+        public bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets if the <see cref="IRefractionManager"/> has been initialized.
