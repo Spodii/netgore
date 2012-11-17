@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>361</Count>
+    <Count>365</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -102,6 +102,42 @@
       </Texture>
     </Item10>
     <Item11>
+      <Index>253</Index>
+      <Categorization>Character.Hat.Irish.Down</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh//Character/Hat/Irish/Down</Name>
+        <Source>0,0,44,70</Source>
+      </Texture>
+    </Item11>
+    <Item12>
+      <Index>254</Index>
+      <Categorization>Character.Hat.Irish.Left</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh//Character/Hat/Irish/Left</Name>
+        <Source>0,0,44,70</Source>
+      </Texture>
+    </Item12>
+    <Item13>
+      <Index>388</Index>
+      <Categorization>Character.Hat.Irish.Right</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh//Character/Hat/Irish/Right</Name>
+        <Source>0,0,44,70</Source>
+      </Texture>
+    </Item13>
+    <Item14>
+      <Index>389</Index>
+      <Categorization>Character.Hat.Irish.Up</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh//Character/Hat/Irish/Up</Name>
+        <Source>0,0,44,70</Source>
+      </Texture>
+    </Item14>
+    <Item15>
       <Index>78</Index>
       <Categorization>Character.Naked.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -109,8 +145,8 @@
         <Name>Grh/Character/Naked/ArmLower</Name>
         <Source>0,0,6,20</Source>
       </Texture>
-    </Item11>
-    <Item12>
+    </Item15>
+    <Item16>
       <Index>79</Index>
       <Categorization>Character.Naked.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -118,8 +154,8 @@
         <Name>Grh/Character/Naked/ArmUpper</Name>
         <Source>0,0,6,12</Source>
       </Texture>
-    </Item12>
-    <Item13>
+    </Item16>
+    <Item17>
       <Index>80</Index>
       <Categorization>Character.Naked.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -127,8 +163,8 @@
         <Name>Grh/Character/Naked/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item13>
-    <Item14>
+    </Item17>
+    <Item18>
       <Index>81</Index>
       <Categorization>Character.Naked.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -136,8 +172,8 @@
         <Name>Grh/Character/Naked/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item14>
-    <Item15>
+    </Item18>
+    <Item19>
       <Index>82</Index>
       <Categorization>Character.Naked.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -145,8 +181,8 @@
         <Name>Grh/Character/Naked/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item15>
-    <Item16>
+    </Item19>
+    <Item20>
       <Index>83</Index>
       <Categorization>Character.Naked.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -154,8 +190,8 @@
         <Name>Grh/Character/Naked/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item16>
-    <Item17>
+    </Item20>
+    <Item21>
       <Index>84</Index>
       <Categorization>Character.Naked.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -163,8 +199,8 @@
         <Name>Grh/Character/Naked/Shoe</Name>
         <Source>0,0,6,16</Source>
       </Texture>
-    </Item17>
-    <Item18>
+    </Item21>
+    <Item22>
       <Index>85</Index>
       <Categorization>Character.Naked.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -172,8 +208,8 @@
         <Name>Grh/Character/Naked/Torso</Name>
         <Source>0,0,14,28</Source>
       </Texture>
-    </Item18>
-    <Item19>
+    </Item22>
+    <Item23>
       <Index>178</Index>
       <Categorization>Character.Top Down.Basic.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -181,8 +217,8 @@
         <Name>Grh/Character/Top Down/Basic/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item19>
-    <Item20>
+    </Item23>
+    <Item24>
       <Index>179</Index>
       <Categorization>Character.Top Down.Basic.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -190,8 +226,8 @@
         <Name>Grh/Character/Top Down/Basic/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item20>
-    <Item21>
+    </Item24>
+    <Item25>
       <Index>180</Index>
       <Categorization>Character.Top Down.Basic.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -199,8 +235,8 @@
         <Name>Grh/Character/Top Down/Basic/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item21>
-    <Item22>
+    </Item25>
+    <Item26>
       <Index>181</Index>
       <Categorization>Character.Top Down.Basic.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -208,8 +244,8 @@
         <Name>Grh/Character/Top Down/Basic/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item22>
-    <Item23>
+    </Item26>
+    <Item27>
       <Index>158</Index>
       <Categorization>Character.Top Down.Crystal.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -217,8 +253,8 @@
         <Name>Grh/Character/Top Down/Crystal/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item23>
-    <Item24>
+    </Item27>
+    <Item28>
       <Index>159</Index>
       <Categorization>Character.Top Down.Crystal.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -226,8 +262,8 @@
         <Name>Grh/Character/Top Down/Crystal/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item24>
-    <Item25>
+    </Item28>
+    <Item29>
       <Index>160</Index>
       <Categorization>Character.Top Down.Crystal.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -235,8 +271,8 @@
         <Name>Grh/Character/Top Down/Crystal/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item25>
-    <Item26>
+    </Item29>
+    <Item30>
       <Index>161</Index>
       <Categorization>Character.Top Down.Crystal.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -244,8 +280,8 @@
         <Name>Grh/Character/Top Down/Crystal/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item26>
-    <Item27>
+    </Item30>
+    <Item31>
       <Index>104</Index>
       <Categorization>Character.Top Down.Zombie.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -253,8 +289,8 @@
         <Name>Grh/Character/Top Down/Zombie/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item27>
-    <Item28>
+    </Item31>
+    <Item32>
       <Index>111</Index>
       <Categorization>Character.Top Down.Zombie.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -262,8 +298,8 @@
         <Name>Grh/Character/Top Down/Zombie/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item28>
-    <Item29>
+    </Item32>
+    <Item33>
       <Index>112</Index>
       <Categorization>Character.Top Down.Zombie.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -271,8 +307,8 @@
         <Name>Grh/Character/Top Down/Zombie/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item29>
-    <Item30>
+    </Item33>
+    <Item34>
       <Index>113</Index>
       <Categorization>Character.Top Down.Zombie.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -280,8 +316,8 @@
         <Name>Grh/Character/Top Down/Zombie/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item30>
-    <Item31>
+    </Item34>
+    <Item35>
       <Index>1</Index>
       <Categorization>Character.Weapon.Sword.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -289,8 +325,8 @@
         <Name>Grh//Character/Weapon/Sword/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item31>
-    <Item32>
+    </Item35>
+    <Item36>
       <Index>2</Index>
       <Categorization>Character.Weapon.Sword.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -298,8 +334,8 @@
         <Name>Grh//Character/Weapon/Sword/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item32>
-    <Item33>
+    </Item36>
+    <Item37>
       <Index>3</Index>
       <Categorization>Character.Weapon.Sword.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -307,8 +343,8 @@
         <Name>Grh//Character/Weapon/Sword/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item33>
-    <Item34>
+    </Item37>
+    <Item38>
       <Index>248</Index>
       <Categorization>Character.Weapon.Sword.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -316,8 +352,8 @@
         <Name>Grh//Character/Weapon/Sword/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
-    </Item34>
-    <Item35>
+    </Item38>
+    <Item39>
       <Index>204</Index>
       <Categorization>Character.Zombie.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -325,8 +361,8 @@
         <Name>Grh/Character/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
-    </Item35>
-    <Item36>
+    </Item39>
+    <Item40>
       <Index>203</Index>
       <Categorization>Character.Zombie.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -334,8 +370,8 @@
         <Name>Grh/Character/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
-    </Item36>
-    <Item37>
+    </Item40>
+    <Item41>
       <Index>200</Index>
       <Categorization>Character.Zombie.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -343,8 +379,8 @@
         <Name>Grh/Character/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item37>
-    <Item38>
+    </Item41>
+    <Item42>
       <Index>206</Index>
       <Categorization>Character.Zombie.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -352,8 +388,8 @@
         <Name>Grh/Character/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item38>
-    <Item39>
+    </Item42>
+    <Item43>
       <Index>205</Index>
       <Categorization>Character.Zombie.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -361,8 +397,8 @@
         <Name>Grh/Character/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item39>
-    <Item40>
+    </Item43>
+    <Item44>
       <Index>201</Index>
       <Categorization>Character.Zombie.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -370,8 +406,8 @@
         <Name>Grh/Character/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item40>
-    <Item41>
+    </Item44>
+    <Item45>
       <Index>207</Index>
       <Categorization>Character.Zombie.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -379,8 +415,8 @@
         <Name>Grh/Character/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
-    </Item41>
-    <Item42>
+    </Item45>
+    <Item46>
       <Index>202</Index>
       <Categorization>Character.Zombie.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -388,8 +424,8 @@
         <Name>Grh/Character/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
-    </Item42>
-    <Item43>
+    </Item46>
+    <Item47>
       <Index>176</Index>
       <Categorization>Effect.light</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -397,8 +433,8 @@
         <Name>Grh/Effect/light</Name>
         <Source>0,0,512,512</Source>
       </Texture>
-    </Item43>
-    <Item44>
+    </Item47>
+    <Item48>
       <Index>101</Index>
       <Categorization>GUI.addstat</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -406,8 +442,8 @@
         <Name>Grh/GUI/addstat</Name>
         <Source>0,0,12,12</Source>
       </Texture>
-    </Item44>
-    <Item45>
+    </Item48>
+    <Item49>
       <Index>31</Index>
       <Categorization>GUI.Default.Controls.Button.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -415,8 +451,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item45>
-    <Item46>
+    </Item49>
+    <Item50>
       <Index>32</Index>
       <Categorization>GUI.Default.Controls.Button.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -424,8 +460,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item46>
-    <Item47>
+    </Item50>
+    <Item51>
       <Index>33</Index>
       <Categorization>GUI.Default.Controls.Button.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -433,8 +469,8 @@
         <Name>Grh/GUI/Default/Controls/Button/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item47>
-    <Item48>
+    </Item51>
+    <Item52>
       <Index>34</Index>
       <Categorization>GUI.Default.Controls.Button.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -442,8 +478,8 @@
         <Name>Grh/GUI/Default/Controls/Button/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item48>
-    <Item49>
+    </Item52>
+    <Item53>
       <Index>35</Index>
       <Categorization>GUI.Default.Controls.Button.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -451,8 +487,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item49>
-    <Item50>
+    </Item53>
+    <Item54>
       <Index>56</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -460,8 +496,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item50>
-    <Item51>
+    </Item54>
+    <Item55>
       <Index>48</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -469,8 +505,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item51>
-    <Item52>
+    </Item55>
+    <Item56>
       <Index>49</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -478,8 +514,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item52>
-    <Item53>
+    </Item56>
+    <Item57>
       <Index>50</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -487,8 +523,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item53>
-    <Item54>
+    </Item57>
+    <Item58>
       <Index>51</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -496,8 +532,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item54>
-    <Item55>
+    </Item58>
+    <Item59>
       <Index>52</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -505,8 +541,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item55>
-    <Item56>
+    </Item59>
+    <Item60>
       <Index>53</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -514,8 +550,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item56>
-    <Item57>
+    </Item60>
+    <Item61>
       <Index>57</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -523,8 +559,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item57>
-    <Item58>
+    </Item61>
+    <Item62>
       <Index>58</Index>
       <Categorization>GUI.Default.Controls.Button.MouseOver.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -532,8 +568,8 @@
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item58>
-    <Item59>
+    </Item62>
+    <Item63>
       <Index>55</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -541,8 +577,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item59>
-    <Item60>
+    </Item63>
+    <Item64>
       <Index>40</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -550,8 +586,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item60>
-    <Item61>
+    </Item64>
+    <Item65>
       <Index>41</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -559,8 +595,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item61>
-    <Item62>
+    </Item65>
+    <Item66>
       <Index>42</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -568,8 +604,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item62>
-    <Item63>
+    </Item66>
+    <Item67>
       <Index>43</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -577,8 +613,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item63>
-    <Item64>
+    </Item67>
+    <Item68>
       <Index>44</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -586,8 +622,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item64>
-    <Item65>
+    </Item68>
+    <Item69>
       <Index>45</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -595,8 +631,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item65>
-    <Item66>
+    </Item69>
+    <Item70>
       <Index>46</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -604,8 +640,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item66>
-    <Item67>
+    </Item70>
+    <Item71>
       <Index>47</Index>
       <Categorization>GUI.Default.Controls.Button.Pressed.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -613,8 +649,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Pressed/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item67>
-    <Item68>
+    </Item71>
+    <Item72>
       <Index>36</Index>
       <Categorization>GUI.Default.Controls.Button.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -622,8 +658,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item68>
-    <Item69>
+    </Item72>
+    <Item73>
       <Index>37</Index>
       <Categorization>GUI.Default.Controls.Button.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -631,8 +667,8 @@
         <Name>Grh/GUI/Default/Controls/Button/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item69>
-    <Item70>
+    </Item73>
+    <Item74>
       <Index>38</Index>
       <Categorization>GUI.Default.Controls.Button.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -640,8 +676,8 @@
         <Name>Grh/GUI/Default/Controls/Button/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item70>
-    <Item71>
+    </Item74>
+    <Item75>
       <Index>39</Index>
       <Categorization>GUI.Default.Controls.Button.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -649,8 +685,8 @@
         <Name>Grh/GUI/Default/Controls/Button/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item71>
-    <Item72>
+    </Item75>
+    <Item76>
       <Index>139</Index>
       <Categorization>GUI.Default.Controls.Character Slot.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -658,8 +694,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/Background</Name>
         <Source>0,0,64,64</Source>
       </Texture>
-    </Item72>
-    <Item73>
+    </Item76>
+    <Item77>
       <Index>188</Index>
       <Categorization>GUI.Default.Controls.Character Slot.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -667,8 +703,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item73>
-    <Item74>
+    </Item77>
+    <Item78>
       <Index>372</Index>
       <Categorization>GUI.Default.Controls.Character Slot.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -676,8 +712,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item74>
-    <Item75>
+    </Item78>
+    <Item79>
       <Index>373</Index>
       <Categorization>GUI.Default.Controls.Character Slot.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -685,8 +721,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item75>
-    <Item76>
+    </Item79>
+    <Item80>
       <Index>374</Index>
       <Categorization>GUI.Default.Controls.Character Slot.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -694,8 +730,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item76>
-    <Item77>
+    </Item80>
+    <Item81>
       <Index>379</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -703,8 +739,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Background</Name>
         <Source>0,0,64,64</Source>
       </Texture>
-    </Item77>
-    <Item78>
+    </Item81>
+    <Item82>
       <Index>380</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -712,8 +748,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item78>
-    <Item79>
+    </Item82>
+    <Item83>
       <Index>381</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -721,8 +757,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item79>
-    <Item80>
+    </Item83>
+    <Item84>
       <Index>382</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -730,8 +766,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item80>
-    <Item81>
+    </Item84>
+    <Item85>
       <Index>383</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -739,8 +775,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item81>
-    <Item82>
+    </Item85>
+    <Item86>
       <Index>384</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -748,8 +784,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item82>
-    <Item83>
+    </Item86>
+    <Item87>
       <Index>385</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -757,8 +793,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item83>
-    <Item84>
+    </Item87>
+    <Item88>
       <Index>386</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -766,8 +802,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item84>
-    <Item85>
+    </Item88>
+    <Item89>
       <Index>387</Index>
       <Categorization>GUI.Default.Controls.Character Slot.MouseOver.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -775,8 +811,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item85>
-    <Item86>
+    </Item89>
+    <Item90>
       <Index>375</Index>
       <Categorization>GUI.Default.Controls.Character Slot.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -784,8 +820,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item86>
-    <Item87>
+    </Item90>
+    <Item91>
       <Index>376</Index>
       <Categorization>GUI.Default.Controls.Character Slot.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -793,8 +829,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item87>
-    <Item88>
+    </Item91>
+    <Item92>
       <Index>377</Index>
       <Categorization>GUI.Default.Controls.Character Slot.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -802,8 +838,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item88>
-    <Item89>
+    </Item92>
+    <Item93>
       <Index>378</Index>
       <Categorization>GUI.Default.Controls.Character Slot.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -811,8 +847,8 @@
         <Name>Grh/GUI/Default/Controls/Character Slot/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item89>
-    <Item90>
+    </Item93>
+    <Item94>
       <Index>110</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -820,8 +856,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item90>
-    <Item91>
+    </Item94>
+    <Item95>
       <Index>60</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -829,8 +865,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item91>
-    <Item92>
+    </Item95>
+    <Item96>
       <Index>102</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -838,8 +874,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item92>
-    <Item93>
+    </Item96>
+    <Item97>
       <Index>103</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -847,8 +883,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item93>
-    <Item94>
+    </Item97>
+    <Item98>
       <Index>105</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -856,8 +892,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item94>
-    <Item95>
+    </Item98>
+    <Item99>
       <Index>106</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -865,8 +901,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item95>
-    <Item96>
+    </Item99>
+    <Item100>
       <Index>107</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -874,8 +910,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item96>
-    <Item97>
+    </Item100>
+    <Item101>
       <Index>108</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -883,8 +919,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item97>
-    <Item98>
+    </Item101>
+    <Item102>
       <Index>109</Index>
       <Categorization>GUI.Default.Controls.Chat Bubble.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -892,8 +928,8 @@
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item98>
-    <Item99>
+    </Item102>
+    <Item103>
       <Index>25</Index>
       <Categorization>GUI.Default.Controls.CheckBox.Ticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -901,8 +937,8 @@
         <Name>Grh/GUI/Default/Controls/CheckBox/Ticked</Name>
         <Source>0,0,15,15</Source>
       </Texture>
-    </Item99>
-    <Item100>
+    </Item103>
+    <Item104>
       <Index>26</Index>
       <Categorization>GUI.Default.Controls.CheckBox.TickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -910,8 +946,8 @@
         <Name>Grh/GUI/Default/Controls/CheckBox/TickedMouseOver</Name>
         <Source>0,0,15,15</Source>
       </Texture>
-    </Item100>
-    <Item101>
+    </Item104>
+    <Item105>
       <Index>27</Index>
       <Categorization>GUI.Default.Controls.CheckBox.TickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -919,8 +955,8 @@
         <Name>Grh/GUI/Default/Controls/CheckBox/TickedPressed</Name>
         <Source>0,0,15,15</Source>
       </Texture>
-    </Item101>
-    <Item102>
+    </Item105>
+    <Item106>
       <Index>28</Index>
       <Categorization>GUI.Default.Controls.CheckBox.Unticked</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -928,8 +964,8 @@
         <Name>Grh/GUI/Default/Controls/CheckBox/Unticked</Name>
         <Source>0,0,15,15</Source>
       </Texture>
-    </Item102>
-    <Item103>
+    </Item106>
+    <Item107>
       <Index>29</Index>
       <Categorization>GUI.Default.Controls.CheckBox.UntickedMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -937,8 +973,8 @@
         <Name>Grh/GUI/Default/Controls/CheckBox/UntickedMouseOver</Name>
         <Source>0,0,15,15</Source>
       </Texture>
-    </Item103>
-    <Item104>
+    </Item107>
+    <Item108>
       <Index>30</Index>
       <Categorization>GUI.Default.Controls.CheckBox.UntickedPressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -946,8 +982,8 @@
         <Name>Grh/GUI/Default/Controls/CheckBox/UntickedPressed</Name>
         <Source>0,0,15,15</Source>
       </Texture>
-    </Item104>
-    <Item105>
+    </Item108>
+    <Item109>
       <Index>16</Index>
       <Categorization>GUI.Default.Controls.Form.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -955,8 +991,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item105>
-    <Item106>
+    </Item109>
+    <Item110>
       <Index>17</Index>
       <Categorization>GUI.Default.Controls.Form.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -964,8 +1000,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Bottom</Name>
         <Source>0,0,1,6</Source>
       </Texture>
-    </Item106>
-    <Item107>
+    </Item110>
+    <Item111>
       <Index>18</Index>
       <Categorization>GUI.Default.Controls.Form.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -973,8 +1009,8 @@
         <Name>Grh/GUI/Default/Controls/Form/BottomLeft</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item107>
-    <Item108>
+    </Item111>
+    <Item112>
       <Index>19</Index>
       <Categorization>GUI.Default.Controls.Form.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -982,8 +1018,8 @@
         <Name>Grh/GUI/Default/Controls/Form/BottomRight</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item108>
-    <Item109>
+    </Item112>
+    <Item113>
       <Index>61</Index>
       <Categorization>GUI.Default.Controls.Form.Buttons.Close</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -991,8 +1027,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Buttons/Close</Name>
         <Source>0,0,9,9</Source>
       </Texture>
-    </Item109>
-    <Item110>
+    </Item113>
+    <Item114>
       <Index>63</Index>
       <Categorization>GUI.Default.Controls.Form.Buttons.CloseMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1000,8 +1036,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Buttons/CloseMouseOver</Name>
         <Source>0,0,9,9</Source>
       </Texture>
-    </Item110>
-    <Item111>
+    </Item114>
+    <Item115>
       <Index>64</Index>
       <Categorization>GUI.Default.Controls.Form.Buttons.ClosePressed</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1009,8 +1045,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Buttons/ClosePressed</Name>
         <Source>0,0,9,9</Source>
       </Texture>
-    </Item111>
-    <Item112>
+    </Item115>
+    <Item116>
       <Index>20</Index>
       <Categorization>GUI.Default.Controls.Form.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1018,8 +1054,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Left</Name>
         <Source>0,0,6,1</Source>
       </Texture>
-    </Item112>
-    <Item113>
+    </Item116>
+    <Item117>
       <Index>21</Index>
       <Categorization>GUI.Default.Controls.Form.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1027,8 +1063,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Right</Name>
         <Source>0,0,6,1</Source>
       </Texture>
-    </Item113>
-    <Item114>
+    </Item117>
+    <Item118>
       <Index>22</Index>
       <Categorization>GUI.Default.Controls.Form.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1036,8 +1072,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Top</Name>
         <Source>0,0,1,22</Source>
       </Texture>
-    </Item114>
-    <Item115>
+    </Item118>
+    <Item119>
       <Index>23</Index>
       <Categorization>GUI.Default.Controls.Form.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1045,8 +1081,8 @@
         <Name>Grh/GUI/Default/Controls/Form/TopLeft</Name>
         <Source>0,0,6,22</Source>
       </Texture>
-    </Item115>
-    <Item116>
+    </Item119>
+    <Item120>
       <Index>24</Index>
       <Categorization>GUI.Default.Controls.Form.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1054,8 +1090,8 @@
         <Name>Grh/GUI/Default/Controls/Form/TopRight</Name>
         <Source>0,0,6,22</Source>
       </Texture>
-    </Item116>
-    <Item117>
+    </Item120>
+    <Item121>
       <Index>153</Index>
       <Categorization>GUI.Default.Controls.ListBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1063,8 +1099,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item117>
-    <Item118>
+    </Item121>
+    <Item122>
       <Index>154</Index>
       <Categorization>GUI.Default.Controls.ListBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1072,8 +1108,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item118>
-    <Item119>
+    </Item122>
+    <Item123>
       <Index>155</Index>
       <Categorization>GUI.Default.Controls.ListBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1081,8 +1117,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item119>
-    <Item120>
+    </Item123>
+    <Item124>
       <Index>156</Index>
       <Categorization>GUI.Default.Controls.ListBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1090,8 +1126,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item120>
-    <Item121>
+    </Item124>
+    <Item125>
       <Index>162</Index>
       <Categorization>GUI.Default.Controls.ListBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1099,8 +1135,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item121>
-    <Item122>
+    </Item125>
+    <Item126>
       <Index>163</Index>
       <Categorization>GUI.Default.Controls.ListBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1108,8 +1144,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item122>
-    <Item123>
+    </Item126>
+    <Item127>
       <Index>168</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.First</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1117,8 +1153,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/First</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item123>
-    <Item124>
+    </Item127>
+    <Item128>
       <Index>172</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.First_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1126,8 +1162,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/First_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item124>
-    <Item125>
+    </Item128>
+    <Item129>
       <Index>169</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Last</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1135,8 +1171,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Last</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item125>
-    <Item126>
+    </Item129>
+    <Item130>
       <Index>173</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Last_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1144,8 +1180,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Last_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item126>
-    <Item127>
+    </Item130>
+    <Item131>
       <Index>170</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Next</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1153,8 +1189,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Next</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item127>
-    <Item128>
+    </Item131>
+    <Item132>
       <Index>174</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Next_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1162,8 +1198,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Next_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item128>
-    <Item129>
+    </Item132>
+    <Item133>
       <Index>171</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Previous</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1171,8 +1207,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Previous</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item129>
-    <Item130>
+    </Item133>
+    <Item134>
       <Index>175</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Previous_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1180,8 +1216,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Previous_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item130>
-    <Item131>
+    </Item134>
+    <Item135>
       <Index>164</Index>
       <Categorization>GUI.Default.Controls.ListBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1189,8 +1225,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item131>
-    <Item132>
+    </Item135>
+    <Item136>
       <Index>165</Index>
       <Categorization>GUI.Default.Controls.ListBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1198,8 +1234,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item132>
-    <Item133>
+    </Item136>
+    <Item137>
       <Index>166</Index>
       <Categorization>GUI.Default.Controls.ListBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1207,8 +1243,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item133>
-    <Item134>
+    </Item137>
+    <Item138>
       <Index>126</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1216,8 +1252,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item134>
-    <Item135>
+    </Item138>
+    <Item139>
       <Index>127</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1225,8 +1261,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item135>
-    <Item136>
+    </Item139>
+    <Item140>
       <Index>128</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1234,8 +1270,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item136>
-    <Item137>
+    </Item140>
+    <Item141>
       <Index>129</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1243,8 +1279,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item137>
-    <Item138>
+    </Item141>
+    <Item142>
       <Index>130</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1252,8 +1288,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item138>
-    <Item139>
+    </Item142>
+    <Item143>
       <Index>131</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1261,8 +1297,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item139>
-    <Item140>
+    </Item143>
+    <Item144>
       <Index>132</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1270,8 +1306,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item140>
-    <Item141>
+    </Item144>
+    <Item145>
       <Index>218</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1279,8 +1315,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item141>
-    <Item142>
+    </Item145>
+    <Item146>
       <Index>219</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1288,8 +1324,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item142>
-    <Item143>
+    </Item146>
+    <Item147>
       <Index>59</Index>
       <Categorization>GUI.Default.Controls.TextBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1297,8 +1333,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Background</Name>
         <Source>0,0,1,1</Source>
       </Texture>
-    </Item143>
-    <Item144>
+    </Item147>
+    <Item148>
       <Index>8</Index>
       <Categorization>GUI.Default.Controls.TextBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1306,8 +1342,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Bottom</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item144>
-    <Item145>
+    </Item148>
+    <Item149>
       <Index>9</Index>
       <Categorization>GUI.Default.Controls.TextBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1315,8 +1351,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item145>
-    <Item146>
+    </Item149>
+    <Item150>
       <Index>10</Index>
       <Categorization>GUI.Default.Controls.TextBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1324,8 +1360,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item146>
-    <Item147>
+    </Item150>
+    <Item151>
       <Index>11</Index>
       <Categorization>GUI.Default.Controls.TextBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1333,8 +1369,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Left</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item147>
-    <Item148>
+    </Item151>
+    <Item152>
       <Index>12</Index>
       <Categorization>GUI.Default.Controls.TextBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1342,8 +1378,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Right</Name>
         <Source>0,0,4,1</Source>
       </Texture>
-    </Item148>
-    <Item149>
+    </Item152>
+    <Item153>
       <Index>13</Index>
       <Categorization>GUI.Default.Controls.TextBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1351,8 +1387,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Top</Name>
         <Source>0,0,1,4</Source>
       </Texture>
-    </Item149>
-    <Item150>
+    </Item153>
+    <Item154>
       <Index>14</Index>
       <Categorization>GUI.Default.Controls.TextBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1360,8 +1396,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item150>
-    <Item151>
+    </Item154>
+    <Item155>
       <Index>15</Index>
       <Categorization>GUI.Default.Controls.TextBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1369,8 +1405,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item151>
-    <Item152>
+    </Item155>
+    <Item156>
       <Index>136</Index>
       <Categorization>GUI.Default.item_slot</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1378,8 +1414,8 @@
         <Name>Grh/GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item152>
-    <Item153>
+    </Item156>
+    <Item157>
       <Index>143</Index>
       <Categorization>GUI.Default.status icon border</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1387,8 +1423,8 @@
         <Name>Grh/GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item153>
-    <Item154>
+    </Item157>
+    <Item158>
       <Index>133</Index>
       <Categorization>GUI.Default.Toolbar.Equipped</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1396,8 +1432,8 @@
         <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item154>
-    <Item155>
+    </Item158>
+    <Item159>
       <Index>167</Index>
       <Categorization>GUI.Default.Toolbar.Guild</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1405,8 +1441,8 @@
         <Name>Grh/GUI/Default/Toolbar/Guild</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item155>
-    <Item156>
+    </Item159>
+    <Item160>
       <Index>134</Index>
       <Categorization>GUI.Default.Toolbar.Inventory</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1414,8 +1450,8 @@
         <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item156>
-    <Item157>
+    </Item160>
+    <Item161>
       <Index>135</Index>
       <Categorization>GUI.Default.Toolbar.Skills</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1423,8 +1459,8 @@
         <Name>Grh/GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item157>
-    <Item158>
+    </Item161>
+    <Item162>
       <Index>144</Index>
       <Categorization>GUI.Default.Toolbar.Stats</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1432,8 +1468,8 @@
         <Name>Grh/GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item158>
-    <Item159>
+    </Item162>
+    <Item163>
       <Index>100</Index>
       <Categorization>Item.Back.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1441,8 +1477,8 @@
         <Name>Grh/Item/Back/crystal</Name>
         <Source>0,0,15,25</Source>
       </Texture>
-    </Item159>
-    <Item160>
+    </Item163>
+    <Item164>
       <Index>99</Index>
       <Categorization>Item.Body.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1450,8 +1486,8 @@
         <Name>Grh/Item/Body/crystal</Name>
         <Source>0,0,22,22</Source>
       </Texture>
-    </Item160>
-    <Item161>
+    </Item164>
+    <Item165>
       <Index>98</Index>
       <Categorization>Item.Feet.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1459,8 +1495,8 @@
         <Name>Grh/Item/Feet/crystal</Name>
         <Source>0,0,15,14</Source>
       </Texture>
-    </Item161>
-    <Item162>
+    </Item165>
+    <Item166>
       <Index>97</Index>
       <Categorization>Item.Head.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1468,8 +1504,8 @@
         <Name>Grh/Item/Head/crystal</Name>
         <Source>0,0,11,16</Source>
       </Texture>
-    </Item162>
-    <Item163>
+    </Item166>
+    <Item167>
       <Index>96</Index>
       <Categorization>Item.Melee.titaniumsword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1477,8 +1513,8 @@
         <Name>Grh/Item/Melee/titaniumsword</Name>
         <Source>0,0,24,24</Source>
       </Texture>
-    </Item163>
-    <Item164>
+    </Item167>
+    <Item168>
       <Index>94</Index>
       <Categorization>Item.Potion.blue</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1486,8 +1522,8 @@
         <Name>Grh/Item/Potion/blue</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item164>
-    <Item165>
+    </Item168>
+    <Item169>
       <Index>95</Index>
       <Categorization>Item.Potion.red</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1495,8 +1531,8 @@
         <Name>Grh/Item/Potion/red</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item165>
-    <Item166>
+    </Item169>
+    <Item170>
       <Index>177</Index>
       <Categorization>Item.Ranged.pistol</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1504,8 +1540,8 @@
         <Name>Grh/Item/Ranged/pistol</Name>
         <Source>0,0,15,18</Source>
       </Texture>
-    </Item166>
-    <Item167>
+    </Item170>
+    <Item171>
       <Index>182</Index>
       <Categorization>Item.Ranged.rock</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1513,8 +1549,8 @@
         <Name>Grh/Item/Ranged/rock</Name>
         <Source>0,0,11,9</Source>
       </Texture>
-    </Item167>
-    <Item168>
+    </Item171>
+    <Item172>
       <Index>294</Index>
       <Categorization>Map.Checkered.bg.00</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1522,8 +1558,8 @@
         <Name>Grh/Map/Checkered/bg/00</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item168>
-    <Item169>
+    </Item172>
+    <Item173>
       <Index>295</Index>
       <Categorization>Map.Checkered.bg.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1531,8 +1567,8 @@
         <Name>Grh/Map/Checkered/bg/01</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item169>
-    <Item170>
+    </Item173>
+    <Item174>
       <Index>296</Index>
       <Categorization>Map.Checkered.bg.02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1540,8 +1576,8 @@
         <Name>Grh/Map/Checkered/bg/02</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item170>
-    <Item171>
+    </Item174>
+    <Item175>
       <Index>297</Index>
       <Categorization>Map.Checkered.bg.03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1549,8 +1585,8 @@
         <Name>Grh/Map/Checkered/bg/03</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item171>
-    <Item172>
+    </Item175>
+    <Item176>
       <Index>298</Index>
       <Categorization>Map.Checkered.bgwall.brown_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1558,8 +1594,8 @@
         <Name>Grh/Map/Checkered/bgwall/brown_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item172>
-    <Item173>
+    </Item176>
+    <Item177>
       <Index>299</Index>
       <Categorization>Map.Checkered.bgwall.brown_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1567,8 +1603,8 @@
         <Name>Grh/Map/Checkered/bgwall/brown_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item173>
-    <Item174>
+    </Item177>
+    <Item178>
       <Index>300</Index>
       <Categorization>Map.Checkered.bgwall.brown_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1576,8 +1612,8 @@
         <Name>Grh/Map/Checkered/bgwall/brown_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item174>
-    <Item175>
+    </Item178>
+    <Item179>
       <Index>301</Index>
       <Categorization>Map.Checkered.bgwall.green_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1585,8 +1621,8 @@
         <Name>Grh/Map/Checkered/bgwall/green_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item175>
-    <Item176>
+    </Item179>
+    <Item180>
       <Index>302</Index>
       <Categorization>Map.Checkered.bgwall.green_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1594,8 +1630,8 @@
         <Name>Grh/Map/Checkered/bgwall/green_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item176>
-    <Item177>
+    </Item180>
+    <Item181>
       <Index>303</Index>
       <Categorization>Map.Checkered.bgwall.green_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1603,8 +1639,8 @@
         <Name>Grh/Map/Checkered/bgwall/green_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item177>
-    <Item178>
+    </Item181>
+    <Item182>
       <Index>304</Index>
       <Categorization>Map.Checkered.bgwall.mid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1612,8 +1648,8 @@
         <Name>Grh/Map/Checkered/bgwall/mid_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item178>
-    <Item179>
+    </Item182>
+    <Item183>
       <Index>305</Index>
       <Categorization>Map.Checkered.bgwall.mid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1621,8 +1657,8 @@
         <Name>Grh/Map/Checkered/bgwall/mid_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item179>
-    <Item180>
+    </Item183>
+    <Item184>
       <Index>371</Index>
       <Categorization>Map.Checkered.bgwall.mid_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1630,8 +1666,8 @@
         <Name>Grh/Map/Checkered/bgwall/mid_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item180>
-    <Item181>
+    </Item184>
+    <Item185>
       <Index>306</Index>
       <Categorization>Map.Checkered.bgwall.side_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1639,8 +1675,8 @@
         <Name>Grh/Map/Checkered/bgwall/side_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item181>
-    <Item182>
+    </Item185>
+    <Item186>
       <Index>307</Index>
       <Categorization>Map.Checkered.bgwall.side_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1648,8 +1684,8 @@
         <Name>Grh/Map/Checkered/bgwall/side_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item182>
-    <Item183>
+    </Item186>
+    <Item187>
       <Index>322</Index>
       <Categorization>Map.Checkered.decor.bridge dark.mid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1657,8 +1693,8 @@
         <Name>Grh/Map/Checkered/decor/bridge dark/mid_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item183>
-    <Item184>
+    </Item187>
+    <Item188>
       <Index>323</Index>
       <Categorization>Map.Checkered.decor.bridge dark.mid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1666,8 +1702,8 @@
         <Name>Grh/Map/Checkered/decor/bridge dark/mid_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item188>
+    <Item189>
       <Index>324</Index>
       <Categorization>Map.Checkered.decor.bridge dark.rope_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1675,8 +1711,8 @@
         <Name>Grh/Map/Checkered/decor/bridge dark/rope_01</Name>
         <Source>0,0,30,20</Source>
       </Texture>
-    </Item185>
-    <Item186>
+    </Item189>
+    <Item190>
       <Index>325</Index>
       <Categorization>Map.Checkered.decor.bridge dark.rope_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1684,8 +1720,8 @@
         <Name>Grh/Map/Checkered/decor/bridge dark/rope_02</Name>
         <Source>0,0,10,20</Source>
       </Texture>
-    </Item186>
-    <Item187>
+    </Item190>
+    <Item191>
       <Index>326</Index>
       <Categorization>Map.Checkered.decor.bridge dark.rope_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1693,8 +1729,8 @@
         <Name>Grh/Map/Checkered/decor/bridge dark/rope_03</Name>
         <Source>0,0,2,12</Source>
       </Texture>
-    </Item187>
-    <Item188>
+    </Item191>
+    <Item192>
       <Index>327</Index>
       <Categorization>Map.Checkered.decor.bridge dark.side_mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1702,8 +1738,8 @@
         <Name>Grh/Map/Checkered/decor/bridge dark/side_mid</Name>
         <Source>0,0,10,22</Source>
       </Texture>
-    </Item188>
-    <Item189>
+    </Item192>
+    <Item193>
       <Index>328</Index>
       <Categorization>Map.Checkered.decor.bridge dark.side_top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1711,8 +1747,8 @@
         <Name>Grh/Map/Checkered/decor/bridge dark/side_top</Name>
         <Source>0,0,10,32</Source>
       </Texture>
-    </Item189>
-    <Item190>
+    </Item193>
+    <Item194>
       <Index>312</Index>
       <Categorization>Map.Checkered.decor.bridge.bottom_mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1720,8 +1756,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/bottom_mid</Name>
         <Source>0,0,32,19</Source>
       </Texture>
-    </Item190>
-    <Item191>
+    </Item194>
+    <Item195>
       <Index>313</Index>
       <Categorization>Map.Checkered.decor.bridge.bottom_side</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1729,8 +1765,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/bottom_side</Name>
         <Source>0,0,32,18</Source>
       </Texture>
-    </Item191>
-    <Item192>
+    </Item195>
+    <Item196>
       <Index>314</Index>
       <Categorization>Map.Checkered.decor.bridge.rope_mid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1738,8 +1774,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/rope_mid_01</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item192>
-    <Item193>
+    </Item196>
+    <Item197>
       <Index>315</Index>
       <Categorization>Map.Checkered.decor.bridge.rope_mid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1747,8 +1783,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/rope_mid_02</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item193>
-    <Item194>
+    </Item197>
+    <Item198>
       <Index>316</Index>
       <Categorization>Map.Checkered.decor.bridge.rope_mid_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1756,8 +1792,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/rope_mid_03</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item194>
-    <Item195>
+    </Item198>
+    <Item199>
       <Index>317</Index>
       <Categorization>Map.Checkered.decor.bridge.rope_mid_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1765,8 +1801,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/rope_mid_04</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item195>
-    <Item196>
+    </Item199>
+    <Item200>
       <Index>318</Index>
       <Categorization>Map.Checkered.decor.bridge.rope_side</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1774,8 +1810,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/rope_side</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item196>
-    <Item197>
+    </Item200>
+    <Item201>
       <Index>319</Index>
       <Categorization>Map.Checkered.decor.bridge.side_bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1783,8 +1819,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/side_bottom</Name>
         <Source>0,0,32,14</Source>
       </Texture>
-    </Item197>
-    <Item198>
+    </Item201>
+    <Item202>
       <Index>320</Index>
       <Categorization>Map.Checkered.decor.bridge.side_mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1792,8 +1828,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/side_mid</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item198>
-    <Item199>
+    </Item202>
+    <Item203>
       <Index>321</Index>
       <Categorization>Map.Checkered.decor.bridge.side_top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1801,8 +1837,8 @@
         <Name>Grh/Map/Checkered/decor/bridge/side_top</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item199>
-    <Item200>
+    </Item203>
+    <Item204>
       <Index>308</Index>
       <Categorization>Map.Checkered.decor.sign</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1810,8 +1846,8 @@
         <Name>Grh/Map/Checkered/decor/sign</Name>
         <Source>0,0,60,64</Source>
       </Texture>
-    </Item200>
-    <Item201>
+    </Item204>
+    <Item205>
       <Index>309</Index>
       <Categorization>Map.Checkered.decor.spike_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1819,8 +1855,8 @@
         <Name>Grh/Map/Checkered/decor/spike_01</Name>
         <Source>0,0,32,30</Source>
       </Texture>
-    </Item201>
-    <Item202>
+    </Item205>
+    <Item206>
       <Index>310</Index>
       <Categorization>Map.Checkered.decor.spike_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1828,8 +1864,8 @@
         <Name>Grh/Map/Checkered/decor/spike_02</Name>
         <Source>0,0,32,30</Source>
       </Texture>
-    </Item202>
-    <Item203>
+    </Item206>
+    <Item207>
       <Index>311</Index>
       <Categorization>Map.Checkered.decor.spike_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1837,8 +1873,8 @@
         <Name>Grh/Map/Checkered/decor/spike_03</Name>
         <Source>0,0,26,10</Source>
       </Texture>
-    </Item203>
-    <Item204>
+    </Item207>
+    <Item208>
       <Index>329</Index>
       <Categorization>Map.Checkered.platform.bottomleft_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1846,8 +1882,8 @@
         <Name>Grh/Map/Checkered/platform/bottomleft_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item204>
-    <Item205>
+    </Item208>
+    <Item209>
       <Index>330</Index>
       <Categorization>Map.Checkered.platform.bottommid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1855,8 +1891,8 @@
         <Name>Grh/Map/Checkered/platform/bottommid_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item205>
-    <Item206>
+    </Item209>
+    <Item210>
       <Index>331</Index>
       <Categorization>Map.Checkered.platform.bottomright_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1864,8 +1900,8 @@
         <Name>Grh/Map/Checkered/platform/bottomright_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item206>
-    <Item207>
+    </Item210>
+    <Item211>
       <Index>332</Index>
       <Categorization>Map.Checkered.platform.left_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1873,8 +1909,8 @@
         <Name>Grh/Map/Checkered/platform/left_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item207>
-    <Item208>
+    </Item211>
+    <Item212>
       <Index>333</Index>
       <Categorization>Map.Checkered.platform.mid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1882,8 +1918,8 @@
         <Name>Grh/Map/Checkered/platform/mid_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item208>
-    <Item209>
+    </Item212>
+    <Item213>
       <Index>334</Index>
       <Categorization>Map.Checkered.platform.mid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1891,8 +1927,8 @@
         <Name>Grh/Map/Checkered/platform/mid_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item209>
-    <Item210>
+    </Item213>
+    <Item214>
       <Index>335</Index>
       <Categorization>Map.Checkered.platform.mid_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1900,8 +1936,8 @@
         <Name>Grh/Map/Checkered/platform/mid_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item210>
-    <Item211>
+    </Item214>
+    <Item215>
       <Index>336</Index>
       <Categorization>Map.Checkered.platform.mid_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1909,8 +1945,8 @@
         <Name>Grh/Map/Checkered/platform/mid_04</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item211>
-    <Item212>
+    </Item215>
+    <Item216>
       <Index>337</Index>
       <Categorization>Map.Checkered.platform.mid_05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1918,8 +1954,8 @@
         <Name>Grh/Map/Checkered/platform/mid_05</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item212>
-    <Item213>
+    </Item216>
+    <Item217>
       <Index>338</Index>
       <Categorization>Map.Checkered.platform.mid_06</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1927,8 +1963,8 @@
         <Name>Grh/Map/Checkered/platform/mid_06</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item213>
-    <Item214>
+    </Item217>
+    <Item218>
       <Index>339</Index>
       <Categorization>Map.Checkered.platform.mid_07</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1936,8 +1972,8 @@
         <Name>Grh/Map/Checkered/platform/mid_07</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item214>
-    <Item215>
+    </Item218>
+    <Item219>
       <Index>340</Index>
       <Categorization>Map.Checkered.platform.right_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1945,8 +1981,8 @@
         <Name>Grh/Map/Checkered/platform/right_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item215>
-    <Item216>
+    </Item219>
+    <Item220>
       <Index>341</Index>
       <Categorization>Map.Checkered.platform.topleft_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1954,8 +1990,8 @@
         <Name>Grh/Map/Checkered/platform/topleft_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item216>
-    <Item217>
+    </Item220>
+    <Item221>
       <Index>342</Index>
       <Categorization>Map.Checkered.platform.topmid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1963,8 +1999,8 @@
         <Name>Grh/Map/Checkered/platform/topmid_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item217>
-    <Item218>
+    </Item221>
+    <Item222>
       <Index>343</Index>
       <Categorization>Map.Checkered.platform.topmid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1972,8 +2008,8 @@
         <Name>Grh/Map/Checkered/platform/topmid_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item218>
-    <Item219>
+    </Item222>
+    <Item223>
       <Index>344</Index>
       <Categorization>Map.Checkered.platform.topmid_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1981,8 +2017,8 @@
         <Name>Grh/Map/Checkered/platform/topmid_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item219>
-    <Item220>
+    </Item223>
+    <Item224>
       <Index>345</Index>
       <Categorization>Map.Checkered.platform.topmid_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1990,8 +2026,8 @@
         <Name>Grh/Map/Checkered/platform/topmid_04</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item220>
-    <Item221>
+    </Item224>
+    <Item225>
       <Index>346</Index>
       <Categorization>Map.Checkered.platform.topright_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1999,8 +2035,8 @@
         <Name>Grh/Map/Checkered/platform/topright_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item221>
-    <Item222>
+    </Item225>
+    <Item226>
       <Index>347</Index>
       <Categorization>Map.Checkered.platform.top_overhang_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2008,8 +2044,8 @@
         <Name>Grh/Map/Checkered/platform/top_overhang_01</Name>
         <Source>0,0,10,32</Source>
       </Texture>
-    </Item222>
-    <Item223>
+    </Item226>
+    <Item227>
       <Index>348</Index>
       <Categorization>Map.Checkered.platform.top_overhang_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2017,8 +2053,8 @@
         <Name>Grh/Map/Checkered/platform/top_overhang_02</Name>
         <Source>0,0,8,32</Source>
       </Texture>
-    </Item223>
-    <Item224>
+    </Item227>
+    <Item228>
       <Index>349</Index>
       <Categorization>Map.Checkered.vines.dark_bottom_fat</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2026,8 +2062,8 @@
         <Name>Grh/Map/Checkered/vines/dark_bottom_fat</Name>
         <Source>0,0,14,16</Source>
       </Texture>
-    </Item224>
-    <Item225>
+    </Item228>
+    <Item229>
       <Index>350</Index>
       <Categorization>Map.Checkered.vines.dark_bottom_thin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2035,8 +2071,8 @@
         <Name>Grh/Map/Checkered/vines/dark_bottom_thin</Name>
         <Source>0,0,10,14</Source>
       </Texture>
-    </Item225>
-    <Item226>
+    </Item229>
+    <Item230>
       <Index>351</Index>
       <Categorization>Map.Checkered.vines.dark_grouped_bottom_a</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2044,8 +2080,8 @@
         <Name>Grh/Map/Checkered/vines/dark_grouped_bottom_a</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item226>
-    <Item227>
+    </Item230>
+    <Item231>
       <Index>352</Index>
       <Categorization>Map.Checkered.vines.dark_grouped_bottom_b</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2053,8 +2089,8 @@
         <Name>Grh/Map/Checkered/vines/dark_grouped_bottom_b</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item227>
-    <Item228>
+    </Item231>
+    <Item232>
       <Index>353</Index>
       <Categorization>Map.Checkered.vines.dark_grouped_mid_a</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2062,8 +2098,8 @@
         <Name>Grh/Map/Checkered/vines/dark_grouped_mid_a</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item228>
-    <Item229>
+    </Item232>
+    <Item233>
       <Index>354</Index>
       <Categorization>Map.Checkered.vines.dark_grouped_mid_b</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2071,8 +2107,8 @@
         <Name>Grh/Map/Checkered/vines/dark_grouped_mid_b</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item229>
-    <Item230>
+    </Item233>
+    <Item234>
       <Index>355</Index>
       <Categorization>Map.Checkered.vines.dark_grouped_top_a</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2080,8 +2116,8 @@
         <Name>Grh/Map/Checkered/vines/dark_grouped_top_a</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item230>
-    <Item231>
+    </Item234>
+    <Item235>
       <Index>356</Index>
       <Categorization>Map.Checkered.vines.dark_grouped_top_b</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2089,8 +2125,8 @@
         <Name>Grh/Map/Checkered/vines/dark_grouped_top_b</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item231>
-    <Item232>
+    </Item235>
+    <Item236>
       <Index>357</Index>
       <Categorization>Map.Checkered.vines.dark_mid_fat</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2098,8 +2134,8 @@
         <Name>Grh/Map/Checkered/vines/dark_mid_fat</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item232>
-    <Item233>
+    </Item236>
+    <Item237>
       <Index>358</Index>
       <Categorization>Map.Checkered.vines.dark_top_fat</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2107,8 +2143,8 @@
         <Name>Grh/Map/Checkered/vines/dark_top_fat</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item233>
-    <Item234>
+    </Item237>
+    <Item238>
       <Index>359</Index>
       <Categorization>Map.Checkered.vines.dark_top_thin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2116,8 +2152,8 @@
         <Name>Grh/Map/Checkered/vines/dark_top_thin</Name>
         <Source>0,0,10,32</Source>
       </Texture>
-    </Item234>
-    <Item235>
+    </Item238>
+    <Item239>
       <Index>360</Index>
       <Categorization>Map.Checkered.vines.light_bottom_fat</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2125,8 +2161,8 @@
         <Name>Grh/Map/Checkered/vines/light_bottom_fat</Name>
         <Source>0,0,14,16</Source>
       </Texture>
-    </Item235>
-    <Item236>
+    </Item239>
+    <Item240>
       <Index>361</Index>
       <Categorization>Map.Checkered.vines.light_bottom_thin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2134,8 +2170,8 @@
         <Name>Grh/Map/Checkered/vines/light_bottom_thin</Name>
         <Source>0,0,10,14</Source>
       </Texture>
-    </Item236>
-    <Item237>
+    </Item240>
+    <Item241>
       <Index>362</Index>
       <Categorization>Map.Checkered.vines.light_grouped_bottom_a</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2143,8 +2179,8 @@
         <Name>Grh/Map/Checkered/vines/light_grouped_bottom_a</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item237>
-    <Item238>
+    </Item241>
+    <Item242>
       <Index>363</Index>
       <Categorization>Map.Checkered.vines.light_grouped_bottom_b</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2152,8 +2188,8 @@
         <Name>Grh/Map/Checkered/vines/light_grouped_bottom_b</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item238>
-    <Item239>
+    </Item242>
+    <Item243>
       <Index>364</Index>
       <Categorization>Map.Checkered.vines.light_grouped_mid_a</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2161,8 +2197,8 @@
         <Name>Grh/Map/Checkered/vines/light_grouped_mid_a</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item239>
-    <Item240>
+    </Item243>
+    <Item244>
       <Index>365</Index>
       <Categorization>Map.Checkered.vines.light_grouped_mid_b</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2170,8 +2206,8 @@
         <Name>Grh/Map/Checkered/vines/light_grouped_mid_b</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item240>
-    <Item241>
+    </Item244>
+    <Item245>
       <Index>366</Index>
       <Categorization>Map.Checkered.vines.light_grouped_top_a</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2179,8 +2215,8 @@
         <Name>Grh/Map/Checkered/vines/light_grouped_top_a</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item241>
-    <Item242>
+    </Item245>
+    <Item246>
       <Index>367</Index>
       <Categorization>Map.Checkered.vines.light_grouped_top_b</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2188,8 +2224,8 @@
         <Name>Grh/Map/Checkered/vines/light_grouped_top_b</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item242>
-    <Item243>
+    </Item246>
+    <Item247>
       <Index>368</Index>
       <Categorization>Map.Checkered.vines.light_mid_fat</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2197,8 +2233,8 @@
         <Name>Grh/Map/Checkered/vines/light_mid_fat</Name>
         <Source>0,0,14,32</Source>
       </Texture>
-    </Item243>
-    <Item244>
+    </Item247>
+    <Item248>
       <Index>369</Index>
       <Categorization>Map.Checkered.vines.light_mid_thin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2206,8 +2242,8 @@
         <Name>Grh/Map/Checkered/vines/light_mid_thin</Name>
         <Source>0,0,10,32</Source>
       </Texture>
-    </Item244>
-    <Item245>
+    </Item248>
+    <Item249>
       <Index>370</Index>
       <Categorization>Map.Checkered.vines.light_top_thin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2215,8 +2251,8 @@
         <Name>Grh/Map/Checkered/vines/light_top_thin</Name>
         <Source>0,0,10,28</Source>
       </Texture>
-    </Item245>
-    <Item246>
+    </Item249>
+    <Item250>
       <Index>114</Index>
       <Categorization>Map.Desert.doorway</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2224,8 +2260,8 @@
         <Name>Grh/Map/Desert/doorway</Name>
         <Source>0,0,101,99</Source>
       </Texture>
-    </Item246>
-    <Item247>
+    </Item250>
+    <Item251>
       <Index>115</Index>
       <Categorization>Map.Desert.hill 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2233,8 +2269,8 @@
         <Name>Grh/Map/Desert/hill 1</Name>
         <Source>0,0,97,64</Source>
       </Texture>
-    </Item247>
-    <Item248>
+    </Item251>
+    <Item252>
       <Index>116</Index>
       <Categorization>Map.Desert.hill 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2242,8 +2278,8 @@
         <Name>Grh/Map/Desert/hill 2</Name>
         <Source>0,0,69,43</Source>
       </Texture>
-    </Item248>
-    <Item249>
+    </Item252>
+    <Item253>
       <Index>117</Index>
       <Categorization>Map.Desert.Platforms.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2251,8 +2287,8 @@
         <Name>Grh/Map/Desert/Platforms/01</Name>
         <Source>0,0,93,47</Source>
       </Texture>
-    </Item249>
-    <Item250>
+    </Item253>
+    <Item254>
       <Index>118</Index>
       <Categorization>Map.Desert.Shrubbery.blue flower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2260,8 +2296,8 @@
         <Name>Grh/Map/Desert/Shrubbery/blue flower</Name>
         <Source>0,0,23,34</Source>
       </Texture>
-    </Item250>
-    <Item251>
+    </Item254>
+    <Item255>
       <Index>119</Index>
       <Categorization>Map.Desert.Shrubbery.cactus</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2269,8 +2305,8 @@
         <Name>Grh/Map/Desert/Shrubbery/cactus</Name>
         <Source>0,0,40,65</Source>
       </Texture>
-    </Item251>
-    <Item252>
+    </Item255>
+    <Item256>
       <Index>120</Index>
       <Categorization>Map.Desert.Shrubbery.red flower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2278,8 +2314,8 @@
         <Name>Grh/Map/Desert/Shrubbery/red flower</Name>
         <Source>0,0,23,34</Source>
       </Texture>
-    </Item252>
-    <Item253>
+    </Item256>
+    <Item257>
       <Index>121</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2287,8 +2323,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 01</Name>
         <Source>0,0,24,23</Source>
       </Texture>
-    </Item253>
-    <Item254>
+    </Item257>
+    <Item258>
       <Index>122</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2296,8 +2332,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 02</Name>
         <Source>0,0,22,27</Source>
       </Texture>
-    </Item254>
-    <Item255>
+    </Item258>
+    <Item259>
       <Index>123</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2305,8 +2341,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 03</Name>
         <Source>0,0,13,16</Source>
       </Texture>
-    </Item255>
-    <Item256>
+    </Item259>
+    <Item260>
       <Index>124</Index>
       <Categorization>Map.Desert.Shrubbery.tree</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2314,8 +2350,8 @@
         <Name>Grh/Map/Desert/Shrubbery/tree</Name>
         <Source>0,0,39,89</Source>
       </Texture>
-    </Item256>
-    <Item257>
+    </Item260>
+    <Item261>
       <Index>145</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Center.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2323,8 +2359,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Center/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item257>
-    <Item258>
+    </Item261>
+    <Item262>
       <Index>146</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Left.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2332,8 +2368,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Left/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item258>
-    <Item259>
+    </Item262>
+    <Item263>
       <Index>147</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Right.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2341,8 +2377,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Right/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item259>
-    <Item260>
+    </Item263>
+    <Item264>
       <Index>148</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Center.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2350,8 +2386,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Center/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item260>
-    <Item261>
+    </Item264>
+    <Item265>
       <Index>149</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Left.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2359,8 +2395,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Left/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item261>
-    <Item262>
+    </Item265>
+    <Item266>
       <Index>150</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Right.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2368,8 +2404,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Right/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item262>
-    <Item263>
+    </Item266>
+    <Item267>
       <Index>190</Index>
       <Categorization>Map.Winter.bg.00</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2377,8 +2413,8 @@
         <Name>Grh/Map/Winter/bg/00</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item263>
-    <Item264>
+    </Item267>
+    <Item268>
       <Index>191</Index>
       <Categorization>Map.Winter.bg.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2386,8 +2422,8 @@
         <Name>Grh/Map/Winter/bg/01</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item264>
-    <Item265>
+    </Item268>
+    <Item269>
       <Index>192</Index>
       <Categorization>Map.Winter.bg.02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2395,8 +2431,8 @@
         <Name>Grh/Map/Winter/bg/02</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item265>
-    <Item266>
+    </Item269>
+    <Item270>
       <Index>193</Index>
       <Categorization>Map.Winter.bg.03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2404,8 +2440,8 @@
         <Name>Grh/Map/Winter/bg/03</Name>
         <Source>0,0,640,480</Source>
       </Texture>
-    </Item266>
-    <Item267>
+    </Item270>
+    <Item271>
       <Index>194</Index>
       <Categorization>Map.Winter.cliff.corner_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2413,8 +2449,8 @@
         <Name>Grh/Map/Winter/cliff/corner_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item267>
-    <Item268>
+    </Item271>
+    <Item272>
       <Index>255</Index>
       <Categorization>Map.Winter.cliff.dark.bottom_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2422,8 +2458,8 @@
         <Name>Grh/Map/Winter/cliff/dark/bottom_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item268>
-    <Item269>
+    </Item272>
+    <Item273>
       <Index>256</Index>
       <Categorization>Map.Winter.cliff.dark.bottom_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2431,8 +2467,8 @@
         <Name>Grh/Map/Winter/cliff/dark/bottom_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item269>
-    <Item270>
+    </Item273>
+    <Item274>
       <Index>257</Index>
       <Categorization>Map.Winter.cliff.dark.bottom_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2440,8 +2476,8 @@
         <Name>Grh/Map/Winter/cliff/dark/bottom_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item270>
-    <Item271>
+    </Item274>
+    <Item275>
       <Index>258</Index>
       <Categorization>Map.Winter.cliff.dark.mid_a_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2449,8 +2485,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_a_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item271>
-    <Item272>
+    </Item275>
+    <Item276>
       <Index>259</Index>
       <Categorization>Map.Winter.cliff.dark.mid_a_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2458,8 +2494,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_a_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item272>
-    <Item273>
+    </Item276>
+    <Item277>
       <Index>260</Index>
       <Categorization>Map.Winter.cliff.dark.mid_a_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2467,8 +2503,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_a_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item273>
-    <Item274>
+    </Item277>
+    <Item278>
       <Index>261</Index>
       <Categorization>Map.Winter.cliff.dark.mid_a_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2476,8 +2512,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_a_04</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item274>
-    <Item275>
+    </Item278>
+    <Item279>
       <Index>262</Index>
       <Categorization>Map.Winter.cliff.dark.mid_b_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2485,8 +2521,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_b_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item275>
-    <Item276>
+    </Item279>
+    <Item280>
       <Index>263</Index>
       <Categorization>Map.Winter.cliff.dark.mid_b_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2494,8 +2530,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_b_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item276>
-    <Item277>
+    </Item280>
+    <Item281>
       <Index>264</Index>
       <Categorization>Map.Winter.cliff.dark.mid_b_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2503,8 +2539,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_b_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item277>
-    <Item278>
+    </Item281>
+    <Item282>
       <Index>265</Index>
       <Categorization>Map.Winter.cliff.dark.mid_b_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2512,8 +2548,8 @@
         <Name>Grh/Map/Winter/cliff/dark/mid_b_04</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item278>
-    <Item279>
+    </Item282>
+    <Item283>
       <Index>266</Index>
       <Categorization>Map.Winter.cliff.dark.side_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2521,8 +2557,8 @@
         <Name>Grh/Map/Winter/cliff/dark/side_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item279>
-    <Item280>
+    </Item283>
+    <Item284>
       <Index>267</Index>
       <Categorization>Map.Winter.cliff.dark.side_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2530,8 +2566,8 @@
         <Name>Grh/Map/Winter/cliff/dark/side_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item280>
-    <Item281>
+    </Item284>
+    <Item285>
       <Index>268</Index>
       <Categorization>Map.Winter.cliff.dark.top_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2539,8 +2575,8 @@
         <Name>Grh/Map/Winter/cliff/dark/top_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item281>
-    <Item282>
+    </Item285>
+    <Item286>
       <Index>269</Index>
       <Categorization>Map.Winter.cliff.dark.top_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2548,8 +2584,8 @@
         <Name>Grh/Map/Winter/cliff/dark/top_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item282>
-    <Item283>
+    </Item286>
+    <Item287>
       <Index>270</Index>
       <Categorization>Map.Winter.cliff.dark.top_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2557,8 +2593,8 @@
         <Name>Grh/Map/Winter/cliff/dark/top_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item283>
-    <Item284>
+    </Item287>
+    <Item288>
       <Index>195</Index>
       <Categorization>Map.Winter.cliff.dry_bottom_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2566,8 +2602,8 @@
         <Name>Grh/Map/Winter/cliff/dry_bottom_01</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item284>
-    <Item285>
+    </Item288>
+    <Item289>
       <Index>196</Index>
       <Categorization>Map.Winter.cliff.dry_bottom_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2575,8 +2611,8 @@
         <Name>Grh/Map/Winter/cliff/dry_bottom_02</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item285>
-    <Item286>
+    </Item289>
+    <Item290>
       <Index>197</Index>
       <Categorization>Map.Winter.cliff.dry_bottom_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2584,8 +2620,8 @@
         <Name>Grh/Map/Winter/cliff/dry_bottom_03</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item286>
-    <Item287>
+    </Item290>
+    <Item291>
       <Index>220</Index>
       <Categorization>Map.Winter.cliff.dry_bottom_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2593,8 +2629,8 @@
         <Name>Grh/Map/Winter/cliff/dry_bottom_04</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item287>
-    <Item288>
+    </Item291>
+    <Item292>
       <Index>221</Index>
       <Categorization>Map.Winter.cliff.dry_hole_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2602,8 +2638,8 @@
         <Name>Grh/Map/Winter/cliff/dry_hole_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item288>
-    <Item289>
+    </Item292>
+    <Item293>
       <Index>222</Index>
       <Categorization>Map.Winter.cliff.dry_hole_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2611,8 +2647,8 @@
         <Name>Grh/Map/Winter/cliff/dry_hole_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item289>
-    <Item290>
+    </Item293>
+    <Item294>
       <Index>223</Index>
       <Categorization>Map.Winter.cliff.dry_hole_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2620,8 +2656,8 @@
         <Name>Grh/Map/Winter/cliff/dry_hole_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item290>
-    <Item291>
+    </Item294>
+    <Item295>
       <Index>224</Index>
       <Categorization>Map.Winter.cliff.dry_hole_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2629,8 +2665,8 @@
         <Name>Grh/Map/Winter/cliff/dry_hole_04</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item291>
-    <Item292>
+    </Item295>
+    <Item296>
       <Index>225</Index>
       <Categorization>Map.Winter.cliff.dry_hole_05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2638,8 +2674,8 @@
         <Name>Grh/Map/Winter/cliff/dry_hole_05</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item292>
-    <Item293>
+    </Item296>
+    <Item297>
       <Index>226</Index>
       <Categorization>Map.Winter.cliff.dry_hole_06</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2647,8 +2683,8 @@
         <Name>Grh/Map/Winter/cliff/dry_hole_06</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item293>
-    <Item294>
+    </Item297>
+    <Item298>
       <Index>227</Index>
       <Categorization>Map.Winter.cliff.dry_mid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2656,8 +2692,8 @@
         <Name>Grh/Map/Winter/cliff/dry_mid_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item294>
-    <Item295>
+    </Item298>
+    <Item299>
       <Index>228</Index>
       <Categorization>Map.Winter.cliff.dry_mid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2665,8 +2701,8 @@
         <Name>Grh/Map/Winter/cliff/dry_mid_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item295>
-    <Item296>
+    </Item299>
+    <Item300>
       <Index>229</Index>
       <Categorization>Map.Winter.cliff.dry_mid_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2674,8 +2710,8 @@
         <Name>Grh/Map/Winter/cliff/dry_mid_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item296>
-    <Item297>
+    </Item300>
+    <Item301>
       <Index>230</Index>
       <Categorization>Map.Winter.cliff.dry_mid_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2683,8 +2719,8 @@
         <Name>Grh/Map/Winter/cliff/dry_mid_04</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item297>
-    <Item298>
+    </Item301>
+    <Item302>
       <Index>231</Index>
       <Categorization>Map.Winter.cliff.dry_mid_05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2692,8 +2728,8 @@
         <Name>Grh/Map/Winter/cliff/dry_mid_05</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item298>
-    <Item299>
+    </Item302>
+    <Item303>
       <Index>232</Index>
       <Categorization>Map.Winter.cliff.dry_mid_06</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2701,8 +2737,8 @@
         <Name>Grh/Map/Winter/cliff/dry_mid_06</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item299>
-    <Item300>
+    </Item303>
+    <Item304>
       <Index>233</Index>
       <Categorization>Map.Winter.cliff.dry_mid_07</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2710,8 +2746,8 @@
         <Name>Grh/Map/Winter/cliff/dry_mid_07</Name>
         <Source>0,0,24,16</Source>
       </Texture>
-    </Item300>
-    <Item301>
+    </Item304>
+    <Item305>
       <Index>234</Index>
       <Categorization>Map.Winter.cliff.ice_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2719,8 +2755,8 @@
         <Name>Grh/Map/Winter/cliff/ice_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item301>
-    <Item302>
+    </Item305>
+    <Item306>
       <Index>235</Index>
       <Categorization>Map.Winter.cliff.side_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2728,8 +2764,8 @@
         <Name>Grh/Map/Winter/cliff/side_01</Name>
         <Source>0,0,7,32</Source>
       </Texture>
-    </Item302>
-    <Item303>
+    </Item306>
+    <Item307>
       <Index>236</Index>
       <Categorization>Map.Winter.cliff.side_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2737,8 +2773,8 @@
         <Name>Grh/Map/Winter/cliff/side_02</Name>
         <Source>0,0,7,32</Source>
       </Texture>
-    </Item303>
-    <Item304>
+    </Item307>
+    <Item308>
       <Index>237</Index>
       <Categorization>Map.Winter.cliff.side_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2746,8 +2782,8 @@
         <Name>Grh/Map/Winter/cliff/side_03</Name>
         <Source>0,0,7,32</Source>
       </Texture>
-    </Item304>
-    <Item305>
+    </Item308>
+    <Item309>
       <Index>238</Index>
       <Categorization>Map.Winter.cliff.snow_mid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2755,8 +2791,8 @@
         <Name>Grh/Map/Winter/cliff/snow_mid_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item305>
-    <Item306>
+    </Item309>
+    <Item310>
       <Index>239</Index>
       <Categorization>Map.Winter.cliff.snow_mid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2764,8 +2800,8 @@
         <Name>Grh/Map/Winter/cliff/snow_mid_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item306>
-    <Item307>
+    </Item310>
+    <Item311>
       <Index>240</Index>
       <Categorization>Map.Winter.cliff.snow_mid_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2773,8 +2809,8 @@
         <Name>Grh/Map/Winter/cliff/snow_mid_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item307>
-    <Item308>
+    </Item311>
+    <Item312>
       <Index>241</Index>
       <Categorization>Map.Winter.cliff.snow_mid_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2782,8 +2818,8 @@
         <Name>Grh/Map/Winter/cliff/snow_mid_04</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item308>
-    <Item309>
+    </Item312>
+    <Item313>
       <Index>242</Index>
       <Categorization>Map.Winter.cliff.snow_mid_05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2791,8 +2827,8 @@
         <Name>Grh/Map/Winter/cliff/snow_mid_05</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item309>
-    <Item310>
+    </Item313>
+    <Item314>
       <Index>243</Index>
       <Categorization>Map.Winter.cliff.snow_misc_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2800,8 +2836,8 @@
         <Name>Grh/Map/Winter/cliff/snow_misc_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item310>
-    <Item311>
+    </Item314>
+    <Item315>
       <Index>244</Index>
       <Categorization>Map.Winter.cliff.snow_misc_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2809,8 +2845,8 @@
         <Name>Grh/Map/Winter/cliff/snow_misc_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item311>
-    <Item312>
+    </Item315>
+    <Item316>
       <Index>245</Index>
       <Categorization>Map.Winter.cliff.snow_top_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2818,8 +2854,8 @@
         <Name>Grh/Map/Winter/cliff/snow_top_01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item312>
-    <Item313>
+    </Item316>
+    <Item317>
       <Index>246</Index>
       <Categorization>Map.Winter.cliff.snow_top_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2827,8 +2863,8 @@
         <Name>Grh/Map/Winter/cliff/snow_top_02</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item313>
-    <Item314>
+    </Item317>
+    <Item318>
       <Index>247</Index>
       <Categorization>Map.Winter.cliff.snow_top_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2836,8 +2872,8 @@
         <Name>Grh/Map/Winter/cliff/snow_top_03</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item314>
-    <Item315>
+    </Item318>
+    <Item319>
       <Index>271</Index>
       <Categorization>Map.Winter.decor.frosty_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2845,8 +2881,8 @@
         <Name>Grh/Map/Winter/decor/frosty_01</Name>
         <Source>0,0,32,34</Source>
       </Texture>
-    </Item315>
-    <Item316>
+    </Item319>
+    <Item320>
       <Index>272</Index>
       <Categorization>Map.Winter.decor.frosty_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2854,8 +2890,8 @@
         <Name>Grh/Map/Winter/decor/frosty_02</Name>
         <Source>0,0,32,34</Source>
       </Texture>
-    </Item316>
-    <Item317>
+    </Item320>
+    <Item321>
       <Index>273</Index>
       <Categorization>Map.Winter.decor.frosty_mini_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2863,8 +2899,8 @@
         <Name>Grh/Map/Winter/decor/frosty_mini_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item317>
-    <Item318>
+    </Item321>
+    <Item322>
       <Index>274</Index>
       <Categorization>Map.Winter.decor.frosty_mini_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2872,8 +2908,8 @@
         <Name>Grh/Map/Winter/decor/frosty_mini_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item318>
-    <Item319>
+    </Item322>
+    <Item323>
       <Index>275</Index>
       <Categorization>Map.Winter.platform.bottom_mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2881,8 +2917,8 @@
         <Name>Grh/Map/Winter/platform/bottom_mid</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item319>
-    <Item320>
+    </Item323>
+    <Item324>
       <Index>276</Index>
       <Categorization>Map.Winter.platform.bottom_side</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2890,8 +2926,8 @@
         <Name>Grh/Map/Winter/platform/bottom_side</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item320>
-    <Item321>
+    </Item324>
+    <Item325>
       <Index>277</Index>
       <Categorization>Map.Winter.platform.top_mid_dry</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2899,8 +2935,8 @@
         <Name>Grh/Map/Winter/platform/top_mid_dry</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item321>
-    <Item322>
+    </Item325>
+    <Item326>
       <Index>278</Index>
       <Categorization>Map.Winter.platform.top_mid_snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2908,8 +2944,8 @@
         <Name>Grh/Map/Winter/platform/top_mid_snow</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item322>
-    <Item323>
+    </Item326>
+    <Item327>
       <Index>279</Index>
       <Categorization>Map.Winter.platform.top_side_dry</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2917,8 +2953,8 @@
         <Name>Grh/Map/Winter/platform/top_side_dry</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item323>
-    <Item324>
+    </Item327>
+    <Item328>
       <Index>280</Index>
       <Categorization>Map.Winter.platform.top_side_snow_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2926,8 +2962,8 @@
         <Name>Grh/Map/Winter/platform/top_side_snow_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item324>
-    <Item325>
+    </Item328>
+    <Item329>
       <Index>281</Index>
       <Categorization>Map.Winter.platform.top_side_snow_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2935,8 +2971,8 @@
         <Name>Grh/Map/Winter/platform/top_side_snow_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item325>
-    <Item326>
+    </Item329>
+    <Item330>
       <Index>282</Index>
       <Categorization>Map.Winter.snow.bottom_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2944,8 +2980,8 @@
         <Name>Grh/Map/Winter/snow/bottom_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item326>
-    <Item327>
+    </Item330>
+    <Item331>
       <Index>283</Index>
       <Categorization>Map.Winter.snow.bottom_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2953,8 +2989,8 @@
         <Name>Grh/Map/Winter/snow/bottom_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item327>
-    <Item328>
+    </Item331>
+    <Item332>
       <Index>284</Index>
       <Categorization>Map.Winter.snow.bottom_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2962,8 +2998,8 @@
         <Name>Grh/Map/Winter/snow/bottom_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item328>
-    <Item329>
+    </Item332>
+    <Item333>
       <Index>285</Index>
       <Categorization>Map.Winter.snow.bottom_04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2971,8 +3007,8 @@
         <Name>Grh/Map/Winter/snow/bottom_04</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item329>
-    <Item330>
+    </Item333>
+    <Item334>
       <Index>286</Index>
       <Categorization>Map.Winter.snow.corner_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2980,8 +3016,8 @@
         <Name>Grh/Map/Winter/snow/corner_01</Name>
         <Source>0,0,3,3</Source>
       </Texture>
-    </Item330>
-    <Item331>
+    </Item334>
+    <Item335>
       <Index>287</Index>
       <Categorization>Map.Winter.snow.mid_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2989,8 +3025,8 @@
         <Name>Grh/Map/Winter/snow/mid_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item331>
-    <Item332>
+    </Item335>
+    <Item336>
       <Index>288</Index>
       <Categorization>Map.Winter.snow.mid_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2998,8 +3034,8 @@
         <Name>Grh/Map/Winter/snow/mid_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item332>
-    <Item333>
+    </Item336>
+    <Item337>
       <Index>289</Index>
       <Categorization>Map.Winter.snow.mid_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3007,8 +3043,8 @@
         <Name>Grh/Map/Winter/snow/mid_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item333>
-    <Item334>
+    </Item337>
+    <Item338>
       <Index>290</Index>
       <Categorization>Map.Winter.snow.side_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3016,8 +3052,8 @@
         <Name>Grh/Map/Winter/snow/side_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item334>
-    <Item335>
+    </Item338>
+    <Item339>
       <Index>291</Index>
       <Categorization>Map.Winter.snow.side_02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3025,8 +3061,8 @@
         <Name>Grh/Map/Winter/snow/side_02</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item335>
-    <Item336>
+    </Item339>
+    <Item340>
       <Index>292</Index>
       <Categorization>Map.Winter.snow.side_03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3034,8 +3070,8 @@
         <Name>Grh/Map/Winter/snow/side_03</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item336>
-    <Item337>
+    </Item340>
+    <Item341>
       <Index>293</Index>
       <Categorization>Map.Winter.snow.top_01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3043,8 +3079,8 @@
         <Name>Grh/Map/Winter/snow/top_01</Name>
         <Source>0,0,16,16</Source>
       </Texture>
-    </Item337>
-    <Item338>
+    </Item341>
+    <Item342>
       <Index>66</Index>
       <Categorization>Particle.ankh</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3052,8 +3088,8 @@
         <Name>Grh/Particle/ankh</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item338>
-    <Item339>
+    </Item342>
+    <Item343>
       <Index>67</Index>
       <Categorization>Particle.ball</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3061,8 +3097,8 @@
         <Name>Grh/Particle/ball</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item339>
-    <Item340>
+    </Item343>
+    <Item344>
       <Index>68</Index>
       <Categorization>Particle.raindrop</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3070,8 +3106,8 @@
         <Name>Grh/Particle/raindrop</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item340>
-    <Item341>
+    </Item344>
+    <Item345>
       <Index>69</Index>
       <Categorization>Particle.shield</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3079,8 +3115,8 @@
         <Name>Grh/Particle/shield</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item341>
-    <Item342>
+    </Item345>
+    <Item346>
       <Index>70</Index>
       <Categorization>Particle.skull</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3088,8 +3124,8 @@
         <Name>Grh/Particle/skull</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item342>
-    <Item343>
+    </Item346>
+    <Item347>
       <Index>72</Index>
       <Categorization>Particle.snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3097,8 +3133,8 @@
         <Name>Grh/Particle/snow</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item343>
-    <Item344>
+    </Item347>
+    <Item348>
       <Index>71</Index>
       <Categorization>Particle.snow sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3106,8 +3142,8 @@
         <Name>Grh/Particle/snow sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item344>
-    <Item345>
+    </Item348>
+    <Item349>
       <Index>73</Index>
       <Categorization>Particle.sparkle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3115,8 +3151,8 @@
         <Name>Grh/Particle/sparkle</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item345>
-    <Item346>
+    </Item349>
+    <Item350>
       <Index>74</Index>
       <Categorization>Particle.splatter</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3124,8 +3160,8 @@
         <Name>Grh/Particle/splatter</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item346>
-    <Item347>
+    </Item350>
+    <Item351>
       <Index>62</Index>
       <Categorization>Particle.Sprite.blood</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3133,8 +3169,8 @@
         <Name>Grh/Particle/Sprite/blood</Name>
         <Source>0,0,8,8</Source>
       </Texture>
-    </Item347>
-    <Item348>
+    </Item351>
+    <Item352>
       <Index>76</Index>
       <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3142,8 +3178,8 @@
         <Name>Grh/Particle/star</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item348>
-    <Item349>
+    </Item352>
+    <Item353>
       <Index>75</Index>
       <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3151,8 +3187,8 @@
         <Name>Grh/Particle/star sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item349>
-    <Item350>
+    </Item353>
+    <Item354>
       <Index>77</Index>
       <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3160,8 +3196,8 @@
         <Name>Grh/Particle/sword</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item350>
-    <Item351>
+    </Item354>
+    <Item355>
       <Index>183</Index>
       <Categorization>Quest.can start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3169,8 +3205,8 @@
         <Name>Grh/Quest/can start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item351>
-    <Item352>
+    </Item355>
+    <Item356>
       <Index>186</Index>
       <Categorization>Quest.cannot start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3178,8 +3214,8 @@
         <Name>Grh/Quest/cannot start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item352>
-    <Item353>
+    </Item356>
+    <Item357>
       <Index>184</Index>
       <Categorization>Quest.started</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3187,8 +3223,8 @@
         <Name>Grh/Quest/started</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item353>
-    <Item354>
+    </Item357>
+    <Item358>
       <Index>185</Index>
       <Categorization>Quest.turnin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3196,8 +3232,8 @@
         <Name>Grh/Quest/turnin</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item354>
-    <Item355>
+    </Item358>
+    <Item359>
       <Index>140</Index>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3205,8 +3241,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item355>
-    <Item356>
+    </Item359>
+    <Item360>
       <Index>142</Index>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3214,8 +3250,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item356>
-    <Item357>
+    </Item360>
+    <Item361>
       <Index>141</Index>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3223,8 +3259,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item357>
-    <Item358>
+    </Item361>
+    <Item362>
       <Index>65</Index>
       <Categorization>Textures.explosion01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3232,8 +3268,8 @@
         <Name>Grh/Textures/explosion01</Name>
         <Source>0,0,256,256</Source>
       </Texture>
-    </Item358>
-    <Item359>
+    </Item362>
+    <Item363>
       <Index>187</Index>
       <Categorization>Textures.noise01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3241,8 +3277,8 @@
         <Name>Grh/Textures/noise01</Name>
         <Source>0,0,256,256</Source>
       </Texture>
-    </Item359>
-    <Item360>
+    </Item363>
+    <Item364>
       <Index>189</Index>
       <Categorization>Textures.wave01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3250,108 +3286,124 @@
         <Name>Grh/Textures/wave01</Name>
         <Source>0,0,512,512</Source>
       </Texture>
-    </Item360>
+    </Item364>
   </Stationary>
   <Animated>
     <Count>0</Count>
   </Animated>
   <AutomaticAnimated>
-    <Count>24</Count>
+    <Count>28</Count>
     <Item0>
-      <Index>4</Index>
-      <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
+      <Index>390</Index>
+      <Categorization>Character.Hat.Irish.Walk Down</Categorization>
     </Item0>
     <Item1>
-      <Index>5</Index>
-      <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
+      <Index>391</Index>
+      <Categorization>Character.Hat.Irish.Walk Left</Categorization>
     </Item1>
     <Item2>
-      <Index>6</Index>
-      <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
+      <Index>392</Index>
+      <Categorization>Character.Hat.Irish.Walk Right</Categorization>
     </Item2>
     <Item3>
-      <Index>7</Index>
-      <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
+      <Index>393</Index>
+      <Categorization>Character.Hat.Irish.Walk Up</Categorization>
     </Item3>
     <Item4>
-      <Index>54</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
+      <Index>4</Index>
+      <Categorization>Character.Top Down.Basic.Walk Down</Categorization>
     </Item4>
     <Item5>
-      <Index>125</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
+      <Index>5</Index>
+      <Categorization>Character.Top Down.Basic.Walk Left</Categorization>
     </Item5>
     <Item6>
-      <Index>151</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
+      <Index>6</Index>
+      <Categorization>Character.Top Down.Basic.Walk Right</Categorization>
     </Item6>
     <Item7>
-      <Index>157</Index>
-      <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
+      <Index>7</Index>
+      <Categorization>Character.Top Down.Basic.Walk Up</Categorization>
     </Item7>
     <Item8>
-      <Index>198</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
+      <Index>54</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Down</Categorization>
     </Item8>
     <Item9>
-      <Index>199</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
+      <Index>125</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Left</Categorization>
     </Item9>
     <Item10>
-      <Index>208</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
+      <Index>151</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Right</Categorization>
     </Item10>
     <Item11>
-      <Index>209</Index>
-      <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
+      <Index>157</Index>
+      <Categorization>Character.Top Down.Crystal.Walk Up</Categorization>
     </Item11>
     <Item12>
-      <Index>249</Index>
-      <Categorization>Character.Weapon.Sword.Walk Down</Categorization>
+      <Index>198</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Down</Categorization>
     </Item12>
     <Item13>
-      <Index>250</Index>
-      <Categorization>Character.Weapon.Sword.Walk Left</Categorization>
+      <Index>199</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Left</Categorization>
     </Item13>
     <Item14>
-      <Index>251</Index>
-      <Categorization>Character.Weapon.Sword.Walk Right</Categorization>
+      <Index>208</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Right</Categorization>
     </Item14>
     <Item15>
-      <Index>252</Index>
-      <Categorization>Character.Weapon.Sword.Walk Up</Categorization>
+      <Index>209</Index>
+      <Categorization>Character.Top Down.Zombie.Walk Up</Categorization>
     </Item15>
     <Item16>
-      <Index>210</Index>
-      <Categorization>Effect.Teleport_</Categorization>
+      <Index>249</Index>
+      <Categorization>Character.Weapon.Sword.Walk Down</Categorization>
     </Item16>
     <Item17>
-      <Index>211</Index>
-      <Categorization>Emoticons.Ellipsis</Categorization>
+      <Index>250</Index>
+      <Categorization>Character.Weapon.Sword.Walk Left</Categorization>
     </Item17>
     <Item18>
-      <Index>212</Index>
-      <Categorization>Emoticons.Exclamation</Categorization>
+      <Index>251</Index>
+      <Categorization>Character.Weapon.Sword.Walk Right</Categorization>
     </Item18>
     <Item19>
-      <Index>213</Index>
-      <Categorization>Emoticons.Heartbroken</Categorization>
+      <Index>252</Index>
+      <Categorization>Character.Weapon.Sword.Walk Up</Categorization>
     </Item19>
     <Item20>
-      <Index>214</Index>
-      <Categorization>Emoticons.Hearts</Categorization>
+      <Index>210</Index>
+      <Categorization>Effect.Teleport_</Categorization>
     </Item20>
     <Item21>
-      <Index>215</Index>
-      <Categorization>Emoticons.Meat</Categorization>
+      <Index>211</Index>
+      <Categorization>Emoticons.Ellipsis</Categorization>
     </Item21>
     <Item22>
-      <Index>216</Index>
-      <Categorization>Emoticons.Question</Categorization>
+      <Index>212</Index>
+      <Categorization>Emoticons.Exclamation</Categorization>
     </Item22>
     <Item23>
+      <Index>213</Index>
+      <Categorization>Emoticons.Heartbroken</Categorization>
+    </Item23>
+    <Item24>
+      <Index>214</Index>
+      <Categorization>Emoticons.Hearts</Categorization>
+    </Item24>
+    <Item25>
+      <Index>215</Index>
+      <Categorization>Emoticons.Meat</Categorization>
+    </Item25>
+    <Item26>
+      <Index>216</Index>
+      <Categorization>Emoticons.Question</Categorization>
+    </Item26>
+    <Item27>
       <Index>217</Index>
       <Categorization>Emoticons.Sweat</Categorization>
-    </Item23>
+    </Item27>
   </AutomaticAnimated>
 </GrhDatas>

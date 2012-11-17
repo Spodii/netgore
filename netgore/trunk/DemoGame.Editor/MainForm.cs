@@ -423,8 +423,7 @@ namespace DemoGame.Editor
                 if (effect == null)
                     return;
 
-                var editorFrm = new ParticleEditorForm();
-                editorFrm.ParticleEffect = effect;
+                var editorFrm = new ParticleEditorForm { ParticleEffect = effect };
                 editorFrm.Show(dockPanel, DockState.Float);
             }
         }

@@ -15,6 +15,7 @@ namespace DemoGame.Editor
 {
     public partial class ParticleEditorForm : DockContent
     {
+        string _originalName;
         GrhData _defaultEmitterSprite;
         IParticleEffect _particleEffect;
 
@@ -57,6 +58,7 @@ namespace DemoGame.Editor
                 {
                     value.EmitterAdded += ParticleEffect_EmitterAdded;
                     value.EmitterRemoved += ParticleEffect_EmitterRemoved;
+                    _originalName = value.Name;
                 }
 
                 gameScreen.ParticleEffect = value;
@@ -75,8 +77,15 @@ namespace DemoGame.Editor
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data. </param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            var pem = ParticleEffectManager.Instance;
+
             // Save changes
-            ParticleEffectManager.Instance.Save(ContentPaths.Dev);
+            if (ParticleEffect != null)
+            {
+                pem.Set(ParticleEffect.Name, (ParticleEffect)ParticleEffect);
+            }
+
+            pem.Save(ContentPaths.Dev);
 
             base.OnClosing(e);
         }
@@ -91,6 +100,8 @@ namespace DemoGame.Editor
 
             if (DesignMode)
                 return;
+
+            cmbEmitterType.SelectedEmitterChanged += cmbEmitterType_SelectedEmitterChanged;
 
             // Load the default emitter sprite
             _defaultEmitterSprite = GrhInfo.GetData("Particle", "sparkle alpha");
@@ -263,7 +274,7 @@ namespace DemoGame.Editor
 
             // Add new emitter. Default to PointEmitter. Type can be changed by the user later.
             var emitter = new PointEmitter(pe);
-            if (emitter.Sprite.GrhData == null)
+            if (emitter.Sprite.GrhData == null && _defaultEmitterSprite != null)
                 emitter.Sprite.SetGrh(_defaultEmitterSprite);
 
             if (!lstEmitters.Items.Contains(emitter))
@@ -277,6 +288,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="EventArgs{Type}"/> instance containing the event data.</param>
         void cmbEmitterType_SelectedEmitterChanged(ParticleEmitterComboBox sender, EventArgs<Type> e)
         {
+            if (DesignMode)
+                return;
+
             if (e.Item1 == null)
                 return;
 
@@ -313,6 +327,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void gameScreen_MouseDown(object sender, MouseEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             gameScreen_MouseMove(sender, e);
         }
 
@@ -323,6 +340,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void gameScreen_MouseMove(object sender, MouseEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             if ((e.Button & MouseButtons.Left) == 0)
                 return;
 
