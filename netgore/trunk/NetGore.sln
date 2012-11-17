@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Client", "DemoGame.Client\DemoGame.Client.csproj", "{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Server", "DemoGame.Server\DemoGame.Server.csproj", "{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore", "NetGore\NetGore.csproj", "{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}"
@@ -10,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Editor", "NetGore.Editor\NetGore.Editor.csproj", "{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.GUITester", "DemoGame.GUITester\DemoGame.GUITester.csproj", "{E35B4F33-9ECB-448B-8D6F-EA1CC4FC87B9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA} = {7A762FC3-FBD4-48D9-894E-D2279A6D33FA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Tests", "NetGore.Tests\NetGore.Tests.csproj", "{EE6959A2-B5BD-4817-8D05-6A01AE107E31}"
 EndProject
@@ -43,6 +48,21 @@ Global
 		ReleaseTopDown|x86 = ReleaseTopDown|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.Debug|x86.ActiveCfg = Debug|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.Debug|x86.Build.0 = Debug|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.DebugTopDown|x86.Build.0 = DebugTopDown|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.Mono|x86.ActiveCfg = Mono|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.Mono|x86.Build.0 = Mono|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.MonoTopDown|x86.ActiveCfg = MonoTopDown|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.MonoTopDown|x86.Build.0 = MonoTopDown|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.Release|x86.ActiveCfg = Release|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.Release|x86.Build.0 = Release|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.ReleaseClient|x86.ActiveCfg = Release|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.ReleaseClient|x86.Build.0 = Release|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
+		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 		{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}.Debug|x86.ActiveCfg = Debug|x86
 		{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}.Debug|x86.Build.0 = Debug|x86
 		{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
