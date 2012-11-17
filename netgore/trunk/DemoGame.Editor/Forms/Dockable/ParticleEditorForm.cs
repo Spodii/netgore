@@ -15,7 +15,6 @@ namespace DemoGame.Editor
 {
     public partial class ParticleEditorForm : DockContent
     {
-        string _originalName;
         GrhData _defaultEmitterSprite;
         IParticleEffect _particleEffect;
 
@@ -58,7 +57,6 @@ namespace DemoGame.Editor
                 {
                     value.EmitterAdded += ParticleEffect_EmitterAdded;
                     value.EmitterRemoved += ParticleEffect_EmitterRemoved;
-                    _originalName = value.Name;
                 }
 
                 gameScreen.ParticleEffect = value;
@@ -82,7 +80,15 @@ namespace DemoGame.Editor
             // Save changes
             if (ParticleEffect != null)
             {
-                pem.Set(ParticleEffect.Name, (ParticleEffect)ParticleEffect);
+                var result = MessageBox.Show("Save changes to the particle effect?", "Save changes?", MessageBoxButtons.YesNoCancel);
+                if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else if (result == DialogResult.Yes)
+                {
+                    pem.Set(ParticleEffect.Name, (ParticleEffect)ParticleEffect);
+                }
             }
 
             pem.Save(ContentPaths.Dev);

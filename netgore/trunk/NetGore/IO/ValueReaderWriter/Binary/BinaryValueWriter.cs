@@ -96,6 +96,24 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Creates a BinaryValueWriter, passes it to the func to let the writing take place, and returns the generated contents.
+        /// </summary>
+        /// <param name="writeFunc">The func used to do the actual writing of the contents.</param>
+        /// <returns>The BinaryValueWriter contents.</returns>
+        public static byte[] CreateAndWrite(Action<BinaryValueWriter> writeFunc)
+        {
+            using (BitStream bs = new BitStream())
+            {
+                using (BinaryValueWriter w = Create(bs))
+                {
+                    writeFunc(w);
+                }
+                bs.TrimExcess();
+                return bs.GetBuffer();
+            }
+        }
+
+        /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
         /// <see cref="BinaryValueWriter"/> is reclaimed by garbage collection.
         /// </summary>
