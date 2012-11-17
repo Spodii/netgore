@@ -11,8 +11,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _rootNodeName = "ParticleEffectManager";
         static readonly ParticleEffectManager _instance;
 
-        readonly Dictionary<string, ParticleEffect> _effects =
-            new Dictionary<string, ParticleEffect>(ParticleEmitter.EmitterNameComparer);
+        readonly Dictionary<string, ParticleEffect> _effects = new Dictionary<string, ParticleEffect>(ParticleEmitter.EmitterNameComparer);
 
         /// <summary>
         /// Initializes the <see cref="ParticleEffectManager"/> class.
@@ -69,6 +68,20 @@ namespace NetGore.Graphics.ParticleEngine
             Debug.Assert(!_effects.ContainsKey(effect.Name));
 
             _effects.Add(effect.Name, effect);
+        }
+
+        /// <summary>
+        /// Sets a ParticleEffect template. This should only be used through the editor.
+        /// </summary>
+        public void Set(string name, ParticleEffect effect)
+        {
+            _effects.Remove(name);
+
+            if (effect != null)
+            {
+                effect.Name = name;
+                AddEffect(effect);
+            }
         }
 
         /// <summary>

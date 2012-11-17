@@ -48,8 +48,8 @@ namespace DemoGame.Editor
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
-            this.gameScreen = new DemoGame.Editor.ParticleEffectScreenControl();
             this.btnDeleteEffect = new System.Windows.Forms.Button();
+            this.gameScreen = new DemoGame.Editor.ParticleEffectScreenControl();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -76,8 +76,8 @@ namespace DemoGame.Editor
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.gameScreen);
-            this.splitContainer1.Size = new System.Drawing.Size(815, 516);
-            this.splitContainer1.SplitterDistance = 262;
+            this.splitContainer1.Size = new System.Drawing.Size(1050, 601);
+            this.splitContainer1.SplitterDistance = 286;
             this.splitContainer1.TabIndex = 0;
             // 
             // tc
@@ -89,7 +89,7 @@ namespace DemoGame.Editor
             this.tc.Location = new System.Drawing.Point(0, 0);
             this.tc.Name = "tc";
             this.tc.SelectedIndex = 0;
-            this.tc.Size = new System.Drawing.Size(262, 516);
+            this.tc.Size = new System.Drawing.Size(286, 601);
             this.tc.TabIndex = 0;
             // 
             // tpEffect
@@ -98,7 +98,7 @@ namespace DemoGame.Editor
             this.tpEffect.Location = new System.Drawing.Point(4, 22);
             this.tpEffect.Name = "tpEffect";
             this.tpEffect.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEffect.Size = new System.Drawing.Size(254, 490);
+            this.tpEffect.Size = new System.Drawing.Size(278, 575);
             this.tpEffect.TabIndex = 2;
             this.tpEffect.Text = "Effect";
             this.tpEffect.UseVisualStyleBackColor = true;
@@ -108,7 +108,7 @@ namespace DemoGame.Editor
             this.pgEffect.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgEffect.Location = new System.Drawing.Point(3, 3);
             this.pgEffect.Name = "pgEffect";
-            this.pgEffect.Size = new System.Drawing.Size(248, 484);
+            this.pgEffect.Size = new System.Drawing.Size(272, 569);
             this.pgEffect.TabIndex = 0;
             // 
             // tpEmitter
@@ -119,7 +119,7 @@ namespace DemoGame.Editor
             this.tpEmitter.Location = new System.Drawing.Point(4, 22);
             this.tpEmitter.Name = "tpEmitter";
             this.tpEmitter.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEmitter.Size = new System.Drawing.Size(254, 490);
+            this.tpEmitter.Size = new System.Drawing.Size(278, 575);
             this.tpEmitter.TabIndex = 0;
             this.tpEmitter.Text = "Emitters";
             this.tpEmitter.UseVisualStyleBackColor = true;
@@ -129,7 +129,7 @@ namespace DemoGame.Editor
             this.pgEmitter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgEmitter.Location = new System.Drawing.Point(3, 209);
             this.pgEmitter.Name = "pgEmitter";
-            this.pgEmitter.Size = new System.Drawing.Size(248, 278);
+            this.pgEmitter.Size = new System.Drawing.Size(272, 363);
             this.pgEmitter.TabIndex = 7;
             // 
             // panel1
@@ -139,7 +139,7 @@ namespace DemoGame.Editor
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 184);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(248, 25);
+            this.panel1.Size = new System.Drawing.Size(272, 25);
             this.panel1.TabIndex = 6;
             // 
             // cmbEmitterType
@@ -150,9 +150,8 @@ namespace DemoGame.Editor
             this.cmbEmitterType.FormattingEnabled = true;
             this.cmbEmitterType.Location = new System.Drawing.Point(65, 0);
             this.cmbEmitterType.Name = "cmbEmitterType";
-            this.cmbEmitterType.Size = new System.Drawing.Size(183, 21);
+            this.cmbEmitterType.Size = new System.Drawing.Size(207, 21);
             this.cmbEmitterType.TabIndex = 8;
-            this.cmbEmitterType.SelectedEmitterChanged += this.cmbEmitterType_SelectedEmitterChanged;
             // 
             // label1
             // 
@@ -172,7 +171,7 @@ namespace DemoGame.Editor
             this.gbEmitter.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbEmitter.Location = new System.Drawing.Point(3, 3);
             this.gbEmitter.Name = "gbEmitter";
-            this.gbEmitter.Size = new System.Drawing.Size(248, 181);
+            this.gbEmitter.Size = new System.Drawing.Size(272, 181);
             this.gbEmitter.TabIndex = 2;
             this.gbEmitter.TabStop = false;
             this.gbEmitter.Text = "Emitters";
@@ -184,7 +183,7 @@ namespace DemoGame.Editor
             this.lstEmitters.FormattingEnabled = true;
             this.lstEmitters.Location = new System.Drawing.Point(3, 16);
             this.lstEmitters.Name = "lstEmitters";
-            this.lstEmitters.Size = new System.Drawing.Size(242, 131);
+            this.lstEmitters.Size = new System.Drawing.Size(266, 131);
             this.lstEmitters.TabIndex = 1;
             this.lstEmitters.SelectedValueChanged += new System.EventHandler(this.lstEmitters_SelectedValueChanged);
             // 
@@ -199,13 +198,13 @@ namespace DemoGame.Editor
             this.pButtons.Location = new System.Drawing.Point(3, 147);
             this.pButtons.Name = "pButtons";
             this.pButtons.Padding = new System.Windows.Forms.Padding(3);
-            this.pButtons.Size = new System.Drawing.Size(242, 31);
+            this.pButtons.Size = new System.Drawing.Size(266, 31);
             this.pButtons.TabIndex = 0;
             // 
             // btnEmitterDown
             // 
             this.btnEmitterDown.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnEmitterDown.Location = new System.Drawing.Point(179, 3);
+            this.btnEmitterDown.Location = new System.Drawing.Point(203, 3);
             this.btnEmitterDown.Name = "btnEmitterDown";
             this.btnEmitterDown.Size = new System.Drawing.Size(30, 25);
             this.btnEmitterDown.TabIndex = 9;
@@ -216,7 +215,7 @@ namespace DemoGame.Editor
             // btnEmitterUp
             // 
             this.btnEmitterUp.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnEmitterUp.Location = new System.Drawing.Point(209, 3);
+            this.btnEmitterUp.Location = new System.Drawing.Point(233, 3);
             this.btnEmitterUp.Name = "btnEmitterUp";
             this.btnEmitterUp.Size = new System.Drawing.Size(30, 25);
             this.btnEmitterUp.TabIndex = 8;
@@ -263,22 +262,10 @@ namespace DemoGame.Editor
             this.tpSettings.Location = new System.Drawing.Point(4, 22);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSettings.Size = new System.Drawing.Size(254, 490);
+            this.tpSettings.Size = new System.Drawing.Size(278, 575);
             this.tpSettings.TabIndex = 1;
             this.tpSettings.Text = "Settings";
             this.tpSettings.UseVisualStyleBackColor = true;
-            // 
-            // gameScreen
-            // 
-            this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameScreen.Location = new System.Drawing.Point(0, 0);
-            this.gameScreen.Name = "gameScreen";
-            this.gameScreen.ParticleEffect = null;
-            this.gameScreen.Size = new System.Drawing.Size(549, 516);
-            this.gameScreen.TabIndex = 0;
-            this.gameScreen.Text = "gameScreenControl1";
-            this.gameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseDown);
-            this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
             // 
             // btnDeleteEffect
             // 
@@ -290,11 +277,23 @@ namespace DemoGame.Editor
             this.btnDeleteEffect.UseVisualStyleBackColor = true;
             this.btnDeleteEffect.Click += new System.EventHandler(this.btnDeleteEffect_Click);
             // 
+            // gameScreen
+            // 
+            this.gameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gameScreen.Location = new System.Drawing.Point(0, 0);
+            this.gameScreen.Name = "gameScreen";
+            this.gameScreen.ParticleEffect = null;
+            this.gameScreen.Size = new System.Drawing.Size(760, 601);
+            this.gameScreen.TabIndex = 0;
+            this.gameScreen.Text = "gameScreenControl1";
+            this.gameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseDown);
+            this.gameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gameScreen_MouseMove);
+            // 
             // ParticleEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(823, 524);
+            this.ClientSize = new System.Drawing.Size(1058, 609);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ParticleEditorForm";

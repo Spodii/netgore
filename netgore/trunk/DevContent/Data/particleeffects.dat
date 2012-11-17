@@ -469,7 +469,7 @@
               </ReleaseRate>
               <ReleaseRotation>
                 <Min>0</Min>
-                <Max>0</Max>
+                <Max>100</Max>
               </ReleaseRotation>
               <ReleaseScale>
                 <Min>1</Min>
