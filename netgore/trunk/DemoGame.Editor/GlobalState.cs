@@ -301,16 +301,44 @@ namespace DemoGame.Editor
 
             foreach (var kvp in grhDataFileTags)
             {
-                if (!kvp.Value.Wall.HasValue)
+                if (kvp.Value.Walls == null || kvp.Value.Walls.Count == 0)
                     continue;
 
-                GrhData.BoundWallType wallType = kvp.Value.Wall.Value;
+                List<WallEntityBase> wallList = new List<WallEntityBase>();
                 GrhData gd = kvp.Key;
 
-                if (wallType == GrhData.BoundWallType.Solid || wallType == GrhData.BoundWallType.Platform)
+                // Create the wall entities
+                foreach (var wallInfo in kvp.Value.Walls)
                 {
-                    WallEntity wall = new WallEntity(Vector2.Zero, Vector2.Zero) { IsPlatform = wallType == GrhData.BoundWallType.Platform };
-                    MapGrhWalls[gd] = new List<WallEntityBase> { wall };
+                    GrhData.BoundWallType wallType = wallInfo.Item1;
+                    Rectangle? area = wallInfo.Item2;
+
+                    Vector2 position;
+                    Vector2 size;
+
+                    if (area.HasValue)
+                    {
+                        position = new Vector2(area.Value.X, area.Value.Y);
+                        size = new Vector2(area.Value.Width, area.Value.Height);
+                    }
+                    else
+                    {
+                        position = Vector2.Zero;
+                        size = Vector2.Zero;
+                    }
+
+                    if (wallType == GrhData.BoundWallType.Solid || wallType == GrhData.BoundWallType.Platform)
+                    {
+                        WallEntity wall = new WallEntity(position, size) { IsPlatform = wallType == GrhData.BoundWallType.Platform };
+                        wallList.Add(wall);
+                    }
+                }
+
+                // If there are any walls, trim the list and set it
+                if (wallList.Count > 0)
+                {
+                    wallList.TrimExcess();
+                    MapGrhWalls[gd] = wallList;
                 }
             }
         }

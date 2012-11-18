@@ -253,6 +253,7 @@ namespace NetGore.Graphics
         public class FileTags
         {
             static readonly Regex _tagRegex = new Regex("\\[(?<tag>\\w)(?<value>[^\\]]+)\\]");
+            static readonly Regex _tagWallDefinitionRegex = new Regex("(?<wallType>\\d+)x(?<x>.+)y(?<y>.+)w(?<w>.+)h(?<h>.+)");
 
             /// <summary>
             /// Gets the categorization title of the sprite.
@@ -263,11 +264,11 @@ namespace NetGore.Graphics
             /// Gets the animation speed, if specified.
             /// </summary>
             public ushort? AnimationSpeed { get; private set; }
-            
+
             /// <summary>
-            /// Gets the bound walls flag, if specified.
+            /// Gets the list of bound walls. Can be null. If non-null, the rectangle defines the position and size of the wall.
             /// </summary>
-            public BoundWallType? Wall { get; private set; }
+            public List<Tuple<BoundWallType, Rectangle?>> Walls { get; private set; }
 
             /// <summary>
             /// Gets the default layer to use, if specified.
@@ -325,15 +326,41 @@ namespace NetGore.Graphics
                 else if (tag == "w")
                 {
                     // Wall
-                    byte val;
-                    if (!byte.TryParse(strValue, out val))
-                        throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, "Failed to parse the value as a byte");
+                    BoundWallType wall;
+                    Rectangle? wallArea;
 
-                    Wall = (BoundWallType)val;
+                    Match wallDefinitionMatch = _tagWallDefinitionRegex.Match(strValue);
+                    if (wallDefinitionMatch.Success)
+                    {
+                        // Wall definition (doesn't cover whole sprite)
+                        wall = (BoundWallType)int.Parse(wallDefinitionMatch.Groups["wallType"].Value);
+                        wallArea = new Rectangle
+                        {
+                            X = int.Parse(wallDefinitionMatch.Groups["x"].Value),
+                            Y = int.Parse(wallDefinitionMatch.Groups["y"].Value),
+                            Width = int.Parse(wallDefinitionMatch.Groups["w"].Value),
+                            Height = int.Parse(wallDefinitionMatch.Groups["h"].Value)
+                        };
+                    }
+                    else
+                    {
+                        // Wall covers whole sprite
+                        byte val;
+                        if (!byte.TryParse(strValue, out val))
+                            throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, "Failed to parse the value as a byte");
 
-                    if (!EnumHelper<BoundWallType>.IsDefined(Wall.Value))
+                        wall = (BoundWallType)val;
+                        wallArea = null;
+                    }
+
+                    if (!EnumHelper<BoundWallType>.IsDefined(wall))
                         throw CreateApplyTagException(tag, strValue, fileNameWithoutSuffix, string.Format("The value is not a valid BoundWallType value (use values {0} to {1})",
                             EnumHelper<BoundWallType>.MinValue, EnumHelper<BoundWallType>.MaxValue));
+
+                    if (Walls == null)
+                        Walls = new List<Tuple<BoundWallType, Rectangle?>>(1);
+
+                    Walls.Add(new Tuple<BoundWallType, Rectangle?>(wall, wallArea));
                 }
                 else if (tag == "l")
                 {
