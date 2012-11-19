@@ -103,18 +103,19 @@ namespace NetGore.Graphics
         /// Sets the primary set, which in this case is just the sprite's title.
         /// </summary>
         /// <param name="setName">The name of the set.</param>
-        void InternalSetSet(string setName)
+        /// <param name="animType">The AnimType to use.</param>
+        void InternalSetSet(string setName, AnimType animType = AnimType.Loop)
         {
-            if (StringComparer.OrdinalIgnoreCase.Equals(_currentSet, setName))
-                return;
-
             _currentSet = setName;
 
             var grhData = GetSetGrhData(_bodyName, setName);
             if (grhData == null)
                 return;
 
-            _bodyGrh.SetGrh(grhData, AnimType.Loop, _currentTime);
+            if (_bodyGrh.GrhData == grhData)
+                return;
+
+            _bodyGrh.SetGrh(grhData, animType, _currentTime);
         }
 
         #region ICharacterSprite Members
@@ -138,7 +139,7 @@ namespace NetGore.Graphics
                 return;
 
             // Update the sprite
-            var grhData = GetSetGrhData(_bodyName, bodyModifierName + " " + GetDirectionSetName(_currentHeading)); // TODO: !! Use 'walk' to animate attack
+            var grhData = GetSetGrhData(_bodyName, bodyModifierName + " " + GetDirectionSetName(_currentHeading));
             if (grhData == null)
                 return;
 
@@ -147,7 +148,7 @@ namespace NetGore.Graphics
             _bodyModifierDirection = _currentHeading;
 
             // Set the animation to loop once
-            _bodyGrh.SetGrh(grhData, AnimType.LoopOnce, _currentTime);
+            InternalSetSet(bodyModifierName + " " + GetDirectionSetName(_bodyModifierDirection), AnimType.LoopOnce);
         }
 
         /// <summary>

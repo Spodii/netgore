@@ -1,26 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Bodies>
   <Body>
-    <Count>2</Count>
+    <Count>4</Count>
     <Item0>
       <ID>1</ID>
-      <Body>basic</Body>
-      <Fall>fall</Fall>
-      <Jump>jump</Jump>
-      <Punch>punch</Punch>
+      <Body>body.naked</Body>
+      <Fall />
+      <Jump />
+      <Attack>attack</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,54</Size>
     </Item0>
     <Item1>
       <ID>2</ID>
-      <Body>zombie</Body>
-      <Fall>fall</Fall>
-      <Jump>jump</Jump>
-      <Punch>punch</Punch>
+      <Body>body.iron</Body>
+      <Fall />
+      <Jump />
+      <Attack>attack</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,54</Size>
     </Item1>
+    <Item2>
+      <ID>3</ID>
+      <Body>body.gold</Body>
+      <Fall />
+      <Jump />
+      <Attack>attack</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>44,54</Size>
+    </Item2>
+    <Item3>
+      <ID>4</ID>
+      <Body>body.black</Body>
+      <Fall />
+      <Jump />
+      <Attack>attack</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>44,54</Size>
+    </Item3>
   </Body>
 </Bodies>

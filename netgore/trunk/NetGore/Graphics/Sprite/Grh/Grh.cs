@@ -468,7 +468,7 @@ namespace NetGore.Graphics
         {
             // We only need to update the frame if we are animating, have a valid GrhData, and if we have more
             // than one frame in the GrhData
-            if (_anim != AnimType.None && GrhData != null && GrhData.FramesCount > 1)
+            if (_anim != AnimType.None && GrhData != null && GrhData.FramesCount > 0)
                 UpdateFrameIndex(currentTime);
 
             // Set the last updated time to now
