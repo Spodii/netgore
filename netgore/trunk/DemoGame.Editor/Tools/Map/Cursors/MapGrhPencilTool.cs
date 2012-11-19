@@ -156,7 +156,8 @@ namespace DemoGame.Editor.Tools
             if (!Input.IsCtrlDown)
                 drawPos = GridAligner.Instance.Align(drawPos, true).Round();
 
-			grh.Draw(spriteBatch, drawPos);
+            grh.Update(map.GetTime());
+            grh.Draw(spriteBatch, drawPos, new Color(255, 255, 255, 180));
         }
 
         /// <summary>
