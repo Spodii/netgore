@@ -25,6 +25,14 @@ namespace DemoGame.Editor.Tools
         EditorMap _mouseOverMap;
         Vector2 _mousePos;
 
+        /// <summary>
+        /// Gets if the given key is used for performing a selection.
+        /// </summary>
+        public override bool IsSelectKey(Keys key)
+        {
+            return (key & Keys.Alt) != 0;
+        }
+
         [SyncValue, DefaultValue(null)]
         public string HotkeyedGrh0
         {
@@ -268,6 +276,10 @@ namespace DemoGame.Editor.Tools
             _mouseOverMap = map;
             _mousePos = cursorPos;
 
+            // Don't do any place/deletes while selecting
+            if (IsSelecting)
+                return;
+
             Vector2 worldPos = camera.ToWorld(cursorPos);
 
             // Handle mouse
@@ -276,7 +288,7 @@ namespace DemoGame.Editor.Tools
                 if (!Input.IsShiftDown)
                 {
                     // Place grh
-                    PlaceMapGrh(map, camera, cursorPos, !Input.IsCtrlDown);
+                    PlaceMapGrhAtScreenPos(map, camera, cursorPos, !Input.IsCtrlDown);
                 }
                 else
                 {
@@ -367,6 +379,52 @@ namespace DemoGame.Editor.Tools
         }
 
         /// <summary>
+        /// Handles what happens when an area of the map is selected.
+        /// </summary>
+        protected override void MapContainer_AreaSelected(EditorMap map, ICamera2D camera, Rectangle selectionArea, MouseEventArgs e)
+        {
+            var gridAligner = GridAligner.Instance;
+
+            if ((e.Button & MouseButtons.Left) != 0)
+            {
+                var grhDataToPlace = GlobalState.Instance.Map.GrhToPlace.GrhData;
+
+                if (grhDataToPlace == null)
+                    return;
+
+                // Place sprites over the selection area
+                if ((Control.ModifierKeys & Keys.Control) == 0)
+                {
+                    // Place on grid
+                    Vector2 startPos = gridAligner.Align(new Vector2(selectionArea.Left, selectionArea.Top));
+                    Vector2 endPos = gridAligner.Align(new Vector2(selectionArea.Right, selectionArea.Bottom));
+
+                    for (int x = (int)startPos.X; x <= endPos.X; x += (int)gridAligner.GridSize.X)
+                    {
+                        for (int y = (int)startPos.Y; y <= endPos.Y; y += (int)gridAligner.GridSize.Y)
+                        {
+                            PlaceMapGrhAtWorldPos(map, new Vector2(x, y), true, grhDataToPlace);
+                        }
+                    }
+                }
+                else
+                {
+                    // Place freely
+                    Vector2 startPos = new Vector2(selectionArea.Left, selectionArea.Top);
+                    Vector2 endPos = new Vector2(selectionArea.Right, selectionArea.Bottom) - grhDataToPlace.Size;
+
+                    for (int x = (int)startPos.X; x <= (int)endPos.X; x += (int)grhDataToPlace.Size.X)
+                    {
+                        for (int y = (int)startPos.Y; y <= (int)endPos.Y; y += (int)grhDataToPlace.Size.Y)
+                        {
+                            PlaceMapGrhAtWorldPos(map, new Vector2(x, y), false, grhDataToPlace);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for handling the <see cref="Tool.IsEnabledChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old (previous) value.</param>
@@ -396,14 +454,13 @@ namespace DemoGame.Editor.Tools
         /// Places a <see cref="MapGrh"/> on the map.
         /// </summary>
         /// <param name="map">The map to place the <see cref="MapGrh"/> on.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/>.</param>
-        /// <param name="screenPos">The screen position to place the <see cref="MapGrh"/>.</param>
+        /// <param name="worldPos">The world position to place the <see cref="MapGrh"/>.</param>
         /// <param name="useTileMode">If TileMode should be used.</param>
         /// <param name="gd">The <see cref="GrhData"/> to place. Set to null to attempt to use the <see cref="GrhData"/> that is
         /// currently selected in the <see cref="GlobalState"/>.</param>
         /// <returns>The <see cref="MapGrh"/> instance that was added, or null if the the <see cref="MapGrh"/> could not be
         /// added for any reason.</returns>
-        public static MapGrh PlaceMapGrh(Map map, ICamera2D camera, Vector2 screenPos, bool useTileMode, GrhData gd = null)
+        public static MapGrh PlaceMapGrhAtWorldPos(Map map, Vector2 worldPos, bool useTileMode, GrhData gd = null)
         {
             // Get the GrhData to place from the global state
             if (gd == null)
@@ -413,22 +470,20 @@ namespace DemoGame.Editor.Tools
             if (gd == null)
                 return null;
 
-            // Get the world position to place it
-            var drawPos = camera.ToWorld(screenPos);
-            drawPos = GridAligner.Instance.Align(drawPos, useTileMode).Round();
+            worldPos = GridAligner.Instance.Align(worldPos, useTileMode).Round();
 
             // Cache some other values
             var selGrhGrhIndex = gd.GrhIndex;
             var layer = GlobalState.Instance.Map.Layer;
             var depth = GlobalState.Instance.Map.LayerDepth;
-            var drawPosArea = drawPos.ToRectangle(new Vector2(2), true);
+            var drawPosArea = worldPos.ToRectangle(new Vector2(2), true);
 
             if (!useTileMode)
             {
                 // Make sure the same MapGrh doesn't already exist at that position
                 if (map.Spatial.Contains<MapGrh>(drawPosArea, x =>
                     x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.MapRenderLayer == layer &&
-                    Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
+                    Math.Round(x.Position.QuickDistance(worldPos)) <= 1))
                 {
                     return null;
                 }
@@ -438,7 +493,7 @@ namespace DemoGame.Editor.Tools
                 // Make sure the same MapGrh doesn't already exist at that position on the same layer
                 if (map.Spatial.Contains<MapGrh>(drawPosArea, x =>
                     x.Grh.GrhData.GrhIndex == selGrhGrhIndex && x.MapRenderLayer == layer &&
-                    Math.Round(x.Position.QuickDistance(drawPos)) <= 1))
+                    Math.Round(x.Position.QuickDistance(worldPos)) <= 1))
                 {
                     return null;
                 }
@@ -446,7 +501,7 @@ namespace DemoGame.Editor.Tools
                 // In TileMode, do not allow ANY MapGrh at the same position and layer depth. And if it does exist, instead of aborting,
                 // delete the existing one.
                 var existingMapGrhs = map.Spatial.GetMany<MapGrh>(drawPosArea, x =>
-                    x.LayerDepth == depth && x.MapRenderLayer == layer && Math.Round(x.Position.QuickDistance(drawPos)) <= 1);
+                    x.LayerDepth == depth && x.MapRenderLayer == layer && Math.Round(x.Position.QuickDistance(worldPos)) <= 1);
 
                 foreach (var toDelete in existingMapGrhs)
                 {
@@ -460,10 +515,29 @@ namespace DemoGame.Editor.Tools
 
             // Create the new MapGrh and add it to the map
             var g = new Grh(gd, AnimType.Loop, map.GetTime());
-            var mg = new MapGrh(g, drawPos) { LayerDepth = depth, MapRenderLayer = layer };
+            var mg = new MapGrh(g, worldPos) { LayerDepth = depth, MapRenderLayer = layer };
             map.AddMapGrh(mg);
 
             return mg;
+        }
+
+        /// <summary>
+        /// Places a <see cref="MapGrh"/> on the map.
+        /// </summary>
+        /// <param name="map">The map to place the <see cref="MapGrh"/> on.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/>.</param>
+        /// <param name="screenPos">The screen position to place the <see cref="MapGrh"/>.</param>
+        /// <param name="useTileMode">If TileMode should be used.</param>
+        /// <param name="gd">The <see cref="GrhData"/> to place. Set to null to attempt to use the <see cref="GrhData"/> that is
+        /// currently selected in the <see cref="GlobalState"/>.</param>
+        /// <returns>The <see cref="MapGrh"/> instance that was added, or null if the the <see cref="MapGrh"/> could not be
+        /// added for any reason.</returns>
+        public static MapGrh PlaceMapGrhAtScreenPos(Map map, ICamera2D camera, Vector2 screenPos, bool useTileMode, GrhData gd = null)
+        {
+            // Get the world position to place it
+            var worldPos = camera.ToWorld(screenPos);
+
+            return PlaceMapGrhAtWorldPos(map, worldPos, useTileMode, gd);
         }
     }
 }
