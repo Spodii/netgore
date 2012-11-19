@@ -15,14 +15,22 @@ namespace DemoGame.Editor.Tools
     public abstract class MapCursorToolBase : MapToolBase
     {
         /// <summary>
-        /// The key used to perform an area selection;
+        /// Gets if the given key is used for performing a selection.
+        /// Default is true only for Shift.
         /// </summary>
-        public const Keys SelectKey = Keys.Shift;
+        public virtual bool IsSelectKey(Keys key)
+        {
+            return (key & Keys.Shift) != 0;
+        }
 
         /// <summary>
-        /// The mouse button used to perform an area selection;
+        /// Gets if the given mouse button is used for performing a selection.
+        /// Default is true only for Left.
         /// </summary>
-        public const MouseButtons SelectMouseButton = MouseButtons.Left;
+        public virtual bool IsSelectMouseButton(MouseButtons button)
+        {
+            return (button & MouseButtons.Left) != 0;
+        }
 
         const string _enabledToolsGroup = "Map Cursors";
 
@@ -297,7 +305,7 @@ namespace DemoGame.Editor.Tools
 
             GlobalState.Instance.Map.SelectedObjsManager.SetSelected(underCursor);
 
-            if (e.Button == SelectMouseButton && ((Control.ModifierKeys & SelectKey) != 0))
+            if (IsSelectMouseButton(e.Button) && IsSelectKey(Control.ModifierKeys))
             {
                 // Start area selection
                 _selectionStart = worldPos;
@@ -315,8 +323,7 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
-                                                       MouseEventArgs e)
+        protected override void MapContainer_MouseMove(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             _mouseOverMap = map;
 
@@ -375,19 +382,15 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
-                                                     MouseEventArgs e)
+        protected override void MapContainer_MouseUp(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
-            if (IsSelecting && e.Button == SelectMouseButton)
+            if (IsSelecting && IsSelectMouseButton(e.Button))
             {
                 // End the mass selection
-
                 _selectionEnd = camera.ToWorld(e.Position());
 
                 var area = Rectangle.FromPoints(_selectionStart, _selectionEnd);
-
-                var selected = CursorSelectObjects(map, area);
-                GlobalState.Instance.Map.SelectedObjsManager.SetManySelected(selected);
+                MapContainer_AreaSelected(map, camera, area, e);
 
                 _isSelecting = false;
                 _selectionStart = Vector2.Zero;
@@ -395,6 +398,16 @@ namespace DemoGame.Editor.Tools
             }
 
             base.MapContainer_MouseUp(sender, map, camera, e);
+        }
+
+        /// <summary>
+        /// Handles what happens when an area of the map is selected.
+        /// Default behavior is to place all selectable objects in the SelectedObjectsManager.
+        /// </summary>
+        protected virtual void MapContainer_AreaSelected(EditorMap map, ICamera2D camera, Rectangle selectionArea, MouseEventArgs e)
+        {
+            var selected = CursorSelectObjects(map, selectionArea);
+            GlobalState.Instance.Map.SelectedObjsManager.SetManySelected(selected);
         }
 
         /// <summary>
