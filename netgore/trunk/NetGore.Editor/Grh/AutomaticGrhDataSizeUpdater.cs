@@ -122,7 +122,7 @@ namespace NetGore.Editor.Grhs
                 if (!File.Exists(ret))
                     isValid = false;
             }
-            catch (ArgumentException)
+            catch
             {
                 isValid = false;
             }
