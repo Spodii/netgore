@@ -363,7 +363,7 @@ namespace NetGore.Graphics
                         {
                             sgd.TextureName.RecycleFile();
                         }
-                        catch (ArgumentException)
+                        catch
                         {
                         }
                     }

@@ -63,16 +63,25 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
         internal AutomaticAnimatedGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
-            var framesDir = GetFramesDirectory();
-            var framesDirName = Path.GetFileName(framesDir).Substring(1); // Get dir name only, and skip the _ at the start
-
-            var fileTags = FileTags.Create(framesDirName);
-            _speed = 1f / fileTags.AnimationSpeed.Value;
-
-            Debug.Assert(fileTags.Title == cat.Title);
-
             _cm = cm;
-            _frames = CreateFrames(framesDir);
+
+            try
+            {
+                var framesDir = GetFramesDirectory();
+                var framesDirName = Path.GetFileName(framesDir).Substring(1); // Get dir name only, and skip the _ at the start
+
+                var fileTags = FileTags.Create(framesDirName);
+                _speed = 1f / fileTags.AnimationSpeed.Value;
+
+                Debug.Assert(fileTags.Title == cat.Title);
+
+                _frames = CreateFrames(framesDir);
+            }
+            catch
+            {
+                _speed = 1f;
+                _frames = new StationaryGrhData[0];
+            }
         }
 
         /// <summary>
@@ -244,7 +253,7 @@ namespace NetGore.Graphics
             // Ensure we only have one valid directory
             if (potentialDirs == null || potentialDirs.Length == 0)
             {
-                throw new GrhDataException(this, "Could not find the directory for AutomaticAnimatedGrhData `{0}`.");
+                throw new GrhDataException(this, string.Format("Could not find the directory for AutomaticAnimatedGrhData `{0}`.", Categorization));
             }
 
             if (potentialDirs.Length > 1)
