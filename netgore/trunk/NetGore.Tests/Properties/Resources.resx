@@ -128,7 +128,7 @@
 		&lt;Jump SkelSet="jump" /&gt;
 		&lt;Fall SkelSet="fall" /&gt;
 		
-		&lt;Punch SkelSet="punch" X="$width/2" Y="0" Width="$width" Height="$height/2" /&gt;
+		&lt;Attack SkelSet="attack" X="$width/2" Y="0" Width="$width" Height="$height/2" /&gt;
 	&lt;/Body&gt;
 	&lt;Body Index="2"&gt;
 		&lt;Size Width="300" Height="78" /&gt;
@@ -138,7 +138,7 @@
 		&lt;Jump SkelSet="dd" /&gt;
 		&lt;Fall SkelSet="ee" /&gt;
 		
-		&lt;Punch SkelSet="ff" X="$x/2" Y="3" Width="$x" Height="$x/2" /&gt;
+		&lt;Attack SkelSet="ff" X="$x/2" Y="3" Width="$x" Height="$x/2" /&gt;
 	&lt;/Body&gt;
 &lt;/Bodies&gt;</value>
     <comment>Xml file contents used for the XmlInfoReader tests.</comment>

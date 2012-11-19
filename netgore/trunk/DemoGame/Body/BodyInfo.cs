@@ -17,7 +17,7 @@ namespace DemoGame
         const string _fallValueKey = "Fall";
         const string _idValueKey = "ID";
         const string _jumpValueKey = "Jump";
-        const string _punchValueKey = "Punch";
+        const string _attackValueKey = "Attack";
         const string _sizeValueKey = "Size";
         const string _standValueKey = "Stand";
         const string _walkValueKey = "Walk";
@@ -32,7 +32,7 @@ namespace DemoGame
             Body = reader.ReadString(_bodyValueKey);
             Fall = reader.ReadString(_fallValueKey);
             Jump = reader.ReadString(_jumpValueKey);
-            Punch = reader.ReadString(_punchValueKey);
+            Attack = reader.ReadString(_attackValueKey);
             Stand = reader.ReadString(_standValueKey);
             Walk = reader.ReadString(_walkValueKey);
             Size = reader.ReadVector2(_sizeValueKey);
@@ -98,7 +98,7 @@ namespace DemoGame
         /// <summary>
         /// Gets or sets the name of the <see cref="SkeletonSet"/> (when using <see cref="SkeletonCharacterSprite"/>) or
         /// sprite category (when using <see cref="GrhCharacterSprite"/>) to use for this body when drawing
-        /// the character punching.
+        /// the character attacking.
         /// </summary>
         /// <remarks>
         /// The setter should only be used in the editor.
@@ -106,8 +106,8 @@ namespace DemoGame
         [Browsable(true)]
         [Description(
             "The name of the SkeletonSet (when using SkeletonCharacterSprite) or sprite category (when using GrhCharacterSprite)" +
-            " to use for this body when drawing the character punching.")]
-        public string Punch { get; set; }
+            " to use for this body when drawing the character attacking.")]
+        public string Attack { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the body in pixels. While this should be roughly equal to the size of the body when
@@ -168,7 +168,7 @@ namespace DemoGame
             writer.Write(_bodyValueKey, Body);
             writer.Write(_fallValueKey, Fall);
             writer.Write(_jumpValueKey, Jump);
-            writer.Write(_punchValueKey, Punch);
+            writer.Write(_attackValueKey, Attack);
             writer.Write(_standValueKey, Stand);
             writer.Write(_walkValueKey, Walk);
             writer.Write(_sizeValueKey, Size);

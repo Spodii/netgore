@@ -125,7 +125,7 @@ namespace DemoGame.Client
         /// </summary>
         public virtual void Attack()
         {
-            CharacterSprite.AddBodyModifier(BodyInfo.Punch);
+            CharacterSprite.AddBodyModifier(BodyInfo.Attack);
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace DemoGame.Client
 #if !TOPDOWN
             return new SkeletonCharacterSprite(getTime, entity, skeletonManager, GameData.AnimationSpeedModifier);
 #else
-            return new GrhCharacterSprite(entity, "Character.Top Down");
+            return new GrhCharacterSprite(entity, "Character");
 #endif
         }
 
