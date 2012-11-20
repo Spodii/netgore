@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="CustomUITypeEditors.cs" />
     <Compile Include="Editor-Specific Derived Classes\EditorMap.cs" />
+    <Compile Include="EditorHelpManager.cs" />
     <Compile Include="Forms\DisplayFilterManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
