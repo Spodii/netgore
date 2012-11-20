@@ -235,8 +235,12 @@ namespace DemoGame.Editor.Tools
             // We only select something not snapped to grid if ctrl is pressed
             bool mustBeSnappedToGrid = !Input.IsCtrlDown;
 
+            bool mustBeOnLayer = !Input.IsShiftDown;
+            MapRenderLayer selectedLayer = GlobalState.Instance.Map.Layer;
+
             return GetBestFitGrhAtPos(map, worldPos, x =>
-                !mustBeSnappedToGrid || GridAligner.Instance.IsAligned(x.Position)
+                (!mustBeSnappedToGrid || GridAligner.Instance.IsAligned(x.Position)) &&
+                (!mustBeOnLayer || x.MapRenderLayer == selectedLayer)
             );
         }
 
@@ -248,13 +252,12 @@ namespace DemoGame.Editor.Tools
         /// <returns>The MapGrhs to delete at the given position.</returns>
         static IEnumerable<MapGrh> GetGrhsToDelete(EditorMap map, Vector2 worldPos)
         {
-            var currentLayer = GlobalState.Instance.Map.Layer;
-
             // We only select something not snapped to grid if ctrl is pressed
             bool mustBeSnappedToGrid = !Input.IsCtrlDown;
 
             // If shift is down, delete from all layers
             bool mustMatchLayer = !Input.IsShiftDown;
+            var currentLayer = GlobalState.Instance.Map.Layer;
 
             // Get all at position & filter
             return map.Spatial.GetMany<MapGrh>(worldPos, x =>
