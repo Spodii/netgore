@@ -3328,7 +3328,7 @@
     <Count>0</Count>
   </Animated>
   <AutomaticAnimated>
-    <Count>40</Count>
+    <Count>44</Count>
     <Item0>
       <Index>398</Index>
       <Categorization>Character.Body.Black.Walk Down</Categorization>
@@ -3410,84 +3410,100 @@
       <Categorization>Character.Body.Naked.Walk Up</Categorization>
     </Item19>
     <Item20>
-      <Index>434</Index>
-      <Categorization>Character.Helm.Irish.Walk Down</Categorization>
+      <Index>54</Index>
+      <Categorization>Character.Helm.Irish.Attack Down</Categorization>
     </Item20>
     <Item21>
-      <Index>435</Index>
-      <Categorization>Character.Helm.Irish.Walk Left</Categorization>
+      <Index>78</Index>
+      <Categorization>Character.Helm.Irish.Attack Left</Categorization>
     </Item21>
     <Item22>
-      <Index>436</Index>
-      <Categorization>Character.Helm.Irish.Walk Right</Categorization>
+      <Index>79</Index>
+      <Categorization>Character.Helm.Irish.Attack Right</Categorization>
     </Item22>
     <Item23>
-      <Index>437</Index>
-      <Categorization>Character.Helm.Irish.Walk Up</Categorization>
+      <Index>80</Index>
+      <Categorization>Character.Helm.Irish.Attack Up</Categorization>
     </Item23>
     <Item24>
-      <Index>4</Index>
-      <Categorization>Character.Weapon.Sword.Attack Down</Categorization>
+      <Index>434</Index>
+      <Categorization>Character.Helm.Irish.Walk Down</Categorization>
     </Item24>
     <Item25>
-      <Index>5</Index>
-      <Categorization>Character.Weapon.Sword.Attack Left</Categorization>
+      <Index>435</Index>
+      <Categorization>Character.Helm.Irish.Walk Left</Categorization>
     </Item25>
     <Item26>
-      <Index>6</Index>
-      <Categorization>Character.Weapon.Sword.Attack Right</Categorization>
+      <Index>436</Index>
+      <Categorization>Character.Helm.Irish.Walk Right</Categorization>
     </Item26>
     <Item27>
-      <Index>7</Index>
-      <Categorization>Character.Weapon.Sword.Attack Up</Categorization>
+      <Index>437</Index>
+      <Categorization>Character.Helm.Irish.Walk Up</Categorization>
     </Item27>
     <Item28>
-      <Index>249</Index>
-      <Categorization>Character.Weapon.Sword.Walk Down</Categorization>
+      <Index>4</Index>
+      <Categorization>Character.Weapon.Sword.Attack Down</Categorization>
     </Item28>
     <Item29>
-      <Index>250</Index>
-      <Categorization>Character.Weapon.Sword.Walk Left</Categorization>
+      <Index>5</Index>
+      <Categorization>Character.Weapon.Sword.Attack Left</Categorization>
     </Item29>
     <Item30>
-      <Index>251</Index>
-      <Categorization>Character.Weapon.Sword.Walk Right</Categorization>
+      <Index>6</Index>
+      <Categorization>Character.Weapon.Sword.Attack Right</Categorization>
     </Item30>
     <Item31>
-      <Index>252</Index>
-      <Categorization>Character.Weapon.Sword.Walk Up</Categorization>
+      <Index>7</Index>
+      <Categorization>Character.Weapon.Sword.Attack Up</Categorization>
     </Item31>
     <Item32>
-      <Index>210</Index>
-      <Categorization>Effect.Teleport_</Categorization>
+      <Index>249</Index>
+      <Categorization>Character.Weapon.Sword.Walk Down</Categorization>
     </Item32>
     <Item33>
-      <Index>211</Index>
-      <Categorization>Emoticons.Ellipsis</Categorization>
+      <Index>250</Index>
+      <Categorization>Character.Weapon.Sword.Walk Left</Categorization>
     </Item33>
     <Item34>
-      <Index>212</Index>
-      <Categorization>Emoticons.Exclamation</Categorization>
+      <Index>251</Index>
+      <Categorization>Character.Weapon.Sword.Walk Right</Categorization>
     </Item34>
     <Item35>
-      <Index>213</Index>
-      <Categorization>Emoticons.Heartbroken</Categorization>
+      <Index>252</Index>
+      <Categorization>Character.Weapon.Sword.Walk Up</Categorization>
     </Item35>
     <Item36>
-      <Index>214</Index>
-      <Categorization>Emoticons.Hearts</Categorization>
+      <Index>210</Index>
+      <Categorization>Effect.Teleport_</Categorization>
     </Item36>
     <Item37>
-      <Index>215</Index>
-      <Categorization>Emoticons.Meat</Categorization>
+      <Index>211</Index>
+      <Categorization>Emoticons.Ellipsis</Categorization>
     </Item37>
     <Item38>
-      <Index>216</Index>
-      <Categorization>Emoticons.Question</Categorization>
+      <Index>212</Index>
+      <Categorization>Emoticons.Exclamation</Categorization>
     </Item38>
     <Item39>
+      <Index>213</Index>
+      <Categorization>Emoticons.Heartbroken</Categorization>
+    </Item39>
+    <Item40>
+      <Index>214</Index>
+      <Categorization>Emoticons.Hearts</Categorization>
+    </Item40>
+    <Item41>
+      <Index>215</Index>
+      <Categorization>Emoticons.Meat</Categorization>
+    </Item41>
+    <Item42>
+      <Index>216</Index>
+      <Categorization>Emoticons.Question</Categorization>
+    </Item42>
+    <Item43>
       <Index>217</Index>
       <Categorization>Emoticons.Sweat</Categorization>
-    </Item39>
+    </Item43>
   </AutomaticAnimated>
 </GrhDatas>

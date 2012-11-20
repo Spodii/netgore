@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -174,6 +173,21 @@ namespace DemoGame.Editor
 
             // Global not currently used...
             tbGlobal.Visible = false;
+
+            // Bind help
+            var helpManager = EditorHelpManager.Instance;
+            helpManager.StatusLabel = tssInfo;
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1 || e.KeyCode == Keys.Help)
+            {
+                if (EditorHelpManager.Instance.RaiseHelp())
+                    e.Handled = true;
+            }
+
+            base.OnKeyDown(e);
         }
 
         static MapRenderLayer GetLayerFromComboBoxText(string text)
