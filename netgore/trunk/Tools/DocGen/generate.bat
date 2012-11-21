@@ -4,7 +4,7 @@ REM Fully generates the documentation then packs it up into a zip file
 @ECHO off
 
 REM Generate documentation with Doxygen
-doxygen Doxyfile.doxy
+"C:\Program Files\doxygen\bin\doxygen.exe" Doxyfile.doxy
 
 REM Move from temp directory to working directory
 rmdir /S /Q docs
@@ -14,7 +14,7 @@ REM Run DoxyPacker, which performs some optimizations and the renaming
 DoxyPacker\bin\DoxyPacker.exe docs\html
 
 REM Use OptiPNG to optimize the generated PNGs
-optipng docs\html\*.png
+..\PngOptimizer\PngOptimizer\optipng.exe docs\html\*.png
 
 REM Use HtmlCompressor to minify all of the HTML files (removes unneeded characters characters)
 FOR %%f IN (docs\html\*.html) DO (
@@ -22,12 +22,12 @@ FOR %%f IN (docs\html\*.html) DO (
 	java -jar htmlcompressor.jar --remove-intertag-spaces --remove-quotes -o "%%f" "%%f"
 )
 
-REM Add to zip file using 7-Zip; move to docs\html dir to make the contents at root level in the archive
-cd docs\html
-7z a -tzip -mx9 ..\..\html.zip .
-cd ..\..\
+REM [OBSOLETE] Add to zip file using 7-Zip; move to docs\html dir to make the contents at root level in the archive
+REM cd docs\html
+REM 7z a -tzip -mx9 ..\..\html.zip .
+REM cd ..\..\
 
-REM Remove docs directory (since we now have html.zip)
-rmdir /S /Q docs
+REM [OBSOLETE] Remove docs directory (since we now have html.zip)
+REM rmdir /S /Q docs
 
 REM Done
