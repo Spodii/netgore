@@ -40,10 +40,7 @@ namespace NetGore.Graphics
         public MapGrh(Grh grh, Vector2 position)
         {
             if (grh == null)
-            {
-                Debug.Fail("grh is null.");
-                return;
-            }
+                throw new ArgumentNullException("grh");
 
             _grh = grh;
             _position = position;
@@ -72,7 +69,6 @@ namespace NetGore.Graphics
             var grhSize = Grh.Size;
             Vector2.Multiply(ref _scale, ref grhSize, out _scaledGrhSizeCache);
         }
-
         /// <summary>
         /// Gets the <see cref="Grh"/> for the <see cref="MapGrh"/>.
         /// </summary>
@@ -184,10 +180,20 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current game time.</param>
         public virtual void Update(TickCount currentTime)
         {
-            _grh.Update(currentTime);
+            Grh.Update(currentTime);
 
-            var grhSize = Grh.Size;
+            Vector2 grhSize = Grh.Size;
+            Vector2 previousScaledGrhSizeCache = _scaledGrhSizeCache;
+
             Vector2.Multiply(ref _scale, ref grhSize, out _scaledGrhSizeCache);
+
+            // Check if the scaled size has changed, but we have not updated the cache. The most common ways for this to happen is if the GrhData changes, or the
+            // Grh is animated but not all frames are the same size.
+            if (_scaledGrhSizeCache != previousScaledGrhSizeCache)
+            {
+                if (Resized != null)
+                    Resized.Raise(this, EventArgsHelper.Create(previousScaledGrhSizeCache));
+            }
         }
 
         #region IDrawable Members
