@@ -32,6 +32,8 @@ namespace DemoGame.Editor.Tools
                 DisabledImage = Resources.MapDisplayBackgroundTool_Disabled,
                 EnabledByDefault = true,
                 OnToolBarByDefault = true,
+                HelpName = "Map Display Background Tool",
+                HelpWikiPage = "Map display background tool",
             };
         }
 

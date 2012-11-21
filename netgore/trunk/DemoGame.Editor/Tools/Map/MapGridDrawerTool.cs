@@ -44,7 +44,7 @@ namespace DemoGame.Editor.Tools
         /// <returns>The <see cref="ToolSettings"/>.</returns>
         static ToolSettings CreateSettings()
         {
-            return new ToolSettings("Map Grid Drawer")
+            return new ToolSettings("Map Display Grid")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
                 MapDrawingExtensions = new IMapDrawingExtension[] { new MapGridDrawingExtension() },
@@ -52,6 +52,8 @@ namespace DemoGame.Editor.Tools
                 ToolBarControlType = ToolBarControlType.SplitButton,
                 DisabledImage = Resources.MapGridDrawerTool_Disabled,
                 EnabledImage = Resources.MapGridDrawerTool_Enabled,
+                HelpName = "Map Display Grid Tool",
+                HelpWikiPage = "Map display grid tool",
             };
         }
 

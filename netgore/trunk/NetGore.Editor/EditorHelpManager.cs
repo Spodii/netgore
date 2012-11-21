@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace DemoGame.Editor
+namespace NetGore.Editor
 {
     /// <summary>
     /// Manages the F1 help for the editor.
@@ -31,17 +31,17 @@ namespace DemoGame.Editor
             _instance = new EditorHelpManager();
         }
 
-        readonly Dictionary<Control, HelpInfo> _helpInfos = new Dictionary<Control, HelpInfo>();
+        readonly Dictionary<object, HelpInfo> _helpInfos = new Dictionary<object, HelpInfo>();
         readonly EventHandler _mouseEnterHandler;
         readonly EventHandler _mouseLeaveHandler;
         readonly EventHandler _disposedHandler;
 
-        Control _mouseOverControl;
+        object _mouseOverControl;
 
         /// <summary>
         /// Gets or sets the help-enabled control the mouse is over.
         /// </summary>
-        Control MouseOverControl
+        object MouseOverControl
         {
             get
             {
@@ -52,7 +52,7 @@ namespace DemoGame.Editor
                 if (_mouseOverControl == value)
                     return;
 
-                Control oldValue = _mouseOverControl;
+                var oldValue = _mouseOverControl;
                 _mouseOverControl = value;
 
                 var lbl = StatusLabel;
@@ -111,6 +111,28 @@ namespace DemoGame.Editor
         /// <param name="wikiPage">The wiki page to navigate to.</param>
         public void Add(Control control, string displayName, string wikiPage)
         {
+            AddInternal(control, displayName, wikiPage);
+        }
+
+        /// <summary>
+        /// Adds the help for a control.
+        /// </summary>
+        /// <param name="control">The control to add the help for.</param>
+        /// <param name="displayName">The name to display in the status bar.</param>
+        /// <param name="wikiPage">The wiki page to navigate to.</param>
+        public void Add(ToolStripItem control, string displayName, string wikiPage)
+        {
+            AddInternal(control, displayName, wikiPage);
+        }
+
+        /// <summary>
+        /// Adds the help for a control.
+        /// </summary>
+        /// <param name="control">The control to add the help for.</param>
+        /// <param name="displayName">The name to display in the status bar.</param>
+        /// <param name="wikiPage">The wiki page to navigate to.</param>
+        void AddInternal(object control, string displayName, string wikiPage)
+        {
             _helpInfos[control] = new HelpInfo { DisplayName = displayName, WikiPage = wikiPage };
 
             SetEventListeners(control, false);
@@ -121,13 +143,13 @@ namespace DemoGame.Editor
         /// Removes the help for a control.
         /// </summary>
         /// <param name="control">The control to remove the help for.</param>
-        public void Remove(Control control)
+        public void Remove(object control)
         {
             _helpInfos.Remove(control);
             SetEventListeners(control, false);
         }
 
-        string GetHelpMessage(Control ctrl)
+        string GetHelpMessage(object ctrl)
         {
             return GetHelpMessage(GetHelpInfo(ctrl));
         }
@@ -140,7 +162,7 @@ namespace DemoGame.Editor
             return string.Format(_helpMessageFormat, helpInfo.DisplayName);
         }
 
-        HelpInfo GetHelpInfo(Control ctrl)
+        HelpInfo GetHelpInfo(object ctrl)
         {
             if (ctrl == null)
                 return null;
@@ -157,7 +179,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="ctrl">The control to set the events on.</param>
         /// <param name="add">True to add listeners; false to remove.</param>
-        void SetEventListeners(Control ctrl, bool add)
+        void SetEventListeners(object ctrl, bool add)
         {
             if (ctrl == null)
                 return;
@@ -166,15 +188,37 @@ namespace DemoGame.Editor
             {
                 if (add)
                 {
-                    ctrl.MouseEnter += _mouseEnterHandler;
-                    ctrl.MouseLeave += _mouseLeaveHandler;
-                    ctrl.Disposed += _disposedHandler;
+                    if (ctrl is Control)
+                    {
+                        var c = (Control)ctrl;
+                        c.MouseEnter += _mouseEnterHandler;
+                        c.MouseLeave += _mouseLeaveHandler;
+                        c.Disposed += _disposedHandler;
+                    }
+                    else if (ctrl is ToolStripItem)
+                    {
+                        var c = (ToolStripItem)ctrl;
+                        c.MouseEnter += _mouseEnterHandler;
+                        c.MouseLeave += _mouseLeaveHandler;
+                        c.Disposed += _disposedHandler;
+                    }
                 }
                 else
                 {
-                    ctrl.MouseEnter -= _mouseEnterHandler;
-                    ctrl.MouseLeave -= _mouseLeaveHandler;
-                    ctrl.Disposed -= _disposedHandler;
+                    if (ctrl is Control)
+                    {
+                        var c = (Control)ctrl;
+                        c.MouseEnter -= _mouseEnterHandler;
+                        c.MouseLeave -= _mouseLeaveHandler;
+                        c.Disposed -= _disposedHandler;
+                    }
+                    else if (ctrl is ToolStripItem)
+                    {
+                        var c = (ToolStripItem)ctrl;
+                        c.MouseEnter -= _mouseEnterHandler;
+                        c.MouseLeave -= _mouseLeaveHandler;
+                        c.Disposed -= _disposedHandler;
+                    }
                 }
             }
             catch
@@ -184,30 +228,18 @@ namespace DemoGame.Editor
 
         void ctrl_Disposed(object sender, EventArgs e)
         {
-            Control c = sender as Control;
-            if (c == null)
-                return;
-
-            Remove(c);
+            Remove(sender);
         }
 
         void ctrl_MouseLeave(object sender, EventArgs e)
         {
-            Control c = sender as Control;
-            if (c == null)
-                return;
-
-            if (MouseOverControl == c)
+            if (MouseOverControl == sender)
                 MouseOverControl = null;
         }
 
         void ctrl_MouseEnter(object sender, EventArgs e)
         {
-            Control c = sender as Control;
-            if (c == null)
-                return;
-
-            MouseOverControl = c;
+            MouseOverControl = sender;
         }
     }
 }

@@ -25,14 +25,16 @@ namespace DemoGame.Editor.Tools
         static ToolSettings CreateSettings()
         {
             return new ToolSettings("Map Display Foreground")
-                       {
-                           ToolBarVisibility = ToolBarVisibility.Map,
-                           ToolBarControlType = ToolBarControlType.Button,
-                           EnabledImage = Resources.MapDisplayForegroundTool_Enabled,
-                           DisabledImage = Resources.MapDisplayForegroundTool_Disabled,
-                           EnabledByDefault = true,
-                           OnToolBarByDefault = true,
-                       };
+            {
+                ToolBarVisibility = ToolBarVisibility.Map,
+                ToolBarControlType = ToolBarControlType.Button,
+                EnabledImage = Resources.MapDisplayForegroundTool_Enabled,
+                DisabledImage = Resources.MapDisplayForegroundTool_Disabled,
+                EnabledByDefault = true,
+                OnToolBarByDefault = true,
+                HelpName = "Map Display Foreground Tool",
+                HelpWikiPage = "Map display foreground tool",
+            };
         }
 
         protected override void OnIsEnabledChanged(bool oldValue, bool newValue)

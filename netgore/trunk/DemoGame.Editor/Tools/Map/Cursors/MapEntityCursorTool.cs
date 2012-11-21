@@ -29,7 +29,7 @@ namespace DemoGame.Editor.Tools
         /// <param name="toolManager">The tool manager.</param>
         public MapEntityCursorTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
-            ToolBarControl.ControlSettings.AsSplitButtonSettings().ClickToEnable = true;
+            ToolBarControl.ControlSettings.AsButtonSettings().ClickToEnable = true;
         }
 
         /// <summary>
@@ -62,10 +62,12 @@ namespace DemoGame.Editor.Tools
             return new ToolSettings("Map Entity Cursor")
             {
                 OnToolBarByDefault = true,
-                ToolBarControlType = ToolBarControlType.SplitButton,
+                ToolBarControlType = ToolBarControlType.Button,
                 MapDrawingExtensions = new MapDrawingExtension[] { new MapEntityBoxDrawer() },
                 DisabledImage = Resources.MapEntityCursorTool_Disabled,
                 EnabledImage = Resources.MapEntityCursorTool_Enabled,
+                HelpName = "Map Entity Cursor",
+                HelpWikiPage = "Map entity cursor tool",
             };
         }
 

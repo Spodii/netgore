@@ -69,14 +69,16 @@ namespace DemoGame.Editor.Tools
         /// <returns>The <see cref="ToolSettings"/>.</returns>
         static ToolSettings CreateSettings()
         {
-            return new ToolSettings("Map Walls Drawer")
+            return new ToolSettings("Map Display Walls")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
                 MapDrawingExtensions = new IMapDrawingExtension[] { new ToolMapDrawingExtension() },
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.SplitButton,
                 EnabledImage = Resources.MapWallsDrawerTool_Enabled,
-                DisabledImage = Resources.MapWallsDrawerTool_Disabled
+                DisabledImage = Resources.MapWallsDrawerTool_Disabled,
+                HelpName = "Map Display Walls Tool",
+                HelpWikiPage = "Map display walls tool",
             };
         }
 

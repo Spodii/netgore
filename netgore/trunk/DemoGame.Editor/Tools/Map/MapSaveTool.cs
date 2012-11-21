@@ -38,6 +38,8 @@ namespace DemoGame.Editor.Tools
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.Button,
                 EnabledImage = Resources.MapSaveTool,
+                HelpName = "Map Save Tool",
+                HelpWikiPage = "Map save tool",
             };
         }
     }

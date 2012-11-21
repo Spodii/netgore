@@ -59,6 +59,12 @@ namespace NetGore.Editor.EditorTool
                 // If an image is set, then default to showing only the image
                 if (ToolBarControl.ControlSettings.Image != null)
                     ToolBarControl.ControlSettings.DisplayStyle = ToolStripItemDisplayStyle.Image;
+
+                // Bind help
+                if (!string.IsNullOrEmpty(settings.HelpName) && !string.IsNullOrEmpty(settings.HelpWikiPage))
+                {
+                    EditorHelpManager.Instance.Add((ToolStripItem)ToolBarControl, settings.HelpName, settings.HelpWikiPage);
+                }
             }
         }
 

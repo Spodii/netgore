@@ -55,6 +55,8 @@ namespace DemoGame.Editor.Tools
                 ToolBarControlType = ToolBarControlType.Button,
                 DisabledImage = Resources.MapWallCursorTool_Disabled,
                 EnabledImage = Resources.MapWallCursorTool_Enabled,
+                HelpName = "Map Wall Cursor",
+                HelpWikiPage = "Map wall cursor tool",
             };
         }
 

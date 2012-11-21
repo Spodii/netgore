@@ -57,6 +57,8 @@ namespace DemoGame.Editor.Tools
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.Button,
                 EnabledImage = Resources.MapEditBackgroundTool,
+                HelpName = "Map Edit Background Tool",
+                HelpWikiPage = "Map edit background tool",
             };
         }
     }

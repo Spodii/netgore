@@ -8,6 +8,7 @@ using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
 using NetGore;
 using NetGore.Content;
+using NetGore.Editor;
 using NetGore.Editor.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.Grhs;
@@ -177,6 +178,8 @@ namespace DemoGame.Editor
             // Bind help
             var helpManager = EditorHelpManager.Instance;
             helpManager.StatusLabel = tssInfo;
+            helpManager.Add(cmbLayer, "Map Layers", "Map layers");
+            helpManager.Add(trackBarDepth, "Layer Depth", "Layer depth");
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

@@ -54,6 +54,8 @@ namespace DemoGame.Editor.Tools
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.Button,
                 EnabledImage = Resources.MapPreviewTool,
+                HelpName = "Map Preview Tool",
+                HelpWikiPage = "Map preview tool",
             };
         }
     }
