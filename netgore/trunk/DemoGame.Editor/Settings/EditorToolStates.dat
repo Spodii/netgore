@@ -164,22 +164,22 @@
         <Item1>DemoGame.Editor.Tools.MapSaveAsTool</Item1>
         <Item2>DemoGame.Editor.Tools.MapDeleteTool</Item2>
         <Item3>DemoGame.Editor.Tools.MapPropertiesTool</Item3>
-        <Item4>DemoGame.Editor.Tools.MapPreviewTool</Item4>
-        <Item5>|</Item5>
-        <Item6>DemoGame.Editor.Tools.MapDisplayBackgroundTool</Item6>
-        <Item7>DemoGame.Editor.Tools.MapDisplayDynamicTool</Item7>
-        <Item8>DemoGame.Editor.Tools.MapDisplayForegroundTool</Item8>
-        <Item9>DemoGame.Editor.Tools.MapLightSourceDrawerTool</Item9>
-        <Item10>DemoGame.Editor.Tools.MapWallsDrawerTool</Item10>
-        <Item11>DemoGame.Editor.Tools.MapGridDrawerTool</Item11>
-        <Item12>|</Item12>
-        <Item13>DemoGame.Editor.Tools.MapGrhPencilTool</Item13>
-        <Item14>DemoGame.Editor.Tools.MapEntityCursorTool</Item14>
-        <Item15>DemoGame.Editor.Tools.MapWallCursorTool</Item15>
-        <Item16>DemoGame.Editor.Tools.MapGrhCursorTool</Item16>
-        <Item17>DemoGame.Editor.Tools.MapLightCursorTool</Item17>
-        <Item18>DemoGame.Editor.Tools.MapEditNPCSpawnsTool</Item18>
-        <Item19>DemoGame.Editor.Tools.MapEditBackgroundTool</Item19>
+        <Item4>DemoGame.Editor.Tools.MapEditBackgroundTool</Item4>
+        <Item5>DemoGame.Editor.Tools.MapEditNPCSpawnsTool</Item5>
+        <Item6>DemoGame.Editor.Tools.MapPreviewTool</Item6>
+        <Item7>|</Item7>
+        <Item8>DemoGame.Editor.Tools.MapDisplayBackgroundTool</Item8>
+        <Item9>DemoGame.Editor.Tools.MapDisplayDynamicTool</Item9>
+        <Item10>DemoGame.Editor.Tools.MapDisplayForegroundTool</Item10>
+        <Item11>DemoGame.Editor.Tools.MapLightSourceDrawerTool</Item11>
+        <Item12>DemoGame.Editor.Tools.MapWallsDrawerTool</Item12>
+        <Item13>DemoGame.Editor.Tools.MapGridDrawerTool</Item13>
+        <Item14>|</Item14>
+        <Item15>DemoGame.Editor.Tools.MapGrhPencilTool</Item15>
+        <Item16>DemoGame.Editor.Tools.MapEntityCursorTool</Item16>
+        <Item17>DemoGame.Editor.Tools.MapWallCursorTool</Item17>
+        <Item18>DemoGame.Editor.Tools.MapGrhCursorTool</Item18>
+        <Item19>DemoGame.Editor.Tools.MapLightCursorTool</Item19>
       </Order>
     </Item1>
   </ToolBarItems>

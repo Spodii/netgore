@@ -135,6 +135,8 @@ namespace DemoGame.Editor.Tools
                 ToolBarControlType = ToolBarControlType.Button,
                 DisabledImage = Resources.MapGrhPencilTool_Disabled,
                 EnabledImage = Resources.MapGrhPencilTool_Enabled,
+                HelpName = "Map Grh Pencil Cursor",
+                HelpWikiPage = "Map grh pencil tool",
             };
         }
 

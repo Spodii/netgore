@@ -29,7 +29,9 @@ namespace DemoGame.Editor.Tools
                 ToolBarVisibility = ToolBarVisibility.Map,
                 MapDrawingExtensions = new IMapDrawingExtension[] { new MapBorderDrawingExtension() },
                 OnToolBarByDefault = false,
-                ToolBarControlType = ToolBarControlType.Button
+                ToolBarControlType = ToolBarControlType.Button,
+                HelpName = "Map Border Drawer",
+                HelpWikiPage = "Map border drawer tool",
             };
         }
 

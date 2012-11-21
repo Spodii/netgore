@@ -77,6 +77,8 @@ namespace DemoGame.Editor.Tools
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.Button,
                 EnabledImage = Resources.MapPropertiesTool,
+                HelpName = "Map Properties Tool",
+                HelpWikiPage = "Map properties tool",
             };
         }
 

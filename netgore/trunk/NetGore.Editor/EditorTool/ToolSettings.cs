@@ -252,6 +252,16 @@ namespace NetGore.Editor.EditorTool
         }
 
         /// <summary>
+        /// Gets or sets the help display name.
+        /// </summary>
+        public string HelpName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the help wiki page title.
+        /// </summary>
+        public string HelpWikiPage { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="InvalidOperationException"/> to throw when trying to change a property while
         /// <see cref="IsLocked"/> is set.
         /// </summary>

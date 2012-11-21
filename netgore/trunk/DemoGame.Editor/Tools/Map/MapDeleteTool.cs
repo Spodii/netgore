@@ -46,6 +46,8 @@ namespace DemoGame.Editor.Tools
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.Button,
                 EnabledImage = Resources.MapDeleteTool,
+                HelpName = "Map Delete Tool",
+                HelpWikiPage = "Map delete tool",
             };
         }
     }

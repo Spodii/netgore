@@ -21,8 +21,7 @@ namespace DemoGame.Editor.Tools
         readonly MapDrawFilterHelperCollection _filterCollection;
         readonly IList<IToolTargetMapContainer> _mapContainers = new List<IToolTargetMapContainer>();
 
-        readonly Dictionary<MapDrawFilterHelper, FilterToolStripItem> _tsFilters =
-            new Dictionary<MapDrawFilterHelper, FilterToolStripItem>();
+        readonly Dictionary<MapDrawFilterHelper, FilterToolStripItem> _tsFilters = new Dictionary<MapDrawFilterHelper, FilterToolStripItem>();
 
         readonly ToolStripButton _tsManageFilters;
 

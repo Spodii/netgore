@@ -25,14 +25,16 @@ namespace DemoGame.Editor.Tools
         static ToolSettings CreateSettings()
         {
             return new ToolSettings("Map Display Dynamic")
-                       {
-                           ToolBarVisibility = ToolBarVisibility.Map,
-                           ToolBarControlType = ToolBarControlType.Button,
-                           EnabledImage = Resources.MapDisplayDynamicTool_Enabled,
-                           DisabledImage = Resources.MapDisplayDynamicTool_Disabled,
-                           EnabledByDefault = true,
-                           OnToolBarByDefault = true,
-                       };
+            {
+                ToolBarVisibility = ToolBarVisibility.Map,
+                ToolBarControlType = ToolBarControlType.Button,
+                EnabledImage = Resources.MapDisplayDynamicTool_Enabled,
+                DisabledImage = Resources.MapDisplayDynamicTool_Disabled,
+                EnabledByDefault = true,
+                OnToolBarByDefault = true,
+                HelpName = "Map Display Dynamic Tool",
+                HelpWikiPage = "Map display dynamic tool",
+            };
         }
 
         protected override void OnIsEnabledChanged(bool oldValue, bool newValue)

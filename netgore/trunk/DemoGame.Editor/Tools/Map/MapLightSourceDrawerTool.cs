@@ -26,13 +26,15 @@ namespace DemoGame.Editor.Tools
         /// <returns>The <see cref="ToolSettings"/>.</returns>
         static ToolSettings CreateSettings()
         {
-            return new ToolSettings("Map Light Source Drawer")
+            return new ToolSettings("Map Display Light")
             {
                 ToolBarVisibility = ToolBarVisibility.Map,
                 MapDrawingExtensions = new IMapDrawingExtension[] { new MapLightSourceDrawingExtension() },
                 ToolBarControlType = ToolBarControlType.Button,
                 DisabledImage = Resources.MapLightSourceDrawerTool_Disabled,
                 EnabledImage = Resources.MapLightSourceDrawerTool_Enabled,
+                HelpName = "Map Display Light Tool",
+                HelpWikiPage = "Map display light tool",
             };
         }
 

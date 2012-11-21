@@ -57,6 +57,8 @@ namespace DemoGame.Editor.Tools
                 OnToolBarByDefault = true,
                 ToolBarControlType = ToolBarControlType.Button,
                 EnabledImage = Resources.MapEditNPCSpawnsTool,
+                HelpName = "Map Edit NPC Spawns Tool",
+                HelpWikiPage = "Map edit npc spawns tool",
             };
         }
     }

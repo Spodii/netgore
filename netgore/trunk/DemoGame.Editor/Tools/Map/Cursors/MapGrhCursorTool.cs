@@ -64,6 +64,8 @@ namespace DemoGame.Editor.Tools
                 ToolBarControlType = ToolBarControlType.Button,
                 DisabledImage = Resources.MapGrhCursorTool_Disabled,
                 EnabledImage = Resources.MapGrhCursorTool_Enabled,
+                HelpName = "Map Grh Cursor",
+                HelpWikiPage = "Map grh cursor tool",
             };
         }
 
