@@ -191,13 +191,8 @@ namespace NetGore.Editor
                 {
                     PropertyGrid.SelectedObject = Focused;
                 }
-                catch (NullReferenceException ex)
+                catch (NullReferenceException)
                 {
-                    const string errmsg =
-                        "NullReferenceException occured on setting PropertyGrid.SelectedObject." +
-                        " Most of the time, this is not a problem. Exception: {0}";
-                    if (log.IsInfoEnabled)
-                        log.InfoFormat(errmsg, ex);
                 }
             }
         }
