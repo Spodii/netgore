@@ -3,21 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CopyContent
 {
     class Program
     {
-        /// <summary>
-        /// The suffix to give asset files in the destionation.
-        /// </summary>
-        const string _newAssetSuffix = "";
-
-        /// <summary>
-        /// When true, each root directory will be processed in a separate thread.
-        /// </summary>
-        const bool _useThreading = true;
-
         /// <summary>
         /// The file suffixes to be considered asset files.
         /// </summary>
@@ -27,9 +18,11 @@ namespace CopyContent
         static readonly List<string> _cleanFolders = new List<string>();
         static readonly List<string> _skipRootFolders = new List<string>();
 
+        static readonly char[] _dirSepChars = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+
         static string _destRoot;
-        static volatile int _liveThreads = 0;
         static string _srcRoot;
+        static bool _silent;
 
         static string AddPathSeparatorSuffix(string s)
         {
@@ -43,165 +36,250 @@ namespace CopyContent
                 return s;
         }
 
-        /// <summary>
-        /// Callback for calling Copy asynchronously from the thread pool.
-        /// </summary>
-        /// <param name="po">The passed state values.</param>
-        static void AsyncCopy(object po)
+        static string GetRenamedFileName(string fileName)
         {
-            var o = (object[])po;
-            Copy((DirectoryInfo)o[0], (string)o[1], false);
+            if (!IsAssetFile(fileName))
+                return fileName;
 
-            _liveThreads--;
+            int sepIndex = fileName.LastIndexOf('.');
+            string ret = fileName.Substring(0, sepIndex);
+            return ret;
         }
 
         /// <summary>
-        /// Checks if a file can skip being copied.
+        /// Gets if a file is an asset file.
         /// </summary>
-        /// <param name="srcFileInfo">The source file.</param>
-        /// <param name="destFile">The destination file path.</param>
-        /// <returns>True if to skip the copying; otherwise false.</returns>
-        static bool CanSkipFileCopy(FileInfo srcFileInfo, string destFile)
+        /// <param name="fileName">The name of the file.</param>
+        /// <returns>True if an asset file; otherwise false.</returns>
+        static bool IsAssetFile(string fileName)
         {
-            // Destination file does not exist
-            if (!File.Exists(destFile))
-                return false;
-
-            var destFileInfo = new FileInfo(destFile);
-
-            // Source file is newer
-            if (srcFileInfo.LastWriteTimeUtc > File.GetLastWriteTimeUtc(destFile))
-                return false;
-
-            // File size mismatch
-            if (srcFileInfo.Length != destFileInfo.Length)
-                return false;
-
-            return true;
+            return _assetSuffixes.Any(x => fileName.EndsWith(x, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
-        /// Checks if a folder can be skipped.
+        /// Program entry point.
         /// </summary>
-        /// <param name="dir">The dir to check if can be skipped.</param>
-        /// <returns>True if the <paramref name="dir"/> can be skipped; otherwise false.</returns>
-        static bool CanSkipFolder(FileSystemInfo dir)
+        /// <param name="args">The args.</param>
+        static void Main(string[] args)
         {
-            if (StringComparer.OrdinalIgnoreCase.Equals(dir.Name, ".svn"))
+            /*
+            args = new string[] 
+            {
+                @"C:\Programming\NetGore\DevContent", 
+                @"C:\Programming\NetGore\DevContentTest", 
+                @"--clean=[Grh]", 
+                @"--skip=[Font,Data,Engine,Fx,Languages,Maps,Music,Skeletons,Sounds]"
+            };
+            */
+
+            // Check for all the args
+            if (args == null || args.Length < 2)
+            {
+                PrintUsage();
+                return;
+            }
+
+            _srcRoot = args[0];
+            _destRoot = args[1];
+
+            // Validate the params
+            if (string.IsNullOrEmpty(_srcRoot) || string.IsNullOrEmpty(_destRoot))
+            {
+                PrintUsage();
+                return;
+            }
+
+            _srcRoot = AddPathSeparatorSuffix(_srcRoot);
+            _destRoot = AddPathSeparatorSuffix(_destRoot);
+
+            // Check for a valid source
+            if (!Directory.Exists(_srcRoot))
+            {
+                Console.WriteLine("Invalid source directory.");
+                return;
+            }
+
+            // Process the switches
+            if (!HandleSwitches(args, 2))
+                return;
+
+            // Go through the individual content directories
+            Parallel.ForEach(Directory.GetDirectories(_srcRoot, "*", SearchOption.TopDirectoryOnly), absSrcContentDir =>
+            {
+                string relContentDirNoSep = AbsToRel(_srcRoot, absSrcContentDir);
+                if (_skipRootFolders.Contains(relContentDirNoSep, StringComparer.OrdinalIgnoreCase))
+                    return;
+
+                string relContentDir = relContentDirNoSep + Path.DirectorySeparatorChar;
+
+                string absDstContentDir = Path.Combine(_destRoot, relContentDir);
+                if (!Directory.Exists(absDstContentDir))
+                    Directory.CreateDirectory(absDstContentDir);
+
+                var srcDirs = GetAbsAndRelDirectories(absSrcContentDir);
+                var dstDirs = GetAbsAndRelDirectories(absDstContentDir);
+
+                bool shouldClean = _cleanFolders.Contains(relContentDirNoSep, StringComparer.OrdinalIgnoreCase);
+
+                // Delete folders in destination that are not in source
+                if (shouldClean)
+                {
+                    foreach (var kvp in dstDirs.ToArray())
+                    {
+                        string relDir = kvp.Key;
+                        if (!srcDirs.ContainsKey(relDir))
+                        {
+                            if (Directory.Exists(kvp.Value))
+                            {
+                                log("Deleting directory: " + relDir);
+                                Directory.Delete(kvp.Value, true);
+                            }
+
+                            dstDirs.Remove(relDir);
+                        }
+                    }
+                }
+
+                var srcFiles = GetAbsAndRelFiles(absSrcContentDir);
+                var dstFiles = GetAbsAndRelFiles(absDstContentDir);
+
+                var srcFilesRenamed = new HashSet<string>(srcFiles.Keys.Select(GetRenamedFileName));
+
+                // Delete files in destination that are not in source
+                if (shouldClean)
+                {
+                    foreach (var kvp in dstFiles.ToArray())
+                    {
+                        string relFile = kvp.Key;
+                        if (!srcFilesRenamed.Contains(relFile))
+                        {
+                            if (File.Exists(kvp.Value))
+                            {
+                                log("Deleting file: " + relFile);
+                                File.Delete(kvp.Value);
+                            }
+
+                            dstFiles.Remove(relFile);
+                        }
+                    }
+                }
+
+                // Create directories not in destination that are in source
+                foreach (var kvp in srcDirs)
+                {
+                    if (!dstDirs.ContainsKey(kvp.Key))
+                    {
+                        string dir = Path.Combine(absDstContentDir, kvp.Key.TrimStart(_dirSepChars));
+                        log("Creating directory: " + kvp.Key);
+                        Directory.CreateDirectory(dir);
+                    }
+                }
+
+                // Copy files from source to destination
+                foreach (var kvp in srcFiles)
+                {
+                    string relPath = kvp.Key;
+                    string srcFilePath = kvp.Value;
+                    string dstFilePath = GetRenamedFileName(Path.Combine(absDstContentDir, relPath.TrimStart(_dirSepChars)));
+
+                    FileInfo srcInfo = null, dstInfo = null;
+                    if (!File.Exists(dstFilePath) || ShouldCopyFile(srcFilePath, dstFilePath, out srcInfo, out dstInfo))
+                    {
+                        log("Copying file: " + relPath);
+                        File.Copy(srcFilePath, dstFilePath, true);
+
+                        if (srcInfo == null)
+                            srcInfo = new FileInfo(srcFilePath);
+
+                        if (dstInfo == null)
+                            dstInfo = new FileInfo(dstFilePath);
+
+                        dstInfo.LastWriteTimeUtc = srcInfo.LastWriteTimeUtc;
+                        dstInfo.CreationTimeUtc = srcInfo.CreationTimeUtc;
+                    }
+                }
+            });
+
+            log("Done");
+        }
+
+        static void log(string txt)
+        {
+            if (_silent)
+                return;
+
+            Console.WriteLine(txt);
+        }
+
+        static bool ShouldCopyFile(string src, string dst, out FileInfo srcInfo, out FileInfo dstInfo)
+        {
+            srcInfo = new FileInfo(src);
+            dstInfo = new FileInfo(dst);
+
+            if (srcInfo.Length != dstInfo.Length ||
+                srcInfo.LastWriteTimeUtc != dstInfo.LastWriteTimeUtc ||
+                srcInfo.CreationTimeUtc != dstInfo.CreationTimeUtc)
+            {
                 return true;
+            }
 
             return false;
         }
 
-        /// <summary>
-        /// Copies the files from a source to destionation recursively.
-        /// </summary>
-        /// <param name="srcInfo">The source directory.</param>
-        /// <param name="dest">The destination directory.</param>
-        /// <param name="isRoot">If true, this is the root directory.</param>
-        static void Copy(DirectoryInfo srcInfo, string dest, bool isRoot)
+        static string AbsToRel(string root, string path)
         {
-            // Check if we can skip this directory
-            if (CanSkipFolder(srcInfo))
-                return;
+            if (!root.EndsWith("\\") && !root.EndsWith("/"))
+                throw new Exception("Root needs to end with path separator");
 
-            // Ensure the destination directory exists
-            if (!Directory.Exists(dest))
-                Directory.CreateDirectory(dest);
-
-            // Get all the child directories in this directory
-            foreach (var srcChildDI in srcInfo.GetDirectories())
-            {
-                // Check if this is an immediate child of the root that we can skip
-                if (isRoot)
-                {
-                    var psrcChildDI = srcChildDI;
-                    if (_skipRootFolders.Any(x => StringComparer.OrdinalIgnoreCase.Equals(psrcChildDI.Name, x)))
-                        continue;
-                }
-
-                // Get the path for the destination directory on the other side
-                var destChild = Path.Combine(dest, srcChildDI.Name);
-
-                // Recursive copy the child directory, using threading if this is the first level of recursion
-                if (_useThreading && isRoot)
-                {
-                    // Threaded
-                    _liveThreads++;
-                    ThreadPool.QueueUserWorkItem(AsyncCopy, new object[] { srcChildDI, destChild });
-                }
-                else
-                {
-                    // Not threaded
-                    Copy(srcChildDI, destChild, false);
-                }
-            }
-
-            // Check to delete existing files
-            var relativePath = AddPathSeparatorSuffix(dest.Substring(_destRoot.Length));
-            if (_cleanFolders.Any(x => relativePath.StartsWith(x, StringComparison.OrdinalIgnoreCase)))
-            {
-                foreach (var dstFile in Directory.GetFiles(dest))
-                {
-                    var fileName = Path.GetFileName(dstFile);
-                    var srcFilePath = _srcRoot + relativePath + fileName;
-
-                    // Check if the file exists in the un-renamed form (its not an asset file)
-                    if (File.Exists(srcFilePath))
-                    {
-                        // File exists - not asset file
-                        continue;
-                    }
-
-                    // Check if running any of the files that start with that name, after being run through the
-                    // asset file name renamer, matches the dest file name
-                    var matchedFiles = Directory.GetFiles(_srcRoot + relativePath, fileName + "*", SearchOption.TopDirectoryOnly);
-                    var matchedFilesRenamed = matchedFiles.Select(GetRenamedFileName);
-
-                    if (matchedFilesRenamed.Any(x => StringComparer.OrdinalIgnoreCase.Equals(x, fileName)))
-                    {
-                        // File exists - asset file
-                        continue;
-                    }
-
-                    // File does not exist
-                    File.Delete(dstFile);
-                }
-            }
-
-            // Copy the files
-            foreach (var srcFileInfo in srcInfo.GetFiles())
-            {
-                // In the root, skip *.exe, *.pdb, *.manifest files
-                if (isRoot)
-                {
-                    if (StringComparer.OrdinalIgnoreCase.Equals(srcFileInfo.Extension, ".exe") ||
-                        StringComparer.OrdinalIgnoreCase.Equals(srcFileInfo.Extension, ".pdb") ||
-                        StringComparer.OrdinalIgnoreCase.Equals(srcFileInfo.Extension, ".manifest"))
-                        continue;
-                }
-
-                // Get the destination file name (so we can alter the name of content files)
-                var destFileName = GetRenamedFileName(srcFileInfo.Name);
-
-                // Get the destination file path
-                var destFile = Path.Combine(dest, destFileName);
-
-                // Check if we can skip the copy
-                if (CanSkipFileCopy(srcFileInfo, destFile))
-                    continue;
-
-                // Copy the file
-                File.Copy(srcFileInfo.FullName, destFile, true);
-            }
+            return path.Substring(root.Length);
         }
 
-        static string GetRenamedFileName(string fileName)
+        static Dictionary<string, string> GetAbsAndRelDirectories(string root)
         {
-            if (IsAssetFile(fileName))
-                return Path.GetFileNameWithoutExtension(fileName) + _newAssetSuffix;
-            else
-                return fileName;
+            root = AddPathSeparatorSuffix(root);
+
+            return Directory.GetDirectories(root, "*", SearchOption.AllDirectories)
+                .ToDictionary(x => x.Substring(root.Length), x => x);
+        }
+
+        static Dictionary<string, string> GetAbsAndRelFiles(string root)
+        {
+            root = AddPathSeparatorSuffix(root);
+
+            return Directory.GetFiles(root, "*", SearchOption.AllDirectories)
+                .ToDictionary(x => x.Substring(root.Length), x => x);
+        }
+
+        /// <summary>
+        /// Prints the usage info text.
+        /// </summary>
+        static void PrintUsage()
+        {
+            const string msg =
+                @"
+Usage:
+  copycontent <source_folder> <dest_folder> [switches]
+
+Examples:
+  copycontent ""C:\Content\"" ""C:\bin\Content\""
+  copycontent ... --skip=""[Data, Engine, Maps, Skeletons]""
+  copycontent ... --clean=""[Grh, Data\Temp\]""
+
+Arguments:
+  source_folder:    The folder to copy files from
+  dest_folder:      The folder to copy files to
+
+Switches:
+  --skip[]:         Specifies root folder names to skip copying
+  --clean[]:        Specifies paths to delete files from the dest that are not in the source
+  --silent:         Don't display messages
+
+Switches that specify a [] at the end indicate an array is expected. The array should be enclosed in double-quotes, but the individual elements should not. Delimit elements with a comma.
+
+NOTE: This program is intended to only be used by the build process. You shouldn't need to manually run this program.
+";
+
+            Console.Write(msg);
         }
 
         /// <summary>
@@ -216,7 +294,7 @@ namespace CopyContent
             if (a == null)
                 return "Expected an array for the switch's value";
 
-            foreach (var x in a.Select(x => AddPathSeparatorSuffix(RemovePathSeparatorPrefix(x.Trim()))))
+            foreach (var x in a.Select(x => x.Trim().Trim(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)))
             {
                 if (!_cleanFolders.Contains(x, StringComparer.OrdinalIgnoreCase))
                     _cleanFolders.Add(x);
@@ -255,7 +333,7 @@ namespace CopyContent
             if (a == null)
                 return "Expected an array for the switch's value";
 
-            foreach (var x in a.Select(x => AddPathSeparatorSuffix(RemovePathSeparatorPrefix(x.Trim()))))
+            foreach (var x in a.Select(x => x.Trim().Trim(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)))
             {
                 if (!_skipRootFolders.Contains(x, StringComparer.OrdinalIgnoreCase))
                     _skipRootFolders.Add(x);
@@ -312,6 +390,11 @@ namespace CopyContent
                         err = HandleSwitch_Clean(value);
                         break;
 
+                    case "silent":
+                        _silent = true;
+                        err = null;
+                        break;
+
                     default:
                         Console.WriteLine("Unknown switch `{0}` near `{1}`.", key, switches[i]);
                         return false;
@@ -326,113 +409,6 @@ namespace CopyContent
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Gets if a file is an asset file.
-        /// </summary>
-        /// <param name="fileName">The name of the file.</param>
-        /// <returns>True if an asset file; otherwise false.</returns>
-        static bool IsAssetFile(string fileName)
-        {
-            return _assetSuffixes.Any(x => fileName.EndsWith(x, StringComparison.OrdinalIgnoreCase));
-        }
-
-        /// <summary>
-        /// Program entry point.
-        /// </summary>
-        /// <param name="args">The args.</param>
-        static void Main(string[] args)
-        {
-            //args = new string[] { @"E:\NetGore\DevContent", @"E:\NetGore\DevContentTest", @"--clean=[Font,Grh]" };
-
-            // Check for all the args
-            if (args == null || args.Length < 2)
-            {
-                PrintUsage();
-
-                if (args == null || args.Length == 0)
-                    Console.ReadLine();
-
-                return;
-            }
-
-            _srcRoot = args[0];
-            _destRoot = args[1];
-
-            // Validate the params
-            if (string.IsNullOrEmpty(_srcRoot) || string.IsNullOrEmpty(_destRoot))
-            {
-                PrintUsage();
-                return;
-            }
-
-            _srcRoot = AddPathSeparatorSuffix(_srcRoot);
-            _destRoot = AddPathSeparatorSuffix(_destRoot);
-
-            // Check for a valid source
-            if (!Directory.Exists(_srcRoot))
-            {
-                Console.WriteLine("Invalid source directory.");
-                return;
-            }
-
-            // Process the switches
-            if (!HandleSwitches(args, 2))
-                return;
-
-            // Start the copying
-            Copy(new DirectoryInfo(_srcRoot), _destRoot, true);
-
-            // Ensure we let all threads we spawn die off because they are background threads, so closing
-            // before they finish will terminate them prematurely
-            while (_liveThreads > 0)
-            {
-                Thread.Sleep(5);
-            }
-        }
-
-        /// <summary>
-        /// Prints the usage info text.
-        /// </summary>
-        static void PrintUsage()
-        {
-            const string msg =
-                @"
-Usage:
-  copycontent <source_folder> <dest_folder> [switches]
-
-Examples:
-  copycontent ""C:\Content\"" ""C:\bin\Content\""
-  copycontent ... --skip=""[Data, Engine, Maps, Skeletons]""
-  copycontent ... --clean=""[Grh, Data\Temp\]""
-
-Arguments:
-  source_folder:    The folder to copy files from
-  dest_folder:      The folder to copy files to
-
-Switches:
-  --skip[]:         Specifies root folder names to skip copying
-  --clean[]:        Specifies paths to delete files from the dest that are not in the source
-
-Switches that specify a [] at the end indicate an array is expected. The array should be enclosed in double-quotes, but the individual elements should not. Delimit elements with a comma.
-
-NOTE: This program is intended to only be used by the build process. You shouldn't need to manually run this program.
-";
-
-            Console.Write(msg);
-        }
-
-        static string RemovePathSeparatorPrefix(string s)
-        {
-            if (s.Length == 0)
-                return s;
-
-            var c = s[0];
-            if (c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)
-                return s.Substring(1);
-            else
-                return s;
         }
     }
 }
