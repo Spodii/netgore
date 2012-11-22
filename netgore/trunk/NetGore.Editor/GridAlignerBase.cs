@@ -138,11 +138,11 @@ namespace NetGore.Editor
             if (!WillAlign && !forceAlign)
                 return spatial.Size;
 
-            var s = Align(spatial.Max, forceAlign);
+            var s = Align(spatial.Max, forceAlign) - spatial.Position;
 
-            if (s.X < 1)
+            if (s.X < GridSize.X)
                 s.X = GridSize.X;
-            if (s.Y < 1)
+            if (s.Y < GridSize.Y)
                 s.Y = GridSize.Y;
 
             return s;
