@@ -176,9 +176,9 @@
         <Item13>DemoGame.Editor.Tools.MapGridDrawerTool</Item13>
         <Item14>|</Item14>
         <Item15>DemoGame.Editor.Tools.MapGrhPencilTool</Item15>
-        <Item16>DemoGame.Editor.Tools.MapEntityCursorTool</Item16>
-        <Item17>DemoGame.Editor.Tools.MapWallCursorTool</Item17>
-        <Item18>DemoGame.Editor.Tools.MapGrhCursorTool</Item18>
+        <Item16>DemoGame.Editor.Tools.MapGrhCursorTool</Item16>
+        <Item17>DemoGame.Editor.Tools.MapEntityCursorTool</Item17>
+        <Item18>DemoGame.Editor.Tools.MapWallCursorTool</Item18>
         <Item19>DemoGame.Editor.Tools.MapLightCursorTool</Item19>
       </Order>
     </Item1>
