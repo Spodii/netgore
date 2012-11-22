@@ -169,8 +169,11 @@ namespace CopyContent
                         string relFile = kvp.Key;
                         if (!srcFilesRenamed.Contains(relFile) || _neverIncludeFiles.Any(x => kvp.Value.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
                         {
-                            log("Deleting file: " + relFile);
-                            File.Delete(kvp.Value);
+                            if (File.Exists(relFile))
+                            {
+                                log("Deleting file: " + relFile);
+                                File.Delete(kvp.Value);
+                            }
 
                             dstFiles.Remove(relFile);
                         }
@@ -183,8 +186,11 @@ namespace CopyContent
                     if (!dstDirs.ContainsKey(kvp.Key))
                     {
                         string dir = Path.Combine(absDstContentDir, kvp.Key.TrimStart(_dirSepChars));
-                        log("Creating directory: " + kvp.Key);
-                        Directory.CreateDirectory(dir);
+                        if (!Directory.Exists(dir))
+                        {
+                            log("Creating directory: " + kvp.Key);
+                            Directory.CreateDirectory(dir);
+                        }
                     }
                 }
 
