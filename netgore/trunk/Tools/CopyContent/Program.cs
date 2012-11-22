@@ -1,42 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CopyContent
 {
-    class Program
+    internal class Program
     {
         /// <summary>
-        /// The file suffixes to be considered asset files.
+        /// The file suffixes to be considered asset files. Asset files get their file extension removed.
+        /// Very roughly sorted by how commonly they are used.
         /// </summary>
-        static readonly string[] _assetSuffixes = new string[]
-        { ".bmp", ".jpg", ".jpeg", ".dds", ".psd", ".png", ".gif", ".tga", ".hdr", ".ttf", ".mp3", ".wav", ".ogg", ".wma" };
+        private static readonly string[] _assetSuffixes = new[] 
+        {
+            ".png", ".bmp", ".wav", ".ogg", ".wma", ".mp3", ".jpg", ".jpeg", ".gif", ".tga", ".hdr", ".ttf", ".dds", ".psd"
+        };
 
-        static readonly List<string> _cleanFolders = new List<string>();
-        static readonly List<string> _skipRootFolders = new List<string>();
+        /// <summary>
+        /// File names/endings that will never be copied to, and will get deleted from the destination.
+        /// </summary>
+        private static readonly string[] _neverIncludeFiles = new[] { "Thumbs.db" };
 
-        static readonly char[] _dirSepChars = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+        private static readonly List<string> _cleanFolders = new List<string>();
+        private static readonly List<string> _skipRootFolders = new List<string>();
+        private static bool _silent;
 
-        static string _destRoot;
-        static string _srcRoot;
-        static bool _silent;
+        private static readonly char[] _dirSepChars = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
 
-        static string AddPathSeparatorSuffix(string s)
+        /// <summary>
+        /// Ensures the specified input contains the directory specified char at the end.
+        /// </summary>
+        private static string AddPathSeparatorSuffix(string s)
         {
             if (s.Length == 0)
                 return Path.DirectorySeparatorChar.ToString();
 
-            var c = s[s.Length - 1];
+            char c = s[s.Length - 1];
             if (c != Path.DirectorySeparatorChar && c != Path.AltDirectorySeparatorChar)
                 return s + Path.DirectorySeparatorChar;
             else
                 return s;
         }
 
-        static string GetRenamedFileName(string fileName)
+        /// <summary>
+        /// Renames a file (or file path) to the correct content name.
+        /// (Simply just removes the file extension)
+        /// </summary>
+        private static string GetRenamedFileName(string fileName)
         {
             if (!IsAssetFile(fileName))
                 return fileName;
@@ -51,7 +64,7 @@ namespace CopyContent
         /// </summary>
         /// <param name="fileName">The name of the file.</param>
         /// <returns>True if an asset file; otherwise false.</returns>
-        static bool IsAssetFile(string fileName)
+        private static bool IsAssetFile(string fileName)
         {
             return _assetSuffixes.Any(x => fileName.EndsWith(x, StringComparison.OrdinalIgnoreCase));
         }
@@ -60,8 +73,10 @@ namespace CopyContent
         /// Program entry point.
         /// </summary>
         /// <param name="args">The args.</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            Stopwatch watch = Stopwatch.StartNew();
+
             /*
             args = new string[] 
             {
@@ -79,21 +94,21 @@ namespace CopyContent
                 return;
             }
 
-            _srcRoot = args[0];
-            _destRoot = args[1];
+            string srcAbsRoot = args[0];
+            string destAbsRoot = args[1];
 
             // Validate the params
-            if (string.IsNullOrEmpty(_srcRoot) || string.IsNullOrEmpty(_destRoot))
+            if (string.IsNullOrEmpty(srcAbsRoot) || string.IsNullOrEmpty(destAbsRoot))
             {
                 PrintUsage();
                 return;
             }
 
-            _srcRoot = AddPathSeparatorSuffix(_srcRoot);
-            _destRoot = AddPathSeparatorSuffix(_destRoot);
+            srcAbsRoot = AddPathSeparatorSuffix(srcAbsRoot);
+            destAbsRoot = AddPathSeparatorSuffix(destAbsRoot);
 
             // Check for a valid source
-            if (!Directory.Exists(_srcRoot))
+            if (!Directory.Exists(srcAbsRoot))
             {
                 Console.WriteLine("Invalid source directory.");
                 return;
@@ -104,22 +119,23 @@ namespace CopyContent
                 return;
 
             // Go through the individual content directories
-            Parallel.ForEach(Directory.GetDirectories(_srcRoot, "*", SearchOption.TopDirectoryOnly), absSrcContentDir =>
+            string[] absSrcContentDirs = Directory.GetDirectories(srcAbsRoot, "*", SearchOption.TopDirectoryOnly);
+            Parallel.ForEach(absSrcContentDirs, absSrcContentDir =>
             {
-                string relContentDirNoSep = AbsToRel(_srcRoot, absSrcContentDir);
+                string relContentDirNoSep = AbsToRel(srcAbsRoot, absSrcContentDir);
                 if (_skipRootFolders.Contains(relContentDirNoSep, StringComparer.OrdinalIgnoreCase))
                     return;
 
                 string relContentDir = relContentDirNoSep + Path.DirectorySeparatorChar;
 
-                string absDstContentDir = Path.Combine(_destRoot, relContentDir);
+                string absDstContentDir = Path.Combine(destAbsRoot, relContentDir);
                 if (!Directory.Exists(absDstContentDir))
                     Directory.CreateDirectory(absDstContentDir);
 
-                var srcDirs = GetAbsAndRelDirectories(absSrcContentDir);
-                var dstDirs = GetAbsAndRelDirectories(absDstContentDir);
-
                 bool shouldClean = _cleanFolders.Contains(relContentDirNoSep, StringComparer.OrdinalIgnoreCase);
+
+                Dictionary<string, string> srcDirs = GetAbsAndRelDirectories(absSrcContentDir);
+                Dictionary<string, string> dstDirs = GetAbsAndRelDirectories(absDstContentDir);
 
                 // Delete folders in destination that are not in source
                 if (shouldClean)
@@ -139,25 +155,22 @@ namespace CopyContent
                         }
                     }
                 }
-
-                var srcFiles = GetAbsAndRelFiles(absSrcContentDir);
-                var dstFiles = GetAbsAndRelFiles(absDstContentDir);
+                
+                Dictionary<string, string> srcFiles = GetAbsAndRelFiles(absSrcContentDir);
+                Dictionary<string, string> dstFiles = GetAbsAndRelFiles(absDstContentDir);
 
                 var srcFilesRenamed = new HashSet<string>(srcFiles.Keys.Select(GetRenamedFileName));
 
-                // Delete files in destination that are not in source
+                // Delete files in destination that are not in source, or match a non-inclusion pattern
                 if (shouldClean)
                 {
                     foreach (var kvp in dstFiles.ToArray())
                     {
                         string relFile = kvp.Key;
-                        if (!srcFilesRenamed.Contains(relFile))
+                        if (!srcFilesRenamed.Contains(relFile) || _neverIncludeFiles.Any(x => kvp.Value.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
                         {
-                            if (File.Exists(kvp.Value))
-                            {
-                                log("Deleting file: " + relFile);
-                                File.Delete(kvp.Value);
-                            }
+                            log("Deleting file: " + relFile);
+                            File.Delete(kvp.Value);
 
                             dstFiles.Remove(relFile);
                         }
@@ -178,16 +191,20 @@ namespace CopyContent
                 // Copy files from source to destination
                 foreach (var kvp in srcFiles)
                 {
-                    string relPath = kvp.Key;
                     string srcFilePath = kvp.Value;
-                    string dstFilePath = GetRenamedFileName(Path.Combine(absDstContentDir, relPath.TrimStart(_dirSepChars)));
+
+                    if (_neverIncludeFiles.Any(x => srcFilePath.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
+                        continue;
+
+                    string relPath = kvp.Key;
+                    string dstFilePath = GetRenamedFileName(Path.Combine(absDstContentDir, relPath.TrimStart( _dirSepChars)));
 
                     FileInfo srcInfo = null, dstInfo = null;
                     if (!File.Exists(dstFilePath) || ShouldCopyFile(srcFilePath, dstFilePath, out srcInfo, out dstInfo))
                     {
                         log("Copying file: " + relPath);
                         File.Copy(srcFilePath, dstFilePath, true);
-
+                       
                         if (srcInfo == null)
                             srcInfo = new FileInfo(srcFilePath);
 
@@ -200,10 +217,13 @@ namespace CopyContent
                 }
             });
 
-            log("Done");
+            log(string.Format("CopyContent complete in {0}ms", watch.ElapsedMilliseconds));
         }
 
-        static void log(string txt)
+        /// <summary>
+        /// Logs the status.
+        /// </summary>
+        private static void log(string txt)
         {
             if (_silent)
                 return;
@@ -211,22 +231,30 @@ namespace CopyContent
             Console.WriteLine(txt);
         }
 
-        static bool ShouldCopyFile(string src, string dst, out FileInfo srcInfo, out FileInfo dstInfo)
+        /// <summary>
+        /// Checks if the existing source file should be copied to the destination.
+        /// Both files must exist.
+        /// </summary>
+        private static bool ShouldCopyFile(string src, string dst, out FileInfo srcInfo, out FileInfo dstInfo)
         {
+            // If the file size, last write time, or creation time differ then replace the destionation
+            // We update the last write and creation time on the destination after doing the copy
             srcInfo = new FileInfo(src);
             dstInfo = new FileInfo(dst);
 
-            if (srcInfo.Length != dstInfo.Length ||
+            return
+                srcInfo.Length != dstInfo.Length ||
                 srcInfo.LastWriteTimeUtc != dstInfo.LastWriteTimeUtc ||
-                srcInfo.CreationTimeUtc != dstInfo.CreationTimeUtc)
-            {
-                return true;
-            }
-
-            return false;
+                srcInfo.CreationTimeUtc != dstInfo.CreationTimeUtc;
         }
 
-        static string AbsToRel(string root, string path)
+        /// <summary>
+        /// Converts an absolute path to a relative path for the root.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private static string AbsToRel(string root, string path)
         {
             if (!root.EndsWith("\\") && !root.EndsWith("/"))
                 throw new Exception("Root needs to end with path separator");
@@ -234,7 +262,10 @@ namespace CopyContent
             return path.Substring(root.Length);
         }
 
-        static Dictionary<string, string> GetAbsAndRelDirectories(string root)
+        /// <summary>
+        /// Gets the directories under the given root, and returns the relative (key) and absolute (value) paths.
+        /// </summary>
+        private static Dictionary<string, string> GetAbsAndRelDirectories(string root)
         {
             root = AddPathSeparatorSuffix(root);
 
@@ -242,7 +273,10 @@ namespace CopyContent
                 .ToDictionary(x => x.Substring(root.Length), x => x);
         }
 
-        static Dictionary<string, string> GetAbsAndRelFiles(string root)
+        /// <summary>
+        /// Gets the files under the given root, and returns the relative (key) and absolute (value) paths.
+        /// </summary>
+        private static Dictionary<string, string> GetAbsAndRelFiles(string root)
         {
             root = AddPathSeparatorSuffix(root);
 
@@ -253,7 +287,7 @@ namespace CopyContent
         /// <summary>
         /// Prints the usage info text.
         /// </summary>
-        static void PrintUsage()
+        private static void PrintUsage()
         {
             const string msg =
                 @"
@@ -272,7 +306,7 @@ Arguments:
 Switches:
   --skip[]:         Specifies root folder names to skip copying
   --clean[]:        Specifies paths to delete files from the dest that are not in the source
-  --silent:         Don't display messages
+  --silent:         Don't display status messages
 
 Switches that specify a [] at the end indicate an array is expected. The array should be enclosed in double-quotes, but the individual elements should not. Delimit elements with a comma.
 
@@ -287,18 +321,16 @@ NOTE: This program is intended to only be used by the build process. You shouldn
         /// </summary>
         /// <param name="value">The value passed to the switch.</param>
         /// <returns>The error message if there was an error processing the <paramref name="value"/>, or null if no errors.</returns>
-        static string HandleSwitch_Clean(string value)
+        private static string HandleSwitch_Clean(string value)
         {
-            var a = HandleSwitch_ReadValueArray(value);
+            IEnumerable<string> a = HandleSwitch_ReadValueArray(value);
 
             if (a == null)
                 return "Expected an array for the switch's value";
 
-            foreach (var x in a.Select(x => x.Trim().Trim(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)))
-            {
-                if (!_cleanFolders.Contains(x, StringComparer.OrdinalIgnoreCase))
-                    _cleanFolders.Add(x);
-            }
+            a = a.Select(x => x.Trim().Trim(_dirSepChars)); // Remove whicespaces and separators
+
+            _cleanFolders.AddRange(a.Distinct(StringComparer.OrdinalIgnoreCase));
 
             return null;
         }
@@ -309,7 +341,7 @@ NOTE: This program is intended to only be used by the build process. You shouldn
         /// <param name="value">The value of the switch.</param>
         /// <returns>The values of the <paramref name="value"/>, or null if the <paramref name="value"/> was not a
         /// valid array.</returns>
-        static IEnumerable<string> HandleSwitch_ReadValueArray(string value)
+        private static IEnumerable<string> HandleSwitch_ReadValueArray(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return null;
@@ -326,18 +358,16 @@ NOTE: This program is intended to only be used by the build process. You shouldn
         /// </summary>
         /// <param name="value">The value passed to the switch.</param>
         /// <returns>The error message if there was an error processing the <paramref name="value"/>, or null if no errors.</returns>
-        static string HandleSwitch_Skip(string value)
+        private static string HandleSwitch_Skip(string value)
         {
-            var a = HandleSwitch_ReadValueArray(value);
+            IEnumerable<string> a = HandleSwitch_ReadValueArray(value);
 
             if (a == null)
                 return "Expected an array for the switch's value";
 
-            foreach (var x in a.Select(x => x.Trim().Trim(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)))
-            {
-                if (!_skipRootFolders.Contains(x, StringComparer.OrdinalIgnoreCase))
-                    _skipRootFolders.Add(x);
-            }
+            a = a.Select(x => x.Trim().Trim(_dirSepChars)); // Remove whicespaces and separators
+
+            _skipRootFolders.AddRange(a.Distinct(StringComparer.OrdinalIgnoreCase));
 
             return null;
         }
@@ -348,15 +378,15 @@ NOTE: This program is intended to only be used by the build process. You shouldn
         /// <param name="switches">The array of switches to process.</param>
         /// <param name="offset">The offset in the <paramref name="switches"/> array to start at.</param>
         /// <returns>True if the switches were successfully handled; false if there were one or more errors.</returns>
-        static bool HandleSwitches(string[] switches, int offset)
+        private static bool HandleSwitches(string[] switches, int offset)
         {
-            for (var i = offset; i < switches.Length; i++)
+            for (int i = offset; i < switches.Length; i++)
             {
                 if (string.IsNullOrEmpty(switches[i].Trim()))
                     continue;
 
                 // Split the key and value
-                var s = switches[i].Split(new char[] { '=' }, 2);
+                string[] s = switches[i].Split(new[] {'='}, 2);
 
                 // Check for a valid key
                 if (string.IsNullOrEmpty(s[0]))
@@ -365,7 +395,7 @@ NOTE: This program is intended to only be used by the build process. You shouldn
                     return false;
                 }
 
-                var key = s[0].ToLowerInvariant().Trim();
+                string key = s[0].ToLowerInvariant().Trim();
                 if (!key.StartsWith("--"))
                 {
                     Console.WriteLine("Invalid arguments specified near `{0}`.", switches[i]);
@@ -376,7 +406,7 @@ NOTE: This program is intended to only be used by the build process. You shouldn
                 key = key.Substring(2);
 
                 // Get the value (or set to null if none given)
-                var value = s.Length > 1 ? s[1] : null;
+                string value = s.Length > 1 ? s[1] : null;
 
                 // Handle the switch by calling their method, which returns a string if there was an error
                 string err;
