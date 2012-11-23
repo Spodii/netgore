@@ -62,10 +62,6 @@ namespace NetGore.Db
                 // Everything else, just throw the default exception
                 throw;
             }
-            finally
-            {
-                ReleaseCommand(cmd);
-            }
         }
 
         /// <summary>
@@ -86,7 +82,7 @@ namespace NetGore.Db
             var cmd = GetCommand(r.Connection);
             try
             {
-                return r.ExecuteNonReaderWithResult(cmd);
+                return r.ExecuteNonReaderWithResult(cmd, this);
             }
             catch (MySqlException ex)
             {
@@ -96,10 +92,6 @@ namespace NetGore.Db
 
                 // Everything else, just throw the default exception
                 throw;
-            }
-            finally
-            {
-                ReleaseCommand(cmd);
             }
         }
 
@@ -123,7 +115,7 @@ namespace NetGore.Db
             var cmd = GetCommand(r.Connection);
             try
             {
-                return r.ExecuteNonReaderWithResult(cmd, out lastInsertedId);
+                return r.ExecuteNonReaderWithResult(cmd, this, out lastInsertedId);
             }
             catch (MySqlException ex)
             {
@@ -133,10 +125,6 @@ namespace NetGore.Db
 
                 // Everything else, just throw the default exception
                 throw;
-            }
-            finally
-            {
-                ReleaseCommand(cmd);
             }
         }
 
@@ -207,10 +195,6 @@ namespace NetGore.Db
                 // Everything else, just throw the default exception
                 throw;
             }
-            finally
-            {
-                ReleaseCommand(cmd);
-            }
         }
 
         /// <summary>
@@ -240,7 +224,7 @@ namespace NetGore.Db
                     }
                 }
 
-                return r.ExecuteNonReaderWithResult(cmd);
+                return r.ExecuteNonReaderWithResult(cmd, this);
             }
             catch (MySqlException ex)
             {
@@ -250,10 +234,6 @@ namespace NetGore.Db
 
                 // Everything else, just throw the default exception
                 throw;
-            }
-            finally
-            {
-                ReleaseCommand(cmd);
             }
         }
 
@@ -286,7 +266,7 @@ namespace NetGore.Db
                     }
                 }
 
-                return r.ExecuteNonReaderWithResult(cmd, out lastInsertedId);
+                return r.ExecuteNonReaderWithResult(cmd, this, out lastInsertedId);
             }
             catch (MySqlException ex)
             {
@@ -296,10 +276,6 @@ namespace NetGore.Db
 
                 // Everything else, just throw the default exception
                 throw;
-            }
-            finally
-            {
-                ReleaseCommand(cmd);
             }
         }
 

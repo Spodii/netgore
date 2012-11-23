@@ -379,22 +379,30 @@ namespace NetGore.Db
         /// This runs in blocking mode.
         /// </summary>
         /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
+        /// <param name="queryBase">The <see cref="DbQueryBase"/> that is executing this command.</param>
         /// <returns>The number of rows affected.</returns>
-        public int ExecuteNonReaderWithResult(DbCommand cmd)
+        public int ExecuteNonReaderWithResult(DbCommand cmd, DbQueryBase queryBase)
         {
-            int ret;
-
-            // Grab the execution lock since we are going to be executing queries
-            lock (_executeQuerySync)
+            try
             {
-                // Empty out the queue
-                FlushQueue();
+                int ret;
 
-                // Execute our job
-                ret = cmd.ExecuteNonQuery();
+                // Grab the execution lock since we are going to be executing queries
+                lock (_executeQuerySync)
+                {
+                    // Empty out the queue
+                    FlushQueue();
+
+                    // Execute our job
+                    ret = cmd.ExecuteNonQuery();
+                }
+
+                return ret;
             }
-
-            return ret;
+            finally
+            {
+                queryBase.ReleaseCommand(cmd);
+            }
         }
 
         /// <summary>
@@ -402,27 +410,35 @@ namespace NetGore.Db
         /// This runs in blocking mode.
         /// </summary>
         /// <param name="cmd">The <see cref="DbCommand"/> to execute.</param>
+        /// <param name="queryBase">The <see cref="DbQueryBase"/> that is executing this command.</param>
         /// <param name="lastInsertedId">Contains the ID for the row that was inserted into the database. Only valid when the
         /// query contains an auto-increment column and the operation being performed is an insert.</param>
         /// <returns>The number of rows affected.</returns>
-        public int ExecuteNonReaderWithResult(DbCommand cmd, out long lastInsertedId)
+        public int ExecuteNonReaderWithResult(DbCommand cmd, DbQueryBase queryBase, out long lastInsertedId)
         {
-            int ret;
-
-            // Grab the execution lock since we are going to be executing queries
-            lock (_executeQuerySync)
+            try
             {
-                // Empty out the queue
-                FlushQueue();
+                int ret;
 
-                // Execute our job
-                ret = cmd.ExecuteNonQuery();
+                // Grab the execution lock since we are going to be executing queries
+                lock (_executeQuerySync)
+                {
+                    // Empty out the queue
+                    FlushQueue();
 
-                // Get the lastInsertedId
-                lastInsertedId = _dbConnectionPool.GetLastInsertedId(cmd);
+                    // Execute our job
+                    ret = cmd.ExecuteNonQuery();
+
+                    // Get the lastInsertedId
+                    lastInsertedId = _dbConnectionPool.GetLastInsertedId(cmd);
+                }
+
+                return ret;
             }
-
-            return ret;
+            finally
+            {
+                queryBase.ReleaseCommand(cmd);
+            }
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
@@ -44,6 +45,15 @@ namespace NetGore.Db
         readonly IEnumerable<DbParameter> _parameters;
 
         bool _disposed;
+
+#if DEBUG
+        /// <summary>
+        /// We set this on a DbCommand right after we create it, then remove it after we release the command. This way we can make sure
+        /// that we are only grabbing a pooled DbCommand that has been released, and are releasing the DbCommands only once. And that when
+        /// we release the DbCommand, we are releasing it from the correct DbQueryBase.
+        /// </summary>
+        readonly DummySite _executedTracker = new DummySite();
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryBase"/> class.
@@ -348,6 +358,12 @@ namespace NetGore.Db
                 cmd.Connection = conn;
             }
 
+            Debug.Assert(cmd.Site == null, "Site was not null...");
+
+#if DEBUG
+            cmd.Site = _executedTracker;
+#endif
+
             return cmd;
         }
 
@@ -424,6 +440,11 @@ namespace NetGore.Db
                 throw new MethodAccessException(_disposedErrorMessage);
 
             AssertValidReleasedCommand(cmd);
+
+#if DEBUG
+            Debug.Assert(cmd.Site == _executedTracker, "DbCommand's ExecutedTracker was not what we expected...");
+            cmd.Site = null;
+#endif
 
             lock (_commandsLock)
                 _commands.Push(cmd);
@@ -529,5 +550,22 @@ namespace NetGore.Db
         }
 
         #endregion
+
+        /// <summary>
+        /// A dummy ISite implementation that does nothing but let us instantiate an object that implements ISite.
+        /// See _executedTracker;
+        /// </summary>
+        class DummySite : ISite
+        {
+            public object GetService(Type serviceType)
+            {
+                return null;
+            }
+
+            public IComponent Component { get; private set; }
+            public IContainer Container { get; private set; }
+            public bool DesignMode { get; private set; }
+            public string Name { get; set; }
+        }
     }
 }
