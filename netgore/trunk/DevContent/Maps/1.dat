@@ -13,7 +13,16 @@
     <Count>0</Count>
   </Walls>
   <DynamicEntities>
-    <Count>0</Count>
+    <Count>1</Count>
+    <Item0>
+      <DynamicEntityType>TeleportEntity</DynamicEntityType>
+      <Size>32,128</Size>
+      <Weight>0</Weight>
+      <Destination>86,646</Destination>
+      <DestinationMap>2</DestinationMap>
+      <Position>1568,256</Position>
+      <Velocity>0,0</Velocity>
+    </Item0>
   </DynamicEntities>
   <Misc>
     <MapGrhs>

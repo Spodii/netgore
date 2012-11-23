@@ -12,85 +12,41 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
-        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
-        /// that used this IUsableEntity may be null.
+        /// Handles when another Entity collides into us. Not synonymous CollideInto since the
+        /// <paramref name="collider"/> Entity is the one who collided into us. For example, if the
+        /// two entities in question were a moving Character and a stationary wall, this Entity would be
+        /// the Wall and <paramref name="collider"/> would be the Character.
         /// </summary>
-        public override event TypedEventHandler<Entity, EventArgs<DynamicEntity>> Used;
-
-        /// <summary>
-        /// Client: 
-        ///     Checks if the Client's character can attempt to use the IUsableEntity. If false, the Client
-        ///     wont even attempt to use the IUsableEntity. If true, the Client will attempt to use it, but
-        ///     it is not guarenteed the Server will also allow it to be used.
-        /// Server:
-        ///     Checks if the specified Entity may use the IUsableEntity.
-        /// </summary>
-        /// <param name="charEntity">The CharacterEntity that is trying to use this IUsableEntity. For the Client,
-        /// this will always be the User's Character. Can be null.</param>
-        /// <returns>True if this IUsableEntity can be used by the <paramref name="charEntity"/>, else false.</returns>
-        public override bool CanUse(DynamicEntity charEntity)
+        /// <param name="collider">Entity that collided into us.</param>
+        /// <param name="displacement">Displacement between the two Entities.</param>
+        public override void CollideFrom(Entity collider, SFML.Graphics.Vector2 displacement)
         {
-            // Check that the base usage rules pass
-            if (!base.CanUse(charEntity))
-                return false;
-
-            // Add custom rules here
-
-            return true;
-        }
-
-        /// <summary>
-        /// Client:
-        ///     Handles any additional usage stuff. When this is called, it is to be assumed that the Server has recognized
-        ///     the IUsableEntity as having been successfully used.
-        /// Server:
-        ///     Attempts to use this IUsableEntity on the <paramref name="charEntity"/>.
-        /// </summary>
-        /// <param name="charEntity">CharacterEntity that is trying to use this IUsableEntity. Can be null.</param>
-        /// <returns>True if this IUsableEntity was successfully used, else false. On the Client, this is generally
-        /// unused.</returns>
-        public override bool Use(DynamicEntity charEntity)
-        {
-            // Check if we can use
-            if (!CanUse(charEntity))
-                return false;
-
-            if (!Open)
-            {
-                Open = true; // For testing after we've tried it once, we'll open it!
-                return false;
-            }
+            // When a character touches this, teleport the character to the destination
+            Character character = collider as Character;
+            if (character == null)
+                return;
 
             // Teleport to a new map
             if (DestinationMap > 0)
             {
-                var c = (Character)charEntity;
-                if (c.Map.ID != DestinationMap)
+                if (character.Map.ID != DestinationMap)
                 {
-                    var newMap = c.World.GetMap(DestinationMap);
+                    var newMap = character.World.GetMap(DestinationMap);
                     if (newMap == null)
                     {
                         const string errmsg = "Failed to teleport Character `{0}` - Invalid DestMap `{1}`.";
-                        Debug.Fail(string.Format(errmsg, c, this));
+                        Debug.Fail(string.Format(errmsg, character, this));
                         if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, c, this);
-                        return false;
+                            log.ErrorFormat(errmsg, character, this);
+                        return;
                     }
 
-                    c.Teleport(newMap, Destination);
+                    character.Teleport(newMap, Destination);
                 }
             }
 
             // Teleport the CharacterEntity to our predefined location
-            charEntity.Position = Destination;
-
-            // Notify listeners
-            if (Used != null)
-                Used.Raise(this, EventArgsHelper.Create(charEntity));
-
-            // Successfully used
-            return true;
+            character.Position = Destination;
         }
     }
 }
