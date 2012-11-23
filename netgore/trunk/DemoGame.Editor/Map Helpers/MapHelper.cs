@@ -343,11 +343,8 @@ namespace DemoGame.Editor
                 }
 
                 // Save successful
-                if (showConfirmation)
-                {
-                    const string savedMsg = "Successfully saved the changes to map `{0}`!";
-                    MessageBox.Show(string.Format(savedMsg, map), "Map saved", MessageBoxButtons.OK);
-                }
+                const string savedMsg = "Successfully saved the changes to map id {0}: {1}";
+                MainForm.SetStatusMessage(string.Format(savedMsg, map.ID, map.Name ?? string.Empty));
             }
             catch (Exception ex)
             {
@@ -374,29 +371,28 @@ namespace DemoGame.Editor
                 var newID = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
                 int newSetID;
-                if (int.TryParse(InputBox.Show("Save as...", "Save map ID as:", newID.ToString()), out newSetID))
+                if (!int.TryParse(InputBox.Show("Save as...", "Save map ID as:", newID.ToString()), out newSetID))
+                    return;
+
+                if (!MapBase.MapIDExists((MapID)newSetID))
                 {
-                    if (!MapBase.MapIDExists((MapID)newSetID))
-                    {
-                        newID = ((MapID)newSetID);
-                        // Confirm save
+                    newID = ((MapID)newSetID);
 
-                        if (showConfirmation)
-                        {
-                            const string confirmMsg = "Are you sure you wish to save map `{0}` as a new map (with ID `{1}`)?";
-                            if (MessageBox.Show(string.Format(confirmMsg, map, newID), "Save map as?", MessageBoxButtons.YesNo) ==
-                                DialogResult.No)
-                                return;
-                        }
-                    }
-                    else
+                    // Confirm save
+                    if (showConfirmation)
                     {
-                        const string confirmMsgOverWrite = "Are you sure you wish to save map `{0}` and overwrite map (with ID `{1}`)?";
-                        if (MessageBox.Show(string.Format(confirmMsgOverWrite, map.ID, newSetID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        const string confirmMsg = "Are you sure you wish to save map `{0}` as a new map (with ID `{1}`)?";
+                        if (MessageBox.Show(string.Format(confirmMsg, map, newID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
                             return;
-
-                        newID = ((MapID)newSetID);
                     }
+                }
+                else
+                {
+                    const string confirmMsgOverWrite = "Are you sure you wish to save map `{0}` and overwrite map (with ID `{1}`)?";
+                    if (MessageBox.Show(string.Format(confirmMsgOverWrite, map.ID, newSetID), "Save map as?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+
+                    newID = ((MapID)newSetID);
                 }
 
                 // Change the map ID
@@ -404,13 +400,6 @@ namespace DemoGame.Editor
 
                 // Save
                 SaveMap(map, false);
-
-                // Save successful
-                if (showConfirmation)
-                {
-                    const string savedMsg = "Successfully saved the map `{0}` as a new map!";
-                    MessageBox.Show(string.Format(savedMsg, map), "Map successfully saved as a new map", MessageBoxButtons.OK);
-                }
             }
             catch (Exception ex)
             {

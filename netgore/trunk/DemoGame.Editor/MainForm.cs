@@ -52,6 +52,27 @@ namespace DemoGame.Editor
             _deserializer = new DockContentDeserializer(this);
         }
 
+        /// <summary>
+        /// Sets the message in the status toolbar.
+        /// </summary>
+        /// <param name="message">The message to display.</param>
+        public static void SetStatusMessage(string message)
+        {
+            try
+            {
+                var frm = _instance;
+                if (frm == null)
+                    return;
+
+                frm.tssInfo.Text = message ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                // Doesn't matter if we somehow have an error
+                Debug.Fail(ex.ToString());
+            }
+        }
+
         static string GetDockSettingsFilePath(string settingsName)
         {
             return ContentPaths.Build.Settings.Join("EditorLayout." + settingsName + ".xml");
@@ -184,6 +205,7 @@ namespace DemoGame.Editor
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            // Display help (F1)
             if (e.KeyCode == Keys.F1 || e.KeyCode == Keys.Help)
             {
                 if (EditorHelpManager.Instance.RaiseHelp())
