@@ -187,6 +187,9 @@ namespace DemoGame.Editor
             Map_LayerChanged(GlobalState.Instance, EventArgs.Empty);
             Map_LayerDepthChanged(GlobalState.Instance, EventArgs.Empty);
 
+            // Clean up bad maps
+            MapHelper.DeleteMissingMapIds();
+
             // Load the initial map
             // TODO: !! Make as setting, auto-load last loaded map
             var editorFrm = new EditMapForm();

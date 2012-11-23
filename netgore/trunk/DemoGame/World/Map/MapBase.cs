@@ -452,15 +452,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the next free map index.
+        /// Gets MapIds for maps that exist in file.
         /// </summary>
-        /// <param name="path">ContentPaths containing the maps.</param>
-        /// <returns>Next free map index.</returns>
-        public static MapID GetNextFreeIndex(ContentPaths path)
+        public static MapID[] GetUsedMapIds(ContentPaths path)
         {
             var mapFiles = GetMapFiles(path);
 
-            // Get the used map indices
             var usedIndices = new List<MapID>(mapFiles.Count());
             foreach (var file in mapFiles)
             {
@@ -470,10 +467,23 @@ namespace DemoGame
             }
 
             usedIndices.Sort();
+            return usedIndices.ToArray();
+        }
 
+        /// <summary>
+        /// Gets the next free map index.
+        /// </summary>
+        /// <param name="path">ContentPaths containing the maps.</param>
+        /// <returns>Next free map index.</returns>
+        public static MapID GetNextFreeIndex(ContentPaths path)
+        {
+            // Get the used map indices
+            MapID[] usedIndices = GetUsedMapIds(path);
+
+            // Find the first missing map index
             // Check every map index starting at 1, returning the first free value found
-            var expected = 1;
-            for (var i = 0; i < usedIndices.Count; i++)
+            int expected = 1;
+            for (var i = 0; i < usedIndices.Length; i++)
             {
                 if ((int)usedIndices[i] != expected)
                     return new MapID(expected);

@@ -126,25 +126,59 @@ namespace DemoGame.Editor
             return null;
         }
 
+        static void DeleteMap(MapID mapId, DeleteMapQuery deleteMapQuery)
+        {
+            try
+            {
+                // Delete file
+                string filePathDev = MapBase.GetMapFilePath(ContentPaths.Dev, mapId);
+                if (File.Exists(filePathDev))
+                    File.Delete(filePathDev);
+            
+                try
+                {
+                    string filePathBuild = MapBase.GetMapFilePath(ContentPaths.Build, mapId);
+                    if (File.Exists(filePathBuild))
+                        File.Delete(filePathBuild);
+                }
+                catch   
+                {
+                }
+
+                // Delete from db
+                deleteMapQuery.Execute(mapId);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to delete mapId `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, mapId, ex);
+                Debug.Fail(string.Format(errmsg, mapId, ex));
+
+                throw;
+            }
+        }
+
         /// <summary>
         /// Deletes a map.
         /// </summary>
         /// <param name="map">The map to delete.</param>
         /// <param name="showConfirmation">If true, a confirmation will be shown to make sure the user wants to
         /// perform this operation.</param>
-        public static void DeleteMap(EditorMap map, bool showConfirmation = true)
+        /// <returns>True if the map was deleted successfully; otherwise false.</returns>
+        public static bool DeleteMap(EditorMap map, bool showConfirmation = true)
         {
             try
             {
                 if (map == null)
-                    return;
+                    return false;
 
                 // Show the confirmation message
                 if (showConfirmation)
                 {
                     const string confirmMsg = "Are you sure you wish to delete map `{0}`? This cannot be undone!";
                     if (MessageBox.Show(string.Format(confirmMsg, map), "Delete map?", MessageBoxButtons.YesNo) == DialogResult.No)
-                        return;
+                        return false;
                 }
                 
                 // If a MapScreenControl is open for this map, set the map on it to null then dispose of the control
@@ -155,13 +189,7 @@ namespace DemoGame.Editor
                     msc.Dispose();
                 }
 
-                // Delete the map file
-                var path = MapBase.GetMapFilePath(ContentPaths.Dev, map.ID);
-                if (File.Exists(path))
-                    File.Delete(path);
-
-                // Update the database
-                GlobalState.Instance.DbController.GetQuery<DeleteMapQuery>().Execute(map.ID);
+                DeleteMap(map.ID, GlobalState.Instance.DbController.GetQuery<DeleteMapQuery>());
 
                 // Delete successful
                 if (showConfirmation)
@@ -176,7 +204,10 @@ namespace DemoGame.Editor
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, map, ex);
                 Debug.Fail(string.Format(errmsg, map, ex));
+                return false;
             }
+
+            return true;
         }
 
         /// <summary>
@@ -408,6 +439,58 @@ namespace DemoGame.Editor
                     log.ErrorFormat(errmsg, map, ex);
                 Debug.Fail(string.Format(errmsg, map, ex));
             }
+        }
+
+        /// <summary>
+        /// Finds the MapIds for maps that exist in the database but not on file, or vise versa.
+        /// </summary>
+        public static MapID[] FindMissingMapIds()
+        {
+            // Get ids from file & db
+            MapID[] idsFromFile = MapBase.GetUsedMapIds(ContentPaths.Dev);
+            MapID[] idsFromDb = FindAllMaps().Select(x => x.ID).ToArray();
+
+            return idsFromFile.NotIntersect(idsFromDb).ToArray();
+        }
+
+        /// <summary>
+        /// Finds and deletes the MapIds for maps that exist in the database but not on file, or vise versa.
+        /// </summary>
+        public static MapID[] DeleteMissingMapIds(bool showConfirmation = true)
+        {
+            MapID[] missingIds = FindMissingMapIds().OrderBy(x => x).ToArray();
+
+            if (missingIds.Length == 0)
+                return new MapID[0];
+
+            if (showConfirmation)
+            {
+                const string confirmMsgDelete = "The following MapIds exist on file but not in the database, or vise versa." + 
+                    " This normally will happen because you deleted or moved the map files directory instead of through the editor." + 
+                    " Do you wish to delete them completely?{0}{0}{1}";
+                if (MessageBox.Show(string.Format(confirmMsgDelete, Environment.NewLine, string.Join(", ", missingIds)), "Delete incomplete maps", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return new MapID[0];
+            }
+            
+            var deleteMapQuery = GlobalState.Instance.DbController.GetQuery<DeleteMapQuery>();
+
+            // Delete
+            List<MapID> deletedIds = new List<MapID>();
+            foreach (MapID id in missingIds)
+            {
+                try
+                {
+                    DeleteMap(id, deleteMapQuery);
+                    deletedIds.Add(id);
+                }
+                catch
+                {
+                }
+            }
+
+            MainForm.SetStatusMessage(string.Format("Deleted {0} missing maps: {1}", deletedIds.Count, string.Join(", ", deletedIds)));
+
+            return deletedIds.ToArray();
         }
     }
 }

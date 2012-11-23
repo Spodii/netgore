@@ -394,6 +394,40 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the values that exist in only one of the IEnumerables (opposite of Intersect).
+        /// </summary>
+        static IEnumerable<T> NotIntersectInternal<T>(params IEnumerable<T>[] sets)
+        {
+            Dictionary<T, byte> counts = new Dictionary<T, byte>();
+            foreach (var set in sets)
+            {
+                foreach (T x in set)
+                {
+                    byte count;
+                    if (!counts.TryGetValue(x, out count))
+                    {
+                        counts[x] = 1; // Set first value
+                    }
+                    else
+                    {
+                        if (count == 1) // Only need to count up to 2
+                            counts[x] = 2;
+                    }
+                }
+            }
+
+            return counts.Where(x => x.Value == 1).Select(x => x.Key);
+        }
+
+        /// <summary>
+        /// Gets the values that exist in only one of the IEnumerables (opposite of Intersect).
+        /// </summary>
+        public static IEnumerable<T> NotIntersect<T>(this IEnumerable<T> a, IEnumerable<T> b)
+        {
+            return NotIntersectInternal(a, b);
+        }
+
+        /// <summary>
         /// Creates a compact IEnumerable from the given IEnumerable. The created IEnumerable is intended to have as
         /// small of a memory footprint as possible while retaining the ability to quickly iterate over. This method is
         /// intended for being used on an unchanging IEnumerable that will remain in memory for a while.
