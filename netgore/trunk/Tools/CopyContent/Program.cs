@@ -82,8 +82,8 @@ namespace CopyContent
             {
                 @"C:\Programming\NetGore\DevContent", 
                 @"C:\Programming\NetGore\DevContentTest", 
-                @"--clean=[Grh]", 
-                @"--skip=[Font,Data,Engine,Fx,Languages,Maps,Music,Skeletons,Sounds]"
+                @"--clean=[Maps]", 
+                @"--skip=[Font,Data,Engine,Fx,Languages,Music,Skeletons,Sounds]"
             };
             */
 
@@ -169,7 +169,7 @@ namespace CopyContent
                         string relFile = kvp.Key;
                         if (!srcFilesRenamed.Contains(relFile) || _neverIncludeFiles.Any(x => kvp.Value.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
                         {
-                            if (File.Exists(relFile))
+                            if (File.Exists(kvp.Value))
                             {
                                 log("Deleting file: " + relFile);
                                 File.Delete(kvp.Value);
