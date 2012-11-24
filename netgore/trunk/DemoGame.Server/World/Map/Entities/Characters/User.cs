@@ -386,7 +386,7 @@ namespace DemoGame.Server
         /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
         protected override MapID GetLoadMap()
         {
-            if (!RespawnMapID.HasValue)
+            if (Map == null)
             {
                 const string errmsg =
                     "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoad... instead.";
@@ -407,7 +407,7 @@ namespace DemoGame.Server
         /// <returns>The position to load this <see cref="Character"/> at.</returns>
         protected override Vector2 GetLoadPosition()
         {
-            if (!RespawnMapID.HasValue)
+            if (Map == null)
             {
                 const string errmsg =
                     "Users are expected to have a valid respawn position at all times, but user `{0}` does not." +
