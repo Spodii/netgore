@@ -6,6 +6,7 @@ using System.Linq;
 using DemoGame.Server;
 using NetGore;
 using NetGore.AI;
+using NetGore.Db;
 using NetGore.Db.ClassCreator;
 using NetGore.Features.ActionDisplays;
 using NetGore.Features.NPCChat;
@@ -59,8 +60,7 @@ For more information on the DbClassCreator, please see:
         static readonly string _outputServerDir = string.Format("{0}..{1}..{1}DemoGame.Server{1}DbObjs{1}",
             AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
-        static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(CodeFormatter formatter,
-                                                                              StatCollectionType statCollectionType)
+        static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(CodeFormatter formatter, StatCollectionType statCollectionType)
         {
             var columnItems = new List<ColumnCollectionItem>();
             foreach (var statType in EnumHelper<StatType>.Values)
@@ -92,7 +92,10 @@ For more information on the DbClassCreator, please see:
             var x = new DbClassGeneratorSettings();
 #pragma warning restore 168
 
-            using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
+            DbConnectionSettings dbSettings = new DbConnectionSettings(string.Format("{0}..{1}..{1}DemoGame.Server{1}DbSettings.dat",
+                AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar), false);
+
+            using (var generator = new MySqlClassGenerator(dbSettings.Host, dbSettings.User, dbSettings.Pass, dbSettings.Database, dbSettings.Port))
             {
                 var baseStatColumns = GetStatColumnCollectionItems(generator.Formatter, StatCollectionType.Base);
                 var reqStatColumns = GetStatColumnCollectionItems(generator.Formatter, StatCollectionType.Requirement);
@@ -105,10 +108,8 @@ For more information on the DbClassCreator, please see:
                 var baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
                 var reqStatTables = new string[] { "item", "item_template" };
 
-                generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), typeof(short), baseStatTables,
-                    baseStatColumns);
-                generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), typeof(short), reqStatTables,
-                    reqStatColumns);
+                generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), typeof(short), baseStatTables, baseStatColumns);
+                generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), typeof(short), reqStatTables, reqStatColumns);
 
                 // Custom external types
                 generator.AddCustomType(typeof(AccountID), "account", "id");
@@ -147,8 +148,7 @@ For more information on the DbClassCreator, please see:
                 // Mass-added custom types
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
                 generator.AddCustomType(typeof(CharacterID), "*", "character_id", "target_character_id", "user_id", "npc_id");
-                generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id", "user_template_id",
-                    "npc_template_id");
+                generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id", "user_template_id", "npc_template_id");
                 generator.AddCustomType(typeof(AccountID), "*", "account_id");
                 generator.AddCustomType(typeof(MapID), "*", "map_id", "respawn_map_id", "load_map_id");
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");
@@ -269,8 +269,7 @@ For more information on the DbClassCreator, please see:
 
             var savePath = saveDir + gtc.ClassName + ".cs";
 
-            code = _fileHeader.Replace("[INSERT_DATE_HERE]", DateTime.Now.ToUniversalTime().ToString()) + Environment.NewLine +
-                   Environment.NewLine + code;
+            code = _fileHeader.Replace("[INSERT_DATE_HERE]", DateTime.Now.ToUniversalTime().ToString()) + Environment.NewLine + Environment.NewLine + code;
 
             File.WriteAllText(savePath, code);
         }
