@@ -12,42 +12,48 @@ Make sure that you re-run the DbClassCreator every time you alter your
 game's database.
 
 For more information on the DbClassCreator, please see:
-    http://www.netgore.com/wiki/dbclasscreator.html
+    http://www.netgore.com/wiki/DbClassCreator
 ********************************************************************/
 
 using System;
 using System.Linq;
-using NetGore.World;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `event_counters_map`.
-    /// </summary>
-    public interface IEventCountersMapTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `counter`.
-        /// </summary>
-        Int64 Counter { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `event_counters_map`.
+/// </summary>
+public interface IEventCountersMapTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+IEventCountersMapTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `map_event_counter_id`.
-        /// </summary>
-        Byte MapEventCounterId { get; }
+/// <summary>
+/// Gets the value of the database column `counter`.
+/// </summary>
+System.Int64 Counter
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `map_event_counter_id`.
+/// </summary>
+System.Byte MapEventCounterId
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `map_id`.
+/// </summary>
+NetGore.World.MapID MapID
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `map_id`.
-        /// </summary>
-        MapID MapID { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IEventCountersMapTable DeepCopy();
-    }
 }

@@ -12,41 +12,48 @@ Make sure that you re-run the DbClassCreator every time you alter your
 game's database.
 
 For more information on the DbClassCreator, please see:
-    http://www.netgore.com/wiki/dbclasscreator.html
+    http://www.netgore.com/wiki/DbClassCreator
 ********************************************************************/
 
 using System;
 using System.Linq;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `event_counters_npc`.
-    /// </summary>
-    public interface IEventCountersNpcTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `counter`.
-        /// </summary>
-        Int64 Counter { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `event_counters_npc`.
+/// </summary>
+public interface IEventCountersNpcTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+IEventCountersNpcTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `npc_event_counter_id`.
-        /// </summary>
-        Byte NPCEventCounterID { get; }
+/// <summary>
+/// Gets the value of the database column `counter`.
+/// </summary>
+System.Int64 Counter
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `npc_event_counter_id`.
+/// </summary>
+System.Byte NPCEventCounterID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `npc_template_id`.
+/// </summary>
+DemoGame.CharacterTemplateID NPCTemplateID
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `npc_template_id`.
-        /// </summary>
-        CharacterTemplateID NPCTemplateID { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IEventCountersNpcTable DeepCopy();
-    }
 }

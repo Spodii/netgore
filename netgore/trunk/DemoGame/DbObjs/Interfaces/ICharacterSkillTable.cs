@@ -12,41 +12,48 @@ Make sure that you re-run the DbClassCreator every time you alter your
 game's database.
 
 For more information on the DbClassCreator, please see:
-    http://www.netgore.com/wiki/dbclasscreator.html
+    http://www.netgore.com/wiki/DbClassCreator
 ********************************************************************/
 
 using System;
 using System.Linq;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `character_skill`.
-    /// </summary>
-    public interface ICharacterSkillTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `character_id`.
-        /// </summary>
-        CharacterID CharacterID { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `character_skill`.
+/// </summary>
+public interface ICharacterSkillTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+ICharacterSkillTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `skill_id`.
-        /// </summary>
-        SkillType SkillID { get; }
+/// <summary>
+/// Gets the value of the database column `character_id`.
+/// </summary>
+DemoGame.CharacterID CharacterID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `skill_id`.
+/// </summary>
+DemoGame.SkillType SkillID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `time_added`.
+/// </summary>
+System.DateTime TimeAdded
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `time_added`.
-        /// </summary>
-        DateTime TimeAdded { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        ICharacterSkillTable DeepCopy();
-    }
 }
