@@ -397,7 +397,7 @@ namespace DemoGame.Server
                 return ServerSettings.Default.InvalidUserLoadMap;
             }
 
-            return RespawnMapID.Value;
+            return Map.ID;
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace DemoGame.Server
                 return ServerSettings.Default.InvalidUserLoadPosition;
             }
 
-            return RespawnPosition;
+            return Position;
         }
 
         /// <summary>
