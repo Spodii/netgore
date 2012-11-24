@@ -1254,7 +1254,11 @@
       </Lights>
     </Lighting>
     <ParticleEffects>
-      <Count>0</Count>
+      <Count>1</Count>
+      <Item0>
+        <ParticleEffectName>fountain</ParticleEffectName>
+        <Position>128,128</Position>
+      </Item0>
     </ParticleEffects>
     <Refraction>
       <RefractionEffects>

@@ -1267,6 +1267,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="IDelayedMapEvent"/>s on the map.
         /// </summary>
+        [Browsable(false)]
         public IEnumerable<IDelayedMapEvent> DelayedEvents
         {
             get { return _delayedEvents; }
@@ -1284,6 +1285,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the gravity to use on the map.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Gravity
         {
             get
