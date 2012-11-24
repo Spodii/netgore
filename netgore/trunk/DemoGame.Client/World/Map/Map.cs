@@ -42,7 +42,6 @@ namespace DemoGame.Client
         Color _ambientLight = Color.White;
         TextureAtlas _atlas;
         ICamera2D _camera;
-        bool _isDisposed;
 
         /// <summary>
         /// List of atlas textures used for the graphics for the map
@@ -65,6 +64,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners when this object has been disposed.
         /// </summary>
+        [Browsable(false)]
         public event TypedEventHandler<Map> Disposed;
 
         /// <summary>
@@ -92,10 +92,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets if this object has been disposed.
         /// </summary>
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
-        }
+        [Browsable(false)]
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Gets the lights on the map.
@@ -118,7 +116,10 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the <see cref="MapParticleEffectCollection"/> containing the particle effects for the map.
         /// </summary>
-        [Browsable(false)]
+        [Browsable(true)]
+        [Description("The particle effects attached to the map.")]
+        [DisplayName("Particle Effects")]
+        [Category("Map")]
         public MapParticleEffectCollection ParticleEffects
         {
             get { return _particleEffects; }
@@ -611,7 +612,7 @@ namespace DemoGame.Client
             if (IsDisposed)
                 return;
 
-            _isDisposed = true;
+            IsDisposed = true;
 
             try
             {

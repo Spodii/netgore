@@ -20,6 +20,14 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEffectReference"/> class.
         /// </summary>
+        protected ParticleEffectReference()
+        {
+            // This constructor is required for adding effects via the editor
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ParticleEffectReference"/> class.
+        /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public ParticleEffectReference(IValueReader reader)
         {
