@@ -277,13 +277,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the experience required for a given stat level.
+        /// Gets the points required for a given stat level.
         /// </summary>
         /// <param name="x">Stat level to check (current stat level).</param>
-        /// <returns>Experience required for the given stat level.</returns>
+        /// <returns>Points required for the given stat level.</returns>
         public static int StatCost(int x)
         {
-            return (x / 10) + 1;
+            return 1;
         }
 
         /// <summary>
