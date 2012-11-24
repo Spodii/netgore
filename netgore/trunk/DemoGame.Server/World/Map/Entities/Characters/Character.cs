@@ -24,8 +24,7 @@ namespace DemoGame.Server
     /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
-    public abstract partial class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference,
-                                              IServerSaveable
+    public abstract partial class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference, IServerSaveable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

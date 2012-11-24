@@ -30,8 +30,7 @@ namespace DemoGame
                     return "stat_req_" + statType.ToString().ToLowerInvariant();
 
                 case StatCollectionType.Modified:
-                    throw new ArgumentException("StatCollectionType.Modified is not allowed in the database.",
-                        "statCollectionType");
+                    throw new ArgumentException("StatCollectionType.Modified is not allowed in the database.", "statCollectionType");
 
                 default:
                     throw new ArgumentOutOfRangeException("statCollectionType");
