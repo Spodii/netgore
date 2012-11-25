@@ -90,7 +90,22 @@ namespace Lidgren.Network
 			m_readPosition += 8;
 			return retval;
 		}
-		
+
+		/// <summary>
+		/// Reads a byte and returns true or false for success
+		/// </summary>
+		public bool ReadByte(out byte result)
+		{
+			if (m_bitLength - m_readPosition < 8)
+			{
+				result = 0;
+				return false;
+			}
+			result = NetBitWriter.ReadByte(m_data, 8, m_readPosition);
+			m_readPosition += 8;
+			return true;
+		}
+
 		/// <summary>
 		/// Reads a signed byte
 		/// </summary>
@@ -125,6 +140,23 @@ namespace Lidgren.Network
 			NetBitWriter.ReadBytes(m_data, numberOfBytes, m_readPosition, retval, 0);
 			m_readPosition += (8 * numberOfBytes);
 			return retval;
+		}
+
+		/// <summary>
+		/// Reads the specified number of bytes and returns true for success
+		/// </summary>
+		public bool ReadBytes(int numberOfBytes, out byte[] result)
+		{
+			if (m_bitLength - m_readPosition + 7 < (numberOfBytes * 8))
+			{
+				result = null;
+				return false;
+			}
+
+			result = new byte[numberOfBytes];
+			NetBitWriter.ReadBytes(m_data, numberOfBytes, m_readPosition, result, 0);
+			m_readPosition += (8 * numberOfBytes);
+			return true;
 		}
 
 		/// <summary>
@@ -201,6 +233,23 @@ namespace Lidgren.Network
 		}
 
 		/// <summary>
+		/// Reads a 32 bit signed integer written using Write(Int32)
+		/// </summary>
+		[CLSCompliant(false)]
+		public bool ReadInt32(out Int32 result)
+		{
+			if (m_bitLength - m_readPosition < 32)
+			{
+				result = 0;
+				return false;
+			}
+
+			result = (Int32)NetBitWriter.ReadUInt32(m_data, 32, m_readPosition);
+			m_readPosition += 32;
+			return true;
+		}
+
+		/// <summary>
 		/// Reads a signed integer stored in 1 to 32 bits, written using Write(Int32, Int32)
 		/// </summary>
 		public Int32 ReadInt32(int numberOfBits)
@@ -237,6 +286,22 @@ namespace Lidgren.Network
 			uint retval = NetBitWriter.ReadUInt32(m_data, 32, m_readPosition);
 			m_readPosition += 32;
 			return retval;
+		}
+
+		/// <summary>
+		/// Reads an 32 bit unsigned integer written using Write(UInt32) and returns true for success
+		/// </summary>
+		[CLSCompliant(false)]
+		public bool ReadUInt32(out UInt32 result)
+		{
+			if (m_bitLength - m_readPosition < 32)
+			{
+				result = 0;
+				return false;
+			}
+			result = NetBitWriter.ReadUInt32(m_data, 32, m_readPosition);
+			m_readPosition += 32;
+			return true;
 		}
 
 		/// <summary>
@@ -334,14 +399,36 @@ namespace Lidgren.Network
 
 			if ((m_readPosition & 7) == 0) // read directly
 			{
-				// endianness is handled inside BitConverter.ToSingle
 				float retval = BitConverter.ToSingle(m_data, m_readPosition >> 3);
 				m_readPosition += 32;
 				return retval;
 			}
 
 			byte[] bytes = ReadBytes(4);
-			return BitConverter.ToSingle(bytes, 0); // endianness is handled inside BitConverter.ToSingle
+			return BitConverter.ToSingle(bytes, 0);
+		}
+
+		/// <summary>
+		/// Reads a 32 bit floating point value written using Write(Single)
+		/// </summary>
+		public bool ReadSingle(out float result)
+		{
+			if (m_bitLength - m_readPosition < 32)
+			{
+				result = 0.0f;
+				return false;
+			}
+
+			if ((m_readPosition & 7) == 0) // read directly
+			{
+				result = BitConverter.ToSingle(m_data, m_readPosition >> 3);
+				m_readPosition += 32;
+				return true;
+			}
+
+			byte[] bytes = ReadBytes(4);
+			result = BitConverter.ToSingle(bytes, 0);
+			return true;
 		}
 
 		/// <summary>
@@ -360,7 +447,7 @@ namespace Lidgren.Network
 			}
 
 			byte[] bytes = ReadBytes(8);
-			return BitConverter.ToDouble(bytes, 0); // endianness is handled inside BitConverter.ToSingle
+			return BitConverter.ToDouble(bytes, 0);
 		}
 
 		//
@@ -382,6 +469,32 @@ namespace Lidgren.Network
 				num2 += 7;
 				if ((num3 & 0x80) == 0)
 					return (uint)num1;
+			}
+		}
+
+		/// <summary>
+		/// Reads a variable sized UInt32 written using WriteVariableUInt32() and returns true for success
+		/// </summary>
+		[CLSCompliant(false)]
+		public bool ReadVariableUInt32(out uint result)
+		{
+			int num1 = 0;
+			int num2 = 0;
+			while (true)
+			{
+				byte num3;
+				if (ReadByte(out num3) == false)
+				{
+					result = 0;
+					return false;
+				}
+				num1 |= (num3 & 0x7f) << num2;
+				num2 += 7;
+				if ((num3 & 0x80) == 0)
+				{
+					result = (uint)num1;
+					return true;
+				}
 			}
 		}
 
@@ -501,6 +614,49 @@ namespace Lidgren.Network
 
 			byte[] bytes = ReadBytes(byteLen);
 			return System.Text.Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+		}
+
+		/// <summary>
+		/// Reads a string written using Write(string) and returns true for success
+		/// </summary>
+		public bool ReadString(out string result)
+		{
+			uint byteLen;
+			if (ReadVariableUInt32(out byteLen) == false)
+			{
+				result = String.Empty;
+				return false;
+			}
+
+			if (byteLen == 0)
+			{
+				result = String.Empty;
+				return true;
+			}
+
+			if (m_bitLength - m_readPosition < (byteLen * 8))
+			{
+				result = String.Empty;
+				return false;
+			}
+
+			if ((m_readPosition & 7) == 0)
+			{
+				// read directly
+				result = System.Text.Encoding.UTF8.GetString(m_data, m_readPosition >> 3, (int)byteLen);
+				m_readPosition += (8 * (int)byteLen);
+				return true;
+			}
+
+			byte[] bytes;
+			if (ReadBytes((int)byteLen, out bytes) == false)
+			{
+				result = String.Empty;
+				return false;
+			}
+
+			result = System.Text.Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+			return true;
 		}
 
 		/// <summary>
