@@ -25,10 +25,10 @@ namespace NetGore.Network
 
             _conn = conn;
 
-            var addressBytes = _conn.RemoteEndpoint.Address.GetAddressBytes();
+            var addressBytes = _conn.RemoteEndPoint.Address.GetAddressBytes();
             _address = IPAddressHelper.IPv4AddressToUInt(addressBytes, 0);
 
-            _addressStr = IPAddressHelper.ToIPv4Address(_address) + ":" + _conn.RemoteEndpoint.Port;
+            _addressStr = IPAddressHelper.ToIPv4Address(_address) + ":" + _conn.RemoteEndPoint.Port;
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace NetGore.Network
         /// </summary>
         public ushort Port
         {
-            get { return (ushort)_conn.RemoteEndpoint.Port; }
+            get { return (ushort)_conn.RemoteEndPoint.Port; }
         }
 
         /// <summary>
