@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.Editor.Properties;
 using NetGore;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
@@ -138,6 +139,16 @@ If you do not save, all changes will be lost.";
                 {
                     MapScreenControl.Map.UndoManager.Redo();
                 }
+            }
+        }
+
+        private void mapScreen_Enter(object sender, EventArgs e)
+        {
+            if (MapScreenControl != null && MapScreenControl.Map != null && MapScreenControl.Map.ID > 0)
+            {
+                var settings = EditorSettings.Default;
+                settings.InitialMapId = (int)MapScreenControl.Map.ID;
+                settings.Save();
             }
         }
     }

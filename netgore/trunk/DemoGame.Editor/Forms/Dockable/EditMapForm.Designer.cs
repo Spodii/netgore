@@ -40,6 +40,7 @@
             this.mapScreen.Size = new System.Drawing.Size(784, 562);
             this.mapScreen.TabIndex = 1;
             this.mapScreen.Text = "Map Screen";
+            this.mapScreen.Enter += new System.EventHandler(this.mapScreen_Enter);
             this.mapScreen.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mapScreen_KeyDown);
             this.mapScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapScreen_MouseUp);
             // 
