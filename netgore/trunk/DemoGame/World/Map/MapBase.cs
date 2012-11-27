@@ -728,7 +728,7 @@ namespace DemoGame
         /// <see cref="DynamicEntity"/>s.</param>
         /// <exception cref="ArgumentNullException"><paramref name="dynamicEntityFactory" /> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="filePath"/> is invalid or no file exists at the path.</exception>
-        protected virtual void Load(string filePath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
+        protected void Load(string filePath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
             if (dynamicEntityFactory == null)
                 throw new ArgumentNullException("dynamicEntityFactory");
@@ -742,6 +742,11 @@ namespace DemoGame
             }
 
             var r = GenericValueReader.CreateFromFile(filePath, _rootNodeName);
+            Load(r, loadDynamicEntities, dynamicEntityFactory);
+        }
+
+        public void Load(IValueReader r, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
+        {
             LoadHeader(r);
             LoadWalls(r);
             LoadDynamicEntities(r, loadDynamicEntities, dynamicEntityFactory);
@@ -751,6 +756,15 @@ namespace DemoGame
         void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
             var loadedDynamicEntities = r.ReadManyNodes(_dynamicEntitiesNodeName, x => dynamicEntityFactory.Read(x, true));
+
+            // Remove any existing entities
+            if (_entities != null)
+            {
+                while (_entities.Count > 0)
+                {
+                    RemoveEntity(_entities[_entities.Count - 1]);
+                }
+            }
 
             // Add the loaded DynamicEntities to the map
             if (loadDynamicEntities)
@@ -1029,7 +1043,7 @@ namespace DemoGame
         /// <see cref="DynamicEntity"/>s.</param>
         /// <exception cref="ArgumentNullException"><paramref name="dynamicEntityFactory"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
-        void Save(IValueWriter writer, IDynamicEntityFactory dynamicEntityFactory)
+        public void Save(IValueWriter writer, IDynamicEntityFactory dynamicEntityFactory)
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");

@@ -11,6 +11,10 @@ namespace DemoGame.Editor
     /// </summary>
     public class EditorMap : Map
     {
+        readonly MapUndoManager _undoManager;
+
+        public MapUndoManager UndoManager { get { return _undoManager; } }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorMap"/> class.
         /// </summary>
@@ -19,6 +23,7 @@ namespace DemoGame.Editor
         /// <param name="getTime">The object used to get the current time.</param>
         public EditorMap(MapID mapID, ICamera2D camera, IGetTime getTime) : base(mapID, camera, getTime)
         {
+            _undoManager = new MapUndoManager(this, GlobalState.Instance.DynamicEntityFactory);
         }
 
         public override void Update(int deltaTime)

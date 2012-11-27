@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.mapScreen = new DemoGame.Editor.MapScreenControl();
             this.SuspendLayout();
             // 
@@ -36,10 +35,13 @@
             // 
             this.mapScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mapScreen.Location = new System.Drawing.Point(0, 0);
+            this.mapScreen.Map = null;
             this.mapScreen.Name = "mapScreen";
             this.mapScreen.Size = new System.Drawing.Size(784, 562);
             this.mapScreen.TabIndex = 1;
             this.mapScreen.Text = "Map Screen";
+            this.mapScreen.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mapScreen_KeyDown);
+            this.mapScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapScreen_MouseUp);
             // 
             // EditMapForm
             // 

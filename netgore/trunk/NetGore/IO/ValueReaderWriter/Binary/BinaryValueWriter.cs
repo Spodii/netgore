@@ -100,11 +100,11 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="writeFunc">The func used to do the actual writing of the contents.</param>
         /// <returns>The BinaryValueWriter contents.</returns>
-        public static byte[] CreateAndWrite(Action<BinaryValueWriter> writeFunc)
+        public static byte[] CreateAndWrite(Action<BinaryValueWriter> writeFunc, bool useEnumNames = true)
         {
             using (BitStream bs = new BitStream())
             {
-                using (BinaryValueWriter w = Create(bs))
+                using (BinaryValueWriter w = Create(bs, useEnumNames))
                 {
                     writeFunc(w);
                 }
