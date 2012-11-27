@@ -194,6 +194,8 @@ namespace NetGore.Graphics
             // Update
             _bodyGrh.Update(_currentTime);
 
+            position += new Vector2(0, Character.Size.Y - _bodyGrh.Size.Y);
+
             // Get the GrhDatas to draw, along with their draw order
             List<KeyValuePair<int, GrhData>> grhDatas = new List<KeyValuePair<int, GrhData>>();
             grhDatas.Add(new KeyValuePair<int, GrhData>(GetLayerOrder(PaperDollLayerType.Body, heading), _bodyGrh.GrhData));
