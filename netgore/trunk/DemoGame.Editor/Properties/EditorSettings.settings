@@ -41,5 +41,8 @@
     <Setting Name="Screen_ScrollDown2" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">S</Value>
     </Setting>
+    <Setting Name="InitialMapId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.DbObjs;
+using DemoGame.Editor.Properties;
 using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
 using NetGore;
@@ -16,6 +18,7 @@ using NetGore.Editor.UI;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using NetGore.World;
 using SFML.Graphics;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
@@ -191,10 +194,17 @@ namespace DemoGame.Editor
             MapHelper.DeleteMissingMapIds();
 
             // Load the initial map
-            // TODO: !! Make as setting, auto-load last loaded map
-            var editorFrm = new EditMapForm();
-            editorFrm.MapScreenControl.ChangeMap(new NetGore.World.MapID(1));
-            editorFrm.Show(dockPanel);
+            var validMaps = MapHelper.FindAllMaps().ToArray();
+            if (validMaps.Length > 0)
+            {
+                MapID initialMapId = (MapID)EditorSettings.Default.InitialMapId;
+                IMapTable initialMap = validMaps.FirstOrDefault(x => x.ID == initialMapId);
+
+                if (initialMap == null)
+                    initialMap = validMaps.MinElement(x => x.ID);
+
+                CreateEditMapForm(initialMap);
+            }
 
             // Global not currently used...
             tbGlobal.Visible = false;
@@ -441,11 +451,22 @@ namespace DemoGame.Editor
                 if (map == null)
                     return;
 
-                var editorFrm = new EditMapForm();
-                editorFrm.MapScreenControl.ChangeMap(map.ID);
-                editorFrm.Text = "[" + map.ID + "] " + map.Name;
-                editorFrm.Show(dockPanel);
+                CreateEditMapForm(map);
             }
+        }
+
+        EditMapForm CreateEditMapForm(IMapTable map)
+        {
+            var editorFrm = new EditMapForm();
+            editorFrm.MapScreenControl.ChangeMap(map.ID);
+            editorFrm.Text = "[" + map.ID + "] " + map.Name;
+            editorFrm.Show(dockPanel);
+
+            var settings = EditorSettings.Default;
+            settings.InitialMapId = (int)map.ID;
+            settings.Save();
+
+            return editorFrm;
         }
 
         /// <summary>

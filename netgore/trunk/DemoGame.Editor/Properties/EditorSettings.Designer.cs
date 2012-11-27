@@ -178,5 +178,17 @@ namespace DemoGame.Editor.Properties {
                 this["Screen_ScrollDown2"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int InitialMapId {
+            get {
+                return ((int)(this["InitialMapId"]));
+            }
+            set {
+                this["InitialMapId"] = value;
+            }
+        }
     }
 }
