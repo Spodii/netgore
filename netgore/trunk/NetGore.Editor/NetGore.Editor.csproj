@@ -358,9 +358,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\Editors\PolygonPointCollectionEditor.cs" />
-    <Compile Include="Undo Manager\IUndoEvent.cs" />
-    <Compile Include="Undo Manager\IUndoManager.cs" />
-    <Compile Include="Undo Manager\UndoManagerBase.cs" />
     <Compile Include="WinForms\GeneralPropertyGridContextMenu.cs">
       <SubType>Component</SubType>
     </Compile>
