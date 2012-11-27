@@ -120,5 +120,25 @@ If you do not save, all changes will be lost.";
             // When the MapScreenControl disposes, also close down the form
             Close();
         }
+
+        private void mapScreen_MouseUp(object sender, MouseEventArgs e)
+        {
+            MapScreenControl.Map.UndoManager.Snapshot();
+        }
+
+        private void mapScreen_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            {
+                if (e.KeyCode == Keys.Z)
+                {
+                    MapScreenControl.Map.UndoManager.Undo();
+                }
+                else if (e.KeyCode == Keys.Y)
+                {
+                    MapScreenControl.Map.UndoManager.Redo();
+                }
+            }
+        }
     }
 }

@@ -28,6 +28,8 @@ namespace NetGore.IO
         /// </summary>
         static readonly char[] _xmlHeader = new char[] { '<', '?', 'x', 'm', 'l', ' ' };
 
+        static readonly string _xmlHeaderStr = "<?xml ";
+
         readonly IValueReader _reader;
 
         /// <summary>

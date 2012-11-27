@@ -328,6 +328,9 @@ namespace DemoGame.Client
 
         void LoadBackgroundImages(IValueReader r)
         {
+            // Remove existing
+            _backgroundImages.Clear();
+
             var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(this, this, x));
 
             // Add the loaded background images
@@ -339,6 +342,12 @@ namespace DemoGame.Client
 
         void LoadGrhs(IValueReader reader)
         {
+            // Remove existing
+            foreach (var spatial in Spatial.GetMany<ISpatial>().ToArray())
+            {
+                Spatial.Remove(spatial);
+            }
+
             reader = reader.ReadNode(_mapGrhsNodeName);
 
             // Used GrhIndexes
@@ -356,11 +365,12 @@ namespace DemoGame.Client
 
         void LoadLighting(IValueReader reader)
         {
+            // Remove existing
+            _lights.Clear();
+
             reader = reader.ReadNode(_lightingNodeName);
 
             AmbientLight = reader.ReadColor("Ambient");
-
-            _lights.Clear();
 
             var loadedLights = reader.ReadManyNodes(_lightsNodeName, x => new Light(x));
             _lights.AddRange(loadedLights);
@@ -377,6 +387,9 @@ namespace DemoGame.Client
         /// <param name="reader"><see cref="IValueReader"/> to read the misc values from.</param>
         protected override void LoadMisc(IValueReader reader)
         {
+            // Remove existing
+            _particleEffects.Clear();
+
             LoadGrhs(reader);
             LoadBackgroundImages(reader);
             LoadLighting(reader);
@@ -386,9 +399,10 @@ namespace DemoGame.Client
 
         void LoadRefractionEffects(IValueReader reader)
         {
-            reader = reader.ReadNode(_refractionEffectsNodeName);
-
+            // Remove existing
             _refractionEffects.Clear();
+
+            reader = reader.ReadNode(_refractionEffectsNodeName);
 
             var loadedFx = reader.ReadManyNodes(_refractionEffectListNodeName, RefractionEffectFactory.Read);
 

@@ -44,6 +44,15 @@ namespace NetGore.IO
             return new BinaryValueReader(reader, useEnumNames);
         }
 
+        public static BinaryValueReader Create(byte[] bytes, bool useEnumNames = true)
+        {
+            if (bytes == null)
+                throw new ArgumentNullException("bytes");
+
+            BitStream bs = new BitStream(bytes, useEnumNames);
+            return new BinaryValueReader(bs, useEnumNames);
+        }
+
         /// <summary>
         /// Creates a <see cref="BinaryValueReader"/> for reading a file.
         /// </summary>
