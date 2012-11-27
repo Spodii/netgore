@@ -121,9 +121,6 @@
     <Compile Include="Controls\GameMessageValueListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\MapDrawFilterHelperListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -138,12 +135,6 @@
     </Compile>
     <Compile Include="CustomUITypeEditors.cs" />
     <Compile Include="Editor-Specific Derived Classes\EditorMap.cs" />
-    <Compile Include="Forms\DisplayFilterManagerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DisplayFilterManagerForm.Designer.cs">
-      <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Dockable\BodyEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,10 +221,6 @@
     </Compile>
     <Compile Include="Editor-Specific Derived Classes\EditorCharacter.cs" />
     <Compile Include="Editor-Specific Derived Classes\EditorDynamicEntityFactory.cs" />
-    <Compile Include="Map Helpers\MapDrawFilterHelper.cs" />
-    <Compile Include="Map Helpers\MapDrawFilterHelperCollection.cs" />
-    <Compile Include="Map Helpers\EventArgs\MapDrawFilterHelperCollectionEventArgs.cs" />
-    <Compile Include="Map Helpers\EventArgs\MapDrawFilterHelperCollectionRenameEventArgs.cs" />
     <Compile Include="Map Helpers\MapHelper.cs" />
     <Compile Include="Map Helpers\MapPreviewer.cs" />
     <Compile Include="Map Helpers\MapSpawnDrawer.cs" />
@@ -310,7 +297,6 @@
     <Compile Include="Tools\Map\MapBorderDrawerTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapCursorToolBase.cs" />
     <Compile Include="Tools\Map\Cursors\MapEntityCursorTool.cs" />
-    <Compile Include="Tools\Map\MapDisplayFilterTool.cs" />
     <Compile Include="Tools\Map\MapGridDrawerTool.cs" />
     <Compile Include="Tools\Map\MapWallsDrawerTool.cs" />
     <Compile Include="Tools\Map\MapLightSourceDrawerTool.cs" />
@@ -451,9 +437,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UndoManager.cs" />
-    <EmbeddedResource Include="Forms\DisplayFilterManagerForm.resx">
-      <DependentUpon>DisplayFilterManagerForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\BodyEditorForm.resx">
       <DependentUpon>BodyEditorForm.cs</DependentUpon>
     </EmbeddedResource>
