@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
@@ -22,9 +23,6 @@ namespace NetGore.Editor.UI
         protected UITypeEditorListForm()
         {
             InitializeComponent();
-
-            if (!DesignMode)
-                _filter.FilterChanged += _filter_FilterChanged;
         }
 
         /// <summary>
@@ -99,8 +97,10 @@ namespace NetGore.Editor.UI
             base.OnLoad(e);
 
             // Don't try to display items when in design mode
-            if (DesignMode)
+            if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 return;
+            
+            _filter.FilterChanged += _filter_FilterChanged;
 
             // Set up the search bar
             cmbFilterType.Items.AddRange(TextFilter.GetFilterNames.Cast<object>().ToArray());

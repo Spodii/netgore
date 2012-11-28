@@ -522,6 +522,9 @@
     <EmbeddedResource Include="UITypeEditors\CharacterTemplateInventoryItemListForm.resx">
       <DependentUpon>CharacterTemplateInventoryItemListForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UITypeEditors\ItemTemplateIDListForm.resx">
+      <DependentUpon>ItemTemplateIDListForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UITypeEditors\SkillTypeListForm.resx">
       <DependentUpon>SkillTypeListForm.cs</DependentUpon>
       <SubType>Designer</SubType>

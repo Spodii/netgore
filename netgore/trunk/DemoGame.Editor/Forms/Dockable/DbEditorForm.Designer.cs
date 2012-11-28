@@ -201,7 +201,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.pgItemTemplate);
             this.splitContainer1.Size = new System.Drawing.Size(456, 377);
-            this.splitContainer1.SplitterDistance = 22;
+            this.splitContainer1.SplitterDistance = 25;
             this.splitContainer1.TabIndex = 0;
             // 
             // txtItemTemplate
@@ -219,7 +219,7 @@
             this.btnItemTemplate.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnItemTemplate.Location = new System.Drawing.Point(298, 0);
             this.btnItemTemplate.Name = "btnItemTemplate";
-            this.btnItemTemplate.Size = new System.Drawing.Size(26, 22);
+            this.btnItemTemplate.Size = new System.Drawing.Size(26, 25);
             this.btnItemTemplate.TabIndex = 15;
             this.btnItemTemplate.Text = "...";
             this.btnItemTemplate.UseVisualStyleBackColor = true;
@@ -230,7 +230,7 @@
             this.btnItemTemplateSave.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnItemTemplateSave.Location = new System.Drawing.Point(324, 0);
             this.btnItemTemplateSave.Name = "btnItemTemplateSave";
-            this.btnItemTemplateSave.Size = new System.Drawing.Size(41, 22);
+            this.btnItemTemplateSave.Size = new System.Drawing.Size(41, 25);
             this.btnItemTemplateSave.TabIndex = 14;
             this.btnItemTemplateSave.Text = "Save";
             this.btnItemTemplateSave.UseVisualStyleBackColor = true;
@@ -241,7 +241,7 @@
             this.btnItemTemplateNew.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnItemTemplateNew.Location = new System.Drawing.Point(365, 0);
             this.btnItemTemplateNew.Name = "btnItemTemplateNew";
-            this.btnItemTemplateNew.Size = new System.Drawing.Size(41, 22);
+            this.btnItemTemplateNew.Size = new System.Drawing.Size(41, 25);
             this.btnItemTemplateNew.TabIndex = 11;
             this.btnItemTemplateNew.Text = "New";
             this.btnItemTemplateNew.UseVisualStyleBackColor = true;
@@ -252,7 +252,7 @@
             this.btnItemTemplateDelete.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnItemTemplateDelete.Location = new System.Drawing.Point(406, 0);
             this.btnItemTemplateDelete.Name = "btnItemTemplateDelete";
-            this.btnItemTemplateDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnItemTemplateDelete.Size = new System.Drawing.Size(50, 25);
             this.btnItemTemplateDelete.TabIndex = 10;
             this.btnItemTemplateDelete.Text = "Delete";
             this.btnItemTemplateDelete.UseVisualStyleBackColor = true;
@@ -274,7 +274,7 @@
             this.pgItemTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgItemTemplate.Location = new System.Drawing.Point(0, 0);
             this.pgItemTemplate.Name = "pgItemTemplate";
-            this.pgItemTemplate.Size = new System.Drawing.Size(456, 351);
+            this.pgItemTemplate.Size = new System.Drawing.Size(456, 348);
             this.pgItemTemplate.TabIndex = 0;
             this.pgItemTemplate.SelectedObjectsChanged += new System.EventHandler(this.pgItemTemplate_SelectedObjectsChanged);
             // 
@@ -310,7 +310,7 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.pgCharacterTemplate);
             this.splitContainer3.Size = new System.Drawing.Size(456, 377);
-            this.splitContainer3.SplitterDistance = 22;
+            this.splitContainer3.SplitterDistance = 25;
             this.splitContainer3.TabIndex = 1;
             // 
             // txtCharacterTemplate
@@ -328,7 +328,7 @@
             this.btnCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnCharacterTemplate.Location = new System.Drawing.Point(298, 0);
             this.btnCharacterTemplate.Name = "btnCharacterTemplate";
-            this.btnCharacterTemplate.Size = new System.Drawing.Size(26, 22);
+            this.btnCharacterTemplate.Size = new System.Drawing.Size(26, 25);
             this.btnCharacterTemplate.TabIndex = 15;
             this.btnCharacterTemplate.Text = "...";
             this.btnCharacterTemplate.UseVisualStyleBackColor = true;
@@ -339,7 +339,7 @@
             this.btnCharacterTemplateSave.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnCharacterTemplateSave.Location = new System.Drawing.Point(324, 0);
             this.btnCharacterTemplateSave.Name = "btnCharacterTemplateSave";
-            this.btnCharacterTemplateSave.Size = new System.Drawing.Size(41, 22);
+            this.btnCharacterTemplateSave.Size = new System.Drawing.Size(41, 25);
             this.btnCharacterTemplateSave.TabIndex = 14;
             this.btnCharacterTemplateSave.Text = "Save";
             this.btnCharacterTemplateSave.UseVisualStyleBackColor = true;
@@ -350,7 +350,7 @@
             this.btnCharacterTemplateNew.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnCharacterTemplateNew.Location = new System.Drawing.Point(365, 0);
             this.btnCharacterTemplateNew.Name = "btnCharacterTemplateNew";
-            this.btnCharacterTemplateNew.Size = new System.Drawing.Size(41, 22);
+            this.btnCharacterTemplateNew.Size = new System.Drawing.Size(41, 25);
             this.btnCharacterTemplateNew.TabIndex = 11;
             this.btnCharacterTemplateNew.Text = "New";
             this.btnCharacterTemplateNew.UseVisualStyleBackColor = true;
@@ -361,7 +361,7 @@
             this.btnCharacterTemplateDelete.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnCharacterTemplateDelete.Location = new System.Drawing.Point(406, 0);
             this.btnCharacterTemplateDelete.Name = "btnCharacterTemplateDelete";
-            this.btnCharacterTemplateDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnCharacterTemplateDelete.Size = new System.Drawing.Size(50, 25);
             this.btnCharacterTemplateDelete.TabIndex = 10;
             this.btnCharacterTemplateDelete.Text = "Delete";
             this.btnCharacterTemplateDelete.UseVisualStyleBackColor = true;
@@ -383,7 +383,7 @@
             this.pgCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgCharacterTemplate.Location = new System.Drawing.Point(0, 0);
             this.pgCharacterTemplate.Name = "pgCharacterTemplate";
-            this.pgCharacterTemplate.Size = new System.Drawing.Size(456, 351);
+            this.pgCharacterTemplate.Size = new System.Drawing.Size(456, 348);
             this.pgCharacterTemplate.TabIndex = 0;
             this.pgCharacterTemplate.SelectedObjectsChanged += new System.EventHandler(this.pgCharacterTemplate_SelectedObjectsChanged);
             // 
@@ -419,7 +419,7 @@
             // 
             this.splitContainer8.Panel2.Controls.Add(this.pgQuest);
             this.splitContainer8.Size = new System.Drawing.Size(456, 377);
-            this.splitContainer8.SplitterDistance = 22;
+            this.splitContainer8.SplitterDistance = 25;
             this.splitContainer8.TabIndex = 2;
             // 
             // txtQuest
@@ -437,7 +437,7 @@
             this.btnQuest.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnQuest.Location = new System.Drawing.Point(298, 0);
             this.btnQuest.Name = "btnQuest";
-            this.btnQuest.Size = new System.Drawing.Size(26, 22);
+            this.btnQuest.Size = new System.Drawing.Size(26, 25);
             this.btnQuest.TabIndex = 15;
             this.btnQuest.Text = "...";
             this.btnQuest.UseVisualStyleBackColor = true;
@@ -448,7 +448,7 @@
             this.btnQuestSave.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnQuestSave.Location = new System.Drawing.Point(324, 0);
             this.btnQuestSave.Name = "btnQuestSave";
-            this.btnQuestSave.Size = new System.Drawing.Size(41, 22);
+            this.btnQuestSave.Size = new System.Drawing.Size(41, 25);
             this.btnQuestSave.TabIndex = 14;
             this.btnQuestSave.Text = "Save";
             this.btnQuestSave.UseVisualStyleBackColor = true;
@@ -459,7 +459,7 @@
             this.btnQuestNew.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnQuestNew.Location = new System.Drawing.Point(365, 0);
             this.btnQuestNew.Name = "btnQuestNew";
-            this.btnQuestNew.Size = new System.Drawing.Size(41, 22);
+            this.btnQuestNew.Size = new System.Drawing.Size(41, 25);
             this.btnQuestNew.TabIndex = 11;
             this.btnQuestNew.Text = "New";
             this.btnQuestNew.UseVisualStyleBackColor = true;
@@ -470,7 +470,7 @@
             this.btnQuestDelete.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnQuestDelete.Location = new System.Drawing.Point(406, 0);
             this.btnQuestDelete.Name = "btnQuestDelete";
-            this.btnQuestDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnQuestDelete.Size = new System.Drawing.Size(50, 25);
             this.btnQuestDelete.TabIndex = 10;
             this.btnQuestDelete.Text = "Delete";
             this.btnQuestDelete.UseVisualStyleBackColor = true;
@@ -492,7 +492,7 @@
             this.pgQuest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgQuest.Location = new System.Drawing.Point(0, 0);
             this.pgQuest.Name = "pgQuest";
-            this.pgQuest.Size = new System.Drawing.Size(456, 351);
+            this.pgQuest.Size = new System.Drawing.Size(456, 348);
             this.pgQuest.TabIndex = 0;
             this.pgQuest.SelectedObjectsChanged += new System.EventHandler(this.pgQuest_SelectedObjectsChanged);
             // 
@@ -529,7 +529,7 @@
             // 
             this.splitContainer9.Panel2.Controls.Add(this.pgAlliance);
             this.splitContainer9.Size = new System.Drawing.Size(456, 377);
-            this.splitContainer9.SplitterDistance = 22;
+            this.splitContainer9.SplitterDistance = 25;
             this.splitContainer9.TabIndex = 1;
             // 
             // txtAlliance
@@ -547,7 +547,7 @@
             this.btnAlliance.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnAlliance.Location = new System.Drawing.Point(298, 0);
             this.btnAlliance.Name = "btnAlliance";
-            this.btnAlliance.Size = new System.Drawing.Size(26, 22);
+            this.btnAlliance.Size = new System.Drawing.Size(26, 25);
             this.btnAlliance.TabIndex = 15;
             this.btnAlliance.Text = "...";
             this.btnAlliance.UseVisualStyleBackColor = true;
@@ -558,7 +558,7 @@
             this.btnAllianceSave.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnAllianceSave.Location = new System.Drawing.Point(324, 0);
             this.btnAllianceSave.Name = "btnAllianceSave";
-            this.btnAllianceSave.Size = new System.Drawing.Size(41, 22);
+            this.btnAllianceSave.Size = new System.Drawing.Size(41, 25);
             this.btnAllianceSave.TabIndex = 14;
             this.btnAllianceSave.Text = "Save";
             this.btnAllianceSave.UseVisualStyleBackColor = true;
@@ -569,7 +569,7 @@
             this.btnAllianceNew.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnAllianceNew.Location = new System.Drawing.Point(365, 0);
             this.btnAllianceNew.Name = "btnAllianceNew";
-            this.btnAllianceNew.Size = new System.Drawing.Size(41, 22);
+            this.btnAllianceNew.Size = new System.Drawing.Size(41, 25);
             this.btnAllianceNew.TabIndex = 11;
             this.btnAllianceNew.Text = "New";
             this.btnAllianceNew.UseVisualStyleBackColor = true;
@@ -580,7 +580,7 @@
             this.btnAllianceDelete.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnAllianceDelete.Location = new System.Drawing.Point(406, 0);
             this.btnAllianceDelete.Name = "btnAllianceDelete";
-            this.btnAllianceDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnAllianceDelete.Size = new System.Drawing.Size(50, 25);
             this.btnAllianceDelete.TabIndex = 10;
             this.btnAllianceDelete.Text = "Delete";
             this.btnAllianceDelete.UseVisualStyleBackColor = true;
@@ -602,7 +602,7 @@
             this.pgAlliance.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgAlliance.Location = new System.Drawing.Point(0, 0);
             this.pgAlliance.Name = "pgAlliance";
-            this.pgAlliance.Size = new System.Drawing.Size(456, 351);
+            this.pgAlliance.Size = new System.Drawing.Size(456, 348);
             this.pgAlliance.TabIndex = 0;
             this.pgAlliance.SelectedObjectsChanged += new System.EventHandler(this.pgAlliance_SelectedObjectsChanged);
             // 
@@ -639,7 +639,7 @@
             // 
             this.splitContainer10.Panel2.Controls.Add(this.pgShop);
             this.splitContainer10.Size = new System.Drawing.Size(456, 377);
-            this.splitContainer10.SplitterDistance = 22;
+            this.splitContainer10.SplitterDistance = 25;
             this.splitContainer10.TabIndex = 2;
             // 
             // txtShop
@@ -657,7 +657,7 @@
             this.btnShops.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnShops.Location = new System.Drawing.Point(298, 0);
             this.btnShops.Name = "btnShops";
-            this.btnShops.Size = new System.Drawing.Size(26, 22);
+            this.btnShops.Size = new System.Drawing.Size(26, 25);
             this.btnShops.TabIndex = 15;
             this.btnShops.Text = "...";
             this.btnShops.UseVisualStyleBackColor = true;
@@ -668,7 +668,7 @@
             this.btnShopSave.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnShopSave.Location = new System.Drawing.Point(324, 0);
             this.btnShopSave.Name = "btnShopSave";
-            this.btnShopSave.Size = new System.Drawing.Size(41, 22);
+            this.btnShopSave.Size = new System.Drawing.Size(41, 25);
             this.btnShopSave.TabIndex = 14;
             this.btnShopSave.Text = "Save";
             this.btnShopSave.UseVisualStyleBackColor = true;
@@ -679,7 +679,7 @@
             this.btnShopNew.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnShopNew.Location = new System.Drawing.Point(365, 0);
             this.btnShopNew.Name = "btnShopNew";
-            this.btnShopNew.Size = new System.Drawing.Size(41, 22);
+            this.btnShopNew.Size = new System.Drawing.Size(41, 25);
             this.btnShopNew.TabIndex = 11;
             this.btnShopNew.Text = "New";
             this.btnShopNew.UseVisualStyleBackColor = true;
@@ -690,7 +690,7 @@
             this.btnShopDelete.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnShopDelete.Location = new System.Drawing.Point(406, 0);
             this.btnShopDelete.Name = "btnShopDelete";
-            this.btnShopDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnShopDelete.Size = new System.Drawing.Size(50, 25);
             this.btnShopDelete.TabIndex = 10;
             this.btnShopDelete.Text = "Delete";
             this.btnShopDelete.UseVisualStyleBackColor = true;
@@ -712,7 +712,7 @@
             this.pgShop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgShop.Location = new System.Drawing.Point(0, 0);
             this.pgShop.Name = "pgShop";
-            this.pgShop.Size = new System.Drawing.Size(456, 351);
+            this.pgShop.Size = new System.Drawing.Size(456, 348);
             this.pgShop.TabIndex = 0;
             this.pgShop.SelectedObjectsChanged += new System.EventHandler(this.pgShop_SelectedObjectsChanged);
             // 
@@ -749,7 +749,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
             this.splitContainer4.Size = new System.Drawing.Size(456, 377);
-            this.splitContainer4.SplitterDistance = 22;
+            this.splitContainer4.SplitterDistance = 25;
             this.splitContainer4.TabIndex = 30;
             // 
             // txtMessages
@@ -767,7 +767,7 @@
             this.btnMessages.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnMessages.Location = new System.Drawing.Point(298, 0);
             this.btnMessages.Name = "btnMessages";
-            this.btnMessages.Size = new System.Drawing.Size(26, 22);
+            this.btnMessages.Size = new System.Drawing.Size(26, 25);
             this.btnMessages.TabIndex = 32;
             this.btnMessages.Text = "...";
             this.btnMessages.UseVisualStyleBackColor = true;
@@ -778,7 +778,7 @@
             this.btnMessagesSave.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnMessagesSave.Location = new System.Drawing.Point(324, 0);
             this.btnMessagesSave.Name = "btnMessagesSave";
-            this.btnMessagesSave.Size = new System.Drawing.Size(41, 22);
+            this.btnMessagesSave.Size = new System.Drawing.Size(41, 25);
             this.btnMessagesSave.TabIndex = 31;
             this.btnMessagesSave.Text = "Save";
             this.btnMessagesSave.UseVisualStyleBackColor = true;
@@ -789,7 +789,7 @@
             this.btnMessagesNew.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnMessagesNew.Location = new System.Drawing.Point(365, 0);
             this.btnMessagesNew.Name = "btnMessagesNew";
-            this.btnMessagesNew.Size = new System.Drawing.Size(41, 22);
+            this.btnMessagesNew.Size = new System.Drawing.Size(41, 25);
             this.btnMessagesNew.TabIndex = 30;
             this.btnMessagesNew.Text = "New";
             this.btnMessagesNew.UseVisualStyleBackColor = true;
@@ -800,7 +800,7 @@
             this.btnMessagesDelete.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnMessagesDelete.Location = new System.Drawing.Point(406, 0);
             this.btnMessagesDelete.Name = "btnMessagesDelete";
-            this.btnMessagesDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnMessagesDelete.Size = new System.Drawing.Size(50, 25);
             this.btnMessagesDelete.TabIndex = 29;
             this.btnMessagesDelete.Text = "Delete";
             this.btnMessagesDelete.UseVisualStyleBackColor = true;
@@ -831,8 +831,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-            this.splitContainer5.Size = new System.Drawing.Size(456, 351);
-            this.splitContainer5.SplitterDistance = 265;
+            this.splitContainer5.Size = new System.Drawing.Size(456, 348);
+            this.splitContainer5.SplitterDistance = 262;
             this.splitContainer5.TabIndex = 0;
             // 
             // splitContainer7
@@ -852,8 +852,8 @@
             // 
             this.splitContainer7.Panel2.Controls.Add(this.txtSelectedMessage);
             this.splitContainer7.Panel2.Controls.Add(this.label7);
-            this.splitContainer7.Size = new System.Drawing.Size(456, 265);
-            this.splitContainer7.SplitterDistance = 229;
+            this.splitContainer7.Size = new System.Drawing.Size(456, 262);
+            this.splitContainer7.SplitterDistance = 226;
             this.splitContainer7.TabIndex = 0;
             // 
             // lstMessages
@@ -863,7 +863,7 @@
             this.lstMessages.FormattingEnabled = true;
             this.lstMessages.Location = new System.Drawing.Point(0, 13);
             this.lstMessages.Name = "lstMessages";
-            this.lstMessages.Size = new System.Drawing.Size(456, 216);
+            this.lstMessages.Size = new System.Drawing.Size(456, 213);
             this.lstMessages.TabIndex = 5;
             this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
             // 
@@ -991,7 +991,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.propertyGrid1);
             this.splitContainer2.Size = new System.Drawing.Size(450, 371);
-            this.splitContainer2.SplitterDistance = 22;
+            this.splitContainer2.SplitterDistance = 25;
             this.splitContainer2.TabIndex = 0;
             // 
             // textBox1
@@ -1009,7 +1009,7 @@
             this.button1.Dock = System.Windows.Forms.DockStyle.Right;
             this.button1.Location = new System.Drawing.Point(333, 0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(26, 22);
+            this.button1.Size = new System.Drawing.Size(26, 25);
             this.button1.TabIndex = 12;
             this.button1.Text = "...";
             this.button1.UseVisualStyleBackColor = true;
@@ -1019,7 +1019,7 @@
             this.button2.Dock = System.Windows.Forms.DockStyle.Right;
             this.button2.Location = new System.Drawing.Point(359, 0);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(41, 22);
+            this.button2.Size = new System.Drawing.Size(41, 25);
             this.button2.TabIndex = 11;
             this.button2.Text = "New";
             this.button2.UseVisualStyleBackColor = true;
@@ -1029,7 +1029,7 @@
             this.button3.Dock = System.Windows.Forms.DockStyle.Right;
             this.button3.Location = new System.Drawing.Point(400, 0);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(50, 22);
+            this.button3.Size = new System.Drawing.Size(50, 25);
             this.button3.TabIndex = 10;
             this.button3.Text = "Delete";
             this.button3.UseVisualStyleBackColor = true;
@@ -1050,7 +1050,7 @@
             this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(450, 345);
+            this.propertyGrid1.Size = new System.Drawing.Size(450, 342);
             this.propertyGrid1.TabIndex = 0;
             // 
             // DbEditorForm
