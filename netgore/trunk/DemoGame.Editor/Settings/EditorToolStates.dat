@@ -147,6 +147,13 @@
         <IsOnToolBar>True</IsOnToolBar>
       </Value>
     </Item18>
+    <Item19>
+      <Key>DemoGame.Editor.Tools.MapGrhFillTool</Key>
+      <Value>
+        <IsEnabled>True</IsEnabled>
+        <IsOnToolBar>True</IsOnToolBar>
+      </Value>
+    </Item19>
   </ToolSettings>
   <ToolBarItems>
     <Count>2</Count>
@@ -176,10 +183,11 @@
         <Item13>DemoGame.Editor.Tools.MapGridDrawerTool</Item13>
         <Item14>|</Item14>
         <Item15>DemoGame.Editor.Tools.MapGrhPencilTool</Item15>
-        <Item16>DemoGame.Editor.Tools.MapGrhCursorTool</Item16>
-        <Item17>DemoGame.Editor.Tools.MapEntityCursorTool</Item17>
-        <Item18>DemoGame.Editor.Tools.MapWallCursorTool</Item18>
-        <Item19>DemoGame.Editor.Tools.MapLightCursorTool</Item19>
+        <Item16>DemoGame.Editor.Tools.MapGrhFillTool</Item16>
+        <Item17>DemoGame.Editor.Tools.MapGrhCursorTool</Item17>
+        <Item18>DemoGame.Editor.Tools.MapEntityCursorTool</Item18>
+        <Item19>DemoGame.Editor.Tools.MapWallCursorTool</Item19>
+        <Item20>DemoGame.Editor.Tools.MapLightCursorTool</Item20>
       </Order>
     </Item1>
   </ToolBarItems>

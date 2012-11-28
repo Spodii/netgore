@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
 using NetGore.IO;
+using NetGore.World;
 using log4net;
 using NetGore;
 using NetGore.Editor;
@@ -207,7 +208,7 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The map.</param>
         /// <param name="worldPos">The world position.</param>
         /// <returns>The best MapGrh to be selected, or null if none found.</returns>
-        static MapGrh GetGrhToSelect(EditorMap map, Vector2 worldPos)
+        public static MapGrh GetGrhToSelect(EditorMap map, Vector2 worldPos, bool mustBeDifferentThanSelected = true)
         {
             var currentLayer = GlobalState.Instance.Map.Layer;
 
@@ -221,7 +222,7 @@ namespace DemoGame.Editor.Tools
             bool mustBeSnappedToGrid = !Input.IsCtrlDown;
 
             return GetBestFitGrhAtPos(map, worldPos, x =>
-                (!currentGrhIndex.HasValue || x.Grh.GrhData.GrhIndex != currentGrhIndex.Value || x.MapRenderLayer != currentLayer) &&
+                (!mustBeDifferentThanSelected || !currentGrhIndex.HasValue || x.Grh.GrhData.GrhIndex != currentGrhIndex.Value || x.MapRenderLayer != currentLayer) &&
                 (!mustBeSnappedToGrid || GridAligner.Instance.IsAligned(x.Position))
             );
         }
@@ -442,6 +443,9 @@ namespace DemoGame.Editor.Tools
             HandleResetState();
         }
 
+        /// <summary>
+        /// Handles the KeyDown event of this Cursor tool.  If the Control key is down then it will shift any selected <see cref="ISpatial"/>'s to the direction of the pressed arrow keys.
+        /// </summary>
         protected override void MapContainer_KeyDown(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, KeyEventArgs e)
         {
             if (!e.Alt && !e.Shift && !e.Control)

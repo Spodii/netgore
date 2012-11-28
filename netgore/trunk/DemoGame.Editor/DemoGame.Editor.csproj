@@ -261,6 +261,7 @@
     <Compile Include="Controls\SkeletonNodesComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Tools\Map\Cursors\MapGrhFillTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapGrhPencilTool.cs" />
     <Compile Include="Tools\Map\MapDisplayBackgroundTool.cs" />
     <Compile Include="Tools\Map\MapDisplayDynamicTool.cs" />
@@ -690,6 +691,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MapDisplayForegroundTool_Enabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapGrhFillTool_Disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MapGrhFillTool_Enabled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

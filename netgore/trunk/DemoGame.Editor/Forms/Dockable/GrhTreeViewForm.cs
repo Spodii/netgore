@@ -74,10 +74,16 @@ namespace DemoGame.Editor
         {
             GlobalState.Instance.Map.SetGrhToPlace(e.GrhData.GrhIndex);
 
-            var pencilTool = ToolManager.Instance.TryGetTool<MapGrhPencilTool>();
+            var toolManager = ToolManager.Instance;
+
+            var pencilTool = toolManager.TryGetTool<MapGrhPencilTool>();
             if (pencilTool != null && pencilTool.IsOnToolBar)
             {
-                pencilTool.IsEnabled = true;
+                var fillTool = toolManager.TryGetTool<MapGrhFillTool>();
+                if (fillTool == null || !fillTool.IsEnabled)
+                {
+                    pencilTool.IsEnabled = true;
+                }
             }
         }
 
