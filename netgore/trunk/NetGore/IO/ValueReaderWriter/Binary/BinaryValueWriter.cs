@@ -99,6 +99,8 @@ namespace NetGore.IO
         /// Creates a BinaryValueWriter, passes it to the func to let the writing take place, and returns the generated contents.
         /// </summary>
         /// <param name="writeFunc">The func used to do the actual writing of the contents.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
         /// <returns>The BinaryValueWriter contents.</returns>
         public static byte[] CreateAndWrite(Action<BinaryValueWriter> writeFunc, bool useEnumNames = true)
         {
