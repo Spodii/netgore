@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor;
 
@@ -41,8 +43,17 @@ namespace DemoGame.Editor
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data. </param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DesignMode || !ControlHelper.DrawListItem<BodyInfo>(Items, e, x => GetDrawString(x)))
+            if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
                 base.OnDrawItem(e);
+                return;
+            }
+
+            // Note: This isn't in the if block above so it won't crash in the designer
+            if (!ControlHelper.DrawListItem<BodyInfo>(Items, e, x => GetDrawString(x)))
+            {
+                base.OnDrawItem(e);
+            }
         }
 
         /// <summary>

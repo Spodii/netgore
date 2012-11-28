@@ -34,6 +34,7 @@
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -77,10 +78,10 @@
             // 
             this.txtItem.BackColor = System.Drawing.SystemColors.Window;
             this.txtItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtItem.Location = new System.Drawing.Point(47, 0);
+            this.txtItem.Location = new System.Drawing.Point(77, 0);
             this.txtItem.Name = "txtItem";
             this.txtItem.ReadOnly = true;
-            this.txtItem.Size = new System.Drawing.Size(192, 20);
+            this.txtItem.Size = new System.Drawing.Size(162, 20);
             this.txtItem.TabIndex = 30;
             // 
             // btnBrowse
@@ -112,7 +113,7 @@
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.label1.Size = new System.Drawing.Size(47, 16);
+            this.label1.Size = new System.Drawing.Size(77, 16);
             this.label1.TabIndex = 27;
             this.label1.Text = "Item Template:";
             // 
@@ -130,6 +131,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 

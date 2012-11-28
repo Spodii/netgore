@@ -39,9 +39,11 @@
             this.txtChance = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
@@ -153,7 +155,7 @@
             this.txtChance.Size = new System.Drawing.Size(59, 20);
             this.txtChance.TabIndex = 17;
             this.tt.SetToolTip(this.txtChance, "The chance of the item to drop. The percent is equal to the value over 65535 (ush" +
-                    "ort.MaxValue).");
+        "ort.MaxValue).");
             this.txtChance.Leave += new System.EventHandler(this.txtChance_Leave);
             // 
             // label2
@@ -180,11 +182,13 @@
             this.Text = "Character template equipped items";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 

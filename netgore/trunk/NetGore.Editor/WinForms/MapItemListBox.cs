@@ -44,6 +44,9 @@ namespace NetGore.Editor.WinForms
         {
             base.Dispose(disposing);
 
+            if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                return;
+
             if (!disposing)
                 return;
 
@@ -68,7 +71,7 @@ namespace NetGore.Editor.WinForms
         {
             base.OnCreateControl();
 
-            if (DesignMode)
+            if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 return;
 
             // Create the update timer

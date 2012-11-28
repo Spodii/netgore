@@ -557,7 +557,7 @@
             this.txtFilterRegex.Size = new System.Drawing.Size(177, 20);
             this.txtFilterRegex.TabIndex = 15;
             this.tt.SetToolTip(this.txtFilterRegex, "Regex used to filter the log messages. Set to empty to avoid using. List is refre" +
-                    "shed when changed to a valid Regex.");
+        "shed when changed to a valid Regex.");
             this.txtFilterRegex.TextChanged += new System.EventHandler(this.txtFilterRegex_TextChanged);
             // 
             // chkFatal

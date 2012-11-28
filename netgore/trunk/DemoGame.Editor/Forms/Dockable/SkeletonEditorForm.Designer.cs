@@ -83,6 +83,7 @@ namespace DemoGame.Editor
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSelectBodyGrhData = new DemoGame.Editor.SelectGrhDataButton();
             this.btnClearTarget = new System.Windows.Forms.Button();
             this.cmbTarget = new DemoGame.Editor.SkeletonNodesComboBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -115,7 +116,6 @@ namespace DemoGame.Editor
             this.radioAnimate = new System.Windows.Forms.RadioButton();
             this.radioEdit = new System.Windows.Forms.RadioButton();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
-            this.btnSelectBodyGrhData = new DemoGame.Editor.SelectGrhDataButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -739,6 +739,15 @@ namespace DemoGame.Editor
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selected Body";
             // 
+            // btnSelectBodyGrhData
+            // 
+            this.btnSelectBodyGrhData.Location = new System.Drawing.Point(160, 67);
+            this.btnSelectBodyGrhData.Name = "btnSelectBodyGrhData";
+            this.btnSelectBodyGrhData.SelectedGrhDataHandler = null;
+            this.btnSelectBodyGrhData.Size = new System.Drawing.Size(24, 23);
+            this.btnSelectBodyGrhData.TabIndex = 49;
+            this.btnSelectBodyGrhData.UseVisualStyleBackColor = true;
+            // 
             // btnClearTarget
             // 
             this.btnClearTarget.Location = new System.Drawing.Point(165, 122);
@@ -1048,15 +1057,6 @@ namespace DemoGame.Editor
             this.radioEdit.TabStop = true;
             this.radioEdit.Text = "Frame Editor";
             this.radioEdit.UseVisualStyleBackColor = true;
-            // 
-            // btnSelectBodyGrhData
-            // 
-            this.btnSelectBodyGrhData.Location = new System.Drawing.Point(160, 67);
-            this.btnSelectBodyGrhData.Name = "btnSelectBodyGrhData";
-            this.btnSelectBodyGrhData.SelectedGrhDataHandler = null;
-            this.btnSelectBodyGrhData.Size = new System.Drawing.Size(24, 23);
-            this.btnSelectBodyGrhData.TabIndex = 49;
-            this.btnSelectBodyGrhData.UseVisualStyleBackColor = true;
             // 
             // SkeletonEditorForm
             // 
