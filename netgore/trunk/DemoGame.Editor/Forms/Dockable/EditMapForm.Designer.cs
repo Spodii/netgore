@@ -42,6 +42,7 @@
             this.mapScreen.Text = "Map Screen";
             this.mapScreen.Enter += new System.EventHandler(this.mapScreen_Enter);
             this.mapScreen.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mapScreen_KeyDown);
+            this.mapScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapScreen_MouseDown);
             this.mapScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapScreen_MouseUp);
             // 
             // EditMapForm

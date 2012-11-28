@@ -213,6 +213,26 @@ namespace DemoGame.Editor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap MapGrhFillTool_Disabled {
+            get {
+                object obj = ResourceManager.GetObject("MapGrhFillTool_Disabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap MapGrhFillTool_Enabled {
+            get {
+                object obj = ResourceManager.GetObject("MapGrhFillTool_Enabled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap MapGrhPencilTool_Disabled {
             get {
                 object obj = ResourceManager.GetObject("MapGrhPencilTool_Disabled", resourceCulture);

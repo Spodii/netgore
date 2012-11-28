@@ -127,6 +127,11 @@ If you do not save, all changes will be lost.";
             MapScreenControl.Map.UndoManager.Snapshot();
         }
 
+        private void mapScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            MapScreenControl.Map.UndoManager.Snapshot();
+        }
+
         private void mapScreen_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control)
