@@ -21,8 +21,7 @@ namespace NetGore.Db
         /// a successful connection.
         /// </returns>
         public static IDbController CreateDbControllerPromptEditWhenInvalid(this DbConnectionSettings s,
-                                                                            Func<DbConnectionSettings, IDbController>
-                                                                                createController, Func<string, bool> createPrompt)
+            Func<DbConnectionSettings, IDbController> createController, Func<string, bool> createPrompt)
         {
             IDbController ret = null;
 

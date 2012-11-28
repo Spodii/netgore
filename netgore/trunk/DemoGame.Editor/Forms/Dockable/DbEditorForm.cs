@@ -168,14 +168,8 @@ namespace DemoGame.Editor
             Show();
             Refresh();
 
-            // Load the engine settings
-            EngineSettingsInitializer.Initialize();
-
             // Create the database connection
-            var settings = new DbConnectionSettings();
-            _dbController =
-                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                    x => settings.PromptEditFileMessageBox(x));
+            _dbController = GlobalState.Instance.DbController;
 
             // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
             // pretty little pictures. :(
