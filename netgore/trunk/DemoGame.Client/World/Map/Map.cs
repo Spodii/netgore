@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -485,24 +486,33 @@ namespace DemoGame.Client
         /// <summary>
         /// Writes all the BackgroundImages.
         /// </summary>
-        /// <param name="w">IValueWriter to write to..</param>
-        void SaveBackgroundImages(IValueWriter w)
+        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
+        void SaveBackgroundImages(IValueWriter w, MapSaveFlags saveFlags)
         {
-            var bgImagesToWrite = _backgroundImages.Where(x => x != null)
-                .OrderBy(x => x.Sprite.GrhData.GrhIndex)
-                .ThenBy(x => (int)x.MapRenderLayer)
-                .ToImmutable();
+            var bgImages = _backgroundImages.Where(x => x != null);
+            if ((saveFlags & MapSaveFlags.DoNotSort) == 0)
+            {
+                bgImages = bgImages.OrderBy(x => x.Sprite.GrhData.GrhIndex).ThenBy(x => (int)x.MapRenderLayer);
+            }
+            bgImages = bgImages.ToImmutable();
 
-            w.WriteManyNodes(_bgImagesNodeName, bgImagesToWrite, ((writer, item) => item.Write(writer)));
+            w.WriteManyNodes(_bgImagesNodeName, bgImages, ((writer, item) => item.Write(writer)));
         }
 
         /// <summary>
         /// Writes all the MapGrhs to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="w">IValueWriter to write to.</param>
-        void SaveGrhs(IValueWriter w)
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
+        void SaveGrhs(IValueWriter w, MapSaveFlags saveFlags)
         {
-            var mapGrhs = Spatial.GetMany<MapGrh>().Distinct().OrderBy(x => x, new BasicMapGrhComparer()).ToImmutable();
+            var mapGrhs = Spatial.GetMany<MapGrh>();
+            if ((saveFlags & MapSaveFlags.DoNotSort) == 0)
+            {
+                mapGrhs = mapGrhs.OrderBy(x => x, new BasicMapGrhComparer());
+            }
+            mapGrhs = mapGrhs.ToImmutable();
 
             w.WriteStartNode(_mapGrhsNodeName);
             {
@@ -510,14 +520,24 @@ namespace DemoGame.Client
                 w.WriteMany(_usedIndiciesNodeName, GetMapGrhList(), w.Write);
 
                 // MapGrhs
-                w.WriteManyNodes(_mapGrhsNodeName, mapGrhs, ((writer, item) => item.WriteState(writer)));
+                w.WriteManyNodes(_mapGrhsNodeName, mapGrhs, ((writer, mapGrh) => mapGrh.WriteState(writer)));
             }
             w.WriteEndNode(_mapGrhsNodeName);
         }
 
-        void SaveLighting(IValueWriter w)
+        /// <summary>
+        /// Writes all the lighting to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
+        void SaveLighting(IValueWriter w, MapSaveFlags saveFlags)
         {
-            var lights = _lights.OrderBy(x => x, new BasicSpatialComparer()).ToImmutable();
+            IEnumerable<ILight> lights = _lights;
+            if ((saveFlags & MapSaveFlags.DoNotSort) == 0)
+            {
+                lights = lights.OrderBy(x => x, new BasicSpatialComparer());
+            }
+            lights = lights.ToImmutable();
 
             w.WriteStartNode(_lightingNodeName);
             {
@@ -531,26 +551,35 @@ namespace DemoGame.Client
         /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
         /// <param name="w">IValueWriter to write to.</param>
-        protected override void SaveMisc(IValueWriter w)
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
+        protected override void SaveMisc(IValueWriter w, MapSaveFlags saveFlags)
         {
-            SaveGrhs(w);
-            SaveBackgroundImages(w);
-            SaveLighting(w);
-            _particleEffects.Write(w, _particleEffectsNodeName);
-            SaveRefractionEffects(w);
+            SaveGrhs(w, saveFlags);
+            SaveBackgroundImages(w, saveFlags);
+            SaveLighting(w, saveFlags);
+            SaveParticleEffects(w, saveFlags);
+            SaveRefractionEffects(w, saveFlags);
         }
 
-        void SaveRefractionEffects(IValueWriter w)
+        void SaveRefractionEffects(IValueWriter w, MapSaveFlags saveFlags)
         {
-            var validFx = _refractionEffects.Where(x => RefractionEffectFactory.IsValidType(x.GetType()))
-                .OrderBy(x => x, new BasicSpatialComparer())
-                .ToImmutable();
+            var validFx = _refractionEffects.Where(x => RefractionEffectFactory.IsValidType(x.GetType()));
+            if ((saveFlags & MapSaveFlags.DoNotSort) == 0)
+            {
+                validFx = validFx.OrderBy(x => x, new BasicSpatialComparer());
+            }
+            validFx = validFx.ToImmutable();
 
             w.WriteStartNode(_refractionEffectsNodeName);
             {
                 w.WriteManyNodes(_refractionEffectListNodeName, validFx, RefractionEffectFactory.Write);
             }
             w.WriteEndNode(_refractionEffectsNodeName);
+        }
+
+        void SaveParticleEffects(IValueWriter w, MapSaveFlags saveFlags)
+        {
+            _particleEffects.Write(w, _particleEffectsNodeName);
         }
 
         /// <summary>

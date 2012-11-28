@@ -23,6 +23,24 @@ namespace DemoGame
     /// </summary>
     public abstract class MapBase : IMap, IMapTable
     {
+        /// <summary>
+        /// Flags used to define behavior when saving the maps.
+        /// </summary>
+        [Flags]
+        public enum MapSaveFlags : byte
+        {
+            /// <summary>
+            /// No flags / default behavior.
+            /// </summary>
+            None = 0,
+
+            /// <summary>
+            /// Do not sort collections before saving, so elements may not get saved in a predictable order. Keeps the saved map closer
+            /// in similarity to the map in memory, but is less predictable.
+            /// </summary>
+            DoNotSort = 1 << 0,
+        }
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         const string _dynamicEntitiesNodeName = "DynamicEntities";
@@ -1039,29 +1057,41 @@ namespace DemoGame
         /// Saves the map to an IValueWriter.
         /// </summary>
         /// <param name="writer">The IValueWriter to save to.</param>
-        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
-        /// <see cref="DynamicEntity"/>s.</param>
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to save the <see cref="DynamicEntity"/>s.</param>
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
         /// <exception cref="ArgumentNullException"><paramref name="dynamicEntityFactory"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="writer"/> is null.</exception>
-        public void Save(IValueWriter writer, IDynamicEntityFactory dynamicEntityFactory)
+        public void Save(IValueWriter writer, IDynamicEntityFactory dynamicEntityFactory, MapSaveFlags saveFlags = MapSaveFlags.None)
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
             if (dynamicEntityFactory == null)
                 throw new ArgumentNullException("dynamicEntityFactory");
 
-            SaveHeader(writer);
-            SaveWalls(writer);
-            SaveDynamicEntities(writer, dynamicEntityFactory);
+            SaveHeader(writer, saveFlags);
+            SaveWalls(writer, saveFlags);
+            SaveDynamicEntities(writer, dynamicEntityFactory, saveFlags);
 
             writer.WriteStartNode(_miscNodeName);
-            SaveMisc(writer);
+            SaveMisc(writer, saveFlags);
             writer.WriteEndNode(_miscNodeName);
         }
 
-        void SaveDynamicEntities(IValueWriter w, IDynamicEntityFactory dynamicEntityFactory)
+        /// <summary>
+        /// Saves the DynamicEntities.
+        /// </summary>
+        /// <param name="w">The IValueWriter to save to.</param>
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to save the <see cref="DynamicEntity"/>s.</param>
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
+        void SaveDynamicEntities(IValueWriter w, IDynamicEntityFactory dynamicEntityFactory, MapSaveFlags saveFlags)
         {
-            var entities = DynamicEntities.OrderBy(x => x, new BasicSpatialComparer()).ToImmutable();
+            var entities = DynamicEntities;
+            if ((saveFlags & MapSaveFlags.DoNotSort) == 0)
+            {
+                entities = entities.OrderBy(x => x, new BasicSpatialComparer());
+            }
+            entities = entities.ToImmutable();
+
             w.WriteManyNodes(_dynamicEntitiesNodeName, entities, (x, v) => dynamicEntityFactory.Write(x, v));
         }
 
@@ -1069,8 +1099,9 @@ namespace DemoGame
         /// Saves the map header
         /// </summary>
         /// <param name="w"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
         /// <exception cref="ArgumentNullException"><paramref name="w" /> is <c>null</c>.</exception>
-        void SaveHeader(IValueWriter w)
+        void SaveHeader(IValueWriter w, MapSaveFlags saveFlags)
         {
             if (w == null)
                 throw new ArgumentNullException("w");
@@ -1092,7 +1123,8 @@ namespace DemoGame
         /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
         /// <param name="w">IValueWriter to write to.</param>
-        protected virtual void SaveMisc(IValueWriter w)
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
+        protected virtual void SaveMisc(IValueWriter w, MapSaveFlags saveFlags)
         {
         }
 
@@ -1100,13 +1132,20 @@ namespace DemoGame
         /// Saves the map walls
         /// </summary>
         /// <param name="w"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="saveFlags">The flags to modify the map save behavior.</param>
         /// <exception cref="ArgumentNullException"><paramref name="w" /> is <c>null</c>.</exception>
-        void SaveWalls(IValueWriter w)
+        void SaveWalls(IValueWriter w, MapSaveFlags saveFlags)
         {
             if (w == null)
                 throw new ArgumentNullException("w");
 
-            var walls = Entities.OfType<WallEntityBase>().OrderBy(x => x, new BasicSpatialComparer()).ToImmutable();
+            var walls = Entities.OfType<WallEntityBase>();
+            if ((saveFlags & MapSaveFlags.DoNotSort) == 0)
+            {
+                walls = walls.OrderBy(x => x, new BasicSpatialComparer());
+            }
+            walls = walls.ToImmutable();
+
             w.WriteManyNodes(_wallsNodeName, walls, ((writer, item) => item.Write(writer)));
         }
 

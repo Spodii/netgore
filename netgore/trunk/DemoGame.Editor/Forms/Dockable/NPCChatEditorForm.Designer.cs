@@ -31,6 +31,14 @@ namespace DemoGame.Editor
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.cmbSelectedDialog = new NetGore.Features.NPCChat.NPCChatDialogComboBox();
+            this.txtDialogTitle = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnNew = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.npcChatDialogView = new NetGore.Features.NPCChat.NPCChatDialogView();
             this.gbSelectedNode = new System.Windows.Forms.GroupBox();
@@ -70,24 +78,24 @@ namespace DemoGame.Editor
             this.label8 = new System.Windows.Forms.Label();
             this.btnAddConditional = new System.Windows.Forms.Button();
             this.btnDeleteConditional = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnNew = new System.Windows.Forms.Button();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.cmbSelectedDialog = new NetGore.Features.NPCChat.NPCChatDialogComboBox();
-            this.txtDialogTitle = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.gbSelectedNode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
@@ -97,12 +105,10 @@ namespace DemoGame.Editor
             this.gbActions.SuspendLayout();
             this.tpRedirect.SuspendLayout();
             this.gbConditionals.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -126,6 +132,100 @@ namespace DemoGame.Editor
             this.splitContainer1.Size = new System.Drawing.Size(930, 623);
             this.splitContainer1.SplitterDistance = 25;
             this.splitContainer1.TabIndex = 12;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.cmbSelectedDialog);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.txtDialogTitle);
+            this.splitContainer3.Panel2.Controls.Add(this.label6);
+            this.splitContainer3.Size = new System.Drawing.Size(698, 25);
+            this.splitContainer3.SplitterDistance = 278;
+            this.splitContainer3.TabIndex = 41;
+            // 
+            // cmbSelectedDialog
+            // 
+            this.cmbSelectedDialog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbSelectedDialog.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSelectedDialog.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSelectedDialog.FormattingEnabled = true;
+            this.cmbSelectedDialog.Location = new System.Drawing.Point(0, 0);
+            this.cmbSelectedDialog.Name = "cmbSelectedDialog";
+            this.cmbSelectedDialog.Size = new System.Drawing.Size(278, 21);
+            this.cmbSelectedDialog.TabIndex = 13;
+            this.cmbSelectedDialog.SelectedValueChanged += new System.EventHandler(this.cmbSelectedDialog_SelectedValueChanged);
+            // 
+            // txtDialogTitle
+            // 
+            this.txtDialogTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDialogTitle.Location = new System.Drawing.Point(30, 0);
+            this.txtDialogTitle.Name = "txtDialogTitle";
+            this.txtDialogTitle.Size = new System.Drawing.Size(386, 20);
+            this.txtDialogTitle.TabIndex = 27;
+            this.txtDialogTitle.TextChanged += new System.EventHandler(this.txtDialogTitle_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Name = "label6";
+            this.label6.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label6.Size = new System.Drawing.Size(30, 16);
+            this.label6.TabIndex = 26;
+            this.label6.Text = "Title:";
+            // 
+            // btnNew
+            // 
+            this.btnNew.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnNew.Location = new System.Drawing.Point(698, 0);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(58, 25);
+            this.btnNew.TabIndex = 40;
+            this.btnNew.Text = "New";
+            this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnSave.Location = new System.Drawing.Point(756, 0);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(58, 25);
+            this.btnSave.TabIndex = 39;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDelete.Location = new System.Drawing.Point(814, 0);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(58, 25);
+            this.btnDelete.TabIndex = 38;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnRefresh.Location = new System.Drawing.Point(872, 0);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(58, 25);
+            this.btnRefresh.TabIndex = 37;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // splitContainer2
             // 
@@ -573,100 +673,6 @@ namespace DemoGame.Editor
             this.btnDeleteConditional.UseVisualStyleBackColor = true;
             this.btnDeleteConditional.Click += new System.EventHandler(this.btnDeleteConditional_Click);
             // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnRefresh.Location = new System.Drawing.Point(872, 0);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(58, 25);
-            this.btnRefresh.TabIndex = 37;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnDelete.Location = new System.Drawing.Point(814, 0);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(58, 25);
-            this.btnDelete.TabIndex = 38;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnSave.Location = new System.Drawing.Point(756, 0);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(58, 25);
-            this.btnSave.TabIndex = 39;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnNew
-            // 
-            this.btnNew.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnNew.Location = new System.Drawing.Point(698, 0);
-            this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(58, 25);
-            this.btnNew.TabIndex = 40;
-            this.btnNew.Text = "New";
-            this.btnNew.UseVisualStyleBackColor = true;
-            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.cmbSelectedDialog);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.txtDialogTitle);
-            this.splitContainer3.Panel2.Controls.Add(this.label6);
-            this.splitContainer3.Size = new System.Drawing.Size(698, 25);
-            this.splitContainer3.SplitterDistance = 278;
-            this.splitContainer3.TabIndex = 41;
-            // 
-            // cmbSelectedDialog
-            // 
-            this.cmbSelectedDialog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbSelectedDialog.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbSelectedDialog.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSelectedDialog.FormattingEnabled = true;
-            this.cmbSelectedDialog.Location = new System.Drawing.Point(0, 0);
-            this.cmbSelectedDialog.Name = "cmbSelectedDialog";
-            this.cmbSelectedDialog.Size = new System.Drawing.Size(278, 21);
-            this.cmbSelectedDialog.TabIndex = 13;
-            this.cmbSelectedDialog.SelectedValueChanged += new System.EventHandler(this.cmbSelectedDialog_SelectedValueChanged);
-            // 
-            // txtDialogTitle
-            // 
-            this.txtDialogTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDialogTitle.Location = new System.Drawing.Point(30, 0);
-            this.txtDialogTitle.Name = "txtDialogTitle";
-            this.txtDialogTitle.Size = new System.Drawing.Size(386, 20);
-            this.txtDialogTitle.TabIndex = 27;
-            this.txtDialogTitle.TextChanged += new System.EventHandler(this.txtDialogTitle_TextChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label6.Location = new System.Drawing.Point(0, 0);
-            this.label6.Name = "label6";
-            this.label6.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.label6.Size = new System.Drawing.Size(30, 16);
-            this.label6.TabIndex = 26;
-            this.label6.Text = "Title:";
-            // 
             // NPCChatEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -681,17 +687,26 @@ namespace DemoGame.Editor
             this.Text = "NPC Chat Editor";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.gbSelectedNode.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
             this.splitContainer6.Panel1.PerformLayout();
             this.splitContainer6.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             this.tcChatDialogItem.ResumeLayout(false);
             this.tpDialog.ResumeLayout(false);
@@ -705,11 +720,8 @@ namespace DemoGame.Editor
             this.splitContainer7.Panel1.ResumeLayout(false);
             this.splitContainer7.Panel2.ResumeLayout(false);
             this.splitContainer7.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            this.splitContainer3.Panel2.PerformLayout();
-            this.splitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

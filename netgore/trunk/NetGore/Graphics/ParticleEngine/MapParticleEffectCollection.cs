@@ -28,7 +28,13 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="nodeName">The name of the collection node.</param>
         public void Write(IValueWriter writer, string nodeName)
         {
-            writer.WriteManyNodes(nodeName, this.ToArray(), (w, v) => v.WriteState(w));
+            // Get the particle effects in a consistent order
+            var particleEffects = this
+                .OrderBy(x => x.Position.Y)
+                .ThenBy(x => x.Position.X)
+                .ToImmutable();
+
+            writer.WriteManyNodes(nodeName, particleEffects, (w, v) => v.WriteState(w));
         }
     }
 }
