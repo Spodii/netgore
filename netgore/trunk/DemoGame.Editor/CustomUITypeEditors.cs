@@ -74,9 +74,11 @@ namespace DemoGame.Editor
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(ItemTemplateTable), "ID");
 
+#if !TOPDOWN
             // Set the UITypeEditor for specific properties on classes instead of every property with a certain type
             AdvancedClassTypeConverter.SetForceEditor(typeof(ItemTemplateTable),
                 new KeyValuePair<string, UITypeEditor>("EquippedBody", new BodyPaperDollTypeEditor()));
+#endif
         }
 
         /// <summary>
