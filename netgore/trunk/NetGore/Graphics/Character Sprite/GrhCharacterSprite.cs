@@ -194,11 +194,11 @@ namespace NetGore.Graphics
             // Update
             _bodyGrh.Update(_currentTime);
 
-            position += new Vector2(0, Character.Size.Y - _bodyGrh.Size.Y);
+            position += new Vector2(Character.Size.X / 2f, Character.Size.Y - _bodyGrh.Size.Y);
 
             // Get the GrhDatas to draw, along with their draw order
-            List<KeyValuePair<int, GrhData>> grhDatas = new List<KeyValuePair<int, GrhData>>();
-            grhDatas.Add(new KeyValuePair<int, GrhData>(GetLayerOrder(PaperDollLayerType.Body, heading), _bodyGrh.GrhData));
+            List<Tuple<int, GrhData, PaperDollLayerType>> grhDatas = new List<Tuple<int, GrhData, PaperDollLayerType>>();
+            grhDatas.Add(new Tuple<int, GrhData, PaperDollLayerType>(GetLayerOrder(PaperDollLayerType.Body, heading), _bodyGrh.GrhData, PaperDollLayerType.Body));
 
             string setSuffix = !string.IsNullOrEmpty(_currentSet) ? "." + _currentSet : "";
             if (_layers != null)
@@ -209,24 +209,34 @@ namespace NetGore.Graphics
                     if (gd == null)
                         continue;
 
-                    grhDatas.Add(new KeyValuePair<int, GrhData>(GetLayerOrder(layerName, heading), gd));
+                    PaperDollLayerType layerType = GetPaperDollLayerType(layerName);
+                    int layerOrder = GetLayerOrder(layerType, heading);
+                    grhDatas.Add(new Tuple<int, GrhData, PaperDollLayerType>(layerOrder, gd, layerType));
                 }
             }
 
-            // Sort
-            grhDatas = grhDatas.OrderBy(x => x.Key).ToList();
+            // Sort by layer order
+            grhDatas = grhDatas.OrderBy(x => x.Item1).ToList();
 
             // Draw in order
             var drawingGrh = _bodyGrh.DeepCopy();
             for (int i = 0; i < grhDatas.Count; i++)
             {
-                GrhData gd = grhDatas[i].Value;
+                GrhData gd = grhDatas[i].Item2;
+
+                // Set frame
                 GrhData gdFrame = gd.GetFrame((int)Math.Floor(_bodyGrh.Frame)) ?? gd.Frames.LastOrDefault();
                 if (gdFrame == null)
                     continue;
 
                 drawingGrh.SetGrh(gdFrame);
-                drawingGrh.Draw(spriteBatch, position, color);
+
+                // Get offset
+                Vector2 sizeXOffset = new Vector2(drawingGrh.Size.X / -2f, 0);
+                Vector2 layerOffset = GetPaperDollLayerOffset(grhDatas[i].Item3);
+
+                // Draw
+                drawingGrh.Draw(spriteBatch, position + layerOffset + sizeXOffset, color);
             }
         }
 
@@ -280,11 +290,22 @@ namespace NetGore.Graphics
         /// <summary>
         /// Enum of the different layer types.
         /// </summary>
-        enum PaperDollLayerType
+        enum PaperDollLayerType : byte
         {
             Weapon,
             Hat,
             Body,
+        }
+
+        /// <summary>
+        /// Gets the drawing position offset to use for a paper doll layer. The offset is relative to the original drawing position (0,0).
+        /// </summary>
+        /// <param name="layerType">The paper doll layer.</param>
+        /// <returns>The drawing offset</returns>
+        static Vector2 GetPaperDollLayerOffset(PaperDollLayerType layerType)
+        {
+            // No offsets defined by default
+            return Vector2.Zero;
         }
 
         /// <summary>
