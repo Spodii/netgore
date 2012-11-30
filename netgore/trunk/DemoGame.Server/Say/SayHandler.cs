@@ -22,8 +22,7 @@ namespace DemoGame.Server
         /// <param name="user">The user invoking the command.</param>
         /// <param name="commandData">The information about the command to be invoked.</param>
         /// <returns>True if the command can be invoked; otherwise false.</returns>
-        protected override bool AllowInvokeCommand(User user,
-                                                   StringCommandParserCommandData<SayHandlerCommandAttribute> commandData)
+        protected override bool AllowInvokeCommand(User user, StringCommandParserCommandData<SayHandlerCommandAttribute> commandData)
         {
             // Check for a valid user
             if (user == null)
@@ -46,9 +45,7 @@ namespace DemoGame.Server
         /// <param name="user">The user invoking the command.</param>
         /// <param name="commandData">The information about the command to be invoked.</param>
         /// <returns>The message to display to the <paramref name="user"/>, or null or empty to display nothing.</returns>
-        protected override string GetCommandNotAllowedMessage(User user,
-                                                              StringCommandParserCommandData<SayHandlerCommandAttribute>
-                                                                  commandData)
+        protected override string GetCommandNotAllowedMessage(User user, StringCommandParserCommandData<SayHandlerCommandAttribute> commandData)
         {
             return null;
         }
