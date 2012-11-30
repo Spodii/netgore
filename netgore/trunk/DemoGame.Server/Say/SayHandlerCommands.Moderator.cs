@@ -128,6 +128,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Enables/disables teleports to a position when clicking.
+        /// </summary>
+        /// <param name="enabled">True to enable; false to disable.</param>
+        [SayHandlerCommand("ClickWarp", UserPermissions.Moderator)]
+        public void ClickWarp(bool enabled)
+        {
+            using (var pw = ServerPacket.SetClickWarpMode(enabled))
+            {
+                User.Send(pw, ServerMessageType.General);
+            }
+        }
+
+        /// <summary>
         /// Kicks the specified user from the world.
         /// </summary>
         /// <param name="userName">The player to kick.</param>
