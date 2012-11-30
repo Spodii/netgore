@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;
 using SFML.Window;
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -11,10 +13,13 @@ namespace DemoGame.Client
         public const string ScreenName = "character creation";
         const string _title = "Create Character";
 
+        const string _invalidCharacterNameMessage = "Invalid character name.";
+
         Control _btnCreateCharacter;
         TextBox _cStatus;
         ClientSockets _sockets = null;
         TextBox _txtName;
+        Label _lblValidNameMarker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateCharacterScreen"/> class.
@@ -35,10 +40,24 @@ namespace DemoGame.Client
             if (_sockets == null)
                 _sockets = ClientSockets.Instance;
 
-            _btnCreateCharacter.IsEnabled = true;
-            _cStatus.IsVisible = false;
-
+            // Set event hooks
             _sockets.PacketHandler.ReceivedCreateAccountCharacter += PacketHandler_ReceivedCreateAccountCharacter;
+
+            // Reset the control states
+            SetError(null);
+            _btnCreateCharacter.IsEnabled = true;
+            _txtName.Text = string.Empty;
+        }
+
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            // Remove event hooks
+            if (_sockets != null)
+            {
+                _sockets.PacketHandler.ReceivedCreateAccountCharacter -= PacketHandler_ReceivedCreateAccountCharacter;
+            }
         }
 
         void ClickButton_Back(object sender, MouseButtonEventArgs e)
@@ -50,14 +69,17 @@ namespace DemoGame.Client
         {
             var name = _txtName.Text;
 
+            // Validate the name client-side before talking to the server
             if (!GameData.UserName.IsValid(name))
             {
-                SetError("Invalid character name.");
+                SetError(_invalidCharacterNameMessage);
                 return;
             }
 
+            // Disable the button while we wait for a response
             _btnCreateCharacter.IsEnabled = false;
 
+            // Send request to server
             using (var pw = ClientPacket.CreateNewAccountCharacter(name))
             {
                 _sockets.Send(pw, ClientMessageType.System);
@@ -83,26 +105,53 @@ namespace DemoGame.Client
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Name:");
 
-            _txtName = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
-            { IsMultiLine = false, Text = "", IsEnabled = true };
+            _txtName = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "", IsEnabled = true };
+            _txtName.TextChanged += _txtName_TextChanged;
+
+            _lblValidNameMarker = new Label(cScreen, _txtName.Position + new Vector2(_txtName.Size.X + 10, 0)) { Text = "*", IsVisible = false, ForeColor = Color.Red };
 
             var textBoxPos = new Vector2(60, _txtName.Position.Y + _txtName.Size.Y + 20);
             var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
-            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
-            { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
+
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
+        }
+
+        void _txtName_TextChanged(Control sender, EventArgs e)
+        {
+            bool isNameValid = GameData.UserName.IsValid(_txtName.Text);
+
+            // Update the validation marker next to the name
+            _lblValidNameMarker.IsVisible = !isNameValid;
+
+            // If the 'Invalid Name' message was shown, remove it when the name changes
+            if (IsErrorSet(_invalidCharacterNameMessage))
+            {
+                SetError(null);
+            }
         }
 
         void PacketHandler_ReceivedCreateAccountCharacter(IIPSocket sender, CreateAccountEventArgs e)
         {
-            _btnCreateCharacter.IsEnabled = true;
+            // Handles when we receive the CreateAccountCharacter message from the server
+            _btnCreateCharacter.IsEnabled = true; // Re-enable the button now that we got a response
 
             if (e.Successful)
             {
+                // Character created - move back to selection screen
                 ScreenManager.SetScreen<CharacterSelectionScreen>();
                 return;
             }
 
+            // Character creation failed, display error
             SetError("Error: " + e.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Gets if the error is set to the given message.
+        /// </summary>
+        bool IsErrorSet(string message)
+        {
+            return _cStatus.IsVisible && _cStatus.Text.Contains(message, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
