@@ -6,6 +6,7 @@ using DemoGame.Server.PeerTrading;
 using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
+using SFML.Graphics;
 using log4net;
 using NetGore;
 using NetGore.Db;
@@ -172,6 +173,24 @@ namespace DemoGame.Server
                 return;
 
             user.ShoppingState.TryPurchase(slot, amount);
+        }
+
+        [MessageHandler((uint)ClientPacketID.ClickWarp)]
+        void RecvClickWarp(IIPSocket conn, BitStream r)
+        {
+            var worldPos = r.ReadVector2();
+
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            var map = user.Map;
+            if (map == null)
+                return;
+
+            worldPos = worldPos.Max(Vector2.Zero).Min(map.Size);
+
+            user.Teleport(user.Map, worldPos);
         }
 
         [MessageHandler((uint)ClientPacketID.CreateNewAccount)]

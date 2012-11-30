@@ -662,6 +662,14 @@ namespace DemoGame.Client
             GameplayScreen.ChatDialogForm.SetPageIndex(pageID, responsesToSkip);
         }
 
+        [MessageHandler((uint)ServerPacketID.SetClickWarpMode)]
+        void RecvSetClickWarpMode(IIPSocket conn, BitStream r)
+        {
+            bool enabled = r.ReadBool();
+            GameplayScreen.AppendToChatOutput("Click warp mode: " + (enabled ? "Enabled" : "Disabled"), Color.Green);
+            GameplayScreen.ClickWarpMode = enabled;
+        }
+
         [MessageHandler((uint)ServerPacketID.SetExp)]
         void RecvSetExp(IIPSocket conn, BitStream r)
         {

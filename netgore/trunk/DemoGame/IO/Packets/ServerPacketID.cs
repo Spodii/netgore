@@ -52,6 +52,7 @@ namespace DemoGame
         SetCash,
         SetCharacterPaperDoll,
         SetChatDialogPage,
+        SetClickWarpMode,
         SetGameTime,
         SetExp,
         SetInventorySlot,
