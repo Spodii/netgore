@@ -56,7 +56,7 @@ namespace DemoGame.Server.UI
         /// <summary>
         /// The cpu performance counter.
         /// </summary>
-        PerformanceCounter _cpuCounter;
+        readonly PerformanceCounter _cpuCounter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
@@ -72,7 +72,17 @@ namespace DemoGame.Server.UI
 
             InitializeComponent();
 
-            _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            try
+            {
+                _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to create Processor performance counter: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                _cpuCounter = null;
+            }
 
             _serverThread = new Thread(ServerThread) { Name = "Server Thread", IsBackground = true };
         }
@@ -460,11 +470,41 @@ namespace DemoGame.Server.UI
             }
 
             // Update the CPU and memory usage values
-            if (_interfaceUpdateTicker % 4 == 0)
+            if (_interfaceUpdateTicker % 8 == 0)
             {
-                lblCPU.Text = Math.Round(_cpuCounter.NextValue()) + "%";
-                lblRAMUsed.Text = SystemPerformance.Memory.ProcessUsageMB + " MB";
-                lblRAMFree.Text = SystemPerformance.Memory.AvailableMB + " MB";
+                if (_cpuCounter != null)
+                {
+                    try
+                    {
+                        lblCPU.Text = Math.Round(_cpuCounter.NextValue()) + "%";
+                    }
+                    catch
+                    {
+                        lblCPU.Text = "ERROR";
+                    }
+                }
+                else
+                {
+                    lblCPU.Text = "?";
+                }
+
+                try
+                {
+                    lblRAMUsed.Text = SystemPerformance.Memory.ProcessUsageMB + " MB";
+                }
+                catch
+                {
+                    lblRAMUsed.Text = "ERROR";
+                }
+
+                try
+                {
+                    lblRAMFree.Text = SystemPerformance.Memory.AvailableMB + " MB";
+                }
+                catch
+                {
+                    lblRAMFree.Text = "ERROR";
+                }
             }
         }
 
