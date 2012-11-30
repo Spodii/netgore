@@ -405,6 +405,13 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SetClickWarpMode(bool enabled)
+        {
+            var pw = GetWriter(ServerPacketID.SetClickWarpMode);
+            pw.Write(enabled);
+            return pw;
+        }
+
         public static PacketWriter SetExp(int exp)
         {
             var pw = GetWriter(ServerPacketID.SetExp);

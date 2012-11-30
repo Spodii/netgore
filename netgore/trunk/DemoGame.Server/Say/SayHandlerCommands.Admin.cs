@@ -11,6 +11,15 @@ namespace DemoGame.Server
     /// </summary>
     public partial class SayHandlerCommands
     {
+        [SayHandlerCommand("ClickWarp", UserPermissions.Admin)]
+        public void ClickWarp(bool enabled)
+        {
+            using (var pw = ServerPacket.SetClickWarpMode(enabled))
+            {
+                User.Send(pw, ServerMessageType.General);
+            }
+        }
+
         /// <summary>
         /// Creates a new map instance and places the user on that map.
         /// </summary>

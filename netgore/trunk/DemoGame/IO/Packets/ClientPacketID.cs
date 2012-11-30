@@ -17,6 +17,7 @@ namespace DemoGame
         AcceptOrTurnInQuest,
         Attack,
         BuyFromShop,
+        ClickWarp,
         CreateNewAccount,
         CreateNewAccountCharacter,
         DeleteAccountCharacter,

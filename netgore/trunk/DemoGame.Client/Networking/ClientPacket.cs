@@ -5,6 +5,7 @@ using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Network;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -37,6 +38,13 @@ namespace DemoGame.Client
             var pw = GetWriter(ClientPacketID.BuyFromShop);
             pw.Write(index);
             pw.Write(amount);
+            return pw;
+        }
+
+        public static PacketWriter ClickWarp(Vector2 worldPos)
+        {
+            var pw = GetWriter(ClientPacketID.ClickWarp);
+            pw.Write(worldPos);;
             return pw;
         }
 

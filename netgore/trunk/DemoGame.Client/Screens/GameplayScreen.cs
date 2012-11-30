@@ -216,6 +216,11 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets if the admin ClickWarpMode is enabled.
+        /// </summary>
+        public bool ClickWarpMode { get; set; }
+
+        /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
         /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
         /// </summary>
@@ -526,6 +531,7 @@ namespace DemoGame.Client
             Character.NameFont = _guiFont;
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = true };
+            _cScreen.Clicked += new TypedEventHandler<Control, SFML.Window.MouseButtonEventArgs>(_cScreen_Clicked);
 
             // Set up all the forms used by this screen
             _statsForm = new StatsForm(UserInfo, _cScreen);
@@ -603,8 +609,18 @@ namespace DemoGame.Client
             _cScreen.SetFocus();
         }
 
+        void _cScreen_Clicked(Control sender, SFML.Window.MouseButtonEventArgs e)
+        {
+            if (ClickWarpMode)
+            {
+                Vector2 worldPos = Map.Camera.ToWorld(new Vector2(e.X, e.Y));
+                using (var pw = ClientPacket.ClickWarp(worldPos))
+                    Socket.Send(pw, ClientMessageType.General);
+            }
+        }
+
         /// <summary>
-        /// Handles the <see cref="InventoryForm.RequestDropItem"/> event.
+        /// Handles the InventoryForm.RequestDropItem event.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs{InventorySlot}"/> instance containing the event data.</param>
@@ -636,7 +652,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the <see cref="InventoryForm.RequestUseItem"/> event.
+        /// Handles the InventoryForm.RequestUseItem event.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs{InventorySlot}"/> instance containing the event data.</param>
@@ -859,8 +875,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void _guildForm_JoinRequested(GuildForm sender, EventArgs e)
         {
-            var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.",
-                MessageBoxButton.OkCancel);
+            var ib = new InputBox(GUIManager, "Enter guild name", "Enter the name of the guild you want to join.", MessageBoxButton.OkCancel);
 
             ib.OptionSelected += delegate(Control s, EventArgs<MessageBoxButton> e2)
             {
