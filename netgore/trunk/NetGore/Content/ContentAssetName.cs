@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using log4net;
 using NetGore.IO;
 
@@ -98,43 +99,42 @@ namespace NetGore.Content
             var sb = new StringBuilder();
 
             // Get the root path
-            var rootPathStr = rootPath.Root.ToString();
+            string rootPathStr = rootPath.Root.ToString();
             sb.Append(rootPathStr);
 
-            // Ensure the root ends with a separator
-            if (!rootPathStr.EndsWith(Path.DirectorySeparatorChar.ToString()) &&
-                !rootPathStr.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
-                sb.Append(PathSeparator);
+            // Get the relative file path
+            string relFilePathStr = GetFileName();
 
-            // Append the name of the file
-            var fileName = GetFileName();
-            sb.Append(fileName);
+            // Get all of the files in the directory that this file lives in
+            string dirPath = Path.GetDirectoryName(Path.Combine(rootPathStr, relFilePathStr));
+            string[] dirFiles = Directory.GetFiles(dirPath, "*.*", SearchOption.TopDirectoryOnly);
 
-            // If the dev path, try to find the suffix
-            if (rootPath == ContentPaths.Dev)
+            // Take all the files in the directory, filter out the markup and suffix, and find which file names match ours
+            string targetFileName = Path.GetFileName(relFilePathStr);
+
+            string[] contentFilePaths = dirFiles.Where(x =>
             {
-                var files = Directory.GetFiles(rootPathStr, fileName + ".*").ToArray();
-                if (files.Length == 0)
-                {
-                    throw new ArgumentException(
-                        string.Format("Could not find a file named `{0}` in path `{1}` with a file suffix.", rootPathStr, fileName));
-                }
-                if (files.Length > 1)
-                {
-                    throw new ArgumentException(
-                        string.Format("Found multiple suffixes for the file named `{0}` in path `{1}`. Was expecting just one.",
-                            rootPathStr, fileName));
-                }
+                string xFileName = Path.GetFileNameWithoutExtension(x);
+                int splitIndex = xFileName.IndexOf('[');
+                if (splitIndex > 0)
+                    xFileName = xFileName.Substring(splitIndex + 1);
+                return StringComparer.OrdinalIgnoreCase.Equals(xFileName, targetFileName);
+            })
+            .ToArray();
 
-                var fileToUse = files.First();
-                var ext = Path.GetExtension(fileToUse);
-                sb.Append(ext);
+            // Verify we found exactly 1 match
+            if (contentFilePaths.Length == 0)
+            {
+                throw new ArgumentException(string.Format("Could not find a file named (without the [] markup and suffix) `{0}` in path `{1}`.",
+                    targetFileName, dirPath));
+            }
+            if (contentFilePaths.Length > 1)
+            {
+                throw new ArgumentException(string.Format("Found multiple potential matches for the file named (without the [] markup and suffix) `{0}` in path `{1}`. Was expecting just one.",
+                    targetFileName, dirPath));
             }
 
-            // Ensure we use the correct path separator
-            sb.Replace(PathSeparator, Path.DirectorySeparatorChar.ToString());
-
-            return sb.ToString();
+            return contentFilePaths[0];
         }
 
         /// <summary>
@@ -201,7 +201,9 @@ namespace NetGore.Content
 
                 // Ensure the file was copied over before deleting
                 if (File.Exists(destPath))
+                {
                     TryDeleteFile(srcPath);
+                }
                 else
                 {
                     // Failed to copy over?

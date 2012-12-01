@@ -34,7 +34,7 @@
       <Categorization>Character.Body.Black.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Black/Down</Name>
+        <Name>Grh/Character/Body/Black/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item3>
@@ -43,7 +43,7 @@
       <Categorization>Character.Body.Black.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Black/Left</Name>
+        <Name>Grh/Character/Body/Black/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item4>
@@ -52,7 +52,7 @@
       <Categorization>Character.Body.Black.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Black/Right</Name>
+        <Name>Grh/Character/Body/Black/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item5>
@@ -61,7 +61,7 @@
       <Categorization>Character.Body.Black.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Black/Up</Name>
+        <Name>Grh/Character/Body/Black/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item6>
@@ -70,7 +70,7 @@
       <Categorization>Character.Body.Gold.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Gold/Down</Name>
+        <Name>Grh/Character/Body/Gold/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item7>
@@ -79,7 +79,7 @@
       <Categorization>Character.Body.Gold.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Gold/Left</Name>
+        <Name>Grh/Character/Body/Gold/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item8>
@@ -88,7 +88,7 @@
       <Categorization>Character.Body.Gold.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Gold/Right</Name>
+        <Name>Grh/Character/Body/Gold/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item9>
@@ -97,7 +97,7 @@
       <Categorization>Character.Body.Gold.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Gold/Up</Name>
+        <Name>Grh/Character/Body/Gold/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item10>
@@ -106,7 +106,7 @@
       <Categorization>Character.Body.Iron.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Iron/Down</Name>
+        <Name>Grh/Character/Body/Iron/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item11>
@@ -115,7 +115,7 @@
       <Categorization>Character.Body.Iron.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Iron/Left</Name>
+        <Name>Grh/Character/Body/Iron/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item12>
@@ -124,7 +124,7 @@
       <Categorization>Character.Body.Iron.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Iron/Right</Name>
+        <Name>Grh/Character/Body/Iron/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item13>
@@ -133,7 +133,7 @@
       <Categorization>Character.Body.Iron.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Iron/Up</Name>
+        <Name>Grh/Character/Body/Iron/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item14>
@@ -142,7 +142,7 @@
       <Categorization>Character.Body.Naked.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Naked/Down</Name>
+        <Name>Grh/Character/Body/Naked/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item15>
@@ -151,7 +151,7 @@
       <Categorization>Character.Body.Naked.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Naked/Left</Name>
+        <Name>Grh/Character/Body/Naked/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item16>
@@ -160,7 +160,7 @@
       <Categorization>Character.Body.Naked.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Naked/Right</Name>
+        <Name>Grh/Character/Body/Naked/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item17>
@@ -169,7 +169,7 @@
       <Categorization>Character.Body.Naked.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Body/Naked/Up</Name>
+        <Name>Grh/Character/Body/Naked/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item18>
@@ -178,7 +178,7 @@
       <Categorization>Character.Helm.Irish.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Helm/Irish/Down</Name>
+        <Name>Grh/Character/Helm/Irish/Down</Name>
         <Source>0,0,44,70</Source>
       </Texture>
     </Item19>
@@ -187,7 +187,7 @@
       <Categorization>Character.Helm.Irish.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Helm/Irish/Left</Name>
+        <Name>Grh/Character/Helm/Irish/Left</Name>
         <Source>0,0,44,70</Source>
       </Texture>
     </Item20>
@@ -196,7 +196,7 @@
       <Categorization>Character.Helm.Irish.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Helm/Irish/Right</Name>
+        <Name>Grh/Character/Helm/Irish/Right</Name>
         <Source>0,0,44,70</Source>
       </Texture>
     </Item21>
@@ -205,7 +205,7 @@
       <Categorization>Character.Helm.Irish.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Helm/Irish/Up</Name>
+        <Name>Grh/Character/Helm/Irish/Up</Name>
         <Source>0,0,44,70</Source>
       </Texture>
     </Item22>
@@ -214,7 +214,7 @@
       <Categorization>Character.Skeletons.Crystal.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/ArmLower</Name>
+        <Name>Grh/Character/Skeletons/Crystal/ArmLower</Name>
         <Source>0,0,6,20</Source>
       </Texture>
     </Item23>
@@ -223,7 +223,7 @@
       <Categorization>Character.Skeletons.Crystal.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/ArmUpper</Name>
+        <Name>Grh/Character/Skeletons/Crystal/ArmUpper</Name>
         <Source>0,0,6,12</Source>
       </Texture>
     </Item24>
@@ -232,7 +232,7 @@
       <Categorization>Character.Skeletons.Crystal.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/Head</Name>
+        <Name>Grh/Character/Skeletons/Crystal/Head</Name>
         <Source>0,0,19,20</Source>
       </Texture>
     </Item25>
@@ -241,7 +241,7 @@
       <Categorization>Character.Skeletons.Crystal.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/LegLower</Name>
+        <Name>Grh/Character/Skeletons/Crystal/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
     </Item26>
@@ -250,7 +250,7 @@
       <Categorization>Character.Skeletons.Crystal.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/LegUpper</Name>
+        <Name>Grh/Character/Skeletons/Crystal/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
     </Item27>
@@ -259,7 +259,7 @@
       <Categorization>Character.Skeletons.Crystal.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/Neck</Name>
+        <Name>Grh/Character/Skeletons/Crystal/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
     </Item28>
@@ -268,7 +268,7 @@
       <Categorization>Character.Skeletons.Crystal.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/Shoe</Name>
+        <Name>Grh/Character/Skeletons/Crystal/Shoe</Name>
         <Source>0,0,6,18</Source>
       </Texture>
     </Item29>
@@ -277,7 +277,7 @@
       <Categorization>Character.Skeletons.Crystal.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Crystal/Torso</Name>
+        <Name>Grh/Character/Skeletons/Crystal/Torso</Name>
         <Source>0,0,14,28</Source>
       </Texture>
     </Item30>
@@ -286,7 +286,7 @@
       <Categorization>Character.Skeletons.Naked.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/ArmLower</Name>
+        <Name>Grh/Character/Skeletons/Naked/ArmLower</Name>
         <Source>0,0,6,20</Source>
       </Texture>
     </Item31>
@@ -295,7 +295,7 @@
       <Categorization>Character.Skeletons.Naked.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/ArmUpper</Name>
+        <Name>Grh/Character/Skeletons/Naked/ArmUpper</Name>
         <Source>0,0,6,12</Source>
       </Texture>
     </Item32>
@@ -304,7 +304,7 @@
       <Categorization>Character.Skeletons.Naked.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/Head</Name>
+        <Name>Grh/Character/Skeletons/Naked/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
     </Item33>
@@ -313,7 +313,7 @@
       <Categorization>Character.Skeletons.Naked.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/LegLower</Name>
+        <Name>Grh/Character/Skeletons/Naked/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
     </Item34>
@@ -322,7 +322,7 @@
       <Categorization>Character.Skeletons.Naked.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/LegUpper</Name>
+        <Name>Grh/Character/Skeletons/Naked/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
     </Item35>
@@ -331,7 +331,7 @@
       <Categorization>Character.Skeletons.Naked.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/Neck</Name>
+        <Name>Grh/Character/Skeletons/Naked/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
     </Item36>
@@ -340,7 +340,7 @@
       <Categorization>Character.Skeletons.Naked.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/Shoe</Name>
+        <Name>Grh/Character/Skeletons/Naked/Shoe</Name>
         <Source>0,0,6,16</Source>
       </Texture>
     </Item37>
@@ -349,7 +349,7 @@
       <Categorization>Character.Skeletons.Naked.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Naked/Torso</Name>
+        <Name>Grh/Character/Skeletons/Naked/Torso</Name>
         <Source>0,0,14,28</Source>
       </Texture>
     </Item38>
@@ -358,7 +358,7 @@
       <Categorization>Character.Skeletons.Zombie.ArmLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/ArmLower</Name>
+        <Name>Grh/Character/Skeletons/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
     </Item39>
@@ -367,7 +367,7 @@
       <Categorization>Character.Skeletons.Zombie.ArmUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/ArmUpper</Name>
+        <Name>Grh/Character/Skeletons/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
     </Item40>
@@ -376,7 +376,7 @@
       <Categorization>Character.Skeletons.Zombie.Head</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/Head</Name>
+        <Name>Grh/Character/Skeletons/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
     </Item41>
@@ -385,7 +385,7 @@
       <Categorization>Character.Skeletons.Zombie.LegLower</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/LegLower</Name>
+        <Name>Grh/Character/Skeletons/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
     </Item42>
@@ -394,7 +394,7 @@
       <Categorization>Character.Skeletons.Zombie.LegUpper</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/LegUpper</Name>
+        <Name>Grh/Character/Skeletons/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
     </Item43>
@@ -403,7 +403,7 @@
       <Categorization>Character.Skeletons.Zombie.Neck</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/Neck</Name>
+        <Name>Grh/Character/Skeletons/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
     </Item44>
@@ -412,7 +412,7 @@
       <Categorization>Character.Skeletons.Zombie.Shoe</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/Shoe</Name>
+        <Name>Grh/Character/Skeletons/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
     </Item45>
@@ -421,7 +421,7 @@
       <Categorization>Character.Skeletons.Zombie.Torso</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Skeletons/Zombie/Torso</Name>
+        <Name>Grh/Character/Skeletons/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
     </Item46>
@@ -430,7 +430,7 @@
       <Categorization>Character.Weapon.Sword.Down</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Weapon/Sword/Down</Name>
+        <Name>Grh/Character/Weapon/Sword/Down</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item47>
@@ -439,7 +439,7 @@
       <Categorization>Character.Weapon.Sword.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Weapon/Sword/Left</Name>
+        <Name>Grh/Character/Weapon/Sword/Left</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item48>
@@ -448,7 +448,7 @@
       <Categorization>Character.Weapon.Sword.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Weapon/Sword/Right</Name>
+        <Name>Grh/Character/Weapon/Sword/Right</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item49>
@@ -457,7 +457,7 @@
       <Categorization>Character.Weapon.Sword.Up</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh//Character/Weapon/Sword/Up</Name>
+        <Name>Grh/Character/Weapon/Sword/Up</Name>
         <Source>0,0,44,54</Source>
       </Texture>
     </Item50>

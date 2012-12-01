@@ -70,7 +70,6 @@ namespace DemoGame.Editor
             Character.NameFont = DefaultRenderFont;
 
             GrhInfo.Load(ContentPaths.Dev, ContentManager);
-            AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
 
             _mapGrhWalls = new MapGrhWalls();
 

@@ -49,7 +49,7 @@ namespace NetGore.Editor.Grhs
                 .ToArray();
 
             // Also grab the existing GrhDatas
-            var existingGrhDatas = GrhInfo.GrhDatas.ToArray().ToDictionary(x => x.Categorization.ToString(), x => x);
+            var existingGrhDatas = GrhInfo.GrhDatas.ToDictionary(x => x.Categorization.ToString(), x => x);
 
             // Go through each file and do the adds
             grhDataFileTags = new Dictionary<GrhData, GrhData.FileTags>();

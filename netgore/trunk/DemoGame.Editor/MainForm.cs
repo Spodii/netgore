@@ -33,8 +33,8 @@ namespace DemoGame.Editor
         static MainForm _instance;
 
         readonly DockContentDeserializer _deserializer;
-        BodyEditorForm _frmBodyEditor;
 
+        BodyEditorForm _frmBodyEditor;
         DbEditorForm _frmDbEditor;
         GrhTreeViewForm _frmGrhTreeView;
         MusicEditorForm _frmMusicEditor;
@@ -55,6 +55,11 @@ namespace DemoGame.Editor
             _deserializer = new DockContentDeserializer(this);
         }
 
+        static void SetStatusMessageLoading(string message)
+        {
+            SetStatusMessage("Loading: " + message + "...");
+        }
+
         /// <summary>
         /// Sets the message in the status toolbar.
         /// </summary>
@@ -68,6 +73,7 @@ namespace DemoGame.Editor
                     return;
 
                 frm.tssInfo.Text = message ?? string.Empty;
+                frm.tssInfo.GetCurrentParent().Refresh();
             }
             catch (Exception ex)
             {
@@ -139,13 +145,18 @@ namespace DemoGame.Editor
             tbGlobal.ToolBarVisibility = ToolBarVisibility.Global;
             tbMap.ToolBarVisibility = ToolBarVisibility.Map;
 
-            // Auto-update grhs
+            // Auto-update GrhDatas
+            SetStatusMessageLoading("Updating GrhData");
             GlobalState.Instance.AutoUpdateGrhDatas();
+
+            SetStatusMessageLoading("Updating cached GrhData sizes");
+            AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
 
             // Enable the update timer
             GlobalState.Instance.IsTickEnabled = true;
 
             // Create the child form instances
+            SetStatusMessageLoading("Creating child forms");
             _frmGrhTreeView = new GrhTreeViewForm();
             _frmGrhTreeView.VisibleChanged += _frmGrhTreeView_VisibleChanged;
 
@@ -181,9 +192,11 @@ namespace DemoGame.Editor
             }
 
             // Load the settings
+            SetStatusMessageLoading("Loading user settings");
             LoadDockSettings("User");
 
             // Set up map state control listeners & display initial values
+            SetStatusMessageLoading("Hooking up map events");
             GlobalState.Instance.Map.LayerDepthChanged -= Map_LayerDepthChanged;
             GlobalState.Instance.Map.LayerDepthChanged += Map_LayerDepthChanged;
 
@@ -194,9 +207,11 @@ namespace DemoGame.Editor
             Map_LayerDepthChanged(GlobalState.Instance, EventArgs.Empty);
 
             // Clean up bad maps
+            SetStatusMessageLoading("Validating map ids");
             MapHelper.DeleteMissingMapIds();
 
             // Load the initial map
+            SetStatusMessageLoading("Loading the initial map");
             var validMaps = MapHelper.FindAllMaps().ToArray();
             if (validMaps.Length > 0)
             {
@@ -213,10 +228,13 @@ namespace DemoGame.Editor
             tbGlobal.Visible = false;
 
             // Bind help
+            SetStatusMessageLoading("Setting up F1 help");
             var helpManager = EditorHelpManager.Instance;
             helpManager.StatusLabel = tssInfo;
             helpManager.Add(cmbLayer, "Map Layers", "Map layers");
             helpManager.Add(trackBarDepth, "Layer Depth", "Layer depth");
+
+            SetStatusMessage(string.Empty);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
