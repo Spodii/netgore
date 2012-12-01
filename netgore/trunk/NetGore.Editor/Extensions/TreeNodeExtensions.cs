@@ -65,6 +65,19 @@ namespace NetGore.Editor
             return sisterNodes.Where(x => x != node);
         }
 
+        public static IEnumerable<TreeNode> GetChildren(this TreeNode root)
+        {
+            if (root != null)
+            {
+                foreach (var c in root.Nodes.OfType<TreeNode>())
+                {
+                    yield return c;
+                    foreach (var c2 in GetChildren(c))
+                        yield return c2;
+                }
+            }
+        }
+
         /// <summary>
         /// Swaps this TreeNode with another TreeNode.
         /// </summary>
