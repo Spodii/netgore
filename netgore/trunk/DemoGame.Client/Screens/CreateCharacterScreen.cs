@@ -40,7 +40,8 @@ namespace DemoGame.Client
             if (_sockets == null)
                 _sockets = ClientSockets.Instance;
 
-            // Set event hooks
+            // Set event hooks (remove first to ensure only one listener is set)
+            _sockets.PacketHandler.ReceivedCreateAccountCharacter -= PacketHandler_ReceivedCreateAccountCharacter;
             _sockets.PacketHandler.ReceivedCreateAccountCharacter += PacketHandler_ReceivedCreateAccountCharacter;
 
             // Reset the control states
@@ -123,15 +124,13 @@ namespace DemoGame.Client
             // Update the validation marker next to the name
             _lblValidNameMarker.IsVisible = !isNameValid;
 
-            // If the 'Invalid Name' message was shown, remove it when the name changes
-            if (IsErrorSet(_invalidCharacterNameMessage))
-            {
-                SetError(null);
-            }
+            // Remove error message when name changes
+            SetError(null);
         }
 
         void PacketHandler_ReceivedCreateAccountCharacter(IIPSocket sender, CreateAccountEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine(e.GetHashCode());
             // Handles when we receive the CreateAccountCharacter message from the server
             _btnCreateCharacter.IsEnabled = true; // Re-enable the button now that we got a response
 

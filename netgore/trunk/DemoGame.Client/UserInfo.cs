@@ -47,6 +47,23 @@ namespace DemoGame.Client
             _questInfo = new UserQuestInformationExtended(this);
         }
 
+        /// <summary>
+        /// Clears all of the user information. Call this when unloading a character and/or loading a new character to ensure.
+        /// none of the state from a previously-loaded character makes its way to the new one.
+        /// </summary>
+        public void Clear()
+        {
+            _inventory.Clear();
+            _questInfo.Clear();
+            _baseStats.SetAll(0);
+            _modStats.SetAll(0);
+            _knownSkills.SetAll(false);
+            _groupInfo.Clear();
+            _equipped.RemoveAll(false);
+            _hasFinishQuestRequirements.Clear();
+            _hasStartQuestRequirements.Clear();
+        }
+
         public StatCollection<StatType> BaseStats
         {
             get { return _baseStats; }

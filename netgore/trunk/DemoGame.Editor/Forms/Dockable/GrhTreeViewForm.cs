@@ -33,11 +33,15 @@ namespace DemoGame.Editor
 
             gtv.Initialize(GlobalState.Instance.ContentManager);
 
+            GlobalState.Instance.Map.GrhToPlaceChanged -= Map_GrhToPlaceChanged;
             GlobalState.Instance.Map.GrhToPlaceChanged += Map_GrhToPlaceChanged;
 
 #pragma warning disable 162
             if (GrhTreeView.EnableGrhEditor)
+            {
+                gtv.EditGrhDataRequested -= gtv_EditGrhDataRequested;
                 gtv.EditGrhDataRequested += gtv_EditGrhDataRequested;
+            }
 #pragma warning restore 162
         }
 

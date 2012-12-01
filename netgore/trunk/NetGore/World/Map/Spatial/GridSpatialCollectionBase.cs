@@ -325,7 +325,10 @@ namespace NetGore.World
             }
 
             // Hook a listener for movement and resizing
+            spatial.Moved -= _spatialMoveHandler;
             spatial.Moved += _spatialMoveHandler;
+
+            spatial.Resized -= _spatialResizeHandler;
             spatial.Resized += _spatialResizeHandler;
         }
 

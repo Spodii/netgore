@@ -91,6 +91,7 @@ namespace DemoGame.Editor.UITypeEditors
             dgv.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Dock = DockStyle.Fill;
 
+            dgv.CellValueChanged -= dgv_CellValueChanged;
             dgv.CellValueChanged += dgv_CellValueChanged;
         }
 

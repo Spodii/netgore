@@ -18,7 +18,10 @@ namespace NetGore.Editor.WinForms
         /// </summary>
         public static void AddUnhandledExceptionHooks()
         {
+            AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            Application.ThreadException -= Application_ThreadException;
             Application.ThreadException += Application_ThreadException;
         }
 

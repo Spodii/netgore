@@ -52,7 +52,9 @@ namespace DemoGame.Editor
             HookInput();
             GameScreen.SkeletonEditorForm = this;
 
+            btnSelectBodyGrhData.GrhDataSelected -= btnSelectBodyGrhData_GrhDataSelected;
             btnSelectBodyGrhData.GrhDataSelected += btnSelectBodyGrhData_GrhDataSelected;
+
             btnSelectBodyGrhData.SelectedGrhDataHandler = btnSelectBodyGrhData_SelectedGrhDataHandler;
         }
 

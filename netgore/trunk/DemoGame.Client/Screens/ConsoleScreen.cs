@@ -47,8 +47,14 @@ namespace DemoGame.Client
         /// <returns>The created <see cref="CheckBox"/>.</returns>
         CheckBox CreateLogLevelCheckBox(Level level, int index)
         {
-            var ret = new CheckBox(_cSettingsPanel, new Vector2(_cSettingsPanel.Size.X - 100, 5))
-            { Font = _consoleFont, Text = level.Name, Tag = level, ForeColor = level.GetColor(), Value = true };
+            var ret = new CheckBox(_cSettingsPanel, new Vector2(_cSettingsPanel.Size.X - 100, 5)) 
+            { 
+                Font = _consoleFont, 
+                Text = level.Name, 
+                Tag = level, 
+                ForeColor = level.GetColor(), 
+                Value = true 
+            };
 
             ret.Position += new Vector2(0, ret.Size.Y * index);
             ret.ValueChanged += LevelCheckBox_ValueChanged;
@@ -93,6 +99,8 @@ namespace DemoGame.Client
         public override void Initialize()
         {
             BasicConfigurator.Configure(_logger);
+
+            ScreenManager.Updated -= ScreenManager_Updated;
             ScreenManager.Updated += ScreenManager_Updated;
 
             _consoleFont = ScreenManager.Content.LoadFont("Font/Courier New", 14, ContentLevel.GameScreen);
@@ -117,15 +125,13 @@ namespace DemoGame.Client
 
             // Create the panel that holds the settings options
             var settingsButtonSize = _consoleFont.MeasureString("Show Settings") + new Vector2(10, 4);
-            _btnShowSettings = new Button(_cScreen, new Vector2(_cScreen.Size.X, 0), settingsButtonSize)
-            { Font = _consoleFont, Text = "Hide Settings" };
+            _btnShowSettings = new Button(_cScreen, new Vector2(_cScreen.Size.X, 0), settingsButtonSize) { Font = _consoleFont, Text = "Hide Settings" };
             _btnShowSettings.Position += new Vector2(-4, 4);
             _btnShowSettings.Clicked += btnShowSettings_Clicked;
 
             var settingsPanelSize = new Vector2(400, 400);
-            _cSettingsPanel = new Panel(_cScreen,
-                new Vector2(_cScreen.Size.X - settingsPanelSize.X - 4, _btnShowSettings.Position.Y + _btnShowSettings.Size.Y + 8),
-                settingsPanelSize) { IsVisible = true, CanDrag = false };
+            _cSettingsPanel = new Panel(_cScreen, new Vector2(_cScreen.Size.X - settingsPanelSize.X - 4, _btnShowSettings.Position.Y + _btnShowSettings.Size.Y + 8), settingsPanelSize) 
+                { IsVisible = true, CanDrag = false };
 
             // Create the logging level checkboxes
             _logLevelCheckBoxes.Add(CreateLogLevelCheckBox(Level.Fatal, 0));

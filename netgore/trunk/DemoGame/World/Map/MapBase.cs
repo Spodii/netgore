@@ -248,6 +248,7 @@ namespace DemoGame
             Spatial.Add(entity);
 
             // Add the event hooks
+            entity.Disposed -= Entity_Disposed;
             entity.Disposed += Entity_Disposed;
 
             // Allow for additional processing

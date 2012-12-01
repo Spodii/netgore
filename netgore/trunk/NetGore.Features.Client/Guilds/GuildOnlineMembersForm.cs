@@ -61,7 +61,10 @@ namespace NetGore.Features.Guilds
 
             if (newValue != null)
             {
+                newValue.OnlineMemberAdded -= _updateHandler;
                 newValue.OnlineMemberAdded += _updateHandler;
+
+                newValue.OnlineMemberRemoved -= _updateHandler;
                 newValue.OnlineMemberRemoved += _updateHandler;
             }
         }

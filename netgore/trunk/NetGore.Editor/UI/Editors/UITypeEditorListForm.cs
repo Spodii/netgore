@@ -99,7 +99,8 @@ namespace NetGore.Editor.UI
             // Don't try to display items when in design mode
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 return;
-            
+
+            _filter.FilterChanged -= _filter_FilterChanged;
             _filter.FilterChanged += _filter_FilterChanged;
 
             // Set up the search bar

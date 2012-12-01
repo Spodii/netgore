@@ -43,7 +43,27 @@ namespace DemoGame.Client
             if (_sockets == null)
                 _sockets = ClientSockets.Instance;
 
+            // Add event listeners
+            _sockets.PacketHandler.AccountCharacterInfos.AccountCharactersLoaded -= HandleCharInfosUpdated;
             _sockets.PacketHandler.AccountCharacterInfos.AccountCharactersLoaded += HandleCharInfosUpdated;
+
+            // Ensure the old user info is cleared out
+            ScreenManager.GetScreen<GameplayScreen>().UserInfo.Clear();
+        }
+
+        /// <summary>
+        /// Handles screen deactivation, which occurs every time the screen changes from being
+        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            // Remove event listeners
+            if (_sockets != null)
+            {
+                _sockets.PacketHandler.AccountCharacterInfos.AccountCharactersLoaded -= HandleCharInfosUpdated;
+            }
         }
 
         void ClickButton_CharacterSelection(object sender, MouseButtonEventArgs e)

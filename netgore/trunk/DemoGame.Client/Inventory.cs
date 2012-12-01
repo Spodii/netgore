@@ -33,6 +33,17 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Clears out all the inventory slots.
+        /// </summary>
+        public void Clear()
+        {
+            for (int i = 0; i < GameData.MaxInventorySize; i++)
+            {
+                UpdateEmpty((InventorySlot)i);
+            }
+        }
+
+        /// <summary>
         /// Gets an inventory item.
         /// </summary>
         /// <param name="slot">Index of the inventory item slot.</param>

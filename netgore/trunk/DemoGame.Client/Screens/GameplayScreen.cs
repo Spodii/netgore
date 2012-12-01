@@ -531,14 +531,13 @@ namespace DemoGame.Client
             Character.NameFont = _guiFont;
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = true };
-            _cScreen.Clicked += new TypedEventHandler<Control, SFML.Window.MouseButtonEventArgs>(_cScreen_Clicked);
+            _cScreen.Clicked += _cScreen_Clicked;
 
             // Set up all the forms used by this screen
             _statsForm = new StatsForm(UserInfo, _cScreen);
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
-            _inventoryForm = new InventoryForm(_dragDropHandler, x => x == UserInfo.Inventory, InventoryInfoRequester,
-                new Vector2(250, 0), _cScreen);
+            _inventoryForm = new InventoryForm(_dragDropHandler, x => x == UserInfo.Inventory, InventoryInfoRequester, new Vector2(250, 0), _cScreen);
             _inventoryForm.RequestDropItem += InventoryForm_RequestDropItem;
             _inventoryForm.RequestUseItem += InventoryForm_RequestUseItem;
 
@@ -571,15 +570,11 @@ namespace DemoGame.Client
             _groupForm = new GroupForm(_cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
-            Func<QuestID, bool> questFinishReqs =
-                x =>
-                UserInfo.QuestInfo.ActiveQuests.Contains(x) && (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
-            _availableQuestsForm = new AvailableQuestsForm(_cScreen, new Vector2(200), new Vector2(250, 350), questStartReqs,
-                questFinishReqs);
+            Func<QuestID, bool> questFinishReqs = x => UserInfo.QuestInfo.ActiveQuests.Contains(x) && (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
+            _availableQuestsForm = new AvailableQuestsForm(_cScreen, new Vector2(200), new Vector2(250, 350), questStartReqs, questFinishReqs);
             _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
-            _latencyLabel = new Label(_cScreen, new Vector2(_cScreen.ClientSize.X - 75, 5))
-            { Text = string.Format(_latencyString, 0), ForeColor = Color.White };
+            _latencyLabel = new Label(_cScreen, new Vector2(_cScreen.ClientSize.X - 75, 5)) { Text = string.Format(_latencyString, 0), ForeColor = Color.White };
 
             _skillCastProgressBar = new SkillCastProgressBar(_cScreen);
 
@@ -589,8 +584,7 @@ namespace DemoGame.Client
             var gameMenu = new GameMenuForm(_cScreen);
             gameMenu.ClickedLogOut += GameMenuClickedLogOut;
 
-            _peerTradeForm = new PeerTradeForm(_cScreen, new Vector2(200))
-            { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler };
+            _peerTradeForm = new PeerTradeForm(_cScreen, new Vector2(200)) { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler };
 
             // Add the forms to the GUI settings manager (which also restores any existing settings)
             _guiStatePersister = new GUIStatePersister("Default"); // FUTURE: Allow changing of the profile

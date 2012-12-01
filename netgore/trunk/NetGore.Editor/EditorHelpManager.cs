@@ -191,15 +191,25 @@ namespace NetGore.Editor
                     if (ctrl is Control)
                     {
                         var c = (Control)ctrl;
+                        c.MouseEnter -= _mouseEnterHandler;
                         c.MouseEnter += _mouseEnterHandler;
+
+                        c.MouseLeave -= _mouseLeaveHandler;
                         c.MouseLeave += _mouseLeaveHandler;
+
+                        c.Disposed -= _disposedHandler;
                         c.Disposed += _disposedHandler;
                     }
                     else if (ctrl is ToolStripItem)
                     {
                         var c = (ToolStripItem)ctrl;
+                        c.MouseEnter -= _mouseEnterHandler;
                         c.MouseEnter += _mouseEnterHandler;
+
+                        c.MouseLeave -= _mouseLeaveHandler;
                         c.MouseLeave += _mouseLeaveHandler;
+
+                        c.Disposed -= _disposedHandler;
                         c.Disposed += _disposedHandler;
                     }
                 }

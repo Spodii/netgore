@@ -28,8 +28,8 @@ namespace DemoGame.Client
         /// <param name="parent">The parent.</param>
         /// <param name="knownSkills">The known skills.</param>
         /// <exception cref="ArgumentNullException"><paramref name="knownSkills" /> is <c>null</c>.</exception>
-        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent,
-                          KnownSkillsCollection knownSkills) : base(parent, position, new Vector2(32, 32))
+        public SkillsForm(ISkillCooldownManager cooldownManager, Vector2 position, Control parent, KnownSkillsCollection knownSkills) : 
+            base(parent, position, new Vector2(32, 32))
         {
             if (knownSkills == null)
                 throw new ArgumentNullException("knownSkills");

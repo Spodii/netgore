@@ -44,7 +44,6 @@ namespace NetGore.Features.Quests
             // Add the initial values
             if (initialCounts != null)
             {
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 foreach (var quest in initialCounts)
                 {
                     // Add the counter for the quest
@@ -66,13 +65,18 @@ namespace NetGore.Features.Quests
                         }
                     }
                 }
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
             _owner = owner;
+
+            _owner.QuestAccepted -= Owner_QuestAccepted;
             _owner.QuestAccepted += Owner_QuestAccepted;
-            _owner.QuestCanceled += Owner_QuestFinished;
-            _owner.QuestFinished += Owner_QuestFinished;
+
+            _owner.QuestCanceled -= Owner_QuestFinishedOrCanceled;
+            _owner.QuestCanceled += Owner_QuestFinishedOrCanceled;
+
+            _owner.QuestFinished -= Owner_QuestFinishedOrCanceled;
+            _owner.QuestFinished += Owner_QuestFinishedOrCanceled;
         }
 
         /// <summary>
@@ -192,12 +196,11 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Handles the <see cref="IQuestPerformer{T}.QuestFinished"/> and <see cref="IQuestPerformer{T}.QuestCanceled"/>
-        /// events.
+        /// Handles the <see cref="IQuestPerformer{T}.QuestFinished"/> and <see cref="IQuestPerformer{T}.QuestCanceled"/> events.
         /// </summary>
         /// <param name="sender">The quest performer the event came from.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        void Owner_QuestFinished(TCharacter sender, EventArgs<IQuest<TCharacter>> e)
+        void Owner_QuestFinishedOrCanceled(TCharacter sender, EventArgs<IQuest<TCharacter>> e)
         {
             Debug.Assert(Equals(sender, Owner));
 

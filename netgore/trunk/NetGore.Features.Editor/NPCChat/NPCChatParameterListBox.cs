@@ -29,7 +29,9 @@ namespace NetGore.Features.NPCChat
 
                 if (_conCollectionItem != null)
                 {
+                    _conCollectionItem.Changed -= ConditionalCollectionItem_Changed;
                     _conCollectionItem.Changed += ConditionalCollectionItem_Changed;
+
                     RebuildItemList();
                 }
             }
@@ -66,12 +68,17 @@ namespace NetGore.Features.NPCChat
                     return;
 
                 if (_valueTextBox != null)
+                {
                     _valueTextBox.TextChanged -= ValueTextBox_TextChanged;
+                }
 
                 _valueTextBox = value;
 
                 if (_valueTextBox != null)
+                {
+                    _valueTextBox.TextChanged -= ValueTextBox_TextChanged;
                     _valueTextBox.TextChanged += ValueTextBox_TextChanged;
+                }
             }
         }
 

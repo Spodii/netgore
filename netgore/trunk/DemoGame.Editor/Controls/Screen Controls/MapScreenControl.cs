@@ -43,7 +43,9 @@ namespace DemoGame.Editor
             if (DrawingManager.LightManager.DefaultSprite == null)
                 DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
-            GlobalState.Instance.Map.SelectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
+            var selectedObjsManager = GlobalState.Instance.Map.SelectedObjsManager;
+            selectedObjsManager.SelectedChanged -= SelectedObjsManager_SelectedChanged;
+            selectedObjsManager.SelectedChanged += SelectedObjsManager_SelectedChanged;
 
             lock (_instancesSync)
             {

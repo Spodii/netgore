@@ -180,7 +180,11 @@ namespace NetGore.Editor.Grhs
                 foreach (var wall in walls)
                 {
                     lstWalls.AddItemAndReselect(wall);
+
+                    wall.Moved -= BoundWallChanged;
                     wall.Moved += BoundWallChanged;
+
+                    wall.Resized -= BoundWallChanged;
                     wall.Resized += BoundWallChanged;
                 }
             }
@@ -378,7 +382,10 @@ namespace NetGore.Editor.Grhs
             lstWalls.AddItemAndReselect(wall);
             lstWalls.SelectedItem = wall;
 
+            wall.Moved -= BoundWallChanged;
             wall.Moved += BoundWallChanged;
+
+            wall.Resized -= BoundWallChanged;
             wall.Resized += BoundWallChanged;
         }
 

@@ -21,6 +21,7 @@ namespace DemoGame.Editor.Tools
         protected MapPreviewTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Saves a preview image of the map to file";
+            ToolBarControl.ControlSettings.Click -= ControlSettings_Click;
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
         }
 

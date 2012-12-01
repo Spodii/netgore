@@ -119,12 +119,25 @@ namespace DemoGame.Editor.Tools
             if (mapContainer == null)
                 return;
 
+            mapContainer.MouseDown -= mapContainer_MouseDownCallback;
             mapContainer.MouseDown += mapContainer_MouseDownCallback;
+
+            mapContainer.MouseUp -= mapContainer_MouseUpCallback;
             mapContainer.MouseUp += mapContainer_MouseUpCallback;
+
+            mapContainer.MouseMove -= mapContainer_MouseMoveCallback;
             mapContainer.MouseMove += mapContainer_MouseMoveCallback;
+
+            mapContainer.MouseWheel -= mapContainer_MouseWheelCallback;
             mapContainer.MouseWheel += mapContainer_MouseWheelCallback;
+
+            mapContainer.KeyDown -= mapContainer_KeyDownCallback;
             mapContainer.KeyDown += mapContainer_KeyDownCallback;
+
+            mapContainer.KeyUp -= mapContainer_KeyUpCallback;
             mapContainer.KeyUp += mapContainer_KeyUpCallback;
+
+            mapContainer.KeyPress -= mapContainer_KeyPress;
             mapContainer.KeyPress += mapContainer_KeyPress;
         }
 

@@ -36,10 +36,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="DemoGame"/> class.
         /// </summary>
-        public DemoGame()
-            : base(
-                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
-                new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), "NetGore")
+        public DemoGame() : base(
+            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), 
+            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), "NetGore")
         {
             EngineSettingsInitializer.Initialize();
 
@@ -74,17 +73,21 @@ namespace DemoGame.Client
 
             ShowMouseCursor = true;
 
+            KeyPressed -= DemoGame_KeyPressed;
             KeyPressed += DemoGame_KeyPressed;
 
-            // Apply some of the initial settings
-            ScreenManager.AudioManager.SoundManager.Volume = ClientSettings.Default.Audio_SoundVolume;
-            ScreenManager.AudioManager.MusicManager.Volume = ClientSettings.Default.Audio_MusicVolume;
+            var clientSettings = ClientSettings.Default;
 
-            UseVerticalSync = ClientSettings.Default.Graphics_VSync;
-            IsFullscreen = ClientSettings.Default.Graphics_Fullscreen;
+            // Apply some of the initial settings
+            ScreenManager.AudioManager.SoundManager.Volume = clientSettings.Audio_SoundVolume;
+            ScreenManager.AudioManager.MusicManager.Volume = clientSettings.Audio_MusicVolume;
+
+            UseVerticalSync = clientSettings.Graphics_VSync;
+            IsFullscreen = clientSettings.Graphics_Fullscreen;
 
             // Listen for changes to the settings
-            ClientSettings.Default.PropertyChanged += Default_PropertyChanged;
+            clientSettings.PropertyChanged -= Default_PropertyChanged;
+            clientSettings.PropertyChanged += Default_PropertyChanged;
         }
 
         /// <summary>

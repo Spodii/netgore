@@ -104,6 +104,7 @@ namespace DemoGame.Server
             _maps.Trim();
 
             // Add some event hooks
+            BanningManager.Instance.AccountBanned -= BanningManager_AccountBanned;
             BanningManager.Instance.AccountBanned += BanningManager_AccountBanned;
         }
 
@@ -500,6 +501,7 @@ namespace DemoGame.Server
             }
 
             // Listen for when the user is disposed
+            user.Disposed -= User_Disposed;
             user.Disposed += User_Disposed;
 
             return true;

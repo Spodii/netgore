@@ -69,6 +69,7 @@ namespace DemoGame.Client
 
                 var inBox = InputBox.CreateNumericInputBox(GUIManager, text, string.Format(message, item.Amount));
                 inBox.Tag = slot;
+                inBox.OptionSelected -= AddToTradeInputBox_OptionSelected;
                 inBox.OptionSelected += AddToTradeInputBox_OptionSelected;
             }
             else
@@ -273,8 +274,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        void PeerTradeInfoHandler_TradeOpened(ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable> sender,
-                                              EventArgs e)
+        void PeerTradeInfoHandler_TradeOpened(ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable> sender, EventArgs e)
         {
             // Figure out which side is for the client, and which side is for the other character
             PeerTradeSidePanel ourSide;
@@ -522,8 +522,7 @@ namespace DemoGame.Client
         /// </summary>
         class CustomSidePanel : PeerTradeSidePanel
         {
-            public CustomSidePanel(PeerTradeFormBase<Character, ItemEntity, IItemTable> parent, Vector2 position,
-                                   bool isSourceSide) : base(parent, position, isSourceSide)
+            public CustomSidePanel(PeerTradeFormBase<Character, ItemEntity, IItemTable> parent, Vector2 position, bool isSourceSide) : base(parent, position, isSourceSide)
             {
             }
 
@@ -539,7 +538,10 @@ namespace DemoGame.Client
                 var ret = base.CreateCashLabel(position);
 
                 if (parentAsPeerTradeForm != null)
+                {
+                    ret.Clicked -= parentAsPeerTradeForm.CashLabel_Clicked;
                     ret.Clicked += parentAsPeerTradeForm.CashLabel_Clicked;
+                }
 
                 return ret;
             }
@@ -551,8 +553,7 @@ namespace DemoGame.Client
             /// <param name="clientSize">The client size of the control.</param>
             /// <param name="slot">The slot that the created control will be handling.</param>
             /// <returns>A <see cref="Control"/> for displaying a single item slot in this side of the peer trade table.</returns>
-            protected override PeerTradeItemsCollectionSlot CreateItemSlotControl(Vector2 position, Vector2 clientSize,
-                                                                                  InventorySlot slot)
+            protected override PeerTradeItemsCollectionSlot CreateItemSlotControl(Vector2 position, Vector2 clientSize, InventorySlot slot)
             {
                 return new CustomSidePanelSlot(this, position, clientSize, slot);
             }

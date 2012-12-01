@@ -103,6 +103,7 @@ namespace NetGore.Db
 
             // Set up the command
             cmd.CommandText = commandText;
+            cmd.Disposed -= HandleIDbCommandDisposed;
             cmd.Disposed += HandleIDbCommandDisposed;
 
             // FUTURE: GetCommand()'s performance can be improved by creating a custom class to wrap around DbCommand instead of using events and lookups

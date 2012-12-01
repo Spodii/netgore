@@ -75,22 +75,25 @@ namespace DemoGame.Client
 
             // Create the login fields
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Name:");
-            _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
-            { IsMultiLine = false, Text = ClientSettings.Default.UI_EnteredUserName };
+            _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = ClientSettings.Default.UI_EnteredUserName };
             _cNameText.KeyPressed += cNameText_KeyPressed;
             _cNameText.TextChanged += cNameText_TextChanged;
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Password:");
-            _cPasswordText = new MaskedTextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
-            { IsMultiLine = false, Text = decodedPass };
-
+            _cPasswordText = new MaskedTextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40)) { IsMultiLine = false, Text = decodedPass };
             _cPasswordText.KeyPressed += cPasswordText_KeyPressed;
             _cPasswordText.TextChanged += cPasswordText_TextChanged;
 
             var textBoxPos = new Vector2(60, _cPasswordText.Position.Y + _cPasswordText.Size.Y + 20);
             var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
-            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
-            { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize) 
+            { 
+                ForeColor = Color.Red, 
+                Border = null, 
+                CanFocus = false, 
+                IsMultiLine = true, 
+                IsEnabled = false 
+            };
 
             _cRememberPassword = new CheckBox(cScreen, _cPasswordText.Position + new Vector2(50, _cPasswordText.Size.Y + 8))
             {
@@ -101,11 +104,14 @@ namespace DemoGame.Client
             };
             _cRememberPassword.ValueChanged += _cRememberPassword_ValueChanged;
 
-            // NOTE: Display the admin account info
-            const string adminAccountInfo =
-                "Use the following account for the default admin account:" + "\n    Username: Spodi" + "\n    Password: qwerty123";
-            new Label(cScreen, _cRememberPassword.Position + new Vector2(-32, _cRememberPassword.Size.Y + 32))
-            { Text = adminAccountInfo, ForeColor = Color.Green, Font = GameScreenHelper.DefaultChatFont };
+            // Display the admin account info
+            const string adminAccountInfo = "Use the following account for the default admin account:" + "\n    Username: Spodi" + "\n    Password: qwerty123";
+            new Label(cScreen, _cRememberPassword.Position + new Vector2(-32, _cRememberPassword.Size.Y + 32)) 
+            { 
+                Text = adminAccountInfo, 
+                ForeColor = Color.Green, 
+                Font = GameScreenHelper.DefaultChatFont 
+            };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Login", "Back");
@@ -117,9 +123,14 @@ namespace DemoGame.Client
 
             // Set up the networking stuff for this screen
             _sockets = ClientSockets.Instance;
+
             _sockets.StatusChanged -= _sockets_StatusChanged;
             _sockets.StatusChanged += _sockets_StatusChanged;
+
+            _sockets.PacketHandler.ReceivedLoginSuccessful -= PacketHandler_ReceivedLoginSuccessful;
             _sockets.PacketHandler.ReceivedLoginSuccessful += PacketHandler_ReceivedLoginSuccessful;
+
+            _sockets.PacketHandler.ReceivedLoginUnsuccessful -= PacketHandler_ReceivedLoginUnsuccessful;
             _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
         }
 

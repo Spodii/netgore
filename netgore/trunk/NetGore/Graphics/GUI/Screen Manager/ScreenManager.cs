@@ -46,6 +46,8 @@ namespace NetGore.Graphics.GUI
                 throw new ArgumentNullException("skinManager");
 
             _game = game;
+
+            _game.RenderWindowChanged -= _game_RenderWindowChanged;
             _game.RenderWindowChanged += _game_RenderWindowChanged;
 
             _skinManager = skinManager;
@@ -56,11 +58,22 @@ namespace NetGore.Graphics.GUI
             _audioManager = Audio.AudioManager.GetInstance(_content);
 
             // Add event listeners to the input-related events
+            _game.KeyPressed -= _game_KeyPressed;
             _game.KeyPressed += _game_KeyPressed;
+
+            _game.KeyReleased -= _game_KeyReleased;
             _game.KeyReleased += _game_KeyReleased;
+
+            _game.TextEntered -= _game_TextEntered;
             _game.TextEntered += _game_TextEntered;
+
+            _game.MouseButtonPressed -= _game_MouseButtonPressed;
             _game.MouseButtonPressed += _game_MouseButtonPressed;
+
+            _game.MouseButtonReleased -= _game_MouseButtonReleased;
             _game.MouseButtonReleased += _game_MouseButtonReleased;
+
+            _game.MouseMoved -= _game_MouseMoved;
             _game.MouseMoved += _game_MouseMoved;
 
             // Load the global content used between screens

@@ -50,6 +50,7 @@ namespace NetGore.Editor.WinForms
             if (pg == null)
                 return;
 
+            pg.SelectedGridItemChanged -= RefresherEventHandler;
             pg.SelectedGridItemChanged += RefresherEventHandler;
         }
 
@@ -62,6 +63,7 @@ namespace NetGore.Editor.WinForms
             if (pg == null)
                 return;
 
+            pg.SelectedObjectsChanged -= ShrinkerEventHandler;
             pg.SelectedObjectsChanged += ShrinkerEventHandler;
         }
 

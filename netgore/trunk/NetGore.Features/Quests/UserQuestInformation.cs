@@ -52,6 +52,15 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Clears out the active and completed quests.
+        /// </summary>
+        public void Clear()
+        {
+            _activeQuests.Clear();
+            _completedQuests.Clear();
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for handling the
         /// <see cref="UserQuestInformation.ActiveQuestAdded"/> event.
         /// </summary>

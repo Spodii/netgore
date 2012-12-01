@@ -19,6 +19,7 @@ namespace DemoGame.Editor.Tools
         protected MapEditNPCSpawnsTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Edit the NPC spawns";
+            ToolBarControl.ControlSettings.Click -= ControlSettings_Click;
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
         }
 

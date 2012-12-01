@@ -35,6 +35,7 @@ namespace NetGore.Graphics.GUI
             _keySettingName = keySettingName;
             _settings = settings;
 
+            settings.PropertyChanged -= settings_PropertyChanged;
             settings.PropertyChanged += settings_PropertyChanged;
 
             UpdateValue();
