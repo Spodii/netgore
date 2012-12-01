@@ -408,6 +408,7 @@ namespace NetGore.Editor.Grhs
             _compactMode = false;
 
             // Event hooks
+            GrhMouseDoubleClick -= GrhTreeView_GrhMouseDoubleClick;
             GrhMouseDoubleClick += GrhTreeView_GrhMouseDoubleClick;
 
             // Set up the context menu for the GrhTreeView
@@ -822,6 +823,7 @@ namespace NetGore.Editor.Grhs
 
             // Create the animate timer
             _animTimer.Interval = 150;
+            _animTimer.Tick -= UpdateAnimations;
             _animTimer.Tick += UpdateAnimations;
             _animTimer.Start();
 

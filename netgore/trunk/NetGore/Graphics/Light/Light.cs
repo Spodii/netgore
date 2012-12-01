@@ -146,6 +146,7 @@ namespace NetGore.Graphics
 
                 if (_positionProvider != null)
                 {
+                    _positionProvider.Moved -= PositionProvider_Moved;
                     _positionProvider.Moved += PositionProvider_Moved;
                     _position = _positionProvider.Center;
                 }

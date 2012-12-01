@@ -213,7 +213,10 @@ namespace NetGore.Graphics
 
             // If not looping, detach once the animation finishes
             if (!loop)
+            {
+                modifier.Looped -= modifier_Looped;
                 modifier.Looped += modifier_Looped;
+            }
         }
 
         /// <summary>

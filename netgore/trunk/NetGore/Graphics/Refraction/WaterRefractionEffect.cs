@@ -397,12 +397,15 @@ namespace NetGore.Graphics
                     return;
 
                 if (_positionProvider != null)
+                {
                     _positionProvider.Moved -= PositionProvider_Moved;
+                }
 
                 _positionProvider = value;
 
                 if (_positionProvider != null)
                 {
+                    _positionProvider.Moved -= PositionProvider_Moved;
                     _positionProvider.Moved += PositionProvider_Moved;
                     _position = _positionProvider.Position;
                 }

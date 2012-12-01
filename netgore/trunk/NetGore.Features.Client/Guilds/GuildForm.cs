@@ -69,11 +69,8 @@ namespace NetGore.Features.Guilds
             _btnOnline.Clicked += btnOnline_Clicked;
 
             var formSize = new Vector2(200, 200);
-            _frmOnline = new GuildOnlineMembersForm(Parent, new Vector2(200, 200), formSize)
-            { GuildInfo = GuildInfo, IsVisible = false };
-
-            _frmMembers = new GuildMembersForm(Parent, new Vector2(250, 250), formSize)
-            { GuildInfo = GuildInfo, IsVisible = false };
+            _frmOnline = new GuildOnlineMembersForm(Parent, new Vector2(200, 200), formSize) { GuildInfo = GuildInfo, IsVisible = false };
+            _frmMembers = new GuildMembersForm(Parent, new Vector2(250, 250), formSize) { GuildInfo = GuildInfo, IsVisible = false };
 
             RelocateControls();
         }
@@ -141,10 +138,15 @@ namespace NetGore.Features.Guilds
             UpdateGuildStatus();
 
             if (oldValue != null)
+            {
                 oldValue.GuildChanged -= UserGuildInfo_GuildChanged;
+            }
 
             if (newValue != null)
+            {
+                newValue.GuildChanged -= UserGuildInfo_GuildChanged;
                 newValue.GuildChanged += UserGuildInfo_GuildChanged;
+            }
         }
 
         /// <summary>

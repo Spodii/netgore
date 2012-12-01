@@ -49,8 +49,7 @@ namespace DemoGame.Client
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
-                var r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i)))
-                { IsVisible = true, Font = GameScreenHelper.DefaultChatFont };
+                var r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true, Font = GameScreenHelper.DefaultChatFont };
                 r.Clicked += ResponseText_Clicked;
                 _responseTextControls[i] = r;
             }

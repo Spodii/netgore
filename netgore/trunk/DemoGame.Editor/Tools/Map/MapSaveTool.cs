@@ -17,6 +17,7 @@ namespace DemoGame.Editor.Tools
         protected MapSaveTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Saves the currently selected map (Ctrl+S)";
+            ToolBarControl.ControlSettings.Click -= ControlSettings_Click;
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
         }
 

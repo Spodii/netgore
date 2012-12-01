@@ -49,19 +49,18 @@ namespace DemoGame.Client
 
             // Create the menu buttons
             _menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Accept", "Cancel");
-
             _menuButtons["Accept"].Clicked += accept_Clicked;
             _menuButtons["Cancel"].Clicked += cancel_Clicked;
 
             // Create the options
             var pos = new Vector2(60, 180);
             var lblSound = GameScreenHelper.CreateMenuLabel(cScreen, pos, "Sound (0 to 100):");
-            _txtSound = new TextBox(cScreen, pos + new Vector2(lblSound.Size.X + 10, -6),
+            _txtSound = new TextBox(cScreen, pos + new Vector2(lblSound.Size.X + 10, -6), 
                 new Vector2(128, lblSound.ClientSize.Y + 4)) { AllowKeysHandler = TextEventArgsFilters.IsDigitFunc };
 
             pos.Y += _txtSound.Size.Y + 16;
             var lblMusic = GameScreenHelper.CreateMenuLabel(cScreen, pos, "Music (0 to 100):");
-            _txtMusic = new TextBox(cScreen, pos + new Vector2(lblMusic.Size.X + 10, -6),
+            _txtMusic = new TextBox(cScreen, pos + new Vector2(lblMusic.Size.X + 10, -6), 
                 new Vector2(128, lblMusic.ClientSize.Y + 4)) { AllowKeysHandler = TextEventArgsFilters.IsDigitFunc };
         }
 
@@ -75,8 +74,7 @@ namespace DemoGame.Client
                 c.IsEnabled = false;
             }
 
-            var mb = new MessageBox(GUIManager, title, string.Format(msg, property), MessageBoxButton.Ok)
-            { Font = GameScreenHelper.DefaultChatFont, DisposeOnSelection = true };
+            var mb = new MessageBox(GUIManager, title, string.Format(msg, property), MessageBoxButton.Ok) { Font = GameScreenHelper.DefaultChatFont, DisposeOnSelection = true };
             mb.OptionSelected += delegate
             {
                 foreach (var c in _menuButtons.Values)

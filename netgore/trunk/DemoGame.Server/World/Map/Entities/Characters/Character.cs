@@ -129,7 +129,9 @@ namespace DemoGame.Server
             else
                 _statusEffects = new NonPersistentCharacterStatusEffects(this);
 
+            _statusEffects.Added -= StatusEffects_HandleOnAdd;
             _statusEffects.Added += StatusEffects_HandleOnAdd;
+            _statusEffects.Removed -= StatusEffects_HandleOnRemove;
             _statusEffects.Removed += StatusEffects_HandleOnRemove;
 
             _baseStats = CreateStats(StatCollectionType.Base);
@@ -139,11 +141,15 @@ namespace DemoGame.Server
             _equipped = CreateEquipped();
 
             // Set up the listeners for when the stat collections change
+            BaseStats.StatChanged -= BaseStatChangedHandler;
             BaseStats.StatChanged += BaseStatChangedHandler;
+            ModStats.StatChanged -= ModStatChangedHandler;
             ModStats.StatChanged += ModStatChangedHandler;
 
             // Set up the listeners for when the equipped items change
+            _equipped.Equipped -= EquippedHandler;
             _equipped.Equipped += EquippedHandler;
+            _equipped.Unequipped -= UnequippedHandler;
             _equipped.Unequipped += UnequippedHandler;
         }
 

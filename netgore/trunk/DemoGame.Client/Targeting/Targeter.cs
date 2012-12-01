@@ -43,6 +43,7 @@ namespace DemoGame.Client
             _targetBeforeDrawHandler = Target_BeforeDraw;
             _targetAfterDrawHandler = Target_AfterDraw;
 
+            _world.MapChanged -= World_MapChanged;
             _world.MapChanged += World_MapChanged;
         }
 
@@ -129,7 +130,10 @@ namespace DemoGame.Client
 
                 if (_target != null)
                 {
+                    _target.BeforeDraw -= _targetBeforeDrawHandler;
                     _target.BeforeDraw += _targetBeforeDrawHandler;
+
+                    _target.AfterDraw -= _targetAfterDrawHandler;
                     _target.AfterDraw += _targetAfterDrawHandler;
                 }
             }
@@ -156,7 +160,10 @@ namespace DemoGame.Client
 
                 if (_mouseOver != null)
                 {
+                    _mouseOver.BeforeDraw -= _mouseOverBeforeDrawHandler;
                     _mouseOver.BeforeDraw += _mouseOverBeforeDrawHandler;
+
+                    _mouseOver.AfterDraw -= _mouseOverAfterDrawHandler;
                     _mouseOver.AfterDraw += _mouseOverAfterDrawHandler;
                 }
             }
@@ -185,11 +192,10 @@ namespace DemoGame.Client
             }
 
             if (MouseOverTarget != null && MouseOverTarget.IsDisposed)
-                MouseOverTarget =  null;
+                MouseOverTarget = null;
 
             if (Target != null && Target.IsDisposed)
                 Target = null;
-
         }
 
 
@@ -203,6 +209,5 @@ namespace DemoGame.Client
             MouseOverTarget = null;
             _target = null;
         }
-
     }
 }

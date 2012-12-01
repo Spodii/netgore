@@ -51,6 +51,7 @@ namespace NetGore.Graphics.GUI
             _deathTime = (TickCount)(TickCount.Now + Lifespan);
             _textControl = new ChatBubbleText(this, text) { Font = Font };
 
+            _owner.Disposed -= ChatBubble_Owner_Disposed;
             _owner.Disposed += ChatBubble_Owner_Disposed;
         }
 

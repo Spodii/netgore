@@ -17,6 +17,7 @@ namespace DemoGame.Editor.Tools
         protected MapDeleteTool(ToolManager toolManager) : base(toolManager, CreateSettings())
         {
             ToolBarControl.ControlSettings.ToolTipText = "Delete the currently selected map";
+            ToolBarControl.ControlSettings.Click -= ControlSettings_Click;
             ToolBarControl.ControlSettings.Click += ControlSettings_Click;
         }
 

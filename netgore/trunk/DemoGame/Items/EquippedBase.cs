@@ -266,6 +266,7 @@ namespace DemoGame
                 }
 
                 // Attach the listener for the OnDispose event
+                item.Disposed -= ItemDisposeHandler;
                 item.Disposed += ItemDisposeHandler;
 
                 // Set the item into the slot

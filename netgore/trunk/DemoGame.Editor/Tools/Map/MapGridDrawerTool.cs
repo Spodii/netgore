@@ -30,6 +30,7 @@ namespace DemoGame.Editor.Tools
             s.ClickToEnable = true;
 
             // Listen for when the settings properties change
+            EditorSettings.Default.PropertyChanged -= EditorSettings_PropertyChanged;
             EditorSettings.Default.PropertyChanged += EditorSettings_PropertyChanged;
 
             // Add menu items

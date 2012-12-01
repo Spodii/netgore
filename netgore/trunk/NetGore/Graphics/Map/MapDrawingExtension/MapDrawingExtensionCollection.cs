@@ -55,9 +55,16 @@ namespace NetGore.Graphics
                 // Set the event hooks on the new map
                 if (Map != null)
                 {
+                    Map.BeginDrawMap -= _handleBeginDrawMap;
                     Map.BeginDrawMap += _handleBeginDrawMap;
+
+                    Map.EndDrawMap -= _handleEndDrawMap;
                     Map.EndDrawMap += _handleEndDrawMap;
+
+                    Map.BeginDrawMapLayer -= _handleBeginDrawMapLayer;
                     Map.BeginDrawMapLayer += _handleBeginDrawMapLayer;
+
+                    Map.EndDrawMapLayer -= _handleEndDrawMapLayer;
                     Map.EndDrawMapLayer += _handleEndDrawMapLayer;
                 }
             }

@@ -64,7 +64,10 @@ namespace NetGore.Editor.EditorTool
             new TypeFactory(filter, typeFactory_TypeLoaded);
 
             // Listen for containers being added and removed
+            ToolTargetContainers.Added -= ToolTargetContainers_Added;
             ToolTargetContainers.Added += ToolTargetContainers_Added;
+
+            ToolTargetContainers.Removed -= ToolTargetContainers_Removed;
             ToolTargetContainers.Removed += ToolTargetContainers_Removed;
 
             // Load the default state settings
@@ -74,8 +77,7 @@ namespace NetGore.Editor.EditorTool
             ToolSettingsProfileName = "User";
 
             // Create the auto-saver
-            _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolState, _autoSaveSettingsRate,
-                _autoSaveSettingsRate);
+            _autoSaveSettingsTimer = new Timer(AutoSaveSettingsTimerCallback, _toolState, _autoSaveSettingsRate, _autoSaveSettingsRate);
         }
 
         /// <summary>
@@ -277,6 +279,7 @@ namespace NetGore.Editor.EditorTool
                 SetToolListeners(tool, false);
 
                 // Add the events
+                tool.Disposed -= tool_Disposed;
                 tool.Disposed += tool_Disposed;
             }
             else

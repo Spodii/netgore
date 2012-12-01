@@ -104,7 +104,10 @@ If you do not save, all changes will be lost.";
             if (DesignMode)
                 return;
 
+            MapScreenControl.MapChanged -= MapScreenControl_MapChanged;
             MapScreenControl.MapChanged += MapScreenControl_MapChanged;
+
+            MapScreenControl.Disposed -= MapScreenControl_Disposed;
             MapScreenControl.Disposed += MapScreenControl_Disposed;
             
             if (FormLoaded != null)

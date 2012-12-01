@@ -42,8 +42,9 @@ namespace DemoGame.Client
                 BorderColor = new Color(255, 255, 255, 100)
             };
 
+            _input.KeyPressed -= Input_KeyPressed;
             _input.KeyPressed += Input_KeyPressed;
-
+           
             // Force the initial repositioning
             RepositionTextBoxes();
         }

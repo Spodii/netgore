@@ -155,6 +155,7 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(iv.Stats.Select(x => (Stat<StatType>)x), StatCollectionType.Base);
             _reqStats = NewItemStats(iv.ReqStats.Select(x => (Stat<StatType>)x), StatCollectionType.Requirement);
 
+            Resized -= ItemEntity_Resized;
             Resized += ItemEntity_Resized;
         }
 
@@ -200,6 +201,7 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
+            Resized -= ItemEntity_Resized;
             Resized += ItemEntity_Resized;
         }
 
@@ -506,6 +508,7 @@ namespace DemoGame.Server
             {
                 case StatCollectionType.Base:
                 case StatCollectionType.Requirement:
+                    ret.StatChanged -= StatCollection_StatChanged;
                     ret.StatChanged += StatCollection_StatChanged;
                     break;
 

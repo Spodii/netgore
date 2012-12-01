@@ -113,6 +113,8 @@ namespace DemoGame.Client
             base.Initialize();
 
             _sockets = ClientSockets.Instance;
+
+            _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
             _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
 
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
@@ -122,21 +124,17 @@ namespace DemoGame.Client
             var textBoxFont = GameScreenHelper.DefaultChatFont;
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 180), "Name:");
-            _cNameText = new TextBox(cScreen, new Vector2(220, 180), new Vector2(200, 40))
-            { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
+            _cNameText = new TextBox(cScreen, new Vector2(220, 180), new Vector2(200, 40)) { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Password:");
-            _cPasswordText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
-            { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
+            _cPasswordText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
 
             GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Email:");
-            _cEmailText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
-            { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
+            _cEmailText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40)) { IsMultiLine = false, Text = string.Empty, Font = textBoxFont };
 
             var textBoxPos = new Vector2(60, _cEmailText.Position.Y + _cEmailText.Size.Y + 20);
             var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
-            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize)
-            { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
+            _cStatus = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Create Account", "Back");
@@ -145,6 +143,7 @@ namespace DemoGame.Client
 
             _createAccountButton = menuButtons["Create Account"];
 
+            _sockets.StatusChanged -= _sockets_StatusChanged;
             _sockets.StatusChanged += _sockets_StatusChanged;
         }
 

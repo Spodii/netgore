@@ -152,6 +152,7 @@ namespace NetGore.Graphics
             }
 
             // Set the categorization event so we can keep up with any changes to the categorization.
+            gd.CategorizationChanged -= ChangeCategorizationHandler;
             gd.CategorizationChanged += ChangeCategorizationHandler;
 
             AddToDictionary(gd);
@@ -581,7 +582,11 @@ namespace NetGore.Graphics
                     _grhDatas.Clear();
 
                 _catDic.Clear();
+
+                _grhDatas.ItemAdded -= AddHandler;
                 _grhDatas.ItemAdded += AddHandler;
+
+                _grhDatas.ItemRemoved -= RemoveHandler;
                 _grhDatas.ItemRemoved += RemoveHandler;
 
                 // Read and add the GrhDatas in order by their type

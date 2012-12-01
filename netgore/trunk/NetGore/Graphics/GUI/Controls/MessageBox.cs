@@ -229,8 +229,7 @@ namespace NetGore.Graphics.GUI
 
                 var text = possibleType.ToString();
                 var fontSize = Font.MeasureString(text);
-                var btn = new Button(this, Vector2.Zero, fontSize + new Vector2(6))
-                { Text = text, Tag = possibleType, Font = Font };
+                var btn = new Button(this, Vector2.Zero, fontSize + new Vector2(6)) { Text = text, Tag = possibleType, Font = Font };
                 btn.Clicked += Button_Clicked;
                 ret.Add(btn);
             }

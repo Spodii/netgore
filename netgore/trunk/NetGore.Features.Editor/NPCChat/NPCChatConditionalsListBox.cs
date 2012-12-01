@@ -44,6 +44,8 @@ namespace NetGore.Features.NPCChat
                 if (_conditionalCollection != null)
                 {
                     Items.AddRange(_conditionalCollection.Cast<object>().ToArray());
+
+                    _conditionalCollection.Changed -= ConditionalCollection_Changed;
                     _conditionalCollection.Changed += ConditionalCollection_Changed;
 
                     if (EvaluationTypeComboBox != null)
@@ -74,6 +76,7 @@ namespace NetGore.Features.NPCChat
                     if (ConditionalCollection != null)
                         _evaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
 
+                    _evaluationTypeComboBox.SelectedIndexChanged -= EvaluationTypeComboBox_SelectedIndexChanged;
                     _evaluationTypeComboBox.SelectedIndexChanged += EvaluationTypeComboBox_SelectedIndexChanged;
                 }
             }
@@ -102,8 +105,7 @@ namespace NetGore.Features.NPCChat
             if (SelectedConditionalItem == null)
                 return;
 
-            var conditionalEditorForm = new NPCChatConditionalEditorForm(SelectedConditionalItem, npcChatConditionals)
-            { StartPosition = FormStartPosition.CenterScreen };
+            var conditionalEditorForm = new NPCChatConditionalEditorForm(SelectedConditionalItem, npcChatConditionals) { StartPosition = FormStartPosition.CenterScreen };
             conditionalEditorForm.Show();
             conditionalEditorForm.FormClosed += conditionalEditorForm_FormClosed;
         }

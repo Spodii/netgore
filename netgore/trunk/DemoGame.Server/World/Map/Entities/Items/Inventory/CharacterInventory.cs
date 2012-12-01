@@ -193,8 +193,6 @@ namespace DemoGame.Server
         {
             Debug.Assert(oldItem != newItem);
 
-
-
             if (newItem != null)
                 newItem.IsPersistent = IsPersistent;
 
@@ -204,11 +202,16 @@ namespace DemoGame.Server
 
             // Stop listening for changes on the item that was removed
             if (oldItem != null)
+            {
                 oldItem.GraphicOrAmountChanged -= ItemGraphicOrAmountChangeHandler;
+            }
 
             // Listen to the item for changes on the item that was added
             if (newItem != null)
+            {
+                newItem.GraphicOrAmountChanged -= ItemGraphicOrAmountChangeHandler;
                 newItem.GraphicOrAmountChanged += ItemGraphicOrAmountChangeHandler;
+            }
 
             // Do not update the database when we are loading the collection
             if (!_isLoading)

@@ -123,6 +123,7 @@ namespace NetGore.Graphics.GUI
             {
                 _closeButton = CreateCloseButton("Close");
                 _closeButton.IsVisible = IsCloseButtonVisible;
+                _closeButton.Clicked -= CloseButtonClicked;
                 _closeButton.Clicked += CloseButtonClicked;
             }
 

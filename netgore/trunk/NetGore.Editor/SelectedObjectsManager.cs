@@ -257,7 +257,6 @@ namespace NetGore.Editor
             {
                 asEntity.Disposed -= _disposedListenerEntity;
                 asEntity.Disposed += _disposedListenerEntity;
-                return;
             }
         }
 
@@ -271,7 +270,6 @@ namespace NetGore.Editor
             if (asEntity != null)
             {
                 asEntity.Disposed -= _disposedListenerEntity;
-                return;
             }
         }
 

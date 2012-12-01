@@ -95,6 +95,7 @@ namespace NetGore.Graphics.ParticleEngine
             // Add
             _emitters.Add(emitter);
 
+            emitter.Disposed -= emitter_Disposed;
             emitter.Disposed += emitter_Disposed;
 
             if (EmitterAdded != null)

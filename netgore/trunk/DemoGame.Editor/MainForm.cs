@@ -184,7 +184,10 @@ namespace DemoGame.Editor
             LoadDockSettings("User");
 
             // Set up map state control listeners & display initial values
+            GlobalState.Instance.Map.LayerDepthChanged -= Map_LayerDepthChanged;
             GlobalState.Instance.Map.LayerDepthChanged += Map_LayerDepthChanged;
+
+            GlobalState.Instance.Map.LayerChanged -= Map_LayerChanged;
             GlobalState.Instance.Map.LayerChanged += Map_LayerChanged;
 
             Map_LayerChanged(GlobalState.Instance, EventArgs.Empty);

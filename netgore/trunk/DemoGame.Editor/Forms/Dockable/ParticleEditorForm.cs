@@ -55,7 +55,10 @@ namespace DemoGame.Editor
                 // Add listeners to the new emitter
                 if (value != null)
                 {
+                    value.EmitterAdded -= ParticleEffect_EmitterAdded;
                     value.EmitterAdded += ParticleEffect_EmitterAdded;
+
+                    value.EmitterRemoved -= ParticleEffect_EmitterRemoved;
                     value.EmitterRemoved += ParticleEffect_EmitterRemoved;
                 }
 
@@ -107,6 +110,7 @@ namespace DemoGame.Editor
             if (DesignMode)
                 return;
 
+            cmbEmitterType.SelectedEmitterChanged -= cmbEmitterType_SelectedEmitterChanged;
             cmbEmitterType.SelectedEmitterChanged += cmbEmitterType_SelectedEmitterChanged;
 
             // Load the default emitter sprite
