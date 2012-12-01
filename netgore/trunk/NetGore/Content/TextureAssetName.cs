@@ -23,11 +23,21 @@ namespace NetGore.Content
 
         static string GetContentAssetName(string textureName)
         {
-            // Only prefix the root if we need to
-            if (textureName.StartsWith(_rootDir, StringComparison.OrdinalIgnoreCase))
-                return textureName;
+            string assetName = string.Empty;
 
-            return _rootDir + textureName;
+            // Add the rootDir if it is not already there
+            if (!textureName.StartsWith(_rootDir, StringComparison.OrdinalIgnoreCase))
+                assetName += _rootDir;
+
+            // Add the textureName, removing any trailing separators if they already exist (since its already on the end of the rootDir)
+            assetName += textureName.TrimStart('/', '\\');
+
+#if DEBUG
+            // Sanity check to make sure we didn't accidentally get any double-slashes in there (and cleans up from when it did in older code)
+            assetName = assetName.Replace("//", "/").Replace("\\\\", "\\");
+#endif
+
+            return assetName;
         }
 
         /// <summary>
