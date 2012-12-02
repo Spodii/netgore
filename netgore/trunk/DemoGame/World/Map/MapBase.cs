@@ -310,6 +310,20 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Clears out all the map's contents.
+        /// </summary>
+        protected virtual void Clear()
+        {
+            foreach (var e in Entities.ToArray())
+                RemoveEntity(e);
+
+            foreach (var de in DynamicEntities.ToArray())
+                RemoveEntity(de);
+
+            Spatial.Clear();
+        }
+
+        /// <summary>
         /// Describes how to create the <see cref="ISpatialCollection"/> to be used by the map. This can be overridden
         /// in the derived class to provide a different <see cref="ISpatialCollection"/> implementation.
         /// </summary>
@@ -766,6 +780,8 @@ namespace DemoGame
 
         public void Load(IValueReader r, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
+            Clear();
+
             LoadHeader(r);
             LoadWalls(r);
             LoadDynamicEntities(r, loadDynamicEntities, dynamicEntityFactory);
@@ -775,15 +791,6 @@ namespace DemoGame
         void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
             var loadedDynamicEntities = r.ReadManyNodes(_dynamicEntitiesNodeName, x => dynamicEntityFactory.Read(x, true));
-
-            // Remove any existing entities
-            if (_entities != null)
-            {
-                while (_entities.Count > 0)
-                {
-                    RemoveEntity(_entities[_entities.Count - 1]);
-                }
-            }
 
             // Add the loaded DynamicEntities to the map
             if (loadDynamicEntities)

@@ -229,6 +229,23 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Clears out all the map's contents.
+        /// </summary>
+        protected override void Clear()
+        {
+            _particleEffects.Clear();
+            _refractionEffects.Clear();
+
+            foreach (var light in Lights.ToArray())
+                RemoveLight(light);
+
+            foreach (var bgImage in BackgroundImages.ToArray())
+                RemoveBackgroundImage(bgImage);
+
+            base.Clear();
+        }
+
+        /// <summary>
         /// When overridden in the derived class, creates a new WallEntityBase instance.
         /// </summary>
         /// <returns>WallEntityBase that is to be used on the map.</returns>
@@ -343,12 +360,6 @@ namespace DemoGame.Client
 
         void LoadGrhs(IValueReader reader)
         {
-            // Remove existing
-            foreach (var spatial in Spatial.GetMany<ISpatial>().ToArray())
-            {
-                Spatial.Remove(spatial);
-            }
-
             reader = reader.ReadNode(_mapGrhsNodeName);
 
             // Used GrhIndexes
@@ -366,9 +377,6 @@ namespace DemoGame.Client
 
         void LoadLighting(IValueReader reader)
         {
-            // Remove existing
-            _lights.Clear();
-
             reader = reader.ReadNode(_lightingNodeName);
 
             AmbientLight = reader.ReadColor("Ambient");
@@ -388,9 +396,6 @@ namespace DemoGame.Client
         /// <param name="reader"><see cref="IValueReader"/> to read the misc values from.</param>
         protected override void LoadMisc(IValueReader reader)
         {
-            // Remove existing
-            _particleEffects.Clear();
-
             LoadGrhs(reader);
             LoadBackgroundImages(reader);
             LoadLighting(reader);
@@ -400,9 +405,6 @@ namespace DemoGame.Client
 
         void LoadRefractionEffects(IValueReader reader)
         {
-            // Remove existing
-            _refractionEffects.Clear();
-
             reader = reader.ReadNode(_refractionEffectsNodeName);
 
             var loadedFx = reader.ReadManyNodes(_refractionEffectListNodeName, RefractionEffectFactory.Read);

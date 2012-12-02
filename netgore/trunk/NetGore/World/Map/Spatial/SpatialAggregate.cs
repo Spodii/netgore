@@ -71,6 +71,18 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Clears out all objects in this ISpatialCollection.
+        /// </summary>
+        public void Clear()
+        {
+            if (_spatialCollections == null)
+                return;
+
+            foreach (var x in _spatialCollections)
+                x.Clear();
+        }
+
+        /// <summary>
         /// Checks if this <see cref="ISpatialCollection"/> contains the given <paramref name="spatial"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to look for.</param>
