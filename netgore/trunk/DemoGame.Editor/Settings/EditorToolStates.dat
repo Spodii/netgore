@@ -106,49 +106,49 @@
       </Value>
     </Item12>
     <Item13>
-      <Key>DemoGame.Editor.Tools.MapEditBackgroundTool</Key>
-      <Value>
-        <IsEnabled>False</IsEnabled>
-        <IsOnToolBar>False</IsOnToolBar>
-      </Value>
-    </Item13>
-    <Item14>
       <Key>DemoGame.Editor.Tools.MapLightSourceDrawerTool</Key>
       <Value>
         <IsEnabled>True</IsEnabled>
         <IsOnToolBar>True</IsOnToolBar>
       </Value>
-    </Item14>
-    <Item15>
+    </Item13>
+    <Item14>
       <Key>DemoGame.Editor.Tools.MapEntityCursorTool</Key>
       <Value>
         <IsEnabled>False</IsEnabled>
         <IsOnToolBar>True</IsOnToolBar>
       </Value>
-    </Item15>
-    <Item16>
+    </Item14>
+    <Item15>
       <Key>DemoGame.Editor.Tools.MapBorderDrawerTool</Key>
       <Value>
         <IsEnabled>True</IsEnabled>
         <IsOnToolBar>False</IsOnToolBar>
       </Value>
+    </Item15>
+    <Item16>
+      <Key>DemoGame.Editor.Tools.MapDisplayBackgroundTool</Key>
+      <Value>
+        <IsEnabled>True</IsEnabled>
+        <IsOnToolBar>True</IsOnToolBar>
+      </Value>
     </Item16>
     <Item17>
-      <Key>DemoGame.Editor.Tools.MapDisplayBackgroundTool</Key>
+      <Key>DemoGame.Editor.Tools.MapDisplayDynamicTool</Key>
       <Value>
         <IsEnabled>True</IsEnabled>
         <IsOnToolBar>True</IsOnToolBar>
       </Value>
     </Item17>
     <Item18>
-      <Key>DemoGame.Editor.Tools.MapDisplayDynamicTool</Key>
+      <Key>DemoGame.Editor.Tools.MapGrhFillTool</Key>
       <Value>
         <IsEnabled>True</IsEnabled>
         <IsOnToolBar>True</IsOnToolBar>
       </Value>
     </Item18>
     <Item19>
-      <Key>DemoGame.Editor.Tools.MapGrhFillTool</Key>
+      <Key>DemoGame.Editor.Tools.MapEditBackgroundTool</Key>
       <Value>
         <IsEnabled>True</IsEnabled>
         <IsOnToolBar>True</IsOnToolBar>
