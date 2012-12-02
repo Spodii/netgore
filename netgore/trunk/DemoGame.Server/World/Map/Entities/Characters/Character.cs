@@ -1340,6 +1340,8 @@ namespace DemoGame.Server
             if (_skillCaster.IsCastingSkill)
                 return;
 
+            SetHeading(Direction.West);
+
             SetVelocity(new Vector2(-_moveSpeedVelocityCache, Velocity.Y));
         }
 
@@ -1356,6 +1358,8 @@ namespace DemoGame.Server
 
             if (_skillCaster.IsCastingSkill)
                 return;
+
+            SetHeading(Direction.East);
 
             SetVelocity(new Vector2(_moveSpeedVelocityCache, Velocity.Y));
         }

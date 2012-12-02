@@ -498,7 +498,7 @@ namespace NetGore.World
 
             if ((Velocity.X > 0 && _lastSentVelocity.X <= 0) || (Velocity.Y > 0 && _lastSentVelocity.Y <= 0))
                 return true;
-
+            
             return false;
         }
 

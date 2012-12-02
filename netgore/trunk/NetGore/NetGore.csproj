@@ -207,6 +207,7 @@
     <Compile Include="Graphics\ParticleEngine\Emitters\IParticleEmitter.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleEffectReference.cs" />
     <Compile Include="IO\BitStream\BitStream.Lidgren.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncDirection.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncMapRenderLayer.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncInventorySlot.cs" />
     <Compile Include="Core\Strings\CharTypeExtensions.cs" />
