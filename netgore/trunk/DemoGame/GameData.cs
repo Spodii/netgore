@@ -181,7 +181,7 @@ namespace DemoGame
             ret.Width += range;
 
             // If looking left, subtract the range from the X position so that the area is to the left, not right
-            if (c.Heading == Direction.West)
+            if (c.Heading == Direction.West || c.Heading == Direction.SouthWest || c.Heading == Direction.NorthWest)
                 ret.X -= range;
 
             return ret;
