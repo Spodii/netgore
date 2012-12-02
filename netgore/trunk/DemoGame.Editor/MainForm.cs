@@ -43,6 +43,8 @@ namespace DemoGame.Editor
         SkeletonEditorForm _frmSkeletonEditor;
         SoundEditorForm _frmSoundEditor;
 
+        public static DockPanel DockPanel { get { return _instance.dockPanel; } }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
         /// </summary>

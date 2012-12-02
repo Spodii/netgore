@@ -150,6 +150,9 @@ namespace DemoGame.Editor.Tools
         {
             base.HandleAfterDrawMapGUI(spriteBatch, map);
 
+            if (!IsEnabled)
+                return;
+
             if (map != _mouseOverMap)
                 return;
 
@@ -365,8 +368,7 @@ namespace DemoGame.Editor.Tools
         /// <param name="map">The <see cref="EditorMap"/>. Cannot be null.</param>
         /// <param name="camera">The <see cref="ICamera2D"/>. Cannot be null.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. Cannot be null.</param>
-        protected override void MapContainer_MouseWheel(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera,
-                                                        MouseEventArgs e)
+        protected override void MapContainer_MouseWheel(IToolTargetMapContainer sender, EditorMap map, ICamera2D camera, MouseEventArgs e)
         {
             // Change the current depth
             int modDepth = 0;

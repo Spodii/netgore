@@ -171,6 +171,7 @@
     <Compile Include="Core\Event Handling\EventHandlerExtensions.cs" />
     <Compile Include="Core\Event Handling\TypedEventHandler.cs" />
     <Compile Include="Core\Event Handling\ValueChangedEventArgs.cs" />
+    <Compile Include="Core\Extensions\PointExtensions.cs" />
     <Compile Include="Core\Extensions\SettingsBaseExtensions.cs" />
     <Compile Include="Cryptography\CryptoHelper.cs" />
     <Compile Include="Cryptography\CryptoProviderExtensions.cs" />

@@ -90,6 +90,9 @@ namespace DemoGame.Editor.Tools
         {
             base.HandleAfterDrawMapGUI(spriteBatch, map);
 
+            if (!IsEnabled)
+                return;
+
             if (map != _mouseOverMap)
                 return;
 
