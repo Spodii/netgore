@@ -10,7 +10,19 @@
     <Gravity>0,0</Gravity>
   </Header>
   <Walls>
-    <Count>0</Count>
+    <Count>2</Count>
+    <Item0>
+      <Position>224,384</Position>
+      <Size>288,32</Size>
+      <IsPlatform>False</IsPlatform>
+      <BoundGrhindex>0</BoundGrhindex>
+    </Item0>
+    <Item1>
+      <Position>224,384</Position>
+      <Size>288,32</Size>
+      <IsPlatform>False</IsPlatform>
+      <BoundGrhindex>0</BoundGrhindex>
+    </Item1>
   </Walls>
   <DynamicEntities>
     <Count>1</Count>

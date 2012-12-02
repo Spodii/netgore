@@ -32,6 +32,11 @@ namespace NetGore.World
         void Add(ISpatial spatial);
 
         /// <summary>
+        /// Clears out all objects in this ISpatialCollection.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
         /// Checks if this <see cref="ISpatialCollection"/> contains the given <paramref name="spatial"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to look for.</param>

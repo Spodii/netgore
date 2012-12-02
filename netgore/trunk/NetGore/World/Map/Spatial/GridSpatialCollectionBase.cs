@@ -333,6 +333,19 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Clears out all objects in this ISpatialCollection.
+        /// </summary>
+        public void Clear()
+        {
+            if (_gridSegments == null)
+                return;
+
+            ISpatial[] items = _gridSegments.SelectMany(x => x.Items).Distinct().ToArray();
+            foreach (var item in items)
+                Remove(item);
+        }
+
+        /// <summary>
         /// Checks if this <see cref="ISpatialCollection"/> contains the given <paramref name="spatial"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to look for.</param>
