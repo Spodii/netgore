@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using DemoGame.Client;
 using NetGore;
 using NetGore.Graphics;
@@ -13,6 +14,10 @@ namespace DemoGame.Editor
     {
         readonly MapUndoManager _undoManager;
 
+        /// <summary>
+        /// Gets the MapUndoManager for this map.
+        /// </summary>
+        [Browsable(false)]
         public MapUndoManager UndoManager { get { return _undoManager; } }
 
         /// <summary>
@@ -26,6 +31,10 @@ namespace DemoGame.Editor
             _undoManager = new MapUndoManager(this, GlobalState.Instance.DynamicEntityFactory);
         }
 
+        /// <summary>
+        /// Updates the map
+        /// </summary>
+        /// <param name="deltaTime">The elapsed time since the last update.</param>
         public override void Update(int deltaTime)
         {
             base.Update(deltaTime);
