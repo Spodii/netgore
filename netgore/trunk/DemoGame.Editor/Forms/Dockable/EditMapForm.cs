@@ -127,11 +127,13 @@ If you do not save, all changes will be lost.";
 
         private void mapScreen_MouseUp(object sender, MouseEventArgs e)
         {
+            // Take an undo snapshot when the mouse button is pressed
             MapScreenControl.Map.UndoManager.Snapshot();
         }
 
         private void mapScreen_MouseDown(object sender, MouseEventArgs e)
         {
+            // Take an undo snapshot when the mouse button is released
             MapScreenControl.Map.UndoManager.Snapshot();
         }
 
