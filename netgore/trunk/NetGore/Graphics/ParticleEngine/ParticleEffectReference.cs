@@ -44,6 +44,17 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override string ToString()
+        {
+            return ParticleEffectName ?? string.Empty;
+        }
+
+        /// <summary>
         /// Gets the <see cref="ParticleEffect"/> instance. Can be null.
         /// </summary>
         [Browsable(false)]
