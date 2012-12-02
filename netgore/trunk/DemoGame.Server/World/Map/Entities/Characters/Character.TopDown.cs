@@ -26,6 +26,8 @@ namespace DemoGame.Server
             if (_skillCaster.IsCastingSkill)
                 return;
 
+            SetHeading(NetGore.Direction.South);
+
             SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
         }
 
@@ -42,6 +44,8 @@ namespace DemoGame.Server
 
             if (_skillCaster.IsCastingSkill)
                 return;
+
+            SetHeading(NetGore.Direction.North);
 
             SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
         }

@@ -64,11 +64,13 @@ namespace DemoGame
         public abstract bool HasShop { get; protected set; }
 
         /// <summary>
-        /// Gets the direction the character is currently facing.
+        /// Gets or sets the direction the character is currently facing.
         /// </summary>
+        [SyncValue("Heading")]
         public Direction Heading
         {
             get { return _heading; }
+            set { SetHeading(value); }
         }
 
         /// <summary>
