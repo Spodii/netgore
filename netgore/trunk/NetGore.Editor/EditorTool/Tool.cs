@@ -349,7 +349,7 @@ namespace NetGore.Editor.EditorTool
         /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
         internal void InvokeAfterDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
-            if (!IsEnabled || IsDisposed)
+            if (IsDisposed)
                 return;
 
             HandleAfterDrawMapGUI(spriteBatch, map);
@@ -362,7 +362,7 @@ namespace NetGore.Editor.EditorTool
         /// <param name="map">The <see cref="IDrawableMap"/> being drawn.</param>
         internal void InvokeBeforeDrawMapGUI(ISpriteBatch spriteBatch, IDrawableMap map)
         {
-            if (!IsEnabled || IsDisposed)
+            if (IsDisposed)
                 return;
 
             HandleBeforeDrawMapGUI(spriteBatch, map);

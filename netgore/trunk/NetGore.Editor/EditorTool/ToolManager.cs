@@ -229,7 +229,7 @@ namespace NetGore.Editor.EditorTool
             if (map == null)
                 throw new ArgumentNullException("map");
 
-            foreach (var t in EnabledTools)
+            foreach (var t in Tools)
             {
                 t.InvokeAfterDrawMapGUI(spriteBatch, map);
             }
@@ -250,7 +250,7 @@ namespace NetGore.Editor.EditorTool
             if (map == null)
                 throw new ArgumentNullException("map");
 
-            foreach (var t in EnabledTools)
+            foreach (var t in Tools)
             {
                 t.InvokeBeforeDrawMapGUI(spriteBatch, map);
             }

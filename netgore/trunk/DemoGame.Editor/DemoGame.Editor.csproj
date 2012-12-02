@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="CustomUITypeEditors.cs" />
     <Compile Include="Editor-Specific Derived Classes\EditorMap.cs" />
+    <Compile Include="EditorEntityDrawer.cs" />
     <Compile Include="Forms\Dockable\BodyEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,7 +224,6 @@
     <Compile Include="Editor-Specific Derived Classes\EditorDynamicEntityFactory.cs" />
     <Compile Include="Map Helpers\MapHelper.cs" />
     <Compile Include="Map Helpers\MapPreviewer.cs" />
-    <Compile Include="Map Helpers\MapSpawnDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\Dockable\ToolTargetFormBase.cs">

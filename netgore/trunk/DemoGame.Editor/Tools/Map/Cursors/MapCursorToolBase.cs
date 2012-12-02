@@ -230,6 +230,9 @@ namespace DemoGame.Editor.Tools
         {
             base.HandleBeforeDrawMapGUI(spriteBatch, imap);
 
+            if (!IsEnabled)
+                return;
+
             var map = imap as EditorMap;
             if (map == null)
                 return;

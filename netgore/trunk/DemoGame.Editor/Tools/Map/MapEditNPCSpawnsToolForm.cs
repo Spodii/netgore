@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
@@ -8,6 +9,7 @@ using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Editor;
 using NetGore.Editor.Docking;
+using NetGore;
 
 namespace DemoGame.Editor.Tools
 {
@@ -39,6 +41,15 @@ namespace DemoGame.Editor.Tools
 
                 OnMapChanged(oldValue, value);
             }
+        }
+
+        /// <summary>
+        /// Gets the MapSpawnValues shown in the form.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<MapSpawnValues> GetMapSpawns()
+        {
+            return lstSpawns.Items.OfType<MapSpawnValues>();
         }
 
         protected virtual void OnMapChanged(EditorMap oldValue, EditorMap newValue)
@@ -121,6 +132,27 @@ namespace DemoGame.Editor.Tools
                 return;
 
             lstSpawns.RefreshItemAt(lstSpawns.SelectedIndex);
+        }
+
+        private void lstSpawns_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // Focus on the center of the selected item
+            var selected = lstSpawns.SelectedItem as MapSpawnValues;
+            if (selected == null)
+                return;
+
+            var spawnArea = selected.SpawnArea;
+
+            if (!spawnArea.X.HasValue && !spawnArea.Y.HasValue && 
+                !spawnArea.Width.HasValue && !spawnArea.Height.HasValue)
+                return;
+
+            var map = Map;
+            if (map == null)
+                return;
+
+            var rect = spawnArea.ToRectangle(map);
+            map.Camera.CenterOn(rect.Center.ToVector2());
         }
     }
 }

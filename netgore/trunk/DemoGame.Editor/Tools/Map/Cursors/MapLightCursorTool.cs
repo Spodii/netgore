@@ -103,6 +103,9 @@ namespace DemoGame.Editor.Tools
         {
             base.HandleBeforeDrawMapGUI(spriteBatch, imap);
 
+            if (!IsEnabled)
+                return;
+
             if (IsSelecting)
                 return;
 
