@@ -228,7 +228,7 @@ namespace NetGore.Editor.Grhs
                 const string errmsg = "Failed to create GrhImageList image for `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, gd, ex);
-                if (!(ex is LoadingFailedException))
+                if (!(ex is LoadingFailedException) && !(ex is OutOfMemoryException))
                     Debug.Fail(string.Format(errmsg, gd, ex));
                 img = null;
             }
