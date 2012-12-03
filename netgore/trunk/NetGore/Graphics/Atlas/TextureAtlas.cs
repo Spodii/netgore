@@ -104,9 +104,12 @@ namespace NetGore.Graphics
             // Ensure we even have anything to work with
             if (atlasItems.IsEmpty())
                 return atlasInfos;
+            
+            // We won't add any items that are >= 50% of the max texture atlas size in any dimension. They are too large to benefit much at all from atlasing.
+            int maxAtlasItemSize = (MaxTextureSize / 2) - 1;
 
             // Build the working list and sort it
-            var workingList = new List<ITextureAtlasable>(atlasItems);
+            var workingList = new List<ITextureAtlasable>(atlasItems.Where(x => x.SourceRect.Width <= maxAtlasItemSize && x.SourceRect.Height <= maxAtlasItemSize));
             workingList.Sort(SizeCompare);
 
             // Loop until the list is empty
@@ -166,8 +169,7 @@ namespace NetGore.Graphics
         /// count of this return value equals the count of the <paramref name="items"/> collection,
         /// all items were successfully added to the atlas of the specified size.</returns>
         /// <exception cref="ArgumentException"><paramref name="items"/> is null.</exception>
-        static Stack<AtlasTextureItem> CombineSingleTexture(ICollection<ITextureAtlasable> items, int width, int height,
-                                                            bool breakOnAddFail)
+        static Stack<AtlasTextureItem> CombineSingleTexture(ICollection<ITextureAtlasable> items, int width, int height, bool breakOnAddFail)
         {
             if (items == null)
             {
@@ -308,7 +310,7 @@ namespace NetGore.Graphics
                 return;
 
             // FUTURE: Query the hardware for the actual _maxTextureSize value allowed by the system
-            _maxTextureSize = 1024;
+            //_maxTextureSize = ...
 
             // Ensure the size found is logical
             if (_maxTextureSize < _minAllowedTextureSize)
