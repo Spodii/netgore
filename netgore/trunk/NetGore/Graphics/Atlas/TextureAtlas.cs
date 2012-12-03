@@ -38,7 +38,7 @@ namespace NetGore.Graphics
         /// Contains a cache of the maximum allowed texture size. If this value is equal to int.MinValue, it has yet
         /// to be found.
         /// </summary>
-        static int _maxTextureSize = 1024;
+        static int _maxTextureSize = 2048;
 
         readonly List<AtlasTextureInfo> _atlasTextureInfos;
 
