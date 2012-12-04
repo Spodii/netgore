@@ -112,38 +112,6 @@ namespace NetGore.World
             }
         }
 
-        [Conditional("DEBUG")]
-        void AssertValidateSegments()
-        {
-            // TODO: !! TEMP: REMOVE THIS BEFORE RELEASE!
-            if (RandomHelper.NextInt(100) == 0)
-            {
-                foreach (var spatial in _gridSegments.SelectMany(x => x.Items))
-                {
-                    var expectedSegments = GetSegments(spatial);
-                    foreach (var segment in _gridSegments)
-                    {
-                        if (expectedSegments.Contains(segment))
-                        {
-                            if (!segment.Contains(spatial))
-                            {
-                                Debug.WriteLine("teh");
-                                Debug.Fail("teh");
-                            }
-                        }
-                        else
-                        {
-                            if (segment.Contains(spatial))
-                            {
-                                Debug.WriteLine("bleh");
-                                Debug.Fail("bleh");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// Gets the grid segments for the specified world area. Only segments in range are returned, and specifying
         /// values out of range does not throw an exception.
@@ -624,7 +592,6 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Rectangle rect, Predicate<T> condition)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             foreach (var segment in segments)
@@ -649,7 +616,6 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Rectangle rect, Predicate<ISpatial> condition)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             foreach (var segment in segments)
@@ -673,7 +639,6 @@ namespace NetGore.World
         /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
         public T Get<T>(Predicate<T> condition)
         {
-            AssertValidateSegments();
             foreach (var segment in _gridSegments)
             {
                 foreach (var spatial in segment.Items.OfType<T>())
@@ -693,7 +658,6 @@ namespace NetGore.World
         /// <returns>First <see cref="ISpatial"/> matching the given condition, or null if none found.</returns>
         public ISpatial Get(Predicate<ISpatial> condition)
         {
-            AssertValidateSegments();
             foreach (var segment in _gridSegments)
             {
                 foreach (var spatial in segment.Items)
@@ -718,7 +682,6 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Vector2 p, Predicate<T> condition)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return default(T);
@@ -743,7 +706,6 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Vector2 p)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return default(T);
@@ -766,7 +728,6 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Vector2 p)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return null;
@@ -784,7 +745,6 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Vector2 p, Predicate<ISpatial> condition)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return null;
@@ -801,7 +761,6 @@ namespace NetGore.World
         /// </returns>
         public ISpatial Get(Rectangle rect)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
             foreach (var segment in segments)
             {
@@ -825,7 +784,6 @@ namespace NetGore.World
         /// </returns>
         public T Get<T>(Rectangle rect)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
             foreach (var segment in segments)
             {
@@ -846,7 +804,6 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Vector2 p)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
@@ -871,7 +828,6 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<ISpatial> GetMany(Rectangle rect)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<ISpatial>();
@@ -898,7 +854,6 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Vector2 p)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<T>();
@@ -924,7 +879,6 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Rectangle rect)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<T>();
@@ -952,7 +906,6 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Predicate<ISpatial> condition)
         {
-            AssertValidateSegments();
             var ret = new HashSet<ISpatial>();
 
             foreach (var segment in _gridSegments)
@@ -974,7 +927,6 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<T> GetMany<T>(Predicate<T> condition)
         {
-            AssertValidateSegments();
             var ret = new HashSet<T>();
 
             foreach (var segment in _gridSegments)
@@ -1002,7 +954,6 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>()
         {
-            AssertValidateSegments();
             var ret = new HashSet<T>();
 
             foreach (var segment in _gridSegments)
@@ -1028,7 +979,6 @@ namespace NetGore.World
         /// <returns>All of the spatials at the given point.</returns>
         public IEnumerable<ISpatial> GetMany(Vector2 p, Predicate<ISpatial> condition)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<ISpatial>();
@@ -1055,7 +1005,6 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Rectangle rect, Predicate<T> condition)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<T>();
@@ -1087,7 +1036,6 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<T> GetMany<T>(Vector2 p, Predicate<T> condition)
         {
-            AssertValidateSegments();
             var segment = TryGetSegment(p);
             if (segment == null)
                 return Enumerable.Empty<T>();
@@ -1117,7 +1065,6 @@ namespace NetGore.World
         /// </returns>
         public IEnumerable<ISpatial> GetMany(Rectangle rect, Predicate<ISpatial> condition)
         {
-            AssertValidateSegments();
             var segments = GetSegments(rect);
 
             var ret = new HashSet<ISpatial>();
@@ -1228,8 +1175,7 @@ namespace NetGore.World
             /// <param name="spatial">The <see cref="ISpatial"/> to add.</param>
             public void Add(ISpatial spatial)
             {
-                bool added = _spatials.Add(spatial);
-                Debug.Assert(added); // TODO: !! tmp
+                _spatials.Add(spatial);
             }
 
             /// <summary>
