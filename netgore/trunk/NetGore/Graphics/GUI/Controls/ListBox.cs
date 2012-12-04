@@ -42,9 +42,9 @@ namespace NetGore.Graphics.GUI
         bool _canSelect = true;
 
         int _currentPage = 1;
-        Action<ISpriteBatch, Vector2, int> _itemDrawer;
+        Action<ISpriteBatch, Vector2, T, int> _itemDrawer;
         int _itemHeight = 12;
-        IEnumerable<T> _items;
+        IList<T> _items;
         StyledText _pageText = new StyledText("1/1");
         int _selectedIndex;
         bool _showPaging = true;
@@ -158,7 +158,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets how to draw items in the list.
         /// </summary>
-        public Action<ISpriteBatch, Vector2, int> ItemDrawer
+        public Action<ISpriteBatch, Vector2, T, int> ItemDrawer
         {
             get { return _itemDrawer; }
             set { _itemDrawer = value ?? GetDefaultItemDrawer(); }
@@ -183,7 +183,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the items to display.
         /// </summary>
-        public virtual IEnumerable<T> Items
+        public virtual IList<T> Items
         {
             get { return _items; }
             set
@@ -337,7 +337,8 @@ namespace NetGore.Graphics.GUI
 
         void DrawItems(ISpriteBatch spriteBatch)
         {
-            if (Items == null)
+            var itemsToDraw = _items;
+            if (itemsToDraw == null)
                 return;
 
             var pos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
@@ -348,12 +349,16 @@ namespace NetGore.Graphics.GUI
 
             var selIndex = SelectedIndex;
 
-            for (var i = offset; i < offset + ipp && i < count; i++)
+            for (int i = offset; i < offset + ipp && i < count; i++)
             {
+                if (i >= itemsToDraw.Count)
+                    return;
+
                 if (selIndex == i)
                     DrawSelectionRegion(spriteBatch, new Rectangle((int)pos.X, (int)pos.Y, (int)ClientSize.X, ItemHeight));
 
-                ItemDrawer(spriteBatch, pos, i);
+                T itemToDraw = itemsToDraw[i];
+                ItemDrawer(spriteBatch, pos, itemToDraw, i);
 
                 pos += new Vector2(0, ih);
             }
@@ -373,9 +378,15 @@ namespace NetGore.Graphics.GUI
         /// Gets the default item drawer.
         /// </summary>
         /// <returns>The default item drawer.</returns>
-        protected virtual Action<ISpriteBatch, Vector2, int> GetDefaultItemDrawer()
+        protected virtual Action<ISpriteBatch, Vector2, T, int> GetDefaultItemDrawer()
         {
-            return (sb, p, v) => sb.DrawString(Font, Items.ElementAtOrDefault(v).ToString(), p, ForeColor);
+            return (sb, p, item, index) =>
+            {
+                if (item == null)
+                    return;
+
+                sb.DrawString(Font, item.ToString(), p, ForeColor);
+            };
         }
 
         static Vector2 GetSpriteSize(SpriteControl spriteControl)
@@ -439,8 +450,16 @@ namespace NetGore.Graphics.GUI
             if (!CanSelect)
                 return;
 
-            var itemIndex = (int)Math.Floor((float)e.Y / ItemHeight) + ((CurrentPage - 1) * ItemsPerPage);
-            SelectedIndex = itemIndex;
+            var ipp = ItemsPerPage;
+            var offset = (CurrentPage - 1) * ipp;
+
+            int minIndex = offset;
+            int maxIndex = offset + Math.Min(minIndex + ipp - 1, _items.Count() - 1);
+
+            float yOffsetFromFirstListItem = e.Y - ScreenPosition.Y - Border.TopHeight;
+            var itemIndex = (int)Math.Floor(yOffsetFromFirstListItem / ItemHeight) + ((CurrentPage - 1) * ItemsPerPage);
+
+            SelectedIndex = itemIndex.Clamp(minIndex, maxIndex);
         }
 
         /// <summary>

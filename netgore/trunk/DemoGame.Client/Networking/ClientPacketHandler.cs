@@ -230,7 +230,9 @@ namespace DemoGame.Client
                 // Remove the quest from the available quests list
                 var aqf = GameplayScreen.AvailableQuestsForm;
                 if (aqf.IsVisible)
-                    aqf.AvailableQuests = aqf.AvailableQuests.Where(x => x.QuestID != questID).ToImmutable();
+                {
+                    aqf.AvailableQuests = aqf.AvailableQuests.Where(x => x.QuestID != questID).ToArray();
+                }
             }
         }
 
@@ -964,7 +966,7 @@ namespace DemoGame.Client
             }
 
             // Grab the descriptions for both the available quests and quests we can turn in
-            var qds = availableQuests.Concat(turnInQuests).Distinct().Select(x => _questDescriptions.GetOrDefault(x));
+            var qds = availableQuests.Concat(turnInQuests).Distinct().Select(x => _questDescriptions.GetOrDefault(x)).ToArray();
 
             // Display the form
             GameplayScreen.AvailableQuestsForm.Display(qds, npcIndex);

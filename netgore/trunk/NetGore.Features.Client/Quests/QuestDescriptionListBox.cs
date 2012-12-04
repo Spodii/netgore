@@ -24,8 +24,8 @@ namespace NetGore.Features.Quests
         /// <param name="hasStartQuestReqs">A func used to check if the user has the requirements to start a quest.</param>
         /// <param name="hasFinishQuestReqs">A func used to check if the user has the requirements to finish a quest.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public QuestDescriptionListBox(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs,
-                                       Func<QuestID, bool> hasFinishQuestReqs) : base(parent, position, clientSize)
+        public QuestDescriptionListBox(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs, Func<QuestID, bool> hasFinishQuestReqs) 
+            : base(parent, position, clientSize)
         {
             _hasStartQuestReqs = hasStartQuestReqs;
             _hasFinishQuestReqs = hasFinishQuestReqs;
@@ -68,22 +68,15 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Gets or sets the items to display.
         /// </summary>
-        public override IEnumerable<IQuestDescription> Items
+        public override IList<IQuestDescription> Items
         {
             get
             {
-                var ret = base.Items;
-
-                // Have the lowest-priority sort be on the quest ID
-                ret = ret.OrderBy(x => x.QuestID);
-
-                // Put quests that can be started before quests that are available but cannot be started
-                ret = ret.OrderByDescending(x => _hasStartQuestReqs(x.QuestID));
-
-                // Put quests that can be turned in above all other quests
-                ret = ret.OrderByDescending(x => _hasFinishQuestReqs(x.QuestID));
-
-                return ret;
+                return base.Items
+                    .OrderByDescending(x => _hasFinishQuestReqs(x.QuestID))
+                    .ThenByDescending(x => _hasStartQuestReqs(x.QuestID))
+                    .ThenBy(x => x.QuestID)
+                    .ToArray();
             }
             set { base.Items = value; }
         }
@@ -92,7 +85,7 @@ namespace NetGore.Features.Quests
         /// Gets the default item drawer.
         /// </summary>
         /// <returns>The default item drawer.</returns>
-        protected override Action<ISpriteBatch, Vector2, int> GetDefaultItemDrawer()
+        protected override Action<ISpriteBatch, Vector2, IQuestDescription, int> GetDefaultItemDrawer()
         {
             return QuestDescriptionDrawer;
         }
@@ -119,9 +112,8 @@ namespace NetGore.Features.Quests
             return _hasStartQuestReqs(questID);
         }
 
-        void QuestDescriptionDrawer(ISpriteBatch sb, Vector2 pos, int index)
+        void QuestDescriptionDrawer(ISpriteBatch sb, Vector2 pos, IQuestDescription item, int index)
         {
-            var item = Items.ElementAtOrDefault(index);
             if (item == null)
                 return;
 
