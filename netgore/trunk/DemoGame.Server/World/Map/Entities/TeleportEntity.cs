@@ -26,6 +26,10 @@ namespace DemoGame.Server
             if (character == null)
                 return;
 
+            // Only let users use teleports
+            if (character is NPC)
+                return;
+
             // Teleport to a new map
             if (DestinationMap > 0)
             {
