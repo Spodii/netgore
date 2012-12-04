@@ -36,10 +36,8 @@ namespace NetGore.Features.Quests
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="initialCounts">The initial counts.</param>
-        protected QuestPerformerKillCounterBase(TCharacter owner,
-                                                IEnumerable
-                                                    <KeyValuePair<IQuest<TCharacter>, IEnumerable<KeyValuePair<TKillID, ushort>>>>
-                                                    initialCounts = null)
+        protected QuestPerformerKillCounterBase(TCharacter owner, 
+            IEnumerable<KeyValuePair<IQuest<TCharacter>, IEnumerable<KeyValuePair<TKillID, ushort>>>> initialCounts = null)
         {
             // Add the initial values
             if (initialCounts != null)
@@ -47,10 +45,7 @@ namespace NetGore.Features.Quests
                 foreach (var quest in initialCounts)
                 {
                     // Add the counter for the quest
-                    var counter = _counterCollectionPool.Acquire();
-                    var reqKills = GetRequiredKills(quest.Key);
-                    counter.Initialize(quest.Key, reqKills);
-                    _counters.Add(counter);
+                    var counter = CreateAndAddKillCounter(quest.Key);
 
                     // Set the initial values
                     foreach (var killCount in quest.Value)
@@ -86,7 +81,13 @@ namespace NetGore.Features.Quests
         /// <returns>The <see cref="KillCounterCollection"/> for the given <paramref name="quest"/>.</returns>
         KillCounterCollection GetKillCounter(IQuest<TCharacter> quest)
         {
-            return _counters.FirstOrDefault(x => x.Quest == quest);
+            var ret = _counters.FirstOrDefault(x => x.Quest == quest);
+            if (ret == null)
+            {
+                // If it didn't exist, just create it
+                ret = CreateAndAddKillCounter(quest);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -96,7 +97,14 @@ namespace NetGore.Features.Quests
         /// <returns>The <see cref="KillCounterCollection"/> index for the given <paramref name="quest"/>.</returns>
         int GetKillCounterIndex(IQuest<TCharacter> quest)
         {
-            return _counters.FindIndex(x => x.Quest == quest);
+            var ret = _counters.FindIndex(x => x.Quest == quest);
+            if (ret <= -1)
+            {
+                // If it didn't exist, just create it
+                CreateAndAddKillCounter(quest);
+                ret = _counters.FindIndex(x => x.Quest == quest);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -127,8 +135,7 @@ namespace NetGore.Features.Quests
                     if (KillCountIncremented != null)
                     {
                         KillCountIncremented(this,
-                            new QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>(counter.Quest, target, count,
-                                reqCount));
+                            new QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>(counter.Quest, target, count, reqCount));
                     }
                 }
             }
@@ -186,13 +193,18 @@ namespace NetGore.Features.Quests
             }
 
             // Create the counter
-            var counter = _counterCollectionPool.Acquire();
-            var reqKills = GetRequiredKills(e.Item1);
-            counter.Initialize(e.Item1, reqKills);
-
-            _counters.Add(counter);
+            CreateAndAddKillCounter(e.Item1);
 
             OnQuestAdded(e.Item1);
+        }
+
+        KillCounterCollection CreateAndAddKillCounter(IQuest<TCharacter> quest)
+        {
+            var counter = _counterCollectionPool.Acquire();
+            var reqKills = GetRequiredKills(quest);
+            counter.Initialize(quest, reqKills);
+            _counters.Add(counter);
+            return counter;
         }
 
         /// <summary>
@@ -269,9 +281,6 @@ namespace NetGore.Features.Quests
         public IEnumerable<KeyValuePair<TKillID, ushort>> GetKillCounts(IQuest<TCharacter> quest)
         {
             var killCounter = GetKillCounter(quest);
-            if (killCounter == null)
-                throw new ArgumentException(string.Format("The quest `{0}` is not in this collection.", quest), "quest");
-
             return killCounter.GetKillCounts();
         }
 
@@ -288,9 +297,6 @@ namespace NetGore.Features.Quests
         public bool HasAllKills(IQuest<TCharacter> quest)
         {
             var killCounter = GetKillCounter(quest);
-            if (killCounter == null)
-                throw new ArgumentException(string.Format("The quest `{0}` is not in this collection.", quest), "quest");
-
             return killCounter.HasAllKills();
         }
 

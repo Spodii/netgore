@@ -18,8 +18,7 @@ namespace DemoGame.Server.Queries
         public SelectQuestStatusKillsQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
-            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_template_id", "count",
-                "character_id", "quest_id");
+            QueryAsserts.ContainsColumns(CharacterQuestStatusKillsTable.DbColumns, "character_template_id", "count", "character_id", "quest_id");
         }
 
         /// <summary>

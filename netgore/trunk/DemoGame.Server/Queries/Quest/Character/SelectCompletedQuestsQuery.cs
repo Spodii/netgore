@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -34,9 +35,12 @@ namespace DemoGame.Server.Queries
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id").Where(
+                qb.Select(CharacterQuestStatusTable.TableName).Add("quest_id")
+                .Where(
                     f.And(f.Equals(s.EscapeColumn("character_id"), s.Parameterize("id")),
-                        f.IsNotNull(s.EscapeColumn("completed_on"))));
+                          f.IsNotNull(s.EscapeColumn("completed_on"))
+                    )
+                );
             return q.ToString();
         }
 
@@ -73,6 +77,7 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, CharacterID item)
         {
+            Debug.Assert(item != 0);
             p["id"] = (int)item;
         }
     }

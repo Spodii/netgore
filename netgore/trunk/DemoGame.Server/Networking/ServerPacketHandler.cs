@@ -379,7 +379,9 @@ namespace DemoGame.Server
                     log.WarnFormat(errmsg, user, questID);
             }
             else
+            {
                 hasRequirements = quest.FinishRequirements.HasRequirements(user);
+            }
 
             using (var pw = ServerPacket.HasQuestFinishRequirements(questID, hasRequirements))
             {
@@ -660,8 +662,7 @@ namespace DemoGame.Server
                 return;
 
             // Check the distance and state
-            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed ||
-                user.GetDistance(npc) > GameData.MaxNPCChatDistance)
+            if (user.Map != npc.Map || user.Map == null || !npc.IsAlive || npc.IsDisposed || user.GetDistance(npc) > GameData.MaxNPCChatDistance)
                 return;
 
             // If the NPC provides any quests that this user can do or turn in, show that instead
@@ -673,9 +674,7 @@ namespace DemoGame.Server
 
                 if (availableQuests.Length > 0 || turnInQuests.Length > 0)
                 {
-                    using (
-                        var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests.Select(x => x.QuestID),
-                            turnInQuests.Select(x => x.QuestID)))
+                    using (var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests.Select(x => x.QuestID), turnInQuests.Select(x => x.QuestID)))
                     {
                         user.Send(pw, ServerMessageType.GUI);
                     }

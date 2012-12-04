@@ -21,9 +21,8 @@ namespace NetGore.Features.Quests
         public static void GetAvailableQuests<T>(T performer, IQuestProvider<T> provider, out IQuest<T>[] availableQuests,
                                                  out IQuest<T>[] turnInQuests) where T : IQuestPerformer<T>
         {
-            availableQuests =
-                provider.Quests.Where(
-                    x => !performer.ActiveQuests.Contains(x) && (x.Repeatable || !performer.HasCompletedQuest(x))).ToArray();
+            availableQuests = provider.Quests
+                .Where(x => !performer.ActiveQuests.Contains(x) && (x.Repeatable || !performer.HasCompletedQuest(x))).ToArray();
 
             var canTurnInQuests = performer.ActiveQuests.Where(x => x.FinishRequirements.HasRequirements(performer)).ToImmutable();
             turnInQuests = provider.Quests.Where(x => canTurnInQuests.Contains(x)).ToArray();

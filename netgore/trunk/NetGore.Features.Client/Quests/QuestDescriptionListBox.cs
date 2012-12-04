@@ -9,8 +9,8 @@ namespace NetGore.Features.Quests
 {
     public class QuestDescriptionListBox : ListBox<IQuestDescription>
     {
-        static readonly Color _defaultCanTurnInColor = new Color(0, 150, 0);
-        static readonly Color _defaultCannotStartColor = new Color(150, 0, 0);
+        static readonly Color _defaultCanTurnInColor = new Color(0, 75, 0);
+        static readonly Color _defaultCannotStartColor = new Color(75, 0, 0);
 
         readonly Func<QuestID, bool> _hasFinishQuestReqs;
         readonly Func<QuestID, bool> _hasStartQuestReqs;
@@ -64,22 +64,6 @@ namespace NetGore.Features.Quests
         /// requirements to start.
         /// </summary>
         public Color CannotStartQuestForeColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the items to display.
-        /// </summary>
-        public override IList<IQuestDescription> Items
-        {
-            get
-            {
-                return base.Items
-                    .OrderByDescending(x => _hasFinishQuestReqs(x.QuestID))
-                    .ThenByDescending(x => _hasStartQuestReqs(x.QuestID))
-                    .ThenBy(x => x.QuestID)
-                    .ToArray();
-            }
-            set { base.Items = value; }
-        }
 
         /// <summary>
         /// Gets the default item drawer.
