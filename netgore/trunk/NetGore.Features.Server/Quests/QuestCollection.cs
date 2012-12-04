@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -64,8 +65,12 @@ namespace NetGore.Features.Quests
         public virtual void Reload(QuestID questID)
         {
             // Check for a valid ID range
-            if (questID < 0 || questID > _quests.Length)
+            if (questID < 0)
                 return;
+
+            // Resize the array if needed
+            if (questID.GetRawValue() >= _quests.Length)
+                Array.Resize(ref _quests, questID.GetRawValue() + 1);
 
             // Try to load the quest
             var q = LoadQuest(questID);
