@@ -185,7 +185,7 @@ namespace NetGore.Features.Quests
             _activeQuests.Clear();
 
             // Read completed quests
-            var count = bs.ReadByte();
+            var count = bs.ReadUShort();
             for (var i = 0; i < count; i++)
             {
                 _completedQuests.Add(bs.ReadQuestID());
@@ -268,7 +268,7 @@ namespace NetGore.Features.Quests
             completedQuests = completedQuests.ToImmutable();
             activeQuests = activeQuests.ToImmutable();
 
-            bs.WriteEnum(QuestInfoMessages.RemoveActiveQuest);
+            bs.WriteEnum(QuestInfoMessages.LoadInitialValues);
 
             // Write the completed quests
             bs.Write((ushort)completedQuests.Count());

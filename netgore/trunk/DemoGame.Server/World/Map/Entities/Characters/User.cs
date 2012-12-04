@@ -92,12 +92,14 @@ namespace DemoGame.Server
             _groupMemberInfo = new GroupMemberInfo(this);
             _shoppingState = new UserShoppingState(this);
             _chatState = new UserChatDialogState(this);
-            _questInfo = CreateQuestInfo();
             _userStatsBase = (UserStats)BaseStats;
             _userStatsMod = (UserStats)ModStats;
 
             // Load the character data
             Load(characterID);
+
+            // Load more stuff
+            _questInfo = CreateQuestInfo();
 
             // Ensure the correct Alliance is being used
             Alliance = AllianceManager[new AllianceID(0)];

@@ -60,15 +60,11 @@ namespace DemoGame.Server.Quests
         /// </summary>
         /// <param name="characterID">The ID of the character.</param>
         /// <returns>The quest statuses for the character with the given <paramref name="characterID"/>.</returns>
-        static IEnumerable<KeyValuePair<IQuest<User>, IEnumerable<KeyValuePair<CharacterTemplateID, ushort>>>> LoadQuestStatuses(
-            CharacterID characterID)
+        static IEnumerable<KeyValuePair<IQuest<User>, IEnumerable<KeyValuePair<CharacterTemplateID, ushort>>>> LoadQuestStatuses(CharacterID characterID)
         {
             var values = _selectQuestStatusKillsQuery.Execute(characterID);
-            return
-                values.Select(
-                    x =>
-                    new KeyValuePair<IQuest<User>, IEnumerable<KeyValuePair<CharacterTemplateID, ushort>>>(
-                        _questManager.GetQuest(x.Key), x.Value));
+            return values.Select(x => new KeyValuePair<IQuest<User>, IEnumerable<KeyValuePair<CharacterTemplateID, ushort>>>(
+                _questManager.GetQuest(x.Key), x.Value));
         }
 
         /// <summary>
@@ -80,8 +76,7 @@ namespace DemoGame.Server.Quests
         /// <param name="count">The current kill count for the <paramref name="target"/> for the
         /// <paramref name="quest"/>.</param>
         /// <param name="reqCount">The required kill count for completing the quest.</param>
-        protected override void OnKillCountIncremented(IQuest<User> quest, CharacterTemplateID target, ushort count,
-                                                       ushort reqCount)
+        protected override void OnKillCountIncremented(IQuest<User> quest, CharacterTemplateID target, ushort count, ushort reqCount)
         {
             _updateCharacterQuestStatusKillsQuery.Execute(Owner.ID, quest.QuestID, target, count);
         }

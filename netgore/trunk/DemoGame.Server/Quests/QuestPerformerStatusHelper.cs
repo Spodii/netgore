@@ -44,8 +44,8 @@ namespace DemoGame.Server.Quests
         /// <returns>The loaded active quests.</returns>
         protected override IEnumerable<IQuest<User>> LoadActiveQuests()
         {
-            var activeQuests = Owner.DbController.GetQuery<SelectActiveQuestsQuery>().Execute(Owner.ID);
-            return activeQuests.Select(x => _questManager.GetQuest(x));
+            var quests = Owner.DbController.GetQuery<SelectActiveQuestsQuery>().Execute(Owner.ID);
+            return quests.Select(x => _questManager.GetQuest(x));
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace DemoGame.Server.Quests
         /// <returns>The loaded completed quests.</returns>
         protected override IEnumerable<IQuest<User>> LoadCompletedQuests()
         {
-            var activeQuests = Owner.DbController.GetQuery<SelectCompletedQuestsQuery>().Execute(Owner.ID);
-            return activeQuests.Select(x => _questManager.GetQuest(x));
+            var quests = Owner.DbController.GetQuery<SelectCompletedQuestsQuery>().Execute(Owner.ID);
+            return quests.Select(x => _questManager.GetQuest(x));
         }
 
         /// <summary>
