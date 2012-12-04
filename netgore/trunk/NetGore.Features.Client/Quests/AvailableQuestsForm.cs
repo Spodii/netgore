@@ -14,7 +14,8 @@ namespace NetGore.Features.Quests
     {
         const int _padding = 3;
         const int _padding2 = _padding * 2;
-        static readonly IEnumerable<IQuestDescription> _emptyQuests = Enumerable.Empty<IQuestDescription>();
+
+        static readonly IQuestDescription[] _emptyQuests = Enumerable.Empty<IQuestDescription>().ToArray();
         static readonly object _eventQuestAccepted = new object();
 
         readonly Func<QuestID, bool> _hasFinishQuestReqs;
@@ -37,8 +38,8 @@ namespace NetGore.Features.Quests
         /// <param name="hasStartQuestReqs">A func used to check if the user has the requirements to start a quest.</param>
         /// <param name="hasFinishQuestReqs">A func used to check if the user has the requirements to finish a quest.</param>
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-        public AvailableQuestsForm(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs,
-                                   Func<QuestID, bool> hasFinishQuestReqs) : base(parent, position, clientSize)
+        public AvailableQuestsForm(Control parent, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs, Func<QuestID, bool> hasFinishQuestReqs) 
+            : base(parent, position, clientSize)
         {
             _hasStartQuestReqs = hasStartQuestReqs;
             _hasFinishQuestReqs = hasFinishQuestReqs;
@@ -55,8 +56,8 @@ namespace NetGore.Features.Quests
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <param name="hasStartQuestReqs">A func used to check if the user has the requirements to start a quest.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
-        public AvailableQuestsForm(IGUIManager guiManager, Vector2 position, Vector2 clientSize,
-                                   Func<QuestID, bool> hasStartQuestReqs) : base(guiManager, position, clientSize)
+        public AvailableQuestsForm(IGUIManager guiManager, Vector2 position, Vector2 clientSize, Func<QuestID, bool> hasStartQuestReqs) 
+            : base(guiManager, position, clientSize)
         {
             _hasStartQuestReqs = hasStartQuestReqs;
 
@@ -76,7 +77,7 @@ namespace NetGore.Features.Quests
         /// <summary>
         /// Gets or sets the available quests to display.
         /// </summary>
-        public IEnumerable<IQuestDescription> AvailableQuests
+        public IList<IQuestDescription> AvailableQuests
         {
             get { return _lstQuests.Items; }
             set
@@ -103,7 +104,7 @@ namespace NetGore.Features.Quests
         {
             _lblAvailableQuests = new Label(this, Vector2.Zero) { Text = "Available Quests:" };
 
-            _lstQuests = new QuestDescriptionListBox(this, Vector2.Zero, new Vector2(32), _hasStartQuestReqs, _hasFinishQuestReqs)
+            _lstQuests = new QuestDescriptionListBox(this, Vector2.Zero, new Vector2(32), _hasStartQuestReqs, _hasFinishQuestReqs) 
             { Items = _emptyQuests, ShowPaging = false };
             _lstQuests.SelectedIndexChanged += lstQuests_SelectedIndexChanged;
 
@@ -125,7 +126,7 @@ namespace NetGore.Features.Quests
         /// </summary>
         /// <param name="availableQuests">The available quest IDs.</param>
         /// <param name="questProviderIndex">The index of the entity providing the quests.</param>
-        public void Display(IEnumerable<IQuestDescription> availableQuests, MapEntityIndex questProviderIndex)
+        public void Display(IList<IQuestDescription> availableQuests, MapEntityIndex questProviderIndex)
         {
             AvailableQuests = availableQuests;
             QuestProviderIndex = questProviderIndex;

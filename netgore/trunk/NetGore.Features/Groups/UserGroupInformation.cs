@@ -51,7 +51,7 @@ namespace NetGore.Features.Groups
         /// <summary>
         /// Gets the members in the group. If the user is not in a group, this will be empty.
         /// </summary>
-        public IEnumerable<string> Members
+        public IList<string> Members
         {
             get { return _members; }
         }

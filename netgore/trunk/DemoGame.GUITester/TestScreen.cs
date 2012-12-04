@@ -131,7 +131,7 @@ namespace DemoGame.GUITester
                 items.Add(i.ToString());
             }
 
-            new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items, ShowPaging = true };
+            new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items, ShowPaging = true, CanSelect = true };
         }
 
         static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)

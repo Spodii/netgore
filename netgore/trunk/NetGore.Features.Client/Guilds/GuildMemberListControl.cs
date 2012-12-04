@@ -36,7 +36,7 @@ namespace NetGore.Features.Guilds
             ShowPaging = true;
         }
 
-        void DefaultDrawer(ISpriteBatch sb, Vector2 pos, int v)
+        void DefaultDrawer(ISpriteBatch sb, Vector2 pos, GuildMemberNameRank item, int index)
         {
             if (Font != _cachedSpacingFont)
             {
@@ -45,17 +45,17 @@ namespace NetGore.Features.Guilds
             }
 
             // Rank
-            sb.DrawString(Font, Items.ElementAt(v).Rank.ToString(), pos, Color.Green);
+            sb.DrawString(Font, item.Rank.ToString(), pos, Color.Green);
 
             // Name
-            sb.DrawString(Font, Items.ElementAt(v).Name, pos + new Vector2(_cachedSpacing + 2, 0), ForeColor);
+            sb.DrawString(Font, item.Name, pos + new Vector2(_cachedSpacing + 2, 0), ForeColor);
         }
 
         /// <summary>
         /// Gets the default item drawer.
         /// </summary>
         /// <returns>The default item drawer.</returns>
-        protected override Action<ISpriteBatch, Vector2, int> GetDefaultItemDrawer()
+        protected override Action<ISpriteBatch, Vector2, GuildMemberNameRank, int> GetDefaultItemDrawer()
         {
             return DefaultDrawer;
         }

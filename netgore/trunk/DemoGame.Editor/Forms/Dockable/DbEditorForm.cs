@@ -870,22 +870,18 @@ namespace DemoGame.Editor
             _dbController.GetQuery<InsertUpdateQuestQuery>().Execute(v);
 
             // Required items to start/finish
-            _dbController.GetQuery<InsertQuestRequireStartItemQuery>().Execute(v.ID,
-                v.StartItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
-            _dbController.GetQuery<InsertQuestRequireFinishItemQuery>().Execute(v.ID,
-                v.FinishItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
+            _dbController.GetQuery<InsertQuestRequireStartItemQuery>().Execute(v.ID, v.StartItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
+            _dbController.GetQuery<InsertQuestRequireFinishItemQuery>().Execute(v.ID, v.FinishItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             // Required quests to start/finish
             _dbController.GetQuery<InsertQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
             _dbController.GetQuery<InsertQuestRequireFinishQuestQuery>().Execute(v.ID, v.FinishQuests);
 
             // Other requirements
-            _dbController.GetQuery<InsertQuestRequireKillQuery>().Execute(v.ID,
-                v.Kills.Select(x => (KeyValuePair<CharacterTemplateID, ushort>)x));
+            _dbController.GetQuery<InsertQuestRequireKillQuery>().Execute(v.ID, v.Kills.Select(x => (KeyValuePair<CharacterTemplateID, ushort>)x));
 
             // Rewards
-            _dbController.GetQuery<InsertQuestRewardItemQuery>().Execute(v.ID,
-                v.RewardItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
+            _dbController.GetQuery<InsertQuestRewardItemQuery>().Execute(v.ID, v.RewardItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             SetQuest(v.ID, false);
 
