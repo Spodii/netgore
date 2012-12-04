@@ -122,6 +122,7 @@
     <Compile Include="Graphics\EntityInterpolatorTests.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifierTests.cs" />
     <Compile Include="NetGore\AlignmentHelperTests.cs" />
+    <Compile Include="NetGore\ByteArrayEqualityComparerTests.cs" />
     <Compile Include="NetGore\ClassTypeTreeTests.cs" />
     <Compile Include="NetGore\Collections\CyclingObjectArrayTests.cs" />
     <Compile Include="NetGore\Collections\EnumTableTests.cs" />
