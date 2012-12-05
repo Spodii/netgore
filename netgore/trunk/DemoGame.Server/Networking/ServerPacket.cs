@@ -43,8 +43,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter CharAttack(MapEntityIndex attacker, MapEntityIndex? attacked = null,
-                                              ActionDisplayID? actionDisplay = null)
+        public static PacketWriter CharAttack(MapEntityIndex attacker, MapEntityIndex? attacked = null, ActionDisplayID? actionDisplay = null)
         {
             var pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(attacker);
@@ -573,6 +572,19 @@ namespace DemoGame.Server
             var pw = GetWriter(ServerPacketID.SkillStartCasting_ToMap);
             pw.Write(entityIndex);
             pw.WriteEnum(skillType);
+            return pw;
+        }
+
+        public static PacketWriter CreateActionDisplayAtEntity(ActionDisplayID actionDisplayId, MapEntityIndex sourceEntityIndex, MapEntityIndex? targetEntityIndex = null)
+        {
+            var pw = GetWriter(ServerPacketID.CreateActionDisplayAtEntity);
+            pw.Write(actionDisplayId);
+            pw.Write(sourceEntityIndex);
+
+            pw.Write(targetEntityIndex.HasValue);
+            if (targetEntityIndex.HasValue)
+                pw.Write(targetEntityIndex.Value);
+
             return pw;
         }
 

@@ -151,6 +151,7 @@ namespace DemoGame.Server
             _weaponType = iv.WeaponType;
             _range = iv.Range;
             _equippedBody = iv.EquippedBody;
+            _actionDisplayID = iv.ActionDisplayID;
 
             _baseStats = NewItemStats(iv.Stats.Select(x => (Stat<StatType>)x), StatCollectionType.Base);
             _reqStats = NewItemStats(iv.ReqStats.Select(x => (Stat<StatType>)x), StatCollectionType.Requirement);

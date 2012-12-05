@@ -22,6 +22,7 @@ namespace DemoGame
         ChatSay,
         CreateAccount,
         CreateAccountCharacter,
+        CreateActionDisplayAtEntity,
         CreateDynamicEntity,
         Emote,
         EndChatDialog,

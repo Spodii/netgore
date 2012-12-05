@@ -24,8 +24,7 @@ namespace NetGore.Features.ActionDisplays
         /// </summary>
         static ActionDisplayScriptManager()
         {
-            new TypeFactory(x => !x.GetCustomAttributes(typeof(ActionDisplayScriptCollectionAttribute), true).IsEmpty(),
-                TypeLoadedHandler);
+            new TypeFactory(x => !x.GetCustomAttributes(typeof(ActionDisplayScriptCollectionAttribute), true).IsEmpty(), TypeLoadedHandler);
         }
 
         /// <summary>
@@ -48,19 +47,15 @@ namespace NetGore.Features.ActionDisplays
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="NetGore.Collections.TypeFactoryLoadedEventArgs"/> instance containing the event data.</param>
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
-            MessageId = "ActionDisplayScriptHandlers")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
-            MessageId = "ActionDisplayScriptHandler")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly",
-            MessageId = "ActionDisplayScriptAttributes")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ActionDisplayScriptHandlers")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ActionDisplayScriptHandler")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "ActionDisplayScriptAttributes")]
         static void TypeLoadedHandler(TypeFactory sender, TypeFactoryLoadedEventArgs e)
         {
             var atbType = typeof(ActionDisplayScriptAttribute);
             var mpdType = typeof(ActionDisplayScriptHandler);
 
-            const BindingFlags bindFlags =
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
+            const BindingFlags bindFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static;
 
             // Search through every method in the class
             foreach (var method in e.LoadedType.GetMethods(bindFlags))
@@ -89,8 +84,7 @@ namespace NetGore.Features.ActionDisplays
                     }
                     catch (Exception ex)
                     {
-                        const string errmsg =
-                            "Failed to create ActionDisplayScriptHandler delegate for method `{0}`. Make sure it is a static method and contains the correct parameters.";
+                        const string errmsg = "Failed to create ActionDisplayScriptHandler delegate for method `{0}`. Make sure it is a static method and contains the correct parameters.";
                         Debug.Fail(string.Format(errmsg, method));
                         throw new InstantiateTypeException(string.Format(errmsg, method), ex);
                     }
@@ -98,8 +92,7 @@ namespace NetGore.Features.ActionDisplays
                     // Ensure the name is unique
                     if (_scriptHandlers.ContainsKey(atb.Name))
                     {
-                        const string errmsg =
-                            "Found multiple ActionDisplayScriptHandlers with the name `{0}`. Names must be unique.";
+                        const string errmsg = "Found multiple ActionDisplayScriptHandlers with the name `{0}`. Names must be unique.";
                         Debug.Fail(string.Format(errmsg, atb.Name));
                         throw new InstantiateTypeException(string.Format(errmsg, atb.Name), mpdType);
                     }

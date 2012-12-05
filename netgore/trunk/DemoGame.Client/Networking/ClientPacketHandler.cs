@@ -270,18 +270,10 @@ namespace DemoGame.Client
             if (attacker == null)
                 return;
 
-            DynamicEntity attacked;
-            if (attackedID.HasValue)
-                attacked = Map.GetDynamicEntity(attackedID.Value);
-            else
-                attacked = null;
+            DynamicEntity attacked = attackedID.HasValue ? Map.GetDynamicEntity(attackedID.Value) : null;
 
             // Use the default ActionDisplayID if we were provided with a null value
-            ActionDisplayID actionDisplayID;
-            if (!actionDisplayIDNullable.HasValue)
-                actionDisplayID = GameData.DefaultActionDisplayID;
-            else
-                actionDisplayID = actionDisplayIDNullable.Value;
+            ActionDisplayID actionDisplayID = !actionDisplayIDNullable.HasValue ? GameData.DefaultActionDisplayID : actionDisplayIDNullable.Value;
 
             // Get the ActionDisplay to use and, if valid, execute it
             var actionDisplay = ActionDisplayScripts.ActionDisplays[actionDisplayID];
@@ -828,6 +820,30 @@ namespace DemoGame.Client
 
             // Set the known skills
             UserInfo.KnownSkills.SetValues(knownSkills);
+        }
+
+        [MessageHandler((uint)ServerPacketID.CreateActionDisplayAtEntity)]
+        void RecvCreateActionDisplayAtEntity(IIPSocket conn, BitStream r)
+        {
+            ActionDisplayID actionDisplayId = r.ReadActionDisplayID();
+            MapEntityIndex sourceEntityIndex = r.ReadMapEntityIndex();
+            bool hasTarget = r.ReadBool();
+            MapEntityIndex? targetEntityIndex = hasTarget ? r.ReadMapEntityIndex() : (MapEntityIndex?)null;
+
+            // Get the entities
+            var sourceEntity = _objGrabber.GetDynamicEntity<Character>(sourceEntityIndex);
+            if (sourceEntity == null)
+                return;
+
+            var targetEntity = targetEntityIndex.HasValue ? _objGrabber.GetDynamicEntity<Character>(targetEntityIndex.Value) : null;
+
+            // Get the action display
+            var ad = ActionDisplayScripts.ActionDisplays[actionDisplayId];
+            if (ad == null)
+                return;
+
+            // Create
+            ad.Execute(Map, sourceEntity, targetEntity);
         }
 
         [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToMap)]

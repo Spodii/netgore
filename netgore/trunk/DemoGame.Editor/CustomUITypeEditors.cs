@@ -47,7 +47,7 @@ namespace DemoGame.Editor
             {
                 IsClass = true,
                 IsAbstract = false,
-                CustomFilter = (x => x.Name.EndsWith("Table") && x.Namespace.Contains("DbObjs"))
+                CustomFilter = (x => x.Name.EndsWith("Table") && (x.Namespace ?? string.Empty).Contains("DbObjs"))
             };
             var filter = filterCreator.GetFilter();
 
@@ -56,8 +56,7 @@ namespace DemoGame.Editor
 
             // Also automatically add all the instantiable types that derive from some of our base classes
             var baseTypes = new Type[] { typeof(Entity), typeof(MapBase) };
-            filterCreator = new TypeFilterCreator
-            { IsClass = true, IsAbstract = false, CustomFilter = (x => baseTypes.Any(x.IsSubclassOf)) };
+            filterCreator = new TypeFilterCreator { IsClass = true, IsAbstract = false, CustomFilter = (x => baseTypes.Any(x.IsSubclassOf)) };
             filter = filterCreator.GetFilter();
 
             typesToAdd = TypeHelper.FindTypes(filter, null);
@@ -178,10 +177,8 @@ namespace DemoGame.Editor
             AdvancedPropertyDescriptor.SetExtraTextProvider<ShopID>(ExtraTextProvider_ShopID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<ItemTemplateID>(ExtraTextProvider_ItemTemplateID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateID>(ExtraTextProvider_CharacterTemplateID);
-            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateEquippedItem>(
-                ExtraTextProvider_CharacterTemplateEquippedItem);
-            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateInventoryItem>(
-                ExtraTextProvider_CharacterTemplateInventoryItem);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateEquippedItem>(ExtraTextProvider_CharacterTemplateEquippedItem);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateInventoryItem>(ExtraTextProvider_CharacterTemplateInventoryItem);
         }
 
         /// <summary>
