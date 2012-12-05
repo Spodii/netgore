@@ -73,27 +73,6 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
-        public void GetAbsoluteFilePathAlternateSeparatorPrefixTest()
-        {
-            var s = new ContentAssetName("/myasset").GetAbsoluteFilePath(ContentPaths.Build);
-            Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
-        }
-
-        [Test]
-        public void GetAbsoluteFilePathSeparatorPrefixTest()
-        {
-            var s = new ContentAssetName("\\myasset").GetAbsoluteFilePath(ContentPaths.Build);
-            Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
-        }
-
-        [Test]
-        public void GetAbsoluteFilePathTest()
-        {
-            var s = new ContentAssetName("myasset").GetAbsoluteFilePath(ContentPaths.Build);
-            Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
-        }
-
-        [Test]
         public void SanitizeAlternateSeparatorTest()
         {
             const string s = @"asdf/basdf/wer/asdf";

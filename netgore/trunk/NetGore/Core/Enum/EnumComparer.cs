@@ -9,6 +9,16 @@ using System.Linq.Expressions;
 
 namespace NetGore
 {
+    public class EnumComparer
+    {
+        /// <summary>
+        /// The underlying Enum types that are supported.
+        /// </summary>
+        protected static readonly ICollection<Type> _supportedUnderlyingTypes = new Type[] { 
+            typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong) 
+        };
+    }
+
     /// <summary>
     /// Comparer that is specifically for Enums.
     /// </summary>
@@ -17,15 +27,9 @@ namespace NetGore
     /// dynamically generated methods to implement a very fast implementation of Equals and GetHashCode.
     /// </remarks>
     /// <typeparam name="T">Type of Enum to compare.</typeparam>
-    public sealed class EnumComparer<T> : IEqualityComparer<T> where T : struct, IComparable, IConvertible, IFormattable
+    public sealed class EnumComparer<T> : EnumComparer, IEqualityComparer<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         static readonly EnumComparer<T> _instance;
-
-        /// <summary>
-        /// The underlying Enum types that are supported.
-        /// </summary>
-        static readonly ICollection<Type> _supportedUnderlyingTypes = new Type[]
-        { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong) };
 
         readonly Func<T, T, bool> _equals;
         readonly Func<T, int> _getHashCode;
