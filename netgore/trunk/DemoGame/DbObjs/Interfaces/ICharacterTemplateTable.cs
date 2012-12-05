@@ -71,14 +71,14 @@ get;
 /// <summary>
 /// Gets the value of the database column `give_cash`.
 /// </summary>
-System.UInt16 GiveCash
+System.Int32 GiveCash
 {
 get;
 }
 /// <summary>
 /// Gets the value of the database column `give_exp`.
 /// </summary>
-System.UInt16 GiveExp
+System.Int32 GiveExp
 {
 get;
 }
@@ -92,7 +92,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `level`.
 /// </summary>
-System.Byte Level
+System.Int16 Level
 {
 get;
 }

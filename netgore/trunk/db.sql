@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.8, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.27, for Win64 (x86)
 --
 -- Host: localhost    Database: demogame
 -- ------------------------------------------------------
--- Server version	5.5.8
+-- Server version	5.5.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2010-12-29 01:18:57',16777343,NULL),(2,'Spodii','3FC0A7ACF087F549AC2B266BAF94B8B1','test@test.com',0,'2010-12-26 14:11:08','2010-12-26 14:14:23',16777343,NULL);
+INSERT INTO `account` VALUES (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2012-12-04 23:52:09',16777343,NULL),(2,'Spodii','3FC0A7ACF087F549AC2B266BAF94B8B1','test@test.com',0,'2010-12-26 14:11:08','2010-12-26 14:14:23',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,12 +86,12 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER*/ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW BEGIN
-	IF new.end_time <= NOW() THEN
-		SET new.expired = 1;
-	ELSE
-		SET new.expired = 0;
-	END IF;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW BEGIN
+	IF new.end_time <= NOW() THEN
+		SET new.expired = 1;
+	ELSE
+		SET new.expired = 0;
+	END IF;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -107,12 +107,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=CURRENT_USER*/ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW BEGIN
-	IF new.end_time <= NOW() THEN
-		SET new.expired = 1;
-	ELSE
-		SET new.expired = 0;
-	END IF;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW BEGIN
+	IF new.end_time <= NOW() THEN
+		SET new.expired = 1;
+	ELSE
+		SET new.expired = 0;
+	END IF;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -163,7 +163,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +172,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58'),(2,1,16777343,'2010-11-26 23:20:14'),(3,1,16777343,'2010-11-27 01:29:44'),(4,1,16777343,'2010-11-27 01:31:43'),(5,1,16777343,'2010-11-27 01:32:38'),(6,1,16777343,'2010-11-27 01:34:24'),(8,1,16777343,'2010-11-27 01:45:49'),(9,1,16777343,'2010-11-28 15:28:17'),(10,1,16777343,'2010-11-29 01:41:54'),(11,1,16777343,'2010-11-29 01:49:37'),(12,1,16777343,'2010-11-29 09:35:05'),(13,1,16777343,'2010-11-29 09:53:51'),(14,1,16777343,'2010-11-29 10:01:28'),(15,1,16777343,'2010-11-29 10:18:45'),(16,1,16777343,'2010-11-29 10:19:40'),(17,1,16777343,'2010-11-29 10:22:02'),(18,1,16777343,'2010-11-29 10:32:04'),(19,1,16777343,'2010-11-29 10:35:13'),(20,1,16777343,'2010-11-29 10:39:52'),(21,1,16777343,'2010-11-29 10:44:09'),(22,1,16777343,'2010-12-05 19:43:09'),(23,1,16777343,'2010-12-07 22:26:29'),(24,1,16777343,'2010-12-07 22:27:51'),(25,1,16777343,'2010-12-07 22:28:51'),(26,1,16777343,'2010-12-07 22:30:53'),(27,1,16777343,'2010-12-07 22:32:12'),(28,1,16777343,'2010-12-08 15:44:02'),(29,1,16777343,'2010-12-08 15:53:31'),(30,1,16777343,'2010-12-08 15:54:00'),(31,1,16777343,'2010-12-08 15:57:44'),(32,1,16777343,'2010-12-08 15:58:23'),(33,1,16777343,'2010-12-08 16:12:08'),(34,1,16777343,'2010-12-08 16:14:31'),(35,1,16777343,'2010-12-08 16:24:07'),(36,1,16777343,'2010-12-08 17:21:40'),(37,1,16777343,'2010-12-08 17:24:10'),(38,1,16777343,'2010-12-09 02:23:45'),(39,1,16777343,'2010-12-09 02:26:40'),(40,1,16777343,'2010-12-16 12:54:10'),(41,1,16777343,'2010-12-16 12:58:55'),(42,1,16777343,'2010-12-16 15:47:18'),(43,1,16777343,'2010-12-19 01:18:11'),(44,1,16777343,'2010-12-21 11:14:13'),(45,1,16777343,'2010-12-21 17:47:03'),(46,1,16777343,'2010-12-26 09:43:59'),(47,1,16777343,'2010-12-26 12:16:07'),(48,1,16777343,'2010-12-26 12:23:14'),(49,1,16777343,'2010-12-26 12:25:24'),(50,1,16777343,'2010-12-26 12:35:37'),(51,1,16777343,'2010-12-26 12:36:31'),(52,1,16777343,'2010-12-26 12:41:31'),(53,1,16777343,'2010-12-26 12:44:07'),(54,1,16777343,'2010-12-26 12:45:24'),(55,1,16777343,'2010-12-26 12:45:27'),(56,1,16777343,'2010-12-26 12:45:30'),(57,1,16777343,'2010-12-26 13:59:11'),(58,1,16777343,'2010-12-26 13:59:17'),(59,1,16777343,'2010-12-26 14:06:37'),(60,1,16777343,'2010-12-26 14:06:47'),(61,1,16777343,'2010-12-26 14:08:40'),(62,1,16777343,'2010-12-26 14:11:11'),(63,2,16777343,'2010-12-26 14:11:26'),(64,1,16777343,'2010-12-26 14:13:43'),(65,2,16777343,'2010-12-26 14:14:23'),(66,1,16777343,'2010-12-26 15:03:15'),(67,1,16777343,'2010-12-26 15:06:19'),(68,1,16777343,'2010-12-26 15:08:24'),(69,1,16777343,'2010-12-26 16:26:16'),(70,1,16777343,'2010-12-26 16:48:52'),(71,1,16777343,'2010-12-26 16:56:43'),(72,1,16777343,'2010-12-29 00:57:39'),(73,1,16777343,'2010-12-29 00:58:01'),(74,1,16777343,'2010-12-29 01:02:22'),(75,1,16777343,'2010-12-29 01:10:52'),(76,1,16777343,'2010-12-29 01:18:57');
+INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-11-26 20:53:58'),(2,1,16777343,'2010-11-26 23:20:14'),(3,1,16777343,'2010-11-27 01:29:44'),(4,1,16777343,'2010-11-27 01:31:43'),(5,1,16777343,'2010-11-27 01:32:38'),(6,1,16777343,'2010-11-27 01:34:24'),(8,1,16777343,'2010-11-27 01:45:49'),(9,1,16777343,'2010-11-28 15:28:17'),(10,1,16777343,'2010-11-29 01:41:54'),(11,1,16777343,'2010-11-29 01:49:37'),(12,1,16777343,'2010-11-29 09:35:05'),(13,1,16777343,'2010-11-29 09:53:51'),(14,1,16777343,'2010-11-29 10:01:28'),(15,1,16777343,'2010-11-29 10:18:45'),(16,1,16777343,'2010-11-29 10:19:40'),(17,1,16777343,'2010-11-29 10:22:02'),(18,1,16777343,'2010-11-29 10:32:04'),(19,1,16777343,'2010-11-29 10:35:13'),(20,1,16777343,'2010-11-29 10:39:52'),(21,1,16777343,'2010-11-29 10:44:09'),(22,1,16777343,'2010-12-05 19:43:09'),(23,1,16777343,'2010-12-07 22:26:29'),(24,1,16777343,'2010-12-07 22:27:51'),(25,1,16777343,'2010-12-07 22:28:51'),(26,1,16777343,'2010-12-07 22:30:53'),(27,1,16777343,'2010-12-07 22:32:12'),(28,1,16777343,'2010-12-08 15:44:02'),(29,1,16777343,'2010-12-08 15:53:31'),(30,1,16777343,'2010-12-08 15:54:00'),(31,1,16777343,'2010-12-08 15:57:44'),(32,1,16777343,'2010-12-08 15:58:23'),(33,1,16777343,'2010-12-08 16:12:08'),(34,1,16777343,'2010-12-08 16:14:31'),(35,1,16777343,'2010-12-08 16:24:07'),(36,1,16777343,'2010-12-08 17:21:40'),(37,1,16777343,'2010-12-08 17:24:10'),(38,1,16777343,'2010-12-09 02:23:45'),(39,1,16777343,'2010-12-09 02:26:40'),(40,1,16777343,'2010-12-16 12:54:10'),(41,1,16777343,'2010-12-16 12:58:55'),(42,1,16777343,'2010-12-16 15:47:18'),(43,1,16777343,'2010-12-19 01:18:11'),(44,1,16777343,'2010-12-21 11:14:13'),(45,1,16777343,'2010-12-21 17:47:03'),(46,1,16777343,'2010-12-26 09:43:59'),(47,1,16777343,'2010-12-26 12:16:07'),(48,1,16777343,'2010-12-26 12:23:14'),(49,1,16777343,'2010-12-26 12:25:24'),(50,1,16777343,'2010-12-26 12:35:37'),(51,1,16777343,'2010-12-26 12:36:31'),(52,1,16777343,'2010-12-26 12:41:31'),(53,1,16777343,'2010-12-26 12:44:07'),(54,1,16777343,'2010-12-26 12:45:24'),(55,1,16777343,'2010-12-26 12:45:27'),(56,1,16777343,'2010-12-26 12:45:30'),(57,1,16777343,'2010-12-26 13:59:11'),(58,1,16777343,'2010-12-26 13:59:17'),(59,1,16777343,'2010-12-26 14:06:37'),(60,1,16777343,'2010-12-26 14:06:47'),(61,1,16777343,'2010-12-26 14:08:40'),(62,1,16777343,'2010-12-26 14:11:11'),(63,2,16777343,'2010-12-26 14:11:26'),(64,1,16777343,'2010-12-26 14:13:43'),(65,2,16777343,'2010-12-26 14:14:23'),(66,1,16777343,'2010-12-26 15:03:15'),(67,1,16777343,'2010-12-26 15:06:19'),(68,1,16777343,'2010-12-26 15:08:24'),(69,1,16777343,'2010-12-26 16:26:16'),(70,1,16777343,'2010-12-26 16:48:52'),(71,1,16777343,'2010-12-26 16:56:43'),(72,1,16777343,'2010-12-29 00:57:39'),(73,1,16777343,'2010-12-29 00:58:01'),(74,1,16777343,'2010-12-29 01:02:22'),(75,1,16777343,'2010-12-29 01:10:52'),(76,1,16777343,'2010-12-29 01:18:57'),(77,1,16777343,'2012-12-04 23:51:17'),(78,1,16777343,'2012-12-04 23:52:09');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +329,7 @@ CREATE TABLE `character` (
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1' COMMENT 'The body to use to display this character.',
   `move_speed` smallint(5) unsigned NOT NULL DEFAULT '1800' COMMENT 'The movement speed of the character.',
   `cash` int(11) NOT NULL DEFAULT '0' COMMENT 'Amount of cash.',
-  `level` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT 'Current level.',
+  `level` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Current level.',
   `exp` int(11) NOT NULL DEFAULT '0' COMMENT 'Experience points.',
   `statpoints` int(11) NOT NULL DEFAULT '0' COMMENT 'Stat points available to be spent.',
   `hp` smallint(6) NOT NULL DEFAULT '50' COMMENT 'Current health points.',
@@ -361,7 +361,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,202845,79,2340,387,84,100,100,100,1,1,1,1,3,2),(2,NULL,'test',NULL,NULL,NULL,1,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
+INSERT INTO `character` VALUES (1,NULL,'Spodi',NULL,NULL,NULL,1,365,222,1,1024,600,1,1800,202875,80,2370,392,83,100,100,100,1,1,1,1,3,2),(2,NULL,'test',NULL,NULL,NULL,1,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -547,12 +547,12 @@ CREATE TABLE `character_template` (
   `chat_dialog` smallint(5) unsigned DEFAULT NULL COMMENT 'The chat dialog (intended for NPCs only).',
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1' COMMENT 'The body to use.',
   `move_speed` smallint(5) unsigned NOT NULL DEFAULT '1800' COMMENT 'The movement speed.',
-  `respawn` smallint(5) unsigned NOT NULL DEFAULT '5' COMMENT 'How long to wait after death to be respawned (intended for NPCs only).',
-  `level` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT 'The character''s level.',
+  `respawn` smallint(5) unsigned NOT NULL DEFAULT '5' COMMENT 'How long in seconds to wait after death to be respawned (intended for NPCs only).',
+  `level` smallint(6) NOT NULL DEFAULT '1' COMMENT 'The character''s level.',
   `exp` int(11) NOT NULL DEFAULT '0' COMMENT 'Current exp.',
   `statpoints` int(11) NOT NULL DEFAULT '0' COMMENT 'Number of stat points available to spend.',
-  `give_exp` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Amount of exp to give when killed (intended for NPCs only).',
-  `give_cash` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Amount of cash to give when killed (intended for NPCs only).',
+  `give_exp` int(11) NOT NULL DEFAULT '0' COMMENT 'Amount of exp to give when killed (intended for NPCs only).',
+  `give_cash` int(11) NOT NULL DEFAULT '0' COMMENT 'Amount of cash to give when killed (intended for NPCs only).',
   `stat_maxhp` smallint(6) NOT NULL DEFAULT '50' COMMENT 'MaxHP stat.',
   `stat_maxmp` smallint(6) NOT NULL DEFAULT '50' COMMENT 'MaxMP stat.',
   `stat_minhit` smallint(6) NOT NULL DEFAULT '1' COMMENT 'MinHit stat.',
@@ -740,7 +740,7 @@ CREATE TABLE `event_counters_item_template` (
 
 LOCK TABLES `event_counters_item_template` WRITE;
 /*!40000 ALTER TABLE `event_counters_item_template` DISABLE KEYS */;
-INSERT INTO `event_counters_item_template` VALUES (2,1,5),(3,4,284),(3,6,10),(5,0,486),(5,6,20),(6,5,8);
+INSERT INTO `event_counters_item_template` VALUES (2,1,5),(3,0,36),(3,4,290),(3,5,4),(3,6,14),(5,0,513),(5,5,2),(5,6,22),(6,5,8),(7,0,633),(7,5,6),(7,6,168);
 /*!40000 ALTER TABLE `event_counters_item_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -766,7 +766,7 @@ CREATE TABLE `event_counters_map` (
 
 LOCK TABLES `event_counters_map` WRITE;
 /*!40000 ALTER TABLE `event_counters_map` DISABLE KEYS */;
-INSERT INTO `event_counters_map` VALUES (1,0,26),(1,6,12),(1,8,200),(2,1,3),(3,0,84),(3,5,220),(3,8,305),(4,1,60);
+INSERT INTO `event_counters_map` VALUES (1,0,27),(1,1,12),(1,2,64),(1,3,2),(1,4,2),(1,6,12),(1,7,10),(1,8,210),(2,1,33),(3,0,85),(3,1,9),(3,3,4),(3,4,4),(3,5,220),(3,8,305),(4,1,66);
 /*!40000 ALTER TABLE `event_counters_map` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -868,7 +868,7 @@ CREATE TABLE `event_counters_user` (
 
 LOCK TABLES `event_counters_user` WRITE;
 /*!40000 ALTER TABLE `event_counters_user` DISABLE KEYS */;
-INSERT INTO `event_counters_user` VALUES (1,2,2),(1,7,28),(1,8,964);
+INSERT INTO `event_counters_user` VALUES (1,2,4),(1,4,14),(1,7,28),(1,8,964);
 /*!40000 ALTER TABLE `event_counters_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1324,7 +1324,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-12-29 01:19:16');
+INSERT INTO `server_time` VALUES ('2012-12-04 23:52:18');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1389,34 +1389,34 @@ DROP TABLE IF EXISTS `view_npc_character`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `view_npc_character` (
-  `id` int(11),
-  `character_template_id` smallint(5) unsigned,
-  `name` varchar(60),
-  `shop_id` smallint(5) unsigned,
-  `chat_dialog` smallint(5) unsigned,
-  `ai_id` smallint(5) unsigned,
-  `load_map_id` smallint(5) unsigned,
-  `load_x` smallint(5) unsigned,
-  `load_y` smallint(5) unsigned,
-  `respawn_map_id` smallint(5) unsigned,
-  `respawn_x` float,
-  `respawn_y` float,
-  `body_id` smallint(5) unsigned,
-  `move_speed` smallint(5) unsigned,
-  `cash` int(11),
-  `level` tinyint(3) unsigned,
-  `exp` int(11),
-  `statpoints` int(11),
-  `hp` smallint(6),
-  `mp` smallint(6),
-  `stat_maxhp` smallint(6),
-  `stat_maxmp` smallint(6),
-  `stat_minhit` smallint(6),
-  `stat_maxhit` smallint(6),
-  `stat_defence` smallint(6),
-  `stat_agi` smallint(6),
-  `stat_int` smallint(6),
-  `stat_str` smallint(6)
+  `id` tinyint NOT NULL,
+  `character_template_id` tinyint NOT NULL,
+  `name` tinyint NOT NULL,
+  `shop_id` tinyint NOT NULL,
+  `chat_dialog` tinyint NOT NULL,
+  `ai_id` tinyint NOT NULL,
+  `load_map_id` tinyint NOT NULL,
+  `load_x` tinyint NOT NULL,
+  `load_y` tinyint NOT NULL,
+  `respawn_map_id` tinyint NOT NULL,
+  `respawn_x` tinyint NOT NULL,
+  `respawn_y` tinyint NOT NULL,
+  `body_id` tinyint NOT NULL,
+  `move_speed` tinyint NOT NULL,
+  `cash` tinyint NOT NULL,
+  `level` tinyint NOT NULL,
+  `exp` tinyint NOT NULL,
+  `statpoints` tinyint NOT NULL,
+  `hp` tinyint NOT NULL,
+  `mp` tinyint NOT NULL,
+  `stat_maxhp` tinyint NOT NULL,
+  `stat_maxmp` tinyint NOT NULL,
+  `stat_minhit` tinyint NOT NULL,
+  `stat_maxhit` tinyint NOT NULL,
+  `stat_defence` tinyint NOT NULL,
+  `stat_agi` tinyint NOT NULL,
+  `stat_int` tinyint NOT NULL,
+  `stat_str` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -1429,34 +1429,34 @@ DROP TABLE IF EXISTS `view_user_character`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE TABLE `view_user_character` (
-  `id` int(11),
-  `character_template_id` smallint(5) unsigned,
-  `name` varchar(60),
-  `shop_id` smallint(5) unsigned,
-  `chat_dialog` smallint(5) unsigned,
-  `ai_id` smallint(5) unsigned,
-  `load_map_id` smallint(5) unsigned,
-  `load_x` smallint(5) unsigned,
-  `load_y` smallint(5) unsigned,
-  `respawn_map_id` smallint(5) unsigned,
-  `respawn_x` float,
-  `respawn_y` float,
-  `body_id` smallint(5) unsigned,
-  `move_speed` smallint(5) unsigned,
-  `cash` int(11),
-  `level` tinyint(3) unsigned,
-  `exp` int(11),
-  `statpoints` int(11),
-  `hp` smallint(6),
-  `mp` smallint(6),
-  `stat_maxhp` smallint(6),
-  `stat_maxmp` smallint(6),
-  `stat_minhit` smallint(6),
-  `stat_maxhit` smallint(6),
-  `stat_defence` smallint(6),
-  `stat_agi` smallint(6),
-  `stat_int` smallint(6),
-  `stat_str` smallint(6)
+  `id` tinyint NOT NULL,
+  `character_template_id` tinyint NOT NULL,
+  `name` tinyint NOT NULL,
+  `shop_id` tinyint NOT NULL,
+  `chat_dialog` tinyint NOT NULL,
+  `ai_id` tinyint NOT NULL,
+  `load_map_id` tinyint NOT NULL,
+  `load_x` tinyint NOT NULL,
+  `load_y` tinyint NOT NULL,
+  `respawn_map_id` tinyint NOT NULL,
+  `respawn_x` tinyint NOT NULL,
+  `respawn_y` tinyint NOT NULL,
+  `body_id` tinyint NOT NULL,
+  `move_speed` tinyint NOT NULL,
+  `cash` tinyint NOT NULL,
+  `level` tinyint NOT NULL,
+  `exp` tinyint NOT NULL,
+  `statpoints` tinyint NOT NULL,
+  `hp` tinyint NOT NULL,
+  `mp` tinyint NOT NULL,
+  `stat_maxhp` tinyint NOT NULL,
+  `stat_maxmp` tinyint NOT NULL,
+  `stat_minhit` tinyint NOT NULL,
+  `stat_maxhit` tinyint NOT NULL,
+  `stat_defence` tinyint NOT NULL,
+  `stat_agi` tinyint NOT NULL,
+  `stat_int` tinyint NOT NULL,
+  `stat_str` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -1533,7 +1533,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
-INSERT INTO `world_stats_count_item_create` VALUES (2,6,'2010-12-09 10:26:47'),(3,2758,'2010-12-29 09:18:42'),(5,2841,'2010-12-29 09:18:43'),(6,1,'2010-12-16 20:55:11'),(7,2420,'2010-12-29 09:18:42');
+INSERT INTO `world_stats_count_item_create` VALUES (2,6,'2010-12-09 10:26:47'),(3,2794,'2012-12-05 07:52:14'),(5,2868,'2012-12-05 07:52:13'),(6,1,'2010-12-16 20:55:11'),(7,3053,'2012-12-05 07:52:14');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1695,7 +1695,7 @@ CREATE TABLE `world_stats_count_user_kill_npc` (
 
 LOCK TABLES `world_stats_count_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_count_user_kill_npc` VALUES (1,1,15,'2010-12-27 00:56:45');
+INSERT INTO `world_stats_count_user_kill_npc` VALUES (1,1,21,'2012-12-05 07:52:14');
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1770,7 +1770,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
   `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
-  `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
+  `user_level` smallint(6) NOT NULL COMMENT 'The level of the user was when this event took place.',
   `user_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
   `user_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
   `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
@@ -1945,7 +1945,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
   `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
-  `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
+  `user_level` smallint(6) NOT NULL COMMENT 'The level of the user was when this event took place.',
   `user_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `user_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
@@ -1959,7 +1959,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1 COMMENT='Event log: User kills NPC.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1968,7 +1968,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,1,76,1024,594,0,0,3,'2010-11-27 07:20:23'),(2,1,1,76,797,498,0,0,3,'2010-12-16 20:55:20'),(3,1,1,76,829,498,0,0,3,'2010-12-16 20:59:02'),(4,1,1,77,525,754,0,0,3,'2010-12-16 20:59:41'),(5,1,1,77,60,550,0,0,1,'2010-12-26 22:13:59'),(6,1,1,77,1024,658,0,0,1,'2010-12-26 23:06:22'),(7,1,1,77,1024,658,0,0,1,'2010-12-26 23:06:23'),(8,1,1,77,1024,658,0,0,1,'2010-12-26 23:08:28'),(9,1,1,77,1024,658,0,0,1,'2010-12-26 23:08:28'),(10,1,1,78,1024,594,0,0,3,'2010-12-27 00:48:54'),(11,1,1,78,1024,594,0,0,3,'2010-12-27 00:48:54'),(12,1,1,78,1024,594,0,0,3,'2010-12-27 00:48:56'),(13,1,1,78,700,391,0,0,3,'2010-12-27 00:49:08'),(14,1,1,78,584,434,0,0,3,'2010-12-27 00:49:09'),(15,1,1,78,1024,594,0,0,3,'2010-12-27 00:56:45');
+INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,1,76,1024,594,0,0,3,'2010-11-27 07:20:23'),(2,1,1,76,797,498,0,0,3,'2010-12-16 20:55:20'),(3,1,1,76,829,498,0,0,3,'2010-12-16 20:59:02'),(4,1,1,77,525,754,0,0,3,'2010-12-16 20:59:41'),(5,1,1,77,60,550,0,0,1,'2010-12-26 22:13:59'),(6,1,1,77,1024,658,0,0,1,'2010-12-26 23:06:22'),(7,1,1,77,1024,658,0,0,1,'2010-12-26 23:06:23'),(8,1,1,77,1024,658,0,0,1,'2010-12-26 23:08:28'),(9,1,1,77,1024,658,0,0,1,'2010-12-26 23:08:28'),(10,1,1,78,1024,594,0,0,3,'2010-12-27 00:48:54'),(11,1,1,78,1024,594,0,0,3,'2010-12-27 00:48:54'),(12,1,1,78,1024,594,0,0,3,'2010-12-27 00:48:56'),(13,1,1,78,700,391,0,0,3,'2010-12-27 00:49:08'),(14,1,1,78,584,434,0,0,3,'2010-12-27 00:49:09'),(15,1,1,78,1024,594,0,0,3,'2010-12-27 00:56:45'),(16,1,1,79,800,344,0,0,3,'2012-12-05 07:51:23'),(17,1,1,79,800,344,0,0,3,'2012-12-05 07:51:23'),(18,1,1,79,800,344,0,0,3,'2012-12-05 07:51:24'),(19,1,1,79,365,222,0,0,3,'2012-12-05 07:51:39'),(20,1,1,79,365,222,0,0,1,'2012-12-05 07:52:13'),(21,1,1,79,365,222,0,0,1,'2012-12-05 07:52:14');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1985,10 +1985,10 @@ CREATE TABLE `world_stats_user_level` (
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
-  `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
+  `level` smallint(6) NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'When this event took place.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='Event log: User levels up.';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='Event log: User levels up.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1997,7 +1997,7 @@ CREATE TABLE `world_stats_user_level` (
 
 LOCK TABLES `world_stats_user_level` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_level` DISABLE KEYS */;
-INSERT INTO `world_stats_user_level` VALUES (1,1,3,829,498,77,'2010-12-16 20:59:02'),(2,1,1,1024,658,78,'2010-12-26 23:08:28'),(3,1,3,1024,594,79,'2010-12-27 00:56:45');
+INSERT INTO `world_stats_user_level` VALUES (1,1,3,829,498,77,'2010-12-16 20:59:02'),(2,1,1,1024,658,78,'2010-12-26 23:08:28'),(3,1,3,1024,594,79,'2010-12-27 00:56:45'),(4,1,1,365,222,80,'2012-12-05 07:52:14');
 /*!40000 ALTER TABLE `world_stats_user_level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2054,7 +2054,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 FUNCTION `create_user_on_account`(accountName VARCHAR(50), characterName VARCHAR(30)) RETURNS varchar(100) CHARSET latin1
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `create_user_on_account`(accountName VARCHAR(50), characterName VARCHAR(30)) RETURNS varchar(100) CHARSET latin1
 BEGIN				DECLARE character_count INT DEFAULT 0;		DECLARE max_character_count INT DEFAULT 9;		DECLARE is_name_free INT DEFAULT 0;		DECLARE errorMsg VARCHAR(100) DEFAULT "";		DECLARE accountID INT DEFAULT NULL;		DECLARE charID INT DEFAULT 0;		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;		IF ISNULL(accountID) THEN			SET errorMsg = "Account with the specified name does not exist.";		ELSE			SELECT COUNT(*) INTO character_count FROM `account_character` WHERE `account_id` = accountID;			IF character_count > max_character_count THEN				SET errorMsg = "No free character slots available in the account.";			ELSE				SELECT COUNT(*) INTO is_name_free FROM `character` WHERE `name` = characterName LIMIT 1;				IF is_name_free > 0 THEN					SET errorMsg = "The specified character name is not available for use.";				ELSE					INSERT INTO `character` SET `name`	= characterName;					SET charID = LAST_INSERT_ID();					INSERT INTO `account_character` SET `character_id` = charID, `account_id` = accountID;				END IF;			END IF;		END IF;						RETURN errorMsg;  END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2071,26 +2071,26 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 FUNCTION `ft_banning_isbanned`(accountID INT) RETURNS int(11)
-BEGIN
-		DECLARE cnt INT DEFAULT 0;
-		DECLARE tnow TIMESTAMP;
-
-		SET tnow = NOW();
-
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `account_id` = accountID
-				AND `end_time` <= tnow;
-		
-		SELECT COUNT(*)
-			INTO cnt
-			FROM `account_ban`
-			WHERE `expired` = 0
-				AND `account_id` = accountID;
-				
-		RETURN cnt;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `ft_banning_isbanned`(accountID INT) RETURNS int(11)
+BEGIN
+		DECLARE cnt INT DEFAULT 0;
+		DECLARE tnow TIMESTAMP;
+
+		SET tnow = NOW();
+
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `account_id` = accountID
+				AND `end_time` <= tnow;
+		
+		SELECT COUNT(*)
+			INTO cnt
+			FROM `account_ban`
+			WHERE `expired` = 0
+				AND `account_id` = accountID;
+				
+		RETURN cnt;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2107,19 +2107,19 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 PROCEDURE `delete_user_on_account`(characterID INT)
-BEGIN
-
-	UPDATE `account_character`
-		SET `time_deleted` = NOW()
-		WHERE `character_id` = characterID
-		AND `time_deleted` IS NULL;
-
-	UPDATE `character`
-		SET `name` = CONCAT('~',`id`,'_',name)
-		WHERE `id` = characterID
-			AND SUBSTR(`name`, 1) != '~';
-
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `delete_user_on_account`(characterID INT)
+BEGIN
+
+	UPDATE `account_character`
+		SET `time_deleted` = NOW()
+		WHERE `character_id` = characterID
+		AND `time_deleted` IS NULL;
+
+	UPDATE `character`
+		SET `name` = CONCAT('~',`id`,'_',name)
+		WHERE `id` = characterID
+			AND SUBSTR(`name`, 1) != '~';
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2136,15 +2136,15 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 PROCEDURE `find_foreign_keys`(tableSchema VARCHAR(100), tableName VARCHAR(100), columnName VARCHAR(100))
-BEGIN
-
-		SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME`
-			FROM information_schema.KEY_COLUMN_USAGE
-			WHERE `REFERENCED_TABLE_SCHEMA` = tableSchema
-				AND `REFERENCED_TABLE_NAME` = tableName
-				AND `REFERENCED_COLUMN_NAME` = columnName;
-
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `find_foreign_keys`(tableSchema VARCHAR(100), tableName VARCHAR(100), columnName VARCHAR(100))
+BEGIN
+
+		SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME`
+			FROM information_schema.KEY_COLUMN_USAGE
+			WHERE `REFERENCED_TABLE_SCHEMA` = tableSchema
+				AND `REFERENCED_TABLE_NAME` = tableName
+				AND `REFERENCED_COLUMN_NAME` = columnName;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2161,24 +2161,24 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 PROCEDURE `ft_banning_get_reasons`(accountID INT)
-BEGIN
-		DECLARE tnow TIMESTAMP;
-
-		SET tnow = NOW();
-
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `account_id` = accountID
-				AND `end_time` <= tnow;
-		
-		SELECT GROUP_CONCAT(DISTINCT `reason` SEPARATOR '\n\r') AS 'reasons',
-				ROUND(TIME_TO_SEC(TIMEDIFF(MAX(`end_time`), NOW())) / 60) AS 'mins_left'
-			FROM `account_ban`
-			WHERE `account_id` = accountID
-				AND	`expired` = 0;
-		
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `ft_banning_get_reasons`(accountID INT)
+BEGIN
+		DECLARE tnow TIMESTAMP;
+
+		SET tnow = NOW();
+
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `account_id` = accountID
+				AND `end_time` <= tnow;
+		
+		SELECT GROUP_CONCAT(DISTINCT `reason` SEPARATOR '\n\r') AS 'reasons',
+				ROUND(TIME_TO_SEC(TIMEDIFF(MAX(`end_time`), NOW())) / 60) AS 'mins_left'
+			FROM `account_ban`
+			WHERE `account_id` = accountID
+				AND	`expired` = 0;
+		
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2195,16 +2195,16 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 PROCEDURE `ft_banning_update_expired`()
-BEGIN
-		DECLARE tnow TIMESTAMP;
-		
-		SET tnow = NOW();
-		
-		UPDATE `account_ban`
-			SET `expired` = 1
-			WHERE `expired` = 0
-				AND `end_time` <= tnow;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `ft_banning_update_expired`()
+BEGIN
+		DECLARE tnow TIMESTAMP;
+		
+		SET tnow = NOW();
+		
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `end_time` <= tnow;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2221,12 +2221,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 PROCEDURE `rebuild_views`()
-BEGIN
-	
-	CALL rebuild_view_npc_character();
-	CALL rebuild_view_user_character();
-    
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_views`()
+BEGIN
+	
+	CALL rebuild_view_npc_character();
+	CALL rebuild_view_user_character();
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2243,12 +2243,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 PROCEDURE `rebuild_view_npc_character`()
-BEGIN
-	
-	DROP VIEW IF EXISTS `view_npc_character`;
-	CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `view_npc_character` AS SELECT c.*  FROM `character` c LEFT JOIN `account_character` a ON c.id = a.character_id WHERE a.account_id IS NULL;
-    
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_view_npc_character`()
+BEGIN
+	
+	DROP VIEW IF EXISTS `view_npc_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `view_npc_character` AS SELECT c.*  FROM `character` c LEFT JOIN `account_character` a ON c.id = a.character_id WHERE a.account_id IS NULL;
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2265,12 +2265,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=CURRENT_USER*/ /*!50003 PROCEDURE `rebuild_view_user_character`()
-BEGIN
-	
-	DROP VIEW IF EXISTS `view_user_character`;
-	CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `view_user_character` AS SELECT c.* FROM `character` c INNER JOIN `account_character` a ON c.id = a.character_id WHERE a.time_deleted IS NULL;
-    
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `rebuild_view_user_character`()
+BEGIN
+	
+	DROP VIEW IF EXISTS `view_user_character`;
+	CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `view_user_character` AS SELECT c.* FROM `character` c INNER JOIN `account_character` a ON c.id = a.character_id WHERE a.time_deleted IS NULL;
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2291,7 +2291,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=CURRENT_USER SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_npc_character` AS select `c`.`id` AS `id`,`c`.`character_template_id` AS `character_template_id`,`c`.`name` AS `name`,`c`.`shop_id` AS `shop_id`,`c`.`chat_dialog` AS `chat_dialog`,`c`.`ai_id` AS `ai_id`,`c`.`load_map_id` AS `load_map_id`,`c`.`load_x` AS `load_x`,`c`.`load_y` AS `load_y`,`c`.`respawn_map_id` AS `respawn_map_id`,`c`.`respawn_x` AS `respawn_x`,`c`.`respawn_y` AS `respawn_y`,`c`.`body_id` AS `body_id`,`c`.`move_speed` AS `move_speed`,`c`.`cash` AS `cash`,`c`.`level` AS `level`,`c`.`exp` AS `exp`,`c`.`statpoints` AS `statpoints`,`c`.`hp` AS `hp`,`c`.`mp` AS `mp`,`c`.`stat_maxhp` AS `stat_maxhp`,`c`.`stat_maxmp` AS `stat_maxmp`,`c`.`stat_minhit` AS `stat_minhit`,`c`.`stat_maxhit` AS `stat_maxhit`,`c`.`stat_defence` AS `stat_defence`,`c`.`stat_agi` AS `stat_agi`,`c`.`stat_int` AS `stat_int`,`c`.`stat_str` AS `stat_str` from (`character` `c` left join `account_character` `a` on((`c`.`id` = `a`.`character_id`))) where isnull(`a`.`account_id`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -2310,7 +2310,7 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=CURRENT_USER SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_user_character` AS select `c`.`id` AS `id`,`c`.`character_template_id` AS `character_template_id`,`c`.`name` AS `name`,`c`.`shop_id` AS `shop_id`,`c`.`chat_dialog` AS `chat_dialog`,`c`.`ai_id` AS `ai_id`,`c`.`load_map_id` AS `load_map_id`,`c`.`load_x` AS `load_x`,`c`.`load_y` AS `load_y`,`c`.`respawn_map_id` AS `respawn_map_id`,`c`.`respawn_x` AS `respawn_x`,`c`.`respawn_y` AS `respawn_y`,`c`.`body_id` AS `body_id`,`c`.`move_speed` AS `move_speed`,`c`.`cash` AS `cash`,`c`.`level` AS `level`,`c`.`exp` AS `exp`,`c`.`statpoints` AS `statpoints`,`c`.`hp` AS `hp`,`c`.`mp` AS `mp`,`c`.`stat_maxhp` AS `stat_maxhp`,`c`.`stat_maxmp` AS `stat_maxmp`,`c`.`stat_minhit` AS `stat_minhit`,`c`.`stat_maxhit` AS `stat_maxhit`,`c`.`stat_defence` AS `stat_defence`,`c`.`stat_agi` AS `stat_agi`,`c`.`stat_int` AS `stat_int`,`c`.`stat_str` AS `stat_str` from (`character` `c` join `account_character` `a` on((`c`.`id` = `a`.`character_id`))) where isnull(`a`.`time_deleted`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -2325,4 +2325,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-12-29  1:21:08
+-- Dump completed on 2012-12-04 23:53:51

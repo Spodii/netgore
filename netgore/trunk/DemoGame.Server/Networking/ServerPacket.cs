@@ -461,7 +461,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetLevel(byte level)
+        public static PacketWriter SetLevel(short level)
         {
             var pw = GetWriter(ServerPacketID.SetLevel);
             pw.Write(level);

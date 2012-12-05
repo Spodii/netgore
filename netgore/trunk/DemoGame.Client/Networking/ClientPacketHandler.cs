@@ -706,7 +706,7 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.SetLevel)]
         void RecvSetLevel(IIPSocket conn, BitStream r)
         {
-            var level = r.ReadByte();
+            var level = r.ReadShort();
             UserInfo.Level = level;
         }
 

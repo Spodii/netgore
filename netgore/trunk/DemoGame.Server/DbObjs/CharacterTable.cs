@@ -141,7 +141,7 @@ System.Int32 _iD;
 /// <summary>
 /// The field that maps onto the database column `level`.
 /// </summary>
-System.Byte _level;
+System.Int16 _level;
 /// <summary>
 /// The field that maps onto the database column `load_map_id`.
 /// </summary>
@@ -336,20 +336,20 @@ this._iD = (System.Int32)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `level`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.The database column contains the comment: 
+/// The underlying database type is `smallint(6)` with the default value of `1`.The database column contains the comment: 
 /// "Current level.".
 /// </summary>
 [System.ComponentModel.Description("Current level.")]
 [NetGore.SyncValueAttribute()]
-public System.Byte Level
+public System.Int16 Level
 {
 get
 {
-return (System.Byte)_level;
+return (System.Int16)_level;
 }
 set
 {
-this._level = (System.Byte)value;
+this._level = (System.Int16)value;
 }
 }
 /// <summary>
@@ -619,7 +619,7 @@ public CharacterTable()
 /// <param name="statMaxmp">The initial value for the corresponding property.</param>
 /// <param name="statMinhit">The initial value for the corresponding property.</param>
 /// <param name="statStr">The initial value for the corresponding property.</param>
-public CharacterTable(System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyID @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Byte @level, NetGore.World.MapID @loadMapID, System.UInt16 @loadX, System.UInt16 @loadY, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, System.Nullable<NetGore.World.MapID> @respawnMapID, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr)
+public CharacterTable(System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyID @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Int16 @level, NetGore.World.MapID @loadMapID, System.UInt16 @loadX, System.UInt16 @loadY, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, System.Nullable<NetGore.World.MapID> @respawnMapID, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr)
 {
 this.AIID = (System.Nullable<NetGore.AI.AIID>)@aIID;
 this.BodyID = (DemoGame.BodyID)@bodyID;
@@ -629,7 +629,7 @@ this.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)@ch
 this.Exp = (System.Int32)@exp;
 this.HP = (DemoGame.SPValueType)@hP;
 this.ID = (DemoGame.CharacterID)@iD;
-this.Level = (System.Byte)@level;
+this.Level = (System.Int16)@level;
 this.LoadMapID = (NetGore.World.MapID)@loadMapID;
 this.LoadX = (System.UInt16)@loadX;
 this.LoadY = (System.UInt16)@loadY;
@@ -685,7 +685,7 @@ dic["chat_dialog"] = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)
 dic["exp"] = (System.Int32)source.Exp;
 dic["hp"] = (DemoGame.SPValueType)source.HP;
 dic["id"] = (DemoGame.CharacterID)source.ID;
-dic["level"] = (System.Byte)source.Level;
+dic["level"] = (System.Int16)source.Level;
 dic["load_map_id"] = (NetGore.World.MapID)source.LoadMapID;
 dic["load_x"] = (System.UInt16)source.LoadX;
 dic["load_y"] = (System.UInt16)source.LoadY;
@@ -721,7 +721,7 @@ this.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)sou
 this.Exp = (System.Int32)source.Exp;
 this.HP = (DemoGame.SPValueType)source.HP;
 this.ID = (DemoGame.CharacterID)source.ID;
-this.Level = (System.Byte)source.Level;
+this.Level = (System.Int16)source.Level;
 this.LoadMapID = (NetGore.World.MapID)source.LoadMapID;
 this.LoadX = (System.UInt16)source.LoadX;
 this.LoadY = (System.UInt16)source.LoadY;
@@ -885,7 +885,7 @@ this.ID = (DemoGame.CharacterID)value;
 break;
 
 case "level":
-this.Level = (System.Byte)value;
+this.Level = (System.Int16)value;
 break;
 
 case "load_map_id":
@@ -1005,7 +1005,7 @@ case "id":
 return new ColumnMetadata("id", "The unique ID of the character.", "int(11)", null, typeof(System.Int32), false, true, false);
 
 case "level":
-return new ColumnMetadata("level", "Current level.", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+return new ColumnMetadata("level", "Current level.", "smallint(6)", "1", typeof(System.Int16), false, false, false);
 
 case "load_map_id":
 return new ColumnMetadata("load_map_id", "The map to load on (when logging in / being created).", "smallint(5) unsigned", "3", typeof(System.UInt16), false, false, true);

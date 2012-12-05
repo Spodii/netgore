@@ -705,8 +705,8 @@ namespace DemoGame.Server
             // Handle killing a NPC
             if (killedNPC != null)
             {
-                int giveExp = killedNPC.GiveExp;
-                int giveCash = killedNPC.GiveCash;
+                var giveExp = killedNPC.GiveExp;
+                var giveCash = killedNPC.GiveCash;
 
                 WorldStatsTracker.Instance.AddUserKillNPC(this, killedNPC);
 
@@ -753,7 +753,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        protected override void OnLevelChanged(byte oldValue, byte newValue)
+        protected override void OnLevelChanged(short oldValue, short newValue)
         {
             base.OnLevelChanged(oldValue, newValue);
 

@@ -122,7 +122,7 @@ namespace DemoGame.Client
             get { return _knownSkills; }
         }
 
-        public byte Level { get; set; }
+        public short Level { get; set; }
 
         public SPValueType MP { get; set; }
 

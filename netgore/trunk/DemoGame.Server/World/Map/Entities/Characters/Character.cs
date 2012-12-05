@@ -64,7 +64,7 @@ namespace DemoGame.Server
         bool _isLoaded = false;
         KnownSkillsCollection _knownSkills;
 
-        byte _level;
+        short _level;
 
         /// <summary>
         /// Map the character is currently on.
@@ -207,7 +207,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s level value has changed.
         /// </summary>
-        public event TypedEventHandler<Character, ValueChangedEventArgs<byte>> LevelChanged;
+        public event TypedEventHandler<Character, ValueChangedEventArgs<short>> LevelChanged;
 
         /// <summary>
         /// Notifies listeners when this <see cref="Character"/>'s MP value has changed.
@@ -1512,7 +1512,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        protected virtual void OnLevelChanged(byte oldValue, byte newValue)
+        protected virtual void OnLevelChanged(short oldValue, short newValue)
         {
         }
 
@@ -2223,7 +2223,7 @@ namespace DemoGame.Server
             get { return _id; }
         }
 
-        public byte Level
+        public short Level
         {
             get { return _level; }
             private set

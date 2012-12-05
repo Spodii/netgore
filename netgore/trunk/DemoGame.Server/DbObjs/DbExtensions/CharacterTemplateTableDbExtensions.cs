@@ -45,10 +45,10 @@ paramValues["alliance_id"] = (System.Byte)source.AllianceID;
 paramValues["body_id"] = (System.UInt16)source.BodyID;
 paramValues["chat_dialog"] = (System.Nullable<System.UInt16>)source.ChatDialog;
 paramValues["exp"] = (System.Int32)source.Exp;
-paramValues["give_cash"] = (System.UInt16)source.GiveCash;
-paramValues["give_exp"] = (System.UInt16)source.GiveExp;
+paramValues["give_cash"] = (System.Int32)source.GiveCash;
+paramValues["give_exp"] = (System.Int32)source.GiveExp;
 paramValues["id"] = (System.UInt16)source.ID;
-paramValues["level"] = (System.Byte)source.Level;
+paramValues["level"] = (System.Int16)source.Level;
 paramValues["move_speed"] = (System.UInt16)source.MoveSpeed;
 paramValues["name"] = (System.String)source.Name;
 paramValues["respawn"] = (System.UInt16)source.Respawn;
@@ -97,11 +97,11 @@ source.Exp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
 i = dataRecord.GetOrdinal("give_cash");
 
-source.GiveCash = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
+source.GiveCash = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
 i = dataRecord.GetOrdinal("give_exp");
 
-source.GiveExp = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
+source.GiveExp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
 i = dataRecord.GetOrdinal("id");
 
@@ -109,7 +109,7 @@ source.ID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataReco
 
 i = dataRecord.GetOrdinal("level");
 
-source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.Level = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
 i = dataRecord.GetOrdinal("move_speed");
 
@@ -206,12 +206,12 @@ break;
 
 
 case "give_cash":
-source.GiveCash = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
+source.GiveCash = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
 case "give_exp":
-source.GiveExp = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
+source.GiveExp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 break;
 
 
@@ -221,7 +221,7 @@ break;
 
 
 case "level":
-source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.Level = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
@@ -337,12 +337,12 @@ break;
 
 
 case "give_cash":
-paramValues[i] = (System.UInt16)source.GiveCash;
+paramValues[i] = (System.Int32)source.GiveCash;
 break;
 
 
 case "give_exp":
-paramValues[i] = (System.UInt16)source.GiveExp;
+paramValues[i] = (System.Int32)source.GiveExp;
 break;
 
 
@@ -352,7 +352,7 @@ break;
 
 
 case "level":
-paramValues[i] = (System.Byte)source.Level;
+paramValues[i] = (System.Int16)source.Level;
 break;
 
 
