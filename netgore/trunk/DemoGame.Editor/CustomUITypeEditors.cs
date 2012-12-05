@@ -13,6 +13,7 @@ using NetGore.AI;
 using NetGore.Db;
 using NetGore.Editor;
 using NetGore.Editor.UI;
+using NetGore.Features.ActionDisplays;
 using NetGore.Features.NPCChat;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
@@ -71,6 +72,7 @@ namespace DemoGame.Editor
 
             // Set the properties we want to force being readonly in the PropertyGrid
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");
+            AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(EditorCharacterTemplate), "ID");
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(ItemTemplateTable), "ID");
 
 #if !TOPDOWN
@@ -100,6 +102,8 @@ namespace DemoGame.Editor
             // regular type and nullable type if we want to support nullable types. It is important that the
             // UITypeEditor, too, also supports the nullable type.
             NetGore.Editor.UI.CustomUITypeEditors.AddEditorsHelper(
+                new EditorTypes(typeof(ActionDisplayID), typeof(ActionDisplayIDEditor)),
+                new EditorTypes(typeof(ActionDisplayID?), typeof(ActionDisplayIDEditor)),
                 new EditorTypes(typeof(CharacterTemplateID), typeof(CharacterTemplateIDEditor)),
                 new EditorTypes(typeof(CharacterTemplateID?), typeof(CharacterTemplateIDEditor)),
                 new EditorTypes(typeof(ItemTemplateID), typeof(ItemTemplateIDEditor)),
