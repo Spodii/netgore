@@ -391,19 +391,31 @@ namespace DemoGame.Client
                 World.Camera.CenterOn(World.UserChar);
 
             // Draw the world layer
-            var sb = DrawingManager.BeginDrawWorld(World.Camera);
-            if (sb == null)
-                return;
+            try
+            {
+                var sb = DrawingManager.BeginDrawWorld(World.Camera);
+                if (sb == null)
+                    return;
 
-            World.Draw(sb);
-            _damageTextPool.Draw(sb, _damageFont);
-            DrawingManager.EndDrawWorld();
+                World.Draw(sb);
+                _damageTextPool.Draw(sb, _damageFont);
+            }
+            finally
+            {
+                DrawingManager.EndDrawWorld();
+            }
 
             // Draw the HUD layer
-            sb = DrawingManager.BeginDrawGUI();
-            _infoBox.Draw(sb);
-            GUIManager.Draw(sb);
-            DrawingManager.EndDrawGUI();
+            try
+            {
+                var sb = DrawingManager.BeginDrawGUI();
+                _infoBox.Draw(sb);
+                GUIManager.Draw(sb);
+            }
+            finally
+            {
+                DrawingManager.EndDrawGUI();
+            }
         }
 
         /// <summary>

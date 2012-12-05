@@ -1994,6 +1994,14 @@ namespace DemoGame.Server
             if (item.MP != 0)
                 MP += item.MP;
 
+            if (item.ActionDisplayID.HasValue)
+            {
+                using (var pw = ServerPacket.CreateActionDisplayAtEntity(item.ActionDisplayID.Value, MapEntityIndex))
+                {
+                    Map.Send(pw, ServerMessageType.MapEffect);
+                }
+            }
+
             return true;
         }
 
