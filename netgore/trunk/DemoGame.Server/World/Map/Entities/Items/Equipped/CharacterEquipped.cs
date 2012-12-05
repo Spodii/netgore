@@ -119,7 +119,7 @@ namespace DemoGame.Server
                 return false;
 
             // Get the possible slots
-            var slots = GetPossibleSlots(item);
+            var slots = GetPossibleSlots(item).ToImmutable();
 
             // Check for valid slots
             if (slots == null)
