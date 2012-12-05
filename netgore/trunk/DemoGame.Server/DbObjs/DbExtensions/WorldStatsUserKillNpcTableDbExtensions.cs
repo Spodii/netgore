@@ -46,7 +46,7 @@ paramValues["npc_template_id"] = (System.Nullable<System.UInt16>)source.NPCTempl
 paramValues["npc_x"] = (System.UInt16)source.NpcX;
 paramValues["npc_y"] = (System.UInt16)source.NpcY;
 paramValues["user_id"] = (System.Int32)source.UserID;
-paramValues["user_level"] = (System.Byte)source.UserLevel;
+paramValues["user_level"] = (System.Int16)source.UserLevel;
 paramValues["user_x"] = (System.UInt16)source.UserX;
 paramValues["user_y"] = (System.UInt16)source.UserY;
 paramValues["when"] = (System.DateTime)source.When;
@@ -89,7 +89,7 @@ source.UserID = (DemoGame.CharacterID)(DemoGame.CharacterID)dataRecord.GetInt32(
 
 i = dataRecord.GetOrdinal("user_level");
 
-source.UserLevel = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.UserLevel = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
 i = dataRecord.GetOrdinal("user_x");
 
@@ -151,7 +151,7 @@ break;
 
 
 case "user_level":
-source.UserLevel = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.UserLevel = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
@@ -222,7 +222,7 @@ break;
 
 
 case "user_level":
-paramValues[i] = (System.Byte)source.UserLevel;
+paramValues[i] = (System.Int16)source.UserLevel;
 break;
 
 

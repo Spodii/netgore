@@ -92,7 +92,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `level`.
 /// </summary>
-System.Byte Level
+System.Int16 Level
 {
 get;
 }

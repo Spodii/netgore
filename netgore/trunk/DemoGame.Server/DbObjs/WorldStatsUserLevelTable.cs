@@ -91,7 +91,7 @@ System.UInt32 _iD;
 /// <summary>
 /// The field that maps onto the database column `level`.
 /// </summary>
-System.Byte _level;
+System.Int16 _level;
 /// <summary>
 /// The field that maps onto the database column `map_id`.
 /// </summary>
@@ -144,20 +144,20 @@ this._iD = (System.UInt32)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `level`.
-/// The underlying database type is `tinyint(3) unsigned`.The database column contains the comment: 
+/// The underlying database type is `smallint(6)`.The database column contains the comment: 
 /// "The level that the character leveled up to (their new level).".
 /// </summary>
 [System.ComponentModel.Description("The level that the character leveled up to (their new level).")]
 [NetGore.SyncValueAttribute()]
-public System.Byte Level
+public System.Int16 Level
 {
 get
 {
-return (System.Byte)_level;
+return (System.Int16)_level;
 }
 set
 {
-this._level = (System.Byte)value;
+this._level = (System.Int16)value;
 }
 }
 /// <summary>
@@ -260,11 +260,11 @@ public WorldStatsUserLevelTable()
 /// <param name="when">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public WorldStatsUserLevelTable(DemoGame.CharacterID @characterID, System.UInt32 @iD, System.Byte @level, System.Nullable<NetGore.World.MapID> @mapID, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
+public WorldStatsUserLevelTable(DemoGame.CharacterID @characterID, System.UInt32 @iD, System.Int16 @level, System.Nullable<NetGore.World.MapID> @mapID, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
 {
 this.CharacterID = (DemoGame.CharacterID)@characterID;
 this.ID = (System.UInt32)@iD;
-this.Level = (System.Byte)@level;
+this.Level = (System.Int16)@level;
 this.MapID = (System.Nullable<NetGore.World.MapID>)@mapID;
 this.When = (System.DateTime)@when;
 this.X = (System.UInt16)@x;
@@ -299,7 +299,7 @@ public static void CopyValues(IWorldStatsUserLevelTable source, System.Collectio
 {
 dic["character_id"] = (DemoGame.CharacterID)source.CharacterID;
 dic["id"] = (System.UInt32)source.ID;
-dic["level"] = (System.Byte)source.Level;
+dic["level"] = (System.Int16)source.Level;
 dic["map_id"] = (System.Nullable<NetGore.World.MapID>)source.MapID;
 dic["when"] = (System.DateTime)source.When;
 dic["x"] = (System.UInt16)source.X;
@@ -314,7 +314,7 @@ public void CopyValuesFrom(IWorldStatsUserLevelTable source)
 {
 this.CharacterID = (DemoGame.CharacterID)source.CharacterID;
 this.ID = (System.UInt32)source.ID;
-this.Level = (System.Byte)source.Level;
+this.Level = (System.Int16)source.Level;
 this.MapID = (System.Nullable<NetGore.World.MapID>)source.MapID;
 this.When = (System.DateTime)source.When;
 this.X = (System.UInt16)source.X;
@@ -376,7 +376,7 @@ this.ID = (System.UInt32)value;
 break;
 
 case "level":
-this.Level = (System.Byte)value;
+this.Level = (System.Int16)value;
 break;
 
 case "map_id":
@@ -418,7 +418,7 @@ case "id":
 return new ColumnMetadata("id", "", "int(10) unsigned", null, typeof(System.UInt32), false, true, false);
 
 case "level":
-return new ColumnMetadata("level", "The level that the character leveled up to (their new level).", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+return new ColumnMetadata("level", "The level that the character leveled up to (their new level).", "smallint(6)", null, typeof(System.Int16), false, false, false);
 
 case "map_id":
 return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, false);

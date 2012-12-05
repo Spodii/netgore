@@ -42,7 +42,7 @@ public static void CopyValues(this IWorldStatsUserLevelTable source, NetGore.Db.
 {
 paramValues["character_id"] = (System.Int32)source.CharacterID;
 paramValues["id"] = (System.UInt32)source.ID;
-paramValues["level"] = (System.Byte)source.Level;
+paramValues["level"] = (System.Int16)source.Level;
 paramValues["map_id"] = (System.Nullable<System.UInt16>)source.MapID;
 paramValues["when"] = (System.DateTime)source.When;
 paramValues["x"] = (System.UInt16)source.X;
@@ -70,7 +70,7 @@ source.ID = (System.UInt32)(System.UInt32)dataRecord.GetUInt32(i);
 
 i = dataRecord.GetOrdinal("level");
 
-source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.Level = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
 i = dataRecord.GetOrdinal("map_id");
 
@@ -116,7 +116,7 @@ break;
 
 
 case "level":
-source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.Level = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
@@ -172,7 +172,7 @@ break;
 
 
 case "level":
-paramValues[i] = (System.Byte)source.Level;
+paramValues[i] = (System.Int16)source.Level;
 break;
 
 

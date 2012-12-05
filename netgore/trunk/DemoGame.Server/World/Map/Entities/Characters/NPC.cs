@@ -36,8 +36,8 @@ namespace DemoGame.Server
 
         IAI _ai;
         NPCChatDialogBase _chatDialog;
-        ushort _giveCash;
-        ushort _giveExp;
+        int _giveCash;
+        int _giveExp;
         IEnumerable<IQuest<User>> _quests;
 
         IShop<ShopItem> _shop;
@@ -138,7 +138,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the amount of cash that the NPC gives upon being killed.
         /// </summary>
-        public ushort GiveCash
+        public int GiveCash
         {
             get { return _giveCash; }
             protected set { _giveCash = value; }
@@ -147,14 +147,14 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the amount of experience that the NPC gives upon being killed.
         /// </summary>
-        public ushort GiveExp
+        public int GiveExp
         {
             get { return _giveExp; }
             protected set { _giveExp = value; }
         }
 
         /// <summary>
-        /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn.
+        /// Gets or sets (protected) the amount of time it takes (in seconds) for the NPC to respawn.
         /// </summary>
         public ushort RespawnSecs { get; protected set; }
 

@@ -107,7 +107,7 @@ System.Int32 _userID;
 /// <summary>
 /// The field that maps onto the database column `user_level`.
 /// </summary>
-System.Byte _userLevel;
+System.Int16 _userLevel;
 /// <summary>
 /// The field that maps onto the database column `user_x`.
 /// </summary>
@@ -228,20 +228,20 @@ this._userID = (System.Int32)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `user_level`.
-/// The underlying database type is `tinyint(3) unsigned`.The database column contains the comment: 
+/// The underlying database type is `smallint(6)`.The database column contains the comment: 
 /// "The level of the user was when this event took place.".
 /// </summary>
 [System.ComponentModel.Description("The level of the user was when this event took place.")]
 [NetGore.SyncValueAttribute()]
-public System.Byte UserLevel
+public System.Int16 UserLevel
 {
 get
 {
-return (System.Byte)_userLevel;
+return (System.Int16)_userLevel;
 }
 set
 {
-this._userLevel = (System.Byte)value;
+this._userLevel = (System.Int16)value;
 }
 }
 /// <summary>
@@ -329,7 +329,7 @@ public WorldStatsNpcKillUserTable()
 /// <param name="userX">The initial value for the corresponding property.</param>
 /// <param name="userY">The initial value for the corresponding property.</param>
 /// <param name="when">The initial value for the corresponding property.</param>
-public WorldStatsNpcKillUserTable(System.UInt32 @iD, System.Nullable<NetGore.World.MapID> @mapID, System.Nullable<DemoGame.CharacterTemplateID> @nPCTemplateID, System.UInt16 @npcX, System.UInt16 @npcY, DemoGame.CharacterID @userID, System.Byte @userLevel, System.UInt16 @userX, System.UInt16 @userY, System.DateTime @when)
+public WorldStatsNpcKillUserTable(System.UInt32 @iD, System.Nullable<NetGore.World.MapID> @mapID, System.Nullable<DemoGame.CharacterTemplateID> @nPCTemplateID, System.UInt16 @npcX, System.UInt16 @npcY, DemoGame.CharacterID @userID, System.Int16 @userLevel, System.UInt16 @userX, System.UInt16 @userY, System.DateTime @when)
 {
 this.ID = (System.UInt32)@iD;
 this.MapID = (System.Nullable<NetGore.World.MapID>)@mapID;
@@ -337,7 +337,7 @@ this.NPCTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)@nPCTemplate
 this.NpcX = (System.UInt16)@npcX;
 this.NpcY = (System.UInt16)@npcY;
 this.UserID = (DemoGame.CharacterID)@userID;
-this.UserLevel = (System.Byte)@userLevel;
+this.UserLevel = (System.Int16)@userLevel;
 this.UserX = (System.UInt16)@userX;
 this.UserY = (System.UInt16)@userY;
 this.When = (System.DateTime)@when;
@@ -375,7 +375,7 @@ dic["npc_template_id"] = (System.Nullable<DemoGame.CharacterTemplateID>)source.N
 dic["npc_x"] = (System.UInt16)source.NpcX;
 dic["npc_y"] = (System.UInt16)source.NpcY;
 dic["user_id"] = (DemoGame.CharacterID)source.UserID;
-dic["user_level"] = (System.Byte)source.UserLevel;
+dic["user_level"] = (System.Int16)source.UserLevel;
 dic["user_x"] = (System.UInt16)source.UserX;
 dic["user_y"] = (System.UInt16)source.UserY;
 dic["when"] = (System.DateTime)source.When;
@@ -393,7 +393,7 @@ this.NPCTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)source.NPCTe
 this.NpcX = (System.UInt16)source.NpcX;
 this.NpcY = (System.UInt16)source.NpcY;
 this.UserID = (DemoGame.CharacterID)source.UserID;
-this.UserLevel = (System.Byte)source.UserLevel;
+this.UserLevel = (System.Int16)source.UserLevel;
 this.UserX = (System.UInt16)source.UserX;
 this.UserY = (System.UInt16)source.UserY;
 this.When = (System.DateTime)source.When;
@@ -479,7 +479,7 @@ this.UserID = (DemoGame.CharacterID)value;
 break;
 
 case "user_level":
-this.UserLevel = (System.Byte)value;
+this.UserLevel = (System.Int16)value;
 break;
 
 case "user_x":
@@ -529,7 +529,7 @@ case "user_id":
 return new ColumnMetadata("user_id", "The ID of the user.", "int(11)", null, typeof(System.Int32), false, false, true);
 
 case "user_level":
-return new ColumnMetadata("user_level", "The level of the user was when this event took place.", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+return new ColumnMetadata("user_level", "The level of the user was when this event took place.", "smallint(6)", null, typeof(System.Int16), false, false, false);
 
 case "user_x":
 return new ColumnMetadata("user_x", "The map x coordinate of the user when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);

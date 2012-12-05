@@ -78,7 +78,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `user_level`.
 /// </summary>
-System.Byte UserLevel
+System.Int16 UserLevel
 {
 get;
 }

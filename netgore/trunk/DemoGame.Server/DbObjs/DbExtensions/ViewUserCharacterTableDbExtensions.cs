@@ -48,7 +48,7 @@ paramValues["chat_dialog"] = (System.Nullable<System.UInt16>)source.ChatDialog;
 paramValues["exp"] = (System.Int32)source.Exp;
 paramValues["hp"] = (System.Int16)source.HP;
 paramValues["id"] = (System.Int32)source.ID;
-paramValues["level"] = (System.Byte)source.Level;
+paramValues["level"] = (System.Int16)source.Level;
 paramValues["load_map_id"] = (System.UInt16)source.LoadMapID;
 paramValues["load_x"] = (System.UInt16)source.LoadX;
 paramValues["load_y"] = (System.UInt16)source.LoadY;
@@ -115,7 +115,7 @@ source.ID = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
 
 i = dataRecord.GetOrdinal("level");
 
-source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.Level = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 
 i = dataRecord.GetOrdinal("load_map_id");
 
@@ -251,7 +251,7 @@ break;
 
 
 case "level":
-source.Level = (System.Byte)(System.Byte)dataRecord.GetByte(i);
+source.Level = (System.Int16)(System.Int16)dataRecord.GetInt16(i);
 break;
 
 
@@ -412,7 +412,7 @@ break;
 
 
 case "level":
-paramValues[i] = (System.Byte)source.Level;
+paramValues[i] = (System.Int16)source.Level;
 break;
 
 

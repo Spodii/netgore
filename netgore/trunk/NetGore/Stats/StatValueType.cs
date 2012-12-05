@@ -42,7 +42,8 @@ namespace NetGore.Stats
         public StatValueType(int value)
         {
             const string errmsg =
-                "Attempted to set StatValueType to `{0}`, but the {2}est StatValueType value supported is `{1}`. Consider using a {2}er value type (e.g. Int32) for the StatValueType. The value has been altered to avoid under/overflow.";
+                "Attempted to set StatValueType to `{0}`, but the {2}est StatValueType value supported is `{1}`." + 
+                " Consider using a {2}er value type (e.g. Int32) for the StatValueType. The value has been altered to avoid under/overflow.";
 
             // Check for a valid range
             if (value < MinValue)

@@ -129,11 +129,11 @@ System.Int32 _exp;
 /// <summary>
 /// The field that maps onto the database column `give_cash`.
 /// </summary>
-System.UInt16 _giveCash;
+System.Int32 _giveCash;
 /// <summary>
 /// The field that maps onto the database column `give_exp`.
 /// </summary>
-System.UInt16 _giveExp;
+System.Int32 _giveExp;
 /// <summary>
 /// The field that maps onto the database column `id`.
 /// </summary>
@@ -141,7 +141,7 @@ System.UInt16 _iD;
 /// <summary>
 /// The field that maps onto the database column `level`.
 /// </summary>
-System.Byte _level;
+System.Int16 _level;
 /// <summary>
 /// The field that maps onto the database column `move_speed`.
 /// </summary>
@@ -258,38 +258,38 @@ this._exp = (System.Int32)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `give_cash`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `0`.The database column contains the comment: 
+/// The underlying database type is `int(11)` with the default value of `0`.The database column contains the comment: 
 /// "Amount of cash to give when killed (intended for NPCs only).".
 /// </summary>
 [System.ComponentModel.Description("Amount of cash to give when killed (intended for NPCs only).")]
 [NetGore.SyncValueAttribute()]
-public System.UInt16 GiveCash
+public System.Int32 GiveCash
 {
 get
 {
-return (System.UInt16)_giveCash;
+return (System.Int32)_giveCash;
 }
 set
 {
-this._giveCash = (System.UInt16)value;
+this._giveCash = (System.Int32)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `give_exp`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `0`.The database column contains the comment: 
+/// The underlying database type is `int(11)` with the default value of `0`.The database column contains the comment: 
 /// "Amount of exp to give when killed (intended for NPCs only).".
 /// </summary>
 [System.ComponentModel.Description("Amount of exp to give when killed (intended for NPCs only).")]
 [NetGore.SyncValueAttribute()]
-public System.UInt16 GiveExp
+public System.Int32 GiveExp
 {
 get
 {
-return (System.UInt16)_giveExp;
+return (System.Int32)_giveExp;
 }
 set
 {
-this._giveExp = (System.UInt16)value;
+this._giveExp = (System.Int32)value;
 }
 }
 /// <summary>
@@ -312,20 +312,20 @@ this._iD = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `level`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.The database column contains the comment: 
+/// The underlying database type is `smallint(6)` with the default value of `1`.The database column contains the comment: 
 /// "The character's level.".
 /// </summary>
 [System.ComponentModel.Description("The character's level.")]
 [NetGore.SyncValueAttribute()]
-public System.Byte Level
+public System.Int16 Level
 {
 get
 {
-return (System.Byte)_level;
+return (System.Int16)_level;
 }
 set
 {
-this._level = (System.Byte)value;
+this._level = (System.Int16)value;
 }
 }
 /// <summary>
@@ -367,9 +367,9 @@ this._name = (System.String)value;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `respawn`.
 /// The underlying database type is `smallint(5) unsigned` with the default value of `5`.The database column contains the comment: 
-/// "How long to wait after death to be respawned (intended for NPCs only).".
+/// "How long in seconds to wait after death to be respawned (intended for NPCs only).".
 /// </summary>
-[System.ComponentModel.Description("How long to wait after death to be respawned (intended for NPCs only).")]
+[System.ComponentModel.Description("How long in seconds to wait after death to be respawned (intended for NPCs only).")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 Respawn
 {
@@ -481,17 +481,17 @@ public CharacterTemplateTable()
 /// <param name="statMaxmp">The initial value for the corresponding property.</param>
 /// <param name="statMinhit">The initial value for the corresponding property.</param>
 /// <param name="statStr">The initial value for the corresponding property.</param>
-public CharacterTemplateTable(System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.AllianceID @allianceID, DemoGame.BodyID @bodyID, System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, System.UInt16 @giveCash, System.UInt16 @giveExp, DemoGame.CharacterTemplateID @iD, System.Byte @level, System.UInt16 @moveSpeed, System.String @name, System.UInt16 @respawn, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr)
+public CharacterTemplateTable(System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.AllianceID @allianceID, DemoGame.BodyID @bodyID, System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, System.Int32 @giveCash, System.Int32 @giveExp, DemoGame.CharacterTemplateID @iD, System.Int16 @level, System.UInt16 @moveSpeed, System.String @name, System.UInt16 @respawn, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr)
 {
 this.AIID = (System.Nullable<NetGore.AI.AIID>)@aIID;
 this.AllianceID = (DemoGame.AllianceID)@allianceID;
 this.BodyID = (DemoGame.BodyID)@bodyID;
 this.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)@chatDialog;
 this.Exp = (System.Int32)@exp;
-this.GiveCash = (System.UInt16)@giveCash;
-this.GiveExp = (System.UInt16)@giveExp;
+this.GiveCash = (System.Int32)@giveCash;
+this.GiveExp = (System.Int32)@giveExp;
 this.ID = (DemoGame.CharacterTemplateID)@iD;
-this.Level = (System.Byte)@level;
+this.Level = (System.Int16)@level;
 this.MoveSpeed = (System.UInt16)@moveSpeed;
 this.Name = (System.String)@name;
 this.Respawn = (System.UInt16)@respawn;
@@ -538,10 +538,10 @@ dic["alliance_id"] = (DemoGame.AllianceID)source.AllianceID;
 dic["body_id"] = (DemoGame.BodyID)source.BodyID;
 dic["chat_dialog"] = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)source.ChatDialog;
 dic["exp"] = (System.Int32)source.Exp;
-dic["give_cash"] = (System.UInt16)source.GiveCash;
-dic["give_exp"] = (System.UInt16)source.GiveExp;
+dic["give_cash"] = (System.Int32)source.GiveCash;
+dic["give_exp"] = (System.Int32)source.GiveExp;
 dic["id"] = (DemoGame.CharacterTemplateID)source.ID;
-dic["level"] = (System.Byte)source.Level;
+dic["level"] = (System.Int16)source.Level;
 dic["move_speed"] = (System.UInt16)source.MoveSpeed;
 dic["name"] = (System.String)source.Name;
 dic["respawn"] = (System.UInt16)source.Respawn;
@@ -568,10 +568,10 @@ this.AllianceID = (DemoGame.AllianceID)source.AllianceID;
 this.BodyID = (DemoGame.BodyID)source.BodyID;
 this.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)source.ChatDialog;
 this.Exp = (System.Int32)source.Exp;
-this.GiveCash = (System.UInt16)source.GiveCash;
-this.GiveExp = (System.UInt16)source.GiveExp;
+this.GiveCash = (System.Int32)source.GiveCash;
+this.GiveExp = (System.Int32)source.GiveExp;
 this.ID = (DemoGame.CharacterTemplateID)source.ID;
-this.Level = (System.Byte)source.Level;
+this.Level = (System.Int16)source.Level;
 this.MoveSpeed = (System.UInt16)source.MoveSpeed;
 this.Name = (System.String)source.Name;
 this.Respawn = (System.UInt16)source.Respawn;
@@ -699,11 +699,11 @@ this.Exp = (System.Int32)value;
 break;
 
 case "give_cash":
-this.GiveCash = (System.UInt16)value;
+this.GiveCash = (System.Int32)value;
 break;
 
 case "give_exp":
-this.GiveExp = (System.UInt16)value;
+this.GiveExp = (System.Int32)value;
 break;
 
 case "id":
@@ -711,7 +711,7 @@ this.ID = (DemoGame.CharacterTemplateID)value;
 break;
 
 case "level":
-this.Level = (System.Byte)value;
+this.Level = (System.Int16)value;
 break;
 
 case "move_speed":
@@ -798,16 +798,16 @@ case "exp":
 return new ColumnMetadata("exp", "Current exp.", "int(11)", "0", typeof(System.Int32), false, false, false);
 
 case "give_cash":
-return new ColumnMetadata("give_cash", "Amount of cash to give when killed (intended for NPCs only).", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("give_cash", "Amount of cash to give when killed (intended for NPCs only).", "int(11)", "0", typeof(System.Int32), false, false, false);
 
 case "give_exp":
-return new ColumnMetadata("give_exp", "Amount of exp to give when killed (intended for NPCs only).", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("give_exp", "Amount of exp to give when killed (intended for NPCs only).", "int(11)", "0", typeof(System.Int32), false, false, false);
 
 case "id":
 return new ColumnMetadata("id", "The unique ID of the character template.", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 
 case "level":
-return new ColumnMetadata("level", "The character's level.", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+return new ColumnMetadata("level", "The character's level.", "smallint(6)", "1", typeof(System.Int16), false, false, false);
 
 case "move_speed":
 return new ColumnMetadata("move_speed", "The movement speed.", "smallint(5) unsigned", "1800", typeof(System.UInt16), false, false, false);
@@ -816,7 +816,7 @@ case "name":
 return new ColumnMetadata("name", "Name of the template. NPCs usually use this name, while users usually have their own name and this value is just for dev reference.", "varchar(50)", "New NPC", typeof(System.String), false, false, false);
 
 case "respawn":
-return new ColumnMetadata("respawn", "How long to wait after death to be respawned (intended for NPCs only).", "smallint(5) unsigned", "5", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("respawn", "How long in seconds to wait after death to be respawned (intended for NPCs only).", "smallint(5) unsigned", "5", typeof(System.UInt16), false, false, false);
 
 case "shop_id":
 return new ColumnMetadata("shop_id", "The shop (intended for NPCs only).", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
