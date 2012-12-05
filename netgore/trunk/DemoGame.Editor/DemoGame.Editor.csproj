@@ -365,6 +365,10 @@
     <Compile Include="UITypeEditors\CharacterTemplateUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UITypeEditors\ActionDisplayIDEditor.cs" />
+    <Compile Include="UITypeEditors\ActionDisplayIDUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UITypeEditors\SkillTypeListBox.cs">
       <SubType>Component</SubType>
     </Compile>
