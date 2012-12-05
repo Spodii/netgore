@@ -391,7 +391,7 @@ namespace DemoGame.Server
             if (Map == null)
             {
                 const string errmsg =
-                    "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoad... instead.";
+                    "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoadMap/Position instead.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
@@ -403,13 +403,41 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles when no legal position could be found for this <see cref="Character"/>.
+        /// This will usually occur when performing a teleport into an area that is completely blocked off, and no near-by
+        /// position can be found. Moving a <see cref="Character"/> too far from the original position can result in them
+        /// going somewhere that they are not supposed to, so it is best to send them to a predefined location.
+        /// </summary>
+        /// <param name="position">The position that the <see cref="Character"/> tried to go to, but failed to.</param>
+        /// <returns>The position to warp the <see cref="Character"/> to.</returns>
+        protected override Vector2 HandleNoLegalPositionFound(Vector2 position)
+        {
+            // Users always get sent to the invalid pos
+            const string errmsg = "User `{0}` getting set to invalid user position (defined in ServerSettings.settings)." + 
+                " If this occurs non-stop, ensure the map/pos defined for InvalidUserLoadMap/Position are valid.";
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat(errmsg, this);
+
+            var mapID = ServerSettings.Default.InvalidUserLoadMap;
+            var map = World.GetMap(mapID);
+            var pos = ServerSettings.Default.InvalidUserLoadPosition;
+            Teleport(map, pos);
+
+            return pos;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the position that this <see cref="Character"/>
         /// will use for when loading.
         /// </summary>
         /// <returns>The position to load this <see cref="Character"/> at.</returns>
         protected override Vector2 GetLoadPosition()
         {
-            if (Map == null)
+            Vector2 pos = Position;
+            var map = Map;
+
+            if (map == null)
             {
                 const string errmsg =
                     "Users are expected to have a valid respawn position at all times, but user `{0}` does not." +
@@ -421,7 +449,7 @@ namespace DemoGame.Server
                 return ServerSettings.Default.InvalidUserLoadPosition;
             }
 
-            return Position;
+            return pos;
         }
 
         /// <summary>
