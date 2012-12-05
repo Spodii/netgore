@@ -568,6 +568,10 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Externals\DockPanelSuite\DockPanelSuite.csproj">
+      <Project>{C75532C4-765B-418E-B09B-46D36B2ABDB1}</Project>
+      <Name>DockPanelSuite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
       <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
       <Name>Lidgren.Network</Name>

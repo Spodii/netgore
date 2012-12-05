@@ -1,5 +1,5 @@
 ﻿using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor
@@ -33,21 +33,21 @@ namespace DemoGame.Editor
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            NetGore.Editor.Docking.DockPanelSkin dockPanelSkin1 = new NetGore.Editor.Docking.DockPanelSkin();
-            NetGore.Editor.Docking.AutoHideStripSkin autoHideStripSkin1 = new NetGore.Editor.Docking.AutoHideStripSkin();
-            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient1 = new NetGore.Editor.Docking.DockPanelGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient1 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPaneStripSkin dockPaneStripSkin1 = new NetGore.Editor.Docking.DockPaneStripSkin();
-            NetGore.Editor.Docking.DockPaneStripGradient dockPaneStripGradient1 = new NetGore.Editor.Docking.DockPaneStripGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient2 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient2 = new NetGore.Editor.Docking.DockPanelGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient3 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPaneStripToolWindowGradient dockPaneStripToolWindowGradient1 = new NetGore.Editor.Docking.DockPaneStripToolWindowGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient4 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient5 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.DockPanelGradient dockPanelGradient3 = new NetGore.Editor.Docking.DockPanelGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient6 = new NetGore.Editor.Docking.TabGradient();
-            NetGore.Editor.Docking.TabGradient tabGradient7 = new NetGore.Editor.Docking.TabGradient();
+            WeifenLuo.WinFormsUI.Docking.DockPanelSkin dockPanelSkin1 = new WeifenLuo.WinFormsUI.Docking.DockPanelSkin();
+            WeifenLuo.WinFormsUI.Docking.AutoHideStripSkin autoHideStripSkin1 = new WeifenLuo.WinFormsUI.Docking.AutoHideStripSkin();
+            WeifenLuo.WinFormsUI.Docking.DockPanelGradient dockPanelGradient1 = new WeifenLuo.WinFormsUI.Docking.DockPanelGradient();
+            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient1 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
+            WeifenLuo.WinFormsUI.Docking.DockPaneStripSkin dockPaneStripSkin1 = new WeifenLuo.WinFormsUI.Docking.DockPaneStripSkin();
+            WeifenLuo.WinFormsUI.Docking.DockPaneStripGradient dockPaneStripGradient1 = new WeifenLuo.WinFormsUI.Docking.DockPaneStripGradient();
+            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient2 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
+            WeifenLuo.WinFormsUI.Docking.DockPanelGradient dockPanelGradient2 = new WeifenLuo.WinFormsUI.Docking.DockPanelGradient();
+            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient3 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
+            WeifenLuo.WinFormsUI.Docking.DockPaneStripToolWindowGradient dockPaneStripToolWindowGradient1 = new WeifenLuo.WinFormsUI.Docking.DockPaneStripToolWindowGradient();
+            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient4 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
+            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient5 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
+            WeifenLuo.WinFormsUI.Docking.DockPanelGradient dockPanelGradient3 = new WeifenLuo.WinFormsUI.Docking.DockPanelGradient();
+            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient6 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
+            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient7 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             this.msMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,7 +70,7 @@ namespace DemoGame.Editor
             this.tssInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssWorldPos = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssScreenPos = new System.Windows.Forms.ToolStripStatusLabel();
-            this.dockPanel = new NetGore.Editor.Docking.DockPanel();
+            this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.tbMap = new NetGore.Editor.EditorTool.ToolBar();
             this.tbGlobal = new NetGore.Editor.EditorTool.ToolBar();
             this.panel1 = new System.Windows.Forms.Panel();

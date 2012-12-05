@@ -13,37 +13,37 @@ using System.Linq;
 
 [assembly:
     SuppressMessage("Microsoft.Usage", "CA2215:Dispose methods should call base class dispose", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockPanel+FocusManagerImpl.#Dispose(System.Boolean)")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPanel+FocusManagerImpl.#Dispose(System.Boolean)")]
 [assembly:
     SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockPanel+FocusManagerImpl+LocalWindowsHook.#m_hHook")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPanel+FocusManagerImpl+LocalWindowsHook.#m_hHook")]
 [assembly:
     SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockPanel+MdiClientController.#Dispose(System.Boolean)")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPanel+MdiClientController.#Dispose(System.Boolean)")]
 [assembly:
     SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockPanel+FocusManagerImpl.#Dispose(System.Boolean)")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPanel+FocusManagerImpl.#Dispose(System.Boolean)")]
 [assembly:
     SuppressMessage("Microsoft.Reliability", "CA2002:DoNotLockOnObjectsWithWeakIdentity", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockPanel+DragHandlerBase.#BeginDrag()")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPanel+DragHandlerBase.#BeginDrag()")]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "pane", Scope = "member",
         Target =
-            "NetGore.Editor.Docking.DockContentHandler.#DockTo(NetGore.Editor.Docking.DockPanel,System.Windows.Forms.DockStyle)")]
+            "WeifenLuo.WinFormsUI.Docking.DockContentHandler.#DockTo(WeifenLuo.WinFormsUI.Docking.DockPanel,System.Windows.Forms.DockStyle)")]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "pane", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockContentHandler.#FloatAt(System.Drawing.Rectangle)")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockContentHandler.#FloatAt(System.Drawing.Rectangle)")]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "activeContent", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockPane.#RestoreToPanel()")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPane.#RestoreToPanel()")]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "content", Scope = "member",
-        Target = "NetGore.Editor.Docking.DockPanel.#DocumentsCount")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPanel.#DocumentsCount")]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "lastDocument", Scope = "member",
         Target =
-            "NetGore.Editor.Docking.DockPanel+Persistor.#LoadFromXml(NetGore.Editor.Docking.DockPanel,System.IO.Stream,NetGore.Editor.Docking.DeserializeDockContent,System.Boolean)"
+            "WeifenLuo.WinFormsUI.Docking.DockPanel+Persistor.#LoadFromXml(WeifenLuo.WinFormsUI.Docking.DockPanel,System.IO.Stream,WeifenLuo.WinFormsUI.Docking.DeserializeDockContent,System.Boolean)"
         )]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Scope = "type",
-        Target = "NetGore.Editor.Docking.DockPane+AppearanceStyle")]
+        Target = "WeifenLuo.WinFormsUI.Docking.DockPane+AppearanceStyle")]

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DemoGame.Editor.Properties;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Editor.EditorTool;
 
 namespace DemoGame.Editor.Tools

@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using NetGore;
 using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Features.NPCChat;
 using NetGore.Features.NPCChat.Conditionals;
 

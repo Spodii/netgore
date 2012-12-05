@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace DemoGame.Editor
 {

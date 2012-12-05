@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using NetGore.Audio;
 using NetGore.Content;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.IO;
 
 namespace DemoGame.Editor

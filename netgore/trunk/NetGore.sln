@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net", "Externals\log4ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network", "Externals\Lidgren.Network\Lidgren.Network.csproj", "{AE483C29-042E-4226-BA52-D247CE7676DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockPanelSuite", "Externals\DockPanelSuite\DockPanelSuite.csproj", "{C75532C4-765B-418E-B09B-46D36B2ABDB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -277,6 +279,20 @@ Global
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.ReleaseClient|x86.Build.0 = Release|x86
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.ReleaseSideScroller|x86.ActiveCfg = Release|x86
 		{AE483C29-042E-4226-BA52-D247CE7676DA}.ReleaseSideScroller|x86.Build.0 = Release|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|x86.ActiveCfg = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|x86.Build.0 = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.DebugSideScroller|x86.ActiveCfg = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.DebugSideScroller|x86.Build.0 = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Mono|x86.ActiveCfg = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Mono|x86.Build.0 = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.MonoSideScroller|x86.ActiveCfg = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.MonoSideScroller|x86.Build.0 = Debug|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|x86.ActiveCfg = Release|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|x86.Build.0 = Release|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.ReleaseClient|x86.ActiveCfg = Release|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.ReleaseSideScroller|x86.ActiveCfg = Release|x86
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.ReleaseSideScroller|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
