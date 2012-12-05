@@ -272,7 +272,9 @@
     </Compile>
     <Compile Include="Grh\GrhImageList.cs" />
     <Compile Include="CreateWallEntityHandler.cs" />
-    <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.cs" />
+    <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Grh\Controls\GrhTreeView\EditGrhForm.Designer.cs">
       <DependentUpon>EditGrhForm.cs</DependentUpon>
     </Compile>
