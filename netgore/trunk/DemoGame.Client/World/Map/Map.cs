@@ -842,10 +842,10 @@ namespace DemoGame.Client
                 }
 
                 // Get the effects to draw, then draw them (if possible)
-                IEnumerable<ITemporaryMapEffect> tempMapEffects = _mapEffects.Where(x => x.MapRenderLayer == layer.Key);
-                foreach (var mapEffect in tempMapEffects)
+                foreach (var mapEffect in _mapEffects)
                 {
-                    mapEffect.Draw(sb);
+                    if (mapEffect.MapRenderLayer == layer.Key && mapEffect.InView(cam))
+                        mapEffect.Draw(sb);
                 }
 
                 // Notify the layer has finished drawing
@@ -858,7 +858,8 @@ namespace DemoGame.Client
             {
                 foreach (var pe in ParticleEffects)
                 {
-                    pe.Draw(sb);
+                    if (pe.InView(cam))
+                        pe.Draw(sb);
                 }
             }
 

@@ -121,6 +121,20 @@ namespace NetGore.Graphics
             UpdateEffect(currentTime);
         }
 
+        /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
+        public bool InView(ICamera2D camera)
+        {
+            var pe = ParticleEffect;
+            if (pe == null)
+                return false;
+
+            return pe.InView(camera);
+        }
+
         #endregion
     }
 }
