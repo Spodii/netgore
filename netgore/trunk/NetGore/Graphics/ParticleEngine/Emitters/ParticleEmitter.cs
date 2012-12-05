@@ -70,6 +70,16 @@ namespace NetGore.Graphics.ParticleEngine
         readonly ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
         readonly Grh _sprite = new Grh();
 
+        /// <summary>
+        /// Holds the minimum x/y particle position (particle.Position). Gets set every update call.
+        /// </summary>
+        Vector2 _minParticlePosition = Vector2.Zero;
+
+        /// <summary>
+        /// Holds the maximum x/y particle position (particle.Position + (particle.Scale * sprite.Size)). Gets set every update call.
+        /// </summary>
+        Vector2 _maxParticlePosition = Vector2.Zero;
+
         int _budget;
         bool _isDisposed = false;
 
@@ -490,6 +500,9 @@ namespace NetGore.Graphics.ParticleEngine
             // Update the particles
             var hasUpdateModifiers = ParticleModifiers.HasUpdateModifiers;
             var i = 0;
+            Vector2 minParticlePosition = Vector2.Zero;
+            Vector2 maxParticlePosition = Vector2.Zero;
+            Vector2 spriteSize = Sprite.Size;
             while (i <= _lastAliveIndex)
             {
                 var particle = _particles[i];
@@ -510,8 +523,26 @@ namespace NetGore.Graphics.ParticleEngine
                 // Update the particle
                 particle.Update(elapsedTime);
 
+                // Update the min/max origin offsets
+                Vector2 posMin = particle.Position;
+
+                Vector2 particleSize;
+                Vector2.Multiply(ref spriteSize, particle.Scale, out particleSize);
+
+                Vector2 posMax;
+                Vector2.Add(ref posMin, ref particleSize, out posMax);
+
+                if (posMin.X < minParticlePosition.X) minParticlePosition.X = posMin.X;
+                if (posMin.Y < minParticlePosition.Y) minParticlePosition.Y = posMin.Y;
+
+                if (posMax.X > maxParticlePosition.X) maxParticlePosition.X = posMax.X;
+                if (posMax.Y > maxParticlePosition.Y) maxParticlePosition.Y = posMax.Y;
+
                 ++i;
             }
+
+            _minParticlePosition = minParticlePosition;
+            _maxParticlePosition = maxParticlePosition;
 
             EmitterModifiers.RestoreEmitter(this);
         }
@@ -880,8 +911,36 @@ namespace NetGore.Graphics.ParticleEngine
             _lastUpdateTime = TickCount.MinValue;
             _nextReleaseTime = TickCount.MinValue;
             _wasKilled = false;
+            _minParticlePosition = Vector2.Zero;
+            _maxParticlePosition = Vector2.Zero;
 
             HandleReset();
+        }
+
+        /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
+        public bool InView(ICamera2D camera)
+        {
+            // Check if in view by using the _min/_maxParticlePosition
+            
+            // If both are equal to 0, then it probably has not been updated yet, so return true to be safe
+            if (_minParticlePosition == Vector2.Zero && _maxParticlePosition == Vector2.Zero)
+                return true;
+
+            // Create a rect of the world position covering the area
+            Vector2 ownerPos = Owner.Position;
+            Vector2 min = _minParticlePosition + ownerPos;
+            Vector2 max = _maxParticlePosition + ownerPos;
+            Vector2 size = max - min;
+            Rectangle rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
+
+            // Inflact the rect's size to cover more area, just to be safe
+            rect.Inflate(96);
+
+            return camera.InView(rect);
         }
 
         /// <summary>

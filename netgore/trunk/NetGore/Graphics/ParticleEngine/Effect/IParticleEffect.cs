@@ -178,5 +178,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         void Update(TickCount currentTime);
+
+        /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
+        bool InView(ICamera2D camera);
     }
 }

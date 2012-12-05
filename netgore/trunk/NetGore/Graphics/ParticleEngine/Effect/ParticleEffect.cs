@@ -536,6 +536,16 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
+        public bool InView(ICamera2D camera)
+        {
+            return _emitters.Any(x => x.InView(camera));
+        }
+
+        /// <summary>
         /// Updates the <see cref="IParticleEffect"/> and all <see cref="IParticleEmitter"/>s inside it.
         /// </summary>
         /// <param name="currentTime">The current time.</param>

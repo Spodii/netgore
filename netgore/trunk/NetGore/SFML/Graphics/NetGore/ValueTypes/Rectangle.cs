@@ -130,6 +130,11 @@ namespace SFML.Graphics
             Height += verticalAmount * 2;
         }
 
+        public void Inflate(int amount)
+        {
+            Inflate(amount, amount);
+        }
+
         /// <summary>Determines whether this Rectangle contains a specified point represented by its x- and y-coordinates.</summary>
         /// <param name="x">The x-coordinate of the specified point.</param>
         /// <param name="y">The y-coordinate of the specified point.</param>

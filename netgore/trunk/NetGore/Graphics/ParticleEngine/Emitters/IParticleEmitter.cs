@@ -136,6 +136,13 @@ namespace NetGore.Graphics.ParticleEngine
         Grh Sprite { get; }
 
         /// <summary>
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The <see cref="ICamera2D"/> to check if this object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
+        bool InView(ICamera2D camera);
+
+        /// <summary>
         /// Forces the <see cref="IParticleEmitter"/> to be reset from the start. This only resets state variables such as
         /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
         /// Has no effect when disposed.
