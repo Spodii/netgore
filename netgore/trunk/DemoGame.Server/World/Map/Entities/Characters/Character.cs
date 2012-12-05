@@ -1088,7 +1088,7 @@ namespace DemoGame.Server
         {
             if (IsPersistent)
             {
-                // Persistent characters get sent to their loading position
+                // Persistent Characters get sent to their loading position
                 const string errmsg = "Character `{0}` is persistent, so they are being set back to their respawn position.";
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, this);
