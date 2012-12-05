@@ -137,27 +137,14 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="ItemEntity"/> class.
         /// </summary>
         /// <param name="iv">The item values.</param>
-        public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
+        public ItemEntity(IItemTable iv) : this(
+            Vector2.Zero, new Vector2(iv.Width, iv.Height),
+            iv.ItemTemplateID, iv.Name, iv.Description, iv.Type, iv.WeaponType, iv.Range,
+            iv.Graphic, iv.Value, iv.Amount, iv.HP, iv.MP, iv.EquippedBody, iv.ActionDisplayID,
+            iv.Stats.Select(x => (Stat<StatType>)x),
+            iv.ReqStats.Select(x => (Stat<StatType>)x))
         {
             _id = iv.ID;
-            _templateID = iv.ItemTemplateID;
-
-            _name = iv.Name;
-            _description = iv.Description;
-            _graphicIndex = iv.Graphic;
-            _value = iv.Value;
-            _amount = iv.Amount;
-            _type = iv.Type;
-            _weaponType = iv.WeaponType;
-            _range = iv.Range;
-            _equippedBody = iv.EquippedBody;
-            _actionDisplayID = iv.ActionDisplayID;
-
-            _baseStats = NewItemStats(iv.Stats.Select(x => (Stat<StatType>)x), StatCollectionType.Base);
-            _reqStats = NewItemStats(iv.ReqStats.Select(x => (Stat<StatType>)x), StatCollectionType.Requirement);
-
-            Resized -= ItemEntity_Resized;
-            Resized += ItemEntity_Resized;
         }
 
         /// <summary>
