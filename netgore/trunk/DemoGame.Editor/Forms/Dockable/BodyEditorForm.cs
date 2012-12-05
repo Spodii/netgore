@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.IO;
 
 namespace DemoGame.Editor

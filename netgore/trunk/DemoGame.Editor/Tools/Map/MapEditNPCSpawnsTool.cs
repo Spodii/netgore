@@ -47,7 +47,7 @@ namespace DemoGame.Editor.Tools
                 _form = new MapEditNPCSpawnsToolForm();
 
             _form.Map = map;
-            _form.Show(MainForm.DockPanel, NetGore.Editor.Docking.DockState.Float);
+            _form.Show(MainForm.DockPanel, WeifenLuo.WinFormsUI.Docking.DockState.Float);
         }
 
         /// <summary>

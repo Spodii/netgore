@@ -15,7 +15,7 @@ using NetGore.Content;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Editor.WinForms;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;

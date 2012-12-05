@@ -11,7 +11,7 @@ using DemoGame.Editor.UITypeEditors;
 using NetGore;
 using NetGore.Content;
 using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.Grhs;
 using NetGore.Editor.UI;

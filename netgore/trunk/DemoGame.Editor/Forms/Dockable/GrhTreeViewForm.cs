@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Editor.Tools;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Editor.EditorTool;
 using NetGore.Editor.Grhs;
 using NetGore;

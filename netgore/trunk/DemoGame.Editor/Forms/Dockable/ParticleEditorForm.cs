@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Editor.WinForms;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Content;
 using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;

@@ -8,7 +8,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Editor;
-using NetGore.Editor.Docking;
+using WeifenLuo.WinFormsUI.Docking;
 using NetGore;
 
 namespace DemoGame.Editor.Tools
