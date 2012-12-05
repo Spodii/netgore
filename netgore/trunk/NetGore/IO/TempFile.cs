@@ -53,7 +53,9 @@ namespace NetGore.IO
                 File.Delete(targetFilePath);
 
             // Copy over the file
-            File.Move(_filePath, targetFilePath);
+            File.Copy(_filePath, targetFilePath, true);
+
+            File.Delete(_filePath);
 
             // Dispose of the TempFile
             Dispose();
