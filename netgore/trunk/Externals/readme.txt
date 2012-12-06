@@ -4,9 +4,9 @@ Lidgren.Network:
 http://code.google.com/p/lidgren-network-gen3/
 2012-10-27
 
-DockPanelSuite:
+WeifenLuo.WinFormsUI.Docking:
 http://sourceforge.net/projects/dockpanelsuite/
-v2.5 RC 1
+v2.7
 
 log4net:
 http://logging.apache.org/log4net/download_log4net.cgi
