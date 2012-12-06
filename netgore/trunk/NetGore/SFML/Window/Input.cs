@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -17,39 +16,43 @@ namespace SFML
         public class Input : ObjectBase
         {
             ////////////////////////////////////////////////////////////
-
-            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// For internal use only, construct the instance from a direct pointer to the internal object
+            /// Get the state of a key
             /// </summary>
-            /// <param name="thisPtr">Internal pointer to the input object</param>
+            /// <param name="key">Key to check</param>
+            /// <returns>True if key is down, false if key is up</returns>
             ////////////////////////////////////////////////////////////
-            public Input(IntPtr thisPtr) : base(thisPtr)
+            public bool IsKeyDown(KeyCode key)
             {
+                return sfInput_IsKeyDown(This, key);
             }
 
-            /// <summary>
-            /// Handle the destruction of the object
-            /// </summary>
-            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
             ////////////////////////////////////////////////////////////
-            protected override void Destroy(bool disposing)
+            /// <summary>
+            /// Get the state of a mouse button
+            /// </summary>
+            /// <param name="button">Button to check</param>
+            /// <returns>True if button is down, false if button is up</returns>
+            ////////////////////////////////////////////////////////////
+            public bool IsMouseButtonDown(MouseButton button)
             {
-                // Nothing to do here, Input instances are owned by the C library
+                return sfInput_IsMouseButtonDown(This, button);
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Get a joystick axis position
+            /// Get the state of a joystick button
             /// </summary>
             /// <param name="joystickId">Identifier of the joystick to check (0 or 1)</param>
-            /// <param name="axis">Axis to get</param>
-            /// <returns>Current axis position, in the range [-100, 100] (except for POV, which is [0, 360])</returns>
+            /// <param name="button">Button to check</param>
+            /// <returns>True if button is down, false if button is up</returns>
             ////////////////////////////////////////////////////////////
-            public float GetJoystickAxis(uint joystickId, JoyAxis axis)
+            public bool IsJoystickButtonDown(uint joystickId, uint button)
             {
-                return sfInput_GetJoystickAxis(This, joystickId, axis);
+                return sfInput_IsJoystickButtonDown(This, joystickId, button);
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Get the mouse X position
             /// </summary>
@@ -71,45 +74,29 @@ namespace SFML
                 return sfInput_GetMouseY(This);
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Get the state of a joystick button
+            /// Get a joystick axis position
             /// </summary>
             /// <param name="joystickId">Identifier of the joystick to check (0 or 1)</param>
-            /// <param name="button">Button to check</param>
-            /// <returns>True if button is down, false if button is up</returns>
+            /// <param name="axis">Axis to get</param>
+            /// <returns>Current axis position, in the range [-100, 100] (except for POV, which is [0, 360])</returns>
             ////////////////////////////////////////////////////////////
-            public bool IsJoystickButtonDown(uint joystickId, uint button)
+            public float GetJoystickAxis(uint joystickId, JoyAxis axis)
             {
-                return sfInput_IsJoystickButtonDown(This, joystickId, button);
-            }
-
-            /// <summary>
-            /// Get the state of a key
-            /// </summary>
-            /// <param name="key">Key to check</param>
-            /// <returns>True if key is down, false if key is up</returns>
-            ////////////////////////////////////////////////////////////
-            public bool IsKeyDown(KeyCode key)
-            {
-                if (key == KeyCode.None)
-                    return false;
-
-                return sfInput_IsKeyDown(This, key);
+                return sfInput_GetJoystickAxis(This, joystickId, axis);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Get the state of a mouse button
+            /// For internal use only, construct the instance from a direct pointer to the internal object
             /// </summary>
-            /// <param name="button">Button to check</param>
-            /// <returns>True if button is down, false if button is up</returns>
+            /// <param name="thisPtr">Internal pointer to the input object</param>
             ////////////////////////////////////////////////////////////
-            public bool IsMouseButtonDown(MouseButton button)
+            public Input(IntPtr thisPtr) :
+                base(thisPtr)
             {
-                return sfInput_IsMouseButtonDown(This, button);
             }
-
-            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -122,35 +109,36 @@ namespace SFML
                 return "[Input]";
             }
 
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Handle the destruction of the object
+            /// </summary>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            ////////////////////////////////////////////////////////////
+            protected override void Destroy(bool disposing)
+            {
+                // Nothing to do here, Input instances are owned by the C library
+            }
+
             #region Imports
-
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfInput_GetJoystickAxis(IntPtr This, uint JoyId, JoyAxis Axis);
-
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern int sfInput_GetMouseX(IntPtr This);
-
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern int sfInput_GetMouseY(IntPtr This);
-
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern bool sfInput_IsJoystickButtonDown(IntPtr This, uint JoyId, uint Button);
-
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern bool sfInput_IsKeyDown(IntPtr This, KeyCode Key);
 
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern bool sfInput_IsMouseButtonDown(IntPtr This, MouseButton Button);
 
-            #endregion
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern bool sfInput_IsJoystickButtonDown(IntPtr This, uint JoyId, uint Button);
 
-            ////////////////////////////////////////////////////////////
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern int sfInput_GetMouseX(IntPtr This);
+
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern int sfInput_GetMouseY(IntPtr This);
+
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfInput_GetJoystickAxis(IntPtr This, uint JoyId, JoyAxis Axis);
+            #endregion
         }
     }
 }

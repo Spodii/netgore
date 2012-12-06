@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -15,7 +14,7 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [StructLayout(LayoutKind.Sequential)]
-        public struct VideoMode : IEquatable<VideoMode>
+        public struct VideoMode
         {
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -24,7 +23,8 @@ namespace SFML
             /// <param name="width">Video mode width</param>
             /// <param name="height">Video mode height</param>
             ////////////////////////////////////////////////////////////
-            public VideoMode(uint width, uint height) : this(width, height, 32)
+            public VideoMode(uint width, uint height) :
+                this(width, height, 32)
             {
             }
 
@@ -38,8 +38,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public VideoMode(uint width, uint height, uint bpp)
             {
-                Width = width;
-                Height = height;
+                Width        = width;
+                Height       = height;
                 BitsPerPixel = bpp;
             }
 
@@ -66,12 +66,10 @@ namespace SFML
                     unsafe
                     {
                         uint Count;
-                        var ModesPtr = sfVideoMode_GetFullscreenModes(out Count);
-                        var Modes = new VideoMode[Count];
+                        VideoMode* ModesPtr = sfVideoMode_GetFullscreenModes(out Count);
+                        VideoMode[] Modes = new VideoMode[Count];
                         for (uint i = 0; i < Count; ++i)
-                        {
                             Modes[i] = ModesPtr[i];
-                        }
 
                         return Modes;
                     }
@@ -85,7 +83,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public static VideoMode DesktopMode
             {
-                get { return sfVideoMode_GetDesktopMode(); }
+                get {return sfVideoMode_GetDesktopMode();}
             }
 
             ////////////////////////////////////////////////////////////
@@ -96,7 +94,10 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override string ToString()
             {
-                return "[VideoMode]" + " Width(" + Width + ")" + " Height(" + Height + ")" + " BitsPerPixel(" + BitsPerPixel + ")";
+                return "[VideoMode]" +
+                       " Width(" + Width + ")" +
+                       " Height(" + Height + ")" +
+                       " BitsPerPixel(" + BitsPerPixel + ")";
             }
 
             /// <summary>Video mode width, in pixels</summary>
@@ -109,83 +110,15 @@ namespace SFML
             public uint BitsPerPixel;
 
             #region Imports
-
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern VideoMode sfVideoMode_GetDesktopMode();
 
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern unsafe VideoMode* sfVideoMode_GetFullscreenModes(out uint Count);
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            unsafe static extern VideoMode* sfVideoMode_GetFullscreenModes(out uint Count);
 
-            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern bool sfVideoMode_IsValid(VideoMode Mode);
-
             #endregion
-
-            /// <summary>
-            /// Indicates whether the current object is equal to another object of the same type.
-            /// </summary>
-            /// <param name="other">An object to compare with this object.</param>
-            /// <returns>
-            /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-            /// </returns>
-            public bool Equals(VideoMode other)
-            {
-                return other.Width == Width && other.Height == Height && other.BitsPerPixel == BitsPerPixel;
-            }
-
-            /// <summary>
-            /// Indicates whether this instance and a specified object are equal.
-            /// </summary>
-            /// <param name="obj">Another object to compare to.</param>
-            /// <returns>
-            /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
-            /// </returns>
-            public override bool Equals(object obj)
-            {
-                return obj is VideoMode && this == (VideoMode)obj;
-            }
-
-            /// <summary>
-            /// Returns the hash code for this instance.
-            /// </summary>
-            /// <returns>
-            /// A 32-bit signed integer that is the hash code for this instance.
-            /// </returns>
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    var result = Width.GetHashCode();
-                    result = (result * 397) ^ Height.GetHashCode();
-                    result = (result * 397) ^ BitsPerPixel.GetHashCode();
-                    return result;
-                }
-            }
-
-            /// <summary>
-            /// Implements the operator ==.
-            /// </summary>
-            /// <param name="left">The left argument.</param>
-            /// <param name="right">The right argument.</param>
-            /// <returns>The result of the operator.</returns>
-            public static bool operator ==(VideoMode left, VideoMode right)
-            {
-                return left.Equals(right);
-            }
-
-            /// <summary>
-            /// Implements the operator !=.
-            /// </summary>
-            /// <param name="left">The left argument.</param>
-            /// <param name="right">The right argument.</param>
-            /// <returns>The result of the operator.</returns>
-            public static bool operator !=(VideoMode left, VideoMode right)
-            {
-                return !left.Equals(right);
-            }
         }
     }
 }
