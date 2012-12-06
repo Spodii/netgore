@@ -85,13 +85,6 @@ namespace DemoGame.Client
 
             config.PingInterval = CommonConfig.PingInterval;
             config.ConnectionTimeout = CommonConfig.ConnectionTimeout;
-
-#if DEBUG
-            config.SimulatedDuplicatesChance = CommonConfig.SimulatedDuplicatesChance;
-            config.SimulatedLoss = CommonConfig.SimulatedLoss;
-            config.SimulatedMinimumLatency = CommonConfig.SimulatedMinimumLatency;
-            config.SimulatedRandomLatency = CommonConfig.SimulatedRandomLatency;
-#endif
         }
 
         /// <summary>
