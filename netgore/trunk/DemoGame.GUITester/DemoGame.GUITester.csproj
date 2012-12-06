@@ -108,6 +108,10 @@
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Externals\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
@@ -132,11 +136,6 @@
     <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">
       <Project>{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}</Project>
       <Name>DemoGame.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Externals\log4net\log4net.csproj">
-      <Project>{F6A02431-167E-4347-BC43-65532C31CDB7}</Project>
-      <Name>log4net</Name>
-      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>

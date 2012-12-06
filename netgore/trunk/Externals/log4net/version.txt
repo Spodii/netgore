@@ -1,1 +1,0 @@
-﻿Apache log4net, version 1.2.10
