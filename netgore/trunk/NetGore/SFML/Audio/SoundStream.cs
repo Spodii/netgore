@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using SFML.Graphics;
@@ -19,138 +18,54 @@ namespace SFML
         public abstract class SoundStream : ObjectBase
         {
             ////////////////////////////////////////////////////////////
-            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            delegate bool GetDataCallbackType(ref Chunk dataChunk, IntPtr UserData);
-
-            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-            delegate void SeekCallbackType(uint timeOffset, IntPtr UserData);
-
-            GetDataCallbackType myGetDataCallback;
-            SeekCallbackType mySeekCallback;
-            short[] myTempBuffer;
-
-            #region Imports
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfSoundStream_Create(GetDataCallbackType OnGetData, SeekCallbackType OnSeek, uint ChannelsCount,
-                                                      uint SampleRate, IntPtr UserData);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_Destroy(IntPtr SoundStreamStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfSoundStream_GetAttenuation(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern uint sfSoundStream_GetChannelsCount(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern bool sfSoundStream_GetLoop(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfSoundStream_GetMinDistance(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfSoundStream_GetPitch(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern uint sfSoundStream_GetPlayingOffset(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_GetPosition(IntPtr SoundStream, out float X, out float Y, out float Z);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern uint sfSoundStream_GetSampleRate(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern SoundStatus sfSoundStream_GetStatus(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfSoundStream_GetVolume(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern bool sfSoundStream_IsRelativeToListener(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_Pause(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_Play(IntPtr SoundStream);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetAttenuation(IntPtr SoundStream, float Attenuation);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetLoop(IntPtr SoundStream, bool Loop);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetMinDistance(IntPtr SoundStream, float MinDistance);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetPitch(IntPtr SoundStream, float Pitch);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetPlayingOffset(IntPtr SoundStream, uint TimeOffset);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetPosition(IntPtr SoundStream, float X, float Y, float Z);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetRelativeToListener(IntPtr SoundStream, bool Relative);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_SetVolume(IntPtr SoundStream, float Volume);
-
-            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfSoundStream_Stop(IntPtr SoundStream);
-
-            #endregion
-
             /// <summary>
             /// Default constructor
             /// </summary>
             ////////////////////////////////////////////////////////////
-            protected SoundStream() : base(IntPtr.Zero)
+            public SoundStream() :
+                base(IntPtr.Zero)
             {
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Attenuation factor. The higher the attenuation, the
-            /// more the sound will be attenuated with distance from listener.
-            /// The default value is 1
+            /// Play the sound stream
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public float Attenuation
+            public void Play()
             {
-                get { return sfSoundStream_GetAttenuation(This); }
-                set { sfSoundStream_SetAttenuation(This, value); }
+                sfSoundStream_Play(This);
             }
 
             ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Pause the sound stream
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public void Pause()
+            {
+                sfSoundStream_Pause(This);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Stop the sound stream
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public void Stop()
+            {
+                sfSoundStream_Stop(This);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Samples rate, in samples per second
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public uint SampleRate
+            {
+                get {return sfSoundStream_GetSampleRate(This);}
+            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -159,10 +74,18 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public uint ChannelsCount
             {
-                get { return sfSoundStream_GetChannelsCount(This); }
+                get {return sfSoundStream_GetChannelsCount(This);}
             }
 
             ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Current status of the sound stream (see SoundStatus enum)
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public SoundStatus Status
+            {
+                get {return sfSoundStream_GetStatus(This);}
+            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -171,20 +94,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool Loop
             {
-                get { return sfSoundStream_GetLoop(This); }
-                set { sfSoundStream_SetLoop(This, value); }
-            }
-
-            /// <summary>
-            /// Minimum distance of the sound stream. Closer than this distance,
-            /// the listener will hear the sound at its maximum volume.
-            /// The default value is 1
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public float MinDistance
-            {
-                get { return sfSoundStream_GetMinDistance(This); }
-                set { sfSoundStream_SetMinDistance(This, value); }
+                get {return sfSoundStream_GetLoop(This);}
+                set {sfSoundStream_SetLoop(This, value);}
             }
 
             ////////////////////////////////////////////////////////////
@@ -194,21 +105,20 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public float Pitch
             {
-                get { return sfSoundStream_GetPitch(This); }
-                set { sfSoundStream_SetPitch(This, value); }
+                get {return sfSoundStream_GetPitch(This);}
+                set {sfSoundStream_SetPitch(This, value);}
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Current playing position, in milliseconds
+            /// Volume of the sound stream, in range [0, 100]. Default value is 100
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public uint PlayingOffset
+            public float Volume
             {
-                get { return sfSoundStream_GetPlayingOffset(This); }
-                set { sfSoundStream_SetPlayingOffset(This, value); }
+                get {return sfSoundStream_GetVolume(This);}
+                set {sfSoundStream_SetVolume(This, value);}
             }
-
-            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -217,13 +127,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Vector3 Position
             {
-                get
-                {
-                    Vector3 v;
-                    sfSoundStream_GetPosition(This, out v.X, out v.Y, out v.Z);
-                    return v;
-                }
-                set { sfSoundStream_SetPosition(This, value.X, value.Y, value.Z); }
+                get {Vector3 v; sfSoundStream_GetPosition(This, out v.X, out v.Y, out v.Z); return v;}
+                set {sfSoundStream_SetPosition(This, value.X, value.Y, value.Z);}
             }
 
             ////////////////////////////////////////////////////////////
@@ -235,75 +140,68 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool RelativeToListener
             {
-                get { return sfSoundStream_IsRelativeToListener(This); }
-                set { sfSoundStream_SetRelativeToListener(This, value); }
+                get {return sfSoundStream_IsRelativeToListener(This);}
+                set {sfSoundStream_SetRelativeToListener(This, value);}
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Samples rate, in samples per second
+            /// Minimum distance of the sound stream. Closer than this distance,
+            /// the listener will hear the sound at its maximum volume.
+            /// The default value is 1
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public uint SampleRate
+            public float MinDistance
             {
-                get { return sfSoundStream_GetSampleRate(This); }
+                get {return sfSoundStream_GetMinDistance(This);}
+                set {sfSoundStream_SetMinDistance(This, value);}
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Current status of the sound stream (see SoundStatus enum)
+            /// Attenuation factor. The higher the attenuation, the
+            /// more the sound will be attenuated with distance from listener.
+            /// The default value is 1
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public SoundStatus Status
+            public float Attenuation
             {
-                get { return sfSoundStream_GetStatus(This); }
+                get {return sfSoundStream_GetAttenuation(This);}
+                set {sfSoundStream_SetAttenuation(This, value);}
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Volume of the sound stream, in range [0, 100]. Default value is 100
+            /// Current playing position, in seconds
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public float Volume
+            public float PlayingOffset
             {
-                get { return sfSoundStream_GetVolume(This); }
-                set { sfSoundStream_SetVolume(This, value); }
+                get {return sfSoundStream_GetPlayingOffset(This);}
+                set {sfSoundStream_SetPlayingOffset(This, value);}
             }
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Handle the destruction of the object
+            /// Provide a string describing the object
             /// </summary>
-            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            /// <returns>String description of the object</returns>
             ////////////////////////////////////////////////////////////
-            protected override void Destroy(bool disposing)
+            public override string ToString()
             {
-                sfSoundStream_Destroy(This);
+                return "[SoundStream]" +
+                       " SampleRate(" + SampleRate + ")" +
+                       " ChannelsCount(" + ChannelsCount + ")" +
+                       " Status(" + Status + ")" +
+                       " Loop(" + Loop + ")" +
+                       " Pitch(" + Pitch + ")" +
+                       " Volume(" + Volume + ")" +
+                       " Position(" + Position + ")" +
+                       " RelativeToListener(" + RelativeToListener + ")" +
+                       " MinDistance(" + MinDistance + ")" +
+                       " Attenuation(" + Attenuation + ")" +
+                       " PlayingOffset(" + PlayingOffset + ")";
             }
-
-            /// <summary>
-            /// Called each time new audio data is needed to feed the stream
-            /// </summary>
-            /// <param name="dataChunk">Data chunk to fill with new audio samples</param>
-            /// <param name="userData">User data -- unused</param>
-            /// <returns>True to continue playback, false to stop</returns>
-            ////////////////////////////////////////////////////////////
-            bool GetData(ref Chunk dataChunk, IntPtr userData)
-            {
-                if (OnGetData(out myTempBuffer))
-                {
-                    unsafe
-                    {
-                        fixed (short* samplesPtr = myTempBuffer)
-                        {
-                            dataChunk.samplesPtr = samplesPtr;
-                            dataChunk.samplesCount = (uint)myTempBuffer.Length;
-                        }
-                    }
-
-                    return true;
-                }
-                else
-                    return false;
-            }
-
-            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -315,7 +213,7 @@ namespace SFML
             protected void Initialize(uint channelsCount, uint sampleRate)
             {
                 myGetDataCallback = new GetDataCallbackType(GetData);
-                mySeekCallback = new SeekCallbackType(Seek);
+                mySeekCallback    = new SeekCallbackType(Seek);
                 SetThis(sfSoundStream_Create(myGetDataCallback, mySeekCallback, channelsCount, sampleRate, IntPtr.Zero));
             }
 
@@ -332,75 +230,158 @@ namespace SFML
             /// <summary>
             /// Virtual function called to seek into the stream
             /// </summary>
-            /// <param name="timeOffset">New position, expressed in milliseconds</param>
+            /// <param name="timeOffset">New position, expressed in seconds</param>
             ////////////////////////////////////////////////////////////
-            protected abstract void OnSeek(uint timeOffset);
-
-            /// <summary>
-            /// Pause the sound stream
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public void Pause()
-            {
-                sfSoundStream_Pause(This);
-            }
-
-            /// <summary>
-            /// Play the sound stream
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public void Play()
-            {
-                sfSoundStream_Play(This);
-            }
-
-            ////////////////////////////////////////////////////////////
+            protected abstract void OnSeek(float timeOffset);
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Called to seek in the stream
+            /// Handle the destruction of the object
             /// </summary>
-            /// <param name="timeOffset">New position, expressed in milliseconds</param>
-            /// <param name="userData">User data -- unused</param>
-            /// <returns>If false is returned, the playback is aborted</returns>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
             ////////////////////////////////////////////////////////////
-            void Seek(uint timeOffset, IntPtr userData)
+            protected override void Destroy(bool disposing)
             {
-                OnSeek(timeOffset);
+                sfSoundStream_Destroy(This);
             }
 
-            /// <summary>
-            /// Stop the sound stream
-            /// </summary>
             ////////////////////////////////////////////////////////////
-            public void Stop()
-            {
-                sfSoundStream_Stop(This);
-            }
-
-            /// <summary>
-            /// Provide a string describing the object
-            /// </summary>
-            /// <returns>String description of the object</returns>
-            ////////////////////////////////////////////////////////////
-            public override string ToString()
-            {
-                return "[SoundStream]" + " SampleRate(" + SampleRate + ")" + " ChannelsCount(" + ChannelsCount + ")" + " Status(" +
-                       Status + ")" + " Loop(" + Loop + ")" + " Pitch(" + Pitch + ")" + " Volume(" + Volume + ")" + " Position(" +
-                       Position + ")" + " RelativeToListener(" + RelativeToListener + ")" + " MinDistance(" + MinDistance + ")" +
-                       " Attenuation(" + Attenuation + ")" + " PlayingOffset(" + PlayingOffset + ")";
-            }
-
             /// <summary>
             /// Structure mapping the C library arguments passed to the data callback
             /// </summary>
             ////////////////////////////////////////////////////////////
             [StructLayout(LayoutKind.Sequential)]
-            struct Chunk
+            private struct Chunk
             {
-                public unsafe short* samplesPtr;
-                public uint samplesCount;
+                unsafe public short* samplesPtr;
+                public uint          samplesCount;
             }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Called each time new audio data is needed to feed the stream
+            /// </summary>
+            /// <param name="dataChunk">Data chunk to fill with new audio samples</param>
+            /// <param name="userData">User data -- unused</param>
+            /// <returns>True to continue playback, false to stop</returns>
+            ////////////////////////////////////////////////////////////
+            private bool GetData(ref Chunk dataChunk, IntPtr userData)
+            {
+                if (OnGetData(out myTempBuffer))
+                {
+                    unsafe
+                    {
+                        fixed (short* samplesPtr = myTempBuffer)
+                        {
+                            dataChunk.samplesPtr   = samplesPtr;
+                            dataChunk.samplesCount = (uint)myTempBuffer.Length;
+                        }
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Called to seek in the stream
+            /// </summary>
+            /// <param name="timeOffset">New position, expressed in seconds</param>
+            /// <param name="userData">User data -- unused</param>
+            /// <returns>If false is returned, the playback is aborted</returns>
+            ////////////////////////////////////////////////////////////
+            private void Seek(float timeOffset, IntPtr userData)
+            {
+                OnSeek(timeOffset);
+            }
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            private delegate bool GetDataCallbackType(ref Chunk dataChunk, IntPtr UserData);
+
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+            private delegate void SeekCallbackType(float timeOffset, IntPtr UserData);
+
+            private GetDataCallbackType myGetDataCallback;
+            private SeekCallbackType    mySeekCallback;
+            private short[]             myTempBuffer;
+
+            #region Imports
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfSoundStream_Create(GetDataCallbackType OnGetData, SeekCallbackType OnSeek, uint ChannelsCount, uint SampleRate, IntPtr UserData);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_Destroy(IntPtr SoundStreamStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_Play(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_Pause(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_Stop(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern SoundStatus sfSoundStream_GetStatus(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern uint sfSoundStream_GetChannelsCount(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern uint sfSoundStream_GetSampleRate(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetLoop(IntPtr SoundStream, bool Loop);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetPitch(IntPtr SoundStream, float Pitch);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetVolume(IntPtr SoundStream, float Volume);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetPosition(IntPtr SoundStream, float X, float Y, float Z);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetRelativeToListener(IntPtr SoundStream, bool Relative);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetMinDistance(IntPtr SoundStream, float MinDistance);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetAttenuation(IntPtr SoundStream, float Attenuation);
+            
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_SetPlayingOffset(IntPtr SoundStream, float TimeOffset);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern bool sfSoundStream_GetLoop(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfSoundStream_GetPitch(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfSoundStream_GetVolume(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfSoundStream_GetPosition(IntPtr SoundStream, out float X, out float Y, out float Z);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern bool sfSoundStream_IsRelativeToListener(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfSoundStream_GetMinDistance(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfSoundStream_GetAttenuation(IntPtr SoundStream);
+
+            [DllImport("csfml-audio-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfSoundStream_GetPlayingOffset(IntPtr SoundStream);
+            #endregion
         }
     }
 }

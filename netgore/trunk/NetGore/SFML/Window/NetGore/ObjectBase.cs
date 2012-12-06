@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SFML
 {
@@ -9,33 +9,28 @@ namespace SFML
     /// SFML object. It's meant for internal use only
     /// </summary>
     ////////////////////////////////////////////////////////////
-    public abstract class ObjectBase : IDisposable
+    public abstract partial class ObjectBase : IDisposable
     {
         ////////////////////////////////////////////////////////////
-        IntPtr myThis = IntPtr.Zero;
-
         /// <summary>
         /// Construct the object from a pointer to the C library object
         /// </summary>
         /// <param name="thisPtr">Internal pointer to the object in the C libraries</param>
         ////////////////////////////////////////////////////////////
-        protected ObjectBase(IntPtr thisPtr)
+        public ObjectBase(IntPtr thisPtr)
         {
             myThis = thisPtr;
         }
 
-        /// <summary>
-        /// Gets if this object has been disposed. For objects that will automatically reload after being disposed (such as content
-        /// loaded through a ContentManager), this will always return true since, even if the object is disposed at the time the
-        /// call is made to the method, it will reload automatically when needed. Such objects are often variations of existing
-        /// objects, prefixed with the word "Lazy" (e.g. Image and LazyImage).
-        /// </summary>
-        public virtual bool IsDisposed
-        {
-            get { return This == IntPtr.Zero; }
-        }
-
         ////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Dispose the object
+        /// </summary>
+        ////////////////////////////////////////////////////////////
+        ~ObjectBase()
+        {
+            Dispose(false);
+        }
 
         ////////////////////////////////////////////////////////////
         /// <summary>
@@ -45,28 +40,21 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public virtual IntPtr This
         {
-            get { return myThis; }
+            get {return myThis;}
         }
 
+        ////////////////////////////////////////////////////////////
         /// <summary>
-        /// Access to the internal pointer of the object. Returns the pointer, never anything more. Cannot override.
-        /// For internal use only
+        /// Explicitely dispose the object
         /// </summary>
-        protected IntPtr ThisRaw
+        ////////////////////////////////////////////////////////////
+        public virtual void Dispose()
         {
-            get { return myThis; }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         ////////////////////////////////////////////////////////////
-
-        ////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Destroy the object (implementation is left to each derived class)
-        /// </summary>
-        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        ////////////////////////////////////////////////////////////
-        protected abstract void Destroy(bool disposing);
-
         /// <summary>
         /// Destroy the object
         /// </summary>
@@ -81,14 +69,13 @@ namespace SFML
             }
         }
 
-        /// <summary>
-        /// Dispose the object
-        /// </summary>
         ////////////////////////////////////////////////////////////
-        ~ObjectBase()
-        {
-            Dispose(false);
-        }
+        /// <summary>
+        /// Destroy the object (implementation is left to each derived class)
+        /// </summary>
+        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+        ////////////////////////////////////////////////////////////
+        protected abstract void Destroy(bool disposing);
 
         ////////////////////////////////////////////////////////////
         /// <summary>
@@ -101,19 +88,6 @@ namespace SFML
             myThis = thisPtr;
         }
 
-        #region IDisposable Members
-
-        /// <summary>
-        /// Explicitely dispose the object
-        /// </summary>
-        ////////////////////////////////////////////////////////////
-        public virtual void Dispose()
-        {
-            // NOTE: Custom change to virtual to support lazy objects
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
+        private IntPtr myThis = IntPtr.Zero;
     }
 }
