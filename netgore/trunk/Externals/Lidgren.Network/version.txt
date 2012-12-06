@@ -1,2 +1,0 @@
-﻿Lidgren Network - Gen 3
-October 27, 2012 release

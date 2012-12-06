@@ -83,6 +83,11 @@
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Externals\Lidgren.Network.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Externals\log4net.dll</HintPath>
@@ -136,11 +141,6 @@
     <Compile Include="PeerTrading\ClientPeerTradeInfoHandlerBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Externals\Lidgren.Network\Lidgren.Network.csproj">
-      <Project>{FA245447-5F23-4AA1-BD5F-8D2DDF33CFBD}</Project>
-      <Name>Lidgren.Network</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
       <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
       <Name>NetGore.Features</Name>
