@@ -39,13 +39,14 @@ namespace NetGore.Editor
 
         /// <summary>
         /// Gets the <see cref="Cursor"/> that represents the transformation box under the cursor.
+        /// Returns null if the cursor is not under a transformation box.
         /// </summary>
         public Cursor CurrentCursor
         {
             get
             {
                 if (UnderCursor == null)
-                    return Cursors.Default;
+                    return null;
 
                 return UnderCursor.MouseCursor;
             }
