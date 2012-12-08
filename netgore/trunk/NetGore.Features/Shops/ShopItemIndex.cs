@@ -34,7 +34,7 @@ namespace NetGore.Features.Shops
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns>The result of the conversion.</returns>
-        public static implicit operator byte(ShopItemIndex v)
+        public static explicit operator byte(ShopItemIndex v)
         {
             return v._value;
         }
@@ -44,7 +44,7 @@ namespace NetGore.Features.Shops
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns>The result of the conversion.</returns>
-        public static implicit operator ShopItemIndex(byte v)
+        public static explicit operator ShopItemIndex(byte v)
         {
             return new ShopItemIndex(v);
         }
@@ -104,6 +104,15 @@ namespace NetGore.Features.Shops
         public static bool operator !=(ShopItemIndex left, ShopItemIndex right)
         {
             return !left.Equals(right);
+        }
+
+        /// <summary>
+        /// Gets the raw internal value of this ShopItemIndex.
+        /// </summary>
+        /// <returns>The raw internal value.</returns>
+        public ushort GetRawValue()
+        {
+            return _value;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DemoGame
             wasConverted = int.TryParse(value, out i);
 
             if (wasConverted)
-                return i;
+                return (SPValueType)i;
 
             return default(SPValueType);
         }

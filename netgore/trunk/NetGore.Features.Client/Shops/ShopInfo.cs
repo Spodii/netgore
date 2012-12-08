@@ -69,10 +69,11 @@ namespace NetGore.Features.Shops
             if (_items == null)
                 return default(TItemInfo);
 
-            if (slot < 0 || slot >= _items.Length)
+            var i = slot.GetRawValue();
+            if (i < 0 || i >= _items.Length)
                 return default(TItemInfo);
 
-            return _items[slot];
+            return _items[i];
         }
     }
 }

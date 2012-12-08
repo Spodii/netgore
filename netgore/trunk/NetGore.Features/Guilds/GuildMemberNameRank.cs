@@ -111,7 +111,7 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <param name="v">The value.</param>
         /// <returns>The result of the conversion.</returns>
-        public static implicit operator KeyValuePair<string, GuildRank>(GuildMemberNameRank v)
+        public static explicit operator KeyValuePair<string, GuildRank>(GuildMemberNameRank v)
         {
             return new KeyValuePair<string, GuildRank>(v.Name, v.Rank);
         }
@@ -121,7 +121,7 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <param name="v">The value.</param>
         /// <returns>The result of the conversion.</returns>
-        public static implicit operator GuildMemberNameRank(KeyValuePair<string, GuildRank> v)
+        public static explicit operator GuildMemberNameRank(KeyValuePair<string, GuildRank> v)
         {
             return new GuildMemberNameRank(v.Key, v.Value);
         }

@@ -56,7 +56,7 @@ namespace NetGore.Stats
             // Populate the last values array with the current values
             foreach (var stat in statCollection)
             {
-                this[stat.StatType] = stat.Value;
+                this[stat.StatType] = stat.Value.GetRawValue();
             }
         }
 
@@ -66,8 +66,8 @@ namespace NetGore.Stats
         /// <param name="key">The key.</param>
         protected int this[T key]
         {
-            get { return _lastValues[ToArrayIndex(key)]; }
-            set { _lastValues[ToArrayIndex(key)] = value; }
+            get { return _lastValues[ToArrayIndex(key)].GetRawValue(); }
+            set { _lastValues[ToArrayIndex(key)] = (StatValueType)value; }
         }
 
         /// <summary>

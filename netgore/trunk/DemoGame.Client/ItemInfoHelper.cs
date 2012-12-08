@@ -86,8 +86,7 @@ namespace DemoGame.Client
             if (itemInfo == null)
                 return StyledText.EmptyArray;
 
-            return GetStyledText(itemInfo.Name, itemInfo.Description, itemInfo.Value, itemInfo.HP, itemInfo.MP, itemInfo.Stats,
-                itemInfo.ReqStats);
+            return GetStyledText(itemInfo.Name, itemInfo.Description, itemInfo.Value, itemInfo.HP, itemInfo.MP, itemInfo.Stats, itemInfo.ReqStats);
         }
 
         /// <summary>
@@ -100,8 +99,7 @@ namespace DemoGame.Client
             if (itemInfo == null)
                 return StyledText.EmptyArray;
 
-            return GetStyledText(itemInfo.Name, itemInfo.Description, itemInfo.Value, itemInfo.HP, itemInfo.MP, itemInfo.Stats,
-                itemInfo.ReqStats);
+            return GetStyledText(itemInfo.Name, itemInfo.Description, itemInfo.Value, itemInfo.HP, itemInfo.MP, itemInfo.Stats, itemInfo.ReqStats);
         }
 
         /// <summary>

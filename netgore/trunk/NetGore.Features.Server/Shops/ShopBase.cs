@@ -106,10 +106,12 @@ namespace NetGore.Features.Shops
         /// the slot was invalid or contains no item.</returns>
         public TShopItem GetShopItem(ShopItemIndex slot)
         {
-            if (slot < 0 || slot >= _shopItems.Length)
+            var i = slot.GetRawValue();
+
+            if (i < 0 || i >= _shopItems.Length)
                 return default(TShopItem);
 
-            return _shopItems[slot];
+            return _shopItems[i];
         }
 
         /// <summary>

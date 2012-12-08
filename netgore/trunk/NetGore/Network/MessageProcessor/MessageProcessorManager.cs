@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -102,19 +103,19 @@ namespace NetGore.Network
                     // Create the message processor for the method
                     foreach (var atb in atbs)
                     {
-                        if (tmpProcessors.CanGet(atb.MsgID) && tmpProcessors[atb.MsgID] != null)
+                        var msgId = atb.MsgID.GetRawValue();
+
+                        if (tmpProcessors.CanGet(msgId) && tmpProcessors[msgId] != null)
                         {
-                            const string errmsg =
-                                "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
-                            Debug.Fail(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method, method));
-                            throw new DuplicateKeyException(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method,
-                                method));
+                            const string errmsg = "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
+                            Debug.Fail(string.Format(errmsg, atb.MsgID, tmpProcessors[msgId].Call.Method, method));
+                            throw new DuplicateKeyException(string.Format(errmsg, atb.MsgID, tmpProcessors[msgId].Call.Method, method));
                         }
 
                         var del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);
                         Debug.Assert(del != null);
                         var msgProcessor = CreateMessageProcessor(atb, del);
-                        tmpProcessors.Insert(atb.MsgID, msgProcessor);
+                        tmpProcessors.Insert(msgId, msgProcessor);
                     }
                 }
             }
@@ -155,7 +156,7 @@ namespace NetGore.Network
         /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
         protected IMessageProcessor GetInternalMessageProcessor(MessageProcessorID msgID)
         {
-            return _processors[msgID];
+            return _processors[msgID.GetRawValue()];
         }
 
         /// <summary>
@@ -271,7 +272,7 @@ namespace NetGore.Network
                     log.DebugFormat("Parsing message ID `{0}`. Stream now at bit position `{1}`.", msgID, data.PositionBits);
 
                 // If we get a message ID of 0, we have likely hit the end
-                if (msgID == 0)
+                if (msgID.GetRawValue() == 0)
                 {
                     AssertRestOfStreamIsZero(data);
                     return;

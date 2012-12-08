@@ -575,6 +575,26 @@ namespace NetGore.Stats
         {
             return !(l == r);
         }
+
+        public static bool operator <(StatValueType l, StatValueType r)
+        {
+            return l._value < r._value;
+        }
+
+        public static bool operator >(StatValueType l, StatValueType r)
+        {
+            return l._value > r._value;
+        }
+
+        public static bool operator <=(StatValueType l, StatValueType r)
+        {
+            return l._value <= r._value;
+        }
+
+        public static bool operator >=(StatValueType l, StatValueType r)
+        {
+            return l._value >= r._value;
+        }
     }
 
     /// <summary>

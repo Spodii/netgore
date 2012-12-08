@@ -37,7 +37,7 @@ namespace NetGore.Features.Shops
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, ShopID value)
         {
-            writer.Write(name, value);
+            value.Write(writer, name);
         }
     }
 }

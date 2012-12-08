@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.Features.ActionDisplays;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 using NetGore.World;
@@ -68,10 +70,13 @@ namespace NetGore.Tests.NetGore.IO
             TestSyncNullable("mByte", null);
             TestSyncNullable("mColor", new Color(255, 243, 234, 12));
             TestSyncNullable("mFloat", null);
+            TestSyncNullable("mGrhIndex", null);
             TestSyncNullable("mGrhIndex", new GrhIndex(5));
             TestSyncNullable("mInt", null);
             TestSyncNullable("mLong", (long)1032);
             TestSyncNullable("mMapEntityIndex", null);
+            TestSyncNullable("mActionDisplayID", null);
+            TestSyncNullable("mActionDisplayID", new ActionDisplayID(5));
         }
 
         [Test]
@@ -119,7 +124,17 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void MapEntityIndexTest()
         {
+            TestSyncNullable("mMapEntityIndex", null);
+            TestSyncNullable("mMapEntityIndex", new MapEntityIndex(55));
             TestSync("mMapEntityIndex", new MapEntityIndex(55));
+        }
+
+        [Test]
+        public void ActionDisplayIDTest()
+        {
+            TestSyncNullable("mActionDisplayID", null);
+            TestSyncNullable("mActionDisplayID", new ActionDisplayID(55));
+            TestSync("mActionDisplayID", new ActionDisplayID(55));
         }
 
         [Test]
@@ -217,6 +232,9 @@ namespace NetGore.Tests.NetGore.IO
             [SyncValue]
             public Vector2? mVector2 { get; set; }
 
+            [SyncValue]
+            public ActionDisplayID? mActionDisplayID { get; set; }
+
             public void Deserialize(IValueReader reader)
             {
                 int count = reader.ReadByte("Count");
@@ -308,6 +326,9 @@ namespace NetGore.Tests.NetGore.IO
 
             [SyncValue]
             public Vector2 mVector2 { get; set; }
+
+            [SyncValue]
+            public ActionDisplayID mActionDisplayID { get; set; }
 
             public void Deserialize(IValueReader reader)
             {
