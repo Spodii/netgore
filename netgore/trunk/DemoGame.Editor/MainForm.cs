@@ -478,7 +478,11 @@ namespace DemoGame.Editor
             }
         }
 
-        EditMapForm CreateEditMapForm(IMapTable map)
+        /// <summary>
+        /// Creates an EditMapForm.
+        /// </summary>
+        /// <param name="map">The map to be edited.</param>
+        void CreateEditMapForm(IMapTable map)
         {
             var editorFrm = new EditMapForm();
             editorFrm.MapScreenControl.ChangeMap(map.ID);
@@ -488,8 +492,6 @@ namespace DemoGame.Editor
             var settings = EditorSettings.Default;
             settings.InitialMapId = (int)map.ID;
             settings.Save();
-
-            return editorFrm;
         }
 
         /// <summary>
@@ -682,6 +684,21 @@ namespace DemoGame.Editor
         {
             if (e.Button == MouseButtons.Right)
                 GlobalState.Instance.Map.LayerDepth = 0;
+        }
+
+        private void shiftContentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var map = MapHelper.ActiveMap;
+            if (map == null)
+                return;
+
+            var frm = new ShiftContentsForm(map);
+            frm.Show();
+        }
+
+        private void mapToolStripMenuItem_Paint(object sender, PaintEventArgs e)
+        {
+            mapToolStripMenuItem.Enabled = MapHelper.ActiveMap != null;
         }
     }
 }
