@@ -567,7 +567,7 @@ namespace NetGore.Features.ActionDisplays
         /// </summary>
         /// <param name="ActionDisplayID"><see cref="ActionDisplayID"/> to cast.</param>
         /// <returns>The <see cref="int"/> value of the <see cref="ActionDisplayID"/>.</returns>
-        public static implicit operator int(ActionDisplayID ActionDisplayID)
+        public static explicit operator int(ActionDisplayID ActionDisplayID)
         {
             return ActionDisplayID._value;
         }
@@ -577,7 +577,7 @@ namespace NetGore.Features.ActionDisplays
         /// </summary>
         /// <param name="value">The <see cref="int"/> to cast.</param>
         /// <returns>The <see cref="ActionDisplayID"/> casted from the <see cref="int"/>.</returns>
-        public static implicit operator ActionDisplayID(int value)
+        public static explicit operator ActionDisplayID(int value)
         {
             return new ActionDisplayID(value);
         }

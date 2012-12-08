@@ -1248,8 +1248,8 @@ namespace DemoGame.Server
             _level = v.Level;
             _exp = v.Exp;
             _cash = v.Cash;
-            _hp = new SPValueType(v.HP);
-            _mp = new SPValueType(v.MP);
+            _hp = v.HP;
+            _mp = v.MP;
             RespawnMapID = v.RespawnMapID;
             RespawnPosition = new Vector2(v.RespawnX, v.RespawnY);
             StatPoints = v.StatPoints;

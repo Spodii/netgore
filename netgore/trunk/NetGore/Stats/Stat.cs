@@ -57,7 +57,7 @@ namespace NetGore.Stats
         /// <returns>The result of the conversion.</returns>
         public static implicit operator KeyValuePair<TStatType, int>(Stat<TStatType> value)
         {
-            return new KeyValuePair<TStatType, int>(value.StatType, value.Value);
+            return new KeyValuePair<TStatType, int>(value.StatType, value.Value.GetRawValue());
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NetGore.Stats
         /// <returns>The result of the conversion.</returns>
         public static implicit operator Stat<TStatType>(KeyValuePair<TStatType, int> value)
         {
-            return new Stat<TStatType>(value.Key, value.Value);
+            return new Stat<TStatType>(value.Key, (StatValueType)value.Value);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NetGore.Stats
         /// </returns>
         public bool Equals(Stat<TStatType> other)
         {
-            return Equals(other._statType, _statType) && other._value.Equals(_value);
+            return Equals(other._statType, _statType) && other._value == _value;
         }
 
         /// <summary>

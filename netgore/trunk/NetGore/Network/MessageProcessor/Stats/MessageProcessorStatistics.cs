@@ -76,8 +76,7 @@ namespace NetGore.Network
 
             if (bits < 0)
             {
-                const string errmsg =
-                    "Invalid bitsRead value `{0}` - value was too large to handle. Will use the largest possible value instead ({1}).";
+                const string errmsg = "Invalid bitsRead value `{0}` - value was too large to handle. Will use the largest possible value instead ({1}).";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, bits, ushort.MaxValue);
                 ubits = ushort.MaxValue;

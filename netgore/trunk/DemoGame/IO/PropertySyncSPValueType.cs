@@ -38,7 +38,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, SPValueType value)
         {
-            writer.Write(name, value);
+            value.Write(writer, name);
         }
     }
 }

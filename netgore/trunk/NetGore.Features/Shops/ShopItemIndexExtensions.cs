@@ -25,7 +25,8 @@ namespace NetGore.Features.Shops
         /// <returns>True if the <paramref name="index"/> is in legal range; otherwise false.</returns>
         public static bool IsLegalValue(this ShopItemIndex index)
         {
-            return index >= 0 && index < _shopSettings.MaxShopItems;
+            int i = (int)index;
+            return i >= 0 && i < _shopSettings.MaxShopItems;
         }
 
         public static ShopItemIndex ReadShopItemIndex(this IValueReader reader, string name)
@@ -35,7 +36,7 @@ namespace NetGore.Features.Shops
 
         public static void Write(this IValueWriter writer, string name, ShopItemIndex value)
         {
-            writer.Write(name, value);
+            writer.Write(name, (byte)value);
         }
     }
 }

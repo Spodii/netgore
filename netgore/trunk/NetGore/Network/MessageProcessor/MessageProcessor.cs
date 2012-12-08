@@ -31,7 +31,7 @@ namespace NetGore.Network
             if (methodDelegate == null)
                 throw new ArgumentNullException("methodDelegate");
 
-            if (msgID == 0)
+            if (msgID.GetRawValue() == 0)
                 throw new ArgumentOutOfRangeException("msgID", "The message ID may not be zero.");
 
             _msgID = msgID;
