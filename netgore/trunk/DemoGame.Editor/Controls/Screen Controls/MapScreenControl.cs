@@ -29,6 +29,11 @@ namespace DemoGame.Editor
         EditorMap _map;
 
         /// <summary>
+        /// If the cursor was under a transbox the last frame.
+        /// </summary>
+        bool _wasUnderTransBox = false;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MapScreenControl"/> class.
         /// </summary>
         public MapScreenControl()
@@ -184,7 +189,24 @@ namespace DemoGame.Editor
             }
 
             TransBoxManager.Update(currentTime);
-            Cursor = TransBoxManager.CurrentCursor;
+
+            // Update the cursor display for the transformation box. Only change the cursor if we are currently
+            // under a transbox, or we have just stopped being under one. If we update it every frame, it screws with the
+            // UI display for everything else (like when the cursor is over a textbox).
+            var transBoxCursor = TransBoxManager.CurrentCursor;
+            if (transBoxCursor == null)
+            {
+                if (_wasUnderTransBox)
+                {
+                    Cursor = Cursors.Default;
+                    _wasUnderTransBox = false;
+                }
+            }
+            else
+            {
+                Cursor = transBoxCursor;
+                _wasUnderTransBox = true;
+            }
 
             int deltaTime;
             if (_lastUpdateTime == TickCount.MinValue)
