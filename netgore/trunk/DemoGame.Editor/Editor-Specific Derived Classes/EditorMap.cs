@@ -43,5 +43,17 @@ namespace DemoGame.Editor
             // Ensure the filter is set
             DrawFilter = GlobalState.Instance.Map.MapDrawFilter;
         }
+
+        /// <summary>
+        /// Gets all objects on the map that implement ISpatial.
+        /// </summary>
+        public IEnumerable<ISpatial> GetAllSpatials()
+        {
+            return Spatial.GetMany<ISpatial>()
+                .Concat(Lights)
+                .Concat(RefractionEffects)
+                .Distinct()
+                .ToArray();
+        }
     }
 }
