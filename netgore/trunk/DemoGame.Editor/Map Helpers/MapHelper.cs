@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
+using NetGore.Editor.EditorTool;
 using log4net;
 using NetGore;
 using NetGore.Db;
@@ -15,12 +16,32 @@ using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
 using SFML.Graphics;
+using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
 namespace DemoGame.Editor
 {
     public static class MapHelper
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Gets the currently active EditorMap being edited, if any.
+        /// </summary>
+        public static EditorMap ActiveMap
+        {
+            get
+            {
+                var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
+                if (tb == null)
+                    return null;
+
+                var map = tb.DisplayObject as EditorMap;
+                if (map == null || map.IsDisposed)
+                    return null;
+
+                return map;
+            }
+        }
 
         /// <summary>
         /// Goes through each map and removes invalid GrhData references.
