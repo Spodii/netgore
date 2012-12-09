@@ -28,7 +28,7 @@ namespace DemoGame.Editor
             if (dsi.Grh.GrhData == null)
                 textureName = "*";
             else
-                textureName = ((StationaryGrhData)dsi.Grh.GrhData).TextureName.Value.Replace("Character/", string.Empty);
+                textureName = dsi.Grh.GrhData.Categorization.ToString();
 
             return textureName + ": " + dsi.Source.Name + " -> " + s;
         }
