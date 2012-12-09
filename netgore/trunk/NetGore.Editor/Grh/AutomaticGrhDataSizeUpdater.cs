@@ -105,9 +105,10 @@ namespace NetGore.Editor.Grhs
         /// </summary>
         public virtual void Save()
         {
+            var values =  _cache.Values.OrderBy(x => x.GrhIndex).ToImmutable();
             using (var writer = XmlValueWriter.Create(CacheFile, _rootNodeName))
             {
-                writer.WriteManyNodes("Item", _cache.Values.OrderBy(x => x.GrhIndex).ToImmutable(), (w, x) => x.WriteState(w));
+                writer.WriteManyNodes("Item", values, (w, x) => x.WriteState(w));
             }
         }
 

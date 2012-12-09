@@ -111,13 +111,12 @@ namespace NetGore.Content
 
             // Take all the files in the directory, filter out the markup and suffix, and find which file names match ours
             string targetFileName = Path.GetFileName(relFilePathStr);
+            targetFileName = RemoveFileTagsFromFileName(targetFileName);
 
             string[] contentFilePaths = dirFiles.Where(x =>
             {
                 string xFileName = Path.GetFileNameWithoutExtension(x);
-                int splitIndex = xFileName.IndexOf('[');
-                if (splitIndex > 0)
-                    xFileName = xFileName.Substring(splitIndex + 1);
+                xFileName = RemoveFileTagsFromFileName(xFileName);
                 return StringComparer.OrdinalIgnoreCase.Equals(xFileName, targetFileName);
             })
             .ToArray();
@@ -125,16 +124,30 @@ namespace NetGore.Content
             // Verify we found exactly 1 match
             if (contentFilePaths.Length == 0)
             {
-                throw new ArgumentException(string.Format("Could not find a file named (without the [] markup and suffix) `{0}` in path `{1}`.",
+                throw new ArgumentException(string.Format(
+                    "Could not find a file named (without the [] markup and suffix) `{0}` in path `{1}`.",
                     targetFileName, dirPath));
             }
             if (contentFilePaths.Length > 1)
             {
-                throw new ArgumentException(string.Format("Found multiple potential matches for the file named (without the [] markup and suffix) `{0}` in path `{1}`. Was expecting just one.",
+                throw new ArgumentException(string.Format(
+                    "Found multiple potential matches for the file named (without the [] markup and suffix) `{0}` in path `{1}`. Was expecting just one.",
                     targetFileName, dirPath));
             }
 
             return contentFilePaths[0];
+        }
+
+        /// <summary>
+        /// Removes the file tags from a file name.
+        /// </summary>
+        /// <param name="fileName">The file name only (no directories, no suffix).</param>
+        static string RemoveFileTagsFromFileName(string fileName)
+        {
+            int splitIndex = fileName.IndexOf('[');
+            if (splitIndex > 0)
+                fileName = fileName.Substring(0, splitIndex);
+            return fileName;
         }
 
         /// <summary>

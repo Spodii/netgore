@@ -2177,7 +2177,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Furniture/chair01[w1x0y20w40h39][l1]</Name>
-        <Source>0,0,40,80</Source>
+        <Source>0,0,40,59</Source>
       </Texture>
     </Item241>
     <Item242>
@@ -2186,7 +2186,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Furniture/chair02[w1x0y20w40h39][l1]</Name>
-        <Source>0,0,40,80</Source>
+        <Source>0,0,40,59</Source>
       </Texture>
     </Item242>
     <Item243>
@@ -2276,7 +2276,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Furniture/stonetable01[w1][l1]</Name>
-        <Source>0,0,40,80</Source>
+        <Source>0,0,40,59</Source>
       </Texture>
     </Item252>
     <Item253>
@@ -2285,7 +2285,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Furniture/stonetable02[w1][l1]</Name>
-        <Source>0,0,40,80</Source>
+        <Source>0,0,40,59</Source>
       </Texture>
     </Item253>
     <Item254>
@@ -2294,7 +2294,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Furniture/stonetable03[w1][l1]</Name>
-        <Source>0,0,40,80</Source>
+        <Source>0,0,40,59</Source>
       </Texture>
     </Item254>
     <Item255>
@@ -2915,7 +2915,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/Nature/StubbyRock[w1x0y10w40h21]</Name>
-        <Source>0,0,40,40</Source>
+        <Source>0,0,40,31</Source>
       </Texture>
     </Item323>
     <Item324>
@@ -2996,7 +2996,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/Map/SmallTown/SmallHouse[w1]</Name>
-        <Source>0,0,400,320</Source>
+        <Source>0,0,400,247</Source>
       </Texture>
     </Item332>
     <Item333>
