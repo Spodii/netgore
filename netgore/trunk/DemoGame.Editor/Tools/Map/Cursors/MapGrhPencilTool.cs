@@ -165,15 +165,8 @@ namespace DemoGame.Editor.Tools
             if (Input.IsShiftDown)
             {
                 // Display tooltip of what would be selected
-                var grhToSelect = GetGrhToSelect((EditorMap)map, worldPos);
-                if (grhToSelect != null && grhToSelect.Grh != null && grhToSelect.Grh.GrhData != null)
-                {
-                    var font = GlobalState.Instance.DefaultRenderFont;
-                    string txt = grhToSelect.Grh.GrhData.Categorization.ToString();
-                    Vector2 txtSize = font.MeasureString(txt);
-                    Vector2 txtPos = drawPos.Max(Vector2.Zero).Min(map.Camera.Size - txtSize);
-                    spriteBatch.DrawStringShaded(font, txt, txtPos, Color.White, Color.Black);
-                }
+                var grhToSelect = GetGrhToSelect(map, worldPos);
+                DrawMapGrhTooltip(spriteBatch, map, grhToSelect, worldPos);
             }
             else
             {
@@ -181,6 +174,21 @@ namespace DemoGame.Editor.Tools
                 grh.Update(map.GetTime());
                 grh.Draw(spriteBatch, drawPos, new Color(255, 255, 255, 180));
             }
+        }
+
+        public static bool DrawMapGrhTooltip(ISpriteBatch spriteBatch, IDrawableMap map, MapGrh mapGrh, Vector2 worldPos)
+        {
+            if (mapGrh == null || mapGrh.Grh == null || mapGrh.Grh.GrhData == null)
+                return false;
+
+            Vector2 drawPos = worldPos - map.Camera.Min;
+            var font = GlobalState.Instance.DefaultRenderFont;
+            string txt = mapGrh.Grh.GrhData.Categorization.ToString();
+            Vector2 txtSize = font.MeasureString(txt);
+            Vector2 txtPos = drawPos.Max(Vector2.Zero).Min(map.Camera.Size - txtSize);
+            spriteBatch.DrawStringShaded(font, txt, txtPos, Color.White, Color.Black);
+
+            return true;
         }
 
         /// <summary>
@@ -196,99 +204,28 @@ namespace DemoGame.Editor.Tools
         }
 
         /// <summary>
-        /// Gets the best-fit MapGrh at the given position.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="worldPos">The world position.</param>
-        /// <param name="filter">If specified, an additional filter to use on the MapGrhs.</param>
-        /// <returns>The best-fit MapGrh at the given position, or null if none are at the position.</returns>
-        static MapGrh GetBestFitGrhAtPos(EditorMap map, Vector2 worldPos, Predicate<MapGrh> filter = null)
-        {
-            var currentLayer = GlobalState.Instance.Map.Layer;
-            var currentLayerDepth = GlobalState.Instance.Map.LayerDepth;
-
-            // Get all at position
-            var allGrhs = map.Spatial.GetMany<MapGrh>(worldPos, filter)
-                .Where(x => x.MapRenderLayer == MapRenderLayer.Dynamic || x.MapRenderLayer == MapRenderLayer.SpriteBackground || x.MapRenderLayer == MapRenderLayer.SpriteForeground)
-                .ToImmutable();
-
-            // Check for any at the current layer depth, prioritizing by the distance from the current layer depth
-            var grhAtCurrLayer = allGrhs.Where(x => x.MapRenderLayer == currentLayer).OrderBy(x => currentLayerDepth.CompareTo(x.LayerDepth)).FirstOrDefault();
-            if (grhAtCurrLayer != null)
-                return grhAtCurrLayer;
-
-            // Nothing at the current layer, so check all layers, but this time prioritizing by the distance from the center of the grh (since it doesn't
-            // make much sense to compare depth on separate layers)
-            return allGrhs.OrderBy(x => worldPos.QuickDistance(x.Center)).FirstOrDefault();
-        }
-
-        /// <summary>
         /// Gets the MapGrh to select at the given position.
         /// </summary>
         /// <param name="map">The map.</param>
         /// <param name="worldPos">The world position.</param>
-        /// <param name="mustBeDifferentThanSelected">If true, only return a MapGrh that is different from what is currently selected.</param>
+        /// <param name="mustBeOnLayer">If not null, then only return a MapGrh on the specified layer.</param>
         /// <returns>The best MapGrh to be selected, or null if none found.</returns>
-        public static MapGrh GetGrhToSelect(EditorMap map, Vector2 worldPos, bool mustBeDifferentThanSelected = true)
+        public static MapGrh GetGrhToSelect(IDrawableMap map, Vector2 worldPos, MapRenderLayer? mustBeOnLayer = null)
         {
-            var currentLayer = GlobalState.Instance.Map.Layer;
+            // Get all MapGrhs as the position
+            var mapGrhs = map.Spatial.GetMany<MapGrh>(worldPos);
 
-            // Get the current GrhIndex since we don't want to select something that is already selected
-            GrhIndex? currentGrhIndex = null;
-            var selectedGrh = GlobalState.Instance.Map.GrhToPlace;
-            if (selectedGrh != null && selectedGrh.GrhData != null)
-                currentGrhIndex = selectedGrh.GrhData.GrhIndex;
+            // Filter layer
+            if (mustBeOnLayer.HasValue)
+                mapGrhs = mapGrhs.Where(x => x.MapRenderLayer == mustBeOnLayer.Value);
 
-            // We only select something not snapped to grid if ctrl is pressed
-            bool mustBeSnappedToGrid = !Input.IsCtrlDown;
+            // Prioritize by draw order & distance from origin, then take the first
+            mapGrhs = mapGrhs
+                .OrderByDescending(x => (int)x.MapRenderLayer)
+                .ThenByDescending(x => x.LayerDepth)
+                .ThenBy(x => worldPos.QuickDistance(x.Position));
 
-            return GetBestFitGrhAtPos(map, worldPos, x =>
-                (!mustBeDifferentThanSelected || !currentGrhIndex.HasValue || x.Grh.GrhData.GrhIndex != currentGrhIndex.Value || x.MapRenderLayer != currentLayer) &&
-                (!mustBeSnappedToGrid || GridAligner.Instance.IsAligned(x.Position))
-            );
-        }
-
-        /// <summary>
-        /// Gets the MapGrh to delete at the given position.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="worldPos">The world position.</param>
-        /// <returns>The best MapGrh to be selected, or null if none found.</returns>
-        static MapGrh GetGrhToDelete(EditorMap map, Vector2 worldPos)
-        {
-            // We only select something not snapped to grid if ctrl is pressed
-            bool mustBeSnappedToGrid = !Input.IsCtrlDown;
-
-            bool mustBeOnLayer = !Input.IsShiftDown;
-            MapRenderLayer selectedLayer = GlobalState.Instance.Map.Layer;
-
-            return GetBestFitGrhAtPos(map, worldPos, x =>
-                (!mustBeSnappedToGrid || GridAligner.Instance.IsAligned(x.Position)) &&
-                (!mustBeOnLayer || x.MapRenderLayer == selectedLayer)
-            );
-        }
-
-        /// <summary>
-        /// Gets the MapGrhs to delete at the given position.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="worldPos">The world position.</param>
-        /// <returns>The MapGrhs to delete at the given position.</returns>
-        static IEnumerable<MapGrh> GetGrhsToDelete(EditorMap map, Vector2 worldPos)
-        {
-            // We only select something not snapped to grid if ctrl is pressed
-            bool mustBeSnappedToGrid = !Input.IsCtrlDown;
-
-            // If shift is down, delete from all layers
-            bool mustMatchLayer = !Input.IsShiftDown;
-            var currentLayer = GlobalState.Instance.Map.Layer;
-
-            // Get all at position & filter
-            return map.Spatial.GetMany<MapGrh>(worldPos, x =>
-                (x.MapRenderLayer == MapRenderLayer.Dynamic || x.MapRenderLayer == MapRenderLayer.SpriteBackground || x.MapRenderLayer == MapRenderLayer.SpriteForeground) &&
-                (!mustBeSnappedToGrid || GridAligner.Instance.IsAligned(x.Position)) &&
-                (!mustMatchLayer || x.MapRenderLayer == currentLayer)
-            ).ToImmutable();
+            return mapGrhs.FirstOrDefault();
         }
 
         /// <summary>
@@ -335,15 +272,16 @@ namespace DemoGame.Editor.Tools
                 if (!Input.IsShiftDown)
                 {
                     // Delete from current layer
-                    var grhToDelete = GetGrhToDelete(map, worldPos);
+                    var grhToDelete = GetGrhToSelect(map, worldPos, mustBeOnLayer: GlobalState.Instance.Map.Layer);
                     if (grhToDelete != null)
                         map.RemoveMapGrh(grhToDelete);
                 }
                 else
                 {
                     // Delete from all layers
-                    var grhsToDelete = GetGrhsToDelete(map, worldPos);
-                    map.RemoveMapGrh(grhsToDelete);
+                    var grhToSelect = GetGrhToSelect(map, worldPos);
+                    if (grhToSelect != null)
+                        map.RemoveMapGrh(grhToSelect);
                 }
             }
         }
