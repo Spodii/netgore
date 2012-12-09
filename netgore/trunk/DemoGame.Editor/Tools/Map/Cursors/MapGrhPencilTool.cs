@@ -210,6 +210,7 @@ namespace DemoGame.Editor.Tools
         /// </summary>
         /// <param name="map">The map.</param>
         /// <param name="worldPos">The world position.</param>
+        /// <param name="mustBeDifferentThanSelected">If true, only return a MapGrh that is different from what is currently selected.</param>
         /// <returns>The best MapGrh to be selected, or null if none found.</returns>
         public static MapGrh GetGrhToSelect(EditorMap map, Vector2 worldPos, bool mustBeDifferentThanSelected = true)
         {

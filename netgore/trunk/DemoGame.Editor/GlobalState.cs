@@ -420,6 +420,8 @@ namespace DemoGame.Editor
                 if (GrhToPlace.GrhData != null && GrhToPlace.GrhData.GrhIndex == grhIndex)
                     return;
 
+                LayerDepth = 0;
+
                 GrhToPlace.SetGrh(grhIndex);
 
                 GrhData.FileTags fileTags = Parent.GetFileTags(grhIndex);
