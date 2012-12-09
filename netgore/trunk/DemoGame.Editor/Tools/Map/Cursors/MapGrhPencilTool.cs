@@ -162,8 +162,25 @@ namespace DemoGame.Editor.Tools
             if (!Input.IsCtrlDown)
                 drawPos = GridAligner.Instance.Align(drawPos, true).Round();
 
-            grh.Update(map.GetTime());
-            grh.Draw(spriteBatch, drawPos, new Color(255, 255, 255, 180));
+            if (Input.IsShiftDown)
+            {
+                // Display tooltip of what would be selected
+                var grhToSelect = GetGrhToSelect((EditorMap)map, worldPos);
+                if (grhToSelect != null && grhToSelect.Grh != null && grhToSelect.Grh.GrhData != null)
+                {
+                    var font = GlobalState.Instance.DefaultRenderFont;
+                    string txt = grhToSelect.Grh.GrhData.Categorization.ToString();
+                    Vector2 txtSize = font.MeasureString(txt);
+                    Vector2 txtPos = drawPos.Max(Vector2.Zero).Min(map.Camera.Size - txtSize);
+                    spriteBatch.DrawStringShaded(font, txt, txtPos, Color.White, Color.Black);
+                }
+            }
+            else
+            {
+                // Display mapgrh to draw
+                grh.Update(map.GetTime());
+                grh.Draw(spriteBatch, drawPos, new Color(255, 255, 255, 180));
+            }
         }
 
         /// <summary>
