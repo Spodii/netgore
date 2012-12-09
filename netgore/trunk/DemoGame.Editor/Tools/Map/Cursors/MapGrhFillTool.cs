@@ -102,8 +102,17 @@ namespace DemoGame.Editor.Tools
             if (!Input.IsCtrlDown)
                 drawPos = GridAligner.Instance.Align(drawPos, true).Round();
 
-            grh.Update(map.GetTime());
-            grh.Draw(spriteBatch, drawPos, new Color(255, 255, 255, 180));
+            if (Input.IsShiftDown)
+            {
+                // Display tooltip of what would be selected
+                var grhToSelect = MapGrhPencilTool.GetGrhToSelect(map, worldPos);
+                MapGrhPencilTool.DrawMapGrhTooltip(spriteBatch, map, grhToSelect, worldPos);
+            }
+            else
+            {
+                grh.Update(map.GetTime());
+                grh.Draw(spriteBatch, drawPos, new Color(255, 255, 255, 180));
+            }
         }
 
         /// <summary>
@@ -180,7 +189,7 @@ namespace DemoGame.Editor.Tools
 
         IEnumerable<MapGrh> GetFillMapGrhs(EditorMap map, Vector2 worldPos)
         {
-            MapGrh mapGrh = MapGrhPencilTool.GetGrhToSelect(map, worldPos, mustBeDifferentThanSelected: false);
+            MapGrh mapGrh = MapGrhPencilTool.GetGrhToSelect(map, worldPos);
             HashSet<MapGrh> ret = new HashSet<MapGrh>();
             GetFillMapGrhs(map, mapGrh, ret);
             return ret.ToArray();
