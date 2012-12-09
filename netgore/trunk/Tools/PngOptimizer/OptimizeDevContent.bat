@@ -1,1 +1,2 @@
-PngOptimizer\bin\PngOptimizer.exe -skip="\.svn" -filter="\.png" -r "..\..\DevContent\"
+CD PngOptimizer
+bin\PngOptimizer.exe -skip="\.svn" -filter="\.png" -r "..\..\..\DevContent\"
