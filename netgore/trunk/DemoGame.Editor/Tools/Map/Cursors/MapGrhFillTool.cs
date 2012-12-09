@@ -131,7 +131,8 @@ namespace DemoGame.Editor.Tools
             _mouseOverMap = map;
             _mousePos = cursorPos;
 
-            var currentGrhData = GlobalState.Instance.Map.GrhToPlace.GrhData;
+            var globalState = GlobalState.Instance;
+            var currentGrhData = globalState.Map.GrhToPlace.GrhData;
 
             Vector2 worldPos = camera.ToWorld(cursorPos);
 
@@ -156,9 +157,9 @@ namespace DemoGame.Editor.Tools
                     var grhToSelect = MapGrhPencilTool.GetGrhToSelect(map, worldPos);
                     if (grhToSelect != null)
                     {
-                        GlobalState.Instance.Map.SetGrhToPlace(grhToSelect.Grh.GrhData.GrhIndex);
-                        GlobalState.Instance.Map.Layer = grhToSelect.MapRenderLayer;
-                        GlobalState.Instance.Map.LayerDepth = grhToSelect.LayerDepth;
+                        globalState.Map.SetGrhToPlace(grhToSelect.Grh.GrhData.GrhIndex);
+                        globalState.Map.Layer = grhToSelect.MapRenderLayer;
+                        globalState.Map.LayerDepth = grhToSelect.LayerDepth;
                     }
                 }
 
