@@ -292,10 +292,10 @@
     <Compile Include="..\..\NetGore\IO\ValueReaderWriter\Xml\XmlValueWriter.cs">
       <Link>External - NetGore\XmlValueWriter.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetGore\SFML\Graphics\NetGore\ValueTypes\Color.cs">
+    <Compile Include="..\..\NetGore\SFML\NetGore\Color.cs">
       <Link>External - NetGore\Color.cs</Link>
     </Compile>
-    <Compile Include="..\..\NetGore\SFML\Graphics\NetGore\ValueTypes\MathHelper.cs">
+    <Compile Include="..\..\NetGore\SFML\NetGore\MathHelper.cs">
       <Link>External - NetGore\MathHelper.cs</Link>
     </Compile>
     <Compile Include="External dummies\ColorConverter.cs" />
