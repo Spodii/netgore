@@ -67,7 +67,7 @@ namespace NetGore.Editor.UI
                 if (gd != null)
                     _selected = gd.GrhIndex;
             }
-
+            
             // Load the GrhTreeView
             gtv.InitializeCompact();
             gtv.CollapseAll();

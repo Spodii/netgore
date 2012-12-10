@@ -61,9 +61,9 @@ namespace NetGore.Graphics
         public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
-        /// Gets an array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
+        /// Gets an array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo.
         /// </summary>
-        internal SkeletonBodyItemInfo[] Items
+        public SkeletonBodyItemInfo[] Items
         {
             get { return _items; }
         }
