@@ -26,7 +26,7 @@ namespace NetGore.World
         Vector2 _size;
 
 #if !TOPDOWN
-        WallEntityBase _standingOn;
+        Entity _standingOn;
 #endif
 
         Vector2 _velocity;
@@ -203,7 +203,7 @@ namespace NetGore.World
         /// not standing on anything (are not on the ground). If using a top-down perspective, this value is always null.
         /// </summary>
         [Browsable(false)]
-        public WallEntityBase StandingOn
+        public Entity StandingOn
         {
             get
             {
@@ -366,7 +366,7 @@ namespace NetGore.World
             // are standing on top of something else.
             if (StandingOn != null)
             {
-                if (!StandingOn.IsEntityStandingOn(this))
+                if (!WallEntityBase.IsEntityStandingOn(StandingOn, this))
                     StandingOn = imap.FindStandingOn(this);
             }
 #endif
@@ -502,7 +502,7 @@ namespace NetGore.World
 
             if (StandingOn != null)
             {
-                if (!StandingOn.IsEntityStandingOn(this))
+                if (!WallEntityBase.IsEntityStandingOn(StandingOn, this))
                     StandingOn = null;
             }
 

@@ -273,6 +273,10 @@ namespace DemoGame
             _mapID = newID;
         }
 
+        /// <summary>
+        /// Checks for an entity's collision against other entities (besides walls).
+        /// </summary>
+        /// <param name="entity">The entity to check the collision for (the entity that has moved).</param>
         void CheckCollisionAgainstEntities(Entity entity)
         {
             // Get the entities we have a rectangular collision with
@@ -289,6 +293,10 @@ namespace DemoGame
             }
         }
 
+        /// <summary>
+        /// Checks for an entity's collision against walls.
+        /// </summary>
+        /// <param name="entity">The entity to check the collision for (the entity that has moved).</param>
         void CheckCollisionsAgainstWalls(Entity entity)
         {
             if (!entity.CollidesAgainstWalls)
@@ -305,7 +313,9 @@ namespace DemoGame
 
                 // If there is a displacement value, forward it to the collision notifiers
                 if (displacement != Vector2.Zero)
-                    wall.HandleCollideInto(this, entity, displacement);
+                {
+                    WallEntityBase.HandleCollideInto(this, wall, entity, displacement, wall.IsPlatform);
+                }
             }
         }
 
