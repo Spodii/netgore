@@ -28,7 +28,7 @@ namespace DemoGame.Client
         bool _isCastingSkill;
         Map _map;
 
-#if !TOPDOWN
+#if SKELETON_SPRITES
         CharacterState _lastState = CharacterState.Idle;
 #endif
 
@@ -235,7 +235,7 @@ namespace DemoGame.Client
         /// <returns>The <see cref="ICharacterSprite"/> instance.</returns>
         public static ICharacterSprite CreateCharacterSprite(IGetTime getTime, Entity entity, SkeletonManager skeletonManager)
         {
-#if !TOPDOWN
+#if SKELETON_SPRITES
             return new SkeletonCharacterSprite(getTime, entity, skeletonManager, GameData.AnimationSpeedModifier);
 #else
             return new GrhCharacterSprite(entity, "Character");
@@ -309,7 +309,7 @@ namespace DemoGame.Client
         /// </summary>
         protected virtual void UpdateAnimation()
         {
-#if !TOPDOWN
+#if SKELETON_SPRITES
             // Only update if the state has changed
             if (_lastState == State)
                 return;
