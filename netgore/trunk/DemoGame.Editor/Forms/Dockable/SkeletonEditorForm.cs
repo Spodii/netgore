@@ -618,6 +618,8 @@ namespace DemoGame.Editor
 
             if (selected != null && lstBodies.Items.Contains(selected))
                 lstBodies.SelectedItem = selected;
+            else
+                lstBodies.SelectedIndex = lstBodies.Items.Count > 0 ? 0 : -1;
 
             UpdateAnimationNodeCBs();
         }
@@ -905,6 +907,10 @@ namespace DemoGame.Editor
             SkeletonBody.BodyItems[selIndex] = (SkeletonBodyItem)o2;
             SkeletonBody.BodyItems[selIndex + 1] = (SkeletonBodyItem)o1;
 
+            var tmp = SkeletonBody.BodyInfo.Items[selIndex];
+            SkeletonBody.BodyInfo.Items[selIndex] = SkeletonBody.BodyInfo.Items[selIndex + 1];
+            SkeletonBody.BodyInfo.Items[selIndex + 1] = tmp;
+
             lstBodies.SelectedIndex = selIndex + 1;
         }
 
@@ -1113,6 +1119,10 @@ namespace DemoGame.Editor
             SkeletonBody.BodyItems[selIndex] = (SkeletonBodyItem)o2;
             SkeletonBody.BodyItems[selIndex - 1] = (SkeletonBodyItem)o1;
 
+            var tmp = SkeletonBody.BodyInfo.Items[selIndex];
+            SkeletonBody.BodyInfo.Items[selIndex] = SkeletonBody.BodyInfo.Items[selIndex - 1];
+            SkeletonBody.BodyInfo.Items[selIndex - 1] = tmp;
+
             lstBodies.SelectedIndex = selIndex - 1;
         }
 
@@ -1165,6 +1175,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmbSource_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (SelectedDSI == null)
+                return;
+
             try
             {
                 SelectedDSI.Source = cmbSource.SelectedItem as SkeletonNode;
@@ -1184,6 +1197,9 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmbTarget_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (SelectedDSI == null)
+                return;
+
             try
             {
                 SelectedDSI.Dest = cmbTarget.SelectedItem as SkeletonNode;
