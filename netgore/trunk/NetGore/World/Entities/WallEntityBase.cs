@@ -133,30 +133,33 @@ namespace NetGore.World
         /// Performs the collision handling for an <see cref="Entity"/> colliding into this <see cref="WallEntityBase"/>.
         /// </summary>
         /// <param name="map">The map that the <see cref="WallEntityBase"/> is on.</param>
+        /// <param name="wall">The wall/platform that the <paramref name="other"/> entity has collided into.</param>
         /// <param name="other">The <see cref="Entity"/> that collided into this <see cref="WallEntityBase"/>.</param>
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
-        public void HandleCollideInto(IMap map, Entity other, Vector2 displacement)
+        /// <param name="wallIsPlatform">If the <paramref name="wall"/> entity is to be treated a as a platform instead of a solid wall.</param>
+        public static void HandleCollideInto(IMap map, Entity wall, Entity other, Vector2 displacement, bool wallIsPlatform)
         {
             Debug.Assert(map != null);
             Debug.Assert(other != null);
 
-            if (IsPlatform)
-                HandleCollideIntoPlatform(other, displacement);
+            if (wallIsPlatform)
+                HandleCollideIntoPlatform(wall, other, displacement);
             else
-                HandleCollideIntoWall(map, other, displacement);
+                HandleCollideIntoWall(map, wall, other, displacement);
         }
 
         /// <summary>
         /// Handles collision for when this wall is a platform.
         /// </summary>
         /// <param name="other">The <see cref="Entity"/> that collided into this <see cref="WallEntityBase"/>.</param>
+        /// <param name="wall">The wall/platform that the <paramref name="other"/> entity has collided into.</param>
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
-        void HandleCollideIntoPlatform(Entity other, Vector2 displacement)
+        static void HandleCollideIntoPlatform(Entity wall, Entity other, Vector2 displacement)
         {
             if (other.Velocity.Y <= 0 || displacement.Y >= 0 ||
-                ((other.LastPosition.Y + other.Size.Y) > Position.Y + _platformYPositionLeniency))
+                ((other.LastPosition.Y + other.Size.Y) > wall.Position.Y + _platformYPositionLeniency))
                 return;
 
             // Move the other entity away from the wall
@@ -165,17 +168,18 @@ namespace NetGore.World
 
             // Collision from falling (land on feet)
             other.SetVelocity(new Vector2(other.Velocity.X, 0.0f));
-            other.StandingOn = this;
+            other.StandingOn = wall;
         }
 
         /// <summary>
         /// Handles collision for when this wall is a wall.
         /// </summary>
         /// <param name="map">The map that the <see cref="WallEntityBase"/> is on.</param>
+        /// <param name="wall">The wall/platform that the <paramref name="other"/> entity has collided into.</param>
         /// <param name="other">The <see cref="Entity"/> that collided into this <see cref="WallEntityBase"/>.</param>
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
-        void HandleCollideIntoWall(IMap map, Entity other, Vector2 displacement)
+        static void HandleCollideIntoWall(IMap map, Entity wall, Entity other, Vector2 displacement)
         {
             var displaced = false;
 
@@ -186,7 +190,7 @@ namespace NetGore.World
             if (displacement.Y == 0)
             {
                 // Check how far the "other" is from being on top of "this"
-                var distFromThis = other.Max.Y - Position.Y;
+                var distFromThis = other.Max.Y - wall.Position.Y;
 
                 // If they are not that far away from being on top of "this", then instead of displacing them horizontally away
                 // from us, pop them up on top of us, effectively "stepping" up
@@ -218,7 +222,7 @@ namespace NetGore.World
                 {
                     // Collision from falling (land on feet)
                     other.SetVelocity(new Vector2(other.Velocity.X, 0.0f));
-                    other.StandingOn = this;
+                    other.StandingOn = wall;
                 }
                 else if (other.Velocity.Y < 0 && displacement.Y > 0)
                 {
@@ -234,10 +238,10 @@ namespace NetGore.World
         /// <param name="spatial">The <see cref="ISpatial"/> to check if standing on this <see cref="WallEntityBase"/>.</param>
         /// <returns>True if the <paramref name="spatial"/> is standing on this <see cref="WallEntityBase"/>; otherwise
         /// false.</returns>
-        public bool IsEntityStandingOn(ISpatial spatial)
+        public static bool IsEntityStandingOn(ISpatial wall, ISpatial spatial)
         {
             var rect = spatial.GetStandingAreaRect();
-            return this.Intersects(rect);
+            return wall.Intersects(rect);
         }
 
         void Read(IValueReader r)
