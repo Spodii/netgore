@@ -302,6 +302,23 @@ namespace DemoGame
             if (!entity.CollidesAgainstWalls)
                 return;
 
+            Vector2 moveVector = entity.Position - entity.LastPosition;
+            Vector2 absMoveVector = moveVector.Abs();
+
+            if (absMoveVector.X > 32 || absMoveVector.Y > 32)
+            {
+                // If the move vector is too large, use the velocity instead
+                moveVector = entity.Velocity;
+            }
+            else
+            {
+                // Use velocity for unset coordinates (velocity is most likely also 0, but gives us better reliability)
+                if (absMoveVector.X <= float.Epsilon)
+                    moveVector.X = entity.Velocity.X;
+                if (absMoveVector.Y <= float.Epsilon)
+                    moveVector.Y = entity.Velocity.Y;
+            }
+            
             // Get the entities we have a rectangular collision with
             var collisionSources = Spatial.GetMany<WallEntityBase>(entity);
 
@@ -314,7 +331,7 @@ namespace DemoGame
                 // If there is a displacement value, forward it to the collision notifiers
                 if (displacement != Vector2.Zero)
                 {
-                    WallEntityBase.HandleCollideInto(this, wall, entity, displacement, wall.IsPlatform);
+                    WallEntityBase.HandleCollideInto(this, wall, entity, displacement, wall.IsPlatform, moveVector);
                 }
             }
         }
@@ -1463,6 +1480,8 @@ namespace DemoGame
                 move.Y = Size.Y - entityMax.Y;
 
             entity.Move(move);
+
+            Vector2 pos = entity.Position;
 
             // Perform collision detetion
             CheckCollisionsAgainstWalls(entity);

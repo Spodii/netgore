@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -138,7 +139,8 @@ namespace NetGore.World
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
         /// <param name="wallIsPlatform">If the <paramref name="wall"/> entity is to be treated a as a platform instead of a solid wall.</param>
-        public static void HandleCollideInto(IMap map, Entity wall, Entity other, Vector2 displacement, bool wallIsPlatform)
+        /// <param name="moveVector">Vector describing how the entity has moved.</param>
+        public static void HandleCollideInto(IMap map, Entity wall, Entity other, Vector2 displacement, bool wallIsPlatform, Vector2 moveVector)
         {
             Debug.Assert(map != null);
             Debug.Assert(other != null);
@@ -146,7 +148,7 @@ namespace NetGore.World
             if (wallIsPlatform)
                 HandleCollideIntoPlatform(wall, other, displacement);
             else
-                HandleCollideIntoWall(map, wall, other, displacement);
+                HandleCollideIntoWall(map, wall, other, displacement, moveVector);
         }
 
         /// <summary>
@@ -179,9 +181,12 @@ namespace NetGore.World
         /// <param name="other">The <see cref="Entity"/> that collided into this <see cref="WallEntityBase"/>.</param>
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
-        static void HandleCollideIntoWall(IMap map, Entity wall, Entity other, Vector2 displacement)
+        /// <param name="moveVector">Vector describing how the entity has moved.</param>
+        static void HandleCollideIntoWall(IMap map, Entity wall, Entity other, Vector2 displacement, Vector2 moveVector)
         {
-            var displaced = false;
+            // NOTE: This seems to be working fine now, but it seems like we should stop calling this for walls once we move the "other" entity.
+
+            bool displaced = false;
 
 #if !TOPDOWN
             // Allow entities to walk up very small inclines. Makes no sense in top-down, so its used in sidescroller only.
@@ -211,10 +216,61 @@ namespace NetGore.World
             }
 #endif
 
+            if (ContainsWallAt(map, other.Position + displacement, other.Size))
+            {
+                moveVector = -moveVector;
+
+                // If we can, offset by the move vector, preferring the smaller translation direction
+                bool moved = false;
+
+                Vector2 absMoveVector = moveVector.Abs();
+                displacement = Vector2.Zero;
+
+                // Check X, if x < y
+                if (absMoveVector.X > 0 && (absMoveVector.Y <= float.Epsilon || absMoveVector.X < absMoveVector.Y))
+                {
+                    if (!ContainsWallAt(map, other.Position + new Vector2(moveVector.X, 0), other.Size))
+                    {
+                        moved = true;
+                        displacement = new Vector2(moveVector.X, 0);
+                    }
+                }
+
+                // Check Y
+                if (!moved && absMoveVector.Y > 0)
+                {
+                    if (!ContainsWallAt(map, other.Position + new Vector2(0, moveVector.Y), other.Size))
+                    {
+                        moved = true;
+                        displacement = new Vector2(0, moveVector.Y);
+                    }
+                }
+
+                // Check X
+                if (!moved && absMoveVector.X > 0)
+                {
+                    if (!ContainsWallAt(map, other.Position + new Vector2(moveVector.X, 0), other.Size))
+                    {
+                        moved = true;
+                        displacement = new Vector2(moveVector.X, 0);
+                    }
+                }
+
+                if (!moved)
+                {
+                    // Couldn't correct the movement? Send them back to where they came from!
+                    displacement = moveVector;
+                }
+            }
+
+
             // Move the other entity away from the wall using the MTD
             if (!displaced)
+            {
                 other.Move(displacement);
+            }
 
+#if !TOPDOWN
             // Check for vertical collision
             if (displacement.Y != 0)
             {
@@ -230,14 +286,27 @@ namespace NetGore.World
                     other.SetVelocity(new Vector2(other.Velocity.X, 0.0f));
                 }
             }
+#endif
+        }
+
+        /// <summary>
+        /// Checks if a wall exists at the given position.
+        /// </summary>
+        /// <param name="map">The map to check.</param>
+        /// <param name="pos">The position to check.</param>
+        /// <param name="size">The size of the position to check.</param>
+        /// <returns>True if a wall exists at the given position, otherwise false.</returns>
+        static bool ContainsWallAt(IMap map, Vector2 pos, Vector2 size)
+        {
+            Rectangle rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            return map.Spatial.Contains<WallEntityBase>(rect, x => !x.IsPlatform);
         }
 
         /// <summary>
         /// Checks if the <paramref name="spatial"/> is standing on this <see cref="WallEntityBase"/>.
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to check if standing on this <see cref="WallEntityBase"/>.</param>
-        /// <returns>True if the <paramref name="spatial"/> is standing on this <see cref="WallEntityBase"/>; otherwise
-        /// false.</returns>
+        /// <returns>True if the <paramref name="spatial"/> is standing on this <see cref="WallEntityBase"/>; otherwise false.</returns>
         public static bool IsEntityStandingOn(ISpatial wall, ISpatial spatial)
         {
             var rect = spatial.GetStandingAreaRect();
