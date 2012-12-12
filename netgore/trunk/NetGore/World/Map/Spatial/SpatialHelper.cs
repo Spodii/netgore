@@ -18,16 +18,11 @@ namespace NetGore.World
         {
             switch (side)
             {
-                case BoxSide.Top:
-                    return new Vector2(0, mtd);
-                case BoxSide.Bottom:
-                    return new Vector2(0, -mtd);
-                case BoxSide.Right:
-                    return new Vector2(mtd, 0);
-                case BoxSide.Left:
-                    return new Vector2(-mtd, 0);
-                default:
-                    return Vector2.Zero;
+                case BoxSide.Top: return new Vector2(0, mtd);
+                case BoxSide.Bottom: return new Vector2(0, -mtd);
+                case BoxSide.Right: return new Vector2(mtd, 0);
+                case BoxSide.Left: return new Vector2(-mtd, 0);
+                default: return Vector2.Zero;
             }
         }
 
@@ -39,17 +34,30 @@ namespace NetGore.World
         /// <returns>The MTD for the <paramref name="source"/> to no longer intersect the <paramref name="target"/>.</returns>
         public static Vector2 MTD(ISpatial source, ISpatial target)
         {
-            var srcMin = source.Position;
-            var srcMax = source.Max;
-            var tarMin = target.Position;
-            var tarMax = target.Max;
+            Vector2 srcMin = source.Position;
+            Vector2 srcMax = source.Max;
+            Vector2 tarMin = target.Position;
+            Vector2 tarMax = target.Max;
 
+            return MTD(srcMin, srcMax, tarMin, tarMax);
+        }
+
+        /// <summary>
+        /// Finds the Minimal Translational Distance between two <see cref="ISpatial"/>s.
+        /// </summary>
+        /// <param name="srcMin">Top-left of the source (dynamic) <see cref="ISpatial"/> that will be the one moving.</param>
+        /// <param name="srcMax">Bottom-right of the source (dynamic) <see cref="ISpatial"/> that will be the one moving.</param>
+        /// <param name="tarMin">Top-left of the target (static) <see cref="ISpatial"/> that will not move.</param>
+        /// <param name="tarMax">Bottom-right of the target (static) <see cref="ISpatial"/> that will not move.</param>
+        /// <returns>The MTD for the source to no longer intersect the target.</returns>
+        public static Vector2 MTD(Vector2 srcMin, Vector2 srcMax, Vector2 tarMin, Vector2 tarMax)
+        {
             // Down
-            var mtd = source.Max.Y - tarMin.Y;
-            var side = BoxSide.Bottom;
+            float mtd = srcMax.Y - tarMin.Y;
+            BoxSide side = BoxSide.Bottom;
 
             // Left
-            var diff = srcMax.X - tarMin.X;
+            float diff = srcMax.X - tarMin.X;
             if (diff < mtd)
             {
                 mtd = diff;
