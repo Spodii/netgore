@@ -96,43 +96,48 @@ namespace SFML.Graphics
 
         /// <summary>Changes the position of the Rectangle.</summary>
         /// <param name="amount">The values to adjust the position of the Rectangle by.</param>
-        public void Offset(Point amount)
+        public Rectangle Offset(Point amount)
         {
             X += amount.X;
             Y += amount.Y;
+            return this;
         }
 
         /// <summary>Changes the position of the Rectangle.</summary>
         /// <param name="amount">The values to adjust the position of the Rectangle by.</param>
-        public void Offset(Vector2 amount)
+        public Rectangle Offset(Vector2 amount)
         {
             X += (int)amount.X;
             Y += (int)amount.Y;
+            return this;
         }
 
         /// <summary>Changes the position of the Rectangle.</summary>
         /// <param name="offsetX">Change in the x-position.</param>
         /// <param name="offsetY">Change in the y-position.</param>
-        public void Offset(int offsetX, int offsetY)
+        public Rectangle Offset(int offsetX, int offsetY)
         {
             X += offsetX;
             Y += offsetY;
+            return this;
         }
 
         /// <summary>Pushes the edges of the Rectangle out by the horizontal and vertical values specified.</summary>
         /// <param name="horizontalAmount">Value to push the sides out by.</param>
         /// <param name="verticalAmount">Value to push the top and bottom out by.</param>
-        public void Inflate(int horizontalAmount, int verticalAmount)
+        public Rectangle Inflate(int horizontalAmount, int verticalAmount)
         {
             X -= horizontalAmount;
             Y -= verticalAmount;
             Width += horizontalAmount * 2;
             Height += verticalAmount * 2;
+            return this;
         }
 
-        public void Inflate(int amount)
+        public Rectangle Inflate(int amount)
         {
             Inflate(amount, amount);
+            return this;
         }
 
         /// <summary>Determines whether this Rectangle contains a specified point represented by its x- and y-coordinates.</summary>

@@ -989,6 +989,11 @@ namespace SFML.Graphics
             return vector;
         }
 
+        public static implicit operator Vector2(Point p)
+        {
+            return new Vector2(p.X, p.Y);
+        }
+
         static Vector2()
         {
             _zero = new Vector2();
