@@ -11,6 +11,11 @@ namespace NetGore.Graphics
     public interface ICharacterSprite
     {
         /// <summary>
+        /// Gets or sets if paperdolling is enabled.
+        /// </summary>
+        bool Paperdoll { get; set; }
+
+        /// <summary>
         /// Gets the character this <see cref="ICharacterSprite"/> is drawing the sprite for.
         /// </summary>
         Entity Character { get; }

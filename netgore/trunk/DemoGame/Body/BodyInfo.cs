@@ -21,6 +21,7 @@ namespace DemoGame
         const string _sizeValueKey = "Size";
         const string _standValueKey = "Stand";
         const string _walkValueKey = "Walk";
+        const string _paperdollValueKey = "Paperdoll";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BodyInfo"/> class.
@@ -36,6 +37,7 @@ namespace DemoGame
             Stand = reader.ReadString(_standValueKey);
             Walk = reader.ReadString(_walkValueKey);
             Size = reader.ReadVector2(_sizeValueKey);
+            Paperdoll = reader.ReadBool(_paperdollValueKey);
         }
 
         /// <summary>
@@ -149,6 +151,13 @@ namespace DemoGame
         public string Walk { get; set; }
 
         /// <summary>
+        /// Gets or sets if paperdolling is used on this body.
+        /// </summary>
+        [Browsable(true)]
+        [Description("If paperdolling is used on this body")]
+        public bool Paperdoll { get; set; }
+
+        /// <summary>
         /// Reads a <see cref="BodyInfo"/> from an <see cref="IValueReader"/>.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
@@ -172,6 +181,7 @@ namespace DemoGame
             writer.Write(_standValueKey, Stand);
             writer.Write(_walkValueKey, Walk);
             writer.Write(_sizeValueKey, Size);
+            writer.Write(_paperdollValueKey, Paperdoll);
         }
     }
 }

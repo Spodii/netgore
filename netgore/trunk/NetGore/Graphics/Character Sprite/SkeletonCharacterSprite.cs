@@ -19,6 +19,8 @@ namespace NetGore.Graphics
         Vector2 _bodySize;
         string _currSkelSet = string.Empty;
         SkeletonAnimation _skelAnim;
+        string[] _paperdollLayers;
+        bool _paperdoll;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonCharacterSprite"/> class.
@@ -36,6 +38,24 @@ namespace NetGore.Graphics
         }
 
         #region ICharacterSprite Members
+
+        /// <summary>
+        /// Gets or sets if paperdolling is enabled.
+        /// </summary>
+        public bool Paperdoll
+        {
+            get { return _paperdoll; }
+            set
+            {
+                if (_paperdoll == value)
+                    return;
+
+                _paperdoll = value;
+
+                // Update paperdoll layers
+                SetPaperDollLayers(_paperdollLayers);
+            }
+        }
 
         /// <summary>
         /// Gets the character this <see cref="ICharacterSprite"/> is drawing the sprite for.
@@ -94,18 +114,23 @@ namespace NetGore.Graphics
         /// <param name="layers">The name of the paper doll layers.</param>
         public void SetPaperDollLayers(IEnumerable<string> layers)
         {
+            _paperdollLayers = layers.ToArray();
+
             _skelAnim.BodyLayers.Clear();
 
             if (layers == null)
                 return;
 
-            foreach (var layer in layers)
+            if (Paperdoll)
             {
-                var bodyInfo = _skelManager.GetBodyInfo(layer);
-                if (bodyInfo == null)
-                    continue;
+                foreach (var layer in layers)
+                {
+                    var bodyInfo = _skelManager.GetBodyInfo(layer);
+                    if (bodyInfo == null)
+                        continue;
 
-                _skelAnim.BodyLayers.Add(new SkeletonBody(bodyInfo, _skelAnim.Skeleton));
+                    _skelAnim.BodyLayers.Add(new SkeletonBody(bodyInfo, _skelAnim.Skeleton));
+                }
             }
         }
 
