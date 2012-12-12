@@ -121,6 +121,11 @@ namespace NetGore.Graphics
         #region ICharacterSprite Members
 
         /// <summary>
+        /// Gets or sets if paperdolling is enabled.
+        /// </summary>
+        public bool Paperdoll { get; set; }
+
+        /// <summary>
         /// Gets the character this <see cref="ICharacterSprite"/> is drawing the sprite for.
         /// </summary>
         public Entity Character
@@ -200,18 +205,21 @@ namespace NetGore.Graphics
             List<Tuple<int, GrhData, PaperDollLayerType>> grhDatas = new List<Tuple<int, GrhData, PaperDollLayerType>>();
             grhDatas.Add(new Tuple<int, GrhData, PaperDollLayerType>(GetLayerOrder(PaperDollLayerType.Body, heading), _bodyGrh.GrhData, PaperDollLayerType.Body));
 
-            string setSuffix = !string.IsNullOrEmpty(_currentSet) ? "." + _currentSet : "";
-            if (_layers != null)
+            if (Paperdoll)
             {
-                foreach (var layerName in _layers)
+                string setSuffix = !string.IsNullOrEmpty(_currentSet) ? "." + _currentSet : "";
+                if (_layers != null)
                 {
-                    GrhData gd = GrhInfo.GetData(new SpriteCategorization("Character." + layerName + setSuffix));
-                    if (gd == null)
-                        continue;
+                    foreach (var layerName in _layers)
+                    {
+                        GrhData gd = GrhInfo.GetData(new SpriteCategorization("Character." + layerName + setSuffix));
+                        if (gd == null)
+                            continue;
 
-                    PaperDollLayerType layerType = GetPaperDollLayerType(layerName);
-                    int layerOrder = GetLayerOrder(layerType, heading);
-                    grhDatas.Add(new Tuple<int, GrhData, PaperDollLayerType>(layerOrder, gd, layerType));
+                        PaperDollLayerType layerType = GetPaperDollLayerType(layerName);
+                        int layerOrder = GetLayerOrder(layerType, heading);
+                        grhDatas.Add(new Tuple<int, GrhData, PaperDollLayerType>(layerOrder, gd, layerType));
+                    }
                 }
             }
 
