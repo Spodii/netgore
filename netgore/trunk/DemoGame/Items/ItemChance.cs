@@ -18,52 +18,22 @@ namespace DemoGame
     {
         #region Non-Templated Code
 
-        static readonly ItemChance _percent100 = new ItemChance(MaxValue);
-        static readonly ItemChance _percent50 = new ItemChance(MaxValue / 2);
-        static readonly ItemChance _percent0 = new ItemChance(0);
-
         static readonly SafeRandom _random = new SafeRandom();
 
         /// <summary>
-        /// Gets an <see cref="ItemChance"/> with a 100% chance.
-        /// </summary>
-        public static ItemChance Percent100
-        {
-            get { return _percent100; }
-        }
-
-        /// <summary>
-        /// Gets an <see cref="ItemChance"/> with a 50% chance.
-        /// </summary>
-        public static ItemChance Percent50
-        {
-            get { return _percent50; }
-        }
-
-        /// <summary>
-        /// Gets an <see cref="ItemChance"/> with a 0% chance.
-        /// </summary>
-        public static ItemChance Percent0
-        {
-            get { return _percent0; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemChance"/> struct.
+        /// Creates an ItemChance from a percent value.
         /// </summary>
         /// <param name="percent">The chance, in percentage, to assign to this ItemChance, where 0.0f is 0% and 1.0f
         /// is a 100% chance. Must be between 0.0f and 1.0f.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><c>percent</c> is out of range.</exception>
-        public ItemChance(float percent)
+        /// <returns></returns>
+        public static ItemChance FromPercent(float percent)
         {
-            if (percent < 0.0f || percent > 1.0f)
-                throw new ArgumentOutOfRangeException("percent");
-
-            _value = (ushort)Math.Round(percent * MaxValue);
+            int tmpValue = (int)Math.Round(percent.Clamp(0f, 1f) * MaxValue);
 
             // Ensure there were no rounding errors
-            if (_value > MaxValue)
-                _value = MaxValue;
+            tmpValue = tmpValue.Clamp(MinValue, MaxValue);
+
+            return new ItemChance(tmpValue);
         }
 
         /// <summary>
