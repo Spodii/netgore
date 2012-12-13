@@ -31,8 +31,8 @@ namespace DemoGame.Server.Queries
             // INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE <{1} - primary keys>
 
             var q =
-                qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns).ODKU().AddFromInsert(
-                    AllianceTable.DbKeyColumns);
+                qb.Insert(AllianceTable.TableName).AddAutoParam(AllianceTable.DbColumns)
+                .ODKU().AddFromInsert(AllianceTable.DbKeyColumns);
             return q.ToString();
         }
 

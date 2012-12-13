@@ -343,7 +343,6 @@ namespace DemoGame.Editor
                 return;
 
             // Main values
-            _dbController.GetQuery<DeleteAllianceQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertUpdateAllianceQuery>().Execute(v);
 
             // Attackable/hostile lists
