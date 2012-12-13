@@ -202,8 +202,7 @@
             this.txtChance.Name = "txtChance";
             this.txtChance.Size = new System.Drawing.Size(59, 20);
             this.txtChance.TabIndex = 17;
-            this.tt.SetToolTip(this.txtChance, "The chance of the item to drop. The percent is equal to the value over 65535 (ush" +
-        "ort.MaxValue).");
+            this.tt.SetToolTip(this.txtChance, "The percent chance for the item to be included, where 100 equals 100%.");
             this.txtChance.Leave += new System.EventHandler(this.txtChance_Leave);
             // 
             // label2

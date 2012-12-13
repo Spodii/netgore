@@ -74,9 +74,7 @@ namespace DemoGame.Editor.UITypeEditors
 
             if (RequireDistinct)
             {
-                if (
-                    lstItems.Items.Cast<CharacterTemplateEquippedItem>().Any(
-                        x => _selectedItem.HasValue && x.ID == _selectedItem.Value))
+                if (lstItems.Items.Cast<CharacterTemplateEquippedItem>().Any(x => _selectedItem.HasValue && x.ID == _selectedItem.Value))
                 {
                     MessageBox.Show("That item is already in the list.");
                     _selectedItem = null;
@@ -85,7 +83,7 @@ namespace DemoGame.Editor.UITypeEditors
             }
 
             // Add
-            var newItem = new CharacterTemplateEquippedItem(_selectedItem.Value, ItemChance.Percent100);
+            var newItem = new CharacterTemplateEquippedItem(_selectedItem.Value, ItemChance.FromPercent(1.0f));
             lstItems.Items.Add(newItem);
 
             if (RequireDistinct)
@@ -153,7 +151,7 @@ namespace DemoGame.Editor.UITypeEditors
 
             var sel = (CharacterTemplateEquippedItem)lstItems.SelectedItem;
 
-            txtChance.Text = sel.Chance.GetRawValue().ToString();
+            txtChance.Text = Math.Round(sel.Chance.Percentage * 100f, 4).ToString();
         }
 
         /// <summary>
@@ -176,16 +174,18 @@ namespace DemoGame.Editor.UITypeEditors
             var sel = (CharacterTemplateEquippedItem)lstItems.SelectedItem;
 
             // Parse the new amount
-            ushort chance;
-            if (!ushort.TryParse(txtChance.Text, out chance))
+            float chancePct;
+            if (!float.TryParse(txtChance.Text, out chancePct))
                 return;
 
+            ItemChance newItemChance = ItemChance.FromPercent(chancePct / 100f);
+
             // Check that the amount changed
-            if (sel.Chance == chance)
+            if (sel.Chance == newItemChance)
                 return;
 
             // Set the new amount
-            sel.Chance = new ItemChance(chance);
+            sel.Chance = newItemChance;
 
             // Force the text to refresh
             lstItems.Items[lstItems.SelectedIndex] = sel;
