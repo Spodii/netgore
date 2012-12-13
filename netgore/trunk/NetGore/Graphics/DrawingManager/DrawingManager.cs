@@ -54,7 +54,7 @@ namespace NetGore.Graphics
         /// <param name="rw">The <see cref="RenderWindow"/>.</param>
         public DrawingManager(RenderWindow rw)
         {
-            BackgroundColor = new Color(100, 149, 237);
+            BackgroundColor = Color.Black;
 
             // Create the objects
             _sb = new RoundedSpriteBatch();

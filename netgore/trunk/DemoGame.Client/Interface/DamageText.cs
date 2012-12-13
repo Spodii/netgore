@@ -99,7 +99,7 @@ namespace DemoGame.Client
             // Get the delta time
             float delta = currTime - _lastUpdate;
             _lastUpdate = currTime;
-            delta *= 0.1f;
+            delta *= 0.2f;
 
             // Update the alpha
             _alpha -= delta;
