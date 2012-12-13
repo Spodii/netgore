@@ -286,6 +286,9 @@ namespace DemoGame.Client
             _lastDrawnTime = currentTime;
 
             // Update the sprite
+            if (BodyInfo != null)
+                _characterSprite.Paperdoll = BodyInfo.Paperdoll;
+
             _characterSprite.Update(currentTime);
 
             UpdateAnimation();
