@@ -1308,7 +1308,7 @@
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
       <Size>64,32</Size>
       <Weight>0</Weight>
-      <Destination>960,112</Destination>
+      <Destination>960,150</Destination>
       <DestinationMap>1</DestinationMap>
       <Position>448,736</Position>
       <Velocity>0,0</Velocity>
