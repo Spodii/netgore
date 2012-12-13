@@ -7,7 +7,7 @@
       <Body>body.naked</Body>
       <Fall />
       <Jump />
-      <Attack>attack</Attack>
+      <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,54</Size>
@@ -18,7 +18,7 @@
       <Body>body.iron</Body>
       <Fall />
       <Jump />
-      <Attack>attack</Attack>
+      <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,54</Size>
@@ -29,7 +29,7 @@
       <Body>body.gold</Body>
       <Fall />
       <Jump />
-      <Attack>attack</Attack>
+      <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,54</Size>
@@ -40,7 +40,7 @@
       <Body>body.black</Body>
       <Fall />
       <Jump />
-      <Attack>attack</Attack>
+      <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,54</Size>
