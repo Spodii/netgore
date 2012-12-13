@@ -4,13 +4,13 @@
     <Count>1</Count>
     <Item0>
       <ID>0</ID>
-      <Title>Test dialog for a MP restoring dude</Title>
+      <Title>Inn Keeper</Title>
       <Items>
         <Count>11</Count>
         <Item0>
           <ID>0</ID>
           <Title />
-          <Text>Care for some MP-restoring goodness?</Text>
+          <Text>Need some healing?</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>2</Count>
@@ -40,7 +40,7 @@
         </Item0>
         <Item1>
           <ID>1</ID>
-          <Title>Is MP not at 100%?</Title>
+          <Title>Is HP not at 100%?</Title>
           <Text />
           <IsBranch>True</IsBranch>
           <Responses>
@@ -75,7 +75,7 @@
               <Count>1</Count>
               <Item0>
                 <Not>False</Not>
-                <ConditionalName>MP% &lt;</ConditionalName>
+                <ConditionalName>HP% &lt;</ConditionalName>
                 <Parameters>
                   <Count>1</Count>
                   <Item0>
@@ -108,7 +108,7 @@
             <Item1>
               <Value>1</Value>
               <Page>8</Page>
-              <Text>[Start doing the Humpty Dance]</Text>
+              <Text>[Scratch your nose]</Text>
               <Actions>
                 <Count>0</Count>
               </Actions>
@@ -139,7 +139,7 @@
         <Item5>
           <ID>5</ID>
           <Title>Don't need it.</Title>
-          <Text>Well fine, screw you! Not like you needed it anyways. Stop wasting my time!</Text>
+          <Text>Good, since you don't need it anyways.</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>1</Count>
@@ -177,7 +177,7 @@
                   <Count>1</Count>
                   <Item0>
                     <Not>False</Not>
-                    <ConditionalName>MP% &lt;</ConditionalName>
+                    <ConditionalName>HP% &lt;</ConditionalName>
                     <Parameters>
                       <Count>1</Count>
                       <Item0>
@@ -204,7 +204,7 @@
         </Item6>
         <Item7>
           <ID>7</ID>
-          <Title>Is MP not at 100%?</Title>
+          <Title>Is HP not at 100%?</Title>
           <Text />
           <IsBranch>True</IsBranch>
           <Responses>
@@ -240,7 +240,7 @@
               <Count>1</Count>
               <Item0>
                 <Not>False</Not>
-                <ConditionalName>MP% &lt;</ConditionalName>
+                <ConditionalName>HP% &lt;</ConditionalName>
                 <Parameters>
                   <Count>1</Count>
                   <Item0>
@@ -273,7 +273,7 @@
             <Item1>
               <Value>1</Value>
               <Page>8</Page>
-              <Text>[Start doing the Humpty Dance]</Text>
+              <Text>[Scratch your nose]</Text>
               <Actions>
                 <Count>0</Count>
               </Actions>
@@ -286,7 +286,7 @@
         <Item9>
           <ID>9</ID>
           <Title />
-          <Text>Hey, your MP is fine. Get out of here!</Text>
+          <Text>Hey, you're already healthy! Get out of here!</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>0</Count>
@@ -295,7 +295,7 @@
         <Item10>
           <ID>10</ID>
           <Title />
-          <Text>MP all restored. Enjoy!</Text>
+          <Text>HP all restored. Enjoy! ^_^</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>0</Count>
