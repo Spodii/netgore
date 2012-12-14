@@ -160,7 +160,7 @@ namespace DemoGame.Editor.Tools
 			var worldPos = map.Camera.ToWorld(_mousePos);
             var drawPos = worldPos - map.Camera.Min;
             if (!Input.IsCtrlDown)
-                drawPos = GridAligner.Instance.Align(drawPos, true).Round();
+                drawPos = (GridAligner.Instance.Align(worldPos, true) - map.Camera.Min).Round();
 
             if (Input.IsShiftDown)
             {
