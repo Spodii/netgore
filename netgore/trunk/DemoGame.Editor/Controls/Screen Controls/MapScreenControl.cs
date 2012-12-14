@@ -87,7 +87,7 @@ namespace DemoGame.Editor
                 var oldValue = _map;
                 _map = value;
 
-                TransBoxManager.Clear();
+                TransBoxManager.Clear(Camera);
 
                 // Load
                 if (_map != null)
@@ -507,7 +507,7 @@ namespace DemoGame.Editor
         void SelectedObjsManager_SelectedChanged(SelectedObjectsManager<object> sender, EventArgs e)
         {
             var items = sender.SelectedObjects.OfType<ISpatial>();
-            TransBoxManager.SetItems(items);
+            TransBoxManager.SetItems(items, Camera);
         }
 
         /// <summary>

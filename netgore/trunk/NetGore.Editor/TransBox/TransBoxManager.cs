@@ -122,14 +122,15 @@ namespace NetGore.Editor
         /// <summary>
         /// Clears all transformation boxes.
         /// </summary>
-        public void Clear()
+        /// <param name="camera">The camera describing the view area.</param>
+        public void Clear(ICamera2D camera)
         {
             if (_items.Count == 0)
                 return;
 
             _items.Clear();
 
-            UpdateTransBoxes();
+            UpdateTransBoxes(camera);
         }
 
         /// <summary>
@@ -326,10 +327,11 @@ namespace NetGore.Editor
         /// </summary>
         /// <param name="items">The <see cref="ISpatial"/>s to place transformation boxes over. Using a null or
         /// empty collection is synonymous with just using <see cref="Clear"/>.</param>
-        public void SetItems(IEnumerable<ISpatial> items)
+        /// <param name="camera">The camera describing the view area.</param>
+        public void SetItems(IEnumerable<ISpatial> items, ICamera2D camera)
         {
             // Clear
-            Clear();
+            Clear(camera);
 
             if (items == null)
                 return;
@@ -345,7 +347,7 @@ namespace NetGore.Editor
             _items.AddRange(toAdd);
 
             // Update
-            UpdateTransBoxes();
+            UpdateTransBoxes(camera);
         }
 
         /// <summary>
@@ -387,7 +389,8 @@ namespace NetGore.Editor
         /// <summary>
         /// Recreates the <see cref="ITransBox"/>es for the current selection.
         /// </summary>
-        void UpdateTransBoxes()
+        /// <param name="camera">The camera describing the view area.</param>
+        void UpdateTransBoxes(ICamera2D camera)
         {
             SelectedTransBox = null;
             UnderCursor = null;
@@ -407,11 +410,11 @@ namespace NetGore.Editor
                 if (item == null)
                 {
                     Debug.Fail("How did this happen?");
-                    Clear();
+                    Clear(camera);
                     return;
                 }
 
-                var transBoxes = TransBox.SurroundEntity(this, item);
+                var transBoxes = TransBox.SurroundEntity(this, item, camera);
                 _transBoxes.AddRange(transBoxes);
             }
             else
@@ -421,7 +424,7 @@ namespace NetGore.Editor
                 var max = new Vector2(Items.Max(x => x.Max.X), Items.Max(x => x.Max.Y));
                 var center = min + ((max - min) / 2f).Round();
 
-                var tb = new MoveManyTransBox(this, _items, center);
+                var tb = new MoveManyTransBox(this, _items, center, camera);
                 _transBoxes.Add(tb);
             }
         }

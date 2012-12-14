@@ -73,7 +73,7 @@ namespace NetGore.Editor.Grhs
             set
             {
                 _walls = value;
-                m.SetItems(Walls);
+                m.SetItems(Walls, Camera);
             }
         }
 

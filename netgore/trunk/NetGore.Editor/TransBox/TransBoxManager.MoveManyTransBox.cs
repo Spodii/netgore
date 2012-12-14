@@ -16,9 +16,10 @@ namespace NetGore.Editor
         sealed class MoveManyTransBox : ITransBox
         {
             static readonly Vector2 _size = GetTransBoxSize(TransBoxType.Move);
-            readonly Dictionary<ISpatial, Vector2> _initialPos = new Dictionary<ISpatial, Vector2>();
 
+            readonly Dictionary<ISpatial, Vector2> _initialPos = new Dictionary<ISpatial, Vector2>();
             readonly TransBoxManager _owner;
+            readonly ICamera2D _camera;
             readonly IEnumerable<ISpatial> _spatials;
 
             Vector2 _position;
@@ -30,9 +31,11 @@ namespace NetGore.Editor
             /// <param name="owner">The <see cref="TransBoxManager"/>.</param>
             /// <param name="spatials">The <see cref="ISpatial"/>s.</param>
             /// <param name="position">The position.</param>
-            public MoveManyTransBox(TransBoxManager owner, IEnumerable<ISpatial> spatials, Vector2 position)
+            /// <param name="camera">The camera.</param>
+            public MoveManyTransBox(TransBoxManager owner, IEnumerable<ISpatial> spatials, Vector2 position, ICamera2D camera)
             {
                 _owner = owner;
+                _camera = camera;
                 _position = position;
                 _spatials = spatials.ToImmutable();
             }
@@ -70,6 +73,11 @@ namespace NetGore.Editor
             {
                 get { return _size; }
             }
+
+            /// <summary>
+            /// Gets the camera describing the view area.
+            /// </summary>
+            public ICamera2D Camera { get { return _camera; } }
 
             /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.

@@ -33,6 +33,11 @@ namespace NetGore.Editor
             Vector2 Size { get; }
 
             /// <summary>
+            /// Gets the camera describing the view area.
+            /// </summary>
+            ICamera2D Camera { get; }
+
+            /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.
             /// </summary>
             /// <param name="worldPos">The world point.</param>
