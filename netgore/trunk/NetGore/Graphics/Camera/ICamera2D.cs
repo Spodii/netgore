@@ -147,5 +147,12 @@ namespace NetGore.Graphics
         /// <param name="scale">Magnification scale in percent. Must be non-zero.</param>
         /// <exception cref="ArgumentException"><paramref name="scale"/> is equal to 0.</exception>
         void Zoom(Vector2 origin, Vector2 size, float scale);
+
+        /// <summary>
+        /// Finds the position for the given area to keep it in full view (or as much as possible) of the camera.
+        /// </summary>
+        /// <param name="screenArea">The area to keep in the screen (screen position).</param>
+        /// <returns>The position for the screenArea to keep it in screen.</returns>
+        Vector2 ClampScreenPosition(Rectangle screenArea);
     }
 }
