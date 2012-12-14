@@ -3014,7 +3014,7 @@
     </Item429>
     <Item430>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomleft04</AssetName>
-      <FileSize>1885</FileSize>
+      <FileSize>5017</FileSize>
       <GrhIndex>719</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
@@ -3035,7 +3035,7 @@
     </Item432>
     <Item433>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomright01</AssetName>
-      <FileSize>1799</FileSize>
+      <FileSize>4905</FileSize>
       <GrhIndex>722</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
@@ -3077,28 +3077,28 @@
     </Item438>
     <Item439>
       <AssetName>Grh/Tiles/HouseInside/cornertopleft</AssetName>
-      <FileSize>2082</FileSize>
+      <FileSize>5344</FileSize>
       <GrhIndex>728</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
     </Item439>
     <Item440>
       <AssetName>Grh/Tiles/HouseInside/cornertopright</AssetName>
-      <FileSize>2016</FileSize>
+      <FileSize>5177</FileSize>
       <GrhIndex>729</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
     </Item440>
     <Item441>
       <AssetName>Grh/Tiles/HouseInside/extra01</AssetName>
-      <FileSize>1357</FileSize>
+      <FileSize>4234</FileSize>
       <GrhIndex>730</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
     </Item441>
     <Item442>
       <AssetName>Grh/Tiles/HouseInside/extra02</AssetName>
-      <FileSize>1463</FileSize>
+      <FileSize>4292</FileSize>
       <GrhIndex>731</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
@@ -3119,7 +3119,7 @@
     </Item444>
     <Item445>
       <AssetName>Grh/Tiles/HouseInside/house03</AssetName>
-      <FileSize>1346</FileSize>
+      <FileSize>4244</FileSize>
       <GrhIndex>734</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
@@ -3231,7 +3231,7 @@
     </Item460>
     <Item461>
       <AssetName>Grh/Tiles/HouseInside/house19</AssetName>
-      <FileSize>1304</FileSize>
+      <FileSize>4168</FileSize>
       <GrhIndex>750</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>

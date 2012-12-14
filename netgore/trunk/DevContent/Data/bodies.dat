@@ -10,7 +10,7 @@
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>44,54</Size>
+      <Size>44,25</Size>
       <Paperdoll>True</Paperdoll>
     </Item0>
     <Item1>
@@ -21,7 +21,7 @@
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>44,54</Size>
+      <Size>44,25</Size>
       <Paperdoll>True</Paperdoll>
     </Item1>
     <Item2>
@@ -32,7 +32,7 @@
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>44,54</Size>
+      <Size>44,25</Size>
       <Paperdoll>True</Paperdoll>
     </Item2>
     <Item3>
@@ -43,7 +43,7 @@
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>44,54</Size>
+      <Size>44,25</Size>
       <Paperdoll>True</Paperdoll>
     </Item3>
     <Item4>
