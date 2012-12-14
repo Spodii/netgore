@@ -20,6 +20,7 @@ namespace NetGore.Editor
             readonly Vector2 _size;
             readonly ISpatial _spatial;
             readonly TransBoxType _type;
+            readonly ICamera2D _camera;
 
             Vector2 _position;
             Vector2 _selectPos;
@@ -32,9 +33,10 @@ namespace NetGore.Editor
             /// <param name="owner">The <see cref="TransBoxManager"/>.</param>
             /// <param name="type">The <see cref="TransBoxType"/>.</param>
             /// <param name="spatial">The <see cref="ISpatial"/>.</param>
-            TransBox(TransBoxManager owner, TransBoxType type, ISpatial spatial)
+            TransBox(TransBoxManager owner, TransBoxType type, ISpatial spatial, ICamera2D camera)
             {
                 _owner = owner;
+                _camera = camera;
 
                 _type = type;
                 _spatial = spatial;
@@ -51,15 +53,21 @@ namespace NetGore.Editor
                 return _owner.GridAligner.Align(v);
             }
 
-
-
             /// <summary>
             /// Gets the position to use for the <see cref="TransBox"/>.
             /// </summary>
             /// <returns>The position for the <see cref="TransBox"/>.</returns>
             Vector2 GetPosition()
             {
+                Vector2 pos = GetPositionNoClamping();
+                return Camera.ClampScreenPosition(new Rectangle(pos.X, pos.Y, Size.X, Size.Y));
+            }
 
+            /// <summary>
+            /// Gets the position, before clamping to screen.
+            /// </summary>
+            Vector2 GetPositionNoClamping()
+            {
                 switch (_type)
                 {
                     case TransBoxType.Bottom:
@@ -142,34 +150,34 @@ namespace NetGore.Editor
             /// <param name="transBoxManager">The <see cref="TransBoxManager"/>.</param>
             /// <param name="entity">Entity to create the transformation boxes for.</param>
             /// <returns></returns>
-            public static IEnumerable<ITransBox> SurroundEntity(TransBoxManager transBoxManager, ISpatial entity)
+            public static IEnumerable<ITransBox> SurroundEntity(TransBoxManager transBoxManager, ISpatial entity, ICamera2D camera)
             {
                 var ret = new List<ITransBox>(entity.SupportsResize ? 9 : 1);
                 var scaleSize = GetTransBoxSize(TransBoxType.BottomLeft);
 
                 // Move box
-                ret.Add(new TransBox(transBoxManager, TransBoxType.Move, entity));
+                ret.Add(new TransBox(transBoxManager, TransBoxType.Move, entity, camera));
 
                 if (entity.SupportsResize)
                 {
                     // Four corners
-                    ret.Add(new TransBox(transBoxManager, TransBoxType.TopLeft, entity));
-                    ret.Add(new TransBox(transBoxManager, TransBoxType.TopRight, entity));
-                    ret.Add(new TransBox(transBoxManager, TransBoxType.BottomLeft, entity));
-                    ret.Add(new TransBox(transBoxManager, TransBoxType.BottomRight, entity));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.TopLeft, entity, camera));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.TopRight, entity, camera));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.BottomLeft, entity, camera));
+                    ret.Add(new TransBox(transBoxManager, TransBoxType.BottomRight, entity, camera));
 
                     // Horizontal sides
                     if (entity.Size.X > scaleSize.X + 4)
                     {
-                        ret.Add(new TransBox(transBoxManager, TransBoxType.Top, entity));
-                        ret.Add(new TransBox(transBoxManager, TransBoxType.Bottom, entity));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Top, entity, camera));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Bottom, entity, camera));
                     }
 
                     // Vertical sides
                     if (entity.Size.Y > scaleSize.Y + 4)
                     {
-                        ret.Add(new TransBox(transBoxManager, TransBoxType.Left, entity));
-                        ret.Add(new TransBox(transBoxManager, TransBoxType.Right, entity));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Left, entity, camera));
+                        ret.Add(new TransBox(transBoxManager, TransBoxType.Right, entity, camera));
                     }
                 }
 
@@ -209,6 +217,11 @@ namespace NetGore.Editor
             {
                 get { return _size; }
             }
+
+            /// <summary>
+            /// Gets the camera describing the view area.
+            /// </summary>
+            public ICamera2D Camera { get { return _camera; } }
 
             /// <summary>
             /// Checks if this <see cref="ITransBox"/> contains the given world point.
