@@ -151,7 +151,7 @@ namespace DemoGame.Server
                 minX = Math.Max(minX, User.Position.X - 96);
                 maxX = Math.Min(maxX, User.Position.X + 96);
 
-                thrallArea = new Rectangle((int)minX, (int)y, (int)(maxX - minX + 1), 1);
+                thrallArea = new Rectangle(minX, y, maxX - minX + 1, 1);
             }
 
             for (var i = 0; i < amount; i++)

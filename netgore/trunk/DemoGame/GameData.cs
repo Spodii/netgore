@@ -197,8 +197,7 @@ namespace DemoGame
         public static Rectangle GetPickupArea(ISpatial spatial)
         {
             const int padding = 70;
-            var r = spatial.ToRectangle();
-            return new Rectangle(r.X - padding, r.Y - padding, r.Width + (padding * 2), r.Height + (padding * 2));
+            return spatial.ToRectangle().Inflate(padding);
         }
 
         /// <summary>
@@ -211,10 +210,7 @@ namespace DemoGame
         /// a ranged attack can reach.</returns>
         public static Rectangle GetRangedAttackArea(Entity c, ushort range)
         {
-            var vrange = new Vector2(range);
-            var min = c.Position - vrange;
-            var max = c.Max + vrange;
-            return new Rectangle((int)min.X, (int)min.Y, (int)max.X, (int)max.Y);
+            return c.ToRectangle().Inflate(range);
         }
 
         /// <summary>

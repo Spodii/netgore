@@ -317,9 +317,9 @@ namespace NetGore.Graphics.GUI
         protected override void DrawControl(ISpriteBatch spriteBatch)
         {
             // Border
-            var sp = ScreenPosition;
-            var size = Size;
-            var rect = new Rectangle((int)sp.X, (int)sp.Y, (int)size.X, (int)size.Y - ToolbarDisplayHeight);
+            Vector2 sp = ScreenPosition;
+            Vector2 size = Size;
+            Rectangle rect = new Rectangle(sp.X, sp.Y, size.X, size.Y - ToolbarDisplayHeight);
             Border.Draw(spriteBatch, rect);
 
             // Draw the items
@@ -328,8 +328,8 @@ namespace NetGore.Graphics.GUI
             // Draw the page number
             if (ShowPaging)
             {
-                var cs = ClientSize;
-                var pagePos = new Vector2((cs.X / 2) - (_pageText.GetWidth(Font) / 2),
+                Vector2 cs = ClientSize;
+                Vector2 pagePos = new Vector2((cs.X / 2) - (_pageText.GetWidth(Font) / 2),
                     cs.Y - ToolbarDisplayHeight + (_toolbarPadding * 2));
                 _pageText.Draw(spriteBatch, Font, sp + pagePos, ForeColor);
             }
@@ -355,7 +355,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 if (selIndex == i)
-                    DrawSelectionRegion(spriteBatch, new Rectangle((int)pos.X, (int)pos.Y, (int)ClientSize.X, ItemHeight));
+                    DrawSelectionRegion(spriteBatch, new Rectangle(pos.X, pos.Y, ClientSize.X, ItemHeight));
 
                 T itemToDraw = itemsToDraw[i];
                 ItemDrawer(spriteBatch, pos, itemToDraw, i);

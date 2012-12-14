@@ -70,7 +70,7 @@ namespace NetGore.Tests.NetGore
                     Assert.IsTrue(spatial.CollectionContains(entity), "Current spatial: " + spatial);
                 }
 
-                var found = spatial.GetMany(new Rectangle((int)min.X, (int)min.Y, (int)diff.X, (int)diff.Y));
+                var found = spatial.GetMany(new Rectangle(min.X, min.Y, diff.X, diff.Y));
 
                 Assert.AreEqual(count, found.Count());
             }

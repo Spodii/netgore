@@ -36,7 +36,7 @@ namespace NetGore.Graphics
                 throw new ArgumentNullException("texture");
 
             _texture = texture;
-            _source = new Rectangle(0, 0, (int)_texture.Width, (int)_texture.Height);
+            _source = new Rectangle(0, 0, _texture.Width, _texture.Height);
         }
 
         /// <summary>

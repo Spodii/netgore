@@ -130,9 +130,9 @@ namespace NetGore.Editor
             /// <param name="camera">The <see cref="ICamera2D"/>.</param>
             public void Draw(ISpriteBatch spriteBatch, ICamera2D camera)
             {
-                var p = camera.ToScreen(Position).Round();
-                var s = Size.Round();
-                var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
+                Vector2 p = camera.ToScreen(Position).Round();
+                Vector2 s = Size.Round();
+                Rectangle r = new Rectangle(p.X, p.Y, s.X, s.Y);
                 SystemSprites.Move.Draw(spriteBatch, r, Color.White);
             }
 

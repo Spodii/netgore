@@ -679,7 +679,7 @@ namespace DemoGame
 
         public bool IsValidPlacementPosition(Vector2 position, Vector2 size)
         {
-            var rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            var rect = new Rectangle(position.X, position.Y, size.X, size.Y);
             return IsValidPlacementPosition(rect);
         }
 
@@ -708,8 +708,7 @@ namespace DemoGame
 
             // Intersections were found, so we have to find a valid position
             // First, grab the walls in the region around the cb
-            var nearbyWallsRect = new Rectangle(r.X - _findValidPlacementPadding, r.Y - _findValidPlacementPadding,
-                r.Width + (_findValidPlacementPadding * 2), r.Height + (_findValidPlacementPadding * 2));
+            var nearbyWallsRect = r.Inflate(_findValidPlacementPadding);
             var nearbyWalls = Spatial.GetMany<WallEntityBase>(nearbyWallsRect);
 
             // Next, find the legal positions we can place the cb
@@ -1227,10 +1226,8 @@ namespace DemoGame
         /// <returns>New position for the entity</returns>
         public Vector2 SnapToWalls(Entity entity, float maxDiff = 20f)
         {
-            var ret = new Vector2(entity.Position.X, entity.Position.Y);
-            var pos = entity.Position - new Vector2(maxDiff / 2f);
-            var size = entity.Size + new Vector2(maxDiff);
-            var newRect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            var ret = entity.Position;
+            var newRect = entity.ToRectangle().Inflate(maxDiff / 2);
 
             foreach (var w in Spatial.GetMany<WallEntityBase>(newRect, x => x != entity))
             {

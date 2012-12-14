@@ -235,9 +235,9 @@ namespace NetGore.Graphics.GUI
             if (!IsDisplayed)
                 return;
 
-            var pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
-            var size = _borderSize + (BorderPadding * 2);
-            var ss = GUIManager.ScreenSize;
+            Vector2 pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
+            Vector2 size = _borderSize + (BorderPadding * 2);
+            Vector2 ss = GUIManager.ScreenSize;
 
             // Ensure the tooltip is in the screen
             if (pos.X < 0)
@@ -251,10 +251,9 @@ namespace NetGore.Graphics.GUI
                 pos.Y = ss.Y - size.Y;
 
             // Draw the border
-            var borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
-                (int)(_borderSize.X + (BorderPadding.X * 2)), (int)(_borderSize.Y + (BorderPadding.Y * 2)));
+            Rectangle borderRect = new Rectangle(pos.X, pos.Y, _borderSize.X, _borderSize.Y).Inflate(BorderPadding.X, BorderPadding.Y);
 
-            var b = _args.Border;
+            ControlBorder b = _args.Border;
             if (b != null)
                 b.Draw(sb, borderRect);
             else

@@ -170,7 +170,7 @@ namespace DemoGame.Client
 
             var pos = DrawPosition + new Vector2((Size.X / 2f) - (spBarWidth / 2f), Size.Y + (spBarHeight * index)).Round();
 
-            var border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
+            var border = new Rectangle(pos.X, pos.Y, spBarWidth, spBarHeight);
             var bar = border;
             bar.Width = (int)((spBarWidth * (percent / 100.0f))).Clamp(0.0f, spBarWidth);
 

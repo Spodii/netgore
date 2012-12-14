@@ -200,7 +200,7 @@ namespace DemoGame.Editor.Tools
             if (mapGrh == null || !ret.Add(mapGrh))
                 return;
 
-            Rectangle rect = new Rectangle((int)mapGrh.Position.X - 1, (int)mapGrh.Position.Y - 1, (int)mapGrh.Size.X + 2, (int)mapGrh.Size.Y + 2);
+            Rectangle rect = new Rectangle(mapGrh.Position.X - 1, mapGrh.Position.Y - 1, mapGrh.Size.X + 2, mapGrh.Size.Y + 2);
             foreach (var mg in map.Spatial.GetMany<MapGrh>(rect, x => x.Grh != null && x.Grh.GrhData == mapGrh.Grh.GrhData))
             {
                 GetFillMapGrhs(map, mg, ret);

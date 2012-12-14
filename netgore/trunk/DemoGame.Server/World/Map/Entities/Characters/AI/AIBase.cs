@@ -103,13 +103,13 @@ namespace DemoGame.Server
         /// <returns>A <see cref="Rectangle"/> describing the visible screen area.</returns>
         public Rectangle GetVisibleMapArea()
         {
-            var center = Actor.Center;
-            var min = center - _halfScreenSize;
+            Vector2 center = Actor.Center;
+            Vector2 min = center - _halfScreenSize;
 
-            var x = (int)Math.Max(0, min.X);
-            var y = (int)Math.Max(0, min.Y);
-            var w = (int)Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
-            var h = (int)Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
+            float x = Math.Max(0, min.X);
+            float y = Math.Max(0, min.Y);
+            float w = Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
+            float h = Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
 
             return new Rectangle(x, y, w, h);
         }

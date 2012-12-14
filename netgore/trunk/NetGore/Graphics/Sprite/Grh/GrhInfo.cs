@@ -288,7 +288,7 @@ namespace NetGore.Graphics
             if (pos == null || size == null)
                 source = null;
             else
-                source = new Rectangle((int)pos.Value.X, (int)pos.Value.Y, (int)size.Value.X, (int)size.Value.Y);
+                source = new Rectangle(pos.Value.X, pos.Value.Y, size.Value.X, size.Value.Y);
 
             var gd = new StationaryGrhData(contentManager, grhIndex, categorization, texture, source);
 

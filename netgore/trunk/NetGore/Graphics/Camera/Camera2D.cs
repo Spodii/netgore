@@ -207,7 +207,7 @@ namespace NetGore.Graphics
             Vector2 size;
             Vector2.Subtract(ref max, ref min, out size);
 
-            return new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
+            return new Rectangle(min.X, min.Y, size.X, size.Y);
         }
 
         /// <summary>

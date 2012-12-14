@@ -717,7 +717,7 @@ namespace NetGore.Features.PeerTrading
                     var drawPos = sp + ((cs - drawSize) / 2f);
 
                     // Draw
-                    var spriteDestRect = new Rectangle((int)drawPos.X, (int)drawPos.Y, (int)drawSize.X, (int)drawSize.Y);
+                    var spriteDestRect = new Rectangle(drawPos.X, drawPos.Y, drawSize.X, drawSize.Y);
                     _sprite.Draw(spriteBatch, spriteDestRect);
 
                     // Draw the amount
