@@ -336,6 +336,28 @@ namespace NetGore.Graphics
             Scale = scale;
         }
 
+        /// <summary>
+        /// Finds the position for the given area to keep it in full view (or as much as possible) of the camera.
+        /// </summary>
+        /// <param name="screenArea">The area to keep in the screen (screen position).</param>
+        /// <returns>The position for the screenArea to keep it in screen.</returns>
+        public Vector2 ClampScreenPosition(Rectangle screenArea)
+        {
+            Vector2 pos = new Vector2(screenArea.X, screenArea.Y);
+
+            if (screenArea.X < Min.X)
+                pos.X = Min.X;
+            else if (pos.Y > Max.X - screenArea.Width)
+                pos.X = Max.X - screenArea.Width;
+
+            if (screenArea.Y < Min.Y)
+                pos.Y = Min.Y;
+            else if (pos.Y > Max.Y - screenArea.Height)
+                pos.Y = Max.Y - screenArea.Height;
+
+            return pos;
+        }
+
         #endregion
     }
 }
