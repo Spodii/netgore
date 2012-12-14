@@ -48,7 +48,7 @@ namespace DemoGame.Client
             var percent = elapsedTime / _currentCastTime;
             var startDrawPos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
             var drawWidth = ClientSize.X * Math.Min(percent, 1);
-            var r = new Rectangle((int)startDrawPos.X, (int)startDrawPos.Y, (int)drawWidth, (int)ClientSize.Y);
+            var r = new Rectangle(startDrawPos.X, startDrawPos.Y, drawWidth, ClientSize.Y);
             RenderRectangle.Draw(spriteBatch, r, new Color(255, 0, 0, 200));
 
             // Draw the name

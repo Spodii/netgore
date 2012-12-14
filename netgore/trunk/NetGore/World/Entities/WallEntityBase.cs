@@ -298,7 +298,7 @@ namespace NetGore.World
         /// <returns>True if a wall exists at the given position, otherwise false.</returns>
         static bool ContainsWallAt(IMap map, Vector2 pos, Vector2 size)
         {
-            Rectangle rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            Rectangle rect = new Rectangle(pos.X, pos.Y, size.X, size.Y);
             return map.Spatial.Contains<WallEntityBase>(rect, x => !x.IsPlatform);
         }
 

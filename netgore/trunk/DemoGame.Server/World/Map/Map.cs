@@ -251,8 +251,6 @@ namespace DemoGame.Server
                 _users.Remove(user);
             else if ((npc = character as NPC) != null)
                 _npcs.Remove(npc);
-
-            return;
         }
 
         /// <summary>
@@ -397,15 +395,14 @@ namespace DemoGame.Server
         /// need to have the <paramref name="toSynchronize"/>'s Position and Velocity synchronized.</returns>
         IEnumerable<User> GetUsersToSyncPandVTo(ISpatial toSynchronize)
         {
-            var xPad = (int)(GameData.ScreenSize.X * 1.5);
-            var yPad = (int)(GameData.ScreenSize.Y * 1.5);
+            int xPad = (int)(GameData.ScreenSize.X * 1.5);
+            int yPad = (int)(GameData.ScreenSize.Y * 1.5);
 
-            var r = toSynchronize.ToRectangle();
-            var syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
+            var syncRegion = toSynchronize.ToRectangle().Inflate(xPad, yPad);
 
             foreach (var user in Users)
             {
-                var userRegion = user.ToRectangle();
+                Rectangle userRegion = user.ToRectangle();
                 if (syncRegion.Intersects(userRegion))
                     yield return user;
             }
@@ -683,8 +680,7 @@ namespace DemoGame.Server
             _disposed = true;
 
             // Dispose of all the disposable entities
-            var disposableEntities = Entities.OfType<IDisposable>();
-            foreach (var entity in disposableEntities)
+            foreach (var entity in Entities.ToImmutable())
             {
                 World.DelayedDispose(entity);
             }

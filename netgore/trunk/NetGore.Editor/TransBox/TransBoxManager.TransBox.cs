@@ -298,15 +298,15 @@ namespace NetGore.Editor
                 if (sprite == null)
                     return;
 
-                var p = camera.ToScreen(Position).Round();
-                var s = Size.Round();
-                var r = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
+                Vector2 p = camera.ToScreen(Position).Round();
+                Vector2 s = Size.Round();
+                Rectangle r = new Rectangle(p.X, p.Y, s.X, s.Y);
 
 
                 p = camera.ToScreen(GetPosition() + Vector2.One).Round();
                 bool okFlag = ContainsPoint(camera.ToWorld(p));
 
-                var newR = new Rectangle((int)p.X, (int)p.Y, (int)s.X, (int)s.Y);
+                Rectangle newR = new Rectangle(p.X, p.Y, s.X, s.Y);
 
                 sprite.Draw(spriteBatch, r, Color.White);
 

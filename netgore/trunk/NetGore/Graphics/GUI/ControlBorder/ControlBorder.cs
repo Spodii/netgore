@@ -286,8 +286,7 @@ namespace NetGore.Graphics.GUI
                 Rectangle r;
                 if (_bg != null)
                 {
-                    r = new Rectangle(cX + lSrc.Width, cY + tSrc.Height, cW - lSrc.Width - rSrc.Width,
-                        cH - tSrc.Height - bSrc.Height);
+                    r = new Rectangle(cX + lSrc.Width, cY + tSrc.Height, cW - lSrc.Width - rSrc.Width, cH - tSrc.Height - bSrc.Height);
 
                     switch (GetDrawStyle(ControlBorderSpriteType.Background))
                     {
@@ -401,8 +400,8 @@ namespace NetGore.Graphics.GUI
                 }
             }
 
-            var sp = c.ScreenPosition;
-            var region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
+            Vector2 sp = c.ScreenPosition;
+            Rectangle region = new Rectangle(sp.X, sp.Y, c.Size.X, c.Size.Y);
             Draw(sb, region, color);
         }
 

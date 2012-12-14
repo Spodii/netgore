@@ -92,7 +92,7 @@ namespace NetGore.Graphics
                 spriteSize.X = GetStretchedSize(Camera.Size.X * Camera.Scale, Map.Size.X, Depth);
                 spriteSize.Y = GetStretchedSize(Camera.Size.Y * Camera.Scale, Map.Size.Y, Depth);
 
-                var rect = new Rectangle((int)pos.X, (int)pos.Y, (int)spriteSize.X, (int)spriteSize.Y);
+                var rect = new Rectangle(pos.X, pos.Y, spriteSize.X, spriteSize.Y);
                 Sprite.Draw(sb, rect, Color);
             }
             else if (vl == BackgroundLayerLayout.Tiled &&

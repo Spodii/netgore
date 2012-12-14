@@ -273,7 +273,7 @@ namespace DemoGame.Client
                 var cmpTo = cmpToTemp;
 
                 // Get the area of walls to look for, adding some padding just in case there are rounding issues
-                var cmpToArea = new Rectangle((int)cmpTo.Position.X - 2, (int)cmpTo.Position.Y - 2, 4, 4);
+                var cmpToArea = new Rectangle(cmpTo.Position.X - 2, cmpTo.Position.Y - 2, 4, 4);
 
                 // Check for any matches by comparing to the map walls in the area
                 var matches = Spatial.GetMany<WallEntityBase>(cmpToArea, x => x.AreValuesEqual(cmpTo));

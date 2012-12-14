@@ -52,8 +52,7 @@ namespace SFML.Graphics.Design
         {
             if (propertyValues == null)
                 throw new ArgumentNullException("propertyValues", FrameworkMessages.NullNotAllowed);
-            return new Rectangle((int)propertyValues["X"], (int)propertyValues["Y"], (int)propertyValues["Width"],
-                (int)propertyValues["Height"]);
+            return new Rectangle((int)propertyValues["X"], (int)propertyValues["Y"], (int)propertyValues["Width"], (int)propertyValues["Height"]);
         }
     }
 }

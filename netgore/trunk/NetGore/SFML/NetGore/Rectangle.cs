@@ -94,6 +94,26 @@ namespace SFML.Graphics
             Height = height;
         }
 
+        /// <summary>Initializes a new instance of Rectangle.</summary>
+        /// <param name="x">The x-coordinate of the rectangle.</param>
+        /// <param name="y">The y-coordinate of the rectangle.</param>
+        /// <param name="width">Width of the rectangle.</param>
+        /// <param name="height">Height of the rectangle.</param>
+        public Rectangle(float x, float y, float width, float height)
+            : this((int)x, (int)y, (int)width, (int)height)
+        {
+        }
+
+        /// <summary>Initializes a new instance of Rectangle.</summary>
+        /// <param name="x">The x-coordinate of the rectangle.</param>
+        /// <param name="y">The y-coordinate of the rectangle.</param>
+        /// <param name="width">Width of the rectangle.</param>
+        /// <param name="height">Height of the rectangle.</param>
+        public Rectangle(double x, double y, double width, double height)
+            : this((int)x, (int)y, (int)width, (int)height)
+        {
+        }
+
         /// <summary>Changes the position of the Rectangle.</summary>
         /// <param name="amount">The values to adjust the position of the Rectangle by.</param>
         public Rectangle Offset(Point amount)
@@ -134,10 +154,22 @@ namespace SFML.Graphics
             return this;
         }
 
+        /// <summary>Pushes the edges of the Rectangle out by the horizontal and vertical values specified.</summary>
+        /// <param name="horizontalAmount">Value to push the sides out by.</param>
+        /// <param name="verticalAmount">Value to push the top and bottom out by.</param>
+        public Rectangle Inflate(float horizontalAmount, float verticalAmount)
+        {
+            return Inflate((int)horizontalAmount, (int)verticalAmount);
+        }
+
+        public Rectangle Inflate(float amount)
+        {
+            return Inflate(amount, amount);
+        }
+
         public Rectangle Inflate(int amount)
         {
-            Inflate(amount, amount);
-            return this;
+            return Inflate(amount, amount);
         }
 
         /// <summary>Determines whether this Rectangle contains a specified point represented by its x- and y-coordinates.</summary>
@@ -266,7 +298,7 @@ namespace SFML.Graphics
         {
             var pos = Vector2.Min(a, b).Floor();
             var size = (a - b).Ceiling().Abs();
-            var rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            var rect = new Rectangle(pos.X, pos.Y, size.X, size.Y);
             return rect;
         }
 

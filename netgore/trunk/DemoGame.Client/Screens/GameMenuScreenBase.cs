@@ -105,7 +105,7 @@ namespace DemoGame.Client
             // Draw the background
             if (_background != null)
             {
-                var bgDest = new Rectangle(0, 0, (int)ScreenManager.ScreenSize.X, (int)ScreenManager.ScreenSize.Y);
+                var bgDest = new Rectangle(0, 0, ScreenManager.ScreenSize.X, ScreenManager.ScreenSize.Y);
                 _background.Draw(spriteBatch, bgDest);
             }
 

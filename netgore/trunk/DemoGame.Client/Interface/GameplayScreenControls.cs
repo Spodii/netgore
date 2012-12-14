@@ -228,7 +228,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_TalkToNPC(GameControl sender, EventArgs e)
         {
-            var r = UserChar.ToRectangle(GameData.MaxNPCChatDistance);
+            var r = UserChar.ToRectangle().Inflate(GameData.MaxNPCChatDistance);
             CharacterEntity npc = Map.Spatial.Get<Character>(r, x => x.HasChatDialog || !x.ProvidedQuests.IsEmpty());
             if (npc == null)
                 return;

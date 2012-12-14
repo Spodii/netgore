@@ -19,7 +19,7 @@ namespace NetGore.Graphics
         static Rectangle CreateRect(Vector2 min, Vector2 max)
         {
             var size = max - min;
-            return new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
+            return new Rectangle(min.X, min.Y, size.X, size.Y);
         }
 
         /// <summary>

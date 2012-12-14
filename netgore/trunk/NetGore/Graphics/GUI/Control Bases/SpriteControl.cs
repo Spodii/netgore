@@ -114,7 +114,7 @@ namespace NetGore.Graphics.GUI
             {
                 // Stretched draw
                 var drawSize = ClientSize;
-                var dest = new Rectangle((int)min.X, (int)min.Y, (int)drawSize.X, (int)drawSize.Y);
+                var dest = new Rectangle(min.X, min.Y, drawSize.X, drawSize.Y);
                 _sprite.Draw(spriteBatch, dest, Color.White);
             }
             else

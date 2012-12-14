@@ -935,7 +935,7 @@ namespace NetGore.Graphics.ParticleEngine
             Vector2 min = _minParticlePosition + ownerPos;
             Vector2 max = _maxParticlePosition + ownerPos;
             Vector2 size = max - min;
-            Rectangle rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
+            Rectangle rect = new Rectangle(min.X, min.Y, size.X, size.Y);
 
             // Inflact the rect's size to cover more area, just to be safe
             rect.Inflate(96);

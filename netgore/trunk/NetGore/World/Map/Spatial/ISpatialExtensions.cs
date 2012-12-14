@@ -86,9 +86,9 @@ namespace NetGore.World
         /// is standing.</returns>
         public static Rectangle GetStandingAreaRect(this ISpatial spatial)
         {
-            var min = spatial.Position;
-            var size = spatial.Size;
-            var r = new Rectangle((int)min.X + 1, (int)(min.Y + size.Y - 1), (int)size.X - 2, 2);
+            Vector2 min = spatial.Position;
+            Vector2 size = spatial.Size;
+            Rectangle r = new Rectangle(min.X + 1, min.Y + size.Y - 1, size.X - 2, 2);
             return r;
         }
 
@@ -117,20 +117,6 @@ namespace NetGore.World
             bool ret;
             a.ToRectangle().Intersects(ref bRect, out ret);
             return ret;
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Rectangle"/> representing the area that an <see cref="ISpatial"/> occupies, plus some
-        /// padding in all directions.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/> to get the rectangle for.</param>
-        /// <param name="padding">How many units to expand the resulting <see cref="Rectangle"/> in each direction.</param>
-        /// <returns>A <see cref="Rectangle"/> representing the area that an <see cref="ISpatial"/> occupies, plus some
-        /// padding in all directions.</returns>
-        public static Rectangle ToRectangle(this ISpatial spatial, int padding)
-        {
-            var r = spatial.ToRectangle();
-            return new Rectangle(r.X - padding, r.Y - padding, r.Width + (padding * 2), r.Height + (padding * 2));
         }
     }
 }

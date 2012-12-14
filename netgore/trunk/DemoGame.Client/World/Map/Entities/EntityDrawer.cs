@@ -78,7 +78,7 @@ namespace DemoGame.Client
             // Draw the destination rectangle and the arrow pointing to it only if the map is the same
             if (camera.Map != null && camera.Map.ID == tele.DestinationMap)
             {
-                var destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X, (int)tele.Size.Y);
+                var destRect = new Rectangle(tele.Destination.X, tele.Destination.Y, tele.Size.X, tele.Size.Y);
                 Draw(sb, destRect, _teleDestColor);
 
                 // Arrow
@@ -110,7 +110,7 @@ namespace DemoGame.Client
         {
             // Find the positon to draw to
             var p = wall.Position + offset;
-            var dest = new Rectangle((int)p.X, (int)p.Y, (int)wall.Size.X, (int)wall.Size.Y);
+            var dest = new Rectangle(p.X, p.Y, wall.Size.X, wall.Size.Y);
 
             // Draw the collision area
             RenderRectangle.Draw(sb, dest, _wallColor);

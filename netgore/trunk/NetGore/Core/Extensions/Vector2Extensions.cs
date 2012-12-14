@@ -291,7 +291,7 @@ namespace NetGore
             else
                 min = source;
 
-            return new Rectangle((int)Math.Round(min.X), (int)Math.Round(min.Y), (int)Math.Round(width), (int)Math.Round(height));
+            return new Rectangle(Math.Round(min.X), Math.Round(min.Y), Math.Round(width), Math.Round(height));
         }
     }
 }

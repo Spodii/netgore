@@ -95,7 +95,7 @@ namespace NetGore.World
         {
             Vector2 pos = spatial.Position;
             Vector2 size = spatial.Size;
-            return new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            return new Rectangle(pos.X, pos.Y, size.X, size.Y);
         }
     }
 }

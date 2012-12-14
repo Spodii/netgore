@@ -1007,7 +1007,7 @@ namespace NetGore.Graphics.GUI
         {
             var pos = Position;
             var size = Size;
-            return new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            return new Rectangle(pos.X, pos.Y, size.X, size.Y);
         }
 
         /// <summary>
@@ -1019,7 +1019,7 @@ namespace NetGore.Graphics.GUI
         {
             var pos = ScreenPosition;
             var size = Size;
-            return new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            return new Rectangle(pos.X, pos.Y, size.X, size.Y);
         }
 
         /// <summary>

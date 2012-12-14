@@ -24,6 +24,7 @@ namespace DemoGame.Server
         readonly Rectangle _area;
         readonly CharacterTemplate _characterTemplate;
         readonly Map _map;
+        readonly BodyInfo _characterTemplateBody;
 
         NPCSpawnerNPC[] _npcs;
 
@@ -49,6 +50,7 @@ namespace DemoGame.Server
 
             _map = map;
             _characterTemplate = _characterTemplateManager[mapSpawnValues.CharacterTemplateID];
+            _characterTemplateBody = BodyInfoManager.Instance.GetBody(_characterTemplate.TemplateTable.BodyID);
             _amount = mapSpawnValues.Amount;
             _area = new MapSpawnRect(mapSpawnValues).ToRectangle(map);
 
@@ -125,15 +127,30 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets a random position that fits inside the <see cref="NPCSpawner.Area"/>.
+        /// Gets a random position that fits inside the <see cref="NPCSpawner.Area"/> and does not intersect with any walls.
         /// </summary>
-        /// <returns>A random position that fits inside the <see cref="NPCSpawner.Area"/>.</returns>
-        public Vector2 RandomSpawnPosition()
+        /// <returns>A random position that fits inside the <see cref="NPCSpawner.Area"/>, or null if no valid spawn positions could be found.</returns>
+        public Vector2? RandomSpawnPosition(BodyInfo bodyInfo)
         {
-            var x = _rnd.Next(Area.Left, Area.Right + 1);
-            var y = _rnd.Next(Area.Top, Area.Bottom + 1);
+            // Try 50 times to find a spawn position
+            for (int i = 0; i < 50; i++)
+            {
+                int x = _rnd.Next(Area.Left, Area.Right + 1);
+                int y = _rnd.Next(Area.Top, Area.Bottom + 1);
 
-            return new Vector2(x, y);
+                Rectangle area = new Rectangle(x, y, bodyInfo.Size.X, bodyInfo.Size.Y);
+
+                if (Map.Spatial.Contains<WallEntityBase>(area))
+                {
+                    return new Vector2(x, y);
+                }
+            }
+
+            if (log.IsErrorEnabled)
+                log.ErrorFormat("Failed to place npc NPCSpawner `{0}` because no valid positions could be found. " +
+                    " Try having less obstacles in the spawn area or making it larger.", this);
+
+            return null;
         }
 
         /// <summary>
@@ -153,9 +170,12 @@ namespace DemoGame.Server
 
             for (var i = 0; i < Amount; i++)
             {
-                var pos = RandomSpawnPosition();
-                var npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos);
-                _npcs[i] = npc;
+                Vector2? pos = RandomSpawnPosition(_characterTemplateBody);
+                if (pos.HasValue)
+                {
+                    NPCSpawnerNPC npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos.Value);
+                    _npcs[i] = npc;
+                }
             }
         }
 
@@ -235,10 +255,16 @@ namespace DemoGame.Server
                     // Check if enough time has elapsed to try and find the new position
                     if (TickCount.Now - _reqNewPositionStartTime > _findNewPositionTimeout)
                     {
+                        Vector2? pos = _spawner.RandomSpawnPosition(BodyInfo);
+                        if (!pos.HasValue)
+                        {
+                            return;
+                        }
+
                         _reqNewPositionStartTime = TickCount.MinValue;
 
                         RespawnMapID = _spawner.Map.ID;
-                        RespawnPosition = _spawner.RandomSpawnPosition();
+                        RespawnPosition = pos.Value;
 
                         Teleport(_spawner.Map, RespawnPosition);
 
@@ -271,10 +297,12 @@ namespace DemoGame.Server
             {
                 EventCounterManager.Map.Increment(_spawner.Map.ID, MapEventCounterType.SpawnedNPCKilled);
 
-                var respawnPos = _spawner.RandomSpawnPosition();
-
-                RespawnMapID = _spawner.Map.ID;
-                RespawnPosition = respawnPos;
+                Vector2? respawnPos = _spawner.RandomSpawnPosition(BodyInfo);
+                if (respawnPos.HasValue)
+                {
+                    RespawnMapID = _spawner.Map.ID;
+                    RespawnPosition = respawnPos.Value;
+                }
 
                 base.OnKilled();
             }
