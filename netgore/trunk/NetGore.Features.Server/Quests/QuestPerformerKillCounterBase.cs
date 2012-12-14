@@ -182,7 +182,7 @@ namespace NetGore.Features.Quests
             Debug.Assert(Equals(sender, Owner));
 
             // Ensure the counter does not already exist for this quest
-            var existingCounter = GetKillCounter(e.Item1);
+            var existingCounter = _counters.FirstOrDefault(x => x.Quest == e.Item1);
             if (existingCounter != null)
             {
                 const string errmsg = "Quest list already contains the quest `{0}`.";
