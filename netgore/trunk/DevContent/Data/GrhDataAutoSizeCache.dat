@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AutoGrhDataSizes>
   <Item>
-    <Count>545</Count>
+    <Count>408</Count>
     <Item0>
       <AssetName>Grh/Character/Weapon/Sword/Down</AssetName>
       <FileSize>4517</FileSize>
@@ -2264,1558 +2264,599 @@
       <Width>16</Width>
     </Item322>
     <Item323>
-      <AssetName>Grh/Tiles/Brick/brick01</AssetName>
-      <FileSize>1352</FileSize>
-      <GrhIndex>612</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item323>
-    <Item324>
-      <AssetName>Grh/Tiles/Brick/brick02</AssetName>
-      <FileSize>1339</FileSize>
-      <GrhIndex>613</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item324>
-    <Item325>
-      <AssetName>Grh/Tiles/Brick/brick03</AssetName>
-      <FileSize>1331</FileSize>
-      <GrhIndex>614</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item325>
-    <Item326>
-      <AssetName>Grh/Tiles/Brick/brick04</AssetName>
-      <FileSize>1455</FileSize>
-      <GrhIndex>615</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item326>
-    <Item327>
-      <AssetName>Grh/Tiles/Brick/brick05</AssetName>
-      <FileSize>1511</FileSize>
-      <GrhIndex>616</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item327>
-    <Item328>
-      <AssetName>Grh/Tiles/Brick/brick06</AssetName>
-      <FileSize>1451</FileSize>
-      <GrhIndex>617</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item328>
-    <Item329>
-      <AssetName>Grh/Tiles/Brick/brick07</AssetName>
-      <FileSize>1510</FileSize>
-      <GrhIndex>618</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item329>
-    <Item330>
-      <AssetName>Grh/Tiles/Brick/dirtbrick01</AssetName>
-      <FileSize>1868</FileSize>
-      <GrhIndex>619</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item330>
-    <Item331>
-      <AssetName>Grh/Tiles/Brick/dirtbrick02</AssetName>
-      <FileSize>1666</FileSize>
-      <GrhIndex>620</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item331>
-    <Item332>
-      <AssetName>Grh/Tiles/Brick/dirtbrick03</AssetName>
-      <FileSize>1831</FileSize>
-      <GrhIndex>621</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item332>
-    <Item333>
-      <AssetName>Grh/Tiles/Brick/dirtbrick04</AssetName>
-      <FileSize>1782</FileSize>
-      <GrhIndex>622</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item333>
-    <Item334>
-      <AssetName>Grh/Tiles/Brick/dirtbrick05</AssetName>
-      <FileSize>1238</FileSize>
-      <GrhIndex>623</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item334>
-    <Item335>
-      <AssetName>Grh/Tiles/Brick/dirtbrick06</AssetName>
-      <FileSize>1720</FileSize>
-      <GrhIndex>624</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item335>
-    <Item336>
-      <AssetName>Grh/Tiles/Brick/dirtbrick07</AssetName>
-      <FileSize>1900</FileSize>
-      <GrhIndex>625</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item336>
-    <Item337>
-      <AssetName>Grh/Tiles/Brick/dirtbrick08</AssetName>
-      <FileSize>1686</FileSize>
-      <GrhIndex>626</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item337>
-    <Item338>
-      <AssetName>Grh/Tiles/Brick/dirtbrick09</AssetName>
-      <FileSize>1917</FileSize>
-      <GrhIndex>627</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item338>
-    <Item339>
-      <AssetName>Grh/Tiles/Cliffs/AboveFernLowerLeft</AssetName>
-      <FileSize>2884</FileSize>
-      <GrhIndex>628</GrhIndex>
-      <Height>40</Height>
-      <Width>80</Width>
-    </Item339>
-    <Item340>
-      <AssetName>Grh/Tiles/Cliffs/AboveFernLowerMiddle</AssetName>
-      <FileSize>3852</FileSize>
-      <GrhIndex>629</GrhIndex>
-      <Height>40</Height>
-      <Width>80</Width>
-    </Item340>
-    <Item341>
-      <AssetName>Grh/Tiles/Cliffs/AboveFernLowerRight</AssetName>
-      <FileSize>3256</FileSize>
-      <GrhIndex>630</GrhIndex>
-      <Height>40</Height>
-      <Width>80</Width>
-    </Item341>
-    <Item342>
-      <AssetName>Grh/Tiles/Cliffs/BareLowerLeft</AssetName>
-      <FileSize>7125</FileSize>
-      <GrhIndex>631</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item342>
-    <Item343>
-      <AssetName>Grh/Tiles/Cliffs/BareLowerRight</AssetName>
-      <FileSize>7079</FileSize>
-      <GrhIndex>632</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item343>
-    <Item344>
-      <AssetName>Grh/Tiles/Cliffs/BareUpperLeft</AssetName>
-      <FileSize>6145</FileSize>
-      <GrhIndex>633</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item344>
-    <Item345>
-      <AssetName>Grh/Tiles/Cliffs/BareUpperRight</AssetName>
-      <FileSize>7054</FileSize>
-      <GrhIndex>634</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item345>
-    <Item346>
-      <AssetName>Grh/Tiles/Cliffs/cliffbaseleft02</AssetName>
-      <FileSize>1156</FileSize>
-      <GrhIndex>635</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item346>
-    <Item347>
-      <AssetName>Grh/Tiles/Cliffs/cliffbaseleft03</AssetName>
-      <FileSize>1246</FileSize>
-      <GrhIndex>636</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item347>
-    <Item348>
-      <AssetName>Grh/Tiles/Cliffs/cliffedgeleft01</AssetName>
-      <FileSize>1234</FileSize>
-      <GrhIndex>637</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item348>
-    <Item349>
-      <AssetName>Grh/Tiles/Cliffs/cliffedgeright01</AssetName>
-      <FileSize>1341</FileSize>
-      <GrhIndex>638</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item349>
-    <Item350>
-      <AssetName>Grh/Tiles/Cliffs/cliffedgeright02</AssetName>
-      <FileSize>1380</FileSize>
-      <GrhIndex>639</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item350>
-    <Item351>
-      <AssetName>Grh/Tiles/Cliffs/cliffedgeright03</AssetName>
-      <FileSize>1423</FileSize>
-      <GrhIndex>640</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item351>
-    <Item352>
-      <AssetName>Grh/Tiles/Cliffs/FermLowerRight</AssetName>
-      <FileSize>4619</FileSize>
-      <GrhIndex>641</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item352>
-    <Item353>
-      <AssetName>Grh/Tiles/Cliffs/FernLowerLeft</AssetName>
-      <FileSize>5153</FileSize>
-      <GrhIndex>642</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item353>
-    <Item354>
-      <AssetName>Grh/Tiles/Cliffs/FernLowerMiddle</AssetName>
-      <FileSize>6319</FileSize>
-      <GrhIndex>643</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item354>
-    <Item355>
-      <AssetName>Grh/Tiles/Cliffs/floor01</AssetName>
-      <FileSize>2032</FileSize>
-      <GrhIndex>644</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item355>
-    <Item356>
-      <AssetName>Grh/Tiles/Cliffs/floor02</AssetName>
-      <FileSize>1887</FileSize>
-      <GrhIndex>645</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item356>
-    <Item357>
-      <AssetName>Grh/Tiles/Cliffs/floor03</AssetName>
-      <FileSize>2036</FileSize>
-      <GrhIndex>646</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item357>
-    <Item358>
-      <AssetName>Grh/Tiles/Cliffs/floor04</AssetName>
-      <FileSize>1957</FileSize>
-      <GrhIndex>647</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item358>
-    <Item359>
-      <AssetName>Grh/Tiles/Cliffs/floor05</AssetName>
-      <FileSize>1969</FileSize>
-      <GrhIndex>648</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item359>
-    <Item360>
-      <AssetName>Grh/Tiles/Cliffs/floor06</AssetName>
-      <FileSize>1848</FileSize>
-      <GrhIndex>649</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item360>
-    <Item361>
-      <AssetName>Grh/Tiles/Cliffs/floor07</AssetName>
-      <FileSize>1983</FileSize>
-      <GrhIndex>650</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item361>
-    <Item362>
-      <AssetName>Grh/Tiles/Cliffs/floor08</AssetName>
-      <FileSize>2089</FileSize>
-      <GrhIndex>651</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item362>
-    <Item363>
-      <AssetName>Grh/Tiles/Cliffs/floor09</AssetName>
-      <FileSize>2062</FileSize>
-      <GrhIndex>652</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item363>
-    <Item364>
-      <AssetName>Grh/Tiles/Cliffs/floor10</AssetName>
-      <FileSize>2062</FileSize>
-      <GrhIndex>653</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item364>
-    <Item365>
-      <AssetName>Grh/Tiles/Cliffs/LowerBare</AssetName>
-      <FileSize>3730</FileSize>
-      <GrhIndex>654</GrhIndex>
-      <Height>80</Height>
-      <Width>40</Width>
-    </Item365>
-    <Item366>
-      <AssetName>Grh/Tiles/Cliffs/LowerFern</AssetName>
-      <FileSize>3292</FileSize>
-      <GrhIndex>655</GrhIndex>
-      <Height>80</Height>
-      <Width>40</Width>
-    </Item366>
-    <Item367>
-      <AssetName>Grh/Tiles/Cliffs/SmallBare</AssetName>
-      <FileSize>2058</FileSize>
-      <GrhIndex>656</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item367>
-    <Item368>
-      <AssetName>Grh/Tiles/Cliffs/SmallRockLeft</AssetName>
-      <FileSize>414</FileSize>
-      <GrhIndex>657</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item368>
-    <Item369>
-      <AssetName>Grh/Tiles/Cliffs/SmallRockMiddle</AssetName>
-      <FileSize>2095</FileSize>
-      <GrhIndex>658</GrhIndex>
-      <Height>40</Height>
-      <Width>80</Width>
-    </Item369>
-    <Item370>
-      <AssetName>Grh/Tiles/Cliffs/SmallRockRight</AssetName>
-      <FileSize>673</FileSize>
-      <GrhIndex>659</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item370>
-    <Item371>
-      <AssetName>Grh/Tiles/Door/Doorknob</AssetName>
-      <FileSize>431</FileSize>
-      <GrhIndex>660</GrhIndex>
-      <Height>72</Height>
-      <Width>46</Width>
-    </Item371>
-    <Item372>
-      <AssetName>Grh/Tiles/Door/LeftSide</AssetName>
-      <FileSize>2625</FileSize>
-      <GrhIndex>661</GrhIndex>
-      <Height>72</Height>
-      <Width>46</Width>
-    </Item372>
-    <Item373>
-      <AssetName>Grh/Tiles/Door/RightSide</AssetName>
-      <FileSize>3236</FileSize>
-      <GrhIndex>662</GrhIndex>
-      <Height>72</Height>
-      <Width>46</Width>
-    </Item373>
-    <Item374>
-      <AssetName>Grh/Tiles/Fence/fencepost01</AssetName>
-      <FileSize>3517</FileSize>
-      <GrhIndex>663</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item374>
-    <Item375>
-      <AssetName>Grh/Tiles/Fence/fencepost02</AssetName>
-      <FileSize>3582</FileSize>
-      <GrhIndex>664</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item375>
-    <Item376>
-      <AssetName>Grh/Tiles/Fence/fencepost03</AssetName>
-      <FileSize>3587</FileSize>
-      <GrhIndex>665</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item376>
-    <Item377>
-      <AssetName>Grh/Tiles/Fence/fencepost04</AssetName>
-      <FileSize>3529</FileSize>
-      <GrhIndex>666</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item377>
-    <Item378>
-      <AssetName>Grh/Tiles/Fence/fencepost05</AssetName>
-      <FileSize>3591</FileSize>
-      <GrhIndex>667</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item378>
-    <Item379>
-      <AssetName>Grh/Tiles/Fence/fencepost06</AssetName>
-      <FileSize>3583</FileSize>
-      <GrhIndex>668</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item379>
-    <Item380>
-      <AssetName>Grh/Tiles/Fence/fencepost07</AssetName>
-      <FileSize>2656</FileSize>
-      <GrhIndex>669</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item380>
-    <Item381>
-      <AssetName>Grh/Tiles/Fence/fencepost08</AssetName>
-      <FileSize>3137</FileSize>
-      <GrhIndex>670</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item381>
-    <Item382>
-      <AssetName>Grh/Tiles/Fence/fencepost09</AssetName>
-      <FileSize>2272</FileSize>
-      <GrhIndex>671</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item382>
-    <Item383>
-      <AssetName>Grh/Tiles/Fence/fencepost10</AssetName>
-      <FileSize>1604</FileSize>
-      <GrhIndex>672</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item383>
-    <Item384>
-      <AssetName>Grh/Tiles/Fence/fencepost11</AssetName>
-      <FileSize>1775</FileSize>
-      <GrhIndex>673</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item384>
-    <Item385>
-      <AssetName>Grh/Tiles/Fence/fencepost12</AssetName>
-      <FileSize>3669</FileSize>
-      <GrhIndex>674</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item385>
-    <Item386>
-      <AssetName>Grh/Tiles/Fence/fencepost13</AssetName>
-      <FileSize>3731</FileSize>
-      <GrhIndex>675</GrhIndex>
-      <Height>95</Height>
-      <Width>40</Width>
-    </Item386>
-    <Item387>
       <AssetName>Grh/Tiles/Furniture/bench01</AssetName>
       <FileSize>3183</FileSize>
       <GrhIndex>676</GrhIndex>
       <Height>40</Height>
       <Width>80</Width>
-    </Item387>
-    <Item388>
+    </Item323>
+    <Item324>
       <AssetName>Grh/Tiles/Furniture/Bowl</AssetName>
       <FileSize>504</FileSize>
       <GrhIndex>677</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item388>
-    <Item389>
+    </Item324>
+    <Item325>
       <AssetName>Grh/Tiles/Furniture/Candle</AssetName>
       <FileSize>582</FileSize>
       <GrhIndex>678</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item389>
-    <Item390>
+    </Item325>
+    <Item326>
       <AssetName>Grh/Tiles/Furniture/chair01</AssetName>
       <FileSize>2177</FileSize>
       <GrhIndex>679</GrhIndex>
       <Height>80</Height>
       <Width>40</Width>
-    </Item390>
-    <Item391>
-      <AssetName>Grh/Tiles/Furniture/chair02</AssetName>
-      <FileSize>2013</FileSize>
-      <GrhIndex>680</GrhIndex>
-      <Height>80</Height>
-      <Width>40</Width>
-    </Item391>
-    <Item392>
+    </Item326>
+    <Item327>
       <AssetName>Grh/Tiles/Furniture/largestonetable01</AssetName>
       <FileSize>4718</FileSize>
       <GrhIndex>681</GrhIndex>
       <Height>120</Height>
       <Width>40</Width>
-    </Item392>
-    <Item393>
+    </Item327>
+    <Item328>
       <AssetName>Grh/Tiles/Furniture/largestonetable02</AssetName>
       <FileSize>5181</FileSize>
       <GrhIndex>682</GrhIndex>
       <Height>120</Height>
       <Width>40</Width>
-    </Item393>
-    <Item394>
+    </Item328>
+    <Item329>
       <AssetName>Grh/Tiles/Furniture/largestonetable03</AssetName>
       <FileSize>4730</FileSize>
       <GrhIndex>683</GrhIndex>
       <Height>120</Height>
       <Width>40</Width>
-    </Item394>
-    <Item395>
+    </Item329>
+    <Item330>
       <AssetName>Grh/Tiles/Furniture/SmallChest</AssetName>
       <FileSize>1828</FileSize>
       <GrhIndex>684</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item395>
-    <Item396>
-      <AssetName>Grh/Tiles/Furniture/stonepattern01</AssetName>
-      <FileSize>1958</FileSize>
-      <GrhIndex>685</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item396>
-    <Item397>
-      <AssetName>Grh/Tiles/Furniture/stonepattern02</AssetName>
-      <FileSize>1952</FileSize>
-      <GrhIndex>686</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item397>
-    <Item398>
-      <AssetName>Grh/Tiles/Furniture/stonepattern03</AssetName>
-      <FileSize>1939</FileSize>
-      <GrhIndex>687</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item398>
-    <Item399>
-      <AssetName>Grh/Tiles/Furniture/stonepattern04</AssetName>
-      <FileSize>1982</FileSize>
-      <GrhIndex>688</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item399>
-    <Item400>
-      <AssetName>Grh/Tiles/Furniture/stonepattern05</AssetName>
-      <FileSize>1918</FileSize>
-      <GrhIndex>689</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item400>
-    <Item401>
+    </Item330>
+    <Item331>
       <AssetName>Grh/Tiles/Furniture/stonetable01</AssetName>
       <FileSize>2546</FileSize>
       <GrhIndex>690</GrhIndex>
       <Height>80</Height>
       <Width>40</Width>
-    </Item401>
-    <Item402>
+    </Item331>
+    <Item332>
       <AssetName>Grh/Tiles/Furniture/stonetable02</AssetName>
       <FileSize>2855</FileSize>
       <GrhIndex>691</GrhIndex>
       <Height>80</Height>
       <Width>40</Width>
-    </Item402>
-    <Item403>
+    </Item332>
+    <Item333>
       <AssetName>Grh/Tiles/Furniture/stonetable03</AssetName>
       <FileSize>2530</FileSize>
       <GrhIndex>692</GrhIndex>
       <Height>80</Height>
       <Width>40</Width>
-    </Item403>
-    <Item404>
-      <AssetName>Grh/Tiles/Grass/cornerstone01</AssetName>
-      <FileSize>1956</FileSize>
-      <GrhIndex>693</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item404>
-    <Item405>
-      <AssetName>Grh/Tiles/Grass/cornerstone02</AssetName>
-      <FileSize>1971</FileSize>
-      <GrhIndex>694</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item405>
-    <Item406>
-      <AssetName>Grh/Tiles/Grass/cornerstone03</AssetName>
-      <FileSize>1968</FileSize>
-      <GrhIndex>695</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item406>
-    <Item407>
-      <AssetName>Grh/Tiles/Grass/cornerstone04</AssetName>
-      <FileSize>1965</FileSize>
-      <GrhIndex>696</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item407>
-    <Item408>
-      <AssetName>Grh/Tiles/Grass/grass</AssetName>
-      <FileSize>1491</FileSize>
-      <GrhIndex>697</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item408>
-    <Item409>
-      <AssetName>Grh/Tiles/Grass/stone01</AssetName>
-      <FileSize>1751</FileSize>
-      <GrhIndex>698</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item409>
-    <Item410>
-      <AssetName>Grh/Tiles/Grass/stone02</AssetName>
-      <FileSize>1789</FileSize>
-      <GrhIndex>699</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item410>
-    <Item411>
-      <AssetName>Grh/Tiles/Grass/stone03</AssetName>
-      <FileSize>1662</FileSize>
-      <GrhIndex>700</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item411>
-    <Item412>
-      <AssetName>Grh/Tiles/Grass/stone04</AssetName>
-      <FileSize>1819</FileSize>
-      <GrhIndex>701</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item412>
-    <Item413>
-      <AssetName>Grh/Tiles/Grass/stone05</AssetName>
-      <FileSize>1916</FileSize>
-      <GrhIndex>702</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item413>
-    <Item414>
-      <AssetName>Grh/Tiles/Grass/stone06</AssetName>
-      <FileSize>1640</FileSize>
-      <GrhIndex>703</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item414>
-    <Item415>
-      <AssetName>Grh/Tiles/Grass/stone07</AssetName>
-      <FileSize>1727</FileSize>
-      <GrhIndex>704</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item415>
-    <Item416>
-      <AssetName>Grh/Tiles/Grass/stone08</AssetName>
-      <FileSize>1754</FileSize>
-      <GrhIndex>705</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item416>
-    <Item417>
-      <AssetName>Grh/Tiles/Grass/stone09</AssetName>
-      <FileSize>1600</FileSize>
-      <GrhIndex>706</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item417>
-    <Item418>
-      <AssetName>Grh/Tiles/Ground/ground01</AssetName>
-      <FileSize>1927</FileSize>
-      <GrhIndex>707</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item418>
-    <Item419>
-      <AssetName>Grh/Tiles/Ground/ground02</AssetName>
-      <FileSize>2010</FileSize>
-      <GrhIndex>708</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item419>
-    <Item420>
-      <AssetName>Grh/Tiles/Ground/ground03</AssetName>
-      <FileSize>1985</FileSize>
-      <GrhIndex>709</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item420>
-    <Item421>
-      <AssetName>Grh/Tiles/Ground/ground04</AssetName>
-      <FileSize>1999</FileSize>
-      <GrhIndex>710</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item421>
-    <Item422>
-      <AssetName>Grh/Tiles/Ground/ground05</AssetName>
-      <FileSize>1952</FileSize>
-      <GrhIndex>711</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item422>
-    <Item423>
-      <AssetName>Grh/Tiles/Ground/ground06</AssetName>
-      <FileSize>1957</FileSize>
-      <GrhIndex>712</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item423>
-    <Item424>
-      <AssetName>Grh/Tiles/Ground/ground07</AssetName>
-      <FileSize>2050</FileSize>
-      <GrhIndex>713</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item424>
-    <Item425>
-      <AssetName>Grh/Tiles/Ground/ground08</AssetName>
-      <FileSize>2011</FileSize>
-      <GrhIndex>714</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item425>
-    <Item426>
+    </Item333>
+    <Item334>
       <AssetName>Grh/Tiles/HouseInside/blacktile</AssetName>
       <FileSize>195</FileSize>
       <GrhIndex>715</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item426>
-    <Item427>
+    </Item334>
+    <Item335>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomleft01</AssetName>
       <FileSize>602</FileSize>
       <GrhIndex>716</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item427>
-    <Item428>
+    </Item335>
+    <Item336>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomleft02</AssetName>
       <FileSize>621</FileSize>
       <GrhIndex>717</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item428>
-    <Item429>
+    </Item336>
+    <Item337>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomleft03</AssetName>
       <FileSize>546</FileSize>
       <GrhIndex>718</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item429>
-    <Item430>
+    </Item337>
+    <Item338>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomleft04</AssetName>
       <FileSize>5017</FileSize>
       <GrhIndex>719</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item430>
-    <Item431>
+    </Item338>
+    <Item339>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomleft05</AssetName>
       <FileSize>1890</FileSize>
       <GrhIndex>720</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item431>
-    <Item432>
+    </Item339>
+    <Item340>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomleft06</AssetName>
       <FileSize>1771</FileSize>
       <GrhIndex>721</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item432>
-    <Item433>
+    </Item340>
+    <Item341>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomright01</AssetName>
       <FileSize>4905</FileSize>
       <GrhIndex>722</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item433>
-    <Item434>
+    </Item341>
+    <Item342>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomright02</AssetName>
       <FileSize>1758</FileSize>
       <GrhIndex>723</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item434>
-    <Item435>
+    </Item342>
+    <Item343>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomright03</AssetName>
       <FileSize>1677</FileSize>
       <GrhIndex>724</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item435>
-    <Item436>
+    </Item343>
+    <Item344>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomright04</AssetName>
       <FileSize>536</FileSize>
       <GrhIndex>725</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item436>
-    <Item437>
+    </Item344>
+    <Item345>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomright05</AssetName>
       <FileSize>607</FileSize>
       <GrhIndex>726</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item437>
-    <Item438>
+    </Item345>
+    <Item346>
       <AssetName>Grh/Tiles/HouseInside/cornerbottomright06</AssetName>
       <FileSize>497</FileSize>
       <GrhIndex>727</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item438>
-    <Item439>
+    </Item346>
+    <Item347>
       <AssetName>Grh/Tiles/HouseInside/cornertopleft</AssetName>
       <FileSize>5344</FileSize>
       <GrhIndex>728</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item439>
-    <Item440>
+    </Item347>
+    <Item348>
       <AssetName>Grh/Tiles/HouseInside/cornertopright</AssetName>
       <FileSize>5177</FileSize>
       <GrhIndex>729</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item440>
-    <Item441>
+    </Item348>
+    <Item349>
       <AssetName>Grh/Tiles/HouseInside/extra01</AssetName>
       <FileSize>4234</FileSize>
       <GrhIndex>730</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item441>
-    <Item442>
+    </Item349>
+    <Item350>
       <AssetName>Grh/Tiles/HouseInside/extra02</AssetName>
       <FileSize>4292</FileSize>
       <GrhIndex>731</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item442>
-    <Item443>
+    </Item350>
+    <Item351>
       <AssetName>Grh/Tiles/HouseInside/house01</AssetName>
       <FileSize>1318</FileSize>
       <GrhIndex>732</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item443>
-    <Item444>
+    </Item351>
+    <Item352>
       <AssetName>Grh/Tiles/HouseInside/house02</AssetName>
       <FileSize>1377</FileSize>
       <GrhIndex>733</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item444>
-    <Item445>
+    </Item352>
+    <Item353>
       <AssetName>Grh/Tiles/HouseInside/house03</AssetName>
       <FileSize>4244</FileSize>
       <GrhIndex>734</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item445>
-    <Item446>
-      <AssetName>Grh/Tiles/HouseInside/house04</AssetName>
-      <FileSize>55640</FileSize>
-      <GrhIndex>735</GrhIndex>
-      <Height>280</Height>
-      <Width>400</Width>
-    </Item446>
-    <Item447>
+    </Item353>
+    <Item354>
       <AssetName>Grh/Tiles/HouseInside/house05</AssetName>
       <FileSize>1364</FileSize>
       <GrhIndex>736</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item447>
-    <Item448>
+    </Item354>
+    <Item355>
       <AssetName>Grh/Tiles/HouseInside/house06</AssetName>
       <FileSize>1158</FileSize>
       <GrhIndex>737</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item448>
-    <Item449>
+    </Item355>
+    <Item356>
       <AssetName>Grh/Tiles/HouseInside/house07</AssetName>
       <FileSize>1455</FileSize>
       <GrhIndex>738</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item449>
-    <Item450>
+    </Item356>
+    <Item357>
       <AssetName>Grh/Tiles/HouseInside/house08</AssetName>
       <FileSize>1412</FileSize>
       <GrhIndex>739</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item450>
-    <Item451>
+    </Item357>
+    <Item358>
       <AssetName>Grh/Tiles/HouseInside/house09</AssetName>
       <FileSize>1224</FileSize>
       <GrhIndex>740</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item451>
-    <Item452>
+    </Item358>
+    <Item359>
       <AssetName>Grh/Tiles/HouseInside/house10</AssetName>
       <FileSize>1169</FileSize>
       <GrhIndex>741</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item452>
-    <Item453>
+    </Item359>
+    <Item360>
       <AssetName>Grh/Tiles/HouseInside/house11</AssetName>
       <FileSize>1530</FileSize>
       <GrhIndex>742</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item453>
-    <Item454>
+    </Item360>
+    <Item361>
       <AssetName>Grh/Tiles/HouseInside/house12</AssetName>
       <FileSize>1346</FileSize>
       <GrhIndex>743</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item454>
-    <Item455>
+    </Item361>
+    <Item362>
       <AssetName>Grh/Tiles/HouseInside/house13</AssetName>
       <FileSize>1323</FileSize>
       <GrhIndex>744</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item455>
-    <Item456>
+    </Item362>
+    <Item363>
       <AssetName>Grh/Tiles/HouseInside/house14</AssetName>
       <FileSize>1469</FileSize>
       <GrhIndex>745</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item456>
-    <Item457>
+    </Item363>
+    <Item364>
       <AssetName>Grh/Tiles/HouseInside/house15</AssetName>
       <FileSize>1360</FileSize>
       <GrhIndex>746</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item457>
-    <Item458>
+    </Item364>
+    <Item365>
       <AssetName>Grh/Tiles/HouseInside/house16</AssetName>
       <FileSize>1430</FileSize>
       <GrhIndex>747</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item458>
-    <Item459>
+    </Item365>
+    <Item366>
       <AssetName>Grh/Tiles/HouseInside/house17</AssetName>
       <FileSize>1762</FileSize>
       <GrhIndex>748</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item459>
-    <Item460>
+    </Item366>
+    <Item367>
       <AssetName>Grh/Tiles/HouseInside/house18</AssetName>
       <FileSize>1342</FileSize>
       <GrhIndex>749</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item460>
-    <Item461>
+    </Item367>
+    <Item368>
       <AssetName>Grh/Tiles/HouseInside/house19</AssetName>
       <FileSize>4168</FileSize>
       <GrhIndex>750</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item461>
-    <Item462>
+    </Item368>
+    <Item369>
       <AssetName>Grh/Tiles/HouseInside/house20</AssetName>
       <FileSize>1412</FileSize>
       <GrhIndex>751</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item462>
-    <Item463>
+    </Item369>
+    <Item370>
       <AssetName>Grh/Tiles/HouseInside/house21</AssetName>
       <FileSize>1277</FileSize>
       <GrhIndex>752</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item463>
-    <Item464>
+    </Item370>
+    <Item371>
       <AssetName>Grh/Tiles/HouseInside/house22</AssetName>
       <FileSize>1208</FileSize>
       <GrhIndex>753</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item464>
-    <Item465>
+    </Item371>
+    <Item372>
       <AssetName>Grh/Tiles/HouseInside/house23</AssetName>
       <FileSize>1342</FileSize>
       <GrhIndex>754</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item465>
-    <Item466>
+    </Item372>
+    <Item373>
       <AssetName>Grh/Tiles/HouseInside/house24</AssetName>
       <FileSize>1576</FileSize>
       <GrhIndex>755</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item466>
-    <Item467>
+    </Item373>
+    <Item374>
       <AssetName>Grh/Tiles/HouseInside/house25</AssetName>
       <FileSize>1527</FileSize>
       <GrhIndex>756</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item467>
-    <Item468>
+    </Item374>
+    <Item375>
       <AssetName>Grh/Tiles/HouseInside/house26</AssetName>
       <FileSize>1508</FileSize>
       <GrhIndex>757</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item468>
-    <Item469>
+    </Item375>
+    <Item376>
       <AssetName>Grh/Tiles/HouseInside/house27</AssetName>
       <FileSize>1639</FileSize>
       <GrhIndex>758</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item469>
-    <Item470>
+    </Item376>
+    <Item377>
       <AssetName>Grh/Tiles/HouseInside/house28</AssetName>
       <FileSize>1381</FileSize>
       <GrhIndex>759</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item470>
-    <Item471>
-      <AssetName>Grh/Tiles/Nature/gate01</AssetName>
-      <FileSize>3871</FileSize>
-      <GrhIndex>760</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item471>
-    <Item472>
-      <AssetName>Grh/Tiles/Nature/LongTree</AssetName>
-      <FileSize>5385</FileSize>
-      <GrhIndex>761</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item472>
-    <Item473>
-      <AssetName>Grh/Tiles/Nature/rock01</AssetName>
-      <FileSize>487</FileSize>
-      <GrhIndex>762</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item473>
-    <Item474>
-      <AssetName>Grh/Tiles/Nature/rock02</AssetName>
-      <FileSize>1163</FileSize>
-      <GrhIndex>763</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item474>
-    <Item475>
-      <AssetName>Grh/Tiles/Nature/StubbyRock</AssetName>
-      <FileSize>1079</FileSize>
-      <GrhIndex>764</GrhIndex>
-      <Height>40</Height>
-      <Width>40</Width>
-    </Item475>
-    <Item476>
-      <AssetName>Grh/Tiles/Nature/StubbyTree</AssetName>
-      <FileSize>6553</FileSize>
-      <GrhIndex>765</GrhIndex>
-      <Height>120</Height>
-      <Width>120</Width>
-    </Item476>
-    <Item477>
-      <AssetName>Grh/Tiles/SmallTown/overlayhouse01</AssetName>
-      <FileSize>23297</FileSize>
-      <GrhIndex>766</GrhIndex>
-      <Height>160</Height>
-      <Width>160</Width>
-    </Item477>
-    <Item478>
-      <AssetName>Grh/Tiles/SmallTown/overlayhouse02</AssetName>
-      <FileSize>23004</FileSize>
-      <GrhIndex>767</GrhIndex>
-      <Height>160</Height>
-      <Width>160</Width>
-    </Item478>
-    <Item479>
-      <AssetName>Grh/Tiles/SmallTown/roof01</AssetName>
-      <FileSize>5654</FileSize>
-      <GrhIndex>768</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item479>
-    <Item480>
-      <AssetName>Grh/Tiles/SmallTown/roof02</AssetName>
-      <FileSize>4581</FileSize>
-      <GrhIndex>769</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item480>
-    <Item481>
-      <AssetName>Grh/Tiles/SmallTown/roof03</AssetName>
-      <FileSize>4660</FileSize>
-      <GrhIndex>770</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item481>
-    <Item482>
-      <AssetName>Grh/Tiles/SmallTown/roof04</AssetName>
-      <FileSize>5647</FileSize>
-      <GrhIndex>771</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item482>
-    <Item483>
-      <AssetName>Grh/Tiles/SmallTown/SmallHouse</AssetName>
-      <FileSize>85197</FileSize>
-      <GrhIndex>772</GrhIndex>
-      <Height>320</Height>
-      <Width>400</Width>
-    </Item483>
-    <Item484>
-      <AssetName>Grh/Tiles/SmallTown/window01</AssetName>
-      <FileSize>6247</FileSize>
-      <GrhIndex>773</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item484>
-    <Item485>
-      <AssetName>Grh/Tiles/SmallTown/window02</AssetName>
-      <FileSize>5440</FileSize>
-      <GrhIndex>774</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item485>
-    <Item486>
-      <AssetName>Grh/Tiles/SmallTown/window03</AssetName>
-      <FileSize>6042</FileSize>
-      <GrhIndex>775</GrhIndex>
-      <Height>80</Height>
-      <Width>80</Width>
-    </Item486>
-    <Item487>
-      <AssetName>Grh/Tiles/TallTown/bullhead</AssetName>
-      <FileSize>10410</FileSize>
-      <GrhIndex>776</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item487>
-    <Item488>
-      <AssetName>Grh/Tiles/TallTown/doorlessentrance</AssetName>
-      <FileSize>5093</FileSize>
-      <GrhIndex>777</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item488>
-    <Item489>
-      <AssetName>Grh/Tiles/TallTown/house01</AssetName>
-      <FileSize>4233</FileSize>
-      <GrhIndex>778</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item489>
-    <Item490>
-      <AssetName>Grh/Tiles/TallTown/house02</AssetName>
-      <FileSize>6896</FileSize>
-      <GrhIndex>779</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item490>
-    <Item491>
-      <AssetName>Grh/Tiles/TallTown/house03</AssetName>
-      <FileSize>6191</FileSize>
-      <GrhIndex>780</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item491>
-    <Item492>
-      <AssetName>Grh/Tiles/TallTown/house04</AssetName>
-      <FileSize>6666</FileSize>
-      <GrhIndex>781</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item492>
-    <Item493>
-      <AssetName>Grh/Tiles/TallTown/house05</AssetName>
-      <FileSize>4208</FileSize>
-      <GrhIndex>782</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item493>
-    <Item494>
-      <AssetName>Grh/Tiles/TallTown/house06</AssetName>
-      <FileSize>8450</FileSize>
-      <GrhIndex>783</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item494>
-    <Item495>
-      <AssetName>Grh/Tiles/TallTown/house07</AssetName>
-      <FileSize>9929</FileSize>
-      <GrhIndex>784</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item495>
-    <Item496>
-      <AssetName>Grh/Tiles/TallTown/house08</AssetName>
-      <FileSize>8763</FileSize>
-      <GrhIndex>785</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item496>
-    <Item497>
-      <AssetName>Grh/Tiles/TallTown/house09</AssetName>
-      <FileSize>10354</FileSize>
-      <GrhIndex>786</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item497>
-    <Item498>
-      <AssetName>Grh/Tiles/TallTown/house10</AssetName>
-      <FileSize>8897</FileSize>
-      <GrhIndex>787</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item498>
-    <Item499>
-      <AssetName>Grh/Tiles/TallTown/house11</AssetName>
-      <FileSize>2984</FileSize>
-      <GrhIndex>788</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item499>
-    <Item500>
-      <AssetName>Grh/Tiles/TallTown/house12</AssetName>
-      <FileSize>7573</FileSize>
-      <GrhIndex>789</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item500>
-    <Item501>
-      <AssetName>Grh/Tiles/TallTown/house13</AssetName>
-      <FileSize>7627</FileSize>
-      <GrhIndex>790</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item501>
-    <Item502>
-      <AssetName>Grh/Tiles/TallTown/house14</AssetName>
-      <FileSize>7648</FileSize>
-      <GrhIndex>791</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item502>
-    <Item503>
-      <AssetName>Grh/Tiles/TallTown/house15</AssetName>
-      <FileSize>2796</FileSize>
-      <GrhIndex>792</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item503>
-    <Item504>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse01</AssetName>
-      <FileSize>9017</FileSize>
-      <GrhIndex>793</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item504>
-    <Item505>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse02</AssetName>
-      <FileSize>9153</FileSize>
-      <GrhIndex>794</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item505>
-    <Item506>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse03</AssetName>
-      <FileSize>6747</FileSize>
-      <GrhIndex>795</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item506>
-    <Item507>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse04</AssetName>
-      <FileSize>6601</FileSize>
-      <GrhIndex>796</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item507>
-    <Item508>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse05</AssetName>
-      <FileSize>8515</FileSize>
-      <GrhIndex>797</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item508>
-    <Item509>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse06</AssetName>
-      <FileSize>9039</FileSize>
-      <GrhIndex>798</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item509>
-    <Item510>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse07</AssetName>
-      <FileSize>6591</FileSize>
-      <GrhIndex>799</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item510>
-    <Item511>
-      <AssetName>Grh/Tiles/TallTown/overlayhouse08</AssetName>
-      <FileSize>6466</FileSize>
-      <GrhIndex>800</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item511>
-    <Item512>
-      <AssetName>Grh/Tiles/TallTown/windowbroken01</AssetName>
-      <FileSize>9276</FileSize>
-      <GrhIndex>801</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item512>
-    <Item513>
-      <AssetName>Grh/Tiles/TallTown/windowfixed01</AssetName>
-      <FileSize>8712</FileSize>
-      <GrhIndex>802</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item513>
-    <Item514>
-      <AssetName>Grh/Tiles/TallTown/windowfixed02</AssetName>
-      <FileSize>10829</FileSize>
-      <GrhIndex>803</GrhIndex>
-      <Height>120</Height>
-      <Width>80</Width>
-    </Item514>
-    <Item515>
+    </Item377>
+    <Item378>
       <AssetName>Grh/Tiles/WoodenFloors/wood01</AssetName>
       <FileSize>1040</FileSize>
       <GrhIndex>804</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item515>
-    <Item516>
+    </Item378>
+    <Item379>
       <AssetName>Grh/Tiles/WoodenFloors/wood02</AssetName>
       <FileSize>1212</FileSize>
       <GrhIndex>805</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item516>
-    <Item517>
+    </Item379>
+    <Item380>
       <AssetName>Grh/Tiles/WoodenFloors/wood03</AssetName>
       <FileSize>1166</FileSize>
       <GrhIndex>806</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item517>
-    <Item518>
+    </Item380>
+    <Item381>
       <AssetName>Grh/Tiles/WoodenFloors/wood04</AssetName>
       <FileSize>1056</FileSize>
       <GrhIndex>807</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item518>
-    <Item519>
+    </Item381>
+    <Item382>
       <AssetName>Grh/Tiles/WoodenFloors/wood05</AssetName>
       <FileSize>1052</FileSize>
       <GrhIndex>808</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item519>
-    <Item520>
+    </Item382>
+    <Item383>
       <AssetName>Grh/Tiles/WoodenFloors/wood06</AssetName>
       <FileSize>1093</FileSize>
       <GrhIndex>809</GrhIndex>
       <Height>40</Height>
       <Width>40</Width>
-    </Item520>
-    <Item521>
+    </Item383>
+    <Item384>
       <AssetName>Grh/Map/Winter/Decor/Pile of snowballs[l1]</AssetName>
       <FileSize>411</FileSize>
       <GrhIndex>812</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item521>
-    <Item522>
+    </Item384>
+    <Item385>
       <AssetName>Grh/Map/Winter/Decor/Snowman[l1]</AssetName>
       <FileSize>877</FileSize>
       <GrhIndex>813</GrhIndex>
       <Height>47</Height>
       <Width>49</Width>
-    </Item522>
-    <Item523>
+    </Item385>
+    <Item386>
       <AssetName>Grh/Map/Winter/Ice/Ice[l0][w1]</AssetName>
       <FileSize>331</FileSize>
       <GrhIndex>819</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item523>
-    <Item524>
+    </Item386>
+    <Item387>
       <AssetName>Grh/Map/Winter/Ice/snow - ice bottom left corner[l0]</AssetName>
       <FileSize>461</FileSize>
       <GrhIndex>820</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item524>
-    <Item525>
+    </Item387>
+    <Item388>
       <AssetName>Grh/Map/Winter/Ice/snow - ice bottom right corner[l0]</AssetName>
       <FileSize>454</FileSize>
       <GrhIndex>821</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item525>
-    <Item526>
+    </Item388>
+    <Item389>
       <AssetName>Grh/Map/Winter/Ice/Snow - Ice bottom[l0]</AssetName>
       <FileSize>504</FileSize>
       <GrhIndex>822</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item526>
-    <Item527>
+    </Item389>
+    <Item390>
       <AssetName>Grh/Map/Winter/Ice/Snow - Ice Left[l0]</AssetName>
       <FileSize>455</FileSize>
       <GrhIndex>823</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item527>
-    <Item528>
+    </Item390>
+    <Item391>
       <AssetName>Grh/Map/Winter/Ice/Snow - Ice Right[l0]</AssetName>
       <FileSize>443</FileSize>
       <GrhIndex>824</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item528>
-    <Item529>
+    </Item391>
+    <Item392>
       <AssetName>Grh/Map/Winter/Ice/Snow - Ice top left corner[l0]</AssetName>
       <FileSize>454</FileSize>
       <GrhIndex>825</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item529>
-    <Item530>
+    </Item392>
+    <Item393>
       <AssetName>Grh/Map/Winter/Ice/Snow - Ice Top right Corner[l0]</AssetName>
       <FileSize>450</FileSize>
       <GrhIndex>826</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item530>
-    <Item531>
+    </Item393>
+    <Item394>
       <AssetName>Grh/Map/Winter/Ice/Snow - ice top[l0]</AssetName>
       <FileSize>458</FileSize>
       <GrhIndex>827</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item531>
-    <Item532>
+    </Item394>
+    <Item395>
       <AssetName>Grh/Map/Winter/Path/Snow - Path bottom left[l0]</AssetName>
       <FileSize>375</FileSize>
       <GrhIndex>828</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item532>
-    <Item533>
+    </Item395>
+    <Item396>
       <AssetName>Grh/Map/Winter/Path/Snow - Path bottom right[l0]</AssetName>
       <FileSize>380</FileSize>
       <GrhIndex>829</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item533>
-    <Item534>
+    </Item396>
+    <Item397>
       <AssetName>Grh/Map/Winter/Path/Snow - Path bottom[l0]</AssetName>
       <FileSize>365</FileSize>
       <GrhIndex>830</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item534>
-    <Item535>
+    </Item397>
+    <Item398>
       <AssetName>Grh/Map/Winter/Path/Snow - Path left[l0]</AssetName>
       <FileSize>364</FileSize>
       <GrhIndex>831</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item535>
-    <Item536>
+    </Item398>
+    <Item399>
       <AssetName>Grh/Map/Winter/Path/Snow - Path right[l0]</AssetName>
       <FileSize>367</FileSize>
       <GrhIndex>832</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item536>
-    <Item537>
+    </Item399>
+    <Item400>
       <AssetName>Grh/Map/Winter/Path/Snow - Path top left[l0]</AssetName>
       <FileSize>363</FileSize>
       <GrhIndex>833</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item537>
-    <Item538>
+    </Item400>
+    <Item401>
       <AssetName>Grh/Map/Winter/Path/Snow - Path Top right[l0]</AssetName>
       <FileSize>355</FileSize>
       <GrhIndex>834</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item538>
-    <Item539>
+    </Item401>
+    <Item402>
       <AssetName>Grh/Map/Winter/Path/Snow - Path Top[l0]</AssetName>
       <FileSize>354</FileSize>
       <GrhIndex>835</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item539>
-    <Item540>
+    </Item402>
+    <Item403>
       <AssetName>Grh/Map/Winter/Path/Snow 2[l0]</AssetName>
       <FileSize>369</FileSize>
       <GrhIndex>836</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item540>
-    <Item541>
+    </Item403>
+    <Item404>
       <AssetName>Grh/Map/Winter/Path/Snow 3[l0]</AssetName>
       <FileSize>364</FileSize>
       <GrhIndex>837</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item541>
-    <Item542>
+    </Item404>
+    <Item405>
       <AssetName>Grh/Map/Winter/Path/Snow 4[l0]</AssetName>
       <FileSize>362</FileSize>
       <GrhIndex>838</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item542>
-    <Item543>
+    </Item405>
+    <Item406>
       <AssetName>Grh/Map/Winter/Path/Snow 5[l0]</AssetName>
       <FileSize>370</FileSize>
       <GrhIndex>839</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item543>
-    <Item544>
+    </Item406>
+    <Item407>
       <AssetName>Grh/Map/Winter/Path/Snow Path[l0]</AssetName>
       <FileSize>300</FileSize>
       <GrhIndex>840</GrhIndex>
       <Height>32</Height>
       <Width>32</Width>
-    </Item544>
+    </Item407>
   </Item>
 </AutoGrhDataSizes>
