@@ -314,20 +314,7 @@ namespace NetGore.Editor
                 Vector2 p = camera.ToScreen(Position).Round();
                 Vector2 s = Size.Round();
                 Rectangle r = new Rectangle(p.X, p.Y, s.X, s.Y);
-
-
-                p = camera.ToScreen(GetPosition() + Vector2.One).Round();
-                bool okFlag = ContainsPoint(camera.ToWorld(p));
-
-                Rectangle newR = new Rectangle(p.X, p.Y, s.X, s.Y);
-
-                sprite.Draw(spriteBatch, r, Color.White);
-
-                // Draw a marker at ACTUAL transbox positions for debug purposes.
-                if (okFlag)
-                    sprite.Draw(spriteBatch, newR, Color.Green);
-                else
-                    sprite.Draw(spriteBatch, newR, Color.Red);
+                sprite.Draw(spriteBatch, r, Color.Green);
             }
 
             /// <summary>
