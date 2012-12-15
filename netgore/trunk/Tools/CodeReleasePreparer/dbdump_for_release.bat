@@ -1,8 +1,6 @@
 @echo off
-SET /P A= Type your database password. 
-echo -
-SET /P B= Type your port number (Note 3306 is default mysql port). 
-echo -
+SET A=password
+SET B=3306
 @echo on
 
 REM Dump

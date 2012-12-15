@@ -12,20 +12,20 @@
   <Walls>
     <Count>787</Count>
     <Item0>
-      <Position>0,0</Position>
-      <Size>64,2016</Size>
+      <Position>-16,1968</Position>
+      <Size>2016,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
     </Item0>
     <Item1>
-      <Position>0,0</Position>
-      <Size>896,96</Size>
+      <Position>0,-16</Position>
+      <Size>64,2016</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
     </Item1>
     <Item2>
-      <Position>0,1984</Position>
-      <Size>2016,32</Size>
+      <Position>0,0</Position>
+      <Size>896,96</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
     </Item2>
@@ -1218,16 +1218,16 @@
       <BoundGrhindex>348</BoundGrhindex>
     </Item200>
     <Item201>
+      <Position>1040,0</Position>
+      <Size>960,128</Size>
+      <IsPlatform>False</IsPlatform>
+      <BoundGrhindex>0</BoundGrhindex>
+    </Item201>
+    <Item202>
       <Position>1049,1970</Position>
       <Size>41,30</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>299</BoundGrhindex>
-    </Item201>
-    <Item202>
-      <Position>1056,0</Position>
-      <Size>960,128</Size>
-      <IsPlatform>False</IsPlatform>
-      <BoundGrhindex>0</BoundGrhindex>
     </Item202>
     <Item203>
       <Position>1056,96</Position>
@@ -4050,40 +4050,40 @@
       <BoundGrhindex>299</BoundGrhindex>
     </Item672>
     <Item673>
+      <Position>1936,80</Position>
+      <Size>64,1920</Size>
+      <IsPlatform>False</IsPlatform>
+      <BoundGrhindex>0</BoundGrhindex>
+    </Item673>
+    <Item674>
       <Position>1942,784</Position>
       <Size>41,30</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>299</BoundGrhindex>
-    </Item673>
-    <Item674>
-      <Position>1952,0</Position>
-      <Size>32,32</Size>
-      <IsPlatform>False</IsPlatform>
-      <BoundGrhindex>819</BoundGrhindex>
     </Item674>
     <Item675>
-      <Position>1952,32</Position>
+      <Position>1952,0</Position>
       <Size>32,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>819</BoundGrhindex>
     </Item675>
     <Item676>
-      <Position>1952,64</Position>
+      <Position>1952,32</Position>
       <Size>32,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>819</BoundGrhindex>
     </Item676>
     <Item677>
-      <Position>1952,96</Position>
+      <Position>1952,64</Position>
       <Size>32,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>819</BoundGrhindex>
     </Item677>
     <Item678>
       <Position>1952,96</Position>
-      <Size>64,1920</Size>
+      <Size>32,32</Size>
       <IsPlatform>False</IsPlatform>
-      <BoundGrhindex>0</BoundGrhindex>
+      <BoundGrhindex>819</BoundGrhindex>
     </Item678>
     <Item679>
       <Position>1952,128</Position>
