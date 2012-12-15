@@ -114,7 +114,7 @@ namespace DemoGame.Editor
             cmbEmitterType.SelectedEmitterChanged += cmbEmitterType_SelectedEmitterChanged;
 
             // Load the default emitter sprite
-            _defaultEmitterSprite = GrhInfo.GetData("Particle", "sparkle alpha");
+            _defaultEmitterSprite = GrhInfo.GetData("Particle", "sparkle");
         }
 
         /// <summary>
@@ -290,6 +290,8 @@ namespace DemoGame.Editor
 
             if (!lstEmitters.Items.Contains(emitter))
                 lstEmitters.Items.Add(emitter);
+
+            lstEmitters.RebuildList(ParticleEffect);
         }
 
         /// <summary>
