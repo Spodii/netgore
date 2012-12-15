@@ -15,13 +15,39 @@ namespace CodeReleasePreparer
 
         static readonly string[] _deleteFilePatterns = new string[]
         {
-            @"\.csproj\.user$", @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe", @"\.pdb$", @"[\\/]bin[\\/]",
-            @"[\\/]obj[\\/]", @"[\\/]\.svn[\\/]", @"[\\/]_ReSharper\.",
+            // Specific files
+            @"/ROOT/NetGore[^\\/]*\.ReSharper$",
+            @"/ROOT/NetGore\.sln\.DotSettings\.user$",
+            @"/ROOT/NetGore\.suo$",
+            @"/ROOT/DemoGame.Client[\\/]bin[\\/]client\.log$",
+            @"/ROOT/DemoGame.Client[\\/]bin[\\/]editor\.log$",
+
+            // Specific folders
+            @"/ROOT/bin[\\/]",
+            @"/ROOT/Settings[\\/]",
+            @"/ROOT/DemoGame[\\/]bin[\\/]",
+            @"/ROOT/DemoGame\.Server[\\/]bin[\\/]logs[\\/]",
+            @"/ROOT/DemoGame\.DbClassCreator[\\/]bin[\\/]",
+            @"/ROOT/DemoGame\.GUITester[\\/]bin[\\/]",
+
+
+            // File patterns
+            @"\.csproj\.user$", 
+            @"\.resharper\.user$", 
+            @"\.cachefile$", 
+            @"\.vshost\.exe", 
+            @"\.pdb$",
+
+            // Folder patterns
+            @"[\\/]obj[\\/]", 
+            @"[\\/]\.svn[\\/]", 
+            @"[\\/]_ReSharper\.",
         };
 
         static readonly string[] _preserveFilePatterns = new string[]
         {
-            @"\.bat$", @"[\\/]InstallationValidator[\\/]bin[\\/]mysql\.data\.dll$",
+            @"\.bat$", 
+            @"[\\/]InstallationValidator[\\/]bin[\\/]mysql\.data\.dll$",
             @"[\\/]InstallationValidator[\\/]bin[\\/]InstallationValidator\.exe$",
             @"[\\/]InstallationValidator[\\/]bin[\\/]InstallationValidator\.exe\.config$",
             @"[\\/]CodeReleasePreparer[\\/]bin[\\/]",
@@ -36,8 +62,6 @@ namespace CodeReleasePreparer
         /// <returns>True if the one who is running this program is probably Spodi; false if it is AN IMPOSTER!!!</returns>
         static bool IsSpodi()
         {
-            var drives = DriveInfo.GetDrives();
-
             // Dual-core ftw!
             if (Environment.ProcessorCount != 4)
                 return false;
@@ -61,8 +85,10 @@ namespace CodeReleasePreparer
 
         static void Main()
         {
-            _delFileRegexes = new RegexCollection(_deleteFilePatterns);
-            _preFileRegexes = new RegexCollection(_preserveFilePatterns);
+            string netgoreRootRegexed = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + "../../../../").Replace("\\", "\\\\");
+
+            _delFileRegexes = new RegexCollection(_deleteFilePatterns.Select(x => x.Replace("/ROOT/", netgoreRootRegexed)));
+            _preFileRegexes = new RegexCollection(_preserveFilePatterns.Select(x => x.Replace("/ROOT/", netgoreRootRegexed)));
 
             // Hmm, spend my time programming, or making ASCII art...
             Console.WriteLine(@"             __          __     _____  _   _ _____ _   _  _____");
