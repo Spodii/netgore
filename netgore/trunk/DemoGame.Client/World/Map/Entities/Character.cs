@@ -149,8 +149,8 @@ namespace DemoGame.Client
             namePos.X += Size.X / 2f; // Move the left side of the name to the center of the character
             namePos.X -= (float)Math.Round(nameSize.X / 2f); // Move the center to the center of the character
 
-            // Move up above the character's head (height of the text, with a little extra offset)
-            namePos.Y -= nameSize.Y + 4f;
+            // Move below the character
+            namePos.Y += Size.Y + 10f;
 
             // Draw
             sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
