@@ -38,12 +38,8 @@ namespace CodeReleasePreparer
         {
             var drives = DriveInfo.GetDrives();
 
-            // Spodi loves his iRAM! How dare he leave home without it!?
-            if (!drives.Any(x => x.Name == "E:\\" && x.VolumeLabel == "iRAM"))
-                return false;
-
             // Dual-core ftw!
-            if (Environment.ProcessorCount != 2)
+            if (Environment.ProcessorCount != 4)
                 return false;
 
             // My PC named its self after me
