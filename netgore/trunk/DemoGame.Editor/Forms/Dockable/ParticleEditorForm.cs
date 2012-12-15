@@ -292,6 +292,7 @@ namespace DemoGame.Editor
                 lstEmitters.Items.Add(emitter);
 
             lstEmitters.RebuildList(ParticleEffect);
+            lstEmitters.SelectedItem = emitter;
         }
 
         /// <summary>
