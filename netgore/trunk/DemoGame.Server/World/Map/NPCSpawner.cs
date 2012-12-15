@@ -140,7 +140,7 @@ namespace DemoGame.Server
 
                 Rectangle area = new Rectangle(x, y, bodyInfo.Size.X, bodyInfo.Size.Y);
 
-                if (Map.Spatial.Contains<WallEntityBase>(area))
+                if (!Map.Spatial.Contains<WallEntityBase>(area))
                 {
                     return new Vector2(x, y);
                 }
@@ -177,6 +177,12 @@ namespace DemoGame.Server
                     _npcs[i] = npc;
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("NPCSpawner [CharTemplate: {0} Map: {1} Area: {2}]",
+                CharacterTemplate.TemplateTable.ID, Map.ID, Area);
         }
 
         /// <summary>

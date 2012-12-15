@@ -347,7 +347,7 @@ namespace NetGore.Graphics
 
             if (screenArea.X < Min.X)
                 pos.X = Min.X;
-            else if (pos.Y > Max.X - screenArea.Width)
+            else if (pos.X > Max.X - screenArea.Width)
                 pos.X = Max.X - screenArea.Width;
 
             if (screenArea.Y < Min.Y)
