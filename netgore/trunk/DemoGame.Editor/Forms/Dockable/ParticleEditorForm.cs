@@ -177,6 +177,7 @@ namespace DemoGame.Editor
             if (!lstEmitters.Items.Contains(newEmitter))
                 lstEmitters.Items.Add(newEmitter);
 
+            lstEmitters.RebuildList(ParticleEffect);
             lstEmitters.SelectedItem = newEmitter;
         }
 
@@ -312,22 +313,21 @@ namespace DemoGame.Editor
                 return;
 
             const string confirmMsg = "Are you sure you wish to change the emitter type from {0} to {1}?";
-            if (
-                MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, e.Item1.Name), "Change emitter type?",
-                    MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show(string.Format(confirmMsg, emitter.GetType().Name, e.Item1.Name), "Change emitter type?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             var newEmitter = (IParticleEmitter)TypeFactory.GetTypeInstance(e.Item1, emitter.Owner);
 
-            emitter.CopyValuesTo(newEmitter);
-
             emitter.Dispose();
+            emitter.CopyValuesTo(newEmitter);
             lstEmitters.Items.Remove(emitter);
 
             if (!lstEmitters.Items.Contains(newEmitter))
                 lstEmitters.Items.Add(newEmitter);
 
             lstEmitters.SelectedItem = newEmitter;
+
+            lstEmitters.RebuildList(ParticleEffect);
         }
 
         /// <summary>

@@ -48,13 +48,9 @@ namespace NetGore.Editor.WinForms
                 base.OnDrawItem(e);
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.DomainUpDown.SelectedItemChanged"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
-        protected override void OnSelectedItemChanged(EventArgs e)
+        protected override void OnSelectedIndexChanged(EventArgs e)
         {
-            base.OnSelectedItemChanged(e);
+            base.OnSelectedIndexChanged(e);
 
             var item = SelectedItem as Type;
 

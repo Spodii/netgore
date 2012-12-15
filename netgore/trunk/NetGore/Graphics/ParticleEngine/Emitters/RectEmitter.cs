@@ -39,7 +39,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// equal to zero.</exception>
         [Category(_emitterCategoryName)]
         [Description("The height of the rectangle.")]
-        [DisplayName("Width")]
+        [DisplayName("Height")]
         [DefaultValue(_defaultHeight)]
         public int Height
         {
