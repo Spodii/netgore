@@ -143,7 +143,7 @@ namespace DemoGame.Server.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("32, 32")]
+        [global::System.Configuration.DefaultSettingValueAttribute("512, 512")]
         public global::SFML.Graphics.Vector2 InvalidPersistentNPCLoadPosition {
             get {
                 return ((global::SFML.Graphics.Vector2)(this["InvalidPersistentNPCLoadPosition"]));
@@ -161,7 +161,7 @@ namespace DemoGame.Server.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("32, 32")]
+        [global::System.Configuration.DefaultSettingValueAttribute("512, 512")]
         public global::SFML.Graphics.Vector2 InvalidUserLoadPosition {
             get {
                 return ((global::SFML.Graphics.Vector2)(this["InvalidUserLoadPosition"]));
