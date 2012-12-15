@@ -501,6 +501,7 @@ CREATE TABLE `character_skill` (
 
 LOCK TABLES `character_skill` WRITE;
 /*!40000 ALTER TABLE `character_skill` DISABLE KEYS */;
+INSERT INTO `character_skill` VALUES (1,0,'2012-12-15 06:18:10'),(1,1,'2012-12-15 06:18:11');
 /*!40000 ALTER TABLE `character_skill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2312,4 +2313,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-14 19:25:26
+-- Dump completed on 2012-12-14 22:18:32
