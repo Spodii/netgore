@@ -109,7 +109,7 @@ namespace NetGore.Graphics.ParticleEngine
                 newName = baseEffectName + " (" + i + ")";
                 i++;
             }
-            while (_effects.ContainsKey(baseEffectName));
+            while (_effects.ContainsKey(newName));
 
             Debug.Assert(!_effects.ContainsKey(newName));
 
