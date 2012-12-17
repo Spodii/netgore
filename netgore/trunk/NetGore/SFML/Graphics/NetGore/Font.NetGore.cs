@@ -26,13 +26,13 @@ namespace SFML.Graphics
         /// <exception cref="LoadingFailedException"/>
         protected internal bool EnsureLoaded(string filename)
         {
-            if (ThisRaw != IntPtr.Zero)
+            if (CPointerRaw != IntPtr.Zero)
                 return true;
 
-            var ptr = sfFont_CreateFromFile(filename);
+            var ptr = sfFont_createFromFile(filename);
             SetThis(ptr);
 
-            if (ThisRaw == IntPtr.Zero)
+            if (CPointerRaw == IntPtr.Zero)
                 throw new LoadingFailedException("font", filename);
 
             return false;
@@ -71,43 +71,32 @@ namespace SFML.Graphics
         }
 
         /// <summary>
-        /// Get the image containing the glyphs of a given size
-        /// </summary>
-        /// <returns>Image storing the glyphs for the given size</returns>
-        public Image GetImage()
-        {
-            return GetImage(DefaultSize);
-        }
-
-        /// <summary>
         /// Handle the destruction of the object
         /// </summary>
         /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
         protected override void Destroy(bool disposing)
         {
-            if (this != ourDefaultFont)
+            if (!disposing)
+                Context.Global.SetActive(true);
+            
+            var t = CPointerRaw;
+            
+            if (t != IntPtr.Zero)
+                sfFont_destroy(t);
+
+            if (disposing)
             {
-                var t = ThisRaw;
+                foreach (Texture texture in myTextures.Values)
+                    texture.Dispose();
 
-                if (!disposing)
-                    Context.Global.SetActive(true);
+                if (myStream != null)
+                    myStream.Dispose();
 
-                if (t != IntPtr.Zero)
-                    sfFont_Destroy(t);
-
-                if (disposing)
-                {
-                    foreach (var image in myImages.Values)
-                    {
-                        image.Dispose();
-                    }
-                }
-
-                myImages.Clear();
-
-                if (!disposing)
-                    Context.Global.SetActive(false);
+                myTextures.Clear();
             }
+
+            if (!disposing)
+                Context.Global.SetActive(false);
         }
 
         protected internal Font()

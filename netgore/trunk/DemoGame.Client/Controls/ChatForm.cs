@@ -104,7 +104,7 @@ namespace DemoGame.Client
 
             switch (e.Code)
             {
-                case KeyCode.Return:
+                case Keyboard.Key.Return:
                     if (Say != null)
                     {
                         var text = _input.Text;
@@ -117,11 +117,11 @@ namespace DemoGame.Client
                     }
                     break;
 
-                case KeyCode.PageUp:
+                case Keyboard.Key.PageUp:
                     _bufferOffset += bufferScrollRate;
                     break;
 
-                case KeyCode.PageDown:
+                case Keyboard.Key.PageDown:
                     _bufferOffset -= bufferScrollRate;
                     break;
             }

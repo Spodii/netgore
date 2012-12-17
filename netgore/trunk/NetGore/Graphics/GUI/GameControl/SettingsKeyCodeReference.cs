@@ -19,7 +19,7 @@ namespace NetGore.Graphics.GUI
         readonly string _keySettingName;
         readonly ApplicationSettingsBase _settings;
 
-        KeyCode _key;
+        Keyboard.Key _key;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsKeyCodeReference"/> class.
@@ -66,11 +66,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Grabs the <see cref="KeyCode"/> value from the <see cref="_settings"/>.
+        /// Grabs the <see cref="Keyboard.Key"/> value from the <see cref="_settings"/>.
         /// </summary>
         void UpdateValue()
         {
-            _key = (KeyCode)_settings[KeySettingName];
+            _key = (Keyboard.Key)_settings[KeySettingName];
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace NetGore.Graphics.GUI
         #region IKeyCodeReference Members
 
         /// <summary>
-        /// Gets the referenced <see cref="KeyCode"/>.
+        /// Gets the referenced <see cref="Keyboard.Key"/>.
         /// </summary>
-        public KeyCode Key
+        public Keyboard.Key Key
         {
             get { return _key; }
         }

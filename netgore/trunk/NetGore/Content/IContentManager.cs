@@ -54,12 +54,12 @@ namespace NetGore.Content
         Font LoadFont(string assetName, int fontSize, ContentLevel level);
 
         /// <summary>
-        /// Loads an <see cref="Image"/> asset.
+        /// Loads an <see cref="Texture"/> asset.
         /// </summary>
         /// <param name="assetName">The name of the asset to load.</param>
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
-        Image LoadImage(string assetName, ContentLevel level);
+        Texture LoadImage(string assetName, ContentLevel level);
 
         /// <summary>
         /// Loads a <see cref="SoundBuffer"/> asset.

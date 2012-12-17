@@ -17,16 +17,12 @@ namespace NetGore.Graphics
         /// <returns>The loaded <see cref="Shader"/>.</returns>
         public static Shader LoadFromMemory(string code)
         {
-            Shader ret;
-
             // To bypass the requirement of having to load from file, write the code to a temporary file then load the shader
             using (var tmpFile = new TempFile())
             {
                 File.WriteAllText(tmpFile.FilePath, code);
-                ret = new Shader(tmpFile.FilePath);
+                return new Shader(null, tmpFile.FilePath);
             }
-
-            return ret;
         }
     }
 }

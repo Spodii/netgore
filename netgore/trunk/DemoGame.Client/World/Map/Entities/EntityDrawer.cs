@@ -3,6 +3,7 @@ using System.Linq;
 using NetGore.Graphics;
 using NetGore.World;
 using SFML.Graphics;
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -60,7 +61,7 @@ namespace DemoGame.Client
             else
             {
                 // Draw a normal entity using the CollisionBox
-                Draw(sb, entity.ToRectangle(), _entityColor);
+                Draw(sb, entity, _entityColor);
             }
         }
 
@@ -73,13 +74,12 @@ namespace DemoGame.Client
         public static void Draw(ISpriteBatch sb, ICamera2D camera, TeleportEntityBase tele)
         {
             // Draw the source rectangle
-            Draw(sb, tele.ToRectangle(), _teleSourceColor);
+            Draw(sb, tele, _teleSourceColor);
 
             // Draw the destination rectangle and the arrow pointing to it only if the map is the same
             if (camera.Map != null && camera.Map.ID == tele.DestinationMap)
             {
-                var destRect = new Rectangle(tele.Destination.X, tele.Destination.Y, tele.Size.X, tele.Size.Y);
-                Draw(sb, destRect, _teleDestColor);
+                Draw(sb, tele.Destination, tele.Size, _teleDestColor);
 
                 // Arrow
                 var centerOffset = tele.Size / 2;
@@ -108,23 +108,30 @@ namespace DemoGame.Client
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void Draw(ISpriteBatch sb, ICamera2D camera, WallEntityBase wall, Vector2 offset)
         {
-            // Find the positon to draw to
-            var p = wall.Position + offset;
-            var dest = new Rectangle(p.X, p.Y, wall.Size.X, wall.Size.Y);
-
-            // Draw the collision area
-            RenderRectangle.Draw(sb, dest, _wallColor);
+            Draw(sb, wall, _wallColor, border: false);
         }
 
         /// <summary>
         /// Draws a <see cref="Rectangle"/>.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="rect">The <see cref="Rectangle"/> to draw.</param>
         /// <param name="color">Color to draw the CollisionBox.</param>
-        static void Draw(ISpriteBatch sb, Rectangle rect, Color color)
+        static void Draw(ISpriteBatch sb, ISpatial spatial, Color color, bool border = true)
         {
-            RenderRectangle.Draw(sb, rect, color, _borderColor);
+            Draw(sb, spatial.Position, spatial.Size, color, border);
+        }
+
+        /// <summary>
+        /// Draws a <see cref="Rectangle"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="color">Color to draw the CollisionBox.</param>
+        static void Draw(ISpriteBatch sb, Vector2 position, Vector2 size, Color color, bool border = true)
+        {
+            if (border)
+                RenderRectangle.Draw(sb, position, size, color, _borderColor);
+            else
+                RenderRectangle.Draw(sb, position, size, color);
         }
     }
 }

@@ -1,7 +1,10 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Collections.Generic;
+using SFML.Window;
+using Vector2f = SFML.Graphics.Vector2;
 
 namespace SFML
 {
@@ -16,41 +19,92 @@ namespace SFML
         {
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Load the shader from a file
+            /// Special type that can be passed to SetParameter,
+            /// and that represents the texture of the object being drawn
             /// </summary>
-            /// <param name="filename">Path of the shader file to load</param>
+            ////////////////////////////////////////////////////////////
+            public class CurrentTextureType { }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Special value that can be passed to SetParameter,
+            /// and that represents the texture of the object being drawn
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public static readonly CurrentTextureType CurrentTexture = null;
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Load the vertex and fragment shaders from files
+            ///
+            /// This function can load both the vertex and the fragment
+            /// shaders, or only one of them: pass NULL if you don't want to load
+            /// either the vertex shader or the fragment shader.
+            /// The sources must be text files containing valid shaders
+            /// in GLSL language. GLSL is a C-like language dedicated to
+            /// OpenGL shaders; you'll probably need to read a good documentation
+            /// for it before writing your own shaders.
+            /// </summary>
+            /// <param name="vertexShaderFilename">Path of the vertex shader file to load, or null to skip this shader</param>
+            /// <param name="fragmentShaderFilename">Path of the fragment shader file to load, or null to skip this shader</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Shader(string filename) :
-                base(sfShader_CreateFromFile(filename))
+            public Shader(string vertexShaderFilename, string fragmentShaderFilename) :
+                base(sfShader_createFromFile(vertexShaderFilename, fragmentShaderFilename))
             {
-                if (This == IntPtr.Zero)
-                    throw new LoadingFailedException("shader", filename);
+                if (CPointer == IntPtr.Zero)
+                    throw new LoadingFailedException("shader", vertexShaderFilename + " " + fragmentShaderFilename);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Construct the shader from another shader
+            /// Load both the vertex and fragment shaders from custom streams
+            ///
+            /// This function can load both the vertex and the fragment
+            /// shaders, or only one of them: pass NULL if you don't want to load
+            /// either the vertex shader or the fragment shader.
+            /// The sources must be valid shaders in GLSL language. GLSL is
+            /// a C-like language dedicated to OpenGL shaders; you'll
+            /// probably need to read a good documentation for it before
+            /// writing your own shaders.
             /// </summary>
-            /// <param name="copy">Shader to copy</param>
+            /// <param name="vertexShaderStream">Source stream to read the vertex shader from, or null to skip this shader</param>
+            /// <param name="fragmentShaderStream">Source stream to read the fragment shader from, or null to skip this shader</param>
+            /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Shader(Shader copy) :
-                base(sfShader_Copy(copy.This))
+            public Shader(Stream vertexShaderStream, Stream fragmentShaderStream) :
+                base(IntPtr.Zero)
             {
-                foreach (KeyValuePair<string, Image> pair in copy.myTextures)
-                    myTextures[pair.Key] = copy.myTextures[pair.Key];
+                StreamAdaptor vertexAdaptor = new StreamAdaptor(vertexShaderStream);
+                StreamAdaptor fragmentAdaptor = new StreamAdaptor(fragmentShaderStream);
+                SetThis(sfShader_createFromStream(vertexAdaptor.InputStreamPtr, fragmentAdaptor.InputStreamPtr));
+                vertexAdaptor.Dispose();
+                fragmentAdaptor.Dispose();
+
+                if (CPointer == IntPtr.Zero)
+                    throw new LoadingFailedException("shader");
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Create a new shader from a text in memory
+            /// Load both the vertex and fragment shaders from source codes in memory
+            ///
+            /// This function can load both the vertex and the fragment
+            /// shaders, or only one of them: pass NULL if you don't want to load
+            /// either the vertex shader or the fragment shader.
+            /// The sources must be valid shaders in GLSL language. GLSL is
+            /// a C-like language dedicated to OpenGL shaders; you'll
+            /// probably need to read a good documentation for it before
+            /// writing your own shaders.
             /// </summary>
-            /// <param name="shader">String containing the shader code</param>
+            /// <param name="vertexShader">String containing the source code of the vertex shader</param>
+            /// <param name="fragmentShader">String containing the source code of the fragment shader</param>
+            /// <returns>New shader instance</returns>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public static Shader FromString(string shader)
+            public static Shader FromString(string vertexShader, string fragmentShader)
             {
-                IntPtr ptr = sfShader_CreateFromMemory(shader);
+                IntPtr ptr = sfShader_createFromMemory(vertexShader, fragmentShader);
                 if (ptr == IntPtr.Zero)
                     throw new LoadingFailedException("shader");
 
@@ -59,122 +113,193 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Change a vector2 parameter of the shader
+            /// Change a float parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a float
+            /// (float GLSL type).
             /// </summary>
+            ///
             /// <param name="name">Name of the parameter in the shader</param>
-            /// <param name="v">Value of the parameter</param>
-            ////////////////////////////////////////////////////////////
-            public void SetParameter(string name, Vector2 v)
-            {
-                SetParameter(name, v.X, v.Y);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Change a 1-component parameter of the shader
-            /// </summary>
-            /// <param name="name">Name of the parameter in the shader</param>
-            /// <param name="x">Value of the parameter</param>
+            /// <param name="x">Value to assign</param>
+            ///
             ////////////////////////////////////////////////////////////
             public void SetParameter(string name, float x)
             {
-                sfShader_SetParameter1(This, name, x);
+                sfShader_setFloatParameter(CPointer, name, x);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Change a 2-component parameter of the shader
+            /// Change a 2-components vector parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a 2x1 vector
+            /// (vec2 GLSL type).
             /// </summary>
             /// <param name="name">Name of the parameter in the shader</param>
-            /// <param name="x">X component of the value</param>
-            /// <param name="y">Y component of the value</param>
+            /// <param name="x">First component of the value to assign</param>
+            /// <param name="y">Second component of the value to assign</param>
             ////////////////////////////////////////////////////////////
             public void SetParameter(string name, float x, float y)
             {
-                sfShader_SetParameter2(This, name, x, y);
+                sfShader_setFloat2Parameter(CPointer, name, x, y);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Change a 3-component parameter of the shader
+            /// Change a 3-components vector parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a 3x1 vector
+            /// (vec3 GLSL type).
             /// </summary>
             /// <param name="name">Name of the parameter in the shader</param>
-            /// <param name="x">X component of the value</param>
-            /// <param name="y">Y component of the value</param>
-            /// <param name="z">Z component of the value</param>
+            /// <param name="x">First component of the value to assign</param>
+            /// <param name="y">Second component of the value to assign</param>
+            /// <param name="z">Third component of the value to assign</param>
             ////////////////////////////////////////////////////////////
             public void SetParameter(string name, float x, float y, float z)
             {
-                sfShader_SetParameter3(This, name, x, y, z);
+                sfShader_setFloat3Parameter(CPointer, name, x, y, z);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Change a 4-component parameter of the shader
+            /// Change a 4-components vector parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a 4x1 vector
+            /// (vec4 GLSL type).
             /// </summary>
             /// <param name="name">Name of the parameter in the shader</param>
-            /// <param name="x">X component of the value</param>
-            /// <param name="y">Y component of the value</param>
-            /// <param name="z">Z component of the value</param>
-            /// <param name="w">W component of the value</param>
+            /// <param name="x">First component of the value to assign</param>
+            /// <param name="y">Second component of the value to assign</param>
+            /// <param name="z">Third component of the value to assign</param>
+            /// <param name="w">Fourth component of the value to assign</param>
             ////////////////////////////////////////////////////////////
             public void SetParameter(string name, float x, float y, float z, float w)
             {
-                sfShader_SetParameter4(This, name, x, y, z, w);
+                sfShader_setFloat4Parameter(CPointer, name, x, y, z, w);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Set a texture parameter
+            /// Change a 2-components vector parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a 2x1 vector
+            /// (vec2 GLSL type).
+            /// </summary>
+            /// <param name="name">Name of the parameter in the shader</param>
+            /// <param name="vector">Vector to assign</param>
+            ////////////////////////////////////////////////////////////
+            public void SetParameter(string name, Vector2f vector)
+            {
+                SetParameter(name, vector.X, vector.Y);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change a color parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a 4x1 vector
+            /// (vec4 GLSL type).
+            /// </summary>
+            /// <param name="name">Name of the parameter in the shader</param>
+            /// <param name="color">Color to assign</param>
+            ////////////////////////////////////////////////////////////
+            public void SetParameter(string name, Color color)
+            {
+                sfShader_setColorParameter(CPointer, name, color);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change a matrix parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a 4x4 matrix
+            /// (mat4 GLSL type).
+            /// </summary>
+            /// <param name="name">Name of the parameter in the shader</param>
+            /// <param name="transform">Transform to assign</param>
+            ////////////////////////////////////////////////////////////
+            public void SetParameter(string name, Transform transform)
+            {
+                sfShader_setTransformParameter(CPointer, name, transform);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change a texture parameter of the shader
+            ///
+            /// "name" is the name of the variable to change in the shader.
+            /// The corresponding parameter in the shader must be a 2D texture
+            /// (sampler2D GLSL type).
+            ///
+            /// It is important to note that \a texture must remain alive as long
+            /// as the shader uses it, no copy is made internally.
+            ///
+            /// To use the texture of the object being draw, which cannot be
+            /// known in advance, you can pass the special value
+            /// Shader.CurrentTexture.
             /// </summary>
             /// <param name="name">Name of the texture in the shader</param>
-            /// <param name="texture">Image to set</param>
+            /// <param name="texture">Texture to assign</param>
             ////////////////////////////////////////////////////////////
-            public void SetTexture(string name, Image texture)
+            public void SetParameter(string name, Texture texture)
             {
                 myTextures[name] = texture;
-                sfShader_SetTexture(This, name, texture.This);
+                sfShader_setTextureParameter(CPointer, name, texture.CPointer);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Set the current texture parameter
+            /// Change a texture parameter of the shader
+            ///
+            /// This overload maps a shader texture variable to the
+            /// texture of the object being drawn, which cannot be
+            /// known in advance. The second argument must be
+            /// sf::Shader::CurrentTexture.
+            /// The corresponding parameter in the shader must be a 2D texture
+            /// (sampler2D GLSL type).
             /// </summary>
             /// <param name="name">Name of the texture in the shader</param>
+            /// <param name="current">Always pass the spacial value Shader.CurrentTexture</param>
             ////////////////////////////////////////////////////////////
-            public void SetCurrentTexture(string name)
+            public void SetParameter(string name, CurrentTextureType current)
             {
-                sfShader_SetCurrentTexture(This, name);
+                sfShader_setCurrentTextureParameter(CPointer, name);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Bind the shader for rendering
+            /// Bind the shader for rendering (activate it)
+            ///
+            /// This function is normally for internal use only, unless
+            /// you want to use the shader with a custom OpenGL rendering
+            /// instead of a SFML drawable.
             /// </summary>
             ////////////////////////////////////////////////////////////
             public void Bind()
             {
-                sfShader_Bind(This);
+                sfShader_bind(CPointer);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Unbind the shader
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public void Unbind()
-            {
-                sfShader_Unbind(This);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Tell whether or not the system supports shaders
+            /// Tell whether or not the system supports shaders.
+            ///
+            /// This property should always be checked before using
+            /// the shader features. If it returns false, then
+            /// any attempt to use Shader will fail.
             /// </summary>
             ////////////////////////////////////////////////////////////
             public static bool IsAvailable
             {
-                get {return sfShader_IsAvailable();}
+                get { return sfShader_isAvailable(); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -200,7 +325,7 @@ namespace SFML
                     Context.Global.SetActive(true);
 
                 myTextures.Clear();
-                sfShader_Destroy(This);
+                sfShader_destroy(CPointer);
 
                 if (!disposing)
                     Context.Global.SetActive(false);
@@ -217,48 +342,51 @@ namespace SFML
             {
             }
 
-            Dictionary<string, Image> myTextures = new Dictionary<string, Image>();
+            Dictionary<string, Texture> myTextures = new Dictionary<string, Texture>();
 
             #region Imports
-           
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_CreateFromFile(string Filename);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_CreateFromMemory(string Shader);
+            static extern IntPtr sfShader_createFromFile(string vertexShaderFilename, string fragmentShaderFilename);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_Copy(IntPtr Shader);
+            static extern IntPtr sfShader_createFromMemory(string vertexShader, string fragmentShader);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_Destroy(IntPtr Shader);
+            static extern IntPtr sfShader_createFromStream(IntPtr vertexShaderStream, IntPtr fragmentShaderStream);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter1(IntPtr Shader, string Name, float X);
+            static extern void sfShader_destroy(IntPtr shader);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter2(IntPtr Shader, string Name, float X, float Y);
+            static extern void sfShader_setFloatParameter(IntPtr shader, string name, float x);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter3(IntPtr Shader, string Name, float X, float Y, float Z);
+            static extern void sfShader_setFloat2Parameter(IntPtr shader, string name, float x, float y);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter4(IntPtr Shader, string Name, float X, float Y, float Z, float W);
+            static extern void sfShader_setFloat3Parameter(IntPtr shader, string name, float x, float y, float z);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetTexture(IntPtr Shader, string Name, IntPtr Texture);
+            static extern void sfShader_setFloat4Parameter(IntPtr shader, string name, float x, float y, float z, float w);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetCurrentTexture(IntPtr Shader, string Name);
+            static extern void sfShader_setColorParameter(IntPtr shader, string name, Color color);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_Bind(IntPtr Shader);
+            static extern void sfShader_setTransformParameter(IntPtr shader, string name, Transform transform);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_Unbind(IntPtr Shader);
+            static extern void sfShader_setTextureParameter(IntPtr shader, string name, IntPtr texture);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern bool sfShader_IsAvailable();
+            static extern void sfShader_setCurrentTextureParameter(IntPtr shader, string name);
+
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_bind(IntPtr shader);
+
+            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern bool sfShader_isAvailable();
 
             #endregion
         }

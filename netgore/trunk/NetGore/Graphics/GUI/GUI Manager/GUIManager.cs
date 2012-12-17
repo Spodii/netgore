@@ -281,7 +281,7 @@ namespace NetGore.Graphics.GUI
                 if (w == null || w.IsDisposed)
                     return Vector2.Zero;
 
-                return new Vector2(w.Input.GetMouseX(), w.Input.GetMouseY());
+                return Mouse.GetPosition(Window);
             }
         }
 
@@ -401,7 +401,7 @@ namespace NetGore.Graphics.GUI
         {
             get
             {
-                if (!IsMouseButtonDown(MouseButton.Left))
+                if (!IsMouseButtonDown(Mouse.Button.Left))
                     return null;
 
                 return _lastPressedControl;
@@ -533,31 +533,31 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets if a given <see cref="KeyCode"/> is currently being pressed.
+        /// Gets if a given <see cref="Keyboard.Key"/> is currently being pressed.
         /// </summary>
-        /// <param name="key">The <see cref="KeyCode"/> to check if pressed.</param>
+        /// <param name="key">The <see cref="Keyboard.Key"/> to check if pressed.</param>
         /// <returns>True if the <paramref name="key"/> is currently being pressed; otherwise false.</returns>
-        public bool IsKeyDown(KeyCode key)
+        public bool IsKeyDown(Keyboard.Key key)
         {
             var w = Window;
             if (w == null || w.IsDisposed)
                 return false;
 
-            return w.Input.IsKeyDown(key);
+            return Keyboard.IsKeyPressed(key);
         }
 
         /// <summary>
-        /// Gets if a given <see cref="MouseButton"/> is currently being pressed.
+        /// Gets if a given <see cref="Mouse.Button"/> is currently being pressed.
         /// </summary>
-        /// <param name="button">The <see cref="MouseButton"/> to check if pressed.</param>
+        /// <param name="button">The <see cref="Mouse.Button"/> to check if pressed.</param>
         /// <returns>True if the <paramref name="button"/> is currently being pressed; otherwise false.</returns>
-        public bool IsMouseButtonDown(MouseButton button)
+        public bool IsMouseButtonDown(Mouse.Button button)
         {
             var w = Window;
             if (w == null || w.IsDisposed)
                 return false;
 
-            return w.Input.IsMouseButtonDown(button);
+            return Mouse.IsButtonPressed(button); 
         }
 
         /// <summary>
@@ -612,7 +612,7 @@ namespace NetGore.Graphics.GUI
                 _lastPressedControl = c;
 
             // Handle a left mouse button press
-            if (e.Button == MouseButton.Left)
+            if (e.Button == Mouse.Button.Left)
             {
                 // Update the focus control
                 var lastFocused = FocusedControl;
@@ -653,7 +653,7 @@ namespace NetGore.Graphics.GUI
 
             // If it was the left mouse button that was released, then stop dragging the drag-and-drop provider
             // control (if we have one)
-            if (e.Button == MouseButton.Left && DraggedDragDropProvider != null)
+            if (e.Button == Mouse.Button.Left && DraggedDragDropProvider != null)
             {
                 if (DropOntoControl != null && DropOntoControl.CanDrop(DraggedDragDropProvider))
                     DropOntoControl.Drop(DraggedDragDropProvider);

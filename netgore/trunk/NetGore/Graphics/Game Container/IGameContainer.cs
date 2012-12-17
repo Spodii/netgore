@@ -23,17 +23,17 @@ namespace NetGore.Graphics
         /// <summary>
         /// Event handler for the JoyButtonPressed event.
         /// </summary>
-        event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonPressed;
+        event TypedEventHandler<IGameContainer, JoystickButtonEventArgs> JoyButtonPressed;
 
         /// <summary>
         /// Event handler for the JoyButtonReleased event.
         /// </summary>
-        event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonReleased;
+        event TypedEventHandler<IGameContainer, JoystickButtonEventArgs> JoyButtonReleased;
 
         /// <summary>
         /// Event handler for the JoyMoved event.
         /// </summary>
-        event TypedEventHandler<IGameContainer, JoyMoveEventArgs> JoyMoved;
+        event TypedEventHandler<IGameContainer, JoystickMoveEventArgs> JoyMoved;
 
         /// <summary>
         /// Event handler for the KeyPressed event.

@@ -107,7 +107,7 @@ namespace NetGore.Graphics.GUI
                 Border = BorderNormal;
             else
             {
-                if (e.Button == MouseButton.Left)
+                if (e.Button == Mouse.Button.Left)
                     Border = BorderPressed;
                 else
                     Border = BorderOver;
@@ -157,7 +157,7 @@ namespace NetGore.Graphics.GUI
                 Border = BorderNormal;
             else
             {
-                if (GUIManager.IsMouseButtonDown(MouseButton.Left))
+                if (GUIManager.IsMouseButtonDown(Mouse.Button.Left))
                     Border = BorderPressed;
                 else
                     Border = BorderOver;

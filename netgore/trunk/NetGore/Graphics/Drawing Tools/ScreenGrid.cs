@@ -147,7 +147,7 @@ namespace NetGore.Graphics
             {
                 p1.X = (float)Math.Round(x);
                 p2.X = (float)Math.Round(x);
-                RenderLine.Draw(sb, p1, p2, Color, 1.1f); // Note: 1.1f is used for thickness instead of 1.0f since at 1.0f, it will sometimes vanish. The SFML implementation is buggy.
+                RenderLine.Draw(sb, p1, p2, Color);
             }
 
             // Horizontal lines
@@ -157,7 +157,7 @@ namespace NetGore.Graphics
             {
                 p1.Y = (float)Math.Round(y);
                 p2.Y = (float)Math.Round(y);
-                RenderLine.Draw(sb, p1, p2, Color, 1.1f);
+                RenderLine.Draw(sb, p1, p2, Color);
             }
         }
 

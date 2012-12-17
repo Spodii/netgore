@@ -36,7 +36,7 @@ namespace NetGore.Graphics
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public override void Draw(Image texture, Vector2 position, Color color, Shader shader = null)
+        public override void Draw(Texture texture, Vector2 position, Color color, Shader shader = null)
         {
             base.Draw(texture, position.Round(), color, shader);
         }
@@ -52,7 +52,7 @@ namespace NetGore.Graphics
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public override void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, Shader shader = null)
+        public override void Draw(Texture texture, Vector2 position, Rectangle? sourceRectangle, Color color, Shader shader = null)
         {
             base.Draw(texture, position.Round(), sourceRectangle, color, shader);
         }
@@ -72,7 +72,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Uniform multiple by which to scale the sprite width and height.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public override void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
+        public override void Draw(Texture texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
                                   Vector2 origin, float scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
         {
             base.Draw(texture, position.Round(), sourceRectangle, color, rotation, origin, scale, effects, shader);
@@ -93,7 +93,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public override void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
+        public override void Draw(Texture texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
                                   Vector2 origin, Vector2 scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
         {
             base.Draw(texture, position.Round(), sourceRectangle, color, rotation, origin, scale, effects, shader);

@@ -211,10 +211,10 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
         void DemoGame_KeyPressed(object sender, KeyEventArgs e)
         {
-            if (e.Code == KeyCode.Tilde)
+            if (e.Code == Keyboard.Key.Tilde)
                 _screenManager.ShowConsole = !_screenManager.ShowConsole;
 
-            if (e.Code == KeyCode.Return && e.Alt)
+            if (e.Code == Keyboard.Key.Return && e.Alt)
                 ClientSettings.Default.Graphics_Fullscreen = !ClientSettings.Default.Graphics_Fullscreen;
         }
 

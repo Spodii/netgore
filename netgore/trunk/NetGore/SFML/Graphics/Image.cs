@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.IO;
 using System.Runtime.ConstrainedExecution;
+using SFML.Window;
 
 namespace SFML
 {
@@ -14,7 +15,7 @@ namespace SFML
         /// manipulating images
         /// </summary>
         ////////////////////////////////////////////////////////////
-        public partial class Image : ObjectBase
+        public class Image : ObjectBase
         {
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -39,9 +40,9 @@ namespace SFML
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
             public Image(uint width, uint height, Color color) :
-                base(sfImage_CreateFromColor(width, height, color))
+                base(sfImage_createFromColor(width, height, color))
             {
-                if (This == IntPtr.Zero)
+                if (CPointer == IntPtr.Zero)
                     throw new LoadingFailedException("image");
             }
 
@@ -53,9 +54,9 @@ namespace SFML
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
             public Image(string filename) :
-                base(sfImage_CreateFromFile(filename))
+                base(sfImage_createFromFile(filename))
             {
-                if (This == IntPtr.Zero)
+                if (CPointer == IntPtr.Zero)
                     throw new LoadingFailedException("image", filename);
             }
 
@@ -69,17 +70,12 @@ namespace SFML
             public Image(Stream stream) :
                 base(IntPtr.Zero)
             {
-                stream.Position = 0;
-                byte[] StreamData = new byte[stream.Length];
-                uint Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
-                unsafe
+                using (StreamAdaptor adaptor = new StreamAdaptor(stream))
                 {
-                    fixed (byte* dataPtr = StreamData)
-                    {
-                        SetThis(sfImage_CreateFromMemory((char*)dataPtr, Read));
-                    }
+                    SetThis(sfImage_createFromStream(adaptor.InputStreamPtr));
                 }
-                if (This == IntPtr.Zero)
+
+                if (CPointer == IntPtr.Zero)
                     throw new LoadingFailedException("image");
             }
 
@@ -97,13 +93,13 @@ namespace SFML
                 {
                     fixed (Color* PixelsPtr = pixels)
                     {
-                        uint Width  = (uint)pixels.GetLength(0);
+                        uint Width = (uint)pixels.GetLength(0);
                         uint Height = (uint)pixels.GetLength(1);
-                        SetThis(sfImage_CreateFromPixels(Width, Height, (byte*)PixelsPtr));
+                        SetThis(sfImage_createFromPixels(Width, Height, (byte*)PixelsPtr));
                     }
                 }
 
-                if (This == IntPtr.Zero)
+                if (CPointer == IntPtr.Zero)
                     throw new LoadingFailedException("image");
             }
 
@@ -123,11 +119,11 @@ namespace SFML
                 {
                     fixed (byte* PixelsPtr = pixels)
                     {
-                        SetThis(sfImage_CreateFromPixels(width, height, PixelsPtr));
+                        SetThis(sfImage_createFromPixels(width, height, PixelsPtr));
                     }
                 }
 
-                if (This == IntPtr.Zero)
+                if (CPointer == IntPtr.Zero)
                     throw new LoadingFailedException("image");
             }
 
@@ -138,7 +134,7 @@ namespace SFML
             /// <param name="copy">Image to copy</param>
             ////////////////////////////////////////////////////////////
             public Image(Image copy) :
-                base(sfImage_Copy(copy.This))
+                base(sfImage_copy(copy.CPointer))
             {
             }
 
@@ -151,7 +147,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool SaveToFile(string filename)
             {
-                return sfImage_SaveToFile(This, filename);
+                return sfImage_saveToFile(CPointer, filename);
             }
 
             ////////////////////////////////////////////////////////////
@@ -174,7 +170,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public void CreateMaskFromColor(Color color, byte alpha)
             {
-                sfImage_CreateMaskFromColor(This, color, alpha);
+                sfImage_createMaskFromColor(CPointer, color, alpha);
             }
 
             ////////////////////////////////////////////////////////////
@@ -205,34 +201,24 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public void Copy(Image source, uint destX, uint destY, IntRect sourceRect)
             {
-                sfImage_CopyImage(This, source.This, destX, destY, sourceRect);
+                Copy(source, destX, destY, sourceRect, false);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Create the image from the current contents of the
-            /// given window
+            /// Copy pixels from another image onto this one.
+            /// This function does a slow pixel copy and should only
+            /// be used at initialization time
             /// </summary>
-            /// <param name="window">Window to capture</param>
-            /// <returns>True if copy has been successful</returns>
+            /// <param name="source">Source image to copy</param>
+            /// <param name="destX">X coordinate of the destination position</param>
+            /// <param name="destY">Y coordinate of the destination position</param>
+            /// <param name="sourceRect">Sub-rectangle of the source image to copy</param>
+            /// <param name="applyAlpha">Should the copy take in account the source transparency?</param>
             ////////////////////////////////////////////////////////////
-            public bool CopyScreen(RenderWindow window)
+            public void Copy(Image source, uint destX, uint destY, IntRect sourceRect, bool applyAlpha)
             {
-                return CopyScreen(window, new IntRect(0, 0, 0, 0));
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Create the image from the current contents of the
-            /// given window
-            /// </summary>
-            /// <param name="window">Window to capture</param>
-            /// <param name="sourceRect">Sub-rectangle of the screen to copy</param>
-            /// <returns>True if copy has been successful</returns>
-            ////////////////////////////////////////////////////////////
-            public bool CopyScreen(RenderWindow window, IntRect sourceRect)
-            {
-                return sfImage_CopyScreen(This, window.This, sourceRect);
+                sfImage_copyImage(CPointer, source.CPointer, destX, destY, sourceRect, applyAlpha);
             }
 
             ////////////////////////////////////////////////////////////
@@ -245,7 +231,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Color GetPixel(uint x, uint y)
             {
-                return sfImage_GetPixel(This, x, y);
+                return sfImage_getPixel(CPointer, x, y);
             }
 
             ////////////////////////////////////////////////////////////
@@ -258,7 +244,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public void SetPixel(uint x, uint y, Color color)
             {
-                sfImage_SetPixel(This, x, y, color);
+                sfImage_setPixel(CPointer, x, y, color);
             }
 
             ////////////////////////////////////////////////////////////
@@ -272,83 +258,41 @@ namespace SFML
             {
                 get
                 {
-                    byte[] PixelsPtr = new byte[Width * Height * 4];
-                    Marshal.Copy(sfImage_GetPixelsPtr(This), PixelsPtr, 0, PixelsPtr.Length);
+                    Vector2u size = Size;
+                    byte[] PixelsPtr = new byte[size.X * size.Y * 4];
+                    Marshal.Copy(sfImage_getPixelsPtr(CPointer), PixelsPtr, 0, PixelsPtr.Length);
                     return PixelsPtr;
                 }
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Update the pixels of the image
+            /// Size of the image, in pixels
             /// </summary>
-            /// <param name="pixels">2 dimensions array containing the pixels</param>
             ////////////////////////////////////////////////////////////
-            public void UpdatePixels(Color[,] pixels)
+            public Vector2u Size
             {
-                UpdatePixels(pixels, 0, 0);
+                get { return sfImage_getSize(CPointer); }
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Update the pixels of the image
+            /// Flip the image horizontally
             /// </summary>
-            /// <param name="pixels">2 dimensions array containing the pixels</param>
-            /// <param name="x">X position of the rectangle to update</param>
-            /// <param name="y">Y position of the rectangle to update</param>
             ////////////////////////////////////////////////////////////
-            public void UpdatePixels(Color[,] pixels, uint x, uint y)
+            public void FlipHorizontally()
             {
-                unsafe
-                {
-                    fixed (Color* PixelsPtr = pixels)
-                    {
-                        int Width  = pixels.GetLength(0);
-                        int Height = pixels.GetLength(1);
-                        sfImage_UpdatePixels(This, PixelsPtr, new IntRect((int)x, (int)y, Width, Height));
-                    }
-                }
+                sfImage_flipHorizontally(CPointer);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Bind the image for rendering
+            /// Flip the image vertically
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public void Bind()
+            public void FlipVertically()
             {
-                sfImage_Bind(This);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Control the smooth filter
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public bool Smooth
-            {
-                get {return sfImage_IsSmooth(This);}
-                set {sfImage_SetSmooth(This, value);}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Width of the image, in pixels
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public uint Width
-            {
-                get {return sfImage_GetWidth(This);}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Height of the image, in pixels
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public uint Height
-            {
-                get {return sfImage_GetHeight(This);}
+                sfImage_flipVertically(CPointer);
             }
 
             ////////////////////////////////////////////////////////////
@@ -360,70 +304,76 @@ namespace SFML
             public override string ToString()
             {
                 return "[Image]" +
-                       " Width(" + Width + ")" +
-                       " Height(" + Height + ")" +
-                       " Smooth(" + Smooth + ")";
+                       " Size(" + Size + ")";
             }
 
-            bool myExternal = false;
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Internal constructor
+            /// </summary>
+            /// <param name="cPointer">Pointer to the object in C library</param>
+            ////////////////////////////////////////////////////////////
+            internal Image(IntPtr cPointer) :
+                base(cPointer)
+            {
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Handle the destruction of the object
+            /// </summary>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            ////////////////////////////////////////////////////////////
+            protected override void Destroy(bool disposing)
+            {
+                sfImage_destroy(CPointer);
+            }
 
             #region Imports
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_CreateFromColor(uint Width, uint Height, Color Col);
+            static extern IntPtr sfImage_createFromColor(uint Width, uint Height, Color Col);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            unsafe static extern IntPtr sfImage_CreateFromPixels(uint Width, uint Height, byte* Pixels);
+            unsafe static extern IntPtr sfImage_createFromPixels(uint Width, uint Height, byte* Pixels);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_CreateFromFile(string Filename);
+            static extern IntPtr sfImage_createFromFile(string Filename);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_Copy(IntPtr Image);
+            unsafe static extern IntPtr sfImage_createFromStream(IntPtr stream);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            unsafe static extern IntPtr sfImage_CreateFromMemory(char* Data, uint Size);
+            static extern IntPtr sfImage_copy(IntPtr Image);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_Destroy(IntPtr This);
+            static extern void sfImage_destroy(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern bool sfImage_SaveToFile(IntPtr This, string Filename);
+            static extern bool sfImage_saveToFile(IntPtr CPointer, string Filename);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_CreateMaskFromColor(IntPtr This, Color Col, byte Alpha);
+            static extern void sfImage_createMaskFromColor(IntPtr CPointer, Color Col, byte Alpha);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern bool sfImage_CopyScreen(IntPtr This, IntPtr Window, IntRect SourceRect);
+            static extern void sfImage_copyImage(IntPtr CPointer, IntPtr Source, uint DestX, uint DestY, IntRect SourceRect, bool applyAlpha);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_CopyImage(IntPtr This, IntPtr Source, uint DestX, uint DestY, IntRect SourceRect);
+            static extern void sfImage_setPixel(IntPtr CPointer, uint X, uint Y, Color Col);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_SetPixel(IntPtr This, uint X, uint Y, Color Col);
+            static extern Color sfImage_getPixel(IntPtr CPointer, uint X, uint Y);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Color sfImage_GetPixel(IntPtr This, uint X, uint Y);
+            static extern IntPtr sfImage_getPixelsPtr(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_GetPixelsPtr(IntPtr This);
+            static extern Vector2u sfImage_getSize(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            unsafe static extern void sfImage_UpdatePixels(IntPtr This, Color* Pixels, IntRect Rectangle);
+            static extern uint sfImage_flipHorizontally(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_Bind(IntPtr This);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_SetSmooth(IntPtr This, bool Smooth);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern uint sfImage_GetWidth(IntPtr This);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern uint sfImage_GetHeight(IntPtr This);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern bool sfImage_IsSmooth(IntPtr This);
+            static extern uint sfImage_flipVertically(IntPtr CPointer);
             #endregion
         }
     }

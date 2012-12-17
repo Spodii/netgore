@@ -47,7 +47,7 @@ namespace NetGore.Graphics
         ushort _sourceX = 0;
         ushort _sourceY = 0;
 
-        Image _texture;
+        Texture _texture;
         TextureAssetName _textureName;
 
         /// <summary>
@@ -139,7 +139,8 @@ namespace NetGore.Graphics
                     else
                     {
                         // Use the correct sizes
-                        SetSourceRect(0, 0, (int)Texture.Width, (int)Texture.Height);
+                        var textureSize = Texture.Size;
+                        SetSourceRect(0, 0, (int)textureSize.X, (int)textureSize.Y);
                     }
                 }
             }
@@ -378,7 +379,7 @@ namespace NetGore.Graphics
         /// Gets the original texture for this <see cref="StationaryGrhData"/>, bypassing any <see cref="TextureAtlas"/> being used.
         /// </summary>
         /// <returns>The original texture for this <see cref="StationaryGrhData"/>.</returns>
-        public Image GetOriginalTexture()
+        public Texture GetOriginalTexture()
         {
             if (!_isUsingAtlas)
                 return Texture;
@@ -464,8 +465,9 @@ namespace NetGore.Graphics
             if (_sourceWidth > 0 || !AutomaticSize || Texture == null || _isUsingAtlas)
                 return;
 
-            _sourceWidth = (ushort)Texture.Width;
-            _sourceHeight = (ushort)Texture.Height;
+            var textureSize = Texture.Size;
+            _sourceWidth = (ushort)textureSize.X;
+            _sourceHeight = (ushort)textureSize.Y;
         }
 
         /// <summary>
@@ -551,7 +553,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture for a single frame Grh.
         /// </summary>
-        public Image Texture
+        public Texture Texture
         {
             get
             {
@@ -578,7 +580,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="atlas">If the <see cref="ITextureAtlasable"/> is using this atlas, then the atlas
         /// should be removed.</param>
-        void ITextureAtlasable.RemoveAtlas(Image atlas)
+        void ITextureAtlasable.RemoveAtlas(Texture atlas)
         {
             if (_isUsingAtlas && _texture == atlas)
                 RemoveAtlas();
@@ -590,7 +592,7 @@ namespace NetGore.Graphics
         /// <param name="texture">Texture atlas.</param>
         /// <param name="atlasSourceRect">Source rectangle in the atlas.</param>
         /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
-        void ITextureAtlasable.SetAtlas(Image texture, Rectangle atlasSourceRect)
+        void ITextureAtlasable.SetAtlas(Texture texture, Rectangle atlasSourceRect)
         {
             if (texture == null)
                 throw new ArgumentNullException("texture");

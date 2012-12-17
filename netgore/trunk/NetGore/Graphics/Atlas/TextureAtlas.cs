@@ -361,7 +361,7 @@ namespace NetGore.Graphics
             readonly IEnumerable<AtlasTextureItem> _nodes;
             readonly int _width;
 
-            Image _atlasTexture;
+            Texture _atlasTexture;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="AtlasTextureInfo"/> class.
@@ -397,7 +397,7 @@ namespace NetGore.Graphics
 
                 // Draw the atlas (rebuilding the texture)
                 IEnumerable<AtlasTextureItem> successful;
-                _atlasTexture = DrawAtlas(padding, out successful);
+                _atlasTexture = new Texture(DrawAtlas(padding, out successful));
 
                 // Tell all the items that were successfully added to use the new atlas texture
                 foreach (var node in successful)
@@ -408,12 +408,12 @@ namespace NetGore.Graphics
             }
 
             /// <summary>
-            /// Draws the <see cref="Image"/> for this atlas.
+            /// Draws the <see cref="Texture"/> for this atlas.
             /// </summary>
             /// <param name="padding">The amount to pad each item.</param>
             /// <param name="successfulItems">An IEnumerable of the <see cref="AtlasTextureItem"/>s that were
             /// successfully draw to the atlas.</param>
-            /// <returns>A <see cref="Image"/> of the atlas.</returns>
+            /// <returns>A <see cref="Texture"/> of the atlas.</returns>
             Image DrawAtlas(int padding, out IEnumerable<AtlasTextureItem> successfulItems)
             {
                 // Create the list for successful items
@@ -426,7 +426,7 @@ namespace NetGore.Graphics
                 Image ret = null;
                 try
                 {
-                    ret = new Image((uint)_width, (uint)_height, _backColor) { Smooth = false };
+                    ret = new Image((uint)_width, (uint)_height, _backColor);
                     ret.CreateMaskFromColor(_backColor);
                     DrawAtlasDrawingHandler(ret, padding, successful);
                 }
@@ -468,9 +468,9 @@ namespace NetGore.Graphics
             }
 
             /// <summary>
-            /// Handles the actual drawing of the atlas items onto a single <see cref="Image"/>.
+            /// Handles the actual drawing of the atlas items onto a single <see cref="Texture"/>.
             /// </summary>
-            /// <param name="destImg">The <see cref="Image"/> to copy to.</param>
+            /// <param name="destImg">The <see cref="Texture"/> to copy to.</param>
             /// <param name="padding">The amount of padding, in pixels, to place around each sprite in the atlas. If this
             /// values is greater than 0, all 4 sides of the atlas item will be copied one pixel outwards. This
             /// is to help prevent issues when using filtering with sprites.</param>
@@ -491,7 +491,7 @@ namespace NetGore.Graphics
                     Image tex;
                     try
                     {
-                        tex = item.ITextureAtlasable.Texture;
+                        tex = item.ITextureAtlasable.Texture.CopyToImage();
                         if (tex.IsDisposed)
                             tex = null;
                     }
@@ -568,8 +568,8 @@ namespace NetGore.Graphics
             /// <summary>
             /// Draws a single item the atlas through a <see cref="ISpriteBatch"/>.
             /// </summary>
-            /// <param name="destImg">The <see cref="Image"/> to copy to.</param>
-            /// <param name="srcImg">The source <see cref="Image"/>.</param>
+            /// <param name="destImg">The <see cref="Texture"/> to copy to.</param>
+            /// <param name="srcImg">The source <see cref="Texture"/>.</param>
             /// <param name="dest">The drawing destination on the atlas.</param>
             /// <param name="src">The source rectangle to draw from the <paramref name="srcImg"/>.</param>
             static void DrawToAtlas(Image destImg, Image srcImg, Vector2 dest, Rectangle src)

@@ -13,12 +13,15 @@ namespace DemoGame.GUITester
     {
         readonly ScreenManager _screenManager;
         readonly ISkinManager _skinManager;
+        readonly TextureAtlas _guiTextureAtlas;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
         /// </summary>
         public Game1() : base(new Point(1024, 768), new Point(1024, 768))
         {
+
+            // Load
             UseVerticalSync = true;
             ShowMouseCursor = true;
 
@@ -33,6 +36,12 @@ namespace DemoGame.GUITester
 
             KeyPressed += Game1_KeyPressed;
 
+            // Shove GUI elements into a texture atlas so we can test them with atlasing
+            var guiGrhs = GrhInfo.GrhDatas.SelectMany(x => x.Frames).Distinct()
+                .Where(x => x.Categorization.Category.ToString().StartsWith("gui", StringComparison.OrdinalIgnoreCase));
+
+            _guiTextureAtlas = new TextureAtlas(guiGrhs);
+
             Run();
         }
 
@@ -43,8 +52,15 @@ namespace DemoGame.GUITester
 
         void Game1_KeyPressed(object sender, KeyEventArgs e)
         {
-            if (e.Code == KeyCode.Return && e.Alt)
+            if (e.Code == Keyboard.Key.Return && e.Alt)
                 IsFullscreen = !IsFullscreen;
+        }
+
+        protected override void Dispose(bool disposeManaged)
+        {
+            _guiTextureAtlas.Dispose();
+
+            base.Dispose(disposeManaged);
         }
 
         /// <summary>

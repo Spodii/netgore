@@ -1940,7 +1940,7 @@ namespace NetGore.Graphics.GUI
             {
                 // Just as a safety net, make sure we NEVER drag when the mouse button is up
                 // even though it shouldn't be up if our code is correct
-                if (!GUIManager.IsMouseButtonDown(MouseButton.Left))
+                if (!GUIManager.IsMouseButtonDown(Mouse.Button.Left))
                 {
                     // Button not down - stop dragging
                     _isDragging = false;

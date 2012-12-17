@@ -50,11 +50,11 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public ContextSettings(uint depthBits, uint stencilBits, uint antialiasingLevel, uint majorVersion, uint minorVersion)
             {
-                DepthBits         = depthBits;
-                StencilBits       = stencilBits;
+                DepthBits = depthBits;
+                StencilBits = stencilBits;
                 AntialiasingLevel = antialiasingLevel;
-                MajorVersion      = majorVersion;
-                MinorVersion      = minorVersion;
+                MajorVersion = majorVersion;
+                MinorVersion = minorVersion;
             }
 
             ////////////////////////////////////////////////////////////

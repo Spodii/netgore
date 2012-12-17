@@ -228,7 +228,7 @@ namespace NetGore.Graphics
         /// <param name="currentTime">The current time in milliseconds.</param>
         protected virtual void SetShaderParameters(TickCount currentTime)
         {
-            Shader.SetTexture("NoiseTexture", ExplosionNoise.CurrentGrhData.Texture);
+            Shader.SetParameter("NoiseTexture", ExplosionNoise.CurrentGrhData.Texture);
             Shader.SetParameter("MaxAge", _lifeSpan);
             Shader.SetParameter("Intensity", Intensity);
 
@@ -417,16 +417,8 @@ namespace NetGore.Graphics
             try
             {
                 spriteBatch.BlendMode = BlendMode.Add;
-                try
-                {
-                    Shader.Bind();
-
-                    ExplosionNoise.Draw(spriteBatch, dest);
-                }
-                finally
-                {
-                    Shader.Unbind();
-                }
+                Shader.Bind();
+                ExplosionNoise.Draw(spriteBatch, dest);
             }
             finally
             {

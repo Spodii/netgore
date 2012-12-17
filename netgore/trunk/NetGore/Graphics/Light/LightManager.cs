@@ -54,16 +54,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Prepares the <see cref="SFML.Graphics.Sprite"/> used to draw to a <see cref="RenderTarget"/>.
+        /// Handles the actual drawing of the buffer to a <see cref="RenderTarget"/>.
         /// </summary>
-        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> to prepare.</param>
-        /// <param name="target">The <see cref="RenderTarget"/> begin drawn to.</param>
-        protected override void PrepareDrawToTargetSprite(SFML.Graphics.Sprite sprite, RenderTarget target)
+        /// <param name="buffer">The <see cref="Texture"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
+        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> set up to draw the <paramref name="buffer"/>.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> to draw the <paramref name="buffer"/> to.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that was used during the creation of the buffer.</param>
+        protected override void HandleDrawBufferToTarget(Texture buffer, SFML.Graphics.Sprite sprite, RenderTarget target, ICamera2D camera, RenderStates renderStates)
         {
-            base.PrepareDrawToTargetSprite(sprite, target);
-
-            // Always use alpha blending
-            sprite.BlendMode = BlendMode.Multiply;
+            renderStates.BlendMode = BlendMode.Multiply;
+            base.HandleDrawBufferToTarget(buffer, sprite, target, camera, renderStates);
         }
 
         #region ILightManager Members
@@ -232,11 +232,11 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <returns>
-        /// The <see cref="Image"/> containing the light map. If the light map failed to be generated
+        /// The <see cref="Texture"/> containing the light map. If the light map failed to be generated
         /// for whatever reason, a null value will be returned instead.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
-        public Image Draw(ICamera2D camera)
+        public Texture Draw(ICamera2D camera)
         {
             return GetBuffer(camera);
         }

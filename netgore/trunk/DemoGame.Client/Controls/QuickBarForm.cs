@@ -328,7 +328,7 @@ namespace DemoGame.Client
             {
                 base.OnClick(e);
 
-                if (e.Button == MouseButton.Right)
+                if (e.Button == Mouse.Button.Right)
                     UseQuickBarItem();
             }
 

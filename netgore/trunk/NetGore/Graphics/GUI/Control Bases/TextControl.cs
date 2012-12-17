@@ -128,7 +128,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="key">Key to check.</param>
         /// <param name="shift">If true, shift will be treated as being pressed.</param>
         /// <returns>String for the key, or String.Empty if invalid.</returns>
-        public static string GetKeyString(KeyCode key, bool shift)
+        public static string GetKeyString(Keyboard.Key key, bool shift)
         {
             if (shift)
             {
@@ -147,126 +147,126 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="key">Key to check.</param>
         /// <returns>String for the key, or String.Empty if invalid.</returns>
-        static string GetKeyStringNoShift(KeyCode key)
+        static string GetKeyStringNoShift(Keyboard.Key key)
         {
             switch (key)
             {
                     // Alpha
-                case KeyCode.A:
+                case Keyboard.Key.A:
                     return "a";
-                case KeyCode.B:
+                case Keyboard.Key.B:
                     return "b";
-                case KeyCode.C:
+                case Keyboard.Key.C:
                     return "c";
-                case KeyCode.D:
+                case Keyboard.Key.D:
                     return "d";
-                case KeyCode.E:
+                case Keyboard.Key.E:
                     return "e";
-                case KeyCode.F:
+                case Keyboard.Key.F:
                     return "f";
-                case KeyCode.G:
+                case Keyboard.Key.G:
                     return "g";
-                case KeyCode.H:
+                case Keyboard.Key.H:
                     return "h";
-                case KeyCode.I:
+                case Keyboard.Key.I:
                     return "i";
-                case KeyCode.J:
+                case Keyboard.Key.J:
                     return "j";
-                case KeyCode.K:
+                case Keyboard.Key.K:
                     return "k";
-                case KeyCode.L:
+                case Keyboard.Key.L:
                     return "l";
-                case KeyCode.M:
+                case Keyboard.Key.M:
                     return "m";
-                case KeyCode.N:
+                case Keyboard.Key.N:
                     return "n";
-                case KeyCode.O:
+                case Keyboard.Key.O:
                     return "o";
-                case KeyCode.P:
+                case Keyboard.Key.P:
                     return "p";
-                case KeyCode.Q:
+                case Keyboard.Key.Q:
                     return "q";
-                case KeyCode.R:
+                case Keyboard.Key.R:
                     return "r";
-                case KeyCode.S:
+                case Keyboard.Key.S:
                     return "s";
-                case KeyCode.T:
+                case Keyboard.Key.T:
                     return "t";
-                case KeyCode.U:
+                case Keyboard.Key.U:
                     return "u";
-                case KeyCode.V:
+                case Keyboard.Key.V:
                     return "v";
-                case KeyCode.W:
+                case Keyboard.Key.W:
                     return "w";
-                case KeyCode.X:
+                case Keyboard.Key.X:
                     return "x";
-                case KeyCode.Y:
+                case Keyboard.Key.Y:
                     return "y";
-                case KeyCode.Z:
+                case Keyboard.Key.Z:
                     return "z";
 
                     // Numeric
-                case KeyCode.Num0:
-                case KeyCode.Numpad0:
+                case Keyboard.Key.Num0:
+                case Keyboard.Key.Numpad0:
                     return "0";
-                case KeyCode.Num1:
-                case KeyCode.Numpad1:
+                case Keyboard.Key.Num1:
+                case Keyboard.Key.Numpad1:
                     return "1";
-                case KeyCode.Num2:
-                case KeyCode.Numpad2:
+                case Keyboard.Key.Num2:
+                case Keyboard.Key.Numpad2:
                     return "2";
-                case KeyCode.Num3:
-                case KeyCode.Numpad3:
+                case Keyboard.Key.Num3:
+                case Keyboard.Key.Numpad3:
                     return "3";
-                case KeyCode.Num4:
-                case KeyCode.Numpad4:
+                case Keyboard.Key.Num4:
+                case Keyboard.Key.Numpad4:
                     return "4";
-                case KeyCode.Num5:
-                case KeyCode.Numpad5:
+                case Keyboard.Key.Num5:
+                case Keyboard.Key.Numpad5:
                     return "5";
-                case KeyCode.Num6:
-                case KeyCode.Numpad6:
+                case Keyboard.Key.Num6:
+                case Keyboard.Key.Numpad6:
                     return "6";
-                case KeyCode.Num7:
-                case KeyCode.Numpad7:
+                case Keyboard.Key.Num7:
+                case Keyboard.Key.Numpad7:
                     return "7";
-                case KeyCode.Num8:
-                case KeyCode.Numpad8:
+                case Keyboard.Key.Num8:
+                case Keyboard.Key.Numpad8:
                     return "8";
-                case KeyCode.Num9:
-                case KeyCode.Numpad9:
+                case Keyboard.Key.Num9:
+                case Keyboard.Key.Numpad9:
                     return "9";
 
                     // Misc
-                case KeyCode.Divide:
+                case Keyboard.Key.Divide:
                     return "/";
-                case KeyCode.Return:
+                case Keyboard.Key.Return:
                     return Environment.NewLine;
-                case KeyCode.Multiply:
+                case Keyboard.Key.Multiply:
                     return "*";
-                case KeyCode.RBracket:
+                case Keyboard.Key.RBracket:
                     return "]";
-                case KeyCode.Comma:
+                case Keyboard.Key.Comma:
                     return ",";
-                case KeyCode.Subtract:
+                case Keyboard.Key.Subtract:
                     return "-";
-                case KeyCode.LBracket:
+                case Keyboard.Key.LBracket:
                     return "[";
-                case KeyCode.Period:
+                case Keyboard.Key.Period:
                     return ".";
-                case KeyCode.BackSlash:
+                case Keyboard.Key.BackSlash:
                     return "\\";
-                case KeyCode.Add:
+                case Keyboard.Key.Add:
                     return "=";
-                case KeyCode.Slash:
+                case Keyboard.Key.Slash:
                     return "/";
-                case KeyCode.Quote:
+                case Keyboard.Key.Quote:
                     return "'";
-                case KeyCode.SemiColon:
+                case Keyboard.Key.SemiColon:
                     return ";";
-                case KeyCode.Tilde:
+                case Keyboard.Key.Tilde:
                     return "`";
-                case KeyCode.Space:
+                case Keyboard.Key.Space:
                     return " ";
 
                 default:
@@ -279,116 +279,116 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="key">Key to check.</param>
         /// <returns>String for the key, or String.Empty if invalid.</returns>
-        static string GetKeyStringShift(KeyCode key)
+        static string GetKeyStringShift(Keyboard.Key key)
         {
             switch (key)
             {
                     // Alpha
-                case KeyCode.A:
+                case Keyboard.Key.A:
                     return "A";
-                case KeyCode.B:
+                case Keyboard.Key.B:
                     return "B";
-                case KeyCode.C:
+                case Keyboard.Key.C:
                     return "C";
-                case KeyCode.D:
+                case Keyboard.Key.D:
                     return "D";
-                case KeyCode.E:
+                case Keyboard.Key.E:
                     return "E";
-                case KeyCode.F:
+                case Keyboard.Key.F:
                     return "F";
-                case KeyCode.G:
+                case Keyboard.Key.G:
                     return "G";
-                case KeyCode.H:
+                case Keyboard.Key.H:
                     return "H";
-                case KeyCode.I:
+                case Keyboard.Key.I:
                     return "I";
-                case KeyCode.J:
+                case Keyboard.Key.J:
                     return "J";
-                case KeyCode.K:
+                case Keyboard.Key.K:
                     return "K";
-                case KeyCode.L:
+                case Keyboard.Key.L:
                     return "L";
-                case KeyCode.M:
+                case Keyboard.Key.M:
                     return "M";
-                case KeyCode.N:
+                case Keyboard.Key.N:
                     return "N";
-                case KeyCode.O:
+                case Keyboard.Key.O:
                     return "O";
-                case KeyCode.P:
+                case Keyboard.Key.P:
                     return "P";
-                case KeyCode.Q:
+                case Keyboard.Key.Q:
                     return "Q";
-                case KeyCode.R:
+                case Keyboard.Key.R:
                     return "R";
-                case KeyCode.S:
+                case Keyboard.Key.S:
                     return "S";
-                case KeyCode.T:
+                case Keyboard.Key.T:
                     return "T";
-                case KeyCode.U:
+                case Keyboard.Key.U:
                     return "U";
-                case KeyCode.V:
+                case Keyboard.Key.V:
                     return "V";
-                case KeyCode.W:
+                case Keyboard.Key.W:
                     return "W";
-                case KeyCode.X:
+                case Keyboard.Key.X:
                     return "X";
-                case KeyCode.Y:
+                case Keyboard.Key.Y:
                     return "Y";
-                case KeyCode.Z:
+                case Keyboard.Key.Z:
                     return "Z";
 
                     // Numeric
-                case KeyCode.Num0:
+                case Keyboard.Key.Num0:
                     return ")";
-                case KeyCode.Num1:
+                case Keyboard.Key.Num1:
                     return "!";
-                case KeyCode.Num2:
+                case Keyboard.Key.Num2:
                     return "@";
-                case KeyCode.Num3:
+                case Keyboard.Key.Num3:
                     return "#";
-                case KeyCode.Num4:
+                case Keyboard.Key.Num4:
                     return "$";
-                case KeyCode.Num5:
+                case Keyboard.Key.Num5:
                     return "%";
-                case KeyCode.Num6:
+                case Keyboard.Key.Num6:
                     return "^";
-                case KeyCode.Num7:
+                case Keyboard.Key.Num7:
                     return "&";
-                case KeyCode.Num8:
+                case Keyboard.Key.Num8:
                     return "*";
-                case KeyCode.Num9:
+                case Keyboard.Key.Num9:
                     return "(";
 
                     // Misc
-                case KeyCode.Divide:
+                case Keyboard.Key.Divide:
                     return "/";
-                case KeyCode.Return:
+                case Keyboard.Key.Return:
                     return Environment.NewLine;
-                case KeyCode.Multiply:
+                case Keyboard.Key.Multiply:
                     return "*";
-                case KeyCode.BackSlash:
+                case Keyboard.Key.BackSlash:
                     return "|";
-                case KeyCode.LBracket:
+                case Keyboard.Key.LBracket:
                     return "}";
-                case KeyCode.Comma:
+                case Keyboard.Key.Comma:
                     return "<";
-                case KeyCode.Subtract:
+                case Keyboard.Key.Subtract:
                     return "_";
-                case KeyCode.RBracket:
+                case Keyboard.Key.RBracket:
                     return "{";
-                case KeyCode.Period:
+                case Keyboard.Key.Period:
                     return ">";
-                case KeyCode.Add:
+                case Keyboard.Key.Add:
                     return "+";
-                case KeyCode.Slash:
+                case Keyboard.Key.Slash:
                     return "?";
-                case KeyCode.Quote:
+                case Keyboard.Key.Quote:
                     return "\"";
-                case KeyCode.SemiColon:
+                case Keyboard.Key.SemiColon:
                     return ":";
-                case KeyCode.Tilde:
+                case Keyboard.Key.Tilde:
                     return "~";
-                case KeyCode.Space:
+                case Keyboard.Key.Space:
                     return " ";
 
                 default:
@@ -425,36 +425,36 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="key">Key to check</param>
         /// <returns>True if part of the alphabet, else false</returns>
-        public static bool IsKeyAlpha(KeyCode key)
+        public static bool IsKeyAlpha(Keyboard.Key key)
         {
             switch (key)
             {
-                case KeyCode.A:
-                case KeyCode.B:
-                case KeyCode.C:
-                case KeyCode.D:
-                case KeyCode.E:
-                case KeyCode.F:
-                case KeyCode.G:
-                case KeyCode.H:
-                case KeyCode.I:
-                case KeyCode.J:
-                case KeyCode.K:
-                case KeyCode.L:
-                case KeyCode.M:
-                case KeyCode.N:
-                case KeyCode.O:
-                case KeyCode.P:
-                case KeyCode.Q:
-                case KeyCode.R:
-                case KeyCode.S:
-                case KeyCode.T:
-                case KeyCode.U:
-                case KeyCode.V:
-                case KeyCode.W:
-                case KeyCode.X:
-                case KeyCode.Y:
-                case KeyCode.Z:
+                case Keyboard.Key.A:
+                case Keyboard.Key.B:
+                case Keyboard.Key.C:
+                case Keyboard.Key.D:
+                case Keyboard.Key.E:
+                case Keyboard.Key.F:
+                case Keyboard.Key.G:
+                case Keyboard.Key.H:
+                case Keyboard.Key.I:
+                case Keyboard.Key.J:
+                case Keyboard.Key.K:
+                case Keyboard.Key.L:
+                case Keyboard.Key.M:
+                case Keyboard.Key.N:
+                case Keyboard.Key.O:
+                case Keyboard.Key.P:
+                case Keyboard.Key.Q:
+                case Keyboard.Key.R:
+                case Keyboard.Key.S:
+                case Keyboard.Key.T:
+                case Keyboard.Key.U:
+                case Keyboard.Key.V:
+                case Keyboard.Key.W:
+                case Keyboard.Key.X:
+                case Keyboard.Key.Y:
+                case Keyboard.Key.Z:
                     return true;
 
                 default:
@@ -467,30 +467,30 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="key">Key to check</param>
         /// <returns>True if numeric, else false</returns>
-        public static bool IsKeyNumeric(KeyCode key)
+        public static bool IsKeyNumeric(Keyboard.Key key)
         {
             switch (key)
             {
-                case KeyCode.Num0:
-                case KeyCode.Num1:
-                case KeyCode.Num2:
-                case KeyCode.Num3:
-                case KeyCode.Num4:
-                case KeyCode.Num5:
-                case KeyCode.Num6:
-                case KeyCode.Num7:
-                case KeyCode.Num8:
-                case KeyCode.Num9:
-                case KeyCode.Numpad0:
-                case KeyCode.Numpad1:
-                case KeyCode.Numpad2:
-                case KeyCode.Numpad3:
-                case KeyCode.Numpad4:
-                case KeyCode.Numpad5:
-                case KeyCode.Numpad6:
-                case KeyCode.Numpad7:
-                case KeyCode.Numpad8:
-                case KeyCode.Numpad9:
+                case Keyboard.Key.Num0:
+                case Keyboard.Key.Num1:
+                case Keyboard.Key.Num2:
+                case Keyboard.Key.Num3:
+                case Keyboard.Key.Num4:
+                case Keyboard.Key.Num5:
+                case Keyboard.Key.Num6:
+                case Keyboard.Key.Num7:
+                case Keyboard.Key.Num8:
+                case Keyboard.Key.Num9:
+                case Keyboard.Key.Numpad0:
+                case Keyboard.Key.Numpad1:
+                case Keyboard.Key.Numpad2:
+                case Keyboard.Key.Numpad3:
+                case Keyboard.Key.Numpad4:
+                case Keyboard.Key.Numpad5:
+                case Keyboard.Key.Numpad6:
+                case Keyboard.Key.Numpad7:
+                case Keyboard.Key.Numpad8:
+                case Keyboard.Key.Numpad9:
                     return true;
 
                 default:

@@ -53,7 +53,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void logOutLbl_Clicked(object sender, MouseButtonEventArgs e)
         {
-            if (e.Button != MouseButton.Left)
+            if (e.Button != Mouse.Button.Left)
                 return;
 
             if (ClickedLogOut != null)
@@ -69,7 +69,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
         void parent_KeyPressed(object sender, KeyEventArgs e)
         {
-            if (e.Code == KeyCode.Escape)
+            if (e.Code == Keyboard.Key.Escape)
                 IsVisible = !IsVisible;
         }
     }

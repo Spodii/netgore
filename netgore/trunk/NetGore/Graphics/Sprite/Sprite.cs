@@ -15,7 +15,7 @@ namespace NetGore.Graphics
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         Rectangle _source;
-        Image _texture;
+        Texture _texture;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sprite"/> class.
@@ -30,13 +30,14 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="texture">The texture used by the Sprite.</param>
         /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
-        public Sprite(Image texture)
+        public Sprite(Texture texture)
         {
             if (texture == null)
                 throw new ArgumentNullException("texture");
 
             _texture = texture;
-            _source = new Rectangle(0, 0, _texture.Width, _texture.Height);
+            var textureSize = _texture.Size;
+            _source = new Rectangle(0, 0, textureSize.X, textureSize.Y);
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace NetGore.Graphics
         /// <param name="texture">The texture used by the Sprite.</param>
         /// <param name="source">Source rectangle in the texture for the Sprite.</param>
         /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
-        public Sprite(Image texture, Rectangle source)
+        public Sprite(Texture texture, Rectangle source)
         {
             if (texture == null)
                 throw new ArgumentNullException("texture");
@@ -177,7 +178,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture containing the sprite.
         /// </summary>
-        public Image Texture
+        public Texture Texture
         {
             get { return _texture; }
             set

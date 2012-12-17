@@ -47,7 +47,7 @@ namespace DemoGame.Client
         /// <summary>
         /// List of atlas textures used for the graphics for the map
         /// </summary>
-        List<Image> _mapAtlases = new List<Image>();
+        List<Texture> _mapAtlases = new List<Texture>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
@@ -208,7 +208,7 @@ namespace DemoGame.Client
         {
             if (grhIndexes == null || grhIndexes.IsEmpty())
             {
-                _mapAtlases = new List<Image>(0);
+                _mapAtlases = new List<Texture>(0);
                 return;
             }
 

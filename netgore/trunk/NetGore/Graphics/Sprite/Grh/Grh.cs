@@ -324,7 +324,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture for the current frame.
         /// </summary>
-        public Image Texture
+        public Texture Texture
         {
             get
             {

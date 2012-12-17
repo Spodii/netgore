@@ -260,7 +260,7 @@ namespace NetGore.Graphics.GUI
                 if (GUIManager.UnderCursor == this)
                 {
                     // Cursor is over
-                    if (GUIManager.IsMouseButtonDown(MouseButton.Left))
+                    if (GUIManager.IsMouseButtonDown(Mouse.Button.Left))
                     {
                         // Left button is down
                         Sprite = _spritePressed;

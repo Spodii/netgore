@@ -15,8 +15,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// The <see cref="SFML.Graphics.Sprite"/> used for repeated draws.
         /// </summary>
-        static readonly SFML.Graphics.Sprite _repeatSprite = new SFML.Graphics.Sprite
-        { BlendMode = BlendMode.Alpha, Scale = Vector2.One, Rotation = 0f, Origin = Vector2.Zero };
+        static readonly SFML.Graphics.Sprite _repeatSprite = new SFML.Graphics.Sprite { Scale = Vector2.One, Rotation = 0f, Origin = Vector2.Zero };
 
         /// <summary>
         /// Checks if a <see cref="ISprite"/> is valid to be drawn.
@@ -110,14 +109,14 @@ namespace NetGore.Graphics
 
             // Set the sprite in general
             _repeatSprite.Color = color;
-            _repeatSprite.Image = s.Texture;
+            _repeatSprite.Texture = s.Texture;
             _repeatSprite.Scale = Vector2.One;
-            _repeatSprite.Height = drawHeight;
+            // NOTE: Line removed in SFML upgrade, and not sure if still needed: _repeatSprite.Height = drawHeight;
 
             // Set up the sprite for the full pieces
             if (fullSprites > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, src.Height);
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, src.Width, src.Height);
 
                 // Draw all the full pieces
                 for (var x = 0; x < fullSprites; x++)
@@ -130,9 +129,8 @@ namespace NetGore.Graphics
             // Draw the remaining partial piece
             if (remainder > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, remainder, src.Height);
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, remainder, src.Height);
                 _repeatSprite.Position = new Vector2(maxX - remainder, y);
-                _repeatSprite.Width = remainder;
 
                 sb.Draw(_repeatSprite);
             }
@@ -181,13 +179,13 @@ namespace NetGore.Graphics
 
             // Set the sprite in general
             _repeatSprite.Color = color;
-            _repeatSprite.Image = s.Texture;
+            _repeatSprite.Texture = s.Texture;
             _repeatSprite.Scale = Vector2.One;
 
             // Set up the sprite for the full pieces
             if (fullSpritesX > 0 || fullSpritesY > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, src.Height);
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, src.Width, src.Height);
 
                 // Draw all the full pieces
                 for (var x = 0; x < fullSpritesX; x++)
@@ -203,9 +201,7 @@ namespace NetGore.Graphics
             // Draw the remaining partial pieces on the sides
             if (remainderX > 0 && fullSpritesY > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, remainderX, src.Height);
-                _repeatSprite.Width = remainderX;
-                _repeatSprite.Height = src.Height;
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, remainderX, src.Height);
 
                 float x = maxX - remainderX;
                 for (var y = 0; y < fullSpritesY; y++)
@@ -217,9 +213,7 @@ namespace NetGore.Graphics
 
             if (remainderY > 0 && fullSpritesX > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, remainderY);
-                _repeatSprite.Width = src.Width;
-                _repeatSprite.Height = remainderY;
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, src.Width, remainderY);
 
                 float y = maxY - remainderY;
                 for (var x = 0; x < fullSpritesX; x++)
@@ -232,9 +226,7 @@ namespace NetGore.Graphics
             // Draw the single partial piece partial for both axis (bottom-right corner)
             if (remainderX > 0 && remainderY > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, remainderX, remainderY);
-                _repeatSprite.Width = remainderX;
-                _repeatSprite.Height = remainderY;
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, remainderX, remainderY);
                 _repeatSprite.Position = new Vector2(maxX - remainderX, maxY - remainderY);
                 sb.Draw(_repeatSprite);
             }
@@ -276,14 +268,14 @@ namespace NetGore.Graphics
 
             // Set the sprite in general
             _repeatSprite.Color = color;
-            _repeatSprite.Image = s.Texture;
+            _repeatSprite.Texture = s.Texture;
             _repeatSprite.Scale = Vector2.One;
-            _repeatSprite.Width = drawWidth;
+            // NOTE: Line removed in SFML upgrade, and not sure if still needed: _repeatSprite.Width = drawWidth;
 
             // Set up the sprite for the full pieces
             if (fullSprites > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, src.Height);
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, src.Width, src.Height);
 
                 // Draw all the full pieces
                 for (var y = 0; y < fullSprites; y++)
@@ -296,10 +288,8 @@ namespace NetGore.Graphics
             // Draw the remaining partial piece
             if (remainder > 0)
             {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, remainder);
+                _repeatSprite.TextureRect = new IntRect(src.X, src.Y, src.Width, remainder);
                 _repeatSprite.Position = new Vector2(x, maxY - remainder);
-                _repeatSprite.Height = remainder;
-
                 sb.Draw(_repeatSprite);
             }
         }

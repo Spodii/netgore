@@ -19,12 +19,12 @@ namespace SFML. Audio
         /// <returns>True if already loaded; false if it had to load.</returns>
         protected internal bool EnsureLoaded(string filename)
         {
-            if (ThisRaw != IntPtr.Zero)
+            if (CPointerRaw != IntPtr.Zero)
                 return true;
 
-            SetThis(sfSoundBuffer_CreateFromFile(filename));
+            SetThis(sfSoundBuffer_createFromFile(filename));
 
-            if (ThisRaw == IntPtr.Zero)
+            if (CPointerRaw == IntPtr.Zero)
                 throw new LoadingFailedException("sound buffer", filename);
 
             return false;
@@ -36,10 +36,10 @@ namespace SFML. Audio
         /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
         protected override void Destroy(bool disposing)
         {
-            var t = ThisRaw;
+            var t = CPointerRaw;
 
             if (t != IntPtr.Zero)
-                sfSoundBuffer_Destroy(t);
+                sfSoundBuffer_destroy(t);
         }
     }
 }

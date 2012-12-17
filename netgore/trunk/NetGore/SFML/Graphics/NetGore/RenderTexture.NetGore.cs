@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SFML.Graphics
 {
-    public partial class RenderImage
+    public partial class RenderTexture
     {
         ////////////////////////////////////////////////////////////
         /// <summary>
@@ -18,15 +18,15 @@ namespace SFML.Graphics
             if (!disposing)
                 Context.Global.SetActive(true);
 
-            var t = ThisRaw;
+            var t = CPointerRaw;
 
             if (t != IntPtr.Zero)
-                sfRenderImage_Destroy(t);
+                sfRenderTexture_destroy(t);
 
             if (disposing)
             {
                 myDefaultView.Dispose();
-                myImage.Dispose();
+                myTexture.Dispose();
             }
 
             if (!disposing)

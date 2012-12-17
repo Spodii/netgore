@@ -5,18 +5,18 @@ using System.Linq;
 namespace SFML.Graphics
 {
     /// <summary>
-    /// An implementation of <see cref="Image"/> that will load on-demand.
+    /// An implementation of <see cref="Texture"/> that will load on-demand.
     /// </summary>
-    public class LazyImage : Image
+    public class LazyTexture : Texture
     {
         string _filename;
         LazyContentLoadFailCounter _loadFailCounter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LazyImage"/> class.
+        /// Initializes a new instance of the <see cref="LazyTexture"/> class.
         /// </summary>
         /// <param name="filename">The file name.</param>
-        public LazyImage(string filename) : base(IntPtr.Zero)
+        public LazyTexture(string filename) : base(IntPtr.Zero)
         {
             _filename = filename;
         }
@@ -44,7 +44,7 @@ namespace SFML.Graphics
         /// Access to the internal pointer of the object.
         /// For internal use only
         /// </summary>
-        public override IntPtr This
+        public override IntPtr CPointer
         {
             get
             {
@@ -74,7 +74,7 @@ namespace SFML.Graphics
                     }
                 }
 
-                return base.This;
+                return base.CPointer;
             }
         }
 
@@ -100,7 +100,7 @@ namespace SFML.Graphics
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the <see cref="LazyImage"/> is reloaded.
+        /// When overridden in the derived class, handles when the <see cref="LazyTexture"/> is reloaded.
         /// </summary>
         protected virtual void OnReload()
         {

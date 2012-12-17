@@ -121,9 +121,9 @@ namespace DemoGame.Client
         {
             var itemPB = (InventoryItemPB)sender;
 
-            if (e.Button == MouseButton.Right)
+            if (e.Button == Mouse.Button.Right)
             {
-                if (GUIManager.IsKeyDown(KeyCode.LShift) || GUIManager.IsKeyDown(KeyCode.RShift))
+                if (GUIManager.IsKeyDown(Keyboard.Key.LShift) || GUIManager.IsKeyDown(Keyboard.Key.RShift))
                 {
                     // Drop
                     if (RequestDropItem != null)
