@@ -407,7 +407,7 @@ namespace NetGore.Tests.Graphics.GUI
 
             var lines = new List<StyledText> { s1, s2, s3, s4 };
 
-            var r = StyledText.ToMultiline(lines, false, Font.DefaultFont, 400);
+            var r = StyledText.ToMultiline(lines, false, TestHelper.DefaultFont, 400);
 
             Assert.AreEqual("abcd", r[0][0].Text);
             Assert.AreEqual("123", r[1][0].Text);

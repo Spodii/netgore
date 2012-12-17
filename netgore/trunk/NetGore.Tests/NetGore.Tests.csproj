@@ -165,6 +165,7 @@
     <Compile Include="NetGore\Vector3Tests.cs" />
     <Compile Include="NetGore\Vector4Tests.cs" />
     <Compile Include="Stats\StatCollectionTests.cs" />
+    <Compile Include="TestHelper.cs" />
     <Compile Include="TestSetUp.cs" />
     <Compile Include="NetGore\CommandLineSwitchHelperTests.cs" />
     <Compile Include="NetGore\IO\ContentAssetNameTests.cs" />
