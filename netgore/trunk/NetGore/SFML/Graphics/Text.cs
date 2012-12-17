@@ -1,6 +1,8 @@
 using System;
 using System.Security;
 using System.Runtime.InteropServices;
+using SFML.Window;
+using Vector2f = SFML.Graphics.Vector2;
 
 namespace SFML
 {
@@ -11,7 +13,7 @@ namespace SFML
         /// This class defines a graphical 2D text, that can be drawn on screen
         /// </summary>
         ////////////////////////////////////////////////////////////
-        public class Text : Drawable
+        public class Text : Transformable, Drawable
         {
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -40,18 +42,7 @@ namespace SFML
             /// </summary>
             ////////////////////////////////////////////////////////////
             public Text() :
-                this("")
-            {
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Construct the text from a string
-            /// </summary>
-            /// <param name="str">String to display</param>
-            ////////////////////////////////////////////////////////////
-            public Text(string str) :
-                this(str, Font.DefaultFont)
+                this("", null)
             {
             }
 
@@ -76,7 +67,7 @@ namespace SFML
             /// <param name="characterSize">Base characters size</param>
             ////////////////////////////////////////////////////////////
             public Text(string str, Font font, uint characterSize) :
-                base(sfText_Create())
+                base(sfText_create())
             {
                 DisplayedString = str;
                 Font = font;
@@ -90,54 +81,14 @@ namespace SFML
             /// <param name="copy">Text to copy</param>
             ////////////////////////////////////////////////////////////
             public Text(Text copy) :
-                base(sfText_Copy(copy.This))
+                base(sfText_copy(copy.CPointer))
             {
+                Origin = copy.Origin;
+                Position = copy.Position;
+                Rotation = copy.Rotation;
+                Scale = copy.Scale;
+
                 Font = copy.Font;
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Position of the object on screen
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 Position
-            {
-                get { return new Vector2(sfText_GetX(This), sfText_GetY(This)); }
-                set { sfText_SetPosition(This, value.X, value.Y); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Rotation of the object, defined in degrees
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override float Rotation
-            {
-                get { return sfText_GetRotation(This); }
-                set { sfText_SetRotation(This, value); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Vertical and horizontal scale of the object
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 Scale
-            {
-                get { return new Vector2(sfText_GetScaleX(This), sfText_GetScaleY(This)); }
-                set { sfText_SetScale(This, value.X, value.Y); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Origin of the transformation of the object
-            /// (center of translation, rotation and scale)
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 Origin
-            {
-                get { return new Vector2(sfText_GetOriginX(This), sfText_GetOriginY(This)); }
-                set { sfText_SetOrigin(This, value.X, value.Y); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -145,53 +96,10 @@ namespace SFML
             /// Global color of the object
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public override Color Color
+            public Color Color
             {
-                get { return sfText_GetColor(This); }
-                set { sfText_SetColor(This, value); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Blending mode of the object
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override BlendMode BlendMode
-            {
-                get { return sfText_GetBlendMode(This); }
-                set { sfText_SetBlendMode(This, value); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Transform a point from global coordinates into local coordinates
-            /// (ie it applies the inverse of object's origin, translation, rotation and scale to the point)
-            /// </summary>
-            /// <param name="point">Point to transform</param>
-            /// <returns>Transformed point</returns>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 TransformToLocal(Vector2 point)
-            {
-                Vector2 Transformed;
-                sfText_TransformToLocal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
-
-                return Transformed;
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Transform a point from local coordinates into global coordinates
-            /// (ie it applies the object's origin, translation, rotation and scale to the point)
-            /// </summary>
-            /// <param name="point">Point to transform</param>
-            /// <returns>Transformed point</returns>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 TransformToGlobal(Vector2 point)
-            {
-                Vector2 Transformed;
-                sfText_TransformToGlobal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
-
-                return Transformed;
+                get { return sfText_getColor(CPointer); }
+                set { sfText_setColor(CPointer, value); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -201,10 +109,32 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public string DisplayedString
             {
-                // TODO : use unicode functions
-                // (convert from UTF-16 to UTF-32, and find how to marshal System.String as sfUint32*...)
-                get {return sfText_GetString(This);}
-                set {sfText_SetString(This, value);}
+                get
+                {
+                    // Get the number of characters
+                    // This is probably not the most optimized way; if anyone has a better solution...
+                    int length = Marshal.PtrToStringAnsi(sfText_getString(CPointer)).Length;
+
+                    // Copy the characters
+                    byte[] characters = new byte[length * 4];
+                    Marshal.Copy(sfText_getUnicodeString(CPointer), characters, 0, characters.Length);
+
+                    // Convert from UTF-32 to String (UTF-16)
+                    return System.Text.Encoding.UTF32.GetString(characters);
+                }
+
+                set
+                {
+                    // Convert from String (UTF-16) to UTF-32
+                    int[] characters = new int[value.Length];
+                    for (int i = 0; i < value.Length; ++i)
+                        characters[i] = Char.ConvertToUtf32(value, i);
+
+                    // Transform to raw and pass to the C API
+                    GCHandle handle = GCHandle.Alloc(characters, GCHandleType.Pinned);
+                    sfText_setUnicodeString(CPointer, handle.AddrOfPinnedObject());
+                    handle.Free();
+                }
             }
 
             ////////////////////////////////////////////////////////////
@@ -214,8 +144,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Font Font
             {
-                get {return myFont;}
-                set {myFont = value; sfText_SetFont(This, value != null ? value.This : IntPtr.Zero);}
+                get { return myFont; }
+                set { myFont = value; sfText_setFont(CPointer, value != null ? value.CPointer : IntPtr.Zero); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -225,8 +155,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public uint CharacterSize
             {
-                get {return sfText_GetCharacterSize(This);}
-                set {sfText_SetCharacterSize(This, value);}
+                get { return sfText_getCharacterSize(CPointer); }
+                set { sfText_setCharacterSize(CPointer, value); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -236,19 +166,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Styles Style
             {
-                get {return sfText_GetStyle(This);}
-                set {sfText_SetStyle(This, value);}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Get the text rectangle on screen
-            /// </summary>
-            /// <returns>Text rectangle in global coordinates (doesn't include rotation)</returns>
-            ////////////////////////////////////////////////////////////
-            public FloatRect GetRect()
-            {
-                return sfText_GetRect(This);
+                get { return sfText_getStyle(CPointer); }
+                set { sfText_setStyle(CPointer, value); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -260,12 +179,45 @@ namespace SFML
             /// <param name="index">Index of the character</param>
             /// <returns>Position of the Index-th character (end of text if Index is out of range)</returns>
             ////////////////////////////////////////////////////////////
-            public Vector2 GetCharacterPos(uint index)
+            public Vector2f FindCharacterPos(uint index)
             {
-                Vector2 Pos;
-                sfText_GetCharacterPos(This, index, out Pos.X, out Pos.Y);
-                
-                return Pos;
+                return sfText_findCharacterPos(CPointer, index);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Get the local bounding rectangle of the entity.
+            ///
+            /// The returned rectangle is in local coordinates, which means
+            /// that it ignores the transformations (translation, rotation,
+            /// scale, ...) that are applied to the entity.
+            /// In other words, this function returns the bounds of the
+            /// entity in the entity's coordinate system.
+            /// </summary>
+            /// <returns>Local bounding rectangle of the entity</returns>
+            ////////////////////////////////////////////////////////////
+            public FloatRect GetLocalBounds()
+            {
+                return sfText_getLocalBounds(CPointer);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Get the global bounding rectangle of the entity.
+            ///
+            /// The returned rectangle is in global coordinates, which means
+            /// that it takes in account the transformations (translation,
+            /// rotation, scale, ...) that are applied to the entity.
+            /// In other words, this function returns the bounds of the
+            /// sprite in the global 2D world's coordinate system.
+            /// </summary>
+            /// <returns>Global bounding rectangle of the entity</returns>
+            ////////////////////////////////////////////////////////////
+            public FloatRect GetGlobalBounds()
+            {
+                // we don't use the native getGlobalBounds function,
+                // because we override the object's transform
+                return Transform.TransformRect(GetLocalBounds());
             }
 
             ////////////////////////////////////////////////////////////
@@ -277,47 +229,37 @@ namespace SFML
             public override string ToString()
             {
                 return "[Text]" +
-                       " Position(" + Position + ")" +
-                       " Rotation(" + Rotation + ")" +
-                       " Scale(" + Scale + ")" +
-                       " Origin(" + Origin + ")" +
                        " Color(" + Color + ")" +
-                       " BlendMode(" + BlendMode + ")" +
                        " String(" + DisplayedString + ")" +
                        " Font(" + Font + ")" +
                        " CharacterSize(" + CharacterSize + ")" +
-                       " Style(" + Style + ")" +
-                       " Rectangle(" + GetRect() + ")";
+                       " Style(" + Style + ")";
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Render the object into the given render window
-            /// </summary>
-            /// <param name="target">Target render window</param>
-            /// <param name="shader">Shader to apply</param>
+            /// <summmary>
+            /// Draw the object to a render target
+            ///
+            /// This is a pure virtual function that has to be implemented
+            /// by the derived class to define how the drawable should be
+            /// drawn.
+            /// </summmary>
+            /// <param name="target">Render target to draw to</param>
+            /// <param name="states">Current render states</param>
             ////////////////////////////////////////////////////////////
-            internal override void Render(RenderWindow target, Shader shader)
+            public void Draw(RenderTarget target, RenderStates states)
             {
-                if (shader == null)
-                    sfRenderWindow_DrawText(target.This, This);
-                else
-                    sfRenderWindow_DrawTextWithShader(target.This, This, shader.This);
-            }
+                //states.Transform *= Transform;
+                RenderStates.MarshalData marshaledStates = states.Marshal(Transform); // NetGore custom line
 
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Render the object into the given render image
-            /// </summary>
-            /// <param name="target">Target render image</param>
-            /// <param name="shader">Shader to apply</param>
-            ////////////////////////////////////////////////////////////
-            internal override void Render(RenderImage target, Shader shader)
-            {
-                if (shader == null)
-                    sfRenderImage_DrawText(target.This, This);
-                else
-                    sfRenderImage_DrawTextWithShader(target.This, This, shader.This);
+                if (target is RenderWindow)
+                {
+                    sfRenderWindow_drawText(((RenderWindow)target).CPointer, CPointer, ref marshaledStates);
+                }
+                else if (target is RenderTexture)
+                {
+                    sfRenderTexture_drawText(((RenderTexture)target).CPointer, CPointer, ref marshaledStates);
+                }
             }
 
             ////////////////////////////////////////////////////////////
@@ -328,110 +270,66 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override void Destroy(bool disposing)
             {
-                sfText_Destroy(This);
+                sfText_destroy(CPointer);
             }
 
-            private Font myFont = Font.DefaultFont;
+            private Font myFont = null;
 
             #region Imports
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfText_Create();
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfText_Copy(IntPtr Text);
+            static extern IntPtr sfText_create();
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_Destroy(IntPtr This);
+            static extern IntPtr sfText_copy(IntPtr Text);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetPosition(IntPtr This, float X, float Y);
+            static extern void sfText_destroy(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfText_GetX(IntPtr This);
+            static extern void sfText_setColor(IntPtr CPointer, Color Color);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfText_GetY(IntPtr This);
+            static extern Color sfText_getColor(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetRotation(IntPtr This, float Rotation);
+            static extern void sfRenderWindow_drawText(IntPtr CPointer, IntPtr Text, ref RenderStates.MarshalData states);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfText_GetRotation(IntPtr This);
+            static extern void sfRenderTexture_drawText(IntPtr CPointer, IntPtr Text, ref RenderStates.MarshalData states);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetScale(IntPtr This, float X, float Y);
+            static extern void sfText_setUnicodeString(IntPtr CPointer, IntPtr Text);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfText_GetScaleX(IntPtr This);
+            static extern void sfText_setFont(IntPtr CPointer, IntPtr Font);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfText_GetScaleY(IntPtr This);
+            static extern void sfText_setCharacterSize(IntPtr CPointer, uint Size);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetOrigin(IntPtr This, float X, float Y);
+            static extern void sfText_setStyle(IntPtr CPointer, Styles Style);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfText_GetOriginX(IntPtr This);
+            static extern IntPtr sfText_getString(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfText_GetOriginY(IntPtr This);
+            static extern IntPtr sfText_getUnicodeString(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetColor(IntPtr This, Color Color);
+            static extern uint sfText_getCharacterSize(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Color sfText_GetColor(IntPtr This);
+            static extern Styles sfText_getStyle(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetBlendMode(IntPtr This, BlendMode Mode);
+            static extern FloatRect sfText_getRect(IntPtr CPointer);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern BlendMode sfText_GetBlendMode(IntPtr This);
+            static extern Vector2f sfText_findCharacterPos(IntPtr CPointer, uint Index);
 
             [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Vector2 sfText_TransformToLocal(IntPtr This, float PointX, float PointY, out float X, out float Y);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Vector2 sfText_TransformToGlobal(IntPtr This, float PointX, float PointY, out float X, out float Y);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_DrawText(IntPtr This, IntPtr String);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_DrawTextWithShader(IntPtr This, IntPtr String, IntPtr Shader);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderImage_DrawText(IntPtr This, IntPtr String);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderImage_DrawTextWithShader(IntPtr This, IntPtr String, IntPtr Shader);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetString(IntPtr This, string Text);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetFont(IntPtr This, IntPtr Font);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetCharacterSize(IntPtr This, uint Size);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_SetStyle(IntPtr This, Styles Style);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity]
-            static extern string sfText_GetString(IntPtr This);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern uint sfText_GetCharacterSize(IntPtr This);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Styles sfText_GetStyle(IntPtr This);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern FloatRect sfText_GetRect(IntPtr This);
-
-            [DllImport("csfml-graphics-2", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfText_GetCharacterPos(IntPtr This, uint Index, out float X, out float Y);
+            static extern FloatRect sfText_getLocalBounds(IntPtr CPointer);
 
             #endregion
         }

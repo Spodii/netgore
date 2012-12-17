@@ -1,13 +1,14 @@
 ﻿using System.Drawing;
 using System.Linq;
 using NetGore.Properties;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
     /// <summary>
     /// Contains <see cref="ISprite"/>s created by and used by the system. These are constructed completely
     /// internally, so there is no concerns about accidentally deleting <see cref="ISprite"/>s or their
-    /// corresponding <see cref="SFML.Graphics.Image"/>.
+    /// corresponding <see cref="Texture"/>.
     /// </summary>
     public static class SystemSprites
     {
@@ -84,12 +85,12 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sysImg">The <see cref="System.Drawing.Image"/>.</param>
         /// <returns>The <see cref="Sprite"/> created from the <paramref name="sysImg"/>.</returns>
-        static Sprite CreateSprite(Image sysImg)
+        static Sprite CreateSprite(System.Drawing.Image sysImg)
         {
             var img = sysImg.ToSFMLImage();
             img.CreateMaskFromColor(EngineSettings.TransparencyColor);
 
-            var sprite = new Sprite(img);
+            var sprite = new Sprite(new Texture(img));
             return sprite;
         }
     }

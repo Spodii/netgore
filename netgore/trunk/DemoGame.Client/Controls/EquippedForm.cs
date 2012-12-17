@@ -87,7 +87,7 @@ namespace DemoGame.Client
 
             switch (e.Button)
             {
-                case MouseButton.Right:
+                case Mouse.Button.Right:
                     if (RequestUnequip != null)
                         RequestUnequip.Raise(this, EventArgsHelper.Create(slot));
                     break;

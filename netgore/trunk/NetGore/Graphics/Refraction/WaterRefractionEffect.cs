@@ -262,11 +262,11 @@ namespace NetGore.Graphics
         /// <param name="currentTime">The current time in milliseconds.</param>
         protected virtual void SetShaderParameters(TickCount currentTime)
         {
-            Shader.SetTexture("WaveNoiseTexture", WaveNoise.CurrentGrhData.Texture);
+            Shader.SetParameter("WaveNoiseTexture", WaveNoise.CurrentGrhData.Texture);
             Shader.SetParameter("WaveIntensity", WaveIntensity);
             Shader.SetParameter("WaveSpeedMultiplier", WaveSpeed);
             Shader.SetParameter("WaterAlphaModifier", WaterAlpha);
-            Shader.SetParameter("DrawTextureHeightRatio", Size.Y / WaveNoise.CurrentGrhData.Texture.Height);
+            Shader.SetParameter("DrawTextureHeightRatio", Size.Y / WaveNoise.CurrentGrhData.Texture.Size.Y);
             Shader.SetParameter("Magnification", Magnification);
             Shader.SetParameter("Time", currentTime);
         }
@@ -484,16 +484,8 @@ namespace NetGore.Graphics
             try
             {
                 spriteBatch.BlendMode = BlendMode.None;
-                try
-                {
-                    Shader.Bind();
-
-                    WaveNoise.Draw(spriteBatch, dest);
-                }
-                finally
-                {
-                    Shader.Unbind();
-                }
+                Shader.Bind();
+                WaveNoise.Draw(spriteBatch, dest);
             }
             finally
             {

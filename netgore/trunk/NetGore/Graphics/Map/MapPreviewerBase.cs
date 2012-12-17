@@ -83,15 +83,17 @@ namespace NetGore.Graphics
             using (var g = System.Drawing.Graphics.FromImage(master))
             {
                 // Create the RenderTarget to draw to
-                using (var renderTarget = new RenderImage((uint)cam.Size.X, (uint)cam.Size.Y))
+                using (var renderTarget = new RenderTexture((uint)cam.Size.X, (uint)cam.Size.Y))
                 {
+                    var renderTargetSize = renderTarget.Size;
+
                     // Create the SpriteBatch
                     using (var sb = new SpriteBatch(renderTarget))
                     {
                         // Loop through as many times as needed to cover the whole map
-                        for (var x = 0; x < map.Width; x += (int)renderTarget.Width)
+                        for (var x = 0; x < map.Width; x += (int)renderTargetSize.X)
                         {
-                            for (var y = 0; y < map.Height; y += (int)renderTarget.Height)
+                            for (var y = 0; y < map.Height; y += (int)renderTargetSize.Y)
                             {
                                 // Clear the target with the background color
                                 renderTarget.Clear(BackgroundColor);
@@ -108,7 +110,7 @@ namespace NetGore.Graphics
                                 renderTarget.Display();
 
                                 // Grab the segment image and copy it to the master image
-                                var sfmlImage = renderTarget.Image;
+                                var sfmlImage = renderTarget.Texture;
                                 var segmentImage = sfmlImage.ToBitmap();
 
                                 ImageCopy(g, segmentImage, new Point(x, y));
@@ -173,7 +175,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Saves an <see cref="SFML.Graphics.Image"/> to file.
+        /// Saves an <see cref="Texture"/> to file.
         /// </summary>
         /// <param name="img">The <see cref="System.Drawing.Image"/> to save.</param>
         /// <param name="filePath">The file path to save the file to.</param>

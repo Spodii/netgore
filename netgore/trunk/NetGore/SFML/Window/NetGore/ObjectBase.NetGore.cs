@@ -11,9 +11,9 @@ namespace SFML
         /// Access to the internal pointer of the object. Returns the pointer, never anything more. Cannot override.
         /// For internal use only
         /// </summary>
-        protected IntPtr ThisRaw
+        protected IntPtr CPointerRaw
         {
-            get { return myThis; }
+            get { return myCPointer; }
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace SFML
         /// </summary>
         public virtual bool IsDisposed
         {
-            get { return This == IntPtr.Zero; }
+            get { return CPointer == IntPtr.Zero; }
         }
     }
 }

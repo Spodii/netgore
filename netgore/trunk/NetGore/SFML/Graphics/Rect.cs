@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-
+// TODO: !! Make types internal?
 namespace SFML
 {
     namespace Graphics
@@ -25,9 +25,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public IntRect(int left, int top, int width, int height)
             {
-                Left   = left;
-                Top    = top;
-                Width  = width;
+                Left = left;
+                Top = top;
+                Width = width;
                 Height = height;
             }
 
@@ -54,11 +54,11 @@ namespace SFML
             public bool Intersects(IntRect rect)
             {
                 // Compute the intersection boundaries
-                int left   = Math.Max(Left,         rect.Left);
-                int top    = Math.Max(Top,          rect.Top);
-                int right  = Math.Min(Left + Width, rect.Left + rect.Width);
+                int left = Math.Max(Left, rect.Left);
+                int top = Math.Max(Top, rect.Top);
+                int right = Math.Min(Left + Width, rect.Left + rect.Width);
                 int bottom = Math.Min(Top + Height, rect.Top + rect.Height);
-            
+
                 return (left < right) && (top < bottom);
             }
 
@@ -73,25 +73,25 @@ namespace SFML
             public bool Intersects(IntRect rect, out IntRect overlap)
             {
                 // Compute the intersection boundaries
-                int left   = Math.Max(Left,         rect.Left);
-                int top    = Math.Max(Top,          rect.Top);
-                int right  = Math.Min(Left + Width, rect.Left + rect.Width);
+                int left = Math.Max(Left, rect.Left);
+                int top = Math.Max(Top, rect.Top);
+                int right = Math.Min(Left + Width, rect.Left + rect.Width);
                 int bottom = Math.Min(Top + Height, rect.Top + rect.Height);
 
                 // If the intersection is valid (positive non zero area), then there is an intersection
                 if ((left < right) && (top < bottom))
                 {
-                    overlap.Left   = left;
-                    overlap.Top    = top;
-                    overlap.Width  = right - left;
+                    overlap.Left = left;
+                    overlap.Top = top;
+                    overlap.Width = right - left;
                     overlap.Height = bottom - top;
                     return true;
                 }
                 else
                 {
-                    overlap.Left   = 0;
-                    overlap.Top    = 0;
-                    overlap.Width  = 0;
+                    overlap.Left = 0;
+                    overlap.Top = 0;
+                    overlap.Width = 0;
                     overlap.Height = 0;
                     return false;
                 }
@@ -144,9 +144,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public FloatRect(float left, float top, float width, float height)
             {
-                Left   = left;
-                Top    = top;
-                Width  = width;
+                Left = left;
+                Top = top;
+                Width = width;
                 Height = height;
             }
 
@@ -173,11 +173,11 @@ namespace SFML
             public bool Intersects(FloatRect rect)
             {
                 // Compute the intersection boundaries
-                float left   = Math.Max(Left,         rect.Left);
-                float top    = Math.Max(Top,          rect.Top);
-                float right  = Math.Min(Left + Width, rect.Left + rect.Width);
+                float left = Math.Max(Left, rect.Left);
+                float top = Math.Max(Top, rect.Top);
+                float right = Math.Min(Left + Width, rect.Left + rect.Width);
                 float bottom = Math.Min(Top + Height, rect.Top + rect.Height);
-            
+
                 return (left < right) && (top < bottom);
             }
 
@@ -192,25 +192,25 @@ namespace SFML
             public bool Intersects(FloatRect rect, out FloatRect overlap)
             {
                 // Compute the intersection boundaries
-                float left   = Math.Max(Left,         rect.Left);
-                float top    = Math.Max(Top,          rect.Top);
-                float right  = Math.Min(Left + Width, rect.Left + rect.Width);
+                float left = Math.Max(Left, rect.Left);
+                float top = Math.Max(Top, rect.Top);
+                float right = Math.Min(Left + Width, rect.Left + rect.Width);
                 float bottom = Math.Min(Top + Height, rect.Top + rect.Height);
 
                 // If the intersection is valid (positive non zero area), then there is an intersection
                 if ((left < right) && (top < bottom))
                 {
-                    overlap.Left   = left;
-                    overlap.Top    = top;
-                    overlap.Width  = right - left;
+                    overlap.Left = left;
+                    overlap.Top = top;
+                    overlap.Width = right - left;
                     overlap.Height = bottom - top;
                     return true;
                 }
                 else
                 {
-                    overlap.Left   = 0;
-                    overlap.Top    = 0;
-                    overlap.Width  = 0;
+                    overlap.Left = 0;
+                    overlap.Top = 0;
+                    overlap.Width = 0;
                     overlap.Height = 0;
                     return false;
                 }

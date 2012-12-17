@@ -5,12 +5,14 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using Image = SFML.Graphics.Image;
+using SFML.Graphics;
+using Color = System.Drawing.Color;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Extension methods for the <see cref="SFML.Graphics.Image"/> and <see cref="System.Drawing.Image"/> class.
+    /// Extension methods for the <see cref="Texture"/> and <see cref="System.Drawing.Image"/> class.
     /// </summary>
     public static class ImageExtensions
     {
@@ -20,15 +22,16 @@ namespace NetGore.Graphics
         const SmoothingMode _defaultSmoothingMode = SmoothingMode.HighQuality;
 
         /// <summary>
-        /// Copies the pixels from a <see cref="SFML.Graphics.Image"/> to a <see cref="Bitmap"/>.
+        /// Copies the pixels from a <see cref="Texture"/> to a <see cref="Bitmap"/>.
         /// </summary>
-        /// <param name="image">The source <see cref="SFML.Graphics.Image"/>.</param>
+        /// <param name="texture">The source <see cref="Texture"/>.</param>
         /// <param name="b">The destination <see cref="Bitmap"/>.</param>
         /// <param name="source">The source area to copy.</param>
-        static unsafe void CopyToBitmap(Image image, Bitmap b, Rectangle source)
+        static unsafe void CopyToBitmap(Texture texture, Bitmap b, Rectangle source)
         {
             const int bytesPerColor = 4;
 
+            var image = texture.CopyToImage();
             var pixels = image.Pixels;
 
             // Lock the whole bitmap for write only
@@ -186,7 +189,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
+        /// Creates an <see cref="Texture"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
         /// </summary>
         /// <param name="image">The image.</param>
         /// <param name="source">The <see cref="Rectangle"/> to copy on the source image.</param>
@@ -198,7 +201,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, Rectangle source, int destWidth, int destHeight)
+        public static Bitmap ToBitmap(this Texture image, Rectangle source, int destWidth, int destHeight)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -220,7 +223,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
+        /// Creates an <see cref="Texture"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
         /// </summary>
         /// <param name="image">The image.</param>
         /// <param name="source">The <see cref="Rectangle"/> to copy on the source image.</param>
@@ -232,7 +235,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source, int destWidth, int destHeight)
+        public static Bitmap ToBitmap(this Texture image, SFML.Graphics.Rectangle source, int destWidth, int destHeight)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -242,7 +245,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
+        /// Creates an <see cref="Texture"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
         /// </summary>
         /// <param name="image">The image.</param>
         /// <param name="source">The <see cref="Rectangle"/> to copy on the source image.</param>
@@ -252,7 +255,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source)
+        public static Bitmap ToBitmap(this Texture image, SFML.Graphics.Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -261,7 +264,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
+        /// Creates an <see cref="Texture"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
         /// </summary>
         /// <param name="image">The image.</param>
         /// <param name="source">The <see cref="Rectangle"/> to copy on the source image.</param>
@@ -271,12 +274,13 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, Rectangle source)
+        public static Bitmap ToBitmap(this Texture image, Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
 
-            if (source.X < 0 || source.Y < 0 || source.Right > image.Width || source.Bottom > image.Height)
+            var imageSize = image.Size;
+            if (source.X < 0 || source.Y < 0 || source.Right > imageSize.X || source.Bottom > imageSize.Y)
                 throw new ArgumentOutOfRangeException("source");
 
             // Create the target bitmap
@@ -289,31 +293,32 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
+        /// Creates an <see cref="Texture"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
         /// </summary>
         /// <param name="image">The image.</param>
         /// <returns>
         /// The <see cref="Bitmap"/> containing the <paramref name="image"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
-        public static Bitmap ToBitmap(this Image image)
+        public static Bitmap ToBitmap(this Texture image)
         {
-            var source = new Rectangle(0, 0, (int)image.Width, (int)image.Height);
+            var imageSize = image.Size;
+            var source = new Rectangle(0, 0, (int)imageSize.X, (int)imageSize.Y);
             return ToBitmap(image, source);
         }
 
         /// <summary>
-        /// Creates a <see cref="SFML.Graphics.Image"/> from a <see cref="System.Drawing.Image"/>.
+        /// Creates a <see cref="Texture"/> from a <see cref="System.Drawing.Image"/>.
         /// </summary>
         /// <param name="img">The <see cref="System.Drawing.Image"/>.</param>
-        /// <returns>The <see cref="SFML.Graphics.Image"/>.</returns>
-        public static Image ToSFMLImage(this System.Drawing.Image img)
+        /// <returns>The <see cref="Texture"/>.</returns>
+        public static SFML.Graphics.Image ToSFMLImage(this System.Drawing.Image img)
         {
-            using (var ms = new MemoryStream((img.Width * img.Height * 4) + 64))
+            using (var ms = new MemoryStream((img.Width * img.Height * 4) + 64)) // W * H * 4 bytes for pixels [ARGB] + 64 bytes extra padding
             {
                 img.Save(ms, ImageFormat.Bmp);
-
-                return new Image(ms);
+                ms.Position = 0; // Reset stream position
+                return new SFML.Graphics.Image(ms);
             }
         }
     }

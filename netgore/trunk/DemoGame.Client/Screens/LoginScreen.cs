@@ -293,7 +293,7 @@ namespace DemoGame.Client
         void cNameText_KeyPressed(object sender, KeyEventArgs e)
         {
             // Tab to the next control
-            if (e.Code == KeyCode.Tab)
+            if (e.Code == Keyboard.Key.Tab)
             {
                 _cPasswordText.SetFocus();
                 _cPasswordText.CursorLinePosition = _cPasswordText.Text.Length;
@@ -324,7 +324,7 @@ namespace DemoGame.Client
         void cPasswordText_KeyPressed(object sender, KeyEventArgs e)
         {
             // Tab to the next control
-            if (e.Code == KeyCode.Tab)
+            if (e.Code == Keyboard.Key.Tab)
             {
                 _cNameText.SetFocus();
                 _cNameText.CursorLinePosition = _cNameText.Text.Length;

@@ -34,16 +34,13 @@ namespace NetGore.Graphics
             {
                 try
                 {
-                    Debug.Assert(_text.Scale == Vector2.One);
                     Debug.Assert(!_text.IsDisposed);
-                    Debug.Assert(_text.Rotation == 0.0f);
-                    Debug.Assert(_text.Style == Text.Styles.Regular);
 
                     _text.Font = font;
                     _text.CharacterSize = fontSize;
                     _text.DisplayedString = str;
 
-                    var r = _text.GetRect();
+                    var r = _text.GetGlobalBounds();
 
                     return new Vector2(r.Width, r.Height);
                 }

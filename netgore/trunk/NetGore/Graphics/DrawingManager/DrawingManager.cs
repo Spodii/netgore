@@ -27,7 +27,7 @@ namespace NetGore.Graphics
         readonly ISpriteBatch _sb;
         readonly View _view = new View();
 
-        RenderImage _buffer;
+        RenderTexture _buffer;
         bool _isDisposed;
 
         /// <summary>
@@ -64,7 +64,6 @@ namespace NetGore.Graphics
             // Set up the sprite used to draw the light map
             _drawBufferToWindowSprite = new SFML.Graphics.Sprite
             {
-                BlendMode = BlendMode.Alpha,
                 Color = Color.White,
                 Rotation = 0,
                 Scale = Vector2.One,
@@ -118,24 +117,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws an <see cref="Image"/> to the screen.
+        /// Draws an <see cref="Texture"/> to the screen.
         /// </summary>
-        /// <param name="buffer">The <see cref="Image"/> to draw.</param>
+        /// <param name="buffer">The <see cref="Texture"/> to draw.</param>
         /// <param name="blendMode">The <see cref="BlendMode"/> to use.</param>
-        void DrawBufferToScreen(Image buffer, BlendMode blendMode)
+        void DrawBufferToScreen(Texture buffer, BlendMode blendMode)
         {
-            var size = new Vector2(buffer.Width, buffer.Height);
+            var size = buffer.Size;
 
-            _drawBufferToWindowSprite.BlendMode = blendMode;
-            _drawBufferToWindowSprite.Image = buffer;
-            _drawBufferToWindowSprite.Width = size.X;
-            _drawBufferToWindowSprite.Height = size.Y;
-            _drawBufferToWindowSprite.SubRect = new IntRect(0, 0, (int)size.X, (int)size.Y);
+            _drawBufferToWindowSprite.Texture = buffer;
+            _drawBufferToWindowSprite.TextureRect = new IntRect(0, 0, (int)size.X, (int)size.Y);
 
-            _view.Reset(new FloatRect(0, 0, size.X, size.Y));
-            _rw.SetView(_view);
-
-            _rw.Draw(_drawBufferToWindowSprite);
+            _rw.Draw(_drawBufferToWindowSprite, new RenderStates(blendMode));
         }
 
         /// <summary>
@@ -146,7 +139,7 @@ namespace NetGore.Graphics
         {
             try
             {
-                return !_rw.IsDisposed && _rw.IsOpened();
+                return !_rw.IsDisposed && _rw.IsOpen();
             }
             catch (ObjectDisposedException)
             {
@@ -302,7 +295,7 @@ namespace NetGore.Graphics
                 _lastDrawWasToWorld = false;
 
                 // Ensure the buffer is set up
-                _buffer = _rw.CreateBufferRenderImage(_buffer);
+                _buffer = _rw.CreateBufferRenderTexture(_buffer);
                 _sb.RenderTarget = _buffer;
 
                 if (_buffer == null)
@@ -375,11 +368,11 @@ namespace NetGore.Graphics
                 // No matter what the last draw was, we clear the screen when drawing the world since the world drawing
                 // always comes first or not at all (makes no sense to draw the GUI then the world)
                 _rw.Clear(BackgroundColor);
-
+                
                 _lastDrawWasToWorld = true;
 
                 // Ensure the buffer is set up
-                _buffer = _rw.CreateBufferRenderImage(_buffer);
+                _buffer = _rw.CreateBufferRenderTexture(_buffer);
                 _sb.RenderTarget = _buffer;
 
                 if (_buffer == null)
@@ -467,7 +460,8 @@ namespace NetGore.Graphics
 
                 // Copy the GUI to the screen
                 _buffer.Display();
-                DrawBufferToScreen(_buffer.Image, BlendMode.Alpha);
+
+                DrawBufferToScreen(_buffer.Texture, BlendMode.Alpha);
             }
             catch (AccessViolationException ex)
             {
@@ -524,10 +518,11 @@ namespace NetGore.Graphics
                 // Draw the lights
                 try
                 {
-                    if (LightManager.IsEnabled)
+                    if (LightManager.IsEnabled) 
                     {
                         // Copy the lights onto the buffer
                         LightManager.DrawToTarget(_worldCamera, _buffer);
+                        _buffer.Display();
                     }
                     else
                     {
@@ -547,7 +542,7 @@ namespace NetGore.Graphics
                         log.ErrorFormat(errmsg, this, LightManager, ex);
                 }
 
-                // Have to display the buffer since we will start referencing the image for it
+                // Have to display the buffer since we will start referencing the texture for it
                 _buffer.Display();
 
                 // Draw the refractions
@@ -556,13 +551,13 @@ namespace NetGore.Graphics
                     if (RefractionManager.IsEnabled)
                     {
                         // Pass the buffer to the refraction manager to draw to the screen
-                        RefractionManager.DrawToTarget(_worldCamera, _rw, _buffer.Image);
+                        RefractionManager.DrawToTarget(_worldCamera, _rw, _buffer.Texture);
                     }
                     else
                     {
                         // Since the RefractionManager won't be handling copying to the screen for us, we will have to draw
                         // to the screen manually
-                        DrawBufferToScreen(_buffer.Image, BlendMode.None);
+                        DrawBufferToScreen(_buffer.Texture, BlendMode.None);
                     }
                 }
                 catch (Exception ex)
@@ -577,6 +572,9 @@ namespace NetGore.Graphics
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, this, RefractionManager, ex);
                 }
+
+                _view.Reset(new FloatRect(0, 0, _rw.Size.X, _rw.Size.Y));
+                _rw.SetView(_view);
             }
             catch (AccessViolationException ex)
             {

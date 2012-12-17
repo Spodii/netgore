@@ -36,7 +36,7 @@ namespace NetGore.Content
         /// <returns>
         /// The asset loaded from the <paramref name="contentManager"/>, or null if the loading failed.
         /// </returns>
-        public static Image LoadImage(this IContentManager contentManager, ContentAssetName contentAssetName, ContentLevel level)
+        public static Texture LoadImage(this IContentManager contentManager, ContentAssetName contentAssetName, ContentLevel level)
         {
             if (contentManager == null || contentAssetName == null)
                 return null;

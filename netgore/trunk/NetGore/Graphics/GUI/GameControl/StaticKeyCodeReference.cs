@@ -8,13 +8,13 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class StaticKeyCodeReference : IKeyCodeReference
     {
-        KeyCode _key;
+        Keyboard.Key _key;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticKeyCodeReference"/> class.
         /// </summary>
         /// <param name="key">The key.</param>
-        public StaticKeyCodeReference(KeyCode key)
+        public StaticKeyCodeReference(Keyboard.Key key)
         {
             _key = key;
         }
@@ -22,8 +22,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Changes the referened key.
         /// </summary>
-        /// <param name="newValue">The new <see cref="KeyCode"/>.</param>
-        public void ChangeKey(KeyCode newValue)
+        /// <param name="newValue">The new <see cref="Keyboard.Key"/>.</param>
+        public void ChangeKey(Keyboard.Key newValue)
         {
             _key = newValue;
         }
@@ -31,9 +31,9 @@ namespace NetGore.Graphics.GUI
         #region IKeyCodeReference Members
 
         /// <summary>
-        /// Gets the referenced <see cref="KeyCode"/>.
+        /// Gets the referenced <see cref="Keyboard.Key"/>.
         /// </summary>
-        public KeyCode Key
+        public Keyboard.Key Key
         {
             get { return _key; }
         }

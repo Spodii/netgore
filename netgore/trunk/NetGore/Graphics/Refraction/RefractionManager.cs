@@ -27,7 +27,7 @@ namespace NetGore.Graphics
         static readonly Shader _defaultShader;
 
         readonly List<IRefractionEffect> _list = new List<IRefractionEffect>();
-        Image _colorMap;
+        Texture _colorMap;
 
         bool _isEnabled;
 
@@ -188,32 +188,19 @@ void main (void)
         /// <summary>
         /// Handles the actual drawing of the buffer to a <see cref="RenderTarget"/>.
         /// </summary>
-        /// <param name="buffer">The <see cref="Image"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
+        /// <param name="buffer">The <see cref="Texture"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
         /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> set up to draw the <paramref name="buffer"/>.</param>
         /// <param name="target">The <see cref="RenderTarget"/> to draw the <paramref name="buffer"/> to.</param>
         /// <param name="camera">The <see cref="ICamera2D"/> that was used during the creation of the buffer.</param>
-        protected override void HandleDrawBufferToTarget(Image buffer, SFML.Graphics.Sprite sprite, RenderTarget target,
-                                                         ICamera2D camera)
+        protected override void HandleDrawBufferToTarget(Texture buffer, SFML.Graphics.Sprite sprite, RenderTarget target, ICamera2D camera, RenderStates renderStates)
         {
+            renderStates.BlendMode = BlendMode.None;
+
             // Set up the shader
-            DrawToTargetShader.SetTexture("ColorMap", _colorMap);
-            DrawToTargetShader.SetTexture("NoiseMap", buffer);
+            DrawToTargetShader.SetParameter("ColorMap", _colorMap);
+            DrawToTargetShader.SetParameter("NoiseMap", buffer);
 
-            // Draw to the target
-            target.Draw(sprite, DrawToTargetShader);
-        }
-
-        /// <summary>
-        /// Prepares the <see cref="SFML.Graphics.Sprite"/> used to draw to a <see cref="RenderTarget"/>.
-        /// </summary>
-        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> to prepare.</param>
-        /// <param name="target">The <see cref="RenderTarget"/> begin drawn to.</param>
-        protected override void PrepareDrawToTargetSprite(SFML.Graphics.Sprite sprite, RenderTarget target)
-        {
-            base.PrepareDrawToTargetSprite(sprite, target);
-
-            // Always use BlendMode.None
-            sprite.BlendMode = BlendMode.None;
+            base.HandleDrawBufferToTarget(buffer, sprite, target, camera, renderStates);
         }
 
         #region IRefractionManager Members
@@ -355,11 +342,11 @@ void main (void)
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <returns>
-        /// The <see cref="Image"/> containing the reflection map. If the reflection map failed to be generated
+        /// The <see cref="Texture"/> containing the reflection map. If the reflection map failed to be generated
         /// for whatever reason, a null value will be returned instead.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="IRefractionManager.IsInitialized"/> is false.</exception>
-        public virtual Image Draw(ICamera2D camera)
+        public virtual Texture Draw(ICamera2D camera)
         {
             return GetBuffer(camera);
         }
@@ -369,9 +356,9 @@ void main (void)
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <param name="target">The <see cref="RenderTarget"/> to draw the refraction map to.</param>
-        /// <param name="colorMap">The <see cref="Image"/> to get the colors from. Typically, this is an <see cref="Image"/> of
+        /// <param name="colorMap">The <see cref="Texture"/> to get the colors from. Typically, this is an <see cref="Texture"/> of
         /// the fully drawn game scene to apply refractions to.</param>
-        public virtual void DrawToTarget(ICamera2D camera, RenderTarget target, Image colorMap)
+        public virtual void DrawToTarget(ICamera2D camera, RenderTarget target, Texture colorMap)
         {
             _colorMap = colorMap;
             DrawBufferToTarget(target, camera);

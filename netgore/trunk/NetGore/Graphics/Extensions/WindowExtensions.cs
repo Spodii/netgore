@@ -17,21 +17,21 @@ namespace NetGore.Graphics
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Creates a <see cref="RenderImage"/> for a <see cref="Window"/> that can be used as a buffer for the <see cref="Window"/>.
+        /// Creates a <see cref="RenderTexture"/> for a <see cref="Window"/> that can be used as a buffer for the <see cref="Window"/>.
         /// </summary>
-        /// <param name="w">The <see cref="Window"/> to create the <see cref="RenderImage"/> for.</param>
-        /// <param name="ri">An optional, pre-existing <see cref="RenderImage"/> to try to use. If this <see cref="RenderImage"/>
-        /// instance is already set up as needed, it will be used instead of creating a new <see cref="RenderImage"/>. This is
+        /// <param name="w">The <see cref="Window"/> to create the <see cref="RenderTexture"/> for.</param>
+        /// <param name="ri">An optional, pre-existing <see cref="RenderTexture"/> to try to use. If this <see cref="RenderTexture"/>
+        /// instance is already set up as needed, it will be used instead of creating a new <see cref="RenderTexture"/>. This is
         /// primarily provided so you can pass a previous output from this method back into it.</param>
         /// <param name="disposeExisting">If <paramref name="ri"/> does not work for the <paramref name="w"/> and a new
-        /// <see cref="RenderImage"/> has to be created, if this value is true, then the <paramref name="ri"/> will be
+        /// <see cref="RenderTexture"/> has to be created, if this value is true, then the <paramref name="ri"/> will be
         /// disposed of. If false, it will not be disposed of.</param>
         /// <returns>
-        /// A <see cref="RenderImage"/> that can be used as a buffer for the <paramref name="w"/>, or null if the
-        /// <see cref="RenderImage"/> could needed to be recreated but could not be. Usually, it is okay to try again later
-        /// (such as the next frame) if the <see cref="RenderImage"/> failed to be created.
+        /// A <see cref="RenderTexture"/> that can be used as a buffer for the <paramref name="w"/>, or null if the
+        /// <see cref="RenderTexture"/> could needed to be recreated but could not be. Usually, it is okay to try again later
+        /// (such as the next frame) if the <see cref="RenderTexture"/> failed to be created.
         /// </returns>
-        public static RenderImage CreateBufferRenderImage(this Window w, RenderImage ri = null, bool disposeExisting = true)
+        public static RenderTexture CreateBufferRenderTexture(this Window w, RenderTexture ri = null, bool disposeExisting = true)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace NetGore.Graphics
                 var mustRecreate = false;
                 try
                 {
-                    if (ri == null || ri.IsDisposed || ri.Width != w.Width || ri.Height != w.Height)
+                    if (ri == null || ri.IsDisposed || ri.Size != w.Size)
                         mustRecreate = true;
                 }
                 catch (InvalidOperationException)
@@ -55,8 +55,7 @@ namespace NetGore.Graphics
                 catch (Exception ex)
                 {
                     // Recreate during any exception, but when its not one we know is fine to ignore, report it
-                    const string errmsg =
-                        "Unexpected exception when reading properties of a RenderImage. Forcing recreation. Exception: {0}";
+                    const string errmsg = "Unexpected exception when reading properties of a RenderImage. Forcing recreation. Exception: {0}";
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, ex);
 
@@ -90,8 +89,9 @@ namespace NetGore.Graphics
                 uint height;
                 try
                 {
-                    width = w.Width;
-                    height = w.Height;
+                    var size = w.Size;
+                    width = (uint)size.X;
+                    height = (uint)size.Y;
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -117,7 +117,7 @@ namespace NetGore.Graphics
                 // Create the new RenderImage
                 try
                 {
-                    ri = new RenderImage(width, height);
+                    ri = new RenderTexture(width, height);
                 }
                 catch (LoadingFailedException ex)
                 {

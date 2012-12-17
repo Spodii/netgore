@@ -1228,10 +1228,10 @@ using System.Linq;
         Target = "SFML.Window.JoyButtonEvent.#JoystickId")]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Scope = "member",
-        Target = "SFML.Window.JoyButtonEventArgs.#Button")]
+        Target = "SFML.Window.JoystickButtonEventArgs.#Button")]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Scope = "member",
-        Target = "SFML.Window.JoyButtonEventArgs.#JoystickId")]
+        Target = "SFML.Window.JoystickButtonEventArgs.#JoystickId")]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Scope = "member",
         Target = "SFML.Window.JoyMoveEvent.#Axis")]
@@ -1243,13 +1243,13 @@ using System.Linq;
         Target = "SFML.Window.JoyMoveEvent.#Position")]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Scope = "member",
-        Target = "SFML.Window.JoyMoveEventArgs.#Axis")]
+        Target = "SFML.Window.JoystickMoveEventArgs.#Axis")]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Scope = "member",
-        Target = "SFML.Window.JoyMoveEventArgs.#JoystickId")]
+        Target = "SFML.Window.JoystickMoveEventArgs.#JoystickId")]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Scope = "member",
-        Target = "SFML.Window.JoyMoveEventArgs.#Position")]
+        Target = "SFML.Window.JoystickMoveEventArgs.#Position")]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Scope = "member",
         Target = "SFML.Window.KeyEvent.#Alt")]

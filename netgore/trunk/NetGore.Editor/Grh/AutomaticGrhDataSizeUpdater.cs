@@ -184,7 +184,7 @@ namespace NetGore.Editor.Grhs
 
                 // The GrhData was not in the cache or the cache contains outdated values, so find the real size by grabbing it directly
                 // from the GrhData's texture
-                var realSize = new Vector2(gd.Texture.Width, gd.Texture.Height);
+                var realSize = gd.Texture.Size;
 
                 // To avoid using too much memory, we will dispose of the texture after we are done. Since the textures are lazy-loaded and
                 // automatically reload, this will not do any harm. We may end up disposing a few textures that were actually being used

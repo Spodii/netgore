@@ -103,7 +103,7 @@ namespace DemoGame.Client
         {
             base.OnKeyPressed(e);
 
-            if (e.Code == KeyCode.Escape)
+            if (e.Code == Keyboard.Key.Escape)
             {
                 if (RequestEndDialog != null)
                     RequestEndDialog.Raise(this, EventArgs.Empty);

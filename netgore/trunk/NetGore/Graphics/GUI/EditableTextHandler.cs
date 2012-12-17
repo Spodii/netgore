@@ -118,19 +118,19 @@ namespace NetGore.Graphics.GUI
         {
             switch (e.Code)
             {
-                case KeyCode.Left:
+                case Keyboard.Key.Left:
                     Source.MoveCursor(MoveCursorDirection.Left);
                     break;
 
-                case KeyCode.Right:
+                case Keyboard.Key.Right:
                     Source.MoveCursor(MoveCursorDirection.Right);
                     break;
 
-                case KeyCode.Up:
+                case Keyboard.Key.Up:
                     Source.MoveCursor(MoveCursorDirection.Up);
                     break;
 
-                case KeyCode.Down:
+                case Keyboard.Key.Down:
                     Source.MoveCursor(MoveCursorDirection.Down);
                     break;
             }

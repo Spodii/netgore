@@ -179,7 +179,7 @@ namespace DemoGame.Client
 
             MouseOverTarget = _world.Map.Spatial.Get<IDrawableTarget>(_world.Camera.ToWorld(cursorPos));
 
-            if (gui.IsMouseButtonDown(MouseButton.Left))
+            if (gui.IsMouseButtonDown(Mouse.Button.Left))
             {
                 if (MouseOverTarget != null)
                 {

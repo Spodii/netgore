@@ -172,7 +172,7 @@ namespace NetGore.Graphics.GUI
             if (sprites == null || sprites.Length == 0)
                 return null;
 
-            var lazyImages = sprites.Where(x => x != null && x.Texture != null).Select(x => x.Texture).OfType<LazyImage>();
+            var lazyImages = sprites.Where(x => x != null && x.Texture != null).Select(x => x.Texture).OfType<LazyTexture>();
             var validFileNames = lazyImages.Where(x => !string.IsNullOrEmpty(x.FileName)).Select(x => x.FileName);
             return validFileNames.FirstOrDefault();
         }

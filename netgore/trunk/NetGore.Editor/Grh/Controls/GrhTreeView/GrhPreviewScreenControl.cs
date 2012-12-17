@@ -59,7 +59,7 @@ namespace NetGore.Editor.Grhs
                 if (RenderWindow == null)
                     return ClientSize.ToVector2();
                 else
-                    return new Vector2(RenderWindow.Width, RenderWindow.Height);
+                    return RenderWindow.Size;
             }
         }
 

@@ -308,7 +308,7 @@ namespace NetGore.Content
         /// <returns>The asset instance.</returns>
         /// <exception cref="ObjectDisposedException"><c>ObjectDisposedException</c>.</exception>
         /// <exception cref="ArgumentNullException">Argument is null.</exception>
-        protected Image ReadAssetImage(string assetName)
+        protected Texture ReadAssetImage(string assetName)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(ToString());
@@ -444,13 +444,13 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// Loads an <see cref="Image"/> asset.
+        /// Loads an <see cref="Texture"/> asset.
         /// </summary>
         /// <param name="assetName">The name of the asset to load.</param>
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="assetName" /> is <c>null</c>.</exception>
-        public Image LoadImage(string assetName, ContentLevel level)
+        public Texture LoadImage(string assetName, ContentLevel level)
         {
             if (assetName == null)
                 throw new ArgumentNullException("assetName");
@@ -458,7 +458,7 @@ namespace NetGore.Content
             assetName = SanitizeAssetName(assetName);
 
             var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetImage(x));
-            return (Image)ret;
+            return (Texture)ret;
         }
 
         /// <summary>
@@ -633,12 +633,12 @@ namespace NetGore.Content
             /// Access to the internal pointer of the object.
             /// For internal use only
             /// </summary>
-            public override IntPtr This
+            public override IntPtr CPointer
             {
                 get
                 {
                     _lastUsed = TickCount.Now;
-                    return base.This;
+                    return base.CPointer;
                 }
             }
 
@@ -667,9 +667,9 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// <see cref="LazyImage"/> implementation specifically for the <see cref="ContentManager"/>.
+        /// <see cref="LazyTexture"/> implementation specifically for the <see cref="ContentManager"/>.
         /// </summary>
-        sealed class MyLazyImage : LazyImage, IMyLazyAsset
+        sealed class MyLazyImage : LazyTexture, IMyLazyAsset
         {
             TickCount _lastUsed;
 
@@ -686,12 +686,12 @@ namespace NetGore.Content
             /// Access to the internal pointer of the object.
             /// For internal use only
             /// </summary>
-            public override IntPtr This
+            public override IntPtr CPointer
             {
                 get
                 {
                     _lastUsed = TickCount.Now;
-                    return base.This;
+                    return base.CPointer;
                 }
             }
 
@@ -701,7 +701,11 @@ namespace NetGore.Content
             protected override void OnReload()
             {
                 Smooth = false;
-                CreateMaskFromColor(EngineSettings.TransparencyColor);
+                using (var img = CopyToImage())
+                {
+                    img.CreateMaskFromColor(EngineSettings.TransparencyColor);
+                    Update(img);
+                }
             }
 
             /// <summary>
@@ -748,12 +752,12 @@ namespace NetGore.Content
             /// Access to the internal pointer of the object.
             /// For internal use only
             /// </summary>
-            public override IntPtr This
+            public override IntPtr CPointer
             {
                 get
                 {
                     _lastUsed = TickCount.Now;
-                    return base.This;
+                    return base.CPointer;
                 }
             }
 

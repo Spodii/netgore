@@ -31,8 +31,16 @@ namespace NetGore.Graphics
                 return;
             }
 
-            using (var s = Shape.Line(p1, p2, thickness, color))
+            using (var s = new ConvexShape(4))
             {
+                s.SetPoint(0, p1);
+                s.SetPoint(1, p2);
+                s.SetPoint(2, p2 + new Vector2(1, 0));
+                s.SetPoint(3, p1 + new Vector2(1, 0));
+                s.FillColor = color;
+                s.OutlineColor = color;
+                s.OutlineThickness = thickness;
+
                 sb.Draw(s);
             }
         }

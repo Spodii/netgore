@@ -444,7 +444,7 @@ namespace NetGore.Graphics.GUI
         {
             base.OnMouseDown(e);
 
-            if (e.Button == MouseButton.Left)
+            if (e.Button == Mouse.Button.Left)
             {
                 Value = !_value;
                 _state = CheckBoxState.Pressed;

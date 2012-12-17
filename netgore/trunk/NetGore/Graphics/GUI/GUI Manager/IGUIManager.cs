@@ -140,18 +140,18 @@ namespace NetGore.Graphics.GUI
         Control GetControlAtPoint(Vector2 point);
 
         /// <summary>
-        /// Gets if a given <see cref="KeyCode"/> is currently being pressed.
+        /// Gets if a given <see cref="Keyboard.Key"/> is currently being pressed.
         /// </summary>
-        /// <param name="key">The <see cref="KeyCode"/> to check if pressed.</param>
+        /// <param name="key">The <see cref="Keyboard.Key"/> to check if pressed.</param>
         /// <returns>True if the <paramref name="key"/> is currently being pressed; otherwise false.</returns>
-        bool IsKeyDown(KeyCode key);
+        bool IsKeyDown(Keyboard.Key key);
 
         /// <summary>
-        /// Gets if a given <see cref="MouseButton"/> is currently being pressed.
+        /// Gets if a given <see cref="Mouse.Button"/> is currently being pressed.
         /// </summary>
-        /// <param name="button">The <see cref="MouseButton"/> to check if pressed.</param>
+        /// <param name="button">The <see cref="Mouse.Button"/> to check if pressed.</param>
         /// <returns>True if the <paramref name="button"/> is currently being pressed; otherwise false.</returns>
-        bool IsMouseButtonDown(MouseButton button);
+        bool IsMouseButtonDown(Mouse.Button button);
 
         /// <summary>
         /// Remove a <see cref="Control"/> from this <see cref="IGUIManager"/> from the root level. This should only be called

@@ -51,7 +51,7 @@ namespace SFML.Graphics
         /// Access to the internal pointer of the object.
         /// For internal use only
         /// </summary>
-        public override IntPtr This
+        public override IntPtr CPointer
         {
             get
             {
@@ -81,7 +81,7 @@ namespace SFML.Graphics
                     }
                 }
 
-                return base.This;
+                return base.CPointer;
             }
         }
 

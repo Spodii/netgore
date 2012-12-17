@@ -22,10 +22,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public SoundBuffer SoundBuffer
             {
-                get
-                {
-                    return mySoundBuffer;
-                }
+                get { return mySoundBuffer; }
             }
 
             ////////////////////////////////////////////////////////////
@@ -77,7 +74,7 @@ namespace SFML
             }
 
             List<short> mySamplesArray = new List<short>();
-            SoundBuffer mySoundBuffer  = null;
+            SoundBuffer mySoundBuffer = null;
         }
     }
 }

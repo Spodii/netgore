@@ -21,7 +21,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture containing the sprite.
         /// </summary>
-        Image Texture { get; }
+        Texture Texture { get; }
 
         /// <summary>
         /// Draws the <see cref="ISprite"/>.

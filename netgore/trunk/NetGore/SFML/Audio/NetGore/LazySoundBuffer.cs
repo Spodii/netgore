@@ -45,7 +45,7 @@ namespace SFML.Graphics
         /// Access to the internal pointer of the object.
         /// For internal use only
         /// </summary>
-        public override IntPtr This
+        public override IntPtr CPointer
         {
             get
             {
@@ -75,7 +75,7 @@ namespace SFML.Graphics
                     }
                 }
 
-                return base.This;
+                return base.CPointer;
             }
         }
 
@@ -101,7 +101,7 @@ namespace SFML.Graphics
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the <see cref="LazyImage"/> is reloaded.
+        /// When overridden in the derived class, handles when the <see cref="LazyTexture"/> is reloaded.
         /// </summary>
         protected virtual void OnReload()
         {

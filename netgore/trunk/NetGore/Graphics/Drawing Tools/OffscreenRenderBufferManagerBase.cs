@@ -29,9 +29,11 @@ namespace NetGore.Graphics
         /// </summary>
         readonly ISpriteBatch _sb;
 
+        readonly RenderStates _renderStates = RenderStates.Default;
+
         Color _bufferClearColor = _defaultColor;
         bool _isDisposed;
-        RenderImage _ri;
+        RenderTexture _ri;
         Window _window;
 
         /// <summary>
@@ -43,7 +45,6 @@ namespace NetGore.Graphics
 
             _drawToTargetSprite = new SFML.Graphics.Sprite
             {
-                BlendMode = BlendMode.Alpha,
                 Color = Color.White,
                 Rotation = 0,
                 Scale = Vector2.One,
@@ -166,15 +167,20 @@ namespace NetGore.Graphics
                 return false;
 
             // Set up the sprite
-            _drawToTargetSprite.Image = bufferImage;
-            _drawToTargetSprite.Width = bufferImage.Width;
-            _drawToTargetSprite.Height = bufferImage.Height;
-            _drawToTargetSprite.Position = target.ConvertCoords(0, 0).Round();
-            _drawToTargetSprite.SubRect = new IntRect(0, 0, (int)bufferImage.Width, (int)bufferImage.Height);
-            PrepareDrawToTargetSprite(_drawToTargetSprite, target);
+            _drawToTargetSprite.Texture = bufferImage;
+            _drawToTargetSprite.Position = target.MapPixelToCoords(Vector2.Zero).Round();
+
+            var bufferImageSize = bufferImage.Size;
+            _drawToTargetSprite.TextureRect = new IntRect(0, 0, (int)bufferImageSize.X, (int)bufferImageSize.Y);
+
+            // Reset RenderStates
+            _renderStates.Shader = DrawToTargetShader;
+            _renderStates.BlendMode = BlendMode.Alpha;
+            _renderStates.Transform = Transform.Identity;
+            _renderStates.Texture = null;
 
             // Draw to the target
-            HandleDrawBufferToTarget(bufferImage, _drawToTargetSprite, target, camera);
+            HandleDrawBufferToTarget(bufferImage, _drawToTargetSprite, target, camera, _renderStates);
 
             return true;
         }
@@ -190,13 +196,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the internal buffer and returns the <see cref="Image"/> for it after drawing it.
+        /// Gets the internal buffer and returns the <see cref="Texture"/> for it after drawing it.
         /// </summary>
         /// <param name="camera">The <see cref="ICamera2D"/> to use when drawing.</param>
         /// <returns>
-        /// The <see cref="Image"/> for the internal offscreen buffer, or null if the buffer failed to be drawn.
+        /// The <see cref="Texture"/> for the internal offscreen buffer, or null if the buffer failed to be drawn.
         /// </returns>
-        protected Image GetBuffer(ICamera2D camera)
+        protected Texture GetBuffer(ICamera2D camera)
         {
             EnsureInitialized();
 
@@ -226,7 +232,7 @@ namespace NetGore.Graphics
 
                 // Prepare and return the image
                 rt.Display();
-                return rt.Image;
+                return rt.Texture;
             }
             catch (Exception ex)
             {
@@ -239,13 +245,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Makes sure the internal buffer is ready then returns a <see cref="RenderImage"/> to draw to it.
+        /// Makes sure the internal buffer is ready then returns a <see cref="RenderTexture"/> to draw to it.
         /// </summary>
-        /// <returns>The <see cref="RenderImage"/> to use, or null if the buffer could not be prepared.</returns>
-        RenderImage GetRenderImage()
+        /// <returns>The <see cref="RenderTexture"/> to use, or null if the buffer could not be prepared.</returns>
+        RenderTexture GetRenderImage()
         {
             var oldRI = _ri;
-            _ri = _window.CreateBufferRenderImage(_ri);
+            _ri = _window.CreateBufferRenderTexture(_ri);
 
             if (_ri == null)
                 return null;
@@ -269,14 +275,13 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles the actual drawing of the buffer to a <see cref="RenderTarget"/>.
         /// </summary>
-        /// <param name="buffer">The <see cref="Image"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
+        /// <param name="buffer">The <see cref="Texture"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
         /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> set up to draw the <paramref name="buffer"/>.</param>
         /// <param name="target">The <see cref="RenderTarget"/> to draw the <paramref name="buffer"/> to.</param>
         /// <param name="camera">The <see cref="ICamera2D"/> that was used during the creation of the buffer.</param>
-        protected virtual void HandleDrawBufferToTarget(Image buffer, SFML.Graphics.Sprite sprite, RenderTarget target,
-                                                        ICamera2D camera)
+        protected virtual void HandleDrawBufferToTarget(Texture buffer, SFML.Graphics.Sprite sprite, RenderTarget target, ICamera2D camera, RenderStates renderStates)
         {
-            target.Draw(_drawToTargetSprite, DrawToTargetShader);
+            target.Draw(sprite, renderStates);
         }
 
         /// <summary>

@@ -160,10 +160,10 @@ namespace NetGore.Graphics
             if (newValue == null)
                 return;
 
-            newValue.ShowMouseCursor(ShowMouseCursor);
-            newValue.EnableVerticalSync(UseVerticalSync);
+            newValue.SetMouseCursorVisible(ShowMouseCursor);
+            newValue.SetVerticalSyncEnabled(UseVerticalSync);
             newValue.SetActive();
-            newValue.Show(true);
+            newValue.SetVisible(true);
         }
 
         /// <summary>
@@ -204,9 +204,9 @@ namespace NetGore.Graphics
                 // Add listeners
                 rw.Closed += rw_Closed;
                 rw.GainedFocus += rw_GainedFocus;
-                rw.JoyButtonPressed += rw_JoyButtonPressed;
-                rw.JoyButtonReleased += rw_JoyButtonReleased;
-                rw.JoyMoved += rw_JoyMoved;
+                rw.JoystickButtonPressed += rw_JoystickButtonPressed;
+                rw.JoystickButtonReleased += rw_JoystickButtonReleased;
+                rw.JoystickMoved += rw_JoystickMoved;
                 rw.KeyPressed += rw_KeyPressed;
                 rw.KeyReleased += rw_KeyReleased;
                 rw.LostFocus += rw_LostFocus;
@@ -224,9 +224,9 @@ namespace NetGore.Graphics
                 // Remove listeners
                 rw.Closed -= rw_Closed;
                 rw.GainedFocus -= rw_GainedFocus;
-                rw.JoyButtonPressed -= rw_JoyButtonPressed;
-                rw.JoyButtonReleased -= rw_JoyButtonReleased;
-                rw.JoyMoved -= rw_JoyMoved;
+                rw.JoystickButtonPressed -= rw_JoystickButtonPressed;
+                rw.JoystickButtonReleased -= rw_JoystickButtonReleased;
+                rw.JoystickMoved -= rw_JoystickMoved;
                 rw.KeyPressed -= rw_KeyPressed;
                 rw.KeyReleased -= rw_KeyReleased;
                 rw.LostFocus -= rw_LostFocus;
@@ -332,8 +332,8 @@ namespace NetGore.Graphics
         /// Handles the JoyButtonPressed event of the <see cref="GameBase.RenderWindow"/>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.JoyButtonEventArgs"/> instance containing the event data.</param>
-        void rw_JoyButtonPressed(object sender, JoyButtonEventArgs e)
+        /// <param name="e">The <see cref="SFML.Window.JoystickButtonEventArgs"/> instance containing the event data.</param>
+        void rw_JoystickButtonPressed(object sender, JoystickButtonEventArgs e)
         {
             if (JoyButtonPressed != null)
                 JoyButtonPressed.Raise(this, e);
@@ -343,8 +343,8 @@ namespace NetGore.Graphics
         /// Handles the JoyButtonReleased event of the <see cref="GameBase.RenderWindow"/>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.JoyButtonEventArgs"/> instance containing the event data.</param>
-        void rw_JoyButtonReleased(object sender, JoyButtonEventArgs e)
+        /// <param name="e">The <see cref="SFML.Window.JoystickButtonEventArgs"/> instance containing the event data.</param>
+        void rw_JoystickButtonReleased(object sender, JoystickButtonEventArgs e)
         {
             if (JoyButtonReleased != null)
                 JoyButtonReleased.Raise(this, e);
@@ -354,8 +354,8 @@ namespace NetGore.Graphics
         /// Handles the JoyMoved event of the <see cref="GameBase.RenderWindow"/>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.JoyMoveEventArgs"/> instance containing the event data.</param>
-        void rw_JoyMoved(object sender, JoyMoveEventArgs e)
+        /// <param name="e">The <see cref="SFML.Window.JoystickMoveEventArgs"/> instance containing the event data.</param>
+        void rw_JoystickMoved(object sender, JoystickMoveEventArgs e)
         {
             if (JoyMoved != null)
                 JoyMoved.Raise(this, e);
@@ -497,17 +497,17 @@ namespace NetGore.Graphics
         /// <summary>
         /// Event handler for the JoyButtonPressed event.
         /// </summary>
-        public event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonPressed = null;
+        public event TypedEventHandler<IGameContainer, JoystickButtonEventArgs> JoyButtonPressed = null;
 
         /// <summary>
         /// Event handler for the JoyButtonReleased event.
         /// </summary>
-        public event TypedEventHandler<IGameContainer, JoyButtonEventArgs> JoyButtonReleased = null;
+        public event TypedEventHandler<IGameContainer, JoystickButtonEventArgs> JoyButtonReleased = null;
 
         /// <summary>
         /// Event handler for the JoyMoved event.
         /// </summary>
-        public event TypedEventHandler<IGameContainer, JoyMoveEventArgs> JoyMoved = null;
+        public event TypedEventHandler<IGameContainer, JoystickMoveEventArgs> JoyMoved = null;
 
         /// <summary>
         /// Event handler for the KeyPressed event.
@@ -650,7 +650,9 @@ namespace NetGore.Graphics
 
                 // Finally, ensure we are showing the new RenderWindow
                 if (RenderWindow != null)
-                    RenderWindow.Show(true);
+                {
+                    RenderWindow.SetVisible(true);
+                }
             }
         }
 
@@ -679,7 +681,7 @@ namespace NetGore.Graphics
                 _showMouseCursor = value;
 
                 if (RenderWindow != null)
-                    RenderWindow.ShowMouseCursor(ShowMouseCursor);
+                    RenderWindow.SetMouseCursorVisible(ShowMouseCursor);
             }
         }
 
@@ -694,7 +696,7 @@ namespace NetGore.Graphics
                 _useVerticalSync = value;
 
                 if (RenderWindow != null)
-                    RenderWindow.EnableVerticalSync(UseVerticalSync);
+                    RenderWindow.SetVerticalSyncEnabled(UseVerticalSync);
             }
         }
 
@@ -788,7 +790,6 @@ namespace NetGore.Graphics
             if (_willDispose)
             {
                 Dispose();
-                return;
             }
         }
 

@@ -15,6 +15,7 @@ namespace NetGore.Graphics
         readonly SFML.Graphics.Sprite _sprite = new SFML.Graphics.Sprite();
         readonly Text _str = new Text();
         readonly View _view = new View();
+        readonly RenderStates _renderState = RenderStates.Default;
 
         bool _isDisposed;
         bool _isStarted;
@@ -42,7 +43,7 @@ namespace NetGore.Graphics
         /// <param name="asset">The asset to check if valid.</param>
         /// <returns>True if the <paramref name="asset"/> is in a valid state to be used; otherwise false.</returns>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        protected static bool IsAssetValid(Image asset)
+        protected static bool IsAssetValid(Texture asset)
         {
             if (asset == null || asset.IsDisposed)
                 return false;
@@ -71,8 +72,8 @@ namespace NetGore.Graphics
         /// </summary>
         public BlendMode BlendMode
         {
-            get { return _sprite.BlendMode; }
-            set { _sprite.BlendMode = value; }
+            get { return _renderState.BlendMode; }
+            set { _renderState.BlendMode = value; }
         }
 
         /// <summary>
@@ -120,11 +121,14 @@ namespace NetGore.Graphics
         /// <param name="rotation">The amount to rotation the view in degrees.</param>
         public void Begin(BlendMode blendMode, Vector2 position, Vector2 size, float rotation)
         {
+            position = position.Round();
+            size = size.Round();
+
             _view.Reset(new FloatRect(position.X, position.Y, size.X, size.Y));
             _view.Rotate(rotation);
             _rt.SetView(_view);
 
-            _sprite.BlendMode = blendMode;
+            _renderState.BlendMode = blendMode;
 
             _isStarted = true;
         }
@@ -149,11 +153,13 @@ namespace NetGore.Graphics
         /// <param name="blendMode">Blending options to use when rendering.</param>
         public virtual void Begin(BlendMode blendMode)
         {
-            _view.Reset(new FloatRect(0f, 0f, _rt.Width, _rt.Height));
+            var rtSize = _rt.Size;
+
+            _view.Reset(new FloatRect(0f, 0f, rtSize.X, rtSize.Y));
             _view.Rotate(0f);
             _rt.SetView(_view);
 
-            _sprite.BlendMode = blendMode;
+            _renderState.BlendMode = blendMode;
 
             _isStarted = true;
         }
@@ -183,10 +189,11 @@ namespace NetGore.Graphics
         /// <param name="shader">The <see cref="Shader"/> to use while drawing.</param>
         public virtual void Draw(SFML.Graphics.Sprite sprite, Shader shader = null)
         {
-            if (sprite == null || !IsAssetValid(sprite.Image))
+            if (sprite == null || !IsAssetValid(sprite.Texture))
                 return;
 
-            _rt.Draw(sprite, shader);
+            _renderState.Shader = shader;
+            _rt.Draw(sprite, _renderState);
         }
 
         /// <summary>
@@ -204,26 +211,35 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void Draw(Image texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color,
+        public virtual void Draw(Texture texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color,
                                  float rotation, Vector2 origin, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
         {
             if (!IsAssetValid(texture))
                 return;
 
-            _sprite.Image = texture;
+            if (sourceRectangle.HasValue)
+            {
+                _sprite.TextureRect = (IntRect)sourceRectangle.Value;
+            }
+            else
+            {
+                Texture t = _sprite.Texture;
+                var tSize = t.Size;
+                _sprite.TextureRect = new IntRect(0, 0, (int)tSize.X, (int)tSize.Y);
+            }
+
+            var spriteTextureRect = _sprite.TextureRect;
+
+            _sprite.Texture = texture;
             _sprite.Position = new Vector2(destinationRectangle.X, destinationRectangle.Y);
-            _sprite.SubRect = sourceRectangle.HasValue
-                                  ? (IntRect)sourceRectangle
-                                  : new IntRect(0, 0, (int)_sprite.Image.Width, (int)_sprite.Image.Height);
             _sprite.Color = color;
             _sprite.Rotation = -MathHelper.ToDegrees(rotation);
             _sprite.Origin = origin;
-            _sprite.FlipX((effects & SpriteEffects.FlipHorizontally) != 0);
-            _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
-            _sprite.Scale = new Vector2((float)destinationRectangle.Width / _sprite.SubRect.Width,
-                (float)destinationRectangle.Height / _sprite.SubRect.Height);
+            _sprite.Scale = new Vector2((float)destinationRectangle.Width / spriteTextureRect.Width, (float)destinationRectangle.Height / spriteTextureRect.Height)
+                * GetScaleEffectMultiplier(effects);
 
-            _rt.Draw(_sprite, shader);
+            _renderState.Shader = shader;
+            _rt.Draw(_sprite, _renderState);
         }
 
         /// <summary>
@@ -236,7 +252,8 @@ namespace NetGore.Graphics
             if (drawable == null)
                 return;
 
-            _rt.Draw(drawable, shader);
+            _renderState.Shader = shader;
+            _rt.Draw(drawable, _renderState);
         }
 
         /// <summary>
@@ -251,8 +268,7 @@ namespace NetGore.Graphics
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void Draw(Image texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color,
-                                 Shader shader = null)
+        public virtual void Draw(Texture texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, Shader shader = null)
         {
             Draw(texture, destinationRectangle, sourceRectangle, color, 0f, Vector2.Zero, SpriteEffects.None, shader);
         }
@@ -267,7 +283,7 @@ namespace NetGore.Graphics
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void Draw(Image texture, Rectangle destinationRectangle, Color color, Shader shader = null)
+        public virtual void Draw(Texture texture, Rectangle destinationRectangle, Color color, Shader shader = null)
         {
             Draw(texture, destinationRectangle, null, color, 0f, Vector2.Zero, SpriteEffects.None, shader);
         }
@@ -287,25 +303,44 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
+        public virtual void Draw(Texture texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
                                  Vector2 origin, Vector2 scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
         {
             if (!IsAssetValid(texture))
                 return;
 
-            _sprite.Image = texture;
+            if (sourceRectangle.HasValue)
+            {
+                _sprite.TextureRect = (IntRect)sourceRectangle.Value;
+            }
+            else
+            {
+                Texture t = _sprite.Texture;
+                var tSize = t.Size;
+                _sprite.TextureRect = new IntRect(0, 0, (int)tSize.X, (int)tSize.Y);
+            }
+
+            _sprite.Texture = texture;
             _sprite.Position = position;
-            _sprite.SubRect = sourceRectangle.HasValue
-                                  ? (IntRect)sourceRectangle
-                                  : new IntRect(0, 0, (int)_sprite.Image.Width, (int)_sprite.Image.Height);
             _sprite.Color = color;
             _sprite.Rotation = -MathHelper.ToDegrees(rotation);
             _sprite.Origin = origin;
-            _sprite.FlipX((effects & SpriteEffects.FlipHorizontally) != 0);
-            _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
-            _sprite.Scale = scale;
+            _sprite.Scale = scale * GetScaleEffectMultiplier(effects);
 
-            _rt.Draw(_sprite, shader);
+            _renderState.Shader = shader;
+
+            _rt.Draw(_sprite, _renderState);
+        }
+
+        /// <summary>
+        /// Gets the scale multiplier for applying the given SpriteEffects to a sprite.
+        /// </summary>
+        static Vector2 GetScaleEffectMultiplier(SpriteEffects effects)
+        {
+            return new Vector2(
+                ((effects & SpriteEffects.FlipHorizontally) != 0) ? -1 : 1,
+                ((effects & SpriteEffects.FlipVertically) != 0) ? -1 : 1
+            );
         }
 
         /// <summary>
@@ -323,7 +358,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Uniform multiple by which to scale the sprite width and height.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
+        public virtual void Draw(Texture texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
                                  Vector2 origin, float scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
         {
             Draw(texture, position, sourceRectangle, color, rotation, origin, new Vector2(scale), effects, shader);
@@ -340,7 +375,7 @@ namespace NetGore.Graphics
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, Shader shader = null)
+        public virtual void Draw(Texture texture, Vector2 position, Rectangle? sourceRectangle, Color color, Shader shader = null)
         {
             Draw(texture, position, sourceRectangle, color, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, shader);
         }
@@ -354,7 +389,7 @@ namespace NetGore.Graphics
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
-        public virtual void Draw(Image texture, Vector2 position, Color color, Shader shader = null)
+        public virtual void Draw(Texture texture, Vector2 position, Color color, Shader shader = null)
         {
             Draw(texture, position, null, color, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, shader);
         }
@@ -373,8 +408,7 @@ namespace NetGore.Graphics
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public virtual void DrawString(Font font, StringBuilder text, Vector2 position, Color color, float rotation,
-                                       Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular,
-                                       Shader shader = null)
+                                       Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
             if (!IsAssetValid(font))
                 return;
@@ -411,7 +445,9 @@ namespace NetGore.Graphics
             _str.Style = style;
             _str.CharacterSize = font.DefaultSize;
 
-            _rt.Draw(_str, shader);
+            _renderState.Shader = shader;
+
+            _rt.Draw(_str, _renderState);
         }
 
         /// <summary>

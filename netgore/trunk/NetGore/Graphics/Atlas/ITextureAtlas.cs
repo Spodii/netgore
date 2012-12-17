@@ -17,7 +17,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the original texture.
         /// </summary>
-        Image Texture { get; }
+        Texture Texture { get; }
 
         /// <summary>
         /// Removes the atlas from the object and forces it to draw normally.
@@ -30,7 +30,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="atlas">If the <see cref="ITextureAtlasable"/> is using this atlas, then the atlas
         /// should be removed.</param>
-        void RemoveAtlas(Image atlas);
+        void RemoveAtlas(Texture atlas);
 
         /// <summary>
         /// Sets the atlas information.
@@ -38,6 +38,6 @@ namespace NetGore.Graphics
         /// <param name="texture">The atlas texture.</param>
         /// <param name="atlasSourceRect">The source <see cref="Rectangle"/> for the image in the atlas texture.</param>
         /// <exception cref="ArgumentNullException"><paramref name="texture" /> is <c>null</c>.</exception>
-        void SetAtlas(Image texture, Rectangle atlasSourceRect);
+        void SetAtlas(Texture texture, Rectangle atlasSourceRect);
     }
 }
