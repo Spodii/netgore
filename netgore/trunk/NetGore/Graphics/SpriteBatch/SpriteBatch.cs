@@ -233,7 +233,7 @@ namespace NetGore.Graphics
             _sprite.Texture = texture;
             _sprite.Position = new Vector2(destinationRectangle.X, destinationRectangle.Y);
             _sprite.Color = color;
-            _sprite.Rotation = -MathHelper.ToDegrees(rotation);
+            _sprite.Rotation = MathHelper.ToDegrees(rotation);
             _sprite.Origin = origin;
             _sprite.Scale = new Vector2((float)destinationRectangle.Width / spriteTextureRect.Width, (float)destinationRectangle.Height / spriteTextureRect.Height)
                 * GetScaleEffectMultiplier(effects);
@@ -323,7 +323,7 @@ namespace NetGore.Graphics
             _sprite.Texture = texture;
             _sprite.Position = position;
             _sprite.Color = color;
-            _sprite.Rotation = -MathHelper.ToDegrees(rotation);
+            _sprite.Rotation = MathHelper.ToDegrees(rotation);
             _sprite.Origin = origin;
             _sprite.Scale = scale * GetScaleEffectMultiplier(effects);
 
