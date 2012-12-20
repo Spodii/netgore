@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
@@ -258,6 +259,91 @@ namespace NetGore.Db.MySql
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Deleted {0} unreferenced rows from {1}.{2} using column {3}.", ret, schema, table, column);
+
+            return ret;
+        }
+
+
+        /// <summary>
+        /// Executes raw sql directly against the database with no parameterization or pooling.
+        /// Only use this for quick one-off queries, such as queries to run during load/unload of the server or editor-specific tasks.
+        /// </summary>
+        /// <param name="sql">The sql to execute.</param>
+        public override void ExecuteNonQuery(string sql)
+        {
+            using (var conn = ConnectionPool.Acquire())
+            {
+                using (var trans = conn.Connection.BeginTransaction())
+                {
+                    using (var dbCommand = conn.Connection.CreateCommand())
+                    {
+                        dbCommand.CommandText = sql;
+                        dbCommand.ExecuteNonQuery();
+                    }
+                    trans.Commit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Executes raw sql directly against the database with no parameterization or pooling.
+        /// Only use this for quick one-off queries, such as queries to run during load/unload of the server or editor-specific tasks.
+        /// </summary>
+        /// <param name="sqls">The sql queries to execute. Gets wrapped up in a transaction.</param>
+        public override void ExecuteNonQueries(params string[] sqls)
+        {
+            using (var conn = ConnectionPool.Acquire())
+            {
+                using (var trans = conn.Connection.BeginTransaction())
+                {
+                    try
+                    {
+                        using (var dbCommand = conn.Connection.CreateCommand())
+                        {
+                            dbCommand.Connection = conn.Connection;
+                            dbCommand.Transaction = trans;
+                            foreach (string sql in sqls)
+                            {
+                                dbCommand.CommandText = sql;
+                                dbCommand.ExecuteNonQuery();
+                            }
+                            trans.Commit();
+                        }
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Executes raw sql directly against the database with no parameterization or pooling.
+        /// Only use this for quick one-off queries, such as queries to run during load/unload of the server or editor-specific tasks.
+        /// </summary>
+        /// <param name="sql">The sql to execute.</param>
+        /// <param name="readFunc">The function used to describe how to the results of each row.</param>
+        /// <typeparam name="T">The return type for read rows.</typeparam>
+        public override List<T> ExecuteQuery<T>(string sql, Func<DbDataReader, T> readFunc)
+        {
+            List<T> ret = new List<T>();
+
+            using (var conn = ConnectionPool.Acquire())
+            {
+                using (var dbCommand = conn.Connection.CreateCommand())
+                {
+                    dbCommand.CommandText = sql;
+                    using (var r = dbCommand.ExecuteReader())
+                    {
+                        while (r.Read())
+                        {
+                            ret.Add(readFunc(r));
+                        }
+                    }
+                }
+            }
 
             return ret;
         }

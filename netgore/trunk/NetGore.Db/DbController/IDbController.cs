@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using NetGore.Db.QueryBuilder;
 
@@ -59,5 +60,28 @@ namespace NetGore.Db
         /// <param name="column">The primary key column.</param>
         /// <returns>The number of rows removed, or -1 if there were no foreign keys for the given column in the first place.</returns>
         int RemoveUnreferencedPrimaryKeys(string schema, string table, string column);
+
+        /// <summary>
+        /// Executes raw sql directly against the database with no parameterization or pooling.
+        /// Only use this for quick one-off queries, such as queries to run during load/unload of the server or editor-specific tasks.
+        /// </summary>
+        /// <param name="sql">The sql to execute.</param>
+        void ExecuteNonQuery(string sql);
+
+        /// <summary>
+        /// Executes raw sql directly against the database with no parameterization or pooling.
+        /// Only use this for quick one-off queries, such as queries to run during load/unload of the server or editor-specific tasks.
+        /// </summary>
+        /// <param name="sqls">The sql queries to execute. Gets wrapped up in a transaction.</param>
+        void ExecuteNonQueries(params string[] sqls);
+
+        /// <summary>
+        /// Executes raw sql directly against the database with no parameterization or pooling.
+        /// Only use this for quick one-off queries, such as queries to run during load/unload of the server or editor-specific tasks.
+        /// </summary>
+        /// <param name="sql">The sql to execute.</param>
+        /// <param name="readFunc">The function used to describe how to the results of each row.</param>
+        /// <typeparam name="T">The return type for read rows.</typeparam>
+        List<T> ExecuteQuery<T>(string sql, Func<DbDataReader, T> readFunc);
     }
 }

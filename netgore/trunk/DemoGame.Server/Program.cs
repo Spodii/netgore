@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using DemoGame.Server.Queries;
 using DemoGame.Server.UI;
+using NetGore.Db;
 using log4net;
 using NetGore.IO;
 
@@ -36,7 +41,12 @@ namespace DemoGame.Server
         /// </summary>
         static void Main(string[] args)
         {
-            log.Info("Starting server...");
+            // Check to apply patches
+            if (args != null && args.Any(x => x != null && x.Trim() == "--patchdb"))
+            {
+                ServerDbPatcher.ApplyPatches();
+                return;
+            }
 
             Console.Title = "NetGore Server";
 

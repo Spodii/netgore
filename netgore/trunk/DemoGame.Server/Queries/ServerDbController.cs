@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using MySql.Data.MySqlClient;
 using NetGore.Db;
 using NetGore.Db.MySql;
 
