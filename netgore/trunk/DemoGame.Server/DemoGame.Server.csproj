@@ -54,6 +54,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\DemoGame\CodeRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\</OutputPath>
@@ -388,6 +389,7 @@
     <Compile Include="Say\SayHandlerCommands.LesserAdmin.cs" />
     <Compile Include="Say\SayHandlerCommands.Moderator.cs" />
     <Compile Include="ServerConsoleCommandEventArgs.cs" />
+    <Compile Include="ServerDbPatcher.cs" />
     <Compile Include="ServerGameData.cs" />
     <Compile Include="Properties\ServerSettingsDescriptions.Designer.cs">
       <AutoGen>True</AutoGen>

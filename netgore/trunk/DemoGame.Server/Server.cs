@@ -54,17 +54,30 @@ namespace DemoGame.Server
                 throw new NotSupportedException(errmsg);
             }
 
+            // Check if patching is needed
+            int numMissingPatches = -1;
+            try
+            {
+                numMissingPatches = ServerDbPatcher.GetMissingPatches().Length;
+            }
+            catch (Exception ex)
+            {
+                log.WarnFormat("Failed to find DbPatches directory, so could not check if patching is required. Exception: {0}", ex);
+            }
+
+            if (numMissingPatches > 0)
+            {
+                log.ErrorFormat("There are `{0}` NetGore db patches not applied. Please backup your database then run /DemoGame.Server/DbPatches/Patch.bat.", numMissingPatches);
+                log.ErrorFormat("Server will auto-close after 10 seconds, and will keep doing this until you patch.");
+                Thread.Sleep(10 * 1000);
+                return;
+            }
+
             // Initialize the engine settings
             EngineSettingsInitializer.Initialize();
 
             // Create the DbController
-            var settings = new DbConnectionSettings();
-            _dbController =
-                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                    x => PromptEditDbSettingsFile(settings, x));
-
-            if (_dbController == null)
-                return;
+            _dbController = CreateDbController();
 
             // Add the query stats tracker
             var queryStats = new BasicQueryStatsTracker { LogFilePath = ContentPaths.Build.Root.Join("querystats.txt") };
@@ -109,6 +122,34 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.Info("Server loaded.");
+        }
+
+        /// <summary>
+        /// Creates a new DbController instance if one does not already exist. Do not use this to just acquire a DbController instance when one may already exist -
+        /// use DbControllerBase.GetInstance() instead.
+        /// </summary>
+        /// <returns></returns>
+        public static ServerDbController CreateDbController()
+        {
+            ServerDbController db = null;
+            
+            // See if the instance already exists
+            try
+            {
+                db = DbControllerBase.GetInstance() as ServerDbController;
+            }
+            catch
+            {
+            }
+
+            if (db == null)
+            {
+                var settings = new DbConnectionSettings();
+                db = (ServerDbController)settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                    x => PromptEditDbSettingsFile(settings, x));
+            }
+
+            return db;
         }
 
         /// <summary>
