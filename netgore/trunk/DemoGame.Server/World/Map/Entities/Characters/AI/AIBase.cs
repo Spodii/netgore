@@ -108,8 +108,8 @@ namespace DemoGame.Server
 
             float x = Math.Max(0, min.X);
             float y = Math.Max(0, min.Y);
-            float w = Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
-            float h = Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
+            float w = Math.Min(Actor.Map.Width, min.X + GameData.ScreenSize.X);
+            float h = Math.Min(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
 
             return new Rectangle(x, y, w, h);
         }
