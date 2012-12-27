@@ -103,15 +103,20 @@ namespace DemoGame.Server
         /// <returns>A <see cref="Rectangle"/> describing the visible screen area.</returns>
         public Rectangle GetVisibleMapArea()
         {
-            Vector2 center = Actor.Center;
-            Vector2 min = center - _halfScreenSize;
+            // How large the NPC's view area is in whole
+            Vector2 viewSize = GameData.ScreenSize;
 
-            float x = Math.Max(0, min.X);
-            float y = Math.Max(0, min.Y);
-            float w = Math.Min(Actor.Map.Width, min.X + GameData.ScreenSize.X);
-            float h = Math.Min(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
+            // Get the NPC's area, then inflate it in all directions by half the view area
+            Rectangle viewArea = Actor.ToRectangle();
+            viewArea.Inflate(viewSize / 2f);
 
-            return new Rectangle(x, y, w, h);
+            // Push the view area inside of the map, giving them the same view logic as a user
+            if (viewArea.X < 0) viewArea.X = 0;
+            if (viewArea.Y < 0) viewArea.Y = 0;
+            if (viewArea.Right > Actor.Map.Width) viewArea.X = (int)Actor.Map.Width - viewArea.Width;
+            if (viewArea.Bottom > Actor.Map.Height) viewArea.Y = (int)Actor.Map.Height - viewArea.Height;
+
+            return viewArea;
         }
 
         /// <summary>

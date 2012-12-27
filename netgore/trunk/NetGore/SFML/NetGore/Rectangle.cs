@@ -162,6 +162,11 @@ namespace SFML.Graphics
             return Inflate((int)horizontalAmount, (int)verticalAmount);
         }
 
+        public Rectangle Inflate(Vector2 amount)
+        {
+            return Inflate(amount.X, amount.Y);
+        }
+
         public Rectangle Inflate(float amount)
         {
             return Inflate(amount, amount);
