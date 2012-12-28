@@ -91,7 +91,14 @@ namespace NetGore.Editor
                 return false;
 
             string url = string.Format(_wikiPageUrlFormat, helpInfo.WikiPage);
-            Process.Start(url);
+            try
+            {
+                Process.Start(url);
+            }
+            catch
+            {
+                Process.Start("IExplore.exe", url);
+            }
 
             MouseOverControl = null;
 
