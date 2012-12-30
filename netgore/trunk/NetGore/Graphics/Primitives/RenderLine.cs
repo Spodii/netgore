@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using SFML.Graphics;
@@ -9,6 +10,11 @@ namespace NetGore.Graphics
     /// </summary>
     public static class RenderLine
     {
+        /// <summary>
+        /// Rectangle used for drawing our lines.
+        /// </summary>
+        static readonly RectangleShape _drawLineRect = new RectangleShape();
+
         /// <summary>
         /// Draws a line.
         /// </summary>
@@ -31,18 +37,32 @@ namespace NetGore.Graphics
                 return;
             }
 
-            using (var s = new ConvexShape(4))
-            {
-                s.SetPoint(0, p1);
-                s.SetPoint(1, p2);
-                s.SetPoint(2, p2 + new Vector2(1, 0));
-                s.SetPoint(3, p1 + new Vector2(1, 0));
-                s.FillColor = color;
-                s.OutlineColor = color;
-                s.OutlineThickness = thickness;
+            // Common properties set no matter the approach we use below
+            _drawLineRect.Position = p1;
+            _drawLineRect.FillColor = color;
 
-                sb.Draw(s);
+            // If we have a perfectly vertical or horizontal line, we can avoid using rotation to speed up the calculation, so check for that first.
+            // This is purely an optimization - the rotation approach works for all points still.
+            if (p1.X == p2.X)
+            {
+                // Perfectly vertical
+                _drawLineRect.Size = new Vector2(thickness, p2.Y - p1.Y);
+                _drawLineRect.Rotation = 0;
             }
+            else if (p1.Y == p2.Y)
+            {
+                // Perfectly horizontal
+                _drawLineRect.Size = new Vector2(p2.X - p1.X, thickness);
+                _drawLineRect.Rotation = 0;
+            }
+            else
+            {
+                // Treat as horizontal by setting the X as the distance and Y as the thickness, then rotate
+                _drawLineRect.Size = new Vector2(p2.Distance(p1), thickness);
+                _drawLineRect.Rotation = MathHelper.ToDegrees((float)Math.Atan2(p2.Y - p1.Y, p2.X - p1.X));
+            }
+
+            sb.Draw(_drawLineRect);
         }
     }
 }
