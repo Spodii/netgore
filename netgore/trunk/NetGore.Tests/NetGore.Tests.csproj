@@ -151,7 +151,6 @@
     <Compile Include="NetGore\IO\AssemblyClassInvokerTests.cs" />
     <Compile Include="NetGore\IO\BitStreamExtensionsTests.cs" />
     <Compile Include="NetGore\IO\GenericValueReaderWriterTests.cs" />
-    <Compile Include="NetGore\IO\JScriptAssemblyCreatorTests.cs" />
     <Compile Include="NetGore\IO\MessageCollectionBaseTests.cs" />
     <Compile Include="NetGore\IO\PathStringTests.cs" />
     <Compile Include="NetGore\IO\PersistableTests.cs" />

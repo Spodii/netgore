@@ -85,16 +85,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstMessages = new DemoGame.Editor.GameMessageValueListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtSelectedMessage = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.lstMissingMessages = new System.Windows.Forms.ListBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.btnMessagesGlobalJS = new System.Windows.Forms.Button();
-            this.btnMessagesLanguageJS = new System.Windows.Forms.Button();
-            this.btnMessagesTest = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -103,6 +96,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            this.lstMissingMessages = new System.Windows.Forms.ListBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lstMessages = new DemoGame.Editor.GameMessageValueListBox();
             this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -142,10 +138,6 @@
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
-            this.splitContainer6.Panel1.SuspendLayout();
-            this.splitContainer6.Panel2.SuspendLayout();
-            this.splitContainer6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -830,7 +822,8 @@
             // 
             // splitContainer5.Panel2
             // 
-            this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
+            this.splitContainer5.Panel2.Controls.Add(this.lstMissingMessages);
+            this.splitContainer5.Panel2.Controls.Add(this.label6);
             this.splitContainer5.Size = new System.Drawing.Size(456, 348);
             this.splitContainer5.SplitterDistance = 262;
             this.splitContainer5.TabIndex = 0;
@@ -855,17 +848,6 @@
             this.splitContainer7.Size = new System.Drawing.Size(456, 262);
             this.splitContainer7.SplitterDistance = 226;
             this.splitContainer7.TabIndex = 0;
-            // 
-            // lstMessages
-            // 
-            this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstMessages.FormattingEnabled = true;
-            this.lstMessages.Location = new System.Drawing.Point(0, 13);
-            this.lstMessages.Name = "lstMessages";
-            this.lstMessages.Size = new System.Drawing.Size(456, 213);
-            this.lstMessages.TabIndex = 5;
-            this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -896,79 +878,6 @@
             this.label7.Size = new System.Drawing.Size(97, 13);
             this.label7.TabIndex = 6;
             this.label7.Text = "Selected message:";
-            // 
-            // splitContainer6
-            // 
-            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer6.Name = "splitContainer6";
-            // 
-            // splitContainer6.Panel1
-            // 
-            this.splitContainer6.Panel1.Controls.Add(this.lstMissingMessages);
-            this.splitContainer6.Panel1.Controls.Add(this.label6);
-            // 
-            // splitContainer6.Panel2
-            // 
-            this.splitContainer6.Panel2.Controls.Add(this.btnMessagesGlobalJS);
-            this.splitContainer6.Panel2.Controls.Add(this.btnMessagesLanguageJS);
-            this.splitContainer6.Panel2.Controls.Add(this.btnMessagesTest);
-            this.splitContainer6.Size = new System.Drawing.Size(456, 82);
-            this.splitContainer6.SplitterDistance = 377;
-            this.splitContainer6.TabIndex = 0;
-            // 
-            // lstMissingMessages
-            // 
-            this.lstMissingMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMissingMessages.FormattingEnabled = true;
-            this.lstMissingMessages.Location = new System.Drawing.Point(0, 13);
-            this.lstMissingMessages.Name = "lstMissingMessages";
-            this.lstMissingMessages.Size = new System.Drawing.Size(377, 69);
-            this.lstMissingMessages.TabIndex = 6;
-            this.lstMissingMessages.DoubleClick += new System.EventHandler(this.lstMissingMessages_DoubleClick);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label6.Location = new System.Drawing.Point(0, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(95, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Missing messages:";
-            // 
-            // btnMessagesGlobalJS
-            // 
-            this.btnMessagesGlobalJS.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnMessagesGlobalJS.Location = new System.Drawing.Point(0, 44);
-            this.btnMessagesGlobalJS.Name = "btnMessagesGlobalJS";
-            this.btnMessagesGlobalJS.Size = new System.Drawing.Size(75, 22);
-            this.btnMessagesGlobalJS.TabIndex = 34;
-            this.btnMessagesGlobalJS.Text = "Global.js";
-            this.btnMessagesGlobalJS.UseVisualStyleBackColor = true;
-            this.btnMessagesGlobalJS.Click += new System.EventHandler(this.btnMessagesGlobalJS_Click);
-            // 
-            // btnMessagesLanguageJS
-            // 
-            this.btnMessagesLanguageJS.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnMessagesLanguageJS.Location = new System.Drawing.Point(0, 22);
-            this.btnMessagesLanguageJS.Name = "btnMessagesLanguageJS";
-            this.btnMessagesLanguageJS.Size = new System.Drawing.Size(75, 22);
-            this.btnMessagesLanguageJS.TabIndex = 33;
-            this.btnMessagesLanguageJS.Text = "Language.js";
-            this.btnMessagesLanguageJS.UseVisualStyleBackColor = true;
-            this.btnMessagesLanguageJS.Click += new System.EventHandler(this.btnMessagesLanguageJS_Click);
-            // 
-            // btnMessagesTest
-            // 
-            this.btnMessagesTest.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnMessagesTest.Location = new System.Drawing.Point(0, 0);
-            this.btnMessagesTest.Name = "btnMessagesTest";
-            this.btnMessagesTest.Size = new System.Drawing.Size(75, 22);
-            this.btnMessagesTest.TabIndex = 32;
-            this.btnMessagesTest.Text = "Test Build";
-            this.btnMessagesTest.UseVisualStyleBackColor = true;
-            this.btnMessagesTest.Click += new System.EventHandler(this.btnMessagesTest_Click);
             // 
             // splitContainer2
             // 
@@ -1053,6 +962,37 @@
             this.propertyGrid1.Size = new System.Drawing.Size(450, 342);
             this.propertyGrid1.TabIndex = 0;
             // 
+            // lstMissingMessages
+            // 
+            this.lstMissingMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMissingMessages.FormattingEnabled = true;
+            this.lstMissingMessages.Location = new System.Drawing.Point(0, 13);
+            this.lstMissingMessages.Name = "lstMissingMessages";
+            this.lstMissingMessages.Size = new System.Drawing.Size(456, 69);
+            this.lstMissingMessages.TabIndex = 8;
+            this.lstMissingMessages.DoubleClick += new System.EventHandler(this.lstMissingMessages_DoubleClick);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(95, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Missing messages:";
+            // 
+            // lstMessages
+            // 
+            this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstMessages.FormattingEnabled = true;
+            this.lstMessages.Location = new System.Drawing.Point(0, 13);
+            this.lstMessages.Name = "lstMessages";
+            this.lstMessages.Size = new System.Drawing.Size(456, 213);
+            this.lstMessages.TabIndex = 5;
+            this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
+            // 
             // DbEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1103,6 +1043,7 @@
             this.splitContainer4.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
+            this.splitContainer5.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
@@ -1111,11 +1052,6 @@
             this.splitContainer7.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
-            this.splitContainer6.Panel1.ResumeLayout(false);
-            this.splitContainer6.Panel1.PerformLayout();
-            this.splitContainer6.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
-            this.splitContainer6.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -1164,12 +1100,6 @@
         private System.Windows.Forms.Button btnMessagesDelete;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.SplitContainer splitContainer5;
-        private System.Windows.Forms.SplitContainer splitContainer6;
-        private System.Windows.Forms.ListBox lstMissingMessages;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button btnMessagesGlobalJS;
-        private System.Windows.Forms.Button btnMessagesLanguageJS;
-        private System.Windows.Forms.Button btnMessagesTest;
         private System.Windows.Forms.SplitContainer splitContainer7;
         private GameMessageValueListBox lstMessages;
         private System.Windows.Forms.Label label5;
@@ -1201,6 +1131,8 @@
         private System.Windows.Forms.Button btnShopDelete;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.PropertyGrid pgShop;
+        private System.Windows.Forms.ListBox lstMissingMessages;
+        private System.Windows.Forms.Label label6;
     }
 }
 

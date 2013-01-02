@@ -220,8 +220,7 @@ namespace DemoGame.Editor
             var selectQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
             var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
 
-            return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                selectQuery.Execute, x => insertByIDQuery.Execute(x));
+            return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute, insertByIDQuery.Execute);
         }
 
         /// <summary>
@@ -235,8 +234,7 @@ namespace DemoGame.Editor
             var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
             var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
 
-            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                selectQuery.Execute, x => insertByIDQuery.Execute(x));
+            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute, insertByIDQuery.Execute);
         }
 
         /// <summary>
@@ -675,33 +673,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnMessagesGlobalJS control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnMessagesGlobalJS_Click(object sender, EventArgs e)
-        {
-            FileHelper.TryOpenWithNotepad(GameMessageCollection.GlobalJScriptFilePath);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesLanguageJS control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnMessagesLanguageJS_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtMessages.Text))
-                return;
-
-            var filePath = GameMessageCollection.GetLanguageJScriptFile(txtMessages.Text);
-            if (!File.Exists(filePath))
-                File.WriteAllText(filePath, string.Empty);
-
-            FileHelper.TryOpenWithNotepad(filePath);
-        }
-
-        /// <summary>
         /// Handles the Click event of the btnMessagesNew control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -723,10 +694,6 @@ namespace DemoGame.Editor
             if (!File.Exists(langFile))
                 File.WriteAllText(langFile, string.Empty);
 
-            var jsFile = GameMessageCollection.GetLanguageJScriptFile(langFile);
-            if (!File.Exists(jsFile))
-                File.WriteAllText(jsFile, string.Empty);
-
             ChangeGameMessagesLanguage(name);
         }
 
@@ -742,28 +709,7 @@ namespace DemoGame.Editor
 
             GameMessageCollection.SaveRawMessages(txtMessages.Text, lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>());
 
-            MessageBox.Show(
-                string.Format("The game messages for language `{0}` have been successfully saved.", txtMessages.Text), "Saved!");
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesTest control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnMessagesTest_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtMessages.Text))
-                return;
-
-            string msg;
-            var success = GameMessageCollection.TestCompilation(lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>(),
-                out msg);
-
-            if (!success)
-                MessageBox.Show(msg);
-            else
-                MessageBox.Show("Compilation successful!");
+            MessageBox.Show(string.Format("The game messages for language `{0}` have been successfully saved.", txtMessages.Text), "Saved!");
         }
 
         /// <summary>

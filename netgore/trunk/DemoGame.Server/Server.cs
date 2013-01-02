@@ -14,7 +14,6 @@ using NetGore.Db.MySql;
 using NetGore.Features.Groups;
 using NetGore.IO;
 using NetGore.Network;
-using NetGore.Scripting;
 
 namespace DemoGame.Server
 {
@@ -91,9 +90,6 @@ namespace DemoGame.Server
             // Clean-up
             var cleaner = new ServerCleaner(this);
             cleaner.Run();
-
-            // Load the game data and such
-            InitializeScripts();
 
             // Create some objects
             _consoleCommands = new ConsoleCommands(this);
@@ -283,41 +279,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Creates a <see cref="ScriptTypeCollection"/> with the specified name.
-        /// </summary>
-        /// <param name="name">Name of the <see cref="ScriptTypeCollection"/>.</param>
-        static void CreateScriptTypeCollection(string name)
-        {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loading scripts `{0}`.", name);
-
-            string path = ContentPaths.Build.Data.Join("ServerScripts").Join(name);
-            var scriptTypes = new ScriptTypeCollection(name, path);
-
-            // Display warnings
-            if (log.IsWarnEnabled)
-            {
-                foreach (var warning in scriptTypes.CompilerErrors.Where(x => x.IsWarning))
-                {
-                    log.Warn(warning);
-                }
-            }
-
-            // Display errors
-            if (log.IsErrorEnabled)
-            {
-                foreach (var error in scriptTypes.CompilerErrors.Where(x => !x.IsWarning))
-                {
-                    log.Error(error);
-                }
-            }
-
-            // Check if the compilation failed
-            if (scriptTypes.CompilationFailed && log.IsFatalEnabled)
-                log.FatalFormat("Failed to compile scripts for `{0}`!", name);
-        }
-
-        /// <summary>
         /// Enqueues a console command string to be executed. When the command is executed, the results will be returned
         /// through the <see cref="Server.ConsoleCommandExecuted"/> event.
         /// </summary>
@@ -430,14 +391,6 @@ namespace DemoGame.Server
                     conn.Disconnect(GameMessage.LoginInvalidName);
                     break;
             }
-        }
-
-        /// <summary>
-        /// Initializes the scripts.
-        /// </summary>
-        static void InitializeScripts()
-        {
-            CreateScriptTypeCollection("AI");
         }
 
         /// <summary>
