@@ -10,7 +10,6 @@ using System.Text;
 using log4net;
 using NetGore;
 using NetGore.IO;
-using NetGore.Scripting;
 
 namespace DemoGame
 {
@@ -143,21 +142,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Compiles the assembly.
-        /// </summary>
-        /// <param name="assemblyCreator">The assembly creator to compile.</param>
-        /// <returns>
-        /// The <see cref="AssemblyClassInvoker"/> for the compiled assembly.
-        /// </returns>
-        protected override AssemblyClassInvoker CompileAssembly(JScriptAssemblyCreator assemblyCreator)
-        {
-            if (_rawMessagesOnly)
-                return null;
-
-            return base.CompileAssembly(assemblyCreator);
-        }
-
-        /// <summary>
         /// Gets the <see cref="GameMessageCollection"/> for the specified language.
         /// </summary>
         /// <param name="language">The game message language.</param>
@@ -185,26 +169,12 @@ namespace DemoGame
         public static void DeleteLanguageFiles(string language)
         {
             var file = GetLanguageFile(ContentPaths.Dev, language);
-            var jsFile = GetLanguageJScriptFile(file);
 
             // Delete the language messages file
             try
             {
                 if (File.Exists(file))
                     File.Delete(file);
-            }
-            catch (IOException ex)
-            {
-                const string errmsg = "Failed to delete language file `{0}`. Exception: {1}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, file, ex);
-            }
-
-            // Delete the JScript file
-            try
-            {
-                if (File.Exists(jsFile))
-                    File.Delete(jsFile);
             }
             catch (IOException ex)
             {
@@ -237,20 +207,9 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the <see cref="GameMessageCollection"/> JScript file for a certain language.
-        /// </summary>
-        /// <param name="languageFilePath">The path to the language file to get the additional JScript file for.</param>
-        /// <returns>The path to the JScript file.</returns>
-        public static string GetLanguageJScriptFile(string languageFilePath)
-        {
-            return languageFilePath + ".js";
-        }
-
-        /// <summary>
         /// Gets the names of all of the available languages.
         /// </summary>
         /// <returns>The names of all of the available languages.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static IEnumerable<string> GetLanguages()
         {
             var comp = StringComparer.OrdinalIgnoreCase;
@@ -263,26 +222,6 @@ namespace DemoGame
             files = files.OrderBy(x => x, comp);
 
             return files.ToImmutable();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional code to be added to the generated JScript.
-        /// </summary>
-        /// <param name="file">The file that is being loaded.</param>
-        /// <param name="assemblyCreator">The assembly creator.</param>
-        protected override void LoadAdditionalJScriptMembers(string file, JScriptAssemblyCreator assemblyCreator)
-        {
-            // global.js
-            var globalFile = GlobalJScriptFilePath;
-            if (File.Exists(globalFile))
-                assemblyCreator.AddRawMember(File.ReadAllText(globalFile));
-
-            // language.js
-            var languageFile = GetLanguageJScriptFile(file);
-            if (File.Exists(languageFile))
-                assemblyCreator.AddRawMember(File.ReadAllText(languageFile));
-
-            base.LoadAdditionalJScriptMembers(file, assemblyCreator);
         }
 
         /// <summary>
@@ -398,8 +337,7 @@ namespace DemoGame
         /// <returns>
         /// True if the <paramref name="messages"/>s compiled successfully; otherwise false.
         /// </returns>
-        public static bool TestCompilation(IEnumerable<KeyValuePair<GameMessage, string>> messages,
-                                           out IEnumerable<CompilerError> errors)
+        public static bool TestCompilation(IEnumerable<KeyValuePair<GameMessage, string>> messages, out IEnumerable<CompilerError> errors)
         {
             bool success;
             try
@@ -413,10 +351,6 @@ namespace DemoGame
                 var langFile = GetLanguageFile(ContentPaths.Dev, _tempLanguageName);
                 if (File.Exists(langFile))
                     File.Delete(langFile);
-
-                var jsFile = GetLanguageJScriptFile(langFile);
-                if (File.Exists(jsFile))
-                    File.Delete(jsFile);
             }
 
             return success;

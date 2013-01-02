@@ -108,7 +108,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Externals\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -487,11 +486,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Scripting\AssemblyClassInvoker.cs" />
     <Compile Include="IO\BitStream\BitStreamExtensions.cs" />
     <Compile Include="IO\IMessageCollection.cs" />
     <Compile Include="Core\ByteArrayEqualityComparer.cs" />
-    <Compile Include="Scripting\JScriptAssemblyCreator.cs" />
     <Compile Include="IO\PropertyInterface\IPropertyInterface.cs" />
     <Compile Include="IO\PropertyInterface\PropertyInterfaceManager.cs" />
     <Compile Include="IO\PropertySync\IPropertySync.cs" />
@@ -505,7 +502,6 @@
     <Compile Include="IO\Persistable\IPersistable.cs" />
     <Compile Include="IO\Persistable\PersistableHelper.cs" />
     <Compile Include="Core\LogHelper.cs" />
-    <Compile Include="Scripting\ScriptAssemblyCache.cs" />
     <Compile Include="SFML\Audio\Listener.cs" />
     <Compile Include="SFML\Audio\Music.cs" />
     <Compile Include="SFML\Audio\Sound.cs" />
@@ -607,9 +603,6 @@
     <Compile Include="Network\Sockets\INetworkSender.cs" />
     <Compile Include="Core\Parser.cs" />
     <Compile Include="Core\RandomHelper.cs" />
-    <Compile Include="Scripting\ScriptLanguage.cs" />
-    <Compile Include="Scripting\ScriptTypeCollection.cs" />
-    <Compile Include="Scripting\ScriptTypeHelper.cs" />
     <Compile Include="Core\Strings\Text Filter\BasicTextFilter.cs" />
     <Compile Include="Core\Strings\Text Filter\RegexTextFilter.cs" />
     <Compile Include="Core\Strings\Text Filter\TextFilter.cs" />

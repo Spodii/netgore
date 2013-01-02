@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.Scripting;
 
 namespace NetGore.IO
 {
@@ -18,9 +17,8 @@ namespace NetGore.IO
     public abstract class MessageCollectionBase<T> : IMessageCollection<T>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly IEnumerable<CompilerError> _compilationErrors = Enumerable.Empty<CompilerError>();
 
-        readonly AssemblyClassInvoker _invoker;
+        readonly IEnumerable<CompilerError> _compilationErrors = Enumerable.Empty<CompilerError>();
 
         /// <summary>
         /// Dictionary of messages for this language.
@@ -37,31 +35,11 @@ namespace NetGore.IO
         /// to this collection from this secondary collection.</param>
         protected MessageCollectionBase(string file, IEnumerable<KeyValuePair<T, string>> secondary = null)
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-
             if (log.IsDebugEnabled)
                 log.DebugFormat("Loading MessageCollectionBase from file `{0}`.", file);
 
             // Load the script messages
             _messages = Load(file, secondary);
-
-            var assemblyCreator = GetAssemblyCreator();
-
-            // Populate the assembly creator
-            assemblyCreator.ClassName = "Messages";
-
-            LoadAdditionalJScriptMembers(file, assemblyCreator);
-
-            foreach (var msg in _messages)
-            {
-                assemblyCreator.AddMessageScriptMethod(msg.Key.ToString(), msg.Value);
-            }
-
-            // Create the assembly and assembly invoker
-            _invoker = CompileAssembly(assemblyCreator);
-            _compilationErrors = assemblyCreator.CompilationErrors;
-
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -89,25 +67,6 @@ namespace NetGore.IO
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Added message `{0}` from default messages.", sourceMsg.Key);
             }
-        }
-
-        /// <summary>
-        /// Compiles the assembly.
-        /// </summary>
-        /// <param name="assemblyCreator">The assembly creator to compile.</param>
-        /// <returns>The <see cref="AssemblyClassInvoker"/> for the compiled assembly.</returns>
-        protected virtual AssemblyClassInvoker CompileAssembly(JScriptAssemblyCreator assemblyCreator)
-        {
-            return assemblyCreator.Compile();
-        }
-
-        /// <summary>
-        /// Gets the <see cref="JScriptAssemblyCreator"/> to use for creating the <see cref="Assembly"/>.
-        /// </summary>
-        /// <returns>The <see cref="JScriptAssemblyCreator"/> to use for creating the <see cref="Assembly"/>.</returns>
-        protected virtual JScriptAssemblyCreator GetAssemblyCreator()
-        {
-            return new JScriptAssemblyCreator();
         }
 
         /// <summary>
@@ -168,15 +127,6 @@ namespace NetGore.IO
                 AddMissingMessages(loadedMessages, secondary);
 
             return loadedMessages;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional code to be added to the generated JScript.
-        /// </summary>
-        /// <param name="file">The file that is being loaded.</param>
-        /// <param name="assemblyCreator">The assembly creator.</param>
-        protected virtual void LoadAdditionalJScriptMembers(string file, JScriptAssemblyCreator assemblyCreator)
-        {
         }
 
         /// <summary>
@@ -286,13 +236,19 @@ namespace NetGore.IO
         /// is not found or invalid.</returns>
         public virtual string GetMessage(T id, params string[] args)
         {
+            string msg;
+            if (!_messages.TryGetValue(id, out msg))
+                return null;
+
             try
             {
-                return _invoker.InvokeAsString(id.ToString(), new object[] { args });
+                return string.Format(msg, args);
             }
-            catch (MissingMemberException)
+            catch (Exception ex)
             {
-                return null;
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat("string.Format() failed on MsgId `{0}`. Exception: {1}", id, ex);
+                return msg;
             }
         }
 
