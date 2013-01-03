@@ -148,7 +148,6 @@
     <Compile Include="NetGore\Features\Guilds\GuildMemberNameRankTests.cs" />
     <Compile Include="NetGore\GameDateTimeTests.cs" />
     <Compile Include="NetGore\GrhIndexTests.cs" />
-    <Compile Include="NetGore\IO\AssemblyClassInvokerTests.cs" />
     <Compile Include="NetGore\IO\BitStreamExtensionsTests.cs" />
     <Compile Include="NetGore\IO\GenericValueReaderWriterTests.cs" />
     <Compile Include="NetGore\IO\MessageCollectionBaseTests.cs" />
@@ -176,9 +175,6 @@
     <Compile Include="NetGore\Collections\ObjectPoolTests.cs" />
     <Compile Include="NetGore\Collections\TSListTests.cs" />
     <Compile Include="CreateCreatorHandler.cs" />
-    <Compile Include="Db\ClassCreator\AliasingTests.cs" />
-    <Compile Include="Db\ClassCreator\ClassCreatorHelper.cs" />
-    <Compile Include="Db\ClassCreator\TypeTests.cs" />
     <Compile Include="Db\MySql\DbQueryNonReaderTests.cs" />
     <Compile Include="Db\MySql\MySqlDbConnectionPoolTests.cs" />
     <Compile Include="Db\MySql\MySqlDbManagerTests.cs" />

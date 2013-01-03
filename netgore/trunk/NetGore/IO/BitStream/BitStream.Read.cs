@@ -326,10 +326,10 @@ namespace NetGore.IO
         /// Reads 32 bits from the BitStream and returns the result as a float.
         /// </summary>
         /// <returns>Value of the next 32 bits in the BitStream as a float.</returns>
-        public float ReadFloat()
+        public unsafe float ReadFloat()
         {
-            var b = ReadBytes(sizeof(float));
-            return BitConverter.ToSingle(b, 0);
+            int intValue = ReadUnsigned(_bitsUInt);
+            return *((float*)&intValue);
         }
 
         /// <summary>
