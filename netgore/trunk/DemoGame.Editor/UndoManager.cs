@@ -62,7 +62,7 @@ namespace DemoGame.Editor
         public bool Snapshot()
         {
             // Serilize the whole map as binary into memory
-            byte[] serialized = BinaryValueWriter.CreateAndWrite(w => Map.Save(w, DynamicEntityFactory, MapBase.MapSaveFlags.DoNotSort));
+            byte[] serialized = BinaryValueWriter.CreateAndWrite(w => Map.Save(w, DynamicEntityFactory, MapBase.MapSaveFlags.DoNotSort), useEnumNames: false);
 
             // Check if the state changed since the last time
             if (_stateIndex >= 0 && ByteArrayEqualityComparer.AreEqual(_states[_stateIndex], serialized))
@@ -97,7 +97,7 @@ namespace DemoGame.Editor
                 return false;
 
             _stateIndex--;
-            Map.Load(BinaryValueReader.Create(_states[_stateIndex]), true, DynamicEntityFactory);
+            LoadMapFromState(_stateIndex);
 
             return true;
         }
@@ -112,9 +112,14 @@ namespace DemoGame.Editor
                 return false;
 
             _stateIndex++;
-            Map.Load(BinaryValueReader.Create(_states[_stateIndex]), true, DynamicEntityFactory);
+            LoadMapFromState(_stateIndex);
 
             return true;
+        }
+
+        void LoadMapFromState(int stateIndex)
+        {
+            Map.Load(BinaryValueReader.Create(_states[stateIndex], useEnumNames: false), true, DynamicEntityFactory);
         }
     }
 }
