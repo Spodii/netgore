@@ -96,7 +96,7 @@ namespace NetGore.IO
         {
             var bitLength = ReadUInt(null);
             var bs = _reader.ReadBits((int)bitLength);
-            return new BinaryValueReader(bs);
+            return new BinaryValueReader(bs, UseEnumNames);
         }
 
         #region IValueReader Members
