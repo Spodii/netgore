@@ -1478,8 +1478,6 @@ namespace DemoGame
 
             entity.Move(move);
 
-            Vector2 pos = entity.Position;
-
             // Perform collision detetion
             CheckCollisionsAgainstWalls(entity);
             CheckCollisionAgainstEntities(entity);

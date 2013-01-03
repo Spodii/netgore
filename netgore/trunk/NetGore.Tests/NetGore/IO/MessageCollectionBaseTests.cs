@@ -15,7 +15,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void CreateTest1()
         {
-            const string fileContents = @"A: ""Spodi says: \""Hi\""""";
+            const string fileContents = "A: Spodi says: \"Hi\"";
 
             using (var f = new TempFile())
             {
@@ -28,8 +28,8 @@ namespace NetGore.Tests.NetGore.IO
         public void CreateTest2()
         {
             const string fileContents =
-                @"A: ""Spodi says: \""Hi\""""
-                                         B: ""Spodi hates you. >:|""";
+                "A: Spodi says: \"Hi\"\n" +
+                "B: Spodi hates you. >:|";
 
             using (var f = new TempFile())
             {
@@ -42,8 +42,8 @@ namespace NetGore.Tests.NetGore.IO
         public void CreateTest3()
         {
             const string fileContents =
-                @"A: ""Spodi says: \""Hi\""""
-                                         B: ""$0 hates you. >:|""";
+                "A: Spodi says: \"Hi\"\n" +
+                "B: {0} hates you. >:|";
 
             using (var f = new TempFile())
             {
@@ -56,8 +56,8 @@ namespace NetGore.Tests.NetGore.IO
         public void CreateTest4()
         {
             const string fileContents =
-                @"A: ""Spodi says: \""Hi\""""
-                                         B: ""$0 says: \""$1\""""";
+                "A: Spodi says: \"Hi\"\n" +
+                "B: {0} says: \"$1\"";
 
             using (var f = new TempFile())
             {
@@ -69,7 +69,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void GetMessageTest1()
         {
-            const string fileContents = @"A: ""Spodi says: \""Hi\""""";
+            const string fileContents = "A: Spodi says: \"Hi\"";
 
             MsgColl c;
             using (var f = new TempFile())
@@ -87,8 +87,8 @@ namespace NetGore.Tests.NetGore.IO
         public void GetMessageTest2()
         {
             const string fileContents =
-                @"A: ""Spodi says: \""Hi\""""
-                                         B: ""Spodi hates you. >:|""";
+                "A: Spodi says: \"Hi\"\n" +
+                "B: Spodi hates you. >:|";
 
             MsgColl c;
             using (var f = new TempFile())
@@ -104,13 +104,12 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual("Spodi hates you. >:|", msg);
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "Spodi")]
         [Test]
         public void GetMessageTest3()
         {
             const string fileContents =
-                @"A: ""Spodi says: \""Hi\""""
-                                         B: ""$0 hates you. >:|""";
+                "A: Spodi says: \"Hi\"\n" +
+                "B: {0} hates you. >:|";
 
             MsgColl c;
             using (var f = new TempFile())
@@ -130,8 +129,8 @@ namespace NetGore.Tests.NetGore.IO
         public void GetMessageTest4()
         {
             const string fileContents =
-                @"A: ""$0 says: \""$1\""""
-                                         B: ""$0 eats $1 for $2. Yummy.""";
+                "A: {0} says: \"{1}\"\n" +
+                "B: {0} eats {1} for {2}. Yummy.";
 
             MsgColl c;
             using (var f = new TempFile())
@@ -148,27 +147,12 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
-        public void InlineJScriptTest()
-        {
-            const string fileContents = @"A: ""Spodi says $0*$1 equals "" + $0 * $1 + """;
-
-            MsgColl c;
-            using (var f = new TempFile())
-            {
-                File.WriteAllText(f.FilePath, fileContents);
-                c = new MsgColl(f.FilePath);
-            }
-
-            Assert.AreEqual("Spodi says 4*7 equals " + 4 * 7, c.GetMessage(MsgType.A, "4", "7"));
-        }
-
-        [Test]
         public void MissingMessageGrabFromSecondaryTest()
         {
             const string fileContentsA =
-                @"A: ""Spodi says: \""Hi\""""
-                                         B: ""Spodi hates you. >:|""";
-            const string fileContentsB = @"A: ""boob says: \""Hi\""";
+                "A: Spodi says: \"Hi\"\n" +
+                "B: Spodi hates you. >:|";
+            const string fileContentsB = "A: boob says: \"Hi\"";
 
             MsgColl cA;
             MsgColl cB;
@@ -193,7 +177,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void MissingMessageTest()
         {
-            const string fileContents = @"A: ""Hi""";
+            const string fileContents = "A: \"Hi\"";
 
             MsgColl c;
             using (var f = new TempFile())

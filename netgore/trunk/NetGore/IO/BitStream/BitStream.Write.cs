@@ -615,10 +615,10 @@ namespace NetGore.IO
         /// Writes a float (32 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the float to write</param>
-        public void Write(float value)
+        public unsafe void Write(float value)
         {
-            var b = BitConverter.GetBytes(value);
-            Write(b, 0, b.Length);
+            int intValue = *((int*)&value);
+            WriteUnsigned(intValue, _bitsUInt);
         }
 
         /// <summary>
