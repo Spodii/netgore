@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NetGore.Content;
+using NetGore;
 
 namespace NetGore.IO.PropertySync
 {
@@ -36,7 +37,7 @@ namespace NetGore.IO.PropertySync
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, ContentAssetName value)
         {
-            writer.Write(name, value);
+			writer.Write(name, value);
         }
     }
 }
