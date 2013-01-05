@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore;
 using SFML.Graphics;
 
 namespace NetGore.IO.PropertySync
