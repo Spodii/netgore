@@ -34,7 +34,8 @@
     <SccProvider>
     </SccProvider>
     <NoWin32Manifest>true</NoWin32Manifest>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>

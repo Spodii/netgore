@@ -189,7 +189,7 @@ namespace NetGore.Features.Guilds
         protected virtual bool InternalTryDemoteMember(IGuildMember invoker, IGuildMember target)
         {
             // Demote
-            --target.GuildRank;
+            target.GuildRank = new GuildRank((byte)(target.GuildRank - 1));
 
             if (target.GuildRank < 0 || target.GuildRank > _guildSettings.HighestRank)
             {
@@ -293,7 +293,7 @@ namespace NetGore.Features.Guilds
         protected virtual bool InternalTryPromoteMember(IGuildMember invoker, IGuildMember target)
         {
             // Promote
-            ++target.GuildRank;
+            target.GuildRank = new GuildRank((byte)(target.GuildRank + 1));
 
             if (target.GuildRank > invoker.GuildRank)
             {

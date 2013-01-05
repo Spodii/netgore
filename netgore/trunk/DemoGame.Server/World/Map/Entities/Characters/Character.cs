@@ -1801,10 +1801,10 @@ namespace DemoGame.Server
 
             // Add as much of the item to the inventory as we can
             int startAmount = item.Amount;
-            var remainder = _inventory.TryAdd(item);
+            ItemEntity remainder = _inventory.TryAdd(item);
 
             // Check how much was added
-            var amountAdded = (startAmount - (remainder != null ? remainder.Amount : 0));
+            int amountAdded = (startAmount - (remainder != null ? (int)remainder.Amount : 0));
             Debug.Assert(amountAdded >= 0 && amountAdded <= byte.MaxValue);
 
             amountAdded = amountAdded.Clamp(byte.MinValue, byte.MaxValue);

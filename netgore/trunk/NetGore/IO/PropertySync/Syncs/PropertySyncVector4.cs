@@ -37,7 +37,7 @@ namespace NetGore.IO.PropertySync
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, Vector4 value)
         {
-            writer.Write(name, value);
+            IValueWriterExtensions.Write(writer, name, value);
         }
     }
 }

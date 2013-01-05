@@ -19,8 +19,6 @@ namespace DemoGame.Editor.Tools
 {
     public class MapGrhCursorTool : MapCursorToolBase
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrhCursorTool"/> class.
         /// </summary>
