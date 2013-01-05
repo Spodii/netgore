@@ -160,10 +160,10 @@ namespace DemoGame.Server
         /// <returns>The <see cref="MapSpawnRect"/> as a <see cref="Rectangle"/>.</returns>
         public Rectangle ToRectangle(IMap map)
         {
-            var x = X.HasValue ? X.Value : 0;
-            var y = Y.HasValue ? Y.Value : 0;
-            var width = Width.HasValue ? Width.Value : (int)Math.Round(map.Width) - x;
-            var height = Height.HasValue ? Height.Value : (int)Math.Round(map.Height) - y;
+            int x = X.HasValue ? (int)X.Value : 0;
+            int y = Y.HasValue ? (int)Y.Value : 0;
+            int width = Width.HasValue ? (int)Width.Value : (int)Math.Round(map.Width) - x;
+            int height = Height.HasValue ? (int)Height.Value : (int)Math.Round(map.Height) - y;
 
             const string errmsgMoved =
                 "A spawn rectangle was being drawn off of the map." +
@@ -174,7 +174,7 @@ namespace DemoGame.Server
 
             if (x > map.Width)
             {
-                var t = x;
+                int t = x;
                 x = (int)(map.Height - width);
                 log.FatalFormat(errmsgMoved, "X", t, x);
                 Debug.Fail(string.Format(errmsgMoved, "X", t, x));
@@ -189,7 +189,7 @@ namespace DemoGame.Server
 
             if (y > map.Height)
             {
-                var t = y;
+                int t = y;
                 y = (int)(map.Height - height);
                 log.FatalFormat(errmsgMoved, "Y", t, y);
                 Debug.Fail(string.Format(errmsgMoved, "Y", t, y));

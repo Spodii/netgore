@@ -59,7 +59,7 @@ namespace DemoGame
         protected void ClearSlot(InventorySlot slot, bool destroy)
         {
             // Get the item at the slot
-            var item = this[slot];
+            T item = this[slot];
 
             // Check for a valid item
             if (item == null)
@@ -144,7 +144,7 @@ namespace DemoGame
             InventorySlot slot;
             while (TryFindStackableSlot(item, out slot))
             {
-                var invItem = this[slot];
+                T invItem = this[slot];
                 if (invItem == null)
                 {
                     const string errmsg = "This should never be a null item. If it is, TryFindStackableSlot() may be broken.";
@@ -198,7 +198,7 @@ namespace DemoGame
                     // There is too much of the item to fit into a single slot, so place a copy of the item into the slot
                     // with the amount equal to the max stack size and repeat this until we run out of slots or all of the
                     // item is added
-                    var copy = (T)item.DeepCopy();
+                    T copy = (T)item.DeepCopy();
                     copy.Amount = ItemEntityBase.MaxStackSize;
                     this[slot] = copy;
 
@@ -220,7 +220,7 @@ namespace DemoGame
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected virtual void InventoryItemDisposedHandler(Entity sender, EventArgs e)
         {
-            var item = (T)sender;
+            T item = (T)sender;
 
             // Try to get the slot
             InventorySlot slot;
@@ -249,7 +249,7 @@ namespace DemoGame
         protected bool TryFindEmptySlot(out InventorySlot emptySlot)
         {
             // Iterate through each slot
-            for (var i = 0; i < _buffer.Length; i++)
+            for (int i = 0; i < _buffer.Length; i++)
             {
                 // Return on the first null item
                 if (this[i] == null)
@@ -277,7 +277,7 @@ namespace DemoGame
             // Iterate through each slot
             for (var i = 0; i < _buffer.Length; i++)
             {
-                var invItem = this[i];
+                T invItem = this[i];
 
                 // Skip empty slots
                 if (invItem == null)
@@ -357,7 +357,7 @@ namespace DemoGame
                 }
 
                 // Check for a change
-                var oldItem = this[slot];
+                T oldItem = this[slot];
                 if (oldItem == value)
                     return;
 
@@ -401,7 +401,7 @@ namespace DemoGame
             {
                 var count = 0;
 
-                for (var i = 0; i < _buffer.Length; i++)
+                for (int i = 0; i < _buffer.Length; i++)
                 {
                     if (this[i] == null)
                         ++count;
@@ -418,7 +418,7 @@ namespace DemoGame
         {
             get
             {
-                for (var i = new InventorySlot(0); i < _buffer.Length; i++)
+                for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
                 {
                     var item = this[i];
                     if (item != null)
@@ -434,9 +434,9 @@ namespace DemoGame
         {
             get
             {
-                var count = 0;
+                int count = 0;
 
-                for (var i = 0; i < _buffer.Length; i++)
+                for (int i = 0; i < _buffer.Length; i++)
                 {
                     if (this[i] != null)
                         ++count;
@@ -469,10 +469,10 @@ namespace DemoGame
             int originalAmount = item.Amount;
 
             // Add the item
-            var remainder = TryAdd(item);
+            T remainder = TryAdd(item);
 
             // Find how much of the item was added
-            var ret = originalAmount - (remainder != null ? remainder.Amount : 0);
+            int ret = originalAmount - (remainder != null ? (int)remainder.Amount : 0);
 
             // If we had a remainder, destroy it
             if (remainder != null)
@@ -498,10 +498,10 @@ namespace DemoGame
             int originalAmount = item.Amount;
 
             // Add the item
-            var remainder = TryAdd(item, out changedSlots);
+            T remainder = TryAdd(item, out changedSlots);
 
             // Find how much of the item was added
-            var ret = originalAmount - (remainder != null ? remainder.Amount : 0);
+            int ret = originalAmount - (remainder != null ? (int)remainder.Amount : 0);
 
             // If we had a remainder, destroy it
             if (remainder != null)

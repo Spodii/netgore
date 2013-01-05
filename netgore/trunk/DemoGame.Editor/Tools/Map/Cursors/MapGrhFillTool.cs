@@ -21,8 +21,6 @@ namespace DemoGame.Editor.Tools
 {
     public class MapGrhFillTool : MapCursorToolBase
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         EditorMap _mouseOverMap;
         Vector2 _mousePos;
 

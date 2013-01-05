@@ -176,18 +176,13 @@ namespace NetGore
                 return true;
 
             IEnumerable<Type> a = type.GetCustomAttributes(true).Select(x => x.GetType());
-
-			// HACK: For some reason Mono 4.0 is not allowing us to pass the predicate directly into the Linq methods, instead it seems to derive that the method it is passing is the NetGore.StringExtentions.Contains method.  Here we force the correct extension overload and then use it in the queries.
-			Func<Type, bool> predicate = a.Contains;
-
-			bool isValid = (MatchAllAttributes ? Attributes.All(predicate) : Attributes.Any(predicate));
-            
-			if (!isValid)
+            bool isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
+            if (!isValid)
             {
                 if (RequireAttributes)
                 {
                     const string errmsg = "Type `{0}` does not have the required attributes: `{1}`.";
-                    var err = string.Format(errmsg, type, GetTypeString(Attributes));
+                    string err = string.Format(errmsg, type, GetTypeString(Attributes));
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     throw new TypeFilterException(err);
@@ -251,14 +246,9 @@ namespace NetGore
             if (Interfaces == null || Interfaces.IsEmpty())
                 return true;
 
-            IEnumerable<Type> i = type.GetInterfaces();
-
-			// HACK: For some reason Mono 4.0 is not allowing us to pass the predicate directly into the Linq methods, instead it seems to derive that the method it is passing is the NetGore.StringExtentions.Contains method.  Here we force the correct extension overload and then use it in the queries.
-			Func<Type, bool> predicate = i.Contains;
-
-            bool isValid = (MatchAllInterfaces ? Interfaces.All(predicate) : Interfaces.Any(predicate));
-           
-			if (!isValid)
+            Type[] i = type.GetInterfaces();
+            bool isValid = (MatchAllInterfaces ? Interfaces.All(x => i.Contains(x)) : Interfaces.Any(x => i.Contains(x)));
+            if (!isValid)
             {
                 if (RequireInterfaces)
                 {

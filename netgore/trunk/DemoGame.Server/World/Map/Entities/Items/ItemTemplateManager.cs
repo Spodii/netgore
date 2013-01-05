@@ -13,7 +13,6 @@ namespace DemoGame.Server
     public class ItemTemplateManager : DbTableDataManager<ItemTemplateID, IItemTemplateTable>
     {
         static readonly ItemTemplateManager _instance;
-        static readonly SafeRandom _rnd = new SafeRandom();
 
         SelectItemTemplateQuery _selectItemTemplateQuery;
 
