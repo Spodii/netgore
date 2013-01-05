@@ -175,9 +175,14 @@ namespace NetGore
             if (Attributes == null || Attributes.IsEmpty())
                 return true;
 
-            var a = type.GetCustomAttributes(true).Select(x => x.GetType());
-            var isValid = (MatchAllAttributes ? Attributes.All(a.Contains) : Attributes.Any(a.Contains));
-            if (!isValid)
+            IEnumerable<Type> a = type.GetCustomAttributes(true).Select(x => x.GetType());
+
+			// HACK: For some reason Mono 4.0 is not allowing us to pass the predicate directly into the Linq methods, instead it seems to derive that the method it is passing is the NetGore.StringExtentions.Contains method.  Here we force the correct extension overload and then use it in the queries.
+			Func<Type, bool> predicate = a.Contains;
+
+			bool isValid = (MatchAllAttributes ? Attributes.All(predicate) : Attributes.Any(predicate));
+            
+			if (!isValid)
             {
                 if (RequireAttributes)
                 {
@@ -246,9 +251,14 @@ namespace NetGore
             if (Interfaces == null || Interfaces.IsEmpty())
                 return true;
 
-            var i = type.GetInterfaces();
-            var isValid = (MatchAllInterfaces ? Interfaces.All(i.Contains) : Interfaces.Any(i.Contains));
-            if (!isValid)
+            IEnumerable<Type> i = type.GetInterfaces();
+
+			// HACK: For some reason Mono 4.0 is not allowing us to pass the predicate directly into the Linq methods, instead it seems to derive that the method it is passing is the NetGore.StringExtentions.Contains method.  Here we force the correct extension overload and then use it in the queries.
+			Func<Type, bool> predicate = i.Contains;
+
+            bool isValid = (MatchAllInterfaces ? Interfaces.All(predicate) : Interfaces.Any(predicate));
+           
+			if (!isValid)
             {
                 if (RequireInterfaces)
                 {
