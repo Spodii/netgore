@@ -106,5 +106,25 @@ namespace NetGore.Features.Guilds
         {
             return left.Equals(right);
         }
+
+        /// <summary>
+        /// Implements the operator --
+        /// </summary>
+        /// <param name="rank">Argument.</param>
+        /// <returns>New GuildRank with one less.</returns>
+        public static GuildRank operator --(GuildRank rank)
+        {
+            return new GuildRank((byte)(rank._value - 1));
+        }
+
+        /// <summary>
+        /// Implements the operator ++.
+        /// </summary>
+        /// <param name="rank">Argument.</param>
+        /// <returns>New GuildRank plus one.</returns>
+        public static GuildRank operator ++(GuildRank rank)
+        {
+            return new GuildRank((byte)(rank._value + 1));
+        }
     }
 }
