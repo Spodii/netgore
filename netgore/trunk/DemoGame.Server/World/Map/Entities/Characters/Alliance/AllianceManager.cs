@@ -67,26 +67,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/> to an int.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The <paramref name="value"/> as an int.</returns>
-        protected override int IDToInt(AllianceID value)
-        {
-            return (int)value;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, converts the int to a <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The int value.</param>
-        /// <returns>The int as a <paramref name="value"/>.</returns>
-        public override AllianceID IntToID(int value)
-        {
-            return new AllianceID(value);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, loads an item from the database.
         /// </summary>
         /// <param name="id">The ID of the item to load.</param>

@@ -13,12 +13,13 @@ namespace NetGore.Db
     /// </summary>
     /// <typeparam name="TID">The Type of ID.</typeparam>
     /// <typeparam name="TItem">The Type of item.</typeparam>
-    public abstract class DbTableDataManager<TID, TItem> : IEnumerable<TItem>
+    public abstract class DbTableDataManager<TID, TItem> : IEnumerable<TItem> where TItem : class
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        readonly object _loadSync = new object();
         readonly IDbController _dbController;
-        readonly DArray<TItem> _items = new DArray<TItem>(32);
+        readonly Dictionary<TID, TItem> _items = new Dictionary<TID, TItem>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbTableDataManager{TID, TItem}"/> class.
@@ -34,7 +35,8 @@ namespace NetGore.Db
 
             CacheDbQueries(_dbController);
 
-            LoadAll();
+            foreach (var id in GetIDs())
+                _items.Add(id, null);
         }
 
         /// <summary>
@@ -47,11 +49,23 @@ namespace NetGore.Db
         {
             get
             {
-                var i = IDToInt(id);
-                if (!_items.CanGet(i))
+                TItem value;
+                if (!_items.TryGetValue(id, out value))
                     return default(TItem);
 
-                return _items[i];
+                // Load if the value is null, which means the id exists but is not loaded
+                if (value == null)
+                {
+                    // Synchronize loads to prevent multiple loads of the same item
+                    lock (_loadSync)
+                    {
+                        value = _items[id]; // Since we weren't locked until now, it could have loaded already
+                        if (value == null)
+                            value = Reload(id);
+                    }
+                }
+
+                return value;
             }
         }
 
@@ -68,7 +82,7 @@ namespace NetGore.Db
         /// </summary>
         public int Length
         {
-            get { return _items.Length; }
+            get { return _items.Count; }
         }
 
         /// <summary>
@@ -89,40 +103,6 @@ namespace NetGore.Db
         protected abstract IEnumerable<TID> GetIDs();
 
         /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/> to an int.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The <paramref name="value"/> as an int.</returns>
-        protected abstract int IDToInt(TID value);
-
-        /// <summary>
-        /// When overridden in the derived class, converts the int to a <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The int value.</param>
-        /// <returns>The int as a <paramref name="value"/>.</returns>
-        public abstract TID IntToID(int value);
-
-        /// <summary>
-        /// Loads all of the items.
-        /// </summary>
-        void LoadAll()
-        {
-            var ids = GetIDs();
-
-            foreach (var id in ids)
-            {
-                var item = LoadItem(id);
-                var i = IDToInt(id);
-                _items.Insert(i, item);
-
-                if (log.IsDebugEnabled)
-                    log.DebugFormat("Loaded item `{0}` at index `{1}`.", item, i);
-            }
-
-            _items.Trim();
-        }
-
-        /// <summary>
         /// When overridden in the derived class, loads an item from the database.
         /// </summary>
         /// <param name="id">The ID of the item to load.</param>
@@ -135,33 +115,16 @@ namespace NetGore.Db
         /// the old object will continue to reference the old values instead of the newly loaded values.
         /// </summary>
         /// <param name="id">The ID of the item to reload from the database.</param>
-        public virtual void Reload(TID id)
+        /// <returns>The loaded item.</returns>
+        public virtual TItem Reload(TID id)
         {
             var item = LoadItem(id);
-            var i = IDToInt(id);
+            _items[id] = item;
 
-            _items.Insert(i, item);
-        }
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Loaded item `{0}` at index `{1}`.", item, id);
 
-        /// <summary>
-        /// Tries to get the item for the given <paramref name="id"/>.
-        /// </summary>
-        /// <param name="id">The ID of the item to get.</param>
-        /// <param name="item">When this method returns true, contains the item with the given <paramref name="id"/>.</param>
-        /// <returns>True if the <paramref name="item"/> for the given <paramref name="id"/> was found;
-        /// otherwise false.</returns>
-        public bool TryGetValue(TID id, out TItem item)
-        {
-            var i = IDToInt(id);
-
-            if (!_items.CanGet(i))
-            {
-                item = default(TItem);
-                return false;
-            }
-
-            item = _items[i];
-            return true;
+            return item;
         }
 
         #region IEnumerable<TItem> Members
@@ -174,9 +137,9 @@ namespace NetGore.Db
         /// </returns>
         public IEnumerator<TItem> GetEnumerator()
         {
-            foreach (var item in _items)
+            foreach (var key in _items.Keys.ToImmutable())
             {
-                yield return item;
+                yield return this[key];
             }
         }
 

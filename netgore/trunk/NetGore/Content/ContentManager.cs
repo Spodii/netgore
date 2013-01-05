@@ -24,12 +24,12 @@ namespace NetGore.Content
         /// When the length of a file name for a lazy asset exceeds this length, trim it down to only show the
         /// last characters, length of which is defined by <see cref="_lazyAssetTrimmedFileNameLength"/>.
         /// </summary>
-        const int _lazyAssetTrimFileNameLength = 30;
+        const int _lazyAssetTrimFileNameLength = 105;
 
         /// <summary>
         /// The length of a trimmed file name for lazy asset.
         /// </summary>
-        const int _lazyAssetTrimmedFileNameLength = 25;
+        const int _lazyAssetTrimmedFileNameLength = 100;
 
         /// <summary>
         /// Gets the minimum amount of time that an asset must go unused before being unloaded.
