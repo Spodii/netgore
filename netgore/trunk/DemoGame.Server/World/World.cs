@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using DemoGame.Server.Guilds;
 using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
@@ -81,7 +83,7 @@ namespace DemoGame.Server
 
             _unarmedWeapon = new ItemEntity(unarmedWeaponTemplate, 1);
 
-            // Load the maps
+            // Create the maps
             var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
             _maps = new DArray<Map>(mapFiles.Count() + 10);
             foreach (var mapFile in mapFiles)
@@ -97,8 +99,14 @@ namespace DemoGame.Server
 
                 var m = new Map(mapID, this);
                 _maps[(int)mapID] = m;
-                m.Load();
             }
+
+            // Load maps in parallel
+            Parallel.ForEach(_maps, map =>
+            {
+                if (map != null)
+                    map.Load();
+            });
 
             // Trim down the maps array under the assumption we won't be adding more maps
             _maps.Trim();

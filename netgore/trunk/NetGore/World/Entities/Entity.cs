@@ -536,8 +536,6 @@ namespace NetGore.World
         /// </summary>
         public void Dispose()
         {
-            ThreadAsserts.IsMainThread();
-
             // Check if the Entity has already been disposed
             if (IsDisposed)
                 return;

@@ -635,13 +635,13 @@ namespace DemoGame.Server
                 return;
             }
 
-            if (!ShopManager.TryGetValue(shopID.Value, out _shop))
+            _shop = ShopManager[shopID.Value];
+            if (_shop == null)
             {
                 const string errmsg = "Failed to load shop with ID `{0}` for NPC `{1}`. Setting shop as null.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, shopID.Value, this);
                 Debug.Fail(string.Format(errmsg, shopID.Value, this));
-                _shop = null;
             }
         }
 

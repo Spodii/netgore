@@ -45,6 +45,8 @@ namespace DemoGame.Server
         /// <exception cref="NotSupportedException">NetGore does not support systems that are not in Little Endian mode!</exception>
         public Server()
         {
+            ThreadAsserts.IsMainThread();
+
             // Check for some system settings
             if (!BitConverter.IsLittleEndian)
             {
@@ -134,7 +136,7 @@ namespace DemoGame.Server
             {
                 db = DbControllerBase.GetInstance() as ServerDbController;
             }
-            catch
+            catch (MemberAccessException)
             {
             }
 

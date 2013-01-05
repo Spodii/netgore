@@ -134,8 +134,8 @@ namespace DemoGame.Editor.UITypeEditors
 
             var selID = (AllianceID)lstItems.SelectedItem;
 
-            Alliance sel;
-            if (!AllianceManager.Instance.TryGetValue(selID, out sel))
+            Alliance sel = AllianceManager.Instance[selID];
+            if (sel == null)
                 return;
  
             string msg = string.Format("Are you sure you wish to remove the alliance `{0}` from the list?", sel);

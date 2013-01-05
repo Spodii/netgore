@@ -40,6 +40,8 @@ namespace DemoGame.Client
             new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), 
             new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), "NetGore")
         {
+            ThreadAsserts.IsMainThread();
+
             EngineSettingsInitializer.Initialize();
 
             // Create the screen manager

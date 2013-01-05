@@ -31,8 +31,8 @@ namespace DemoGame.Editor
             RenderRectangle.Draw(spriteBatch, rect, new Color(0, 255, 0, 75), new Color(0, 0, 0, 125), 2);
 
             // Draw name
-            CharacterTemplate charTemp;
-            if (CharacterTemplateManager.Instance.TryGetValue(spawn.CharacterTemplateID, out charTemp))
+            CharacterTemplate charTemp = CharacterTemplateManager.Instance[spawn.CharacterTemplateID];
+            if (charTemp != null)
             {
                 string text = string.Format("{0}x {1} [{2}]", spawn.SpawnAmount, charTemp.TemplateTable.Name, spawn.CharacterTemplateID);
 

@@ -65,46 +65,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Get a random ItemTemplate.
-        /// </summary>
-        /// <returns>A random ItemTemplate. Will not be null.</returns>
-        public IItemTemplateTable GetRandomTemplate()
-        {
-            var max = Length;
-
-            IItemTemplateTable template;
-            do
-            {
-                var i = _rnd.Next(0, max);
-                if (!TryGetValue(new ItemTemplateID(i), out template))
-                    template = null;
-            }
-            while (template == null);
-
-            return template;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/> to an int.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The <paramref name="value"/> as an int.</returns>
-        protected override int IDToInt(ItemTemplateID value)
-        {
-            return (int)value;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, converts the int to a <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The int value.</param>
-        /// <returns>The int as a <paramref name="value"/>.</returns>
-        public override ItemTemplateID IntToID(int value)
-        {
-            return new ItemTemplateID(value);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, loads an item from the database.
         /// </summary>
         /// <param name="id">The ID of the item to load.</param>
