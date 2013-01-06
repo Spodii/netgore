@@ -102,7 +102,7 @@ namespace DemoGame.Server
             }
 
             // Load maps in parallel
-            Parallel.ForEach(_maps, map =>
+            Parallel.ForEach(_maps.ToArray(), map =>
             {
                 if (map != null)
                     map.Load();
