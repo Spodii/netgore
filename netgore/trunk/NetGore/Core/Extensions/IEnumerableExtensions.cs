@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NetGore
 {
@@ -15,6 +16,40 @@ namespace NetGore
         /// The default delimiter to use for Implode.
         /// </summary>
         const string _defaultImplodeDelimiter = ", ";
+
+        /// <summary>
+        /// Takes a set of values, calls an action on them (usually to load them), then places them into a final array.
+        /// Each value index must be unique.
+        /// </summary>
+        /// <param name="values">The values to be loaded and indexed.</param>
+        /// <param name="loader">The func to use to load the values.</param>
+        /// <param name="getIndex">The func to use to get the index of each value.</param>
+        /// <returns>Array of the values at the appropriate indexes.</returns>
+        public static TLoaded[] LoadIntoIndexedArray<TLoaded, TUnloaded>(this IEnumerable<TUnloaded> values, Func<TLoaded, int> getIndex, Func<TUnloaded, TLoaded> loader)
+        {
+            // Load & find max index
+            Dictionary<int, TLoaded> dict = new Dictionary<int, TLoaded>();
+
+            Parallel.ForEach(values, unloadedValue =>
+            {
+                TLoaded loadedValue = loader(unloadedValue);
+                int index = getIndex(loadedValue);
+
+                if (dict.ContainsKey(index))
+                    throw new Exception("Duplicate index found: " + index);
+
+                dict[index] = loadedValue;
+            });
+
+            // Place into appropriate positions in final array
+            TLoaded[] ret = new TLoaded[dict.Keys.Max() + 1];
+            foreach (var kvp in dict)
+            {
+                ret[kvp.Key] = kvp.Value;
+            }
+
+            return ret;
+        }
 
         /// <summary>
         /// Checks if two IEnumerables contain the exact same elements and same number of elements. Order does not matter.

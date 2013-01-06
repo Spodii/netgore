@@ -9,6 +9,8 @@ using log4net;
 
 namespace NetGore.Collections
 {
+    // TODO: Stop using DArray
+
     /// <summary>
     /// Dynamic, auto-expanding array that preserves and recycles indices.
     /// </summary>
