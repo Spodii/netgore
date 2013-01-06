@@ -32,7 +32,7 @@ namespace DemoGame.Server
         readonly GuildMemberPerformer _guildMemberPerformer;
         readonly List<MapInstance> _instancedMaps = new List<MapInstance>();
         readonly object _instancedMapsSync = new object();
-        readonly DArray<Map> _maps;
+        readonly Map[] _maps;
         readonly RespawnTaskList _respawnTaskList;
         readonly Server _server;
         readonly ItemEntity _unarmedWeapon;
@@ -85,31 +85,26 @@ namespace DemoGame.Server
 
             // Create the maps
             var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
-            _maps = new DArray<Map>(mapFiles.Count() + 10);
-            foreach (var mapFile in mapFiles)
+            _maps = mapFiles.LoadIntoIndexedArray(x => (int)x.ID, x => 
             {
                 MapID mapID;
-                if (!MapBase.TryGetIndexFromPath(mapFile, out mapID))
+                if (!MapBase.TryGetIndexFromPath(x, out mapID))
                 {
                     const string errmsg = "Failed to get the ID of map file `{0}`.";
                     if (log.IsFatalEnabled)
-                        log.FatalFormat(errmsg, mapFile);
-                    throw new ArgumentException(string.Format(errmsg, mapFile));
+                        log.FatalFormat(errmsg, x);
+                    throw new ArgumentException(string.Format(errmsg, x));
                 }
 
-                var m = new Map(mapID, this);
-                _maps[(int)mapID] = m;
-            }
-
+                return new Map(mapID, this);
+            });
+            
             // Load maps in parallel
-            Parallel.ForEach(_maps.ToArray(), map =>
+            Parallel.ForEach(_maps, map =>
             {
                 if (map != null)
                     map.Load();
             });
-
-            // Trim down the maps array under the assumption we won't be adding more maps
-            _maps.Trim();
 
             // Add some event hooks
             BanningManager.Instance.AccountBanned -= BanningManager_AccountBanned;
@@ -148,7 +143,7 @@ namespace DemoGame.Server
         /// </summary>
         public IEnumerable<Map> Maps
         {
-            get { return _maps; }
+            get { return _maps.Where(x => x != null); }
         }
 
         /// <summary>
@@ -271,21 +266,20 @@ namespace DemoGame.Server
         /// <returns>Map for the given index, or null if invalid.</returns>
         public Map GetMap(MapID mapID)
         {
-            // If the map can be grabbed from the index, grab it
-            if (_maps.CanGet((int)mapID))
-            {
-                // Check that the map is valid
-                Debug.Assert(_maps[(int)mapID] != null, "Tried to get a null map.");
+            Map map = null;
 
-                // Return the map at the index
-                return _maps[(int)mapID];
+            if (mapID < _maps.Length && mapID >= 0)
+            {
+                map = _maps[(int)mapID];
             }
 
-            // Could not grab by index
-            if (log.IsWarnEnabled)
-                log.WarnFormat("GetMap() on ID `{0}` returned null because map does not exist.", mapID);
+            if (map == null)
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat("GetMap() on ID `{0}` returned null because map does not exist.", mapID);
+            }
 
-            return null;
+            return map;
         }
 
         /// <summary>
@@ -417,16 +411,6 @@ namespace DemoGame.Server
             {
                 map.Send(data, messageType);
             }
-        }
-
-        /// <summary>
-        /// Sends data to all users in the world. This method is thread-safe.
-        /// </summary>
-        /// <param name="message">GameMessage to send.</param>
-        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
-        public void Send(GameMessage message, ServerMessageType messageType)
-        {
-            Send(message, messageType, null);
         }
 
         /// <summary>
