@@ -380,7 +380,8 @@ namespace DemoGame.Server
             }
             else
             {
-                hasRequirements = quest.FinishRequirements.HasRequirements(user);
+                if (quest.FinishRequirements != null)
+                    hasRequirements = quest.FinishRequirements.HasRequirements(user);
             }
 
             using (var pw = ServerPacket.HasQuestFinishRequirements(questID, hasRequirements))
@@ -408,7 +409,10 @@ namespace DemoGame.Server
                     log.WarnFormat(errmsg, user, questID);
             }
             else
-                hasRequirements = quest.StartRequirements.HasRequirements(user);
+            {
+                if (quest.StartRequirements != null)
+                    hasRequirements = quest.StartRequirements.HasRequirements(user);
+            }
 
             using (var pw = ServerPacket.HasQuestStartRequirements(questID, hasRequirements))
             {

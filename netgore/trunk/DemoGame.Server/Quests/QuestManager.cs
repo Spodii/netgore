@@ -19,7 +19,13 @@ namespace DemoGame.Server.Quests
         /// </summary>
         static QuestManager()
         {
-            _instance = new QuestManager(DbControllerBase.GetInstance());
+            var qmInstance = new QuestManager(DbControllerBase.GetInstance());
+            _instance = qmInstance;
+            foreach (var quest in _instance)
+            {
+                _instance.LoadQuest(quest.QuestID);
+                _instance.Reload(quest.QuestID);
+            }
         }
 
         /// <summary>

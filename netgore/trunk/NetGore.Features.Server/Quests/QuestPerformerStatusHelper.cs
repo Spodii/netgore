@@ -272,6 +272,9 @@ namespace NetGore.Features.Quests
             var removed = _activeQuests.Remove(quest);
             Debug.Assert(removed);
 
+            // Add the quest to the completed quests list
+            _completedQuests.Add(quest);
+
             quest.Rewards.Give(Owner);
 
             // Raise events

@@ -63,7 +63,8 @@ namespace DemoGame.Server.Quests
             // Complete quests
             var reqCompleteQuests = dbController.GetQuery<SelectQuestRequireFinishCompleteQuestsQuery>().Execute(QuestID);
             if (!reqCompleteQuests.IsEmpty())
-                l.Add(new CompleteQuestQuestRequirement(this, reqCompleteQuests.Select(questManager.GetQuest)));
+                if (!questManager.IsEmpty())
+                    l.Add(new CompleteQuestQuestRequirement(this, reqCompleteQuests.Select(questManager.GetQuest)));
 
             return new QuestRequirementCollection<User>(l);
         }
@@ -106,7 +107,8 @@ namespace DemoGame.Server.Quests
             // Complete quests
             var reqCompleteQuests = dbController.GetQuery<SelectQuestRequireStartCompleteQuestsQuery>().Execute(QuestID);
             if (!reqCompleteQuests.IsEmpty())
-                l.Add(new CompleteQuestQuestRequirement(this, reqCompleteQuests.Select(questManager.GetQuest)));
+                if (!questManager.IsEmpty())
+                    l.Add(new CompleteQuestQuestRequirement(this, reqCompleteQuests.Select(questManager.GetQuest)));
 
             return new QuestRequirementCollection<User>(l);
         }
