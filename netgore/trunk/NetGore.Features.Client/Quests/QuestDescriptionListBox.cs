@@ -10,7 +10,6 @@ namespace NetGore.Features.Quests
     public class QuestDescriptionListBox : ListBox<IQuestDescription>
     {
         static readonly Color _defaultCanTurnInColor = new Color(0, 75, 0);
-        static readonly Color _defaultCannotStartColor = new Color(75, 0, 0);
 
         readonly Func<QuestID, bool> _hasFinishQuestReqs;
         readonly Func<QuestID, bool> _hasStartQuestReqs;
@@ -31,7 +30,6 @@ namespace NetGore.Features.Quests
             _hasFinishQuestReqs = hasFinishQuestReqs;
 
             CanTurnInQuestForeColor = _defaultCanTurnInColor;
-            CannotStartQuestForeColor = _defaultCannotStartColor;
         }
 
         /// <summary>
@@ -51,19 +49,12 @@ namespace NetGore.Features.Quests
             _hasFinishQuestReqs = hasFinishQuestReqs;
 
             CanTurnInQuestForeColor = _defaultCanTurnInColor;
-            CannotStartQuestForeColor = _defaultCannotStartColor;
         }
 
         /// <summary>
         /// Gets or sets the font color for a quest that can be turned in.
         /// </summary>
         public Color CanTurnInQuestForeColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the font color for a quest that the is available but the user does not have the
-        /// requirements to start.
-        /// </summary>
-        public Color CannotStartQuestForeColor { get; set; }
 
         /// <summary>
         /// Gets the default item drawer.
@@ -108,15 +99,14 @@ namespace NetGore.Features.Quests
 
             // Get the color to use for the title
             var titleColor = ForeColor;
-            if (HasFinishQuestReqs(item.QuestID))
-                titleColor = CanTurnInQuestForeColor;
-            else if (!HasStartQuestReqs(item.QuestID))
-                titleColor = CannotStartQuestForeColor;
 
             // Draw the quest's title, prefixing a DONE tag if its ready to turn in
             var title = item.Name;
-            if (_hasFinishQuestReqs(item.QuestID))
+            if (HasFinishQuestReqs(item.QuestID))
+            {
+                titleColor = CanTurnInQuestForeColor;
                 title = "[DONE] " + title;
+            }
             sb.DrawString(Font, title, pos + new Vector2(indexStrWidth, 0), titleColor);
         }
     }
