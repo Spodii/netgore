@@ -127,6 +127,7 @@ namespace NetGore.Features.Skills
         public void SetSkill(T skill, bool value)
         {
             _collection.TrySetValue(skill, value);
+            OnKnowSkillChanged(skill, value);  
         }
 
         /// <summary>
