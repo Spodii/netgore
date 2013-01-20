@@ -789,7 +789,7 @@ namespace DemoGame.Client
             var skillType = r.ReadEnum<SkillType>();
             var isKnown = r.ReadBool();
 
-            if (EnumHelper<SkillType>.IsDefined(skillType))
+            if (!EnumHelper<SkillType>.IsDefined(skillType))
             {
                 const string errmsg = "Invalid SkillType received: `{0}`";
                 if (log.IsWarnEnabled)

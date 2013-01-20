@@ -33,9 +33,7 @@ namespace DemoGame.Server.Queries
             */
 
             var s = qb.Settings;
-            var q =
-                qb.Insert(CharacterSkillTable.TableName).AddAutoParam("character_id", "skill_id").ODKU().Add(
-                    s.EscapeColumn("character_id"), s.EscapeColumn("character_id"));
+            var q = qb.Insert(CharacterSkillTable.TableName).AddAutoParam("character_id", "skill_id").ODKU().Add("character_id", "character_id");
 
             return q.ToString();
         }
