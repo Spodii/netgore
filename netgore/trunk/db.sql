@@ -1,18 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : aura-demogame
-Source Server Version : 50528
-Source Host           : localhost:3306
-Source Database       : demogame
-
-Target Server Type    : MYSQL
-Target Server Version : 50528
-File Encoding         : 65001
-
-Date: 2013-01-21 20:48:19
-*/
-
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
