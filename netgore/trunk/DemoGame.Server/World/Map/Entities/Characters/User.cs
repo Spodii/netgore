@@ -1325,6 +1325,11 @@ namespace DemoGame.Server
             // Lower the count of use-once items
             if (item.Type == ItemType.UseOnce)
                 Inventory.DecreaseItemAmount(slot);
+
+            // Check if the item enables the user to learn a skill
+            if (item.SkillID.HasValue)
+                if (!this.KnownSkills.Knows(item.SkillID.Value))
+                    KnownSkills.SetSkill(item.SkillID.Value, true);
         }
 
         #region IGroupable Members

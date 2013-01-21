@@ -356,7 +356,7 @@ this._level = (System.Int16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `load_map_id`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `3`.The database column contains the comment: 
+/// The underlying database type is `smallint(5) unsigned` with the default value of `1`.The database column contains the comment: 
 /// "The map to load on (when logging in / being created).".
 /// </summary>
 [System.ComponentModel.Description("The map to load on (when logging in / being created).")]
@@ -374,7 +374,7 @@ this._loadMapID = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `load_x`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `1024`.The database column contains the comment: 
+/// The underlying database type is `smallint(5) unsigned` with the default value of `512`.The database column contains the comment: 
 /// "The x coordinate to load at.".
 /// </summary>
 [System.ComponentModel.Description("The x coordinate to load at.")]
@@ -392,7 +392,7 @@ this._loadX = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `load_y`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `600`.The database column contains the comment: 
+/// The underlying database type is `smallint(5) unsigned` with the default value of `512`.The database column contains the comment: 
 /// "The y coordinate to load at.".
 /// </summary>
 [System.ComponentModel.Description("The y coordinate to load at.")]
@@ -464,7 +464,7 @@ this._name = (System.String)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `respawn_map_id`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `3`.The database column contains the comment: 
+/// The underlying database type is `smallint(5) unsigned` with the default value of `1`.The database column contains the comment: 
 /// "The map to respawn on (when null, cannot respawn). Used to reposition character after death.".
 /// </summary>
 [System.ComponentModel.Description("The map to respawn on (when null, cannot respawn). Used to reposition character after death.")]
@@ -482,7 +482,7 @@ this._respawnMapID = (System.Nullable<System.UInt16>)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `respawn_x`.
-/// The underlying database type is `float` with the default value of `1024`.The database column contains the comment: 
+/// The underlying database type is `float` with the default value of `512`.The database column contains the comment: 
 /// "The x coordinate to respawn at.".
 /// </summary>
 [System.ComponentModel.Description("The x coordinate to respawn at.")]
@@ -500,7 +500,7 @@ this._respawnX = (System.Single)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `respawn_y`.
-/// The underlying database type is `float` with the default value of `600`.The database column contains the comment: 
+/// The underlying database type is `float` with the default value of `512`.The database column contains the comment: 
 /// "The y coordinate to respawn at.".
 /// </summary>
 [System.ComponentModel.Description("The y coordinate to respawn at.")]
@@ -1134,13 +1134,13 @@ case "level":
 return new ColumnMetadata("level", "Current level.", "smallint(6)", "1", typeof(System.Int16), false, false, false);
 
 case "load_map_id":
-return new ColumnMetadata("load_map_id", "The map to load on (when logging in / being created).", "smallint(5) unsigned", "3", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("load_map_id", "The map to load on (when logging in / being created).", "smallint(5) unsigned", "1", typeof(System.UInt16), false, false, false);
 
 case "load_x":
-return new ColumnMetadata("load_x", "The x coordinate to load at.", "smallint(5) unsigned", "1024", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("load_x", "The x coordinate to load at.", "smallint(5) unsigned", "512", typeof(System.UInt16), false, false, false);
 
 case "load_y":
-return new ColumnMetadata("load_y", "The y coordinate to load at.", "smallint(5) unsigned", "600", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("load_y", "The y coordinate to load at.", "smallint(5) unsigned", "512", typeof(System.UInt16), false, false, false);
 
 case "move_speed":
 return new ColumnMetadata("move_speed", "The movement speed of the character.", "smallint(5) unsigned", "1800", typeof(System.UInt16), false, false, false);
@@ -1152,13 +1152,13 @@ case "name":
 return new ColumnMetadata("name", "The character's name. Prefixed with `~<ID>_` when its a deleted user. The ~ denotes deleted, and the <ID> ensures a unique value.", "varchar(60)", "", typeof(System.String), false, false, false);
 
 case "respawn_map_id":
-return new ColumnMetadata("respawn_map_id", "The map to respawn on (when null, cannot respawn). Used to reposition character after death.", "smallint(5) unsigned", "3", typeof(System.Nullable<System.UInt16>), true, false, false);
+return new ColumnMetadata("respawn_map_id", "The map to respawn on (when null, cannot respawn). Used to reposition character after death.", "smallint(5) unsigned", "1", typeof(System.Nullable<System.UInt16>), true, false, false);
 
 case "respawn_x":
-return new ColumnMetadata("respawn_x", "The x coordinate to respawn at.", "float", "1024", typeof(System.Single), false, false, false);
+return new ColumnMetadata("respawn_x", "The x coordinate to respawn at.", "float", "512", typeof(System.Single), false, false, false);
 
 case "respawn_y":
-return new ColumnMetadata("respawn_y", "The y coordinate to respawn at.", "float", "600", typeof(System.Single), false, false, false);
+return new ColumnMetadata("respawn_y", "The y coordinate to respawn at.", "float", "512", typeof(System.Single), false, false, false);
 
 case "shop_id":
 return new ColumnMetadata("shop_id", "The shop that this character runs. Null if not a shopkeeper.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, false);

@@ -67,6 +67,7 @@ namespace DemoGame.Server
         ItemType _type;
         int _value;
         WeaponType _weaponType;
+        SkillType? _skillID;
 
         /// <summary>
         /// Initializes the <see cref="ItemEntity"/> class.
@@ -116,7 +117,7 @@ namespace DemoGame.Server
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
                 pos, new Vector2(t.Width, t.Height), t.ID, t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic,
-                t.Value, amount, t.HP, t.MP, t.EquippedBody, t.ActionDisplayID, t.Stats.Select(x => (Stat<StatType>)x),
+                t.Value, amount, t.HP, t.MP, t.EquippedBody, t.ActionDisplayID, t.SkillID, t.Stats.Select(x => (Stat<StatType>)x),
                 t.ReqStats.Select(x => (Stat<StatType>)x))
         {
             if (ItemTemplateID.HasValue)
@@ -141,7 +142,7 @@ namespace DemoGame.Server
             Vector2.Zero, new Vector2(iv.Width, iv.Height),
             iv.ItemTemplateID, iv.Name, iv.Description, iv.Type, iv.WeaponType, iv.Range,
             iv.Graphic, iv.Value, iv.Amount, iv.HP, iv.MP, iv.EquippedBody, iv.ActionDisplayID,
-            iv.Stats.Select(x => (Stat<StatType>)x),
+            iv.SkillID, iv.Stats.Select(x => (Stat<StatType>)x),
             iv.ReqStats.Select(x => (Stat<StatType>)x))
         {
             _id = iv.ID;
@@ -169,7 +170,7 @@ namespace DemoGame.Server
         /// <param name="reqStats">The req stats.</param>
         ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type,
                    WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount, SPValueType hp, SPValueType mp,
-                   string equippedBody, ActionDisplayID? actionDisplayID, IEnumerable<Stat<StatType>> baseStats,
+                   string equippedBody, ActionDisplayID? actionDisplayID, SkillType? skillID, IEnumerable<Stat<StatType>> baseStats,
                    IEnumerable<Stat<StatType>> reqStats) : base(pos, size)
         {
             _templateID = templateID;
@@ -185,6 +186,7 @@ namespace DemoGame.Server
             _mp = mp;
             _equippedBody = equippedBody;
             _actionDisplayID = actionDisplayID;
+            _skillID = skillID;
 
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
@@ -200,7 +202,7 @@ namespace DemoGame.Server
         ItemEntity(ItemEntity s)
             : this(
                 s.Position, s.Size, s.ItemTemplateID, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex,
-                s.Value, s.Amount, s.HP, s.MP, s.EquippedBody, s.ActionDisplayID, s.BaseStats, s.ReqStats)
+                s.Value, s.Amount, s.HP, s.MP, s.EquippedBody, s.ActionDisplayID, s.SkillID, s.BaseStats, s.ReqStats)
         {
         }
 
@@ -698,6 +700,14 @@ namespace DemoGame.Server
 
                 SynchronizeField("action_display_id", _actionDisplayID);
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SkillID"/> to use when using this item.
+        /// </summary>
+        public SkillType? SkillID
+        {
+            get { return _skillID; }
         }
 
         /// <summary>
