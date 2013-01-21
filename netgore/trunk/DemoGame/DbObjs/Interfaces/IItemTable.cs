@@ -118,6 +118,13 @@ System.UInt16 Range
 get;
 }
 /// <summary>
+/// Gets the value of the database column `skill_id`.
+/// </summary>
+System.Nullable<DemoGame.SkillType> SkillID
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column in the column collection `Stat`
 /// that corresponds to the given <paramref name="key"/>.
 /// </summary>

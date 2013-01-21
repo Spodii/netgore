@@ -33,7 +33,7 @@ public class ItemTemplateTable : IItemTemplateTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"action_display_id", "description", "equipped_body", "graphic", "height", "hp", "id", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
+ static  readonly System.String[] _dbColumns = new string[] {"action_display_id", "description", "equipped_body", "graphic", "height", "hp", "id", "mp", "name", "range", "skill_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -61,7 +61,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"action_display_id", "description", "equipped_body", "graphic", "height", "hp", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"action_display_id", "description", "equipped_body", "graphic", "height", "hp", "mp", "name", "range", "skill_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value", "weapon_type", "width" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -131,7 +131,7 @@ public const System.String TableName = "item_template";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 25;
+public const System.Int32 ColumnCount = 26;
 /// <summary>
 /// The field that maps onto the database column `action_display_id`.
 /// </summary>
@@ -172,6 +172,10 @@ System.String _name;
 /// The field that maps onto the database column `range`.
 /// </summary>
 System.UInt16 _range;
+/// <summary>
+/// The field that maps onto the database column `skill_id`.
+/// </summary>
+System.Nullable<System.Byte> _skillID;
 /// <summary>
 /// Dictionary containing the values for the column collection `Stat`.
 /// </summary>
@@ -377,6 +381,24 @@ this._range = (System.UInt16)value;
 }
 }
 /// <summary>
+/// Gets or sets the value for the field that maps onto the database column `skill_id`.
+/// The underlying database type is `tinyint(5) unsigned`.The database column contains the comment: 
+/// "The skill the item can set for a user.".
+/// </summary>
+[System.ComponentModel.Description("The skill the item can set for a user.")]
+[NetGore.SyncValueAttribute()]
+public System.Nullable<DemoGame.SkillType> SkillID
+{
+get
+{
+return (System.Nullable<DemoGame.SkillType>)_skillID;
+}
+set
+{
+this._skillID = (System.Nullable<System.Byte>)value;
+}
+}
+/// <summary>
 /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
 /// </summary>
 /// <param name="key">The key of the column to get.</param>
@@ -519,6 +541,7 @@ public ItemTemplateTable()
 /// <param name="mP">The initial value for the corresponding property.</param>
 /// <param name="name">The initial value for the corresponding property.</param>
 /// <param name="range">The initial value for the corresponding property.</param>
+/// <param name="skillID">The initial value for the corresponding property.</param>
 /// <param name="statAgi">The initial value for the corresponding property.</param>
 /// <param name="statDefence">The initial value for the corresponding property.</param>
 /// <param name="statInt">The initial value for the corresponding property.</param>
@@ -534,7 +557,7 @@ public ItemTemplateTable()
 /// <param name="value">The initial value for the corresponding property.</param>
 /// <param name="weaponType">The initial value for the corresponding property.</param>
 /// <param name="width">The initial value for the corresponding property.</param>
-public ItemTemplateTable(System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID> @actionDisplayID, System.String @description, System.String @equippedBody, NetGore.GrhIndex @graphic, System.Byte @height, DemoGame.SPValueType @hP, DemoGame.ItemTemplateID @iD, DemoGame.SPValueType @mP, System.String @name, System.UInt16 @range, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statReqAgi, System.Int16 @statReqInt, System.Int16 @statReqStr, System.Int16 @statStr, DemoGame.ItemType @type, System.Int32 @value, DemoGame.WeaponType @weaponType, System.Byte @width)
+public ItemTemplateTable(System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID> @actionDisplayID, System.String @description, System.String @equippedBody, NetGore.GrhIndex @graphic, System.Byte @height, DemoGame.SPValueType @hP, DemoGame.ItemTemplateID @iD, DemoGame.SPValueType @mP, System.String @name, System.UInt16 @range, System.Nullable<DemoGame.SkillType> @skillID, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statReqAgi, System.Int16 @statReqInt, System.Int16 @statReqStr, System.Int16 @statStr, DemoGame.ItemType @type, System.Int32 @value, DemoGame.WeaponType @weaponType, System.Byte @width)
 {
 this.ActionDisplayID = (System.Nullable<NetGore.Features.ActionDisplays.ActionDisplayID>)@actionDisplayID;
 this.Description = (System.String)@description;
@@ -546,6 +569,7 @@ this.ID = (DemoGame.ItemTemplateID)@iD;
 this.MP = (DemoGame.SPValueType)@mP;
 this.Name = (System.String)@name;
 this.Range = (System.UInt16)@range;
+this.SkillID = (System.Nullable<DemoGame.SkillType>)@skillID;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@statAgi);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)@statDefence);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@statInt);
@@ -599,6 +623,7 @@ dic["id"] = (DemoGame.ItemTemplateID)source.ID;
 dic["mp"] = (DemoGame.SPValueType)source.MP;
 dic["name"] = (System.String)source.Name;
 dic["range"] = (System.UInt16)source.Range;
+dic["skill_id"] = (System.Nullable<DemoGame.SkillType>)source.SkillID;
 dic["stat_agi"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 dic["stat_defence"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
 dic["stat_int"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
@@ -632,6 +657,7 @@ this.ID = (DemoGame.ItemTemplateID)source.ID;
 this.MP = (DemoGame.SPValueType)source.MP;
 this.Name = (System.String)source.Name;
 this.Range = (System.UInt16)source.Range;
+this.SkillID = (System.Nullable<DemoGame.SkillType>)source.SkillID;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi));
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence));
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int));
@@ -689,6 +715,9 @@ return Name;
 
 case "range":
 return Range;
+
+case "skill_id":
+return SkillID;
 
 case "stat_agi":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
@@ -787,6 +816,10 @@ break;
 
 case "range":
 this.Range = (System.UInt16)value;
+break;
+
+case "skill_id":
+this.SkillID = (System.Nullable<DemoGame.SkillType>)value;
 break;
 
 case "stat_agi":
@@ -894,6 +927,9 @@ return new ColumnMetadata("name", "The name of the item.", "varchar(255)", "New 
 
 case "range":
 return new ColumnMetadata("range", "The range of the item. Usually for attack range, but can depend on ItemType and/or WeaponType.", "smallint(5) unsigned", "10", typeof(System.UInt16), false, false, false);
+
+case "skill_id":
+return new ColumnMetadata("skill_id", "The skill the item can set for a user.", "tinyint(5) unsigned", null, typeof(System.Nullable<System.Byte>), true, false, false);
 
 case "stat_agi":
 return new ColumnMetadata("stat_agi", "Stat modifier bonus. Use-once items often perminately increase this value, while equipped items provide a stat mod bonus.", "smallint(6)", "0", typeof(System.Int16), false, false, false);

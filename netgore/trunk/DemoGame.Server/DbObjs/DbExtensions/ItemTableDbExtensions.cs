@@ -52,6 +52,7 @@ paramValues["item_template_id"] = (System.Nullable<System.UInt16>)source.ItemTem
 paramValues["mp"] = (System.Int16)source.MP;
 paramValues["name"] = (System.String)source.Name;
 paramValues["range"] = (System.UInt16)source.Range;
+paramValues["skill_id"] = (System.Nullable<System.Byte>)source.SkillID;
 paramValues["stat_agi"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 paramValues["stat_defence"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
 paramValues["stat_int"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
@@ -127,6 +128,10 @@ source.Name = (System.String)(System.String)dataRecord.GetString(i);
 i = dataRecord.GetOrdinal("range");
 
 source.Range = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
+
+i = dataRecord.GetOrdinal("skill_id");
+
+source.SkillID = (System.Nullable<DemoGame.SkillType>)(System.Nullable<DemoGame.SkillType>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataRecord.GetByte(i));
 
 i = dataRecord.GetOrdinal("stat_agi");
 
@@ -262,6 +267,11 @@ break;
 
 case "range":
 source.Range = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
+break;
+
+
+case "skill_id":
+source.SkillID = (System.Nullable<DemoGame.SkillType>)(System.Nullable<DemoGame.SkillType>)(dataRecord.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataRecord.GetByte(i));
 break;
 
 
@@ -421,6 +431,11 @@ paramValues[i] = (System.UInt16)source.Range;
 break;
 
 
+case "skill_id":
+paramValues[i] = (System.Nullable<System.Byte>)source.SkillID;
+break;
+
+
 case "stat_agi":
 paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 break;
@@ -523,6 +538,7 @@ Equals(source.ItemTemplateID, otherItem.ItemTemplateID) &&
 Equals(source.MP, otherItem.MP) && 
 Equals(source.Name, otherItem.Name) && 
 Equals(source.Range, otherItem.Range) && 
+Equals(source.SkillID, otherItem.SkillID) && 
 Equals(source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi), otherItem.GetStat((DemoGame.StatType)DemoGame.StatType.Agi)) && 
 Equals(source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence), otherItem.GetStat((DemoGame.StatType)DemoGame.StatType.Defence)) && 
 Equals(source.GetStat((DemoGame.StatType)DemoGame.StatType.Int), otherItem.GetStat((DemoGame.StatType)DemoGame.StatType.Int)) && 
