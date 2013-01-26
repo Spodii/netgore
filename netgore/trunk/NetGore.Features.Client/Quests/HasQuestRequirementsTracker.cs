@@ -40,6 +40,9 @@ namespace NetGore.Features.Quests
         {
             bool? value;
 
+            // Update the quest status before checking it's "current" value
+            Update(quest);
+
             // Try to get the cached value
             if (!_statuses.TryGetValue(quest, out value))
             {

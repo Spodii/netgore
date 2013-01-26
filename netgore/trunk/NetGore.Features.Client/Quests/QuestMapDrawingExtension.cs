@@ -219,13 +219,25 @@ namespace NetGore.Features.Quests
                 // For each of the four indicators, start at the "highest priority" one and stop when we find
                 // the first valid status that we can use
                 if (CheckStatusTurnIn(incomplete))
+                {
                     IndicatorDrawer(QuestTurnInIndicator, c, e.SpriteBatch);
+                    continue;
+                }
                 else if (CheckStatusCanStart(incomplete))
+                {
                     IndicatorDrawer(QuestAvailableCanStartIndicator, c, e.SpriteBatch);
+                    continue;
+                }
                 else if (CheckStatusStarted(incomplete))
+                {
                     IndicatorDrawer(QuestStartedIndicator, c, e.SpriteBatch);
+                    continue;
+                }
                 else if (CheckStatusCannotStart(incomplete))
+                {
                     IndicatorDrawer(QuestAvailableCannotStartIndicator, c, e.SpriteBatch);
+                    continue;
+                }
             }
         }
     }
