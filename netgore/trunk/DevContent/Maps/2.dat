@@ -1310,7 +1310,9 @@
       <Weight>0</Weight>
       <Destination>960,150</Destination>
       <DestinationMap>1</DestinationMap>
+	  <DestinationMapInstance>0</DestinationMapInstance>
       <Position>448,736</Position>
+	  <TeleportGroupMembers>False</TeleportGroupMembers>
       <Velocity>0,0</Velocity>
     </Item0>
   </DynamicEntities>

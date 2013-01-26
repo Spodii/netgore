@@ -48,5 +48,25 @@ namespace DemoGame
         [Description("Map to teleport the Entity that uses this Teleport to.")]
         [Browsable(true)]
         public MapID DestinationMap { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index of the instanced map that the Entity will be teleported to upon use.
+        /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
+        [Category("Teleport")]
+        [DisplayName("DestinationMapInstance")]
+        [Description("Instanced Map to teleport the Entity that uses this Teleport to.")]
+        [Browsable(true)]
+        public MapID DestinationMapInstance { get; set; }
+
+        /// <summary>
+        /// Gets or sets if group members are teleported too - only with instanced maps.
+        /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
+        [Category("Teleport")]
+        [DisplayName("Teleport Group Members")]
+        [Description("Do you want group members teleported too?")]
+        [Browsable(true)]
+        public bool TeleportGroupMembers { get; set; }
     }
 }
