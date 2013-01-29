@@ -44,7 +44,7 @@ namespace DemoGame.Server
         public IEnumerable<IAccountBanTable> GetAccountBanInfo(string accountName)
         {
             AccountID accID;
-            if (!TryGetAccountIDFromAccountName(accountName, out accID))
+            if (!TryGetAccountIDFromUserName(accountName, out accID))
                 return Enumerable.Empty<IAccountBanTable>();
 
             return GetAccountBanInfo(accID);
