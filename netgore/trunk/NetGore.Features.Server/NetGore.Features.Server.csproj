@@ -105,6 +105,7 @@
     <Compile Include="Banning\BanManagerFailReason.cs" />
     <Compile Include="Banning\BanManagerFailReasonExtensions.cs" />
     <Compile Include="Banning\BanningManagerAccountBannedEventArgs.cs" />
+    <Compile Include="Banning\BanningManagerAccountUnBannedEventArgs.cs" />
     <Compile Include="Banning\BanningManagerBase.cs" />
     <Compile Include="Banning\IBanningManager.cs" />
     <Compile Include="Banning\StoredProcGetReasons.cs" />

@@ -161,3 +161,8 @@ AccountBanned: Your account has been banned. The ban will expire in {0}. Reason:
 DisconnectedBanned: Your account has been banned. The ban will expire in {0}. Reason: "{1}"
 BanUserSuccessful: You have successfully banned {0}.
 BanUserFailed: Failed to ban user {0}: {1}
+UnBanUserSuccessful: You have successfully unbanned {0}.
+UnBanUserFailed: Failed to unban user {0}: {1}
+SelfBanFailed: You cannot ban yourself.
+SelfUnBanFailed: You cannot un-ban yourself.
+BanInsufficientPermissions: Failed. {0} has a higher permission rank than you.

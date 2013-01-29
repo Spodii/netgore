@@ -115,6 +115,32 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, removes a ban from an account.
+        /// </summary>
+        /// <param name="accountID">The account to remove the ban from.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the unban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be removed.</param>
+        /// <returns>
+        /// True if the unban was successfully added; otherwise false.
+        /// </returns>
+        protected override bool TryRemoveBanInternal(AccountID accountID, string issuedBy, out BanManagerFailReason failReason)
+        {
+            var q = DbController.GetQuery<UpdateAccountUnBanQuery>();
+            var rowsAffected = q.ExecuteWithResult(accountID, issuedBy);
+
+            if (rowsAffected == 0)
+            {
+                failReason = BanManagerFailReason.FailedToRemoveFromDatabase;
+                return false;
+            }
+            else
+            {
+                failReason = BanManagerFailReason.Unknown;
+                return true;
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the ID of an account from the account's name.
         /// </summary>
         /// <param name="accountName">The name of the account.</param>

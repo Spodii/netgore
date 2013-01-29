@@ -39,10 +39,24 @@ namespace NetGore.Features.Banning
             AccountBanned;
 
         /// <summary>
+        /// Notifies listeners when an account has been unbanned.
+        /// </summary>
+        public event TypedEventHandler<IBanningManager<TAccountID>, BanningManagerAccountUnBannedEventArgs<TAccountID>>
+            AccountUnBanned;
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling for when a ban is successfully added to an account.
         /// </summary>
         /// <param name="accountID">The account that was banned.</param>
         protected virtual void OnAccountBanned(TAccountID accountID)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling for when a ban is successfully removed from an account.
+        /// </summary>
+        /// <param name="accountID">The account that was unbanned.</param>
+        protected virtual void OnAccountUnBanned(TAccountID accountID)
         {
         }
 
@@ -66,6 +80,17 @@ namespace NetGore.Features.Banning
         /// </returns>
         protected abstract bool TryAddBanInternal(TAccountID accountID, TimeSpan length, string reason, string issuedBy,
                                                   out BanManagerFailReason failReason);
+
+        /// <summary>
+        /// When overridden in the derived class, removes a ban from an account.
+        /// </summary>
+        /// <param name="accountID">The account to remove the ban from.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the unban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the unban failed to be removed.</param>
+        /// <returns>
+        /// True if the unban was successfully added; otherwise false.
+        /// </returns>
+        protected abstract bool TryRemoveBanInternal(TAccountID accountID, string issuedBy, out BanManagerFailReason failReason);
 
         /// <summary>
         /// When overridden in the derived class, gets the ID of an account from the account's name.
@@ -296,6 +321,87 @@ namespace NetGore.Features.Banning
         {
             BanManagerFailReason failReason;
             return TryAddUserBan(userName, length, reason, issuedBy, out failReason);
+        }
+
+        /// <summary>
+        /// Tries to remove a ban from an account.
+        /// </summary>
+        /// <param name="accountID">The account to remove the ban from.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the unban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the unban failed to be added.</param>
+        /// <returns>
+        /// True if the unban was successfully added; otherwise false.
+        /// </returns>
+        public bool TryRemoveAccountBan(TAccountID accountID, string issuedBy, out BanManagerFailReason failReason)
+        {
+            // Check the parameters
+            if (string.IsNullOrEmpty(issuedBy))
+            {
+                failReason = BanManagerFailReason.NoIssuerProvided;
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Failed to unban account `{0}`: {1}", accountID, failReason.GetDetailedString());
+                return false;
+            }
+
+            // Try to remove the ban
+            try
+            {
+                if (!TryRemoveBanInternal(accountID, issuedBy, out failReason))
+                {
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Failed to unban account `{0}`: {1}", accountID, failReason.GetDetailedString());
+
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                failReason = BanManagerFailReason.ExceptionOccured;
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Failed to unban account `{0}`: {1}. Exception: {2}", accountID, failReason.GetDetailedString(),
+                        ex);
+
+                return false;
+            }
+
+            // Raise the event
+            OnAccountUnBanned(accountID);
+
+            if (AccountUnBanned != null)
+                AccountUnBanned.Raise(this, BanningManagerAccountUnBannedEventArgs.Create(accountID, issuedBy));
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Successfully unbanned account `{0}` (issuedBy: {1}).", accountID, issuedBy);
+
+            failReason = BanManagerFailReason.Unknown;
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to remove a ban from an account by specifying the user's name.
+        /// </summary>
+        /// <param name="userName">The name of the user to unban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the unban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be removed.</param>
+        /// <returns>
+        /// True if the ban was successfully removed; otherwise false.
+        /// </returns>
+        public bool TryRemoveUserBan(string userName, string issuedBy, out BanManagerFailReason failReason)
+        {
+            // Get the account ID
+            TAccountID accountID;
+            if (!TryGetAccountIDFromUserName(userName, out accountID))
+            {
+                const string errmsg = "Failed to unban user `{0}`: {1}";
+                failReason = BanManagerFailReason.InvalidUser;
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, userName, failReason.GetDetailedString());
+                return false;
+            }
+
+            // UnBan the account by ID
+            return TryRemoveAccountBan(accountID, issuedBy, out failReason);
         }
 
         #endregion

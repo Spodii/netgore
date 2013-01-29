@@ -98,6 +98,22 @@ namespace DemoGame.Server
                 return;
             }
 
+            if (StringComparer.OrdinalIgnoreCase.Equals(User.Name, username))
+            {
+                User.Send(GameMessage.SelfBanFailed, ServerMessageType.GUI);
+                return;
+            }
+
+            var target = World.FindUser(username);
+            if (target == null)
+                return;
+
+            if (target.Permissions > User.Permissions)
+            {
+                User.Send(GameMessage.BanInsufficientPermissions, ServerMessageType.GUI, username);
+                return;
+            }
+
             if (string.IsNullOrEmpty(duration))
             {
                 User.Send(GameMessage.CommandGeneralInvalidParameter, ServerMessageType.GUI, "duration");
@@ -124,6 +140,51 @@ namespace DemoGame.Server
             {
                 // Ban successful
                 User.Send(GameMessage.BanUserSuccessful, ServerMessageType.GUI, username);
+            }
+        }
+
+        /// <summary>
+        /// Removes a users ban.
+        /// </summary>
+        /// <param name="username">The name of the user to unban.</param>
+        /// <param name="reason">The reason the user is to be unbanned.</param>
+        [SayHandlerCommand("UnBanUser", UserPermissions.Moderator)]
+        public void UnBanUser(string username, string reason)
+        {
+            // Check for valid parameters
+            if (!GameData.UserName.IsValid(username))
+            {
+                User.Send(GameMessage.CommandGeneralInvalidUser, ServerMessageType.GUI, username);
+                return;
+            }
+
+            if (StringComparer.OrdinalIgnoreCase.Equals(User.Name, username))
+            {
+                User.Send(GameMessage.SelfUnBanFailed, ServerMessageType.GUI);
+                return;
+            }
+
+            var target = World.FindUser(username);
+            if (target == null)
+                return;
+
+            if (target.Permissions > User.Permissions)
+            {
+                User.Send(GameMessage.BanInsufficientPermissions, ServerMessageType.GUI, username);
+                return;
+            }
+
+            // Perform the unban and notify the issuer if it was successful or not
+            BanManagerFailReason banFailReason;
+            if (!BanningManager.Instance.TryRemoveUserBan(username, User.Name, out banFailReason))
+            {
+                // Remove Ban failed
+                User.Send(GameMessage.UnBanUserFailed, ServerMessageType.GUI, username, banFailReason.GetDetailedString());
+            }
+            else
+            {
+                // Remove Ban successful
+                User.Send(GameMessage.UnBanUserSuccessful, ServerMessageType.GUI, username);
             }
         }
 
