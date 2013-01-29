@@ -283,6 +283,7 @@
     <Compile Include="Queries\Account\SelectAccountIDFromUserNameQuery.cs" />
     <Compile Include="Queries\Account\UpdateAccountPermissionsQuery.cs" />
     <Compile Include="Queries\Banning\InsertAccountBanQuery.cs" />
+    <Compile Include="Queries\Banning\UpdateAccountUnBanQuery.cs" />
     <Compile Include="Queries\Banning\SelectAccountBansQuery.cs" />
     <Compile Include="Queries\Character\DeleteUserCharacterQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterEquippedBodiesQuery.cs" />

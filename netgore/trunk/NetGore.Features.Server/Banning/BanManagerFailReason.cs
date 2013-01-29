@@ -3,7 +3,7 @@
 namespace NetGore.Features.Banning
 {
     /// <summary>
-    /// Describes the different reasons why an attempt to add a ban fails.
+    /// Describes the different reasons why an attempt to add or remove a ban fails.
     /// </summary>
     public enum BanManagerFailReason : byte
     {
@@ -33,25 +33,28 @@ namespace NetGore.Features.Banning
         FailedToAddToDatabase,
 
         /// <summary>
-        /// An exception occured while trying to add the ban.
+        /// The ban failed to be removed from the database.
+        /// </summary>
+        FailedToRemoveFromDatabase,
+
+        /// <summary>
+        /// An exception occurred while trying to add or remove the ban.
         /// </summary>
         ExceptionOccured,
 
         /// <summary>
-        /// Tried to ban an account that does not exist.
+        /// Tried to ban or unban an account that does not exist.
         /// </summary>
         InvalidAccount,
 
         /// <summary>
-        /// Tried to ban a user that does not exist.
+        /// Tried to ban or unban a user that does not exist.
         /// </summary>
         InvalidUser,
 
         /// <summary>
-        /// Tried to ban yourself.
+        /// Tried to ban or unban yourself.
         /// </summary>
         SelfBan,
-
-        
     }
 }

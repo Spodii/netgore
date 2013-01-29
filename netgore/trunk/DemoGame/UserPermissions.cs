@@ -19,7 +19,7 @@ namespace DemoGame
          * to see how to handle cases like these.
          * 
          * Permission flags don't all have to be GOOD things. For example, a permission level can be created for
-         * users who repeatidly cause minor problems (harassment, swearing, etc). You can then check if a user has
+         * users who repeatedly cause minor problems (harassment, swearing, etc). You can then check if a user has
          * this permission flag set and, if they do, reject them from performing certain actions.
          */
 

@@ -381,6 +381,31 @@ namespace DemoGame
         /// </summary>
         BanUserFailed,
 
+        /// <summary>
+        /// Ban was successfully removed for the given user.
+        /// </summary>
+        UnBanUserSuccessful,
+
+        /// <summary>
+        /// Ban failed to be removed for the given user.
+        /// </summary>
+        UnBanUserFailed,
+
+        /// <summary>
+        /// Ban failed to be added for yourself.
+        /// </summary>
+        SelfBanFailed,
+
+        /// <summary>
+        /// UnBan failed to be removed for yourself.
+        /// </summary>
+        SelfUnBanFailed,
+
+        /// <summary>
+        /// User has insufficient permissions to ban the required user.
+        /// </summary>
+        BanInsufficientPermissions,
+
         #endregion
     }
 }
