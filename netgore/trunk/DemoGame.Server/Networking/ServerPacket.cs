@@ -751,5 +751,21 @@ namespace DemoGame.Server
             pw.Write(usedBy);
             return pw;
         }
+
+        public static PacketWriter ReceiveFriends(string onlineFriends, string friendsMap, string friendsList)
+        {
+            var pw = GetWriter(ServerPacketID.ReceiveFriends);
+            pw.Write(onlineFriends);
+            pw.Write(friendsMap);
+            pw.Write(friendsList);
+            return pw;
+        }
+
+        public static PacketWriter ReceivePrivateMessage(string message)
+        {
+            var pw = GetWriter(ServerPacketID.ReceivePrivateMessage);
+            pw.Write(message);
+            return pw;
+        }
     }
 }

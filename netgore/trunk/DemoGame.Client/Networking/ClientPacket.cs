@@ -275,5 +275,26 @@ namespace DemoGame.Client
             pw.Write(useItemIndex);
             return pw;
         }
+
+        public static PacketWriter GetFriends()
+        {
+            var pw = GetWriter(ClientPacketID.GetFriends);
+            return pw;
+        }
+
+        public static PacketWriter SaveFriends(string friendsList)
+        {
+            var pw = GetWriter(ClientPacketID.SaveFriends);
+            pw.Write(friendsList);
+            return pw;
+        }
+
+        public static PacketWriter SendPrivateMessage(string targetName, string message)
+        {
+            var pw = GetWriter(ClientPacketID.SendPrivateMessage);
+            pw.Write(targetName);
+            pw.Write(message);
+            return pw;
+        }
     }
 }

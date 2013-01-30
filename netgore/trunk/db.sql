@@ -1,3 +1,4 @@
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -21,7 +22,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', '3fc0a7acf087f549ac2b266baf94b8b1', 'spodi@netgore.com', '255', '2009-09-07 15:43:16', '2012-12-14 19:24:56', '16777343', null);
+INSERT INTO `account` VALUES ('1', 'Spodi', '3fc0a7acf087f549ac2b266baf94b8b1', 'spodi@netgore.com', '255', '2009-09-07 15:43:16', '2013-01-30 20:41:10', '16777343', '16777343');
 
 -- ----------------------------
 -- Table structure for `account_ban`
@@ -76,11 +77,12 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='The IPs used to access accounts.';
 
 -- ----------------------------
 -- Records of account_ips
 -- ----------------------------
+
 
 -- ----------------------------
 -- Table structure for `active_trade_cash`
@@ -227,6 +229,7 @@ CREATE TABLE `character` (
   `stat_agi` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Agi stat.',
   `stat_int` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Int stat.',
   `stat_str` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Str stat.',
+  `friends` varchar(800) NOT NULL DEFAULT '' COMMENT 'A list of friends that the user has.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_character_name` (`name`),
   KEY `character_ibfk_2` (`load_map_id`),
@@ -242,7 +245,7 @@ CREATE TABLE `character` (
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', null, 'Spodi', null, null, null, '3', '424', '366', '1', '512', '512', '1', '1800', '15', '1', '15', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('1', null, 'Spodi', null, null, null, '3', '424', '366', '1', '512', '512', '1', '1800', '15', '1', '15', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -965,7 +968,7 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2012-12-14 19:25:10');
+INSERT INTO `server_time` VALUES ('2013-01-30 20:41:21');
 
 -- ----------------------------
 -- Table structure for `shop`
@@ -1053,6 +1056,7 @@ CREATE TABLE `world_stats_count_item_create` (
 -- ----------------------------
 -- Records of world_stats_count_item_create
 -- ----------------------------
+
 
 -- ----------------------------
 -- Table structure for `world_stats_count_item_sell`

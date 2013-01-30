@@ -12,6 +12,7 @@ namespace DemoGame.Client
         Equipped,
         Stats,
         Skills,
-        Guild
+        Guild,
+        Friends
     }
 }

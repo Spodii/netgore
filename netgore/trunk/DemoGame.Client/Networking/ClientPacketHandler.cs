@@ -1085,6 +1085,55 @@ namespace DemoGame.Client
             usedEntity.Use(usedBy);
         }
 
+        [MessageHandler((uint)ServerPacketID.ReceiveFriends)]
+        void RecvReceiveFriends(IIPSocket conn, BitStream r)
+        {
+            List<String> _onlineFriends = new List<String>();
+            _onlineFriends = r.ReadString().Split(',').ToList<string>();
+            string[] FriendsMap = r.ReadString().Split(',');
+            string[] FriendsList = r.ReadString().Split(',');
+
+            _onlineFriends.RemoveAll(x => x == "");
+            int i = 0;
+            FriendsForm._myFriends = new List<Friends>();
+
+            foreach (string friend in _onlineFriends)
+            {
+                FriendsForm._myFriends.Add(new Friends
+                {
+                    Name = friend,
+                    Map = FriendsMap[i],
+                    Online = true
+                });
+            }
+
+            foreach (string _friend in FriendsList)
+            {
+                FriendsForm._myFriends.Add(new Friends
+                {
+                    Name = _friend,
+                    Online = false
+                });
+
+                i++;
+            }
+
+
+            FriendsForm._myFriends.RemoveDuplicates((x, y) => x.Name == y.Name);
+            FriendsForm._myFriends.RemoveAll((x) => x.Name == "");
+            FriendsForm.SortList();
+        }
+
+        [MessageHandler((uint)ServerPacketID.ReceivePrivateMessage)]
+        void RecvReceivePrivateMessage(IIPSocket conn, BitStream r)
+        {
+            string Message = r.ReadString();
+            string PrivateMessage = Message;
+
+            // Display the private message
+            GameplayScreen.AppendToChatOutput(Message, Color.BlueViolet);
+        }
+
         #region IGetTime Members
 
         /// <summary>

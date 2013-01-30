@@ -40,6 +40,8 @@ namespace DemoGame
         PlaySoundAt,
         PlaySoundAtEntity,
         QuestInfo,
+        ReceiveFriends,
+        ReceivePrivateMessage,
         RemoveDynamicEntity,
         RemoveStatusEffect,
         SendAccountCharacters,
