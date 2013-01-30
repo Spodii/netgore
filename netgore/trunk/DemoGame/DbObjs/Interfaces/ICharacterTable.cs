@@ -76,6 +76,13 @@ System.Int32 Exp
 get;
 }
 /// <summary>
+/// Gets the value of the database column `friends`.
+/// </summary>
+System.String Friends
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `hp`.
 /// </summary>
 DemoGame.SPValueType HP

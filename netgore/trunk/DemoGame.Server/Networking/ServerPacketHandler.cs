@@ -14,6 +14,7 @@ using NetGore.Features.Quests;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.World;
+using System.Collections.Generic;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local
@@ -853,6 +854,66 @@ namespace DemoGame.Server
                         map.Send(pw, ServerMessageType.Map);
                     }
                 }
+            }
+        }
+
+        [MessageHandler((uint)ClientPacketID.GetFriends)]
+        void RecvGetFriends(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+ 
+            string FriendsString = user.Friends;
+ 
+            List<string> FriendsList = FriendsString.Split(',').ToList<string>();
+            string OnlineFriendsString = "";
+            string FriendsMap = "";
+ 
+            var OnlineMembers = Server.World.GetUsers();
+ 
+            foreach (var Member in OnlineMembers)
+            {
+                if (FriendsList.Contains(Member.Name))
+                {
+                    OnlineFriendsString += Member.Name + ",";
+                    FriendsMap += Member.Map + ",";
+                }
+            }
+ 
+            using (var pw = ServerPacket.ReceiveFriends(OnlineFriendsString, FriendsMap, FriendsString))
+            {
+                user.Send(pw, ServerMessageType.GUI);
+            }
+        }
+ 
+        [MessageHandler((uint)ClientPacketID.SaveFriends)]
+        void RecvSaveFriends(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+ 
+            string Friends = r.ReadString();
+            user.Friends = Friends;
+        }
+ 
+ 
+        [MessageHandler((uint)ClientPacketID.SendPrivateMessage)]
+        void RecvSendPrivateMessage(IIPSocket conn, BitStream r)
+        {
+ 
+            string TargetName = r.ReadString();
+            string Text = r.ReadString();
+ 
+            // Get the user to send the message to
+            User TargetChar = World.FindUser(TargetName);
+ 
+            string PrivateMessage = TargetName + " Says: " + Text;
+
+            using (var pw = ServerPacket.ReceivePrivateMessage(PrivateMessage))
+            {
+                TargetChar.Send(pw, ServerMessageType.GUIChat);
             }
         }
 

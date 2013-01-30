@@ -49,6 +49,7 @@ namespace DemoGame.Client
         Font _guiFont;
         GUIStatePersister _guiStatePersister;
         GuildForm _guildForm;
+        FriendsForm _friendsForm;
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
@@ -110,6 +111,11 @@ namespace DemoGame.Client
         public GuildForm GuildForm
         {
             get { return _guildForm; }
+        }
+
+        public FriendsForm FriendsForm
+        {
+            get { return _friendsForm; }
         }
 
         /// <summary>
@@ -581,6 +587,8 @@ namespace DemoGame.Client
 
             _groupForm = new GroupForm(_cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
+            _friendsForm = new FriendsForm(UserInfo, _cScreen) { IsVisible = false };
+
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
             Func<QuestID, bool> questFinishReqs = x => UserInfo.QuestInfo.ActiveQuests.Contains(x) && (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
             _availableQuestsForm = new AvailableQuestsForm(_cScreen, new Vector2(200), new Vector2(250, 350), questStartReqs, questFinishReqs);
@@ -610,6 +618,7 @@ namespace DemoGame.Client
             _guiStatePersister.Add("SkillsForm", _skillsForm);
             _guiStatePersister.Add("QuickBarForm", _quickBarForm);
             _guiStatePersister.Add("PeerTradeForm", _peerTradeForm);
+            _guiStatePersister.Add("FriendsForm", _friendsForm);
 
             // Set the focus to the screen container
             _cScreen.SetFocus();
@@ -748,6 +757,17 @@ namespace DemoGame.Client
 
                 case ToolbarItemType.Guild:
                     _guildForm.IsVisible = !_guildForm.IsVisible;
+                    break;
+
+                case ToolbarItemType.Friends:
+
+                    _friendsForm.IsVisible = !_friendsForm.IsVisible;
+
+                    using (var pw = ClientPacket.GetFriends())
+                    {
+                        Socket.Send(pw, ClientMessageType.GUI);
+                    }
+
                     break;
             }
         }

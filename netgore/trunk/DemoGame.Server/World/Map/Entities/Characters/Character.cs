@@ -87,6 +87,11 @@ namespace DemoGame.Server
         string _name;
 
         /// <summary>
+        /// Friends with the character.
+        /// </summary>
+        string _friends;
+
+        /// <summary>
         /// The time at which the character will be allowed to attack again. That is, they cannot attack until the game time
         /// surpasses this time.
         /// </summary>
@@ -363,6 +368,12 @@ namespace DemoGame.Server
         public Map Map
         {
             get { return _map; }
+        }
+
+        public string Friends
+        {
+            get { return _friends; }
+            set { _friends = value; }
         }
 
         /// <summary>
@@ -1253,6 +1264,7 @@ namespace DemoGame.Server
             RespawnMapID = v.RespawnMapID;
             RespawnPosition = new Vector2(v.RespawnX, v.RespawnY);
             StatPoints = v.StatPoints;
+            _friends = v.Friends;
 
             _knownSkills = new KnownSkillsCollection(this);
 
