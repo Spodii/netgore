@@ -50,6 +50,7 @@ namespace DemoGame.Client
         GUIStatePersister _guiStatePersister;
         GuildForm _guildForm;
         FriendsForm _friendsForm;
+        MiniMapForm _minimapForm;
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
@@ -116,6 +117,11 @@ namespace DemoGame.Client
         public FriendsForm FriendsForm
         {
             get { return _friendsForm; }
+        }
+
+        public MiniMapForm MiniMapForm
+        {
+            get { return _minimapForm; }
         }
 
         /// <summary>
@@ -589,6 +595,8 @@ namespace DemoGame.Client
 
             _friendsForm = new FriendsForm(UserInfo, _cScreen) { IsVisible = false };
 
+            _minimapForm = new MiniMapForm(_cScreen, this) { IsVisible = true };
+
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
             Func<QuestID, bool> questFinishReqs = x => UserInfo.QuestInfo.ActiveQuests.Contains(x) && (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
             _availableQuestsForm = new AvailableQuestsForm(_cScreen, new Vector2(200), new Vector2(250, 350), questStartReqs, questFinishReqs);
@@ -619,6 +627,7 @@ namespace DemoGame.Client
             _guiStatePersister.Add("QuickBarForm", _quickBarForm);
             _guiStatePersister.Add("PeerTradeForm", _peerTradeForm);
             _guiStatePersister.Add("FriendsForm", _friendsForm);
+            _guiStatePersister.Add("MiniMapForm", _minimapForm);
 
             // Set the focus to the screen container
             _cScreen.SetFocus();
@@ -842,6 +851,9 @@ namespace DemoGame.Client
         void World_MapChanged(World sender, ValueChangedEventArgs<Map> e)
         {
             ChatBubble.ClearAll();
+
+            // Update the mini map
+            MiniMapForm.MapChanged(e.NewValue);
 
             // Stop all sounds
             SoundManager.Stop();
