@@ -860,11 +860,15 @@ namespace DemoGame.Server
         [MessageHandler((uint)ClientPacketID.GetFriends)]
         void RecvGetFriends(IIPSocket conn, BitStream r)
         {
+            var account = TryGetAccount(conn);
+            if (account == null)
+                return;
+
             User user;
             if ((user = TryGetUser(conn)) == null)
                 return;
- 
-            string FriendsString = user.Friends;
+
+            string FriendsString = account.Friends;
  
             List<string> FriendsList = FriendsString.Split(',').ToList<string>();
             string OnlineFriendsString = "";
@@ -890,12 +894,11 @@ namespace DemoGame.Server
         [MessageHandler((uint)ClientPacketID.SaveFriends)]
         void RecvSaveFriends(IIPSocket conn, BitStream r)
         {
-            User user;
-            if ((user = TryGetUser(conn)) == null)
+            var account = TryGetAccount(conn);
+            if (account == null)
                 return;
- 
-            string Friends = r.ReadString();
-            user.Friends = Friends;
+
+            account.SetFriends(r.ReadString());
         }
  
  

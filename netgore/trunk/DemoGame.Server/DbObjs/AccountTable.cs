@@ -33,7 +33,7 @@ public class AccountTable : IAccountTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"creator_ip", "current_ip", "email", "id", "name", "password", "permissions", "time_created", "time_last_login" };
+ static  readonly System.String[] _dbColumns = new string[] {"creator_ip", "current_ip", "email", "friends", "id", "name", "password", "permissions", "time_created", "time_last_login" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -61,7 +61,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"creator_ip", "current_ip", "email", "name", "password", "permissions", "time_created", "time_last_login" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"creator_ip", "current_ip", "email", "friends", "name", "password", "permissions", "time_created", "time_last_login" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -79,7 +79,7 @@ public const System.String TableName = "account";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 9;
+public const System.Int32 ColumnCount = 10;
 /// <summary>
 /// The field that maps onto the database column `creator_ip`.
 /// </summary>
@@ -92,6 +92,10 @@ System.Nullable<System.UInt32> _currentIp;
 /// The field that maps onto the database column `email`.
 /// </summary>
 System.String _email;
+/// <summary>
+/// The field that maps onto the database column `friends`.
+/// </summary>
+System.String _friends;
 /// <summary>
 /// The field that maps onto the database column `id`.
 /// </summary>
@@ -168,6 +172,24 @@ return (System.String)_email;
 set
 {
 this._email = (System.String)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `friends`.
+/// The underlying database type is `varchar(800)`.The database column contains the comment: 
+/// "A list of friends that the user has.".
+/// </summary>
+[System.ComponentModel.Description("A list of friends that the user has.")]
+[NetGore.SyncValueAttribute()]
+public System.String Friends
+{
+get
+{
+return (System.String)_friends;
+}
+set
+{
+this._friends = (System.String)value;
 }
 }
 /// <summary>
@@ -302,17 +324,19 @@ public AccountTable()
 /// <param name="creatorIp">The initial value for the corresponding property.</param>
 /// <param name="currentIp">The initial value for the corresponding property.</param>
 /// <param name="email">The initial value for the corresponding property.</param>
+/// <param name="friends">The initial value for the corresponding property.</param>
 /// <param name="iD">The initial value for the corresponding property.</param>
 /// <param name="name">The initial value for the corresponding property.</param>
 /// <param name="password">The initial value for the corresponding property.</param>
 /// <param name="permissions">The initial value for the corresponding property.</param>
 /// <param name="timeCreated">The initial value for the corresponding property.</param>
 /// <param name="timeLastLogin">The initial value for the corresponding property.</param>
-public AccountTable(System.UInt32 @creatorIp, System.Nullable<System.UInt32> @currentIp, System.String @email, DemoGame.AccountID @iD, System.String @name, System.String @password, DemoGame.UserPermissions @permissions, System.DateTime @timeCreated, System.DateTime @timeLastLogin)
+public AccountTable(System.UInt32 @creatorIp, System.Nullable<System.UInt32> @currentIp, System.String @email, System.String @friends, DemoGame.AccountID @iD, System.String @name, System.String @password, DemoGame.UserPermissions @permissions, System.DateTime @timeCreated, System.DateTime @timeLastLogin)
 {
 this.CreatorIp = (System.UInt32)@creatorIp;
 this.CurrentIp = (System.Nullable<System.UInt32>)@currentIp;
 this.Email = (System.String)@email;
+this.Friends = (System.String)@friends;
 this.ID = (DemoGame.AccountID)@iD;
 this.Name = (System.String)@name;
 this.Password = (System.String)@password;
@@ -350,6 +374,7 @@ public static void CopyValues(IAccountTable source, System.Collections.Generic.I
 dic["creator_ip"] = (System.UInt32)source.CreatorIp;
 dic["current_ip"] = (System.Nullable<System.UInt32>)source.CurrentIp;
 dic["email"] = (System.String)source.Email;
+dic["friends"] = (System.String)source.Friends;
 dic["id"] = (DemoGame.AccountID)source.ID;
 dic["name"] = (System.String)source.Name;
 dic["password"] = (System.String)source.Password;
@@ -367,6 +392,7 @@ public void CopyValuesFrom(IAccountTable source)
 this.CreatorIp = (System.UInt32)source.CreatorIp;
 this.CurrentIp = (System.Nullable<System.UInt32>)source.CurrentIp;
 this.Email = (System.String)source.Email;
+this.Friends = (System.String)source.Friends;
 this.ID = (DemoGame.AccountID)source.ID;
 this.Name = (System.String)source.Name;
 this.Password = (System.String)source.Password;
@@ -394,6 +420,9 @@ return CurrentIp;
 
 case "email":
 return Email;
+
+case "friends":
+return Friends;
 
 case "id":
 return ID;
@@ -437,6 +466,10 @@ break;
 
 case "email":
 this.Email = (System.String)value;
+break;
+
+case "friends":
+this.Friends = (System.String)value;
 break;
 
 case "id":
@@ -487,6 +520,9 @@ return new ColumnMetadata("current_ip", "IP address currently logged in to the a
 
 case "email":
 return new ColumnMetadata("email", "The email address.", "varchar(60)", null, typeof(System.String), false, false, false);
+
+case "friends":
+return new ColumnMetadata("friends", "A list of friends that the user has.", "varchar(800)", "", typeof(System.String), false, false, false);
 
 case "id":
 return new ColumnMetadata("id", "The unique ID of the account.", "int(11)", null, typeof(System.Int32), false, true, false);

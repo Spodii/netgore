@@ -55,6 +55,13 @@ System.String Email
 get;
 }
 /// <summary>
+/// Gets the value of the database column `friends`.
+/// </summary>
+System.String Friends
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `id`.
 /// </summary>
 DemoGame.AccountID ID

@@ -15,6 +15,7 @@ CREATE TABLE `account` (
   `time_last_login` datetime NOT NULL COMMENT 'When the account was last logged in to.',
   `creator_ip` int(10) unsigned NOT NULL COMMENT 'The IP address that created the account.',
   `current_ip` int(10) unsigned DEFAULT NULL COMMENT 'IP address currently logged in to the account, or null if nobody is logged in.',
+  `friends` varchar(800) NOT NULL DEFAULT '' COMMENT 'A list of friends that the user has.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='The user accounts. Multiple chars can exist per account.';
@@ -22,7 +23,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', '3fc0a7acf087f549ac2b266baf94b8b1', 'spodi@netgore.com', '255', '2009-09-07 15:43:16', '2013-01-30 20:41:10', '16777343', '16777343');
+INSERT INTO `account` VALUES ('1', 'Spodi', '3fc0a7acf087f549ac2b266baf94b8b1', 'spodi@netgore.com', '255', '2009-09-07 15:43:16', '2013-01-30 20:41:10', '16777343', '16777343', '');
 
 -- ----------------------------
 -- Table structure for `account_ban`
@@ -82,7 +83,6 @@ CREATE TABLE `account_ips` (
 -- ----------------------------
 -- Records of account_ips
 -- ----------------------------
-
 
 -- ----------------------------
 -- Table structure for `active_trade_cash`
@@ -229,7 +229,6 @@ CREATE TABLE `character` (
   `stat_agi` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Agi stat.',
   `stat_int` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Int stat.',
   `stat_str` smallint(6) NOT NULL DEFAULT '1' COMMENT 'Str stat.',
-  `friends` varchar(800) NOT NULL DEFAULT '' COMMENT 'A list of friends that the user has.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_character_name` (`name`),
   KEY `character_ibfk_2` (`load_map_id`),
@@ -245,7 +244,7 @@ CREATE TABLE `character` (
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', null, 'Spodi', null, null, null, '3', '424', '366', '1', '512', '512', '1', '1800', '15', '1', '15', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '');
+INSERT INTO `character` VALUES ('1', null, 'Spodi', null, null, null, '3', '424', '366', '1', '512', '512', '1', '1800', '15', '1', '15', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -1056,7 +1055,6 @@ CREATE TABLE `world_stats_count_item_create` (
 -- ----------------------------
 -- Records of world_stats_count_item_create
 -- ----------------------------
-
 
 -- ----------------------------
 -- Table structure for `world_stats_count_item_sell`
