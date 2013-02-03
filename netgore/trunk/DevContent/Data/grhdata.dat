@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>409</Count>
+    <Count>414</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -1551,6 +1551,24 @@
       </Texture>
     </Item171>
     <Item172>
+      <Index>85</Index>
+      <Categorization>GUI.MiniMapCharacter</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/MiniMapCharacter</Name>
+        <Source>0,0,12,12</Source>
+      </Texture>
+    </Item172>
+    <Item173>
+      <Index>86</Index>
+      <Categorization>GUI.MiniMapNPC</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/MiniMapNPC</Name>
+        <Source>0,0,12,12</Source>
+      </Texture>
+    </Item173>
+    <Item174>
       <Index>234</Index>
       <Categorization>Item.Body.Black</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1558,8 +1576,8 @@
         <Name>Grh/Item/Body/Black</Name>
         <Source>0,0,30,30</Source>
       </Texture>
-    </Item172>
-    <Item173>
+    </Item174>
+    <Item175>
       <Index>235</Index>
       <Categorization>Item.Body.Gold</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1567,8 +1585,8 @@
         <Name>Grh/Item/Body/Gold</Name>
         <Source>0,0,30,30</Source>
       </Texture>
-    </Item173>
-    <Item174>
+    </Item175>
+    <Item176>
       <Index>236</Index>
       <Categorization>Item.Body.Iron</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1576,8 +1594,8 @@
         <Name>Grh/Item/Body/Iron</Name>
         <Source>0,0,30,30</Source>
       </Texture>
-    </Item174>
-    <Item175>
+    </Item176>
+    <Item177>
       <Index>94</Index>
       <Categorization>Item.Potion.blue</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1585,8 +1603,8 @@
         <Name>Grh/Item/Potion/blue</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item175>
-    <Item176>
+    </Item177>
+    <Item178>
       <Index>95</Index>
       <Categorization>Item.Potion.red</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1594,8 +1612,8 @@
         <Name>Grh/Item/Potion/red</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item176>
-    <Item177>
+    </Item178>
+    <Item179>
       <Index>177</Index>
       <Categorization>Item.Ranged.pistol</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1603,8 +1621,8 @@
         <Name>Grh/Item/Ranged/pistol</Name>
         <Source>0,0,15,18</Source>
       </Texture>
-    </Item177>
-    <Item178>
+    </Item179>
+    <Item180>
       <Index>182</Index>
       <Categorization>Item.Ranged.rock</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1612,8 +1630,8 @@
         <Name>Grh/Item/Ranged/rock</Name>
         <Source>0,0,11,9</Source>
       </Texture>
-    </Item178>
-    <Item179>
+    </Item180>
+    <Item181>
       <Index>237</Index>
       <Categorization>Item.Weapon.Sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1621,8 +1639,8 @@
         <Name>Grh/Item/Weapon/Sword</Name>
         <Source>0,0,27,21</Source>
       </Texture>
-    </Item179>
-    <Item180>
+    </Item181>
+    <Item182>
       <Index>81</Index>
       <Categorization>Map.Black</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1630,8 +1648,8 @@
         <Name>Grh/Map/Black</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item180>
-    <Item181>
+    </Item182>
+    <Item183>
       <Index>97</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Bridge Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1639,8 +1657,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Bridge Right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item181>
-    <Item182>
+    </Item183>
+    <Item184>
       <Index>98</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Bridge top left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1648,8 +1666,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Bridge top left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item182>
-    <Item183>
+    </Item184>
+    <Item185>
       <Index>99</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Bridge Top Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1657,8 +1675,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Bridge Top Right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item183>
-    <Item184>
+    </Item185>
+    <Item186>
       <Index>100</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Bridge UpDown Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1666,8 +1684,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Bridge UpDown Left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item186>
+    <Item187>
       <Index>238</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Bridge UpDown Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1675,8 +1693,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Bridge UpDown Right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item185>
-    <Item186>
+    </Item187>
+    <Item188>
       <Index>239</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Bridge Updown top left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1684,8 +1702,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Bridge Updown top left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item186>
-    <Item187>
+    </Item188>
+    <Item189>
       <Index>243</Index>
       <Categorization>Map.Grassy.Bridge.Grass - LRBridge</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1693,8 +1711,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - LRBridge[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item187>
-    <Item188>
+    </Item189>
+    <Item190>
       <Index>240</Index>
       <Categorization>Map.Grassy.Bridge.Grass - LRBridge bottom left corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1702,8 +1720,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - LRBridge bottom left corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item188>
-    <Item189>
+    </Item190>
+    <Item191>
       <Index>241</Index>
       <Categorization>Map.Grassy.Bridge.Grass - LRBridge Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1711,8 +1729,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - LRBridge Left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item189>
-    <Item190>
+    </Item191>
+    <Item192>
       <Index>242</Index>
       <Categorization>Map.Grassy.Bridge.Grass - LRBridge Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1720,8 +1738,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - LRBridge Top[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item190>
-    <Item191>
+    </Item192>
+    <Item193>
       <Index>257</Index>
       <Categorization>Map.Grassy.Bridge.Grass - UDBridge</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1729,8 +1747,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - UDBridge[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item191>
-    <Item192>
+    </Item193>
+    <Item194>
       <Index>244</Index>
       <Categorization>Map.Grassy.Bridge.Grass - UDBridge botom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1738,8 +1756,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - UDBridge botom[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item192>
-    <Item193>
+    </Item194>
+    <Item195>
       <Index>246</Index>
       <Categorization>Map.Grassy.Bridge.Grass - UDBridge bottom left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1747,8 +1765,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - UDBridge bottom left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item193>
-    <Item194>
+    </Item195>
+    <Item196>
       <Index>245</Index>
       <Categorization>Map.Grassy.Bridge.Grass - UDBridge Bottom left corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1756,8 +1774,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - UDBridge Bottom left corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item194>
-    <Item195>
+    </Item196>
+    <Item197>
       <Index>247</Index>
       <Categorization>Map.Grassy.Bridge.Grass - UDBridge bottom right corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1765,8 +1783,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - UDBridge bottom right corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item195>
-    <Item196>
+    </Item197>
+    <Item198>
       <Index>255</Index>
       <Categorization>Map.Grassy.Bridge.Grass - UDBridge Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1774,8 +1792,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - UDBridge Left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item196>
-    <Item197>
+    </Item198>
+    <Item199>
       <Index>256</Index>
       <Categorization>Map.Grassy.Bridge.Grass - UDBridge top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1783,8 +1801,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - UDBridge top[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item197>
-    <Item198>
+    </Item199>
+    <Item200>
       <Index>258</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Updown Bridge top right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1792,8 +1810,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Updown Bridge top right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item198>
-    <Item199>
+    </Item200>
+    <Item201>
       <Index>259</Index>
       <Categorization>Map.Grassy.Bridge.Grass - Water left Bridge Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1801,8 +1819,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - Water left Bridge Bottom[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item199>
-    <Item200>
+    </Item201>
+    <Item202>
       <Index>260</Index>
       <Categorization>Map.Grassy.Bridge.Grass - water right bridge bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1810,8 +1828,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass - water right bridge bottom[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item200>
-    <Item201>
+    </Item202>
+    <Item203>
       <Index>261</Index>
       <Categorization>Map.Grassy.Bridge.Grass Bridge right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1819,8 +1837,8 @@
         <Name>Grh/Map/Grassy/Bridge/Grass Bridge right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item201>
-    <Item202>
+    </Item203>
+    <Item204>
       <Index>262</Index>
       <Categorization>Map.Grassy.Bridge.Water - Bridge bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1828,8 +1846,8 @@
         <Name>Grh/Map/Grassy/Bridge/Water - Bridge bottom[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item202>
-    <Item203>
+    </Item204>
+    <Item205>
       <Index>263</Index>
       <Categorization>Map.Grassy.Bridge.Water - Bridge UpDown Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1837,8 +1855,8 @@
         <Name>Grh/Map/Grassy/Bridge/Water - Bridge UpDown Left[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item203>
-    <Item204>
+    </Item205>
+    <Item206>
       <Index>264</Index>
       <Categorization>Map.Grassy.Bridge.Water - Bridge UpDown Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1846,8 +1864,8 @@
         <Name>Grh/Map/Grassy/Bridge/Water - Bridge UpDown Right[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item204>
-    <Item205>
+    </Item206>
+    <Item207>
       <Index>265</Index>
       <Categorization>Map.Grassy.Bridge.Water - Grass Left Bridge top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1855,8 +1873,8 @@
         <Name>Grh/Map/Grassy/Bridge/Water - Grass Left Bridge top[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item205>
-    <Item206>
+    </Item207>
+    <Item208>
       <Index>266</Index>
       <Categorization>Map.Grassy.Bridge.Water - Grass right LRBridge top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1864,8 +1882,8 @@
         <Name>Grh/Map/Grassy/Bridge/Water - Grass right LRBridge top[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item206>
-    <Item207>
+    </Item208>
+    <Item209>
       <Index>269</Index>
       <Categorization>Map.Grassy.Building.Bar Whole</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1873,8 +1891,8 @@
         <Name>Grh/Map/Grassy/Building/Bar Whole[l1][w1]</Name>
         <Source>0,0,64,32</Source>
       </Texture>
-    </Item207>
-    <Item208>
+    </Item209>
+    <Item210>
       <Index>270</Index>
       <Categorization>Map.Grassy.Building.Building - 1 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1882,8 +1900,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 1 1[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item208>
-    <Item209>
+    </Item210>
+    <Item211>
       <Index>271</Index>
       <Categorization>Map.Grassy.Building.Building - 1 2 repeatable</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1891,8 +1909,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 1 2 repeatable[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item209>
-    <Item210>
+    </Item211>
+    <Item212>
       <Index>272</Index>
       <Categorization>Map.Grassy.Building.Building - 1 3</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1900,8 +1918,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 1 3[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item210>
-    <Item211>
+    </Item212>
+    <Item213>
       <Index>276</Index>
       <Categorization>Map.Grassy.Building.Building - 1 7</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1909,8 +1927,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 1 7[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item211>
-    <Item212>
+    </Item213>
+    <Item214>
       <Index>277</Index>
       <Categorization>Map.Grassy.Building.Building - 1 8</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1918,8 +1936,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 1 8[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item212>
-    <Item213>
+    </Item214>
+    <Item215>
       <Index>278</Index>
       <Categorization>Map.Grassy.Building.Building - 2 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1927,8 +1945,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 2 1[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item213>
-    <Item214>
+    </Item215>
+    <Item216>
       <Index>279</Index>
       <Categorization>Map.Grassy.Building.Building - 2 2 repeatable</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1936,8 +1954,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 2 2 repeatable[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item214>
-    <Item215>
+    </Item216>
+    <Item217>
       <Index>280</Index>
       <Categorization>Map.Grassy.Building.Building - 2 3</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1945,8 +1963,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 2 3[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item215>
-    <Item216>
+    </Item217>
+    <Item218>
       <Index>283</Index>
       <Categorization>Map.Grassy.Building.Building - 2 7</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1954,8 +1972,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 2 7[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item216>
-    <Item217>
+    </Item218>
+    <Item219>
       <Index>284</Index>
       <Categorization>Map.Grassy.Building.Building - 2 8</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1963,8 +1981,8 @@
         <Name>Grh/Map/Grassy/Building/Building - 2 8[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item217>
-    <Item218>
+    </Item219>
+    <Item220>
       <Index>285</Index>
       <Categorization>Map.Grassy.Building.Building - window</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1972,8 +1990,8 @@
         <Name>Grh/Map/Grassy/Building/Building - window[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item218>
-    <Item219>
+    </Item220>
+    <Item221>
       <Index>286</Index>
       <Categorization>Map.Grassy.Building.Roof - 1 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1981,8 +1999,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 1 1[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item219>
-    <Item220>
+    </Item221>
+    <Item222>
       <Index>287</Index>
       <Categorization>Map.Grassy.Building.Roof - 1 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1990,8 +2008,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 1 2[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item220>
-    <Item221>
+    </Item222>
+    <Item223>
       <Index>288</Index>
       <Categorization>Map.Grassy.Building.Roof - 1 3 repeatable</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1999,8 +2017,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 1 3 repeatable[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item221>
-    <Item222>
+    </Item223>
+    <Item224>
       <Index>289</Index>
       <Categorization>Map.Grassy.Building.Roof - 1 4</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2008,8 +2026,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 1 4[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item222>
-    <Item223>
+    </Item224>
+    <Item225>
       <Index>290</Index>
       <Categorization>Map.Grassy.Building.Roof - 1 5</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2017,8 +2035,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 1 5[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item223>
-    <Item224>
+    </Item225>
+    <Item226>
       <Index>291</Index>
       <Categorization>Map.Grassy.Building.Roof - 2 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2026,8 +2044,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 2 1[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item224>
-    <Item225>
+    </Item226>
+    <Item227>
       <Index>292</Index>
       <Categorization>Map.Grassy.Building.Roof - 2 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2035,8 +2053,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 2 2[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item225>
-    <Item226>
+    </Item227>
+    <Item228>
       <Index>293</Index>
       <Categorization>Map.Grassy.Building.roof - 3 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2044,8 +2062,8 @@
         <Name>Grh/Map/Grassy/Building/roof - 3 1[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item226>
-    <Item227>
+    </Item228>
+    <Item229>
       <Index>294</Index>
       <Categorization>Map.Grassy.Building.roof - 3 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2053,8 +2071,8 @@
         <Name>Grh/Map/Grassy/Building/roof - 3 2[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item227>
-    <Item228>
+    </Item229>
+    <Item230>
       <Index>295</Index>
       <Categorization>Map.Grassy.Building.Roof - 3 3 repeatable</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2062,8 +2080,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 3 3 repeatable[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item228>
-    <Item229>
+    </Item230>
+    <Item231>
       <Index>296</Index>
       <Categorization>Map.Grassy.Building.Roof - 3 4</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2071,8 +2089,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 3 4[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item229>
-    <Item230>
+    </Item231>
+    <Item232>
       <Index>297</Index>
       <Categorization>Map.Grassy.Building.Roof - 3 5</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2080,8 +2098,8 @@
         <Name>Grh/Map/Grassy/Building/Roof - 3 5[l1][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item230>
-    <Item231>
+    </Item232>
+    <Item233>
       <Index>299</Index>
       <Categorization>Map.Grassy.Building.Tree - Whole</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2089,8 +2107,8 @@
         <Name>Grh/Map/Grassy/Building/Tree - Whole[l1][w1x25y93w41h30]</Name>
         <Source>0,0,96,128</Source>
       </Texture>
-    </Item231>
-    <Item232>
+    </Item233>
+    <Item234>
       <Index>300</Index>
       <Categorization>Map.Grassy.Decor.lilypad open down</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2098,8 +2116,8 @@
         <Name>Grh/Map/Grassy/Decor/lilypad open down</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item232>
-    <Item233>
+    </Item234>
+    <Item235>
       <Index>301</Index>
       <Categorization>Map.Grassy.Decor.lilypad open left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2107,8 +2125,8 @@
         <Name>Grh/Map/Grassy/Decor/lilypad open left</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item233>
-    <Item234>
+    </Item235>
+    <Item236>
       <Index>302</Index>
       <Categorization>Map.Grassy.Decor.Lilypad openright</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2116,8 +2134,8 @@
         <Name>Grh/Map/Grassy/Decor/Lilypad openright</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item234>
-    <Item235>
+    </Item236>
+    <Item237>
       <Index>303</Index>
       <Categorization>Map.Grassy.Decor.Lilypad opentop</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2125,8 +2143,8 @@
         <Name>Grh/Map/Grassy/Decor/Lilypad opentop</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item235>
-    <Item236>
+    </Item237>
+    <Item238>
       <Index>304</Index>
       <Categorization>Map.Grassy.Decor.Small Plant</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2134,8 +2152,8 @@
         <Name>Grh/Map/Grassy/Decor/Small Plant[l1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item236>
-    <Item237>
+    </Item238>
+    <Item239>
       <Index>317</Index>
       <Categorization>Map.Grassy.Dirt.Dirt</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2143,8 +2161,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item237>
-    <Item238>
+    </Item239>
+    <Item240>
       <Index>306</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2152,8 +2170,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass bottom[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item238>
-    <Item239>
+    </Item240>
+    <Item241>
       <Index>305</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass Bottom Left Corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2161,8 +2179,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass Bottom Left Corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item239>
-    <Item240>
+    </Item241>
+    <Item242>
       <Index>307</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass corner bottom right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2170,8 +2188,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass corner bottom right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item240>
-    <Item241>
+    </Item242>
+    <Item243>
       <Index>308</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass corner top left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2179,8 +2197,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass corner top left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item241>
-    <Item242>
+    </Item243>
+    <Item244>
       <Index>309</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass corner top right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2188,8 +2206,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass corner top right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item242>
-    <Item243>
+    </Item244>
+    <Item245>
       <Index>311</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2197,8 +2215,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item243>
-    <Item244>
+    </Item245>
+    <Item246>
       <Index>310</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass Left Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2206,8 +2224,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass Left Bottom[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item244>
-    <Item245>
+    </Item246>
+    <Item247>
       <Index>313</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2215,8 +2233,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass Right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item245>
-    <Item246>
+    </Item247>
+    <Item248>
       <Index>312</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass Right Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2224,8 +2242,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass Right Bottom[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item246>
-    <Item247>
+    </Item248>
+    <Item249>
       <Index>316</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2233,8 +2251,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass top[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item247>
-    <Item248>
+    </Item249>
+    <Item250>
       <Index>314</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass top left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2242,8 +2260,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass top left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item248>
-    <Item249>
+    </Item250>
+    <Item251>
       <Index>315</Index>
       <Categorization>Map.Grassy.Dirt.Dirt - Grass Top Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2251,8 +2269,8 @@
         <Name>Grh/Map/Grassy/Dirt/Dirt - Grass Top Right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item249>
-    <Item250>
+    </Item251>
+    <Item252>
       <Index>96</Index>
       <Categorization>Map.Grassy.Grass</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2260,8 +2278,8 @@
         <Name>Grh/Map/Grassy/Grass[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item250>
-    <Item251>
+    </Item252>
+    <Item253>
       <Index>320</Index>
       <Categorization>Map.Grassy.Water.Grass - Water Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2269,8 +2287,8 @@
         <Name>Grh/Map/Grassy/Water/Grass - Water Bottom[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item251>
-    <Item252>
+    </Item253>
+    <Item254>
       <Index>318</Index>
       <Categorization>Map.Grassy.Water.Grass - Water bottom left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2278,8 +2296,8 @@
         <Name>Grh/Map/Grassy/Water/Grass - Water bottom left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item252>
-    <Item253>
+    </Item254>
+    <Item255>
       <Index>319</Index>
       <Categorization>Map.Grassy.Water.Grass - Water Bottom Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2287,8 +2305,8 @@
         <Name>Grh/Map/Grassy/Water/Grass - Water Bottom Right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item253>
-    <Item254>
+    </Item255>
+    <Item256>
       <Index>321</Index>
       <Categorization>Map.Grassy.Water.grass - water left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2296,8 +2314,8 @@
         <Name>Grh/Map/Grassy/Water/grass - water left[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item254>
-    <Item255>
+    </Item256>
+    <Item257>
       <Index>322</Index>
       <Categorization>Map.Grassy.Water.Grass - water right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2305,8 +2323,8 @@
         <Name>Grh/Map/Grassy/Water/Grass - water right[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item255>
-    <Item256>
+    </Item257>
+    <Item258>
       <Index>325</Index>
       <Categorization>Map.Grassy.Water.Grass - Water top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2314,8 +2332,8 @@
         <Name>Grh/Map/Grassy/Water/Grass - Water top[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item256>
-    <Item257>
+    </Item258>
+    <Item259>
       <Index>323</Index>
       <Categorization>Map.Grassy.Water.Grass - Water top left corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2323,8 +2341,8 @@
         <Name>Grh/Map/Grassy/Water/Grass - Water top left corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item257>
-    <Item258>
+    </Item259>
+    <Item260>
       <Index>324</Index>
       <Categorization>Map.Grassy.Water.Grass - Water top right corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2332,8 +2350,8 @@
         <Name>Grh/Map/Grassy/Water/Grass - Water top right corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item258>
-    <Item259>
+    </Item260>
+    <Item261>
       <Index>330</Index>
       <Categorization>Map.Grassy.Water.Water</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2341,8 +2359,8 @@
         <Name>Grh/Map/Grassy/Water/Water[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item259>
-    <Item260>
+    </Item261>
+    <Item262>
       <Index>326</Index>
       <Categorization>Map.Grassy.Water.Water - Grass Bottom Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2350,8 +2368,8 @@
         <Name>Grh/Map/Grassy/Water/Water - Grass Bottom Left[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item260>
-    <Item261>
+    </Item262>
+    <Item263>
       <Index>327</Index>
       <Categorization>Map.Grassy.Water.Water - Grass Bottom Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2359,8 +2377,8 @@
         <Name>Grh/Map/Grassy/Water/Water - Grass Bottom Right[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item261>
-    <Item262>
+    </Item263>
+    <Item264>
       <Index>328</Index>
       <Categorization>Map.Grassy.Water.Water - Grass Top Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2368,8 +2386,8 @@
         <Name>Grh/Map/Grassy/Water/Water - Grass Top Left[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item262>
-    <Item263>
+    </Item264>
+    <Item265>
       <Index>329</Index>
       <Categorization>Map.Grassy.Water.Water - Grass top right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2377,8 +2395,8 @@
         <Name>Grh/Map/Grassy/Water/Water - Grass top right[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item263>
-    <Item264>
+    </Item265>
+    <Item266>
       <Index>331</Index>
       <Categorization>Map.Jail.1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2386,8 +2404,8 @@
         <Name>Grh/Map/Jail/1[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item264>
-    <Item265>
+    </Item266>
+    <Item267>
       <Index>332</Index>
       <Categorization>Map.Jail.10</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2395,8 +2413,8 @@
         <Name>Grh/Map/Jail/10[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item265>
-    <Item266>
+    </Item267>
+    <Item268>
       <Index>333</Index>
       <Categorization>Map.Jail.11</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2404,8 +2422,8 @@
         <Name>Grh/Map/Jail/11[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item266>
-    <Item267>
+    </Item268>
+    <Item269>
       <Index>334</Index>
       <Categorization>Map.Jail.12</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2413,8 +2431,8 @@
         <Name>Grh/Map/Jail/12[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item267>
-    <Item268>
+    </Item269>
+    <Item270>
       <Index>335</Index>
       <Categorization>Map.Jail.13</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2422,8 +2440,8 @@
         <Name>Grh/Map/Jail/13[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item268>
-    <Item269>
+    </Item270>
+    <Item271>
       <Index>336</Index>
       <Categorization>Map.Jail.14</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2431,8 +2449,8 @@
         <Name>Grh/Map/Jail/14[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item269>
-    <Item270>
+    </Item271>
+    <Item272>
       <Index>337</Index>
       <Categorization>Map.Jail.15</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2440,8 +2458,8 @@
         <Name>Grh/Map/Jail/15[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item270>
-    <Item271>
+    </Item272>
+    <Item273>
       <Index>338</Index>
       <Categorization>Map.Jail.16</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2449,8 +2467,8 @@
         <Name>Grh/Map/Jail/16[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item271>
-    <Item272>
+    </Item273>
+    <Item274>
       <Index>339</Index>
       <Categorization>Map.Jail.17</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2458,8 +2476,8 @@
         <Name>Grh/Map/Jail/17[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item272>
-    <Item273>
+    </Item274>
+    <Item275>
       <Index>340</Index>
       <Categorization>Map.Jail.18</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2467,8 +2485,8 @@
         <Name>Grh/Map/Jail/18[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item273>
-    <Item274>
+    </Item275>
+    <Item276>
       <Index>341</Index>
       <Categorization>Map.Jail.19</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2476,8 +2494,8 @@
         <Name>Grh/Map/Jail/19[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item274>
-    <Item275>
+    </Item276>
+    <Item277>
       <Index>342</Index>
       <Categorization>Map.Jail.2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2485,8 +2503,8 @@
         <Name>Grh/Map/Jail/2[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item275>
-    <Item276>
+    </Item277>
+    <Item278>
       <Index>343</Index>
       <Categorization>Map.Jail.20</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2494,8 +2512,8 @@
         <Name>Grh/Map/Jail/20[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item276>
-    <Item277>
+    </Item278>
+    <Item279>
       <Index>344</Index>
       <Categorization>Map.Jail.21</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2503,8 +2521,8 @@
         <Name>Grh/Map/Jail/21[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item277>
-    <Item278>
+    </Item279>
+    <Item280>
       <Index>345</Index>
       <Categorization>Map.Jail.22</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2512,8 +2530,8 @@
         <Name>Grh/Map/Jail/22[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item278>
-    <Item279>
+    </Item280>
+    <Item281>
       <Index>346</Index>
       <Categorization>Map.Jail.23</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2521,8 +2539,8 @@
         <Name>Grh/Map/Jail/23[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item279>
-    <Item280>
+    </Item281>
+    <Item282>
       <Index>347</Index>
       <Categorization>Map.Jail.24</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2530,8 +2548,8 @@
         <Name>Grh/Map/Jail/24[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item280>
-    <Item281>
+    </Item282>
+    <Item283>
       <Index>348</Index>
       <Categorization>Map.Jail.25</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2539,8 +2557,8 @@
         <Name>Grh/Map/Jail/25[l1][w1x0y64w32h32]</Name>
         <Source>0,0,32,96</Source>
       </Texture>
-    </Item281>
-    <Item282>
+    </Item283>
+    <Item284>
       <Index>352</Index>
       <Categorization>Map.Jail.3</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2548,8 +2566,8 @@
         <Name>Grh/Map/Jail/3[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item282>
-    <Item283>
+    </Item284>
+    <Item285>
       <Index>353</Index>
       <Categorization>Map.Jail.4</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2557,8 +2575,8 @@
         <Name>Grh/Map/Jail/4[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item283>
-    <Item284>
+    </Item285>
+    <Item286>
       <Index>354</Index>
       <Categorization>Map.Jail.5</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2566,8 +2584,8 @@
         <Name>Grh/Map/Jail/5[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item284>
-    <Item285>
+    </Item286>
+    <Item287>
       <Index>355</Index>
       <Categorization>Map.Jail.6</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2575,8 +2593,8 @@
         <Name>Grh/Map/Jail/6[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item285>
-    <Item286>
+    </Item287>
+    <Item288>
       <Index>356</Index>
       <Categorization>Map.Jail.7</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2584,8 +2602,8 @@
         <Name>Grh/Map/Jail/7[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item286>
-    <Item287>
+    </Item288>
+    <Item289>
       <Index>357</Index>
       <Categorization>Map.Jail.8</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2593,8 +2611,8 @@
         <Name>Grh/Map/Jail/8[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item287>
-    <Item288>
+    </Item289>
+    <Item290>
       <Index>358</Index>
       <Categorization>Map.Jail.9</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2602,8 +2620,8 @@
         <Name>Grh/Map/Jail/9[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item288>
-    <Item289>
+    </Item290>
+    <Item291>
       <Index>367</Index>
       <Categorization>Map.Jail.Decor.29</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2611,8 +2629,8 @@
         <Name>Grh/Map/Jail/Decor/29[l1]</Name>
         <Source>0,0,64,64</Source>
       </Texture>
-    </Item289>
-    <Item290>
+    </Item291>
+    <Item292>
       <Index>370</Index>
       <Categorization>Map.Jail.Decor.skull pile</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2620,8 +2638,8 @@
         <Name>Grh/Map/Jail/Decor/skull pile[l1]</Name>
         <Source>0,0,43,32</Source>
       </Texture>
-    </Item290>
-    <Item291>
+    </Item292>
+    <Item293>
       <Index>360</Index>
       <Categorization>Map.Jail.floor</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2629,8 +2647,8 @@
         <Name>Grh/Map/Jail/floor[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item291>
-    <Item292>
+    </Item293>
+    <Item294>
       <Index>359</Index>
       <Categorization>Map.Jail.floor blood</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2638,8 +2656,8 @@
         <Name>Grh/Map/Jail/floor blood[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item292>
-    <Item293>
+    </Item294>
+    <Item295>
       <Index>363</Index>
       <Categorization>Map.Jail.stair</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2647,8 +2665,8 @@
         <Name>Grh/Map/Jail/stair[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item293>
-    <Item294>
+    </Item295>
+    <Item296>
       <Index>362</Index>
       <Categorization>Map.Jail.stair 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2656,8 +2674,8 @@
         <Name>Grh/Map/Jail/stair 2[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item294>
-    <Item295>
+    </Item296>
+    <Item297>
       <Index>366</Index>
       <Categorization>Map.Jail.wall</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2665,8 +2683,8 @@
         <Name>Grh/Map/Jail/wall[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item295>
-    <Item296>
+    </Item297>
+    <Item298>
       <Index>364</Index>
       <Categorization>Map.Jail.wall bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2674,8 +2692,8 @@
         <Name>Grh/Map/Jail/wall bottom[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item296>
-    <Item297>
+    </Item298>
+    <Item299>
       <Index>365</Index>
       <Categorization>Map.Jail.wall window</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2683,8 +2701,8 @@
         <Name>Grh/Map/Jail/wall window[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item297>
-    <Item298>
+    </Item299>
+    <Item300>
       <Index>82</Index>
       <Categorization>Map.Misc.Crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2692,8 +2710,8 @@
         <Name>Grh/Map/Misc/Crystal[l1][w1x0y32w32h32]</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item298>
-    <Item299>
+    </Item300>
+    <Item301>
       <Index>83</Index>
       <Categorization>Map.Misc.Orb</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2701,8 +2719,8 @@
         <Name>Grh/Map/Misc/Orb[l1][w1x0y32w32h32]</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item299>
-    <Item300>
+    </Item301>
+    <Item302>
       <Index>812</Index>
       <Categorization>Map.Winter.Decor.Pile of snowballs</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2710,8 +2728,8 @@
         <Name>Grh/Map/Winter/Decor/Pile of snowballs[l1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item300>
-    <Item301>
+    </Item302>
+    <Item303>
       <Index>813</Index>
       <Categorization>Map.Winter.Decor.Snowman</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2719,8 +2737,8 @@
         <Name>Grh/Map/Winter/Decor/Snowman[l1]</Name>
         <Source>0,0,49,47</Source>
       </Texture>
-    </Item301>
-    <Item302>
+    </Item303>
+    <Item304>
       <Index>819</Index>
       <Categorization>Map.Winter.Ice.Ice</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2728,8 +2746,8 @@
         <Name>Grh/Map/Winter/Ice/Ice[l0][w1]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item302>
-    <Item303>
+    </Item304>
+    <Item305>
       <Index>822</Index>
       <Categorization>Map.Winter.Ice.Snow - Ice bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2737,8 +2755,8 @@
         <Name>Grh/Map/Winter/Ice/Snow - Ice bottom[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item303>
-    <Item304>
+    </Item305>
+    <Item306>
       <Index>820</Index>
       <Categorization>Map.Winter.Ice.snow - ice bottom left corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2746,8 +2764,8 @@
         <Name>Grh/Map/Winter/Ice/snow - ice bottom left corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item304>
-    <Item305>
+    </Item306>
+    <Item307>
       <Index>821</Index>
       <Categorization>Map.Winter.Ice.snow - ice bottom right corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2755,8 +2773,8 @@
         <Name>Grh/Map/Winter/Ice/snow - ice bottom right corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item305>
-    <Item306>
+    </Item307>
+    <Item308>
       <Index>823</Index>
       <Categorization>Map.Winter.Ice.Snow - Ice Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2764,8 +2782,8 @@
         <Name>Grh/Map/Winter/Ice/Snow - Ice Left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item306>
-    <Item307>
+    </Item308>
+    <Item309>
       <Index>824</Index>
       <Categorization>Map.Winter.Ice.Snow - Ice Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2773,8 +2791,8 @@
         <Name>Grh/Map/Winter/Ice/Snow - Ice Right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item307>
-    <Item308>
+    </Item309>
+    <Item310>
       <Index>827</Index>
       <Categorization>Map.Winter.Ice.Snow - ice top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2782,8 +2800,8 @@
         <Name>Grh/Map/Winter/Ice/Snow - ice top[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item308>
-    <Item309>
+    </Item310>
+    <Item311>
       <Index>825</Index>
       <Categorization>Map.Winter.Ice.Snow - Ice top left corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2791,8 +2809,8 @@
         <Name>Grh/Map/Winter/Ice/Snow - Ice top left corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item309>
-    <Item310>
+    </Item311>
+    <Item312>
       <Index>826</Index>
       <Categorization>Map.Winter.Ice.Snow - Ice Top right Corner</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2800,8 +2818,8 @@
         <Name>Grh/Map/Winter/Ice/Snow - Ice Top right Corner[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item310>
-    <Item311>
+    </Item312>
+    <Item313>
       <Index>830</Index>
       <Categorization>Map.Winter.Path.Snow - Path bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2809,8 +2827,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path bottom[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item311>
-    <Item312>
+    </Item313>
+    <Item314>
       <Index>828</Index>
       <Categorization>Map.Winter.Path.Snow - Path bottom left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2818,8 +2836,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path bottom left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item312>
-    <Item313>
+    </Item314>
+    <Item315>
       <Index>829</Index>
       <Categorization>Map.Winter.Path.Snow - Path bottom right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2827,8 +2845,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path bottom right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item313>
-    <Item314>
+    </Item315>
+    <Item316>
       <Index>831</Index>
       <Categorization>Map.Winter.Path.Snow - Path left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2836,8 +2854,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item314>
-    <Item315>
+    </Item316>
+    <Item317>
       <Index>832</Index>
       <Categorization>Map.Winter.Path.Snow - Path right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2845,8 +2863,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item315>
-    <Item316>
+    </Item317>
+    <Item318>
       <Index>835</Index>
       <Categorization>Map.Winter.Path.Snow - Path Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2854,8 +2872,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path Top[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item316>
-    <Item317>
+    </Item318>
+    <Item319>
       <Index>833</Index>
       <Categorization>Map.Winter.Path.Snow - Path top left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2863,8 +2881,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path top left[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item317>
-    <Item318>
+    </Item319>
+    <Item320>
       <Index>834</Index>
       <Categorization>Map.Winter.Path.Snow - Path Top right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2872,8 +2890,8 @@
         <Name>Grh/Map/Winter/Path/Snow - Path Top right[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item318>
-    <Item319>
+    </Item320>
+    <Item321>
       <Index>836</Index>
       <Categorization>Map.Winter.Path.Snow 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2881,8 +2899,8 @@
         <Name>Grh/Map/Winter/Path/Snow 2[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item319>
-    <Item320>
+    </Item321>
+    <Item322>
       <Index>837</Index>
       <Categorization>Map.Winter.Path.Snow 3</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2890,8 +2908,8 @@
         <Name>Grh/Map/Winter/Path/Snow 3[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item320>
-    <Item321>
+    </Item322>
+    <Item323>
       <Index>838</Index>
       <Categorization>Map.Winter.Path.Snow 4</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2899,8 +2917,8 @@
         <Name>Grh/Map/Winter/Path/Snow 4[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item321>
-    <Item322>
+    </Item323>
+    <Item324>
       <Index>839</Index>
       <Categorization>Map.Winter.Path.Snow 5</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2908,8 +2926,8 @@
         <Name>Grh/Map/Winter/Path/Snow 5[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item322>
-    <Item323>
+    </Item324>
+    <Item325>
       <Index>840</Index>
       <Categorization>Map.Winter.Path.Snow Path</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2917,8 +2935,8 @@
         <Name>Grh/Map/Winter/Path/Snow Path[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item323>
-    <Item324>
+    </Item325>
+    <Item326>
       <Index>371</Index>
       <Categorization>Map.Winter.Snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2926,8 +2944,35 @@
         <Name>Grh/Map/Winter/Snow[l0]</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item324>
-    <Item325>
+    </Item326>
+    <Item327>
+      <Index>87</Index>
+      <Categorization>MiniMap.1</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/MiniMap/1</Name>
+        <Source>0,0,250,250</Source>
+      </Texture>
+    </Item327>
+    <Item328>
+      <Index>88</Index>
+      <Categorization>MiniMap.2</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/MiniMap/2</Name>
+        <Source>0,0,250,250</Source>
+      </Texture>
+    </Item328>
+    <Item329>
+      <Index>89</Index>
+      <Categorization>MiniMap.3</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/MiniMap/3</Name>
+        <Source>0,0,250,250</Source>
+      </Texture>
+    </Item329>
+    <Item330>
       <Index>66</Index>
       <Categorization>Particle.ankh</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2935,8 +2980,8 @@
         <Name>Grh/Particle/ankh</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item325>
-    <Item326>
+    </Item330>
+    <Item331>
       <Index>67</Index>
       <Categorization>Particle.ball</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2944,8 +2989,8 @@
         <Name>Grh/Particle/ball</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item326>
-    <Item327>
+    </Item331>
+    <Item332>
       <Index>68</Index>
       <Categorization>Particle.raindrop</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2953,8 +2998,8 @@
         <Name>Grh/Particle/raindrop</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item327>
-    <Item328>
+    </Item332>
+    <Item333>
       <Index>69</Index>
       <Categorization>Particle.shield</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2962,8 +3007,8 @@
         <Name>Grh/Particle/shield</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item328>
-    <Item329>
+    </Item333>
+    <Item334>
       <Index>70</Index>
       <Categorization>Particle.skull</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2971,8 +3016,8 @@
         <Name>Grh/Particle/skull</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item329>
-    <Item330>
+    </Item334>
+    <Item335>
       <Index>72</Index>
       <Categorization>Particle.snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2980,8 +3025,8 @@
         <Name>Grh/Particle/snow</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item330>
-    <Item331>
+    </Item335>
+    <Item336>
       <Index>71</Index>
       <Categorization>Particle.snow sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2989,8 +3034,8 @@
         <Name>Grh/Particle/snow sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item331>
-    <Item332>
+    </Item336>
+    <Item337>
       <Index>73</Index>
       <Categorization>Particle.sparkle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -2998,8 +3043,8 @@
         <Name>Grh/Particle/sparkle</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item332>
-    <Item333>
+    </Item337>
+    <Item338>
       <Index>74</Index>
       <Categorization>Particle.splatter</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3007,8 +3052,8 @@
         <Name>Grh/Particle/splatter</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item333>
-    <Item334>
+    </Item338>
+    <Item339>
       <Index>62</Index>
       <Categorization>Particle.Sprite.blood</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3016,8 +3061,8 @@
         <Name>Grh/Particle/Sprite/blood</Name>
         <Source>0,0,8,8</Source>
       </Texture>
-    </Item334>
-    <Item335>
+    </Item339>
+    <Item340>
       <Index>76</Index>
       <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3025,8 +3070,8 @@
         <Name>Grh/Particle/star</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item335>
-    <Item336>
+    </Item340>
+    <Item341>
       <Index>75</Index>
       <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3034,8 +3079,8 @@
         <Name>Grh/Particle/star sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item336>
-    <Item337>
+    </Item341>
+    <Item342>
       <Index>77</Index>
       <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3043,8 +3088,8 @@
         <Name>Grh/Particle/sword</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item337>
-    <Item338>
+    </Item342>
+    <Item343>
       <Index>183</Index>
       <Categorization>Quest.can start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3052,8 +3097,8 @@
         <Name>Grh/Quest/can start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item338>
-    <Item339>
+    </Item343>
+    <Item344>
       <Index>186</Index>
       <Categorization>Quest.cannot start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3061,8 +3106,8 @@
         <Name>Grh/Quest/cannot start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item339>
-    <Item340>
+    </Item344>
+    <Item345>
       <Index>184</Index>
       <Categorization>Quest.started</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3070,8 +3115,8 @@
         <Name>Grh/Quest/started</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item340>
-    <Item341>
+    </Item345>
+    <Item346>
       <Index>185</Index>
       <Categorization>Quest.turnin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3079,8 +3124,8 @@
         <Name>Grh/Quest/turnin</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item341>
-    <Item342>
+    </Item346>
+    <Item347>
       <Index>140</Index>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3088,8 +3133,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item342>
-    <Item343>
+    </Item347>
+    <Item348>
       <Index>142</Index>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3097,8 +3142,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item343>
-    <Item344>
+    </Item348>
+    <Item349>
       <Index>141</Index>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3106,8 +3151,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item344>
-    <Item345>
+    </Item349>
+    <Item350>
       <Index>65</Index>
       <Categorization>Textures.explosion01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3115,8 +3160,8 @@
         <Name>Grh/Textures/explosion01</Name>
         <Source>0,0,256,256</Source>
       </Texture>
-    </Item345>
-    <Item346>
+    </Item350>
+    <Item351>
       <Index>187</Index>
       <Categorization>Textures.noise01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3124,8 +3169,8 @@
         <Name>Grh/Textures/noise01</Name>
         <Source>0,0,256,256</Source>
       </Texture>
-    </Item346>
-    <Item347>
+    </Item351>
+    <Item352>
       <Index>189</Index>
       <Categorization>Textures.wave01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3133,8 +3178,8 @@
         <Name>Grh/Textures/wave01</Name>
         <Source>0,0,512,512</Source>
       </Texture>
-    </Item347>
-    <Item348>
+    </Item352>
+    <Item353>
       <Index>676</Index>
       <Categorization>Tiles.Furniture.bench01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3142,8 +3187,8 @@
         <Name>Grh/Tiles/Furniture/bench01</Name>
         <Source>0,0,80,40</Source>
       </Texture>
-    </Item348>
-    <Item349>
+    </Item353>
+    <Item354>
       <Index>677</Index>
       <Categorization>Tiles.Furniture.Bowl</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3151,8 +3196,8 @@
         <Name>Grh/Tiles/Furniture/Bowl</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item349>
-    <Item350>
+    </Item354>
+    <Item355>
       <Index>678</Index>
       <Categorization>Tiles.Furniture.Candle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3160,8 +3205,8 @@
         <Name>Grh/Tiles/Furniture/Candle</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item350>
-    <Item351>
+    </Item355>
+    <Item356>
       <Index>679</Index>
       <Categorization>Tiles.Furniture.chair01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3169,8 +3214,8 @@
         <Name>Grh/Tiles/Furniture/chair01</Name>
         <Source>0,0,40,80</Source>
       </Texture>
-    </Item351>
-    <Item352>
+    </Item356>
+    <Item357>
       <Index>681</Index>
       <Categorization>Tiles.Furniture.largestonetable01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3178,8 +3223,8 @@
         <Name>Grh/Tiles/Furniture/largestonetable01</Name>
         <Source>0,0,40,120</Source>
       </Texture>
-    </Item352>
-    <Item353>
+    </Item357>
+    <Item358>
       <Index>682</Index>
       <Categorization>Tiles.Furniture.largestonetable02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3187,8 +3232,8 @@
         <Name>Grh/Tiles/Furniture/largestonetable02</Name>
         <Source>0,0,40,120</Source>
       </Texture>
-    </Item353>
-    <Item354>
+    </Item358>
+    <Item359>
       <Index>683</Index>
       <Categorization>Tiles.Furniture.largestonetable03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3196,8 +3241,8 @@
         <Name>Grh/Tiles/Furniture/largestonetable03</Name>
         <Source>0,0,40,120</Source>
       </Texture>
-    </Item354>
-    <Item355>
+    </Item359>
+    <Item360>
       <Index>684</Index>
       <Categorization>Tiles.Furniture.SmallChest</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3205,8 +3250,8 @@
         <Name>Grh/Tiles/Furniture/SmallChest</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item355>
-    <Item356>
+    </Item360>
+    <Item361>
       <Index>690</Index>
       <Categorization>Tiles.Furniture.stonetable01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3214,8 +3259,8 @@
         <Name>Grh/Tiles/Furniture/stonetable01</Name>
         <Source>0,0,40,80</Source>
       </Texture>
-    </Item356>
-    <Item357>
+    </Item361>
+    <Item362>
       <Index>691</Index>
       <Categorization>Tiles.Furniture.stonetable02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3223,8 +3268,8 @@
         <Name>Grh/Tiles/Furniture/stonetable02</Name>
         <Source>0,0,40,80</Source>
       </Texture>
-    </Item357>
-    <Item358>
+    </Item362>
+    <Item363>
       <Index>692</Index>
       <Categorization>Tiles.Furniture.stonetable03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3232,8 +3277,8 @@
         <Name>Grh/Tiles/Furniture/stonetable03</Name>
         <Source>0,0,40,80</Source>
       </Texture>
-    </Item358>
-    <Item359>
+    </Item363>
+    <Item364>
       <Index>715</Index>
       <Categorization>Tiles.HouseInside.blacktile</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3241,8 +3286,8 @@
         <Name>Grh/Tiles/HouseInside/blacktile</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item359>
-    <Item360>
+    </Item364>
+    <Item365>
       <Index>716</Index>
       <Categorization>Tiles.HouseInside.cornerbottomleft01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3250,8 +3295,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomleft01</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item360>
-    <Item361>
+    </Item365>
+    <Item366>
       <Index>717</Index>
       <Categorization>Tiles.HouseInside.cornerbottomleft02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3259,8 +3304,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomleft02</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item361>
-    <Item362>
+    </Item366>
+    <Item367>
       <Index>718</Index>
       <Categorization>Tiles.HouseInside.cornerbottomleft03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3268,8 +3313,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomleft03</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item362>
-    <Item363>
+    </Item367>
+    <Item368>
       <Index>719</Index>
       <Categorization>Tiles.HouseInside.cornerbottomleft04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3277,8 +3322,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomleft04</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item363>
-    <Item364>
+    </Item368>
+    <Item369>
       <Index>720</Index>
       <Categorization>Tiles.HouseInside.cornerbottomleft05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3286,8 +3331,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomleft05</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item364>
-    <Item365>
+    </Item369>
+    <Item370>
       <Index>721</Index>
       <Categorization>Tiles.HouseInside.cornerbottomleft06</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3295,8 +3340,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomleft06</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item365>
-    <Item366>
+    </Item370>
+    <Item371>
       <Index>722</Index>
       <Categorization>Tiles.HouseInside.cornerbottomright01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3304,8 +3349,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomright01</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item366>
-    <Item367>
+    </Item371>
+    <Item372>
       <Index>723</Index>
       <Categorization>Tiles.HouseInside.cornerbottomright02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3313,8 +3358,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomright02</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item367>
-    <Item368>
+    </Item372>
+    <Item373>
       <Index>724</Index>
       <Categorization>Tiles.HouseInside.cornerbottomright03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3322,8 +3367,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomright03</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item368>
-    <Item369>
+    </Item373>
+    <Item374>
       <Index>725</Index>
       <Categorization>Tiles.HouseInside.cornerbottomright04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3331,8 +3376,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomright04</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item369>
-    <Item370>
+    </Item374>
+    <Item375>
       <Index>726</Index>
       <Categorization>Tiles.HouseInside.cornerbottomright05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3340,8 +3385,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomright05</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item370>
-    <Item371>
+    </Item375>
+    <Item376>
       <Index>727</Index>
       <Categorization>Tiles.HouseInside.cornerbottomright06</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3349,8 +3394,8 @@
         <Name>Grh/Tiles/HouseInside/cornerbottomright06</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item371>
-    <Item372>
+    </Item376>
+    <Item377>
       <Index>728</Index>
       <Categorization>Tiles.HouseInside.cornertopleft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3358,8 +3403,8 @@
         <Name>Grh/Tiles/HouseInside/cornertopleft</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item372>
-    <Item373>
+    </Item377>
+    <Item378>
       <Index>729</Index>
       <Categorization>Tiles.HouseInside.cornertopright</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3367,8 +3412,8 @@
         <Name>Grh/Tiles/HouseInside/cornertopright</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item373>
-    <Item374>
+    </Item378>
+    <Item379>
       <Index>730</Index>
       <Categorization>Tiles.HouseInside.extra01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3376,8 +3421,8 @@
         <Name>Grh/Tiles/HouseInside/extra01</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item374>
-    <Item375>
+    </Item379>
+    <Item380>
       <Index>731</Index>
       <Categorization>Tiles.HouseInside.extra02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3385,8 +3430,8 @@
         <Name>Grh/Tiles/HouseInside/extra02</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item375>
-    <Item376>
+    </Item380>
+    <Item381>
       <Index>732</Index>
       <Categorization>Tiles.HouseInside.house01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3394,8 +3439,8 @@
         <Name>Grh/Tiles/HouseInside/house01</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item376>
-    <Item377>
+    </Item381>
+    <Item382>
       <Index>733</Index>
       <Categorization>Tiles.HouseInside.house02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3403,8 +3448,8 @@
         <Name>Grh/Tiles/HouseInside/house02</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item377>
-    <Item378>
+    </Item382>
+    <Item383>
       <Index>734</Index>
       <Categorization>Tiles.HouseInside.house03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3412,8 +3457,8 @@
         <Name>Grh/Tiles/HouseInside/house03</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item378>
-    <Item379>
+    </Item383>
+    <Item384>
       <Index>736</Index>
       <Categorization>Tiles.HouseInside.house05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3421,8 +3466,8 @@
         <Name>Grh/Tiles/HouseInside/house05</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item379>
-    <Item380>
+    </Item384>
+    <Item385>
       <Index>737</Index>
       <Categorization>Tiles.HouseInside.house06</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3430,8 +3475,8 @@
         <Name>Grh/Tiles/HouseInside/house06</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item380>
-    <Item381>
+    </Item385>
+    <Item386>
       <Index>738</Index>
       <Categorization>Tiles.HouseInside.house07</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3439,8 +3484,8 @@
         <Name>Grh/Tiles/HouseInside/house07</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item381>
-    <Item382>
+    </Item386>
+    <Item387>
       <Index>739</Index>
       <Categorization>Tiles.HouseInside.house08</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3448,8 +3493,8 @@
         <Name>Grh/Tiles/HouseInside/house08</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item382>
-    <Item383>
+    </Item387>
+    <Item388>
       <Index>740</Index>
       <Categorization>Tiles.HouseInside.house09</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3457,8 +3502,8 @@
         <Name>Grh/Tiles/HouseInside/house09</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item383>
-    <Item384>
+    </Item388>
+    <Item389>
       <Index>741</Index>
       <Categorization>Tiles.HouseInside.house10</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3466,8 +3511,8 @@
         <Name>Grh/Tiles/HouseInside/house10</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item384>
-    <Item385>
+    </Item389>
+    <Item390>
       <Index>742</Index>
       <Categorization>Tiles.HouseInside.house11</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3475,8 +3520,8 @@
         <Name>Grh/Tiles/HouseInside/house11</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item385>
-    <Item386>
+    </Item390>
+    <Item391>
       <Index>743</Index>
       <Categorization>Tiles.HouseInside.house12</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3484,8 +3529,8 @@
         <Name>Grh/Tiles/HouseInside/house12</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item386>
-    <Item387>
+    </Item391>
+    <Item392>
       <Index>744</Index>
       <Categorization>Tiles.HouseInside.house13</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3493,8 +3538,8 @@
         <Name>Grh/Tiles/HouseInside/house13</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item387>
-    <Item388>
+    </Item392>
+    <Item393>
       <Index>745</Index>
       <Categorization>Tiles.HouseInside.house14</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3502,8 +3547,8 @@
         <Name>Grh/Tiles/HouseInside/house14</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item388>
-    <Item389>
+    </Item393>
+    <Item394>
       <Index>746</Index>
       <Categorization>Tiles.HouseInside.house15</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3511,8 +3556,8 @@
         <Name>Grh/Tiles/HouseInside/house15</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item389>
-    <Item390>
+    </Item394>
+    <Item395>
       <Index>747</Index>
       <Categorization>Tiles.HouseInside.house16</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3520,8 +3565,8 @@
         <Name>Grh/Tiles/HouseInside/house16</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item390>
-    <Item391>
+    </Item395>
+    <Item396>
       <Index>748</Index>
       <Categorization>Tiles.HouseInside.house17</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3529,8 +3574,8 @@
         <Name>Grh/Tiles/HouseInside/house17</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item391>
-    <Item392>
+    </Item396>
+    <Item397>
       <Index>749</Index>
       <Categorization>Tiles.HouseInside.house18</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3538,8 +3583,8 @@
         <Name>Grh/Tiles/HouseInside/house18</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item392>
-    <Item393>
+    </Item397>
+    <Item398>
       <Index>750</Index>
       <Categorization>Tiles.HouseInside.house19</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3547,8 +3592,8 @@
         <Name>Grh/Tiles/HouseInside/house19</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item393>
-    <Item394>
+    </Item398>
+    <Item399>
       <Index>751</Index>
       <Categorization>Tiles.HouseInside.house20</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3556,8 +3601,8 @@
         <Name>Grh/Tiles/HouseInside/house20</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item394>
-    <Item395>
+    </Item399>
+    <Item400>
       <Index>752</Index>
       <Categorization>Tiles.HouseInside.house21</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3565,8 +3610,8 @@
         <Name>Grh/Tiles/HouseInside/house21</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item395>
-    <Item396>
+    </Item400>
+    <Item401>
       <Index>753</Index>
       <Categorization>Tiles.HouseInside.house22</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3574,8 +3619,8 @@
         <Name>Grh/Tiles/HouseInside/house22</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item396>
-    <Item397>
+    </Item401>
+    <Item402>
       <Index>754</Index>
       <Categorization>Tiles.HouseInside.house23</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3583,8 +3628,8 @@
         <Name>Grh/Tiles/HouseInside/house23</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item397>
-    <Item398>
+    </Item402>
+    <Item403>
       <Index>755</Index>
       <Categorization>Tiles.HouseInside.house24</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3592,8 +3637,8 @@
         <Name>Grh/Tiles/HouseInside/house24</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item398>
-    <Item399>
+    </Item403>
+    <Item404>
       <Index>756</Index>
       <Categorization>Tiles.HouseInside.house25</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3601,8 +3646,8 @@
         <Name>Grh/Tiles/HouseInside/house25</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item399>
-    <Item400>
+    </Item404>
+    <Item405>
       <Index>757</Index>
       <Categorization>Tiles.HouseInside.house26</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3610,8 +3655,8 @@
         <Name>Grh/Tiles/HouseInside/house26</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item400>
-    <Item401>
+    </Item405>
+    <Item406>
       <Index>758</Index>
       <Categorization>Tiles.HouseInside.house27</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3619,8 +3664,8 @@
         <Name>Grh/Tiles/HouseInside/house27</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item401>
-    <Item402>
+    </Item406>
+    <Item407>
       <Index>759</Index>
       <Categorization>Tiles.HouseInside.house28</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3628,8 +3673,8 @@
         <Name>Grh/Tiles/HouseInside/house28</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item402>
-    <Item403>
+    </Item407>
+    <Item408>
       <Index>804</Index>
       <Categorization>Tiles.WoodenFloors.wood01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3637,8 +3682,8 @@
         <Name>Grh/Tiles/WoodenFloors/wood01</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item403>
-    <Item404>
+    </Item408>
+    <Item409>
       <Index>805</Index>
       <Categorization>Tiles.WoodenFloors.wood02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3646,8 +3691,8 @@
         <Name>Grh/Tiles/WoodenFloors/wood02</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item404>
-    <Item405>
+    </Item409>
+    <Item410>
       <Index>806</Index>
       <Categorization>Tiles.WoodenFloors.wood03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3655,8 +3700,8 @@
         <Name>Grh/Tiles/WoodenFloors/wood03</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item405>
-    <Item406>
+    </Item410>
+    <Item411>
       <Index>807</Index>
       <Categorization>Tiles.WoodenFloors.wood04</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3664,8 +3709,8 @@
         <Name>Grh/Tiles/WoodenFloors/wood04</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item406>
-    <Item407>
+    </Item411>
+    <Item412>
       <Index>808</Index>
       <Categorization>Tiles.WoodenFloors.wood05</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3673,8 +3718,8 @@
         <Name>Grh/Tiles/WoodenFloors/wood05</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item407>
-    <Item408>
+    </Item412>
+    <Item413>
       <Index>809</Index>
       <Categorization>Tiles.WoodenFloors.wood06</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3682,7 +3727,7 @@
         <Name>Grh/Tiles/WoodenFloors/wood06</Name>
         <Source>0,0,40,40</Source>
       </Texture>
-    </Item408>
+    </Item413>
   </Stationary>
   <Animated>
     <Count>0</Count>
