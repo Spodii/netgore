@@ -43,6 +43,7 @@ public static void CopyValues(this IAccountTable source, NetGore.Db.DbParameterV
 paramValues["creator_ip"] = (System.UInt32)source.CreatorIp;
 paramValues["current_ip"] = (System.Nullable<System.UInt32>)source.CurrentIp;
 paramValues["email"] = (System.String)source.Email;
+paramValues["friends"] = (System.String)source.Friends;
 paramValues["id"] = (System.Int32)source.ID;
 paramValues["name"] = (System.String)source.Name;
 paramValues["password"] = (System.String)source.Password;
@@ -73,6 +74,10 @@ source.CurrentIp = (System.Nullable<System.UInt32>)(System.Nullable<System.UInt3
 i = dataRecord.GetOrdinal("email");
 
 source.Email = (System.String)(System.String)dataRecord.GetString(i);
+
+i = dataRecord.GetOrdinal("friends");
+
+source.Friends = (System.String)(System.String)dataRecord.GetString(i);
 
 i = dataRecord.GetOrdinal("id");
 
@@ -127,6 +132,11 @@ break;
 
 case "email":
 source.Email = (System.String)(System.String)dataRecord.GetString(i);
+break;
+
+
+case "friends":
+source.Friends = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
@@ -196,6 +206,11 @@ paramValues[i] = (System.String)source.Email;
 break;
 
 
+case "friends":
+paramValues[i] = (System.String)source.Friends;
+break;
+
+
 case "id":
 paramValues[i] = (System.Int32)source.ID;
 break;
@@ -244,6 +259,7 @@ public static System.Boolean HasSameValues(this IAccountTable source, IAccountTa
 return Equals(source.CreatorIp, otherItem.CreatorIp) && 
 Equals(source.CurrentIp, otherItem.CurrentIp) && 
 Equals(source.Email, otherItem.Email) && 
+Equals(source.Friends, otherItem.Friends) && 
 Equals(source.ID, otherItem.ID) && 
 Equals(source.Name, otherItem.Name) && 
 Equals(source.Password, otherItem.Password) && 

@@ -281,6 +281,7 @@
     <Compile Include="IServerSaveable.cs" />
     <Compile Include="Queries\Account\SelectAccountCharacterNamesQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountIDFromUserNameQuery.cs" />
+    <Compile Include="Queries\Account\UpdateAccountFriendsQuery.cs" />
     <Compile Include="Queries\Account\UpdateAccountPermissionsQuery.cs" />
     <Compile Include="Queries\Banning\InsertAccountBanQuery.cs" />
     <Compile Include="Queries\Banning\UpdateAccountUnBanQuery.cs" />

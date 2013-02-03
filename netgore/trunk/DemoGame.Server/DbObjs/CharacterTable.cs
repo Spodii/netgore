@@ -33,7 +33,7 @@ public class CharacterTable : ICharacterTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "friends", "hp", "id", "level", "load_map_id", "load_x", "load_y", "move_speed", "mp", "name", "respawn_map_id", "respawn_x", "respawn_y", "shop_id", "statpoints", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
+ static  readonly System.String[] _dbColumns = new string[] {"ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "load_map_id", "load_x", "load_y", "move_speed", "mp", "name", "respawn_map_id", "respawn_x", "respawn_y", "shop_id", "statpoints", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -61,7 +61,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "friends", "hp", "level", "load_map_id", "load_x", "load_y", "move_speed", "mp", "name", "respawn_map_id", "respawn_x", "respawn_y", "shop_id", "statpoints", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "level", "load_map_id", "load_x", "load_y", "move_speed", "mp", "name", "respawn_map_id", "respawn_x", "respawn_y", "shop_id", "statpoints", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -105,7 +105,7 @@ public const System.String TableName = "character";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 29;
+public const System.Int32 ColumnCount = 28;
 /// <summary>
 /// The field that maps onto the database column `ai_id`.
 /// </summary>
@@ -130,10 +130,6 @@ System.Nullable<System.UInt16> _chatDialog;
 /// The field that maps onto the database column `exp`.
 /// </summary>
 System.Int32 _exp;
-/// <summary>
-/// The field that maps onto the database column `friends`.
-/// </summary>
-System.String _friends;
 /// <summary>
 /// The field that maps onto the database column `hp`.
 /// </summary>
@@ -300,24 +296,6 @@ return (System.Int32)_exp;
 set
 {
 this._exp = (System.Int32)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `friends`.
-/// The underlying database type is `varchar(800)`.The database column contains the comment: 
-/// "A list of friends that the user has.".
-/// </summary>
-[System.ComponentModel.Description("A list of friends that the user has.")]
-[NetGore.SyncValueAttribute()]
-public System.String Friends
-{
-get
-{
-return (System.String)_friends;
-}
-set
-{
-this._friends = (System.String)value;
 }
 }
 /// <summary>
@@ -619,7 +597,6 @@ public CharacterTable()
 /// <param name="characterTemplateID">The initial value for the corresponding property.</param>
 /// <param name="chatDialog">The initial value for the corresponding property.</param>
 /// <param name="exp">The initial value for the corresponding property.</param>
-/// <param name="friends">The initial value for the corresponding property.</param>
 /// <param name="hP">The initial value for the corresponding property.</param>
 /// <param name="iD">The initial value for the corresponding property.</param>
 /// <param name="level">The initial value for the corresponding property.</param>
@@ -642,7 +619,7 @@ public CharacterTable()
 /// <param name="statMaxmp">The initial value for the corresponding property.</param>
 /// <param name="statMinhit">The initial value for the corresponding property.</param>
 /// <param name="statStr">The initial value for the corresponding property.</param>
-public CharacterTable(System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyID @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, System.String @friends, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Int16 @level, NetGore.World.MapID @loadMapID, System.UInt16 @loadX, System.UInt16 @loadY, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, System.Nullable<NetGore.World.MapID> @respawnMapID, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr)
+public CharacterTable(System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyID @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Int16 @level, NetGore.World.MapID @loadMapID, System.UInt16 @loadX, System.UInt16 @loadY, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, System.Nullable<NetGore.World.MapID> @respawnMapID, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr)
 {
 this.AIID = (System.Nullable<NetGore.AI.AIID>)@aIID;
 this.BodyID = (DemoGame.BodyID)@bodyID;
@@ -650,7 +627,6 @@ this.Cash = (System.Int32)@cash;
 this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)@characterTemplateID;
 this.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)@chatDialog;
 this.Exp = (System.Int32)@exp;
-this.Friends = (System.String)@friends;
 this.HP = (DemoGame.SPValueType)@hP;
 this.ID = (DemoGame.CharacterID)@iD;
 this.Level = (System.Int16)@level;
@@ -707,7 +683,6 @@ dic["cash"] = (System.Int32)source.Cash;
 dic["character_template_id"] = (System.Nullable<DemoGame.CharacterTemplateID>)source.CharacterTemplateID;
 dic["chat_dialog"] = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)source.ChatDialog;
 dic["exp"] = (System.Int32)source.Exp;
-dic["friends"] = (System.String)source.Friends;
 dic["hp"] = (DemoGame.SPValueType)source.HP;
 dic["id"] = (DemoGame.CharacterID)source.ID;
 dic["level"] = (System.Int16)source.Level;
@@ -744,7 +719,6 @@ this.Cash = (System.Int32)source.Cash;
 this.CharacterTemplateID = (System.Nullable<DemoGame.CharacterTemplateID>)source.CharacterTemplateID;
 this.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)source.ChatDialog;
 this.Exp = (System.Int32)source.Exp;
-this.Friends = (System.String)source.Friends;
 this.HP = (DemoGame.SPValueType)source.HP;
 this.ID = (DemoGame.CharacterID)source.ID;
 this.Level = (System.Int16)source.Level;
@@ -797,9 +771,6 @@ return ChatDialog;
 
 case "exp":
 return Exp;
-
-case "friends":
-return Friends;
 
 case "hp":
 return HP;
@@ -903,10 +874,6 @@ break;
 
 case "exp":
 this.Exp = (System.Int32)value;
-break;
-
-case "friends":
-this.Friends = (System.String)value;
 break;
 
 case "hp":
@@ -1030,9 +997,6 @@ return new ColumnMetadata("chat_dialog", "The chat dialog that this character di
 
 case "exp":
 return new ColumnMetadata("exp", "Experience points.", "int(11)", "0", typeof(System.Int32), false, false, false);
-
-case "friends":
-return new ColumnMetadata("friends", "A list of friends that the user has.", "varchar(800)", "", typeof(System.String), false, false, false);
 
 case "hp":
 return new ColumnMetadata("hp", "Current health points.", "smallint(6)", "50", typeof(System.Int16), false, false, false);

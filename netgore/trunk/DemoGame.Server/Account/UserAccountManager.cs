@@ -493,6 +493,22 @@ namespace DemoGame.Server
             }
 
             /// <summary>
+            /// Sets the friends list for this account.
+            /// </summary>
+            /// <param name="friends">The friends list.</param>
+            public void SetFriends(string friends)
+            {
+                if (String.IsNullOrEmpty(friends))
+                    return;
+
+                // Set the new value
+                Friends = friends;
+
+                // Update the database
+                DbController.GetQuery<UpdateAccountFriendsQuery>().Execute(ID, Friends);
+            }
+
+            /// <summary>
             /// Loads and sets the User being used by this account.
             /// </summary>
             /// <param name="world">The World that the User will be part of.</param>

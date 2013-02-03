@@ -85,5 +85,11 @@ namespace DemoGame.Server
         /// <param name="value">The CharacterID for the Character at the given <paramref name="index"/>.</param>
         /// <returns>True if the <paramref name="value"/> was successfully acquired; otherwise false.</returns>
         bool TryGetCharacterID(byte index, out CharacterID value);
+
+        /// <summary>
+        /// Sets the list of friends for this account.
+        /// </summary>
+        /// <param name="friends">The friends list.</param>
+        void SetFriends(string friends);
     }
 }

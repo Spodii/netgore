@@ -46,7 +46,6 @@ paramValues["cash"] = (System.Int32)source.Cash;
 paramValues["character_template_id"] = (System.Nullable<System.UInt16>)source.CharacterTemplateID;
 paramValues["chat_dialog"] = (System.Nullable<System.UInt16>)source.ChatDialog;
 paramValues["exp"] = (System.Int32)source.Exp;
-paramValues["friends"] = (System.String)source.Friends;
 paramValues["hp"] = (System.Int16)source.HP;
 paramValues["id"] = (System.Int32)source.ID;
 paramValues["level"] = (System.Int16)source.Level;
@@ -105,10 +104,6 @@ source.ChatDialog = (System.Nullable<NetGore.Features.NPCChat.NPCChatDialogID>)(
 i = dataRecord.GetOrdinal("exp");
 
 source.Exp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
-
-i = dataRecord.GetOrdinal("friends");
-
-source.Friends = (System.String)(System.String)dataRecord.GetString(i);
 
 i = dataRecord.GetOrdinal("hp");
 
@@ -242,11 +237,6 @@ break;
 
 case "exp":
 source.Exp = (System.Int32)(System.Int32)dataRecord.GetInt32(i);
-break;
-
-
-case "friends":
-source.Friends = (System.String)(System.String)dataRecord.GetString(i);
 break;
 
 
@@ -411,11 +401,6 @@ paramValues[i] = (System.Int32)source.Exp;
 break;
 
 
-case "friends":
-paramValues[i] = (System.String)source.Friends;
-break;
-
-
 case "hp":
 paramValues[i] = (System.Int16)source.HP;
 break;
@@ -547,7 +532,6 @@ Equals(source.Cash, otherItem.Cash) &&
 Equals(source.CharacterTemplateID, otherItem.CharacterTemplateID) && 
 Equals(source.ChatDialog, otherItem.ChatDialog) && 
 Equals(source.Exp, otherItem.Exp) && 
-Equals(source.Friends, otherItem.Friends) && 
 Equals(source.HP, otherItem.HP) && 
 Equals(source.ID, otherItem.ID) && 
 Equals(source.Level, otherItem.Level) && 
