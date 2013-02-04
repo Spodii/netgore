@@ -26,6 +26,7 @@ namespace DemoGame
         EndNPCChatDialog,
         GetEquipmentItemInfo,
         GetFriends,
+        GetOnlineUsers,
         GetInventoryItemInfo,
         HasQuestFinishRequirements,
         HasQuestStartRequirements,

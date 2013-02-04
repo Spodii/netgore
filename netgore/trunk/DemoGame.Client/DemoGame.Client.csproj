@@ -147,6 +147,7 @@
     <Compile Include="ClientPeerTradeInfoHandlerEventArgs.cs" />
     <Compile Include="Controls\FriendsForm.cs" />
     <Compile Include="Controls\MiniMapForm.cs" />
+    <Compile Include="Controls\OnlineUsersForm.cs" />
     <Compile Include="Controls\ToolbarEventArgs.cs" />
     <Compile Include="Friends.cs" />
     <Compile Include="Interface\GameControlsKeys.SideScroller.cs" />

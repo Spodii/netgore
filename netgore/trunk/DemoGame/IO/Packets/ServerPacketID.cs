@@ -42,6 +42,7 @@ namespace DemoGame
         QuestInfo,
         ReceiveFriends,
         ReceivePrivateMessage,
+        ReceiveOnlineUsers,
         RemoveDynamicEntity,
         RemoveStatusEffect,
         SendAccountCharacters,

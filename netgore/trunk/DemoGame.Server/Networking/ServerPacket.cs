@@ -767,5 +767,12 @@ namespace DemoGame.Server
             pw.Write(message);
             return pw;
         }
+
+        public static PacketWriter ReceiveAllUsers(string onlineUsers)
+        {
+            var pw = GetWriter(ServerPacketID.ReceiveOnlineUsers);
+            pw.Write(onlineUsers);
+            return pw;
+        }
     }
 }

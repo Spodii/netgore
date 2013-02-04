@@ -1134,6 +1134,20 @@ namespace DemoGame.Client
             GameplayScreen.AppendToChatOutput(Message, Color.BlueViolet);
         }
 
+        [MessageHandler((uint)ServerPacketID.ReceiveOnlineUsers)]
+        void RecvReceiveOnlineUsers(IIPSocket conn, BitStream r)
+        {
+            List<String> online = r.ReadString().Split(';').ToList();
+            online.RemoveAll(x => x.IsEmpty());
+
+            foreach (string user in online)
+                OnlineUsersForm._online.Add(user);
+
+            OnlineUsersForm._online.RemoveDuplicates((x, y) => x == y);
+            OnlineUsersForm._online.RemoveAll(x => x.IsEmpty());
+            OnlineUsersForm.UpdateUsersList();
+        }
+
         #region IGetTime Members
 
         /// <summary>

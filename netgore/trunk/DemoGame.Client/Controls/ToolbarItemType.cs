@@ -13,6 +13,7 @@ namespace DemoGame.Client
         Stats,
         Skills,
         Guild,
-        Friends
+        Friends,
+        Users
     }
 }
