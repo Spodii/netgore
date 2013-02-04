@@ -82,7 +82,7 @@ namespace DemoGame.Client
             if (ScaledMapGrh != null)
                 _scaledMap = new PictureBox(this, Vector2.Zero, this.ClientSize) { CanFocus = false, CanDrag = false, Sprite = ScaledMapGrh };
 
-            var entites = GamePlayScreen.Map.Entities.Where(x => !(x is WallEntity));
+            var entites = GamePlayScreen.Map.Spatial.GetMany(x => x is CharacterEntity);
             foreach (var entity in entites)
             {
                 if (entity is User)
@@ -92,7 +92,7 @@ namespace DemoGame.Client
             }
         }
 
-        private void DrawEntityGrh(Entity entity, Grh grh)
+        private void DrawEntityGrh(ISpatial entity, Grh grh)
         {
             var scaleX = GamePlayScreen.Map.Size.X / ScaledMapGrh.Size.X;
             var scaleY = GamePlayScreen.Map.Size.Y / ScaledMapGrh.Size.Y;
