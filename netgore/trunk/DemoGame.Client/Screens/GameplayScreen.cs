@@ -50,6 +50,7 @@ namespace DemoGame.Client
         GUIStatePersister _guiStatePersister;
         GuildForm _guildForm;
         FriendsForm _friendsForm;
+        OnlineUsersForm _onlineUsersForm;
         MiniMapForm _minimapForm;
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
@@ -117,6 +118,11 @@ namespace DemoGame.Client
         public FriendsForm FriendsForm
         {
             get { return _friendsForm; }
+        }
+
+        public OnlineUsersForm OnlineUsersForm
+        {
+            get { return _onlineUsersForm; }
         }
 
         public MiniMapForm MiniMapForm
@@ -595,6 +601,8 @@ namespace DemoGame.Client
 
             _friendsForm = new FriendsForm(UserInfo, _cScreen) { IsVisible = false };
 
+            _onlineUsersForm = new OnlineUsersForm(_cScreen) { IsVisible = false };
+
             _minimapForm = new MiniMapForm(_cScreen, this) { IsVisible = true };
 
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
@@ -628,6 +636,7 @@ namespace DemoGame.Client
             _guiStatePersister.Add("PeerTradeForm", _peerTradeForm);
             _guiStatePersister.Add("FriendsForm", _friendsForm);
             _guiStatePersister.Add("MiniMapForm", _minimapForm);
+            _guiStatePersister.Add("OnlineUsersForm", _onlineUsersForm);
 
             // Set the focus to the screen container
             _cScreen.SetFocus();
@@ -776,7 +785,10 @@ namespace DemoGame.Client
                     {
                         Socket.Send(pw, ClientMessageType.GUI);
                     }
+                    break;
 
+                case ToolbarItemType.Users:
+                    _onlineUsersForm.IsVisible = !_onlineUsersForm.IsVisible;
                     break;
             }
         }

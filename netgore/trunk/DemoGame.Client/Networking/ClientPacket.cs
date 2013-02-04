@@ -296,5 +296,11 @@ namespace DemoGame.Client
             pw.Write(message);
             return pw;
         }
+
+        public static PacketWriter GetOnlineUsers()
+        {
+            var pw = GetWriter(ClientPacketID.GetOnlineUsers);
+            return pw;
+        }
     }
 }

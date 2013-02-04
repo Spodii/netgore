@@ -920,6 +920,31 @@ namespace DemoGame.Server
             }
         }
 
+        [MessageHandler((uint)ClientPacketID.GetOnlineUsers)]
+        void RecvGetOnlineUsers(IIPSocket conn, BitStream r)
+        {
+            User myUser;
+            if ((myUser = TryGetUser(conn)) == null)
+                return;
+
+            var allUsers = Server.World.GetUsers();
+            var orderedUsers = allUsers.OrderBy(x => !x.Permissions.IsSet(UserPermissions.None)).ThenBy(x => x.Name).ToList();
+            string onlineUsers = string.Empty;
+
+            foreach (var user in orderedUsers)
+            {
+                if (myUser == user)
+                    continue;
+
+                onlineUsers += user.Name + ";";
+            }
+
+            using (var pw = ServerPacket.ReceiveAllUsers(onlineUsers))
+            {
+                myUser.Send(pw, ServerMessageType.GUI);
+            }
+        }
+
         static IUserAccount TryGetAccount(IIPSocket conn)
         {
             // Check for a valid conn
