@@ -612,14 +612,23 @@ namespace DemoGame.Server
             // Load the user
             userAccount.SetUser(World, characterID);
 
-            // Send the MOTD
+
             var user = userAccount.User;
-            if (user != null && !string.IsNullOrEmpty(ServerSettings.Default.MOTD))
+            if (user != null)
             {
-                using (var pw = ServerPacket.Chat(ServerSettings.Default.MOTD))
+                // Send the MOTD
+                if (!string.IsNullOrEmpty(ServerSettings.Default.MOTD))
                 {
-                    user.Send(pw, ServerMessageType.GUIChat);
+                    using (var pw = ServerPacket.Chat(ServerSettings.Default.MOTD))
+                    {
+                        user.Send(pw, ServerMessageType.GUIChat);
+                    }
                 }
+
+                // Send a notification to the world that the user joined
+                var param = new object[] {user.Name};
+                World.Send(GameMessage.UserJoinedWorld, ServerMessageType.GUIChat, param);
+
             }
         }
 
@@ -869,13 +878,13 @@ namespace DemoGame.Server
                 return;
 
             string FriendsString = account.Friends;
- 
+
             List<string> FriendsList = FriendsString.Split(',').ToList<string>();
             string OnlineFriendsString = "";
             string FriendsMap = "";
- 
+
             var OnlineMembers = Server.World.GetUsers();
- 
+
             foreach (var Member in OnlineMembers)
             {
                 if (FriendsList.Contains(Member.Name))
@@ -884,13 +893,13 @@ namespace DemoGame.Server
                     FriendsMap += Member.Map + ",";
                 }
             }
- 
+
             using (var pw = ServerPacket.ReceiveFriends(OnlineFriendsString, FriendsMap, FriendsString))
             {
                 user.Send(pw, ServerMessageType.GUI);
             }
         }
- 
+
         [MessageHandler((uint)ClientPacketID.SaveFriends)]
         void RecvSaveFriends(IIPSocket conn, BitStream r)
         {
@@ -900,18 +909,18 @@ namespace DemoGame.Server
 
             account.SetFriends(r.ReadString());
         }
- 
- 
+
+
         [MessageHandler((uint)ClientPacketID.SendPrivateMessage)]
         void RecvSendPrivateMessage(IIPSocket conn, BitStream r)
         {
- 
+
             string TargetName = r.ReadString();
             string Text = r.ReadString();
- 
+
             // Get the user to send the message to
             User TargetChar = World.FindUser(TargetName);
- 
+
             string PrivateMessage = TargetName + " Says: " + Text;
 
             using (var pw = ServerPacket.ReceivePrivateMessage(PrivateMessage))

@@ -35,6 +35,10 @@ LoginInvalidName: Account with the given name does not exist.
 LoginInvalidPassword: Incorrect password.
 LoginAccountInUse: Account is already in use.
 
+########### Core: World Notifications ###########
+UserJoinedWorld: {0} has joined the game.
+UserLeftWorld: {0} has left the game.
+
 ########### Core: Account creation ###########
 CreateAccountSuccessful: Account successfully created! You may now log in.
 CreateAccountInvalidName: Invalid account name. Must be between 3 and 30 characters and contain only alphanumeric characters.

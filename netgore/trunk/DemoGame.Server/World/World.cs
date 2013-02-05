@@ -595,6 +595,11 @@ namespace DemoGame.Server
             {
                 _users.Remove(name);
             }
+
+            // Send a notification to the world that the user left
+            var param = new object[] { name };
+            Send(GameMessage.UserLeftWorld, ServerMessageType.GUIChat, param);
+
         }
 
         #region IDisposable Members
