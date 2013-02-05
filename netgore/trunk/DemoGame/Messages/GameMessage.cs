@@ -148,6 +148,7 @@ namespace DemoGame
         /// Message sent when a user has successfully left the world
         /// </summary>
         UserLeftWorld,
+
         #endregion
 
         #region Core: Account creation

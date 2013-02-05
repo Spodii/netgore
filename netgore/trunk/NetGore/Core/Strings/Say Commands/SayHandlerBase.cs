@@ -29,6 +29,7 @@ namespace NetGore
             _parser = new SayHandlerStringCommandParser(this, sayCommands.GetType());
         }
 
+
         /// <summary>
         /// Gets if the given <paramref name="user"/> is allowed to invoke the given command.
         /// </summary>
@@ -69,9 +70,11 @@ namespace NetGore
                 _parser.TryParse(_sayCommands, text, out output);
             }
 
+            string orginalMessage = "/" + text;
+
             // Handle the output
             if (!string.IsNullOrEmpty(output))
-                HandleCommandOutput(user, output);
+                HandleCommandOutput(user, output, orginalMessage);
         }
 
         /// <summary>
@@ -79,7 +82,8 @@ namespace NetGore
         /// </summary>
         /// <param name="user">The user that the command came from.</param>
         /// <param name="text">The output text from the command. Will not be null or empty.</param>
-        protected abstract void HandleCommandOutput(T user, string text);
+        /// <param name="orginalMessage">The orginal message that was inititally input.</param>
+        protected abstract void HandleCommandOutput(T user, string text, string orginalMessage);
 
         /// <summary>
         /// When overridden in the derived class, handles text that was not a command.

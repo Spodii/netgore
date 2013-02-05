@@ -13,7 +13,8 @@ namespace DemoGame.Client
     public class OnlineUsersForm : Form
     {
         static ListBox<String> _lbOnlineUsers;
-        public static List<String> _online;
+        public static List<String> Online;
+       
 
         readonly ClientSockets _sockets = null;
 
@@ -29,10 +30,10 @@ namespace DemoGame.Client
             this.VisibleChanged -= OnlineUsersForm_VisibleChanged;
             this.VisibleChanged += OnlineUsersForm_VisibleChanged;
 
-            _online = new List<String>();
+            Online = new List<String>();
 
             var items = new List<String>();
-            for (var i = 0; i < (_online.Count); i++)
+            for (var i = 0; i < (Online.Count); i++)
             {
                 items.Add(i.ToString());
             }
@@ -89,15 +90,15 @@ namespace DemoGame.Client
         /// </summary>
         public static void UpdateUsersList()
         {
-            if (_online == null)
+            if (Online == null)
                 return;
 
             // Clear the users list
             _lbOnlineUsers.Items.Clear();
 
-            if (_online != null || !_online.IsEmpty())
+            if (Online != null || !Online.IsEmpty())
             {
-                foreach (string user in _online)
+                foreach (string user in Online)
                 {
                     _lbOnlineUsers.Items.Add(user);
                 }
