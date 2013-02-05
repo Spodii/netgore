@@ -68,7 +68,8 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         ILight _userLight;
         World _world;
-        private SayHandler _sayHandler;
+        SayHandler _sayHandler;
+        ProfanityHandler _profanityHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -267,6 +268,9 @@ namespace DemoGame.Client
 
         public void AddChatBubble(Entity owner, string text)
         {
+            // Clean up with profanity handler
+            text = _profanityHandler.ProcessMessage(text);
+
             ChatBubble.Create(_cScreen, owner, text);
         }
 
@@ -276,6 +280,9 @@ namespace DemoGame.Client
         /// <param name="text">Text to append to the chat's output TextBox.</param>
         public void AppendToChatOutput(string text)
         {
+            // Clean up with profanity handler
+            text = _profanityHandler.ProcessMessage(text);
+
             _chatForm.AppendToOutput(text);
         }
 
@@ -286,6 +293,9 @@ namespace DemoGame.Client
         /// <param name="color">Color of the text to append.</param>
         public void AppendToChatOutput(string text, Color color)
         {
+            // Clean up with profanity handler
+            text = _profanityHandler.ProcessMessage(text);
+
             _chatForm.AppendToOutput(text, color);
         }
 
@@ -295,7 +305,15 @@ namespace DemoGame.Client
         /// <param name="text">Text to append to the chat's output TextBox.</param>
         public void AppendToChatOutput(IEnumerable<StyledText> text)
         {
-            _chatForm.AppendToOutput(text);
+            var newText = new List<StyledText>();
+
+            foreach (var styledText in text)
+            {
+                string filteredText = _profanityHandler.ProcessMessage(styledText.Text);
+                newText.Add(new StyledText(filteredText, styledText.Color));
+            }
+
+            _chatForm.AppendToOutput(newText);
         }
 
         /// <summary>
@@ -548,6 +566,7 @@ namespace DemoGame.Client
             _world.MapChanged += World_MapChanged;
 
             _sayHandler = new SayHandler(this);
+            _profanityHandler = new ProfanityHandler();
 
             // Create some misc goodies that require a reference to the Socket
             _equipmentInfoRequester = new EquipmentInfoRequester(UserInfo.Equipped, Socket);
