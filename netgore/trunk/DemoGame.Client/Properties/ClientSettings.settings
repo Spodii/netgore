@@ -140,5 +140,8 @@
     <Setting Name="Keys_Window_Modifier2" Type="SFML.Window.Keyboard.Key" Scope="User">
       <Value Profile="(Default)">Unknown</Value>
     </Setting>
+    <Setting Name="UseProfanityFilter" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
