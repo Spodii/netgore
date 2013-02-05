@@ -1141,10 +1141,10 @@ namespace DemoGame.Client
             online.RemoveAll(x => x.IsEmpty());
 
             foreach (string user in online)
-                OnlineUsersForm._online.Add(user);
+                OnlineUsersForm.Online.Add(user);
 
-            OnlineUsersForm._online.RemoveDuplicates((x, y) => x == y);
-            OnlineUsersForm._online.RemoveAll(x => x.IsEmpty());
+            OnlineUsersForm.Online.RemoveDuplicates((x, y) => x == y);
+            OnlineUsersForm.Online.RemoveAll(x => x.IsEmpty());
             OnlineUsersForm.UpdateUsersList();
         }
 

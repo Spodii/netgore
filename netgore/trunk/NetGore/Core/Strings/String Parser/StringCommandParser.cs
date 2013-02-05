@@ -14,6 +14,8 @@ namespace NetGore
     /// </summary>
     public abstract class StringCommandParser
     {
+        public static readonly string UnknownCommandSpecified = "Unknown command specified.";
+
         /// <summary>
         /// Gets the parameter information for a method.
         /// </summary>
@@ -277,6 +279,7 @@ namespace NetGore
                 binder != null ? binder.ToString() : "NULL", cd.Attribute.Command);
         }
 
+
         /// <summary>
         /// Handles when an invalid command is called.
         /// </summary>
@@ -291,13 +294,14 @@ namespace NetGore
                 return "No command specified.";
 
             IEnumerable<StringCommandParserCommandData<T>> cmdDatas;
+        
             if (!_commands.TryGetValue(commandName, out cmdDatas))
-                return "Unknown command specified.";
+                return UnknownCommandSpecified;
 
             if (cmdDatas.IsEmpty())
             {
                 Debug.Fail("Shouldn't ever have 0 methods in the list.");
-                return "Unknown command specified.";
+                return UnknownCommandSpecified;
             }
 
             return "Expected usage: " + commandName + " (" + GetParameterInfo(cmdDatas.Select(x => x.Method).First()) + ")";

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Client.Properties;
+using DemoGame.Client.Say;
 using log4net;
 using NetGore;
 using NetGore.Features.Groups;
@@ -67,6 +68,7 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         ILight _userLight;
         World _world;
+        private SayHandler _sayHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -336,10 +338,10 @@ namespace DemoGame.Client
             if (text.Length > GameData.MaxClientSayLength)
                 text = text.Substring(0, GameData.MaxClientSayLength);
 
-            using (var pw = ClientPacket.Say(text))
-            {
-                Socket.Send(pw, ClientMessageType.Chat);
-            }
+            // Process with the say handler
+            _sayHandler.Process((User) UserChar, text);      
+
+            
         }
 
         /// <summary>
@@ -458,10 +460,19 @@ namespace DemoGame.Client
         void GameMenuClickedLogOut(object sender, EventArgs e)
         {
             // Change to the login screen
+            Logout();
+        }
+
+        /// <summary>
+        /// Ends the screen session and logs the user out to the main menu
+        /// </summary>
+        public void Logout()
+        {
             ScreenManager.SetScreen<LoginScreen>();
 
             // Disconnect the socket to close the connection
             Socket.Disconnect();
+
         }
 
         /// <summary>
@@ -535,6 +546,8 @@ namespace DemoGame.Client
 
             _world = new World(this, new Camera2D(GameData.ScreenSize), new UserInfo(Socket));
             _world.MapChanged += World_MapChanged;
+
+            _sayHandler = new SayHandler(this);
 
             // Create some misc goodies that require a reference to the Socket
             _equipmentInfoRequester = new EquipmentInfoRequester(UserInfo.Equipped, Socket);

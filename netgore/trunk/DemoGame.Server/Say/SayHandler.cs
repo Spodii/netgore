@@ -55,7 +55,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="user">The user that the command came from.</param>
         /// <param name="text">The output text from the command. Will not be null or empty.</param>
-        protected override void HandleCommandOutput(User user, string text)
+        protected override void HandleCommandOutput(User user, string text, string orginalMessage)
         {
             ThreadAsserts.IsMainThread();
 
@@ -70,6 +70,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="user">The user the <paramref name="text"/> came from.</param>
         /// <param name="text">The text that wasn't a command.</param>
+        /// <param name="orginalMessage">The orginal message that was inititally input.</param>
         protected override void HandleNonCommand(User user, string text)
         {
             ThreadAsserts.IsMainThread();
