@@ -115,6 +115,7 @@ namespace DemoGame
         /// </summary>
         CommandAnnounce,
 
+
         #endregion
 
         #region Core: Login failure reasons
@@ -134,6 +135,19 @@ namespace DemoGame
         /// </summary>
         LoginAccountInUse,
 
+        #endregion
+
+        #region Core: World Notifications
+        
+        /// <summary>
+        /// Message sent when a user has successfully joined the world
+        /// </summary>
+        UserJoinedWorld,
+
+        /// <summary>
+        /// Message sent when a user has successfully left the world
+        /// </summary>
+        UserLeftWorld,
         #endregion
 
         #region Core: Account creation
