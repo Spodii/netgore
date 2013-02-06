@@ -25,6 +25,17 @@ namespace NetGore.Graphics.GUI
         readonly Dictionary<string, IGameScreen> _screens = new Dictionary<string, IGameScreen>(StringComparer.OrdinalIgnoreCase);
         readonly ISkinManager _skinManager;
 
+        // This is changed when the focus on the window changes
+        private bool _updateGameControls = true;
+
+        /// <summary>
+        /// Determines whether or not the screen manager window is focused or not
+        /// </summary>
+        public bool WindowFocused
+        {
+            get { return _updateGameControls; }
+        }
+
         IGameScreen _activeScreen;
         bool _isDisposed;
 
@@ -76,6 +87,12 @@ namespace NetGore.Graphics.GUI
             _game.MouseMoved -= _game_MouseMoved;
             _game.MouseMoved += _game_MouseMoved;
 
+            _game.GainedFocus -= _game_GainedFocus;
+            _game.GainedFocus += _game_GainedFocus;
+
+            _game.LostFocus -= _game_LostFocus;
+            _game.LostFocus += _game_LostFocus;
+
             // Load the global content used between screens
             _defaultFont = _content.LoadFont(defaultFontName, defaultFontSize, ContentLevel.Global);
 
@@ -84,6 +101,26 @@ namespace NetGore.Graphics.GUI
             {
                 screen.LoadContent();
             }
+        }
+
+        /// <summary>
+        /// Fires when the game window loses focus
+        /// </summary>
+        /// <param name="sender">The sender of this event</param>
+        /// <param name="e">The event arguments of the game window</param>
+        void _game_LostFocus(IGameContainer sender, EventArgs e)
+        {
+            _updateGameControls = false;
+        }
+
+        /// <summary>
+        /// Fires when the game window gains focus
+        /// </summary>
+        /// <param name="sender">The sender of this event</param>
+        /// <param name="e">The event arguments of the game window</param>
+        void _game_GainedFocus(IGameContainer sender, EventArgs e)
+        {
+            _updateGameControls = true;
         }
 
         /// <summary>

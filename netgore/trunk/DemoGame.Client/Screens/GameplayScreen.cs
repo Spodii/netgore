@@ -75,7 +75,8 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public GameplayScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
+        public GameplayScreen(IScreenManager screenManager)
+            : base(screenManager, ScreenName)
         {
             PlayMusic = true;
         }
@@ -357,9 +358,9 @@ namespace DemoGame.Client
                 text = text.Substring(0, GameData.MaxClientSayLength);
 
             // Process with the say handler
-            _sayHandler.Process((User) UserChar, text);      
+            _sayHandler.Process((User)UserChar, text);
 
-            
+
         }
 
         /// <summary>
@@ -863,8 +864,9 @@ namespace DemoGame.Client
             _characterTargeter.Update(GUIManager);
             _gameControls.TargetIndex = _characterTargeter.TargetEntityIndex;
 
-            // Update controls
-            _gameControls.Update(GUIManager, _currentTime);
+            // Update controls if focus is active
+            if (ScreenManager.WindowFocused)
+                _gameControls.Update(GUIManager, _currentTime);
 
             var sock = _socket.RemoteSocket;
             if (_latencyLabel != null && sock != null && sock.IsConnected)

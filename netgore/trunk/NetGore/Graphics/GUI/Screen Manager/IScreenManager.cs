@@ -71,6 +71,12 @@ namespace NetGore.Graphics.GUI
         IGameContainer Game { get; }
 
         /// <summary>
+        /// Determines whether or not the window this screen manager is tied to is focused or not
+        /// This can be a window or a render control
+        /// </summary>
+        bool WindowFocused { get; }
+
+        /// <summary>
         /// Gets if this <see cref="IScreenManager"/> has been disposed.
         /// </summary>
         bool IsDisposed { get; }
