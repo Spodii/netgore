@@ -170,3 +170,7 @@ UnBanUserFailed: Failed to unban user {0}: {1}
 SelfBanFailed: You cannot ban yourself.
 SelfUnBanFailed: You cannot un-ban yourself.
 BanInsufficientPermissions: Failed. {0} has a higher permission rank than you.
+
+########### Command responses ###########
+AdminGaveCash: The gods have blessed you with {0} cash.
+AdminTookCash: The gods have cursed you; taking {0} cash.

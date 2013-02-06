@@ -224,10 +224,37 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Changes the name of the specified user in the world.
+        /// </summary>
+        /// <param name="userName">The name of the players name to change</param>
+        /// <param name="newUserName"The new name of this person></param>
+        [SayHandlerCommand("ChangeName", UserPermissions.Moderator)]
+        public void ChangeName(string userName, string newUserName)
+        {
+            // Get the user we want
+            var target = World.FindUser(userName);
+
+            // Check that the user could be found
+            if (target == null)
+            {
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
+                return;
+            }
+
+            // Change the target username
+
+            if (GameData.UserName.IsValid(newUserName))
+                target.Name = newUserName;
+            else
+                UserChat("The new name chosen is illegal.");
+        }
+
+
+        /// <summary>
         /// Causes you to kill yourself.
         /// </summary>
         [SayHandlerCommand("Suicide", UserPermissions.Moderator)]
-        [SayHandlerCommand("Seppuku", UserPermissions.Moderator)]
+        [SayHandlerCommand("Seppuku ", UserPermissions.Moderator)]
         public void Suicide()
         {
             User.Kill();

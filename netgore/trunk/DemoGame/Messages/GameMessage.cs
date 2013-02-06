@@ -422,5 +422,18 @@ namespace DemoGame
         BanInsufficientPermissions,
 
         #endregion
+
+        #region Command Responses
+        
+        /// <summary>
+        /// Triggered when the "GiveCash" command is fired
+        /// </summary>
+        AdminGaveCash,
+
+        /// <summary>
+        /// Triggered when the "TakeCash" command is fired
+        /// </summary>
+        AdminTookCash,
+        #endregion
     }
 }

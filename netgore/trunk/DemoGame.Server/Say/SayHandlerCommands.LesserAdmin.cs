@@ -69,6 +69,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Desummons all NPCs in the current world.
+        /// </summary>
+        [SayHandlerCommand("DethrallWorld", UserPermissions.LesserAdmin)]
+        public void Dethrall()
+        {
+
+            // Iterate over every map and kill all the mobs that are of type 'ThralledNPC'
+            foreach (var userMap in World.Maps)
+            {
+                // Get the thralled NPCs
+                var toKill = userMap.NPCs.OfType<ThralledNPC>().Where(x => x.IsAlive).ToImmutable();
+
+                // Kill all the found thralled NPCs
+                foreach (var thralledNPC in toKill)
+                {
+                    thralledNPC.Kill();
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Kills the specified user.
         /// </summary>
         /// <param name="userName">The player to kill.</param>
@@ -87,6 +109,57 @@ namespace DemoGame.Server
 
             target.Kill();
         }
+
+        /// <summary>
+        /// Awards the specific user with cash
+        /// </summary>
+        /// <param name="userName">The player to give cash to</param>
+        /// <param name="amount">The amount of cash to give the player</param>
+        [SayHandlerCommand("GiveCash", UserPermissions.LesserAdmin)]
+        public void GiveCash(string userName, int amount)
+        {
+            // Get the user we want
+            var target = World.FindUser(userName);
+
+            // Check that the user could be found
+            if (target == null)
+            {
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
+                return;
+            }
+
+            target.Cash += amount;
+
+            // Notify the player
+            target.Send(GameMessage.AdminGaveCash, ServerMessageType.GUIChat, amount);
+        }
+
+        /// <summary>
+        /// Removes the specific user of cash by a specific amount
+        /// </summary>
+        /// <param name="userName">The player to take cash from</param>
+        /// <param name="amount">The amount of cash to take from the player</param>
+        [SayHandlerCommand("TakeCash", UserPermissions.LesserAdmin)]
+        public void TakeCash(string userName, int amount)
+        {
+            // Get the user we want
+            var target = World.FindUser(userName);
+
+            // Check that the user could be found
+            if (target == null)
+            {
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
+                return;
+            }
+
+            // Clamp the amount of cash to be taken so you can never have below 0
+            target.Cash = (int)MathHelper.Clamp(target.Cash - amount, 0, int.MaxValue);
+
+            // Notify the player
+            target.Send(GameMessage.AdminTookCash, ServerMessageType.GUIChat, amount);
+        }
+
+
 
         /// <summary>
         /// Warps the specified player to the user of the command.
