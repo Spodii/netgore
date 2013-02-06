@@ -72,7 +72,7 @@ namespace DemoGame.Server
         /// Desummons all NPCs in the current world.
         /// </summary>
         [SayHandlerCommand("DethrallWorld", UserPermissions.LesserAdmin)]
-        public void Dethrall()
+        public void DethrallWorld()
         {
 
             // Iterate over every map and kill all the mobs that are of type 'ThralledNPC'

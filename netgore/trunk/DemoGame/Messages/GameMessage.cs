@@ -36,6 +36,11 @@ namespace DemoGame
         /// </summary>
         CannotAttackNotInSight,
 
+        /// <summary>
+        /// Displayed when a status effect is worn off during combat
+        /// </summary>
+        CombatStatusEffectWoreOff,
+
         #endregion
 
         #region Core: General chat command responses
