@@ -541,8 +541,11 @@ namespace DemoGame.Client
         {
             var statusEffectType = r.ReadEnum<StatusEffectType>();
 
+            var status_message = GameMessageHelper.AsString(GameMessage.CombatStatusEffectWoreOff,
+                                                            new object[] {statusEffectType.ToString()});
+
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
-            GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
+            GameplayScreen.AppendToChatOutput(status_message);
         }
 
         [MessageHandler((uint)ServerPacketID.SendAccountCharacters)]
