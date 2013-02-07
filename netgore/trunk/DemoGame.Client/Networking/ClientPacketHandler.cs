@@ -540,12 +540,10 @@ namespace DemoGame.Client
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
             var statusEffectType = r.ReadEnum<StatusEffectType>();
-
-            var status_message = GameMessageHelper.AsString(GameMessage.CombatStatusEffectWoreOff,
-                                                            new object[] {statusEffectType.ToString()});
+            var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatStatusEffectWoreOff, statusEffectType.ToString());
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
-            GameplayScreen.AppendToChatOutput(status_message);
+            GameplayScreen.AppendToChatOutput(message);
         }
 
         [MessageHandler((uint)ServerPacketID.SendAccountCharacters)]
