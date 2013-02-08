@@ -70,7 +70,7 @@ namespace DemoGame.Client
             _castStartTime = TickCount.Now;
             _skillType = skillType;
 
-            Text = "Casting " + skillType;
+            Text = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatCastingBegin, skillType.ToString());
 
             var textSize = Font.MeasureString(Text);
             _textOffset = (Size / 2f) - (textSize / 2f);

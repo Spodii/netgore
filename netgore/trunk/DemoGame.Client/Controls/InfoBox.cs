@@ -15,7 +15,7 @@ namespace DemoGame.Client
         readonly Font _font;
         readonly List<InfoBoxItem> _items;
 
-        Color _defaultColor = Color.Green;
+        private Color _defaultColor = Color.Black;
         int _maxItems = 20;
         int _messageLife = 5000;
         Vector2 _position;
@@ -128,6 +128,7 @@ namespace DemoGame.Client
 
                 // Draw
                 sb.DrawString(_font, item.Message, pos, color);
+                
             }
         }
 

@@ -186,7 +186,7 @@ namespace DemoGame.Client
 
         static IEnumerable<StyledText> CreateChatText(string name, string message)
         {
-            var left = new StyledText(name + ": ", Color.Green);
+            var left = new StyledText(name + ": ", Color.Yellow);
             var right = new StyledText(message, Color.Black);
             return new List<StyledText> { left, right };
         }
@@ -243,8 +243,11 @@ namespace DemoGame.Client
             var power = r.ReadUShort();
             var secsLeft = r.ReadUShort();
 
+            var param = new string[] {User.Name, statusEffectType.ToString()};
+            var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatStatusEffectGained, param);
+
             GameplayScreen.StatusEffectsForm.AddStatusEffect(statusEffectType, power, secsLeft);
-            GameplayScreen.AppendToChatOutput(string.Format("Added status effect {0} with power {1}.", statusEffectType, power));
+            GameplayScreen.AppendToChatOutput(message);
         }
 
         [MessageHandler((uint)ServerPacketID.CharAttack)]
@@ -442,8 +445,10 @@ namespace DemoGame.Client
             var exp = r.ReadInt();
             var cash = r.ReadInt();
 
-            var msg = string.Format("Got {0} exp and {1} cash", exp, cash);
-            GameplayScreen.InfoBox.Add(msg);
+            var param = new string[] {exp.ToString(),cash.ToString()};
+            var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatRecieveReward, param);
+
+            GameplayScreen.InfoBox.Add(message);
         }
 
         [MessageHandler((uint)ServerPacketID.NotifyGetItem)]
@@ -470,8 +475,10 @@ namespace DemoGame.Client
             if (chr == null)
                 return;
 
+            var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatSelfLevelUp, UserInfo.Level.ToString());
+
             if (chr == World.UserChar)
-                GameplayScreen.InfoBox.Add("You have leveled up!");
+                GameplayScreen.InfoBox.Add(message);
         }
 
         [MessageHandler((uint)ServerPacketID.PeerTradeEvent)]
@@ -540,6 +547,7 @@ namespace DemoGame.Client
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
             var statusEffectType = r.ReadEnum<StatusEffectType>();
+
             var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatStatusEffectWoreOff, statusEffectType.ToString());
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);

@@ -31,9 +31,9 @@ namespace DemoGame.Client
         {
             var content = ContentManager.Create();
 
-            _defaultGameGUIFont = content.LoadFont("Font/Lavi", 14, ContentLevel.Global);
-            _defaultChatFont = content.LoadFont("Font/Arial", 14, ContentLevel.Global);
-            _defaultScreenFont = content.LoadFont("Font/Adler", 24, ContentLevel.Global);
+            _defaultGameGUIFont = content.LoadFont("Font/varelaroundregular", 14, ContentLevel.Global);
+            _defaultChatFont = content.LoadFont("Font/varelaroundregular", 14, ContentLevel.Global);
+            _defaultScreenFont = content.LoadFont("Font/varelaroundregular", 24, ContentLevel.Global);
             _defaultMenuButtonFont = content.LoadFont("Font/Biometric Joe", 36, ContentLevel.Global);
             _defaultMenuTitleFont = content.LoadFont("Font/If", 72, ContentLevel.Global);
         }
