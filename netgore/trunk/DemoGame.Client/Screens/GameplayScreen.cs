@@ -653,7 +653,7 @@ namespace DemoGame.Client
             var gameMenu = new GameMenuForm(_cScreen);
             gameMenu.ClickedLogOut += GameMenuClickedLogOut;
 
-            _peerTradeForm = new PeerTradeForm(_cScreen, new Vector2(200)) { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler };
+            _peerTradeForm = new PeerTradeForm(_cScreen, new Vector2(200)) { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler, UserInfo = UserInfo };
 
             // Add the forms to the GUI settings manager (which also restores any existing settings)
             _guiStatePersister = new GUIStatePersister("Default"); // FUTURE: Allow changing of the profile
