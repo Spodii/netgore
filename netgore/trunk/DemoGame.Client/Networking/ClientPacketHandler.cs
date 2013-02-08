@@ -243,7 +243,7 @@ namespace DemoGame.Client
             var power = r.ReadUShort();
             var secsLeft = r.ReadUShort();
 
-            var param = new string[] {User.Name, statusEffectType.ToString()};
+            var param = new string[] {User.Name, statusEffectType.ToString(), power.ToString()};
             var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatStatusEffectGained, param);
 
             GameplayScreen.StatusEffectsForm.AddStatusEffect(statusEffectType, power, secsLeft);
