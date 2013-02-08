@@ -41,6 +41,27 @@ namespace DemoGame
         /// </summary>
         CombatStatusEffectWoreOff,
 
+        /// <summary>
+        /// A combat status effect has worn off on a user
+        /// </summary>
+        CombatStatusEffectGained,
+
+        /// <summary>
+        /// A message recieved after defeating a monster
+        /// </summary>
+        CombatRecieveReward,
+
+
+        /// <summary>
+        /// A message recieved for when you level up
+        /// </summary>
+        CombatSelfLevelUp, 
+
+        /// <summary>
+        /// Displayed when a spell has begun to be casted
+        /// </summary>
+        CombatCastingBegin,
+
         #endregion
 
         #region Core: General chat command responses

@@ -12,6 +12,10 @@ CannotAttackNeedTarget: You must select a target to attack first."
 CannotAttackAllianceConflict: You feel you shouldn't attack {0}.
 CannotAttackNotInSight: You can't see the person you are trying to attack!
 CombatStatusEffectWoreOff: The effect of {0} wears off.
+CombatStatusEffectGained: {0} gains the effect of {1}.
+CombatRecieveReward: You recieve {0} EXP and {1} cash.
+CombatSelfLevelUp: You have risen to level {0}!
+CombatCastingBegin: Casting {0}
 
 ########### Core: Specialized chat command responses ###########
 CommandTellNoName: Tell what to whom?

@@ -153,7 +153,7 @@ namespace DemoGame.Client
             namePos.Y += Size.Y + 10f;
 
             // Draw
-            sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
+            sb.DrawStringShaded(font, Name, namePos, Color.Yellow, Color.Black);
         }
 
         /// <summary>
