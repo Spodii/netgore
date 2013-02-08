@@ -403,7 +403,7 @@ namespace DemoGame.Server
         /// <returns>A deep copy of the object</returns>
         public override ItemEntityBase DeepCopy()
         {
-            return new ItemEntity(this);
+            return new ItemEntity(this) { IsPersistent = this.IsPersistent };
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace DemoGame.Server
                 return null;
 
             // Create the new ItemEntity
-            var child = new ItemEntity(this) { Amount = amount };
+            var child = new ItemEntity(this) { Amount = amount, IsPersistent = true };
 
             // Lower the amount of this ItemEntity
             Amount -= amount;
