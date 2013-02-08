@@ -329,6 +329,12 @@ namespace DemoGame.Server.PeerTrading
 
                 if (newItem != null)
                 {
+                    if (newItem.ID == 0)
+                    {
+                        Debug.WriteLine(newItem.Name + ": ItemID cannot be zero!");
+                        return;
+                    }
+
                     // Add the new item to the database
                     Debug.Assert(TryGetSlot(newItem).HasValue, "How is the new item not in the database?!");
                     _insertItemQuery.Execute(newItem.ID, _owner.ID);

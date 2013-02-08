@@ -190,6 +190,8 @@ namespace DemoGame
                     // As there is nothing to stack the new item onto create a deep copy in a new slot.
                     var copy = (T)item.DeepCopy();
                     this[slot] = copy;
+                    if (changedSlots != null)
+                        changedSlots.Add(slot);
 
                     return null;
                 }
