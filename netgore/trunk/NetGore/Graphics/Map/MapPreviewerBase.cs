@@ -181,7 +181,15 @@ namespace NetGore.Graphics
         /// <param name="filePath">The file path to save the file to.</param>
         protected virtual void SaveTexture(Image img, string filePath)
         {
-            img.Save(filePath, ImageFormat.Png);
+            // Scale to 10% or 20 if it's a small map
+            float scaledPercent = ((float)10 / 100);
+            if (img.Height < 1300)
+                scaledPercent = ((float)20 / 100);
+            var newWidth = (int)(img.Width * scaledPercent).Clamp(1, 2048);
+            var newHeight = (int)(img.Height * scaledPercent).Clamp(1, 2048);
+            var newImg = img.CreateScaled(newWidth, newHeight, true, null, null);
+            newImg.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+            newImg.Save(filePath, ImageFormat.Png);
         }
 
         /// <summary>

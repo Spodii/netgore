@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Editor.Properties;
+using NetGore;
+using NetGore.IO;
 using NetGore.Editor.EditorTool;
 using ToolBar = NetGore.Editor.EditorTool.ToolBar;
 
@@ -27,6 +29,14 @@ namespace DemoGame.Editor.Tools
 
         void ControlSettings_Click(object sender, EventArgs e)
         {
+            SaveMapPreview();
+        }
+
+        /// <summary>
+        /// Automatically saves an image of the map in it's mini-map format.
+        /// </summary>
+        void SaveMapPreview()
+        {
             var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
             if (tb == null)
                 return;
@@ -35,12 +45,10 @@ namespace DemoGame.Editor.Tools
             if (map == null)
                 return;
 
-            var filePath = Path.GetFullPath(map.ID + ".png");
+            var filePath = ContentPaths.Dev.Grhs.Join("MiniMap\\" + map.ID + EngineSettings.ImageFileSuffix);
 
             var mp = new MapPreviewer();
             mp.CreatePreview(map, ToolManager.MapDrawingExtensions, filePath);
-
-            MessageBox.Show("Saved map preview to file:" + Environment.NewLine + filePath, "Preview saved", MessageBoxButtons.OK);
         }
 
         /// <summary>

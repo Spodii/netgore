@@ -496,6 +496,17 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the path to a mini-map file.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
+        /// <param name="id">The ID of the map.</param>
+        /// <returns>The path to the mini-map file.</returns>
+        public static string GetMiniMapFilePath(ContentPaths contentPath, MapID id)
+        {
+            return contentPath.Grhs.Join("MiniMap\\" + id + EngineSettings.ImageFileSuffix);
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of the path of all the map files in the given ContentPaths.
         /// </summary>
         /// <param name="path">ContentPaths to load the map files from.</param>

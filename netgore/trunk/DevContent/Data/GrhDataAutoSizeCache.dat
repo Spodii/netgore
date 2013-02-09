@@ -550,24 +550,24 @@
     </Item77>
     <Item78>
       <AssetName>Grh/MiniMap/1</AssetName>
-      <FileSize>46437</FileSize>
+      <FileSize>44635</FileSize>
       <GrhIndex>87</GrhIndex>
-      <Height>250</Height>
-      <Width>250</Width>
+      <Height>200</Height>
+      <Width>200</Width>
     </Item78>
     <Item79>
       <AssetName>Grh/MiniMap/2</AssetName>
-      <FileSize>40064</FileSize>
+      <FileSize>16440</FileSize>
       <GrhIndex>88</GrhIndex>
-      <Height>250</Height>
-      <Width>250</Width>
+      <Height>192</Height>
+      <Width>204</Width>
     </Item79>
     <Item80>
       <AssetName>Grh/MiniMap/3</AssetName>
-      <FileSize>59718</FileSize>
+      <FileSize>19402</FileSize>
       <GrhIndex>89</GrhIndex>
-      <Height>250</Height>
-      <Width>250</Width>
+      <Height>150</Height>
+      <Width>192</Width>
     </Item80>
     <Item81>
       <AssetName>Grh/GUI/Default/Toolbar/Users</AssetName>

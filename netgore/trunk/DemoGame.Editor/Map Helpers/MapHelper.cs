@@ -66,6 +66,7 @@ namespace DemoGame.Editor
                 {
                     // Save
                     SaveMap(map, false);
+                    SaveMiniMap(map.ID, ContentPaths.Dev.Grhs + "MiniMap");
                     ret.Add(new KeyValuePair<MapID, int>(mapId, removed));
                 }
             }
@@ -132,6 +133,7 @@ namespace DemoGame.Editor
                 {
                     map.SetDimensions(new Vector2(960, 960));
                     SaveMap(map, false);
+                    SaveMiniMap(map.ID, ContentPaths.Dev.Grhs + "MiniMap");
                 }
 
                 return id;
@@ -229,6 +231,36 @@ namespace DemoGame.Editor
             }
 
             return true;
+        }
+
+        static void DeleteMiniMap(MapID mapId)
+        {
+            try
+            {
+                // Delete file
+                string filePathDev = MapBase.GetMiniMapFilePath(ContentPaths.Dev, mapId);
+                if (File.Exists(filePathDev))
+                    File.Delete(filePathDev);
+
+                try
+                {
+                    string filePathBuild = MapBase.GetMiniMapFilePath(ContentPaths.Build, mapId);
+                    if (File.Exists(filePathBuild))
+                        File.Delete(filePathBuild);
+                }
+                catch
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to delete the mini-map for mapId `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, mapId, ex);
+                Debug.Fail(string.Format(errmsg, mapId, ex));
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -380,6 +412,7 @@ namespace DemoGame.Editor
                 {
                     // Save the map
                     map.Save(ContentPaths.Dev, EditorDynamicEntityFactory.Instance);
+                    SaveMiniMap(map.ID, ContentPaths.Dev.Grhs + "MiniMap");
 
                     // Update the database
                     GlobalState.Instance.DbController.GetQuery<InsertMapQuery>().Execute(map);
@@ -405,6 +438,18 @@ namespace DemoGame.Editor
                     log.ErrorFormat(errmsg, map, ex);
                 Debug.Fail(string.Format(errmsg, map, ex));
             }
+        }
+
+        /// <summary>
+        /// Saves a map as a new mini-map.
+        /// </summary>
+        /// <param name="mapID">The map ID to save.</param>
+        /// <param name="folder">The name of the folder to save to.</param>
+        public static void SaveMiniMap(MapID mapID, string folder)
+        {
+            var tb = ToolBar.GetToolBar(ToolBarVisibility.Map);
+            var tbItems = tb.Items;
+            tbItems["Map Preview"].PerformClick();
         }
 
         /// <summary>
@@ -452,6 +497,7 @@ namespace DemoGame.Editor
 
                 // Save
                 SaveMap(map, false);
+                SaveMiniMap(map.ID, ContentPaths.Dev.Grhs + "MiniMap");
             }
             catch (Exception ex)
             {
@@ -503,6 +549,7 @@ namespace DemoGame.Editor
                 {
                     DeleteMap(id, deleteMapQuery);
                     deletedIds.Add(id);
+                    DeleteMiniMap(id);
                 }
                 catch
                 {
