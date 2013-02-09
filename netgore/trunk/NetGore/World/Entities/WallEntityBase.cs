@@ -20,6 +20,7 @@ namespace NetGore.World
         const string _positionValueKey = "Position";
         const string _sizeValueKey = "Size";
         const string _boundGrhIndexValueKey = "BoundGrhindex";
+        const string _directionBlockValueKey = "DirectionalBlock";
 
         /// <summary>
         /// Platforms will only prevent someone from falling down through a platform if they started above the platform.
@@ -96,6 +97,14 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Gets or sets if this <see cref="WallEntityBase"/> will have a blocked direction.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The direction which to not allow movement through this wall.")]
+        [DefaultValue(Direction.None)]
+        public Direction DirectionalBlock { get; set; }
+
+        /// <summary>
         /// Gets if the values of this <see cref="WallEntityBase"/> equal the values of another, and if they are of the
         /// same type. Not all values need to be taken into consideration, just relevant ones to seeing if two walls are
         /// functionally the same.
@@ -140,7 +149,8 @@ namespace NetGore.World
         /// to make it no longer overlap this wall.</param>
         /// <param name="wallIsPlatform">If the <paramref name="wall"/> entity is to be treated a as a platform instead of a solid wall.</param>
         /// <param name="moveVector">Vector describing how the entity has moved.</param>
-        public static void HandleCollideInto(IMap map, Entity wall, Entity other, Vector2 displacement, bool wallIsPlatform, Vector2 moveVector)
+        /// <param name="blockedDirection">Direction to not allow movement through this <paramref name="wall"/>.</param>
+        public static void HandleCollideInto(IMap map, Entity wall, Entity other, Vector2 displacement, bool wallIsPlatform, Vector2 moveVector, Direction blockedDirection)
         {
             Debug.Assert(map != null);
             Debug.Assert(other != null);
@@ -148,7 +158,7 @@ namespace NetGore.World
             if (wallIsPlatform)
                 HandleCollideIntoPlatform(wall, other, displacement);
             else
-                HandleCollideIntoWall(map, wall, other, displacement, moveVector);
+                HandleCollideIntoWall(map, wall, other, displacement, moveVector, blockedDirection);
         }
 
         /// <summary>
@@ -182,7 +192,8 @@ namespace NetGore.World
         /// <param name="displacement">The minimum transitional displacement to move the <paramref name="other"/>
         /// to make it no longer overlap this wall.</param>
         /// <param name="moveVector">Vector describing how the entity has moved.</param>
-        static void HandleCollideIntoWall(IMap map, Entity wall, Entity other, Vector2 displacement, Vector2 moveVector)
+        /// <param name="blockedDirection">Direction to not allow movement through this <paramref name="wall"/>.</param>
+        static void HandleCollideIntoWall(IMap map, Entity wall, Entity other, Vector2 displacement, Vector2 moveVector, Direction blockedDirection)
         {
             // NOTE: This seems to be working fine now, but it seems like we should stop calling this for walls once we move the "other" entity.
 
@@ -263,6 +274,15 @@ namespace NetGore.World
                 }
             }
 
+            // Check if there is an actual blocked direction
+            if (blockedDirection != Direction.None)
+            {
+                // Get the other's direction from it's vector
+                var otherDirection = DirectionHelper.FromVector(moveVector);
+                // If they aren't opposite directions, allow movement through the wall
+                if (!IfOppositeDirections(blockedDirection, otherDirection))
+                    displaced = true;
+            }
 
             // Move the other entity away from the wall using the MTD
             if (!displaced)
@@ -287,6 +307,48 @@ namespace NetGore.World
                 }
             }
 #endif
+        }
+
+        /// <summary>
+        /// Checks if a walls directional block is the opposite to another direction.
+        /// </summary>
+        /// <param name="blockedDirection">The walls directional block.</param>
+        /// <param name="entityDirection">The other direction to check.</param>
+        /// <returns>True if a walls directional block is opposite to the other (entities) direction, otherwise false.</returns>
+        private static bool IfOppositeDirections(Direction blockedDirection, Direction? entityDirection)
+        {
+            switch (blockedDirection)
+            {
+                case Direction.North:
+                case Direction.NorthWest:
+                case Direction.NorthEast:
+                    if (entityDirection == Direction.South ||
+                        entityDirection == Direction.SouthEast ||
+                        entityDirection == Direction.SouthWest)
+                        return true;
+                    break;
+
+                case Direction.South:
+                case Direction.SouthWest:
+                case Direction.SouthEast:
+                    if (entityDirection == Direction.North ||
+                        entityDirection == Direction.NorthEast ||
+                        entityDirection == Direction.NorthWest)
+                        return true;
+                    break;
+
+                case Direction.East:
+                    if (entityDirection == Direction.West)
+                        return true;
+                    break;
+
+                case Direction.West:
+                    if (entityDirection == Direction.East)
+                        return true;
+                    break;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -319,6 +381,7 @@ namespace NetGore.World
             var size = r.ReadVector2(_sizeValueKey);
             IsPlatform = r.ReadBool(_isPlatformValueKey);
             BoundGrhIndex = r.ReadGrhIndex(_boundGrhIndexValueKey);
+            DirectionalBlock = r.ReadEnum<Direction>(_directionBlockValueKey);
 
             SetPositionRaw(position);
             SetSizeRaw(size);
@@ -330,6 +393,7 @@ namespace NetGore.World
             w.Write(_sizeValueKey, Size);
             w.Write(_isPlatformValueKey, IsPlatform);
             w.Write(_boundGrhIndexValueKey, BoundGrhIndex);
+            w.WriteEnum(_directionBlockValueKey, DirectionalBlock);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace NetGore
     /// </summary>
     public enum Direction : byte
     {
+        None,
         North,
         NorthEast,
         East,
