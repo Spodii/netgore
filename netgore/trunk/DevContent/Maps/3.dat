@@ -16,90 +16,105 @@
       <Size>32,576</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item0>
     <Item1>
       <Position>0,576</Position>
       <Size>424,64</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item1>
     <Item2>
       <Position>0,622</Position>
       <Size>960,128</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item2>
     <Item3>
       <Position>32,0</Position>
       <Size>832,105</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item3>
     <Item4>
       <Position>32,96</Position>
       <Size>480,96</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item4>
     <Item5>
       <Position>64,96</Position>
       <Size>35,34</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item5>
     <Item6>
       <Position>64,331</Position>
       <Size>103,110</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item6>
     <Item7>
       <Position>448,96</Position>
       <Size>32,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>82</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item7>
     <Item8>
       <Position>480,576</Position>
       <Size>480,64</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item8>
     <Item9>
       <Position>513,2</Position>
       <Size>24,262</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item9>
     <Item10>
       <Position>539,96</Position>
       <Size>78,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item10>
     <Item11>
       <Position>544,96</Position>
       <Size>32,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>83</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item11>
     <Item12>
       <Position>595,174</Position>
       <Size>209,50</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item12>
     <Item13>
       <Position>832,96</Position>
       <Size>32,32</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>83</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item13>
     <Item14>
       <Position>864,0</Position>
       <Size>96,576</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
+      <DirectionalBlock>None</DirectionalBlock>
     </Item14>
   </Walls>
   <DynamicEntities>
