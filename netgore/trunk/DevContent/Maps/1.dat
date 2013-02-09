@@ -4742,9 +4742,9 @@
       <Weight>0</Weight>
       <Destination>450,500</Destination>
       <DestinationMap>3</DestinationMap>
-	  <DestinationMapInstance>0</DestinationMapInstance>
+      <DestinationMapInstance>0</DestinationMapInstance>
       <Position>256,416</Position>
-	  <TeleportGroupMembers>False</TeleportGroupMembers>
+      <TeleportGroupMembers>False</TeleportGroupMembers>
       <Velocity>0,0</Velocity>
     </Item0>
     <Item1>
@@ -4753,9 +4753,9 @@
       <Weight>0</Weight>
       <Destination>458,625</Destination>
       <DestinationMap>2</DestinationMap>
-	  <DestinationMapInstance>0</DestinationMapInstance>
+      <DestinationMapInstance>0</DestinationMapInstance>
       <Position>928,0</Position>
-	  <TeleportGroupMembers>False</TeleportGroupMembers>
+      <TeleportGroupMembers>False</TeleportGroupMembers>
       <Velocity>0,0</Velocity>
     </Item1>
   </DynamicEntities>

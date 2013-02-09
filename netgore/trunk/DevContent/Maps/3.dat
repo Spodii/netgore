@@ -24,7 +24,7 @@
       <BoundGrhindex>0</BoundGrhindex>
     </Item1>
     <Item2>
-      <Position>0,640</Position>
+      <Position>0,622</Position>
       <Size>960,128</Size>
       <IsPlatform>False</IsPlatform>
       <BoundGrhindex>0</BoundGrhindex>
@@ -110,9 +110,9 @@
       <Weight>0</Weight>
       <Destination>285,480</Destination>
       <DestinationMap>1</DestinationMap>
-	  <DestinationMapInstance>0</DestinationMapInstance>
+      <DestinationMapInstance>0</DestinationMapInstance>
       <Position>424,573</Position>
-	  <TeleportGroupMembers>False</TeleportGroupMembers>
+      <TeleportGroupMembers>False</TeleportGroupMembers>
       <Velocity>0,0</Velocity>
     </Item0>
   </DynamicEntities>

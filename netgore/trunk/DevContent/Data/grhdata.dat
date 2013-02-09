@@ -2960,7 +2960,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/MiniMap/1</Name>
-        <Source>0,0,250,250</Source>
+        <Source>0,0,200,200</Source>
       </Texture>
     </Item328>
     <Item329>
@@ -2969,7 +2969,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/MiniMap/2</Name>
-        <Source>0,0,250,250</Source>
+        <Source>0,0,204,192</Source>
       </Texture>
     </Item329>
     <Item330>
@@ -2978,7 +2978,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/MiniMap/3</Name>
-        <Source>0,0,250,250</Source>
+        <Source>0,0,192,150</Source>
       </Texture>
     </Item330>
     <Item331>

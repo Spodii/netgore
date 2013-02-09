@@ -13,6 +13,7 @@ namespace NetGore
     {
         static EngineSettings _instance;
         const string _dataFileSuffix = ".dat";
+        const string _imageFileSuffix = ".png";
 
 #if !TOPDOWN
         readonly Vector2 _gravity;
@@ -87,6 +88,15 @@ namespace NetGore
         public static string DataFileSuffix
         {
             get { return _dataFileSuffix; }
+        }
+
+        /// <summary>
+        /// Gets the suffix given to png image files. Includes the prefixed period, if one is used. Can be empty, but cannot
+        /// be null.
+        /// </summary>
+        public static string ImageFileSuffix
+        {
+            get { return _imageFileSuffix; }
         }
 
         /// <summary>
