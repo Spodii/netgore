@@ -18,6 +18,7 @@ using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.World;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -679,7 +680,10 @@ namespace DemoGame.Client
 
         void _cScreen_Clicked(Control sender, SFML.Window.MouseButtonEventArgs e)
         {
-            if (ClickWarpMode)
+
+            var keyComboPressed = Keyboard.IsKeyPressed(ClientSettings.Default.Keys_ClickWarp) &&
+                                  Keyboard.IsKeyPressed(ClientSettings.Default.Keys_ClickWarp2);
+            if (ClickWarpMode || keyComboPressed)
             {
                 Vector2 worldPos = Map.Camera.ToWorld(new Vector2(e.X, e.Y));
                 using (var pw = ClientPacket.ClickWarp(worldPos))

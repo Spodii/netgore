@@ -143,5 +143,11 @@
     <Setting Name="UseProfanityFilter" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="Keys_ClickWarp" Type="SFML.Window.Keyboard.Key" Scope="User">
+      <Value Profile="(Default)">LShift</Value>
+    </Setting>
+    <Setting Name="Keys_ClickWarp2" Type="SFML.Window.Keyboard.Key" Scope="User">
+      <Value Profile="(Default)">LControl</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
