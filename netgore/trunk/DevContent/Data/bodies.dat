@@ -10,7 +10,7 @@
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>44,25</Size>
+      <Size>64,52</Size>
       <Paperdoll>True</Paperdoll>
     </Item0>
     <Item1>
@@ -65,8 +65,8 @@
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
-      <Size>64,64</Size>
-      <Paperdoll>True</Paperdoll>
+      <Size>64,52</Size>
+      <Paperdoll>False</Paperdoll>
     </Item5>
   </Body>
 </Bodies>
