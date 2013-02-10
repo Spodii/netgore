@@ -85,7 +85,8 @@ namespace NetGore.Graphics
                     return "Left";
             }
 
-            throw new ArgumentOutOfRangeException("direction");
+            return "";
+           // throw new ArgumentOutOfRangeException("direction");
         }
 
         /// <summary>
