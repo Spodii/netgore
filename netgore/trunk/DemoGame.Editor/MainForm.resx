@@ -121,6 +121,43 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="msMenu.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="msMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>687, 24</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="msMenu.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="msMenu.Text" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;msMenu.Name" xml:space="preserve">
+    <value>msMenu</value>
+  </data>
+  <data name="&gt;&gt;msMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;msMenu.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;msMenu.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 20</value>
+  </data>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="mapToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 22</value>
+  </data>
+  <data name="mapToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Map</value>
+  </data>
   <data name="loadMapToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
   </data>
@@ -133,11 +170,11 @@
   <data name="newMapToolStripMenuItem.Text" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="mapToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="particleEffectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>146, 22</value>
   </data>
-  <data name="mapToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Map</value>
+  <data name="particleEffectToolStripMenuItem.Text" xml:space="preserve">
+    <value>Particle Effect</value>
   </data>
   <data name="loadPEToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
@@ -151,23 +188,17 @@
   <data name="newPEToolStripMenuItem.Text" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="particleEffectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 22</value>
-  </data>
-  <data name="particleEffectToolStripMenuItem.Text" xml:space="preserve">
-    <value>Particle Effect</value>
-  </data>
   <data name="closeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>146, 22</value>
   </data>
   <data name="closeToolStripMenuItem.Text" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 20</value>
+  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 20</value>
   </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>File</value>
+  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
+    <value>Screens</value>
   </data>
   <data name="selectedMapObjectsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 22</value>
@@ -217,17 +248,11 @@
   <data name="bodyEditorToolStripMenuItem.Text" xml:space="preserve">
     <value>Body Editor</value>
   </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 20</value>
+  <data name="toolsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 20</value>
   </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>Screens</value>
-  </data>
-  <data name="shiftContentsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 22</value>
-  </data>
-  <data name="shiftContentsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Shift Contents</value>
+  <data name="toolsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Tools</value>
   </data>
   <data name="mapToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 22</value>
@@ -235,40 +260,36 @@
   <data name="mapToolStripMenuItem.Text" xml:space="preserve">
     <value>Map</value>
   </data>
-  <data name="toolsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
+  <data name="shiftContentsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 22</value>
   </data>
-  <data name="toolsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Tools</value>
-  </data>
-  <data name="msMenu.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="msMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>687, 24</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="msMenu.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="msMenu.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;msMenu.Name" xml:space="preserve">
-    <value>msMenu</value>
-  </data>
-  <data name="&gt;&gt;msMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;msMenu.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;msMenu.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="shiftContentsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Shift Contents</value>
   </data>
   <metadata name="ssStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>206, 17</value>
   </metadata>
+  <data name="ssStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 411</value>
+  </data>
+  <data name="ssStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>687, 22</value>
+  </data>
+  <data name="ssStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;ssStatus.Name" xml:space="preserve">
+    <value>ssStatus</value>
+  </data>
+  <data name="&gt;&gt;ssStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ssStatus.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ssStatus.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="tssInfo.Size" type="System.Drawing.Size, System.Drawing">
     <value>549, 17</value>
   </data>
@@ -295,27 +316,6 @@
   </data>
   <data name="tssScreenPos.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
-  </data>
-  <data name="ssStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 411</value>
-  </data>
-  <data name="ssStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>687, 22</value>
-  </data>
-  <data name="ssStatus.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;ssStatus.Name" xml:space="preserve">
-    <value>ssStatus</value>
-  </data>
-  <data name="&gt;&gt;ssStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ssStatus.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ssStatus.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="dockPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -403,7 +403,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblDepth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>331, 3</value>
+    <value>444, 6</value>
   </data>
   <data name="lblDepth.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 0</value>
@@ -535,7 +535,7 @@
     <value>221, 3</value>
   </data>
   <data name="trackBarDepth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 21</value>
+    <value>217, 21</value>
   </data>
   <data name="trackBarDepth.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
