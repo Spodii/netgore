@@ -120,6 +120,7 @@ For more information on the DbClassCreator, please see:
                 generator.AddCustomType(typeof(CharacterID), "character", "id");
                 generator.AddCustomType(typeof(CharacterTemplateID), "character", "template_id");
 
+
                 generator.AddCustomType(typeof(EquipmentSlot), "character_equipped", "slot");
 
                 generator.AddCustomType(typeof(InventorySlot), "character_inventory", "slot");
@@ -144,6 +145,7 @@ For more information on the DbClassCreator, please see:
                 generator.AddCustomType(typeof(MapID), "map", "id");
 
                 generator.AddCustomType(typeof(MapSpawnValuesID), "map_spawn", "id");
+                generator.AddCustomType(typeof(Direction), "map_spawn", "direction_id");
 
                 // Mass-added custom types
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");

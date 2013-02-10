@@ -48,6 +48,13 @@ DemoGame.CharacterTemplateID CharacterTemplateID
 get;
 }
 /// <summary>
+/// Gets the value of the database column `direction_id`.
+/// </summary>
+NetGore.Direction DirectionId
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `height`.
 /// </summary>
 System.Nullable<System.UInt16> Height

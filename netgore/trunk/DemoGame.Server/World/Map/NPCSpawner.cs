@@ -22,6 +22,7 @@ namespace DemoGame.Server
 
         readonly byte _amount;
         readonly Rectangle _area;
+        private readonly Direction _spawnDirection;
         readonly CharacterTemplate _characterTemplate;
         readonly Map _map;
         readonly BodyInfo _characterTemplateBody;
@@ -53,6 +54,7 @@ namespace DemoGame.Server
             _characterTemplateBody = BodyInfoManager.Instance.GetBody(_characterTemplate.TemplateTable.BodyID);
             _amount = mapSpawnValues.Amount;
             _area = new MapSpawnRect(mapSpawnValues).ToRectangle(map);
+            _spawnDirection = mapSpawnValues.DirectionId;
 
             if (_characterTemplate == null)
             {
@@ -170,10 +172,19 @@ namespace DemoGame.Server
 
             for (var i = 0; i < Amount; i++)
             {
-                Vector2? pos = RandomSpawnPosition(_characterTemplateBody);
+                Vector2? pos = RandomSpawnPosition(_characterTemplateBody);                                
                 if (pos.HasValue)
-                {
-                    NPCSpawnerNPC npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos.Value);
+                {   
+
+                    Array values = Enum.GetValues(typeof(Direction));
+
+                    // Get the direction
+                    var dir = _spawnDirection;
+
+                    if (dir == Direction.None)
+                        dir = (Direction) values.GetValue(RandomHelper.NextInt(values.Length));
+
+                    NPCSpawnerNPC npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos.Value, dir);
                     _npcs[i] = npc;
                 }
             }
@@ -212,12 +223,16 @@ namespace DemoGame.Server
             /// <param name="template">NPCTemplate used to create the NPC.</param>
             /// <param name="map">The map.</param>
             /// <param name="position">The position.</param>
+            /// <param name="spawnDirection">The direction to spawn in</param>
             /// <exception cref="ArgumentNullException"><paramref name="spawner" /> is <c>null</c>.</exception>
-            public NPCSpawnerNPC(NPCSpawner spawner, World parent, CharacterTemplate template, Map map, Vector2 position)
+            public NPCSpawnerNPC(NPCSpawner spawner, World parent, CharacterTemplate template, Map map, Vector2 position, Direction spawnDirection)
                 : base(parent, template, map, position)
             {
                 if (spawner == null)
                     throw new ArgumentNullException("spawner");
+
+                // Set the heading for this NPC
+                Heading = spawnDirection;
 
                 _spawner = spawner;
             }

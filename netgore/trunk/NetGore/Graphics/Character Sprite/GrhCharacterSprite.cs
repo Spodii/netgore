@@ -134,6 +134,11 @@ namespace NetGore.Graphics
             get { return _character; }
         }
 
+        public Vector2 SpriteSize
+        {
+            get { return _bodyGrh.Size; }
+        }
+
         /// <summary>
         /// Adds a sprite body modifier that alters some, but not all, of the body. <see cref="ICharacterSprite"/>s
         /// that do not support dynamic sprites treat this the same as <see cref="ICharacterSprite.SetBody"/>.

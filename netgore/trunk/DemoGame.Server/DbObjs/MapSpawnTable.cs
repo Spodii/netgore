@@ -33,7 +33,7 @@ public class MapSpawnTable : IMapSpawnTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"amount", "character_template_id", "height", "id", "map_id", "width", "x", "y" };
+ static  readonly System.String[] _dbColumns = new string[] {"amount", "character_template_id", "direction_id", "height", "id", "map_id", "width", "x", "y" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -61,7 +61,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"amount", "character_template_id", "height", "map_id", "width", "x", "y" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"amount", "character_template_id", "direction_id", "height", "map_id", "width", "x", "y" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -79,7 +79,7 @@ public const System.String TableName = "map_spawn";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 8;
+public const System.Int32 ColumnCount = 9;
 /// <summary>
 /// The field that maps onto the database column `amount`.
 /// </summary>
@@ -88,6 +88,10 @@ System.Byte _amount;
 /// The field that maps onto the database column `character_template_id`.
 /// </summary>
 System.UInt16 _characterTemplateID;
+/// <summary>
+/// The field that maps onto the database column `direction_id`.
+/// </summary>
+System.Int16 _directionId;
 /// <summary>
 /// The field that maps onto the database column `height`.
 /// </summary>
@@ -146,6 +150,24 @@ return (DemoGame.CharacterTemplateID)_characterTemplateID;
 set
 {
 this._characterTemplateID = (System.UInt16)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `direction_id`.
+/// The underlying database type is `smallint(5)` with the default value of `0`.The database column contains the comment: 
+/// "The direction of this spawn; None if randonm".
+/// </summary>
+[System.ComponentModel.Description("The direction of this spawn; None if randonm")]
+[NetGore.SyncValueAttribute()]
+public NetGore.Direction DirectionId
+{
+get
+{
+return (NetGore.Direction)_directionId;
+}
+set
+{
+this._directionId = (System.Int16)value;
 }
 }
 /// <summary>
@@ -279,16 +301,18 @@ public MapSpawnTable()
 /// </summary>
 /// <param name="amount">The initial value for the corresponding property.</param>
 /// <param name="characterTemplateID">The initial value for the corresponding property.</param>
+/// <param name="directionId">The initial value for the corresponding property.</param>
 /// <param name="height">The initial value for the corresponding property.</param>
 /// <param name="iD">The initial value for the corresponding property.</param>
 /// <param name="mapID">The initial value for the corresponding property.</param>
 /// <param name="width">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public MapSpawnTable(System.Byte @amount, DemoGame.CharacterTemplateID @characterTemplateID, System.Nullable<System.UInt16> @height, DemoGame.MapSpawnValuesID @iD, NetGore.World.MapID @mapID, System.Nullable<System.UInt16> @width, System.Nullable<System.UInt16> @x, System.Nullable<System.UInt16> @y)
+public MapSpawnTable(System.Byte @amount, DemoGame.CharacterTemplateID @characterTemplateID, NetGore.Direction @directionId, System.Nullable<System.UInt16> @height, DemoGame.MapSpawnValuesID @iD, NetGore.World.MapID @mapID, System.Nullable<System.UInt16> @width, System.Nullable<System.UInt16> @x, System.Nullable<System.UInt16> @y)
 {
 this.Amount = (System.Byte)@amount;
 this.CharacterTemplateID = (DemoGame.CharacterTemplateID)@characterTemplateID;
+this.DirectionId = (NetGore.Direction)@directionId;
 this.Height = (System.Nullable<System.UInt16>)@height;
 this.ID = (DemoGame.MapSpawnValuesID)@iD;
 this.MapID = (NetGore.World.MapID)@mapID;
@@ -325,6 +349,7 @@ public static void CopyValues(IMapSpawnTable source, System.Collections.Generic.
 {
 dic["amount"] = (System.Byte)source.Amount;
 dic["character_template_id"] = (DemoGame.CharacterTemplateID)source.CharacterTemplateID;
+dic["direction_id"] = (NetGore.Direction)source.DirectionId;
 dic["height"] = (System.Nullable<System.UInt16>)source.Height;
 dic["id"] = (DemoGame.MapSpawnValuesID)source.ID;
 dic["map_id"] = (NetGore.World.MapID)source.MapID;
@@ -341,6 +366,7 @@ public void CopyValuesFrom(IMapSpawnTable source)
 {
 this.Amount = (System.Byte)source.Amount;
 this.CharacterTemplateID = (DemoGame.CharacterTemplateID)source.CharacterTemplateID;
+this.DirectionId = (NetGore.Direction)source.DirectionId;
 this.Height = (System.Nullable<System.UInt16>)source.Height;
 this.ID = (DemoGame.MapSpawnValuesID)source.ID;
 this.MapID = (NetGore.World.MapID)source.MapID;
@@ -365,6 +391,9 @@ return Amount;
 
 case "character_template_id":
 return CharacterTemplateID;
+
+case "direction_id":
+return DirectionId;
 
 case "height":
 return Height;
@@ -404,6 +433,10 @@ break;
 
 case "character_template_id":
 this.CharacterTemplateID = (DemoGame.CharacterTemplateID)value;
+break;
+
+case "direction_id":
+this.DirectionId = (NetGore.Direction)value;
 break;
 
 case "height":
@@ -451,6 +484,9 @@ return new ColumnMetadata("amount", "The total number of NPCs this spawner will 
 
 case "character_template_id":
 return new ColumnMetadata("character_template_id", "The character template used to instantiate the spawned NPCs.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+
+case "direction_id":
+return new ColumnMetadata("direction_id", "The direction of this spawn; None if randonm", "smallint(5)", "0", typeof(System.Int16), false, false, false);
 
 case "height":
 return new ColumnMetadata("height", "The height of the spawner (NULL indicates the bottom- side of the map).", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, false);
