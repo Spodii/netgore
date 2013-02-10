@@ -50,13 +50,13 @@ namespace NetGore.Features.Quests
                     // Set the initial values
                     foreach (var killCount in quest.Value)
                     {
-                        if (counter.SetCount(killCount.Key, killCount.Value))
+                        if (!counter.SetCount(killCount.Key, killCount.Value))
                         {
                             const string errmsg =
                                 "Failed to set initial kill count for `{0}` to `{1}` on quest `{2}` for quest performer `{3}`." +
                                 " This likely means that the kill requirements for the quest have changed, in which case this isn't a problem.";
                             if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, killCount.Key, killCount.Value, quest.Key, owner);
+                                log.ErrorFormat(errmsg, killCount.Key, killCount.Value, quest.Key.QuestID, owner);
                         }
                     }
                 }
