@@ -21,6 +21,11 @@ namespace NetGore.Graphics
         Entity Character { get; }
 
         /// <summary>
+        /// Returns the size of the sprite in total
+        /// </summary>
+        Vector2 SpriteSize { get;  }
+
+        /// <summary>
         /// Adds a sprite body modifier that alters some, but not all, of the body. <see cref="ICharacterSprite"/>s
         /// that do not support dynamic sprites treat this the same as <see cref="ICharacterSprite.SetBody"/>.
         /// </summary>

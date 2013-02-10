@@ -47,8 +47,10 @@ namespace DemoGame.Client
         /// </summary>
         void HandleFrame()
         {
-            try
-            {
+
+            //TODO: find out why exception swalloer causes issues
+           // try
+           // {
                 // If the game has not been created yet, just don't do anything
                 if (_game == null)
                     return;
@@ -58,13 +60,13 @@ namespace DemoGame.Client
                     _game.HandleFrame();
                 else
                     Close();
-            }
-            catch (Exception ex)
-            {
-                ExceptionSwallower.Instance.Swallow(ex);
-                if (ExceptionSwallower.Instance.Rethrow)
-                    throw;
-            }
+           // }
+           // catch (Exception ex)
+            //{
+             //   ExceptionSwallower.Instance.Swallow(ex);
+              //  if (ExceptionSwallower.Instance.Rethrow)
+               //     throw;
+           // }
         }
 
         /// <summary>

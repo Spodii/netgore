@@ -42,6 +42,7 @@ public static void CopyValues(this IMapSpawnTable source, NetGore.Db.DbParameter
 {
 paramValues["amount"] = (System.Byte)source.Amount;
 paramValues["character_template_id"] = (System.UInt16)source.CharacterTemplateID;
+paramValues["direction_id"] = (System.Int16)source.DirectionId;
 paramValues["height"] = (System.Nullable<System.UInt16>)source.Height;
 paramValues["id"] = (System.Int32)source.ID;
 paramValues["map_id"] = (System.UInt16)source.MapID;
@@ -68,6 +69,10 @@ source.Amount = (System.Byte)(System.Byte)dataRecord.GetByte(i);
 i = dataRecord.GetOrdinal("character_template_id");
 
 source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataRecord.GetUInt16(i);
+
+i = dataRecord.GetOrdinal("direction_id");
+
+source.DirectionId = (NetGore.Direction)(NetGore.Direction)dataRecord.GetInt16(i);
 
 i = dataRecord.GetOrdinal("height");
 
@@ -117,6 +122,11 @@ break;
 
 case "character_template_id":
 source.CharacterTemplateID = (DemoGame.CharacterTemplateID)(DemoGame.CharacterTemplateID)dataRecord.GetUInt16(i);
+break;
+
+
+case "direction_id":
+source.DirectionId = (NetGore.Direction)(NetGore.Direction)dataRecord.GetInt16(i);
 break;
 
 
@@ -181,6 +191,11 @@ paramValues[i] = (System.UInt16)source.CharacterTemplateID;
 break;
 
 
+case "direction_id":
+paramValues[i] = (System.Int16)source.DirectionId;
+break;
+
+
 case "height":
 paramValues[i] = (System.Nullable<System.UInt16>)source.Height;
 break;
@@ -228,6 +243,7 @@ public static System.Boolean HasSameValues(this IMapSpawnTable source, IMapSpawn
 {
 return Equals(source.Amount, otherItem.Amount) && 
 Equals(source.CharacterTemplateID, otherItem.CharacterTemplateID) && 
+Equals(source.DirectionId, otherItem.DirectionId) && 
 Equals(source.Height, otherItem.Height) && 
 Equals(source.ID, otherItem.ID) && 
 Equals(source.MapID, otherItem.MapID) && 

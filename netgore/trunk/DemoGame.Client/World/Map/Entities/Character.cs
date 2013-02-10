@@ -14,7 +14,7 @@ namespace DemoGame.Client
     /// Represents a single Character on the Client.
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawableTarget
-    {       
+    {
         static readonly IEnumerable<QuestID> _emptyQuestIDs = new QuestID[0];
 
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
@@ -58,7 +58,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
         /// </summary>
-        public Character() : base(Vector2.Zero, Vector2.One)
+        public Character()
+            : base(Vector2.Zero, Vector2.One)
         {
         }
 
@@ -150,7 +151,7 @@ namespace DemoGame.Client
             namePos.X -= (float)Math.Round(nameSize.X / 2f); // Move the center to the center of the character
 
             // Move below the character
-            namePos.Y -= 15;
+            namePos.Y -= 10 + (CharacterSprite.SpriteSize.Y - Size.Y);
 
             // Draw
             sb.DrawStringShaded(font, Name, namePos, Color.White, Color.Black);
@@ -426,8 +427,9 @@ namespace DemoGame.Client
 
             if (IsVisible)
             {
-                // Draw the character body
-                _characterSprite.Draw(sb, drawPos, Heading, Color);
+                // Draw the character body as long as the heading is not None
+                if (Heading != Direction.None)
+                    _characterSprite.Draw(sb, drawPos, Heading, Color);
 
                 // Draw the HP/MP
                 DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));
