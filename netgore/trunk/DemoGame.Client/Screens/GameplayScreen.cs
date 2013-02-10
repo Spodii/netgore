@@ -856,6 +856,18 @@ namespace DemoGame.Client
             if (shopInfo != null && shopInfo.ShopOwner != null && !GameData.IsValidDistanceToShop(UserChar, shopInfo.ShopOwner))
                 ShopForm.HideShop();
 
+            // If the window is shown
+            if (AvailableQuestsForm.IsVisible)
+            {
+                // Get the quest provider
+                var owner = World.Map.GetDynamicEntity(AvailableQuestsForm.QuestProviderIndex);
+                
+                // Shopping distance is equal to quest turn in distance
+                if (owner != null && !GameData.IsValidDistanceToShop(UserChar, owner))
+                    AvailableQuestsForm.IsVisible = false;
+
+            }
+
             // Update some other goodies
             World.Update();
             _damageTextPool.Update(_currentTime);
