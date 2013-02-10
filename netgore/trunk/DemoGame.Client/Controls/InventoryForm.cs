@@ -6,6 +6,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 using SFML.Window;
+using Sprite = NetGore.Graphics.Sprite;
 
 namespace DemoGame.Client
 {
@@ -307,6 +308,9 @@ namespace DemoGame.Client
                         ItemAmountBackColor);
             }
 
+
+            public ISprite SpriteOccupied { get; set; }
+
             /// <summary>
             /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
             /// from the given <paramref name="skinManager"/>.
@@ -317,6 +321,7 @@ namespace DemoGame.Client
                 base.LoadSkin(skinManager);
 
                 Sprite = GUIManager.SkinManager.GetSprite("item_slot");
+               // SpriteOccupied = 
             }
 
             /// <summary>

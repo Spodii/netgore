@@ -8,6 +8,8 @@ namespace DemoGame
     /// </summary>
     public enum GameMessage : ushort
     {
+        GameTitle,
+
         #region Core: Combat messages
 
         /// <summary>

@@ -27,6 +27,7 @@ namespace DemoGame.Client
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         public CreateCharacterScreen(IScreenManager screenManager) : base(screenManager, ScreenName, _title)
         {
+            PlayMusic = true;
         }
 
         /// <summary>

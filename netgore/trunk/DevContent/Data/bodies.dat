@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Bodies>
   <Body>
-    <Count>5</Count>
+    <Count>6</Count>
     <Item0>
       <ID>1</ID>
       <Body>body.naked</Body>
@@ -57,5 +57,16 @@
       <Size>32,40</Size>
       <Paperdoll>False</Paperdoll>
     </Item4>
+    <Item5>
+      <ID>6</ID>
+      <Body>sprites.soldier</Body>
+      <Fall />
+      <Jump />
+      <Attack>walk</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>64,64</Size>
+      <Paperdoll>True</Paperdoll>
+    </Item5>
   </Body>
 </Bodies>
