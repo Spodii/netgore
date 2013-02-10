@@ -150,10 +150,10 @@ namespace DemoGame.Client
             namePos.X -= (float)Math.Round(nameSize.X / 2f); // Move the center to the center of the character
 
             // Move below the character
-            namePos.Y += Size.Y + 10f;
+            namePos.Y -= Size.Y + 20;
 
             // Draw
-            sb.DrawStringShaded(font, Name, namePos, Color.Yellow, Color.Black);
+            sb.DrawStringShaded(font, Name, namePos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -165,10 +165,11 @@ namespace DemoGame.Client
         /// <param name="color">The color to draw the bar.</param>
         protected virtual void DrawSPBar(ISpriteBatch sb, byte percent, byte index, Color color)
         {
-            const float spBarWidth = 55;
-            const float spBarHeight = 6;
+            const float spBarWidth = 40;
+            const float spBarHeight = 4;
+            const int padding = 5;
 
-            var pos = DrawPosition + new Vector2((Size.X / 2f) - (spBarWidth / 2f), Size.Y + (spBarHeight * index)).Round();
+            var pos = DrawPosition + new Vector2((Size.X / 2f) - (spBarWidth / 2f), Size.Y + (spBarHeight * index) + padding).Round();
 
             var border = new Rectangle(pos.X, pos.Y, spBarWidth, spBarHeight);
             var bar = border;

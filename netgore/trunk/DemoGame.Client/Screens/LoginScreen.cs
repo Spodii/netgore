@@ -4,6 +4,7 @@ using System.Linq;
 using DemoGame.Client.Properties;
 using Lidgren.Network;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Cryptography;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
@@ -132,6 +133,8 @@ namespace DemoGame.Client
 
             _sockets.PacketHandler.ReceivedLoginUnsuccessful -= PacketHandler_ReceivedLoginUnsuccessful;
             _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
+
+
         }
 
         /// <summary>

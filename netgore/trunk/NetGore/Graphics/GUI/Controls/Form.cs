@@ -86,7 +86,7 @@ namespace NetGore.Graphics.GUI
         /// <returns>The <see cref="Control"/> for the close button.</returns>
         protected virtual Control CreateCloseButton(string spriteName)
         {
-            return new FormButton(this, spriteName);
+            return new FormButton(this, spriteName);         
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace NetGore.Graphics.GUI
         {
             base.DrawControl(spriteBatch);
 
-            DrawText(spriteBatch, new Vector2(3, 3));
+            DrawText(spriteBatch, new Vector2(5, 3));
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace NetGore.Graphics.GUI
 
             CanDrag = true;
             CanFocus = true;
-            ForeColor = Color.White;
+            ForeColor = Color.Yellow;
             IsCloseButtonVisible = true;
         }
 

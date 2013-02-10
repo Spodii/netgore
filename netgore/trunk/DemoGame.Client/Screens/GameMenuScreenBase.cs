@@ -43,6 +43,7 @@ namespace DemoGame.Client
         public GameMenuScreenBase(IScreenManager screenManager, string name, string title) : base(screenManager, name)
         {
             Title = title;
+            PlayMusic = true;
         }
 
         /// <summary>

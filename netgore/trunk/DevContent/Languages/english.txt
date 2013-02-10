@@ -5,6 +5,9 @@
 # and so it doesn't have to be copied to each language file. But do add comments into here if it
 # is related to the language specifically.
 
+# Game name
+GameTitle:Skies of Zomok
+
 ########### Core: Combat messages ###########
 CannotAttackWithWeapon: You cannot attack with a {0}.
 CannotAttackTooFarAway: The target is too far away to attack.

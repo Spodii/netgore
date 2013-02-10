@@ -15,7 +15,8 @@ namespace NetGore.Graphics
         {
             HighlightInnerColor = new Color(0, 0, 0, 0);
             HighlightOuterColor = new Color(0, 255, 0, 150);
-            HighlightBorderThickness = 4;
+            HighlightOuterColor = Color.White;
+            HighlightBorderThickness = 2;
         }
 
         /// <summary>

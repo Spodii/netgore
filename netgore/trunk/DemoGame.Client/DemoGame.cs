@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using DemoGame.Client.Properties;
 using log4net;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -37,9 +38,12 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="DemoGame"/> class.
         /// </summary>
         public DemoGame() : base(
-            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), 
-            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), "NetGore")
+            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y),
+            new Point((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y), GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.GameTitle))
         {
+
+
+
             ThreadAsserts.IsMainThread();
 
             EngineSettingsInitializer.Initialize();
@@ -61,14 +65,19 @@ namespace DemoGame.Client
             // Set up our custom chat bubbles
             ChatBubble.CreateChatBubbleInstance = CreateChatBubbleInstanceHandler;
 
+            // Get our title song
+            var titleSong = ScreenManager.AudioManager.MusicManager.MusicInfos.ElementAt(0);
+
             // Create the screens
-            new OptionsScreen(ScreenManager);
+            new OptionsScreen(ScreenManager) { ScreenMusic = titleSong }; ;
             new GameplayScreen(ScreenManager);
-            new MainMenuScreen(ScreenManager);
-            new LoginScreen(ScreenManager);
-            new CharacterSelectionScreen(ScreenManager);
-            new CreateCharacterScreen(ScreenManager);
-            new NewAccountScreen(ScreenManager);
+            new MainMenuScreen(ScreenManager) { ScreenMusic = titleSong };
+            new LoginScreen(ScreenManager) { ScreenMusic = titleSong }; ;
+            new CharacterSelectionScreen(ScreenManager) { ScreenMusic = titleSong }; ;
+            new CreateCharacterScreen(ScreenManager) { ScreenMusic = titleSong }; ;
+            new NewAccountScreen(ScreenManager) { ScreenMusic = titleSong }; ;
+
+
 
             ScreenManager.ConsoleScreen = new ConsoleScreen(ScreenManager);
             ScreenManager.SetScreen<MainMenuScreen>();
@@ -157,6 +166,10 @@ namespace DemoGame.Client
         protected override IntPtr CreateWindowedDisplayHandle(out object displayContainer)
         {
             var frm = new GameForm(this);
+            
+            // Set form title while we're at it
+            frm.Text = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.GameTitle);
+
             displayContainer = frm;
             return frm.Handle;
         }

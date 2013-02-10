@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.Audio;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 
@@ -7,7 +8,7 @@ namespace DemoGame.Client
     class MainMenuScreen : GameMenuScreenBase
     {
         public const string ScreenName = "main menu";
-        const string _title = "NetGore";
+        private static string _title = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.GameTitle);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainMenuScreen"/> class.
@@ -15,6 +16,7 @@ namespace DemoGame.Client
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         public MainMenuScreen(IScreenManager screenManager) : base(screenManager, ScreenName, _title)
         {
+            PlayMusic = true;
         }
 
         /// <summary>
@@ -35,6 +37,11 @@ namespace DemoGame.Client
             menuButtons["New Account"].Clicked += delegate { ScreenManager.SetScreen<NewAccountScreen>(); };
             menuButtons["Options"].Clicked += delegate { ScreenManager.SetScreen<OptionsScreen>(); };
             menuButtons["Quit"].Clicked += delegate { ScreenManager.Game.Dispose(); };
+
         }
+
+      
+
+
     }
 }

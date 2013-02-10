@@ -291,13 +291,13 @@ namespace NetGore.Graphics.GUI
                     switch (GetDrawStyle(ControlBorderSpriteType.Background))
                     {
                         case ControlBorderDrawStyle.Stretch:
-                            _bg.Draw(sb, r, color);
+                            _bg.Draw(sb, r, Color.White);
                             break;
 
                         case ControlBorderDrawStyle.Tile:
                             AssertSaneDrawTilingAmount(r.X, r.Right, _bg.Size.X, ControlBorderSpriteType.Background);
                             AssertSaneDrawTilingAmount(r.Y, r.Bottom, _bg.Size.Y, ControlBorderSpriteType.Background);
-                            sb.DrawTiledXY(r.X, r.Right, r.Y, r.Bottom, _bg, color);
+                            sb.DrawTiledXY(r.X, r.Right, r.Y, r.Bottom, _bg, Color.White);
                             break;
                     }
                 }
@@ -307,12 +307,12 @@ namespace NetGore.Graphics.GUI
                 switch (GetDrawStyle(ControlBorderSpriteType.Top))
                 {
                     case ControlBorderDrawStyle.Stretch:
-                        _t.Draw(sb, r, color);
+                        _t.Draw(sb, r, Color.White);
                         break;
 
                     case ControlBorderDrawStyle.Tile:
                         AssertSaneDrawTilingAmount(r.X, r.Right, _t.Size.X, ControlBorderSpriteType.Top);
-                        sb.DrawTiledX(r.X, r.Right, r.Y, _t, color);
+                        sb.DrawTiledX(r.X, r.Right, r.Y, _t, Color.White);
                         break;
                 }
 
@@ -321,12 +321,12 @@ namespace NetGore.Graphics.GUI
                 switch (GetDrawStyle(ControlBorderSpriteType.Left))
                 {
                     case ControlBorderDrawStyle.Stretch:
-                        _l.Draw(sb, r, color);
+                        _l.Draw(sb, r, Color.White);
                         break;
 
                     case ControlBorderDrawStyle.Tile:
                         AssertSaneDrawTilingAmount(r.Y, r.Bottom, _l.Size.Y, ControlBorderSpriteType.Left);
-                        sb.DrawTiledY(r.Y, r.Bottom, r.X, _l, color);
+                        sb.DrawTiledY(r.Y, r.Bottom, r.X, _l, Color.White);
                         break;
                 }
 
@@ -335,12 +335,12 @@ namespace NetGore.Graphics.GUI
                 switch (GetDrawStyle(ControlBorderSpriteType.Right))
                 {
                     case ControlBorderDrawStyle.Stretch:
-                        _r.Draw(sb, r, color);
+                        _r.Draw(sb, r, Color.White);
                         break;
 
                     case ControlBorderDrawStyle.Tile:
                         AssertSaneDrawTilingAmount(r.Y, r.Bottom, _r.Size.Y, ControlBorderSpriteType.Right);
-                        sb.DrawTiledY(r.Y, r.Bottom, r.X, _r, color);
+                        sb.DrawTiledY(r.Y, r.Bottom, r.X, _r, Color.White);
                         break;
                 }
 
@@ -349,30 +349,30 @@ namespace NetGore.Graphics.GUI
                 switch (GetDrawStyle(ControlBorderSpriteType.Bottom))
                 {
                     case ControlBorderDrawStyle.Stretch:
-                        _b.Draw(sb, r, color);
+                        _b.Draw(sb, r, Color.White);
                         break;
 
                     case ControlBorderDrawStyle.Tile:
                         AssertSaneDrawTilingAmount(r.X, r.Right, _b.Size.X, ControlBorderSpriteType.Bottom);
-                        sb.DrawTiledX(r.X, r.Right, r.Y, _b, color);
+                        sb.DrawTiledX(r.X, r.Right, r.Y, _b, Color.White);
                         break;
                 }
 
                 // Top-left corner
                 r = new Rectangle(cX, cY, tlSrc.Width, tlSrc.Height);
-                _tl.Draw(sb, r, color);
+                _tl.Draw(sb, r, Color.White);
 
                 // Top-right corner
                 r = new Rectangle(cX + cW - trSrc.Width, cY, trSrc.Width, trSrc.Height);
-                _tr.Draw(sb, r, color);
+                _tr.Draw(sb, r, Color.White);
 
                 // Bottom-left corner
                 r = new Rectangle(cX, cY + cH - blSrc.Height, blSrc.Width, blSrc.Height);
-                _bl.Draw(sb, r, color);
+                _bl.Draw(sb, r, Color.White);
 
                 // Bottom-right corner
                 r = new Rectangle(cX + cW - brSrc.Width, cY + cH - brSrc.Height, brSrc.Width, brSrc.Height);
-                _br.Draw(sb, r, color);
+                _br.Draw(sb, r, Color.White);
             }
         }
 
