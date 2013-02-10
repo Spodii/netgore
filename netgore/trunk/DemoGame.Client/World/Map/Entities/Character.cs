@@ -150,7 +150,7 @@ namespace DemoGame.Client
             namePos.X -= (float)Math.Round(nameSize.X / 2f); // Move the center to the center of the character
 
             // Move below the character
-            namePos.Y -= Size.Y + 20;
+            namePos.Y -= 15;
 
             // Draw
             sb.DrawStringShaded(font, Name, namePos, Color.White, Color.Black);
