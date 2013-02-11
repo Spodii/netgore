@@ -2,9 +2,9 @@ This folder contains database patches for NetGore. The purpose of these are to m
 
 Simply run Patch.bat and any missing patches will be applied.
 
-You do not need to add your own database patches here. It is recommended you actually don't even touch anything in here.
+You do not need to add your own database patches here. It is recommended you actually don't even touch anything in here if you are not developing for NetGore (in opposed to your own game created with NetGore).
 
-There is no harm in running Patch.bat multiple times as it only applies any patches that have no been applied already.
+There is no harm in running Patch.bat multiple times as it only applies any patches that have not been applied already.
 
 == For Developers ==
 

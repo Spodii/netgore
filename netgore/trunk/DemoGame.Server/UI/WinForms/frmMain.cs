@@ -472,13 +472,43 @@ namespace DemoGame.Server.UI
             // Update the CPU and memory usage values
             if (_interfaceUpdateTicker % 8 == 0)
             {
-                // Try and retrieve bandwidth
-                var totalBytes = _server.ServerSockets.Statistics.ReceivedBytes + _server.ServerSockets.Statistics.SentBytes;
-                var totalMegabytes = totalBytes/1000f/1000f;
+                // Bandwidth
+                if (_server != null && _server.ServerSockets != null)
+                {
+                    try
+                    {
+                        var totalBytes = _server.ServerSockets.Statistics.ReceivedBytes + _server.ServerSockets.Statistics.SentBytes;
+                        var totalMegabytes = totalBytes / 1000f / 1000f;
+                        lblBandwidth.Text = string.Format("{0:0.##} MB", totalMegabytes);
+                    }
+                    catch
+                    {
+                        lblBandwidth.Text = "ERROR";
+                    }
+                }
+                else
+                {
+                    lblBandwidth.Text = "";
+                }
 
-                lblBandwidth.Text = string.Format("{0:0.##} MB", totalMegabytes);
-                lblUserCount.Text = _server.World.GetUsers().Count().ToString();
+                // User count
+                if (_server != null)
+                {
+                    try
+                    {
+                        lblUserCount.Text = _server.World.GetUsers().Count().ToString();
+                    }
+                    catch
+                    {
+                        lblUserCount.Text = "ERROR";
+                    }
+                }
+                else
+                {
+                    lblUserCount.Text = "0";
+                }
 
+                // CPU
                 if (_cpuCounter != null)
                 {
                     try
@@ -495,6 +525,7 @@ namespace DemoGame.Server.UI
                     lblCPU.Text = "?";
                 }
 
+                // Memory used
                 try
                 {
                     lblRAMUsed.Text = SystemPerformance.Memory.ProcessUsageMB + " MB";
@@ -504,6 +535,7 @@ namespace DemoGame.Server.UI
                     lblRAMUsed.Text = "ERROR";
                 }
 
+                // Memory free
                 try
                 {
                     lblRAMFree.Text = SystemPerformance.Memory.AvailableMB + " MB";
