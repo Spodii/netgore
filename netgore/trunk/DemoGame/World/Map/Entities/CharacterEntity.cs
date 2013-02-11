@@ -106,6 +106,18 @@ namespace DemoGame
         [SyncValue]
         public virtual string Name { get; set; }
 
+
+        /// <summary>
+        /// A flag that determines whether or not this <see cref="CharcterEntity"/> is visible to other clients.
+        /// </summary>
+        [SyncValue]
+        public bool Invisible
+        {
+            get;
+            set;
+        }
+
+
         /// <summary>
         /// Handles collision against other entities.
         /// </summary>

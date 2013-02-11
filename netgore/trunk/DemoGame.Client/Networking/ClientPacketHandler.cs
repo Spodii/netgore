@@ -186,7 +186,7 @@ namespace DemoGame.Client
 
         static IEnumerable<StyledText> CreateChatText(string name, string message)
         {
-            var left = new StyledText(name + ": ", Color.Yellow);
+            var left = new StyledText(name + ": ", Color.Red);
             var right = new StyledText(message, Color.Black);
             return new List<StyledText> { left, right };
         }

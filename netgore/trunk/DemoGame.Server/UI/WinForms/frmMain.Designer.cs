@@ -68,9 +68,13 @@
             this.chkWarn = new System.Windows.Forms.CheckBox();
             this.chkInfo = new System.Windows.Forms.CheckBox();
             this.chkDebug = new System.Windows.Forms.CheckBox();
-            this.lstLog = new DemoGame.Server.UI.LogListBox();
             this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            this.label8 = new System.Windows.Forms.Label();
+            this.lblBandwidth = new System.Windows.Forms.Label();
+            this.lstLog = new DemoGame.Server.UI.LogListBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblUserCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -132,7 +136,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Size = new System.Drawing.Size(552, 521);
-            this.splitContainer1.SplitterDistance = 219;
+            this.splitContainer1.SplitterDistance = 176;
             this.splitContainer1.TabIndex = 0;
             // 
             // tabControl1
@@ -144,11 +148,15 @@
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(542, 209);
+            this.tabControl1.Size = new System.Drawing.Size(542, 166);
             this.tabControl1.TabIndex = 1;
             // 
             // tbStatus
             // 
+            this.tbStatus.Controls.Add(this.lblUserCount);
+            this.tbStatus.Controls.Add(this.label9);
+            this.tbStatus.Controls.Add(this.lblBandwidth);
+            this.tbStatus.Controls.Add(this.label8);
             this.tbStatus.Controls.Add(this.lblIP);
             this.tbStatus.Controls.Add(this.label4);
             this.tbStatus.Controls.Add(this.lblRAMFree);
@@ -160,7 +168,7 @@
             this.tbStatus.Location = new System.Drawing.Point(4, 22);
             this.tbStatus.Name = "tbStatus";
             this.tbStatus.Padding = new System.Windows.Forms.Padding(3);
-            this.tbStatus.Size = new System.Drawing.Size(534, 183);
+            this.tbStatus.Size = new System.Drawing.Size(534, 140);
             this.tbStatus.TabIndex = 1;
             this.tbStatus.Text = "Status";
             this.tbStatus.UseVisualStyleBackColor = true;
@@ -243,7 +251,7 @@
             this.tpConsole.Location = new System.Drawing.Point(4, 22);
             this.tpConsole.Name = "tpConsole";
             this.tpConsole.Padding = new System.Windows.Forms.Padding(3);
-            this.tpConsole.Size = new System.Drawing.Size(534, 183);
+            this.tpConsole.Size = new System.Drawing.Size(534, 140);
             this.tpConsole.TabIndex = 0;
             this.tpConsole.Text = "Console";
             this.tpConsole.UseVisualStyleBackColor = true;
@@ -264,8 +272,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.txtConsoleIn);
-            this.splitContainer3.Size = new System.Drawing.Size(528, 177);
-            this.splitContainer3.SplitterDistance = 148;
+            this.splitContainer3.Size = new System.Drawing.Size(528, 134);
+            this.splitContainer3.SplitterDistance = 105;
             this.splitContainer3.TabIndex = 2;
             // 
             // txtConsoleOut
@@ -276,7 +284,7 @@
             this.txtConsoleOut.Location = new System.Drawing.Point(0, 0);
             this.txtConsoleOut.Name = "txtConsoleOut";
             this.txtConsoleOut.ReadOnly = true;
-            this.txtConsoleOut.Size = new System.Drawing.Size(528, 148);
+            this.txtConsoleOut.Size = new System.Drawing.Size(528, 105);
             this.txtConsoleOut.TabIndex = 0;
             this.txtConsoleOut.Text = "";
             // 
@@ -294,7 +302,7 @@
             this.tbLogItem.Controls.Add(this.splitContainer4);
             this.tbLogItem.Location = new System.Drawing.Point(4, 22);
             this.tbLogItem.Name = "tbLogItem";
-            this.tbLogItem.Size = new System.Drawing.Size(534, 183);
+            this.tbLogItem.Size = new System.Drawing.Size(534, 140);
             this.tbLogItem.TabIndex = 2;
             this.tbLogItem.Text = "Log Item";
             this.tbLogItem.UseVisualStyleBackColor = true;
@@ -315,7 +323,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.txtLogMsg);
             this.splitContainer4.Panel2.Controls.Add(this.label7);
-            this.splitContainer4.Size = new System.Drawing.Size(534, 183);
+            this.splitContainer4.Size = new System.Drawing.Size(534, 140);
             this.splitContainer4.SplitterDistance = 25;
             this.splitContainer4.TabIndex = 5;
             // 
@@ -486,7 +494,7 @@
             this.txtLogMsg.Multiline = true;
             this.txtLogMsg.Name = "txtLogMsg";
             this.txtLogMsg.ReadOnly = true;
-            this.txtLogMsg.Size = new System.Drawing.Size(534, 141);
+            this.txtLogMsg.Size = new System.Drawing.Size(534, 98);
             this.txtLogMsg.TabIndex = 14;
             this.tt.SetToolTip(this.txtLogMsg, "The fully parsed log message");
             // 
@@ -506,7 +514,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(542, 288);
+            this.groupBox1.Size = new System.Drawing.Size(542, 331);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logging";
@@ -534,7 +542,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.lstLog);
-            this.splitContainer2.Size = new System.Drawing.Size(536, 269);
+            this.splitContainer2.Size = new System.Drawing.Size(536, 312);
             this.splitContainer2.SplitterDistance = 25;
             this.splitContainer2.TabIndex = 9;
             // 
@@ -557,7 +565,7 @@
             this.txtFilterRegex.Size = new System.Drawing.Size(177, 20);
             this.txtFilterRegex.TabIndex = 15;
             this.tt.SetToolTip(this.txtFilterRegex, "Regex used to filter the log messages. Set to empty to avoid using. List is refre" +
-        "shed when changed to a valid Regex.");
+                    "shed when changed to a valid Regex.");
             this.txtFilterRegex.TextChanged += new System.EventHandler(this.txtFilterRegex_TextChanged);
             // 
             // chkFatal
@@ -633,6 +641,30 @@
             this.chkDebug.UseVisualStyleBackColor = true;
             this.chkDebug.CheckedChanged += new System.EventHandler(this.LogCheckBox_CheckedChanged);
             // 
+            // tmrUpdateDisplay
+            // 
+            this.tmrUpdateDisplay.Enabled = true;
+            this.tmrUpdateDisplay.Interval = 500;
+            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 56);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(60, 13);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Bandwidth:";
+            // 
+            // lblBandwidth
+            // 
+            this.lblBandwidth.AutoSize = true;
+            this.lblBandwidth.Location = new System.Drawing.Point(80, 56);
+            this.lblBandwidth.Name = "lblBandwidth";
+            this.lblBandwidth.Size = new System.Drawing.Size(13, 13);
+            this.lblBandwidth.TabIndex = 9;
+            this.lblBandwidth.Text = "0";
+            // 
             // lstLog
             // 
             this.lstLog.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -640,16 +672,28 @@
             this.lstLog.FormattingEnabled = true;
             this.lstLog.Location = new System.Drawing.Point(0, 0);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(536, 240);
+            this.lstLog.Size = new System.Drawing.Size(536, 283);
             this.lstLog.TabIndex = 0;
             this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lbLog_SelectedIndexChanged);
             this.lstLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);
             // 
-            // tmrUpdateDisplay
+            // label9
             // 
-            this.tmrUpdateDisplay.Enabled = true;
-            this.tmrUpdateDisplay.Interval = 500;
-            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(4, 69);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(70, 13);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Users Online:";
+            // 
+            // lblUserCount
+            // 
+            this.lblUserCount.AutoSize = true;
+            this.lblUserCount.Location = new System.Drawing.Point(80, 69);
+            this.lblUserCount.Name = "lblUserCount";
+            this.lblUserCount.Size = new System.Drawing.Size(13, 13);
+            this.lblUserCount.TabIndex = 11;
+            this.lblUserCount.Text = "0";
             // 
             // frmMain
             // 
@@ -758,5 +802,9 @@
         private System.Windows.Forms.TextBox txtLogTime;
         private System.Windows.Forms.TextBox txtLogClass;
         private System.Windows.Forms.ToolTip tt;
+        private System.Windows.Forms.Label lblBandwidth;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblUserCount;
+        private System.Windows.Forms.Label label9;
     }
 }

@@ -472,6 +472,13 @@ namespace DemoGame.Server.UI
             // Update the CPU and memory usage values
             if (_interfaceUpdateTicker % 8 == 0)
             {
+                // Try and retrieve bandwidth
+                var totalBytes = _server.ServerSockets.Statistics.ReceivedBytes + _server.ServerSockets.Statistics.SentBytes;
+                var totalMegabytes = totalBytes/1000f/1000f;
+
+                lblBandwidth.Text = string.Format("{0:0.##} MB", totalMegabytes);
+                lblUserCount.Text = _server.World.GetUsers().Count().ToString();
+
                 if (_cpuCounter != null)
                 {
                     try

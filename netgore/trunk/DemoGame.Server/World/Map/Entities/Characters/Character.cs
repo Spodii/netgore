@@ -2006,6 +2006,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// A flag that determines whether this character can take damage or not
+        /// </summary>
+        public bool Immortal
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
         /// Makes the Character use a skill.
         /// </summary>
         /// <param name="skillType">The type of skill to use.</param>
@@ -2190,6 +2200,11 @@ namespace DemoGame.Server
             get { return _hp; }
             set
             {
+
+                // Prevent this character from taking any damage if they're immortal
+                if(Immortal)
+                    return;
+                
                 // Get the new value, ensuring it is in a valid range
                 int max = ModStats[StatType.MaxHP];
                 SPValueType newValue;
