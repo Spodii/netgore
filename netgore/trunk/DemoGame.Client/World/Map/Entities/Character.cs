@@ -425,8 +425,11 @@ namespace DemoGame.Client
             var drawPos = DrawPosition;
             _lastScreenPosition = drawPos - Parent.Camera.Min;
 
-            if (IsVisible)
+            if (IsVisible && !Invisible)
             {
+
+             
+
                 // Draw the character body as long as the heading is not None
                 if (Heading != Direction.None)
                     _characterSprite.Draw(sb, drawPos, Heading, Color);

@@ -66,6 +66,12 @@ namespace NetGore.Network
             return null;
         }
 
+       
+        public NetPeerStatistics Statistics
+        {
+            get { return _local.Statistics; }
+        }
+
         /// <summary>
         /// Gets the <see cref="NetServer"/> instance.
         /// Avoid using this object directly when possible.

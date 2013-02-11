@@ -111,6 +111,120 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Teaches the specific user the skill given by the ID
+        /// </summary>
+        /// <param name="userName">The player to give the skill.</param>
+        /// <param name="skillID">The skill ID</param>
+        [SayHandlerCommand("TeachSkill", UserPermissions.LesserAdmin)]
+        public void TeachSkill(string userName, int skillID)
+        {
+            // Get the user we want
+            var target = World.FindUser(userName);
+            var skillCount = Enum.GetNames(typeof(SkillType)).Length;
+
+
+            if (skillID > skillCount)
+                return;
+
+            // Check that the user could be found
+            if (target == null)
+            {
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
+                return;
+            }
+
+            var skillType = (SkillType)skillID;
+
+            target.KnownSkills.SetSkill(skillType, true);
+
+        }
+
+        /// <summary>
+        /// Teaches the specific user the skill given by the skill name.
+        /// This is represented by the <see cref="SkillType"/> enum name; not the display name client-side.
+        /// </summary>
+        /// <param name="userName">The player to give the skill.</param>
+        /// <param name="skillName">The skill name to teach the user</param>
+        [SayHandlerCommand("TeachSkill", UserPermissions.LesserAdmin)]
+        public void TeachSkill(string userName, string skillName)
+        {
+            // Get the user we want
+            var target = World.FindUser(userName);
+
+            // Check that the user could be found
+            if (target == null)
+            {
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
+                return;
+            }
+
+            SkillType skillType;
+            var result = Enum.TryParse(skillName, true, out skillType);
+
+            if (result)
+                target.KnownSkills.SetSkill(skillType, true);
+
+        }
+
+        /// <summary>
+        /// Unteaches the specific user the skill given by the skill name.
+        /// This is represented by the <see cref="SkillType"/> enum name; not the display name client-side.
+        /// </summary>
+        /// <param name="userName">The player to give the skill.</param>
+        /// <param name="skillName">The skill name to teach the user</param>
+        [SayHandlerCommand("UnteachSkill", UserPermissions.LesserAdmin)]
+        public void UnteachSkill(string userName, string skillName)
+        {
+            // Get the user we want
+            var target = World.FindUser(userName);
+
+            // Check that the user could be found
+            if (target == null)
+            {
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
+                return;
+            }
+
+            SkillType skillType;
+            var result = Enum.TryParse(skillName, true, out skillType);
+
+            if (result)
+                target.KnownSkills.SetSkill(skillType, false);
+
+        }
+
+
+        /// <summary>
+        /// Unteaches the specific user the skill given by the ID
+        /// </summary>
+        /// <param name="userName">The player to give the skill.</param>
+        /// /// <param name="skillID">The skill ID</param>
+        [SayHandlerCommand("UnteachSkill", UserPermissions.LesserAdmin)]
+        public void UnteachSkill(string userName, int skillID)
+        {
+            // Get the user we want
+            var target = World.FindUser(userName);
+            var skillCount = Enum.GetNames(typeof(SkillType)).Length;
+
+
+            if (skillID > skillCount)
+                return;
+
+            // Check that the user could be found
+            if (target == null)
+            {
+                User.Send(GameMessage.CommandGeneralUnknownUser, ServerMessageType.GUIChat, userName);
+                return;
+            }
+
+            var skillType = (SkillType)skillID;
+
+            target.KnownSkills.SetSkill(skillType, false);
+
+        }
+
+
+        /// <summary>
         /// Awards the specific user with cash
         /// </summary>
         /// <param name="userName">The player to give cash to</param>
@@ -285,5 +399,83 @@ namespace DemoGame.Server
             // Move the user
             User.Teleport(map, pos);
         }
+
+
+        /// <summary>
+        /// Warps the user to the specified map.
+        /// </summary>
+        /// <param name="mapID">The mapID to be warped to.</param>
+        [SayHandlerCommand("Warp", UserPermissions.LesserAdmin)]
+        public void Warp(MapID mapID)
+        {
+            // Check for a valid map
+            if (!MapBase.MapIDExists(mapID))
+            {
+                UserChat("Invalid map ID `{0}`.", mapID);
+                return;
+            }
+
+            var map = World.GetMap(mapID);
+            if (map == null)
+            {
+                UserChat("No map with ID `{0}` exists.", mapID);
+                return;
+            }
+
+            var pos = User.Position;
+
+            if (pos.X < 0 || pos.Y < 0 || pos.X > map.Width || pos.Y > map.Height)
+            {
+                UserChat("The position of your current coordinates are out of the map's range. Map size: {0}", map.Size);
+                return;
+            }
+
+            // Move the user
+            User.Teleport(map, pos);
+        }
+
+        /// Warps the user to the specified position.
+        /// </summary>
+        /// <param name="mapID">The mapID to be warped to.</param>
+        /// <param name="x">The position along the x-axis to be warped to.</param>
+        /// <param name="y">The position along the y-axis to be warped to.</param>
+        [SayHandlerCommand("Warp", UserPermissions.LesserAdmin)]
+        public void Warp(int x, int y)
+        {
+            var map = User.Map;
+
+            var pos = new Vector2(x, y);
+
+            if (pos.X < 0 || pos.Y < 0 || pos.X > map.Width || pos.Y > map.Height)
+            {
+                UserChat("That position is out of the map's range. Map size: {0}", map.Size);
+                return;
+            }
+
+            // Move the user
+            User.Teleport(map, pos);
+        }
+
+        /// <summary>
+        /// Toggles the immortality flag on the given user.
+        /// When set, the user cannot take any damage via conventional means.
+        /// </summary>
+        [SayHandlerCommand("Immortal", UserPermissions.LesserAdmin)]
+        public void MakeImmortal()
+        {
+            User.Immortal = !User.Immortal;
+        }
+
+        /// <summary>
+        /// Toggles the visibility flag on the given user.
+        /// When set, the user cannot be seen by any other clients or take agression from monsters.
+        /// </summary>
+        [SayHandlerCommand("Invisible", UserPermissions.LesserAdmin)]
+        public void MakeInvisible()
+        {
+            User.Invisible = !User.Invisible;
+        }
+
+
     }
 }

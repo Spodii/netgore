@@ -90,8 +90,9 @@ namespace DemoGame.Server
             var center = Actor.Center;
 
             // Get the characters that we are even hostile towards and are in view
+            // Invisible players cannot be seen or be targeted
             var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea,
-                x => IsValidTarget(x) && IsHostileTowards(x) && x != Actor);
+                x => IsValidTarget(x) && IsHostileTowards(x) && x != Actor && !x.Invisible);
             var closest = possibleChars.MinElementOrDefault(x => center.QuickDistance(x.Center));
 
             return closest;

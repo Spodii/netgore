@@ -182,7 +182,7 @@ namespace DemoGame.Server
                     var dir = _spawnDirection;
 
                     if (dir == Direction.None)
-                        dir = (Direction) values.GetValue(RandomHelper.NextInt(values.Length));
+                        dir = (Direction) values.GetValue(RandomHelper.NextInt(1, values.Length));
 
                     NPCSpawnerNPC npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos.Value, dir);
                     _npcs[i] = npc;
