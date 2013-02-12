@@ -73,6 +73,7 @@ namespace NetGore.Graphics
                 case Direction.NorthEast:
                     return "Up";
 
+                case Direction.None:
                 case Direction.South:
                 case Direction.SouthWest:
                 case Direction.SouthEast:
@@ -85,8 +86,7 @@ namespace NetGore.Graphics
                     return "Left";
             }
 
-            return "";
-           // throw new ArgumentOutOfRangeException("direction");
+            throw new ArgumentOutOfRangeException("direction");
         }
 
         /// <summary>
