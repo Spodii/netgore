@@ -427,12 +427,8 @@ namespace DemoGame.Client
 
             if (IsVisible && !Invisible)
             {
-
-             
-
-                // Draw the character body as long as the heading is not None
-                if (Heading != Direction.None)
-                    _characterSprite.Draw(sb, drawPos, Heading, Color);
+                // Draw the character body
+                _characterSprite.Draw(sb, drawPos, Heading, Color);
 
                 // Draw the HP/MP
                 DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));
