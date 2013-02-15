@@ -107,7 +107,7 @@ namespace NetGore.Features.Quests
                 titleColor = CanTurnInQuestForeColor;
                 title = "[DONE] " + title;
             }
-            sb.DrawString(Font, title, pos + new Vector2(indexStrWidth, 0), titleColor);
+            sb.DrawString(Font, title, pos + new Vector2(indexStrWidth + 10, 0), titleColor);
         }
     }
 }

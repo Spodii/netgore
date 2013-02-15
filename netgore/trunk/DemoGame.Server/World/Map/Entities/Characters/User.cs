@@ -1557,6 +1557,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the quests that this <see cref="IQuestPerformer{TCharacter}"/> has repeatable.
+        /// </summary>
+        public IEnumerable<IQuest<User>> RepeatableQuests
+        {
+            get { return _questInfo.RepeatableQuests; }
+        }
+
+        /// <summary>
         /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> can accept the given <paramref name="quest"/>.
         /// </summary>
         /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> can accept.</param>
@@ -1587,6 +1595,17 @@ namespace DemoGame.Server
         public bool HasCompletedQuest(IQuest<User> quest)
         {
             return _questInfo.HasCompletedQuest(quest);
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> can repeat the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> can repeat.</param>
+        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> can repeat the given <paramref name="quest"/>;
+        /// otherwise false.</returns>
+        public bool IsRepeatableQuest(IQuest<User> quest)
+        {
+            return _questInfo.IsRepeatableQuest(quest);
         }
 
         /// <summary>

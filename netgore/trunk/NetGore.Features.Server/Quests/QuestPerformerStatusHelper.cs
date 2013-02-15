@@ -15,6 +15,7 @@ namespace NetGore.Features.Quests
 
         readonly List<IQuest<TCharacter>> _activeQuests = new List<IQuest<TCharacter>>();
         readonly List<IQuest<TCharacter>> _completedQuests = new List<IQuest<TCharacter>>();
+        readonly List<IQuest<TCharacter>> _repeatableQuests = new List<IQuest<TCharacter>>();
         readonly TCharacter _owner;
 
         /// <summary>
@@ -27,6 +28,7 @@ namespace NetGore.Features.Quests
 
             _completedQuests.AddRange(LoadCompletedQuests());
             _activeQuests.AddRange(LoadActiveQuests());
+            _repeatableQuests.AddRange(LoadRepeatableQuests());
         }
 
         /// <summary>
@@ -58,6 +60,14 @@ namespace NetGore.Features.Quests
         public IEnumerable<IQuest<TCharacter>> CompletedQuests
         {
             get { return _completedQuests; }
+        }
+
+        /// <summary>
+        /// Gets the repeatable quests.
+        /// </summary>
+        public IEnumerable<IQuest<TCharacter>> RepeatableQuests
+        {
+            get { return _repeatableQuests; }
         }
 
         /// <summary>
@@ -146,6 +156,16 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Checks if the owner has a repeatable <see cref="IQuest{TCharacter}"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if the owner has this repeatable.</param>
+        /// <returns>True if the owner can repeat the <paramref name="quest"/>; otherwise false.</returns>
+        public bool IsRepeatableQuest(IQuest<TCharacter> quest)
+        {
+            return _repeatableQuests.Contains(quest);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, loads the active quests.
         /// </summary>
         /// <returns>The loaded active quests.</returns>
@@ -156,6 +176,12 @@ namespace NetGore.Features.Quests
         /// </summary>
         /// <returns>The loaded completed quests.</returns>
         protected abstract IEnumerable<IQuest<TCharacter>> LoadCompletedQuests();
+
+        /// <summary>
+        /// When overridden in the derived class, loads the repeatable quests.
+        /// </summary>
+        /// <returns>The loaded repeatable quests.</returns>
+        protected abstract IEnumerable<IQuest<TCharacter>> LoadRepeatableQuests();
 
         /// <summary>
         /// When overridden in the derived class, notifies the owner that they were unable to accept a quest

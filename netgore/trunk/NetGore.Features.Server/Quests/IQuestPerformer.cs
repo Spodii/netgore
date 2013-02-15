@@ -36,6 +36,11 @@ namespace NetGore.Features.Quests
         IEnumerable<IQuest<TCharacter>> CompletedQuests { get; }
 
         /// <summary>
+        /// Gets the quests that this <see cref="IQuestPerformer{TCharacter}"/> has repeatable.
+        /// </summary>
+        IEnumerable<IQuest<TCharacter>> RepeatableQuests { get; }
+
+        /// <summary>
         /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> can accept the given <paramref name="quest"/>.
         /// </summary>
         /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> can accept.</param>
@@ -58,6 +63,14 @@ namespace NetGore.Features.Quests
         /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> has completed the given <paramref name="quest"/>;
         /// otherwise false.</returns>
         bool HasCompletedQuest(IQuest<TCharacter> quest);
+
+        /// <summary>
+        /// Gets if this <see cref="IQuestPerformer{TCharacter}"/> can repeat the given <paramref name="quest"/>.
+        /// </summary>
+        /// <param name="quest">The quest to check if this <see cref="IQuestPerformer{TCharacter}"/> can repeat.</param>
+        /// <returns>True if this <see cref="IQuestPerformer{TCharacter}"/> can repeat the given <paramref name="quest"/>;
+        /// otherwise false.</returns>
+        bool IsRepeatableQuest(IQuest<TCharacter> quest);
 
         /// <summary>
         /// Tries to add the given <paramref name="quest"/> to this <see cref="IQuestPerformer{TCharacter}"/>'s list

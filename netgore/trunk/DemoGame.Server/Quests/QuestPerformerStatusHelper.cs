@@ -24,7 +24,8 @@ namespace DemoGame.Server.Quests
             // Send the initial quest status
             var completed = CompletedQuests.Select(x => x.QuestID);
             var active = ActiveQuests.Select(x => x.QuestID);
-            using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteQuestInfo(x, completed, active)))
+            var repeatable = RepeatableQuests.Select(x => x.QuestID);
+            using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteQuestInfo(x, completed, active, repeatable)))
             {
                 Owner.Send(pw, ServerMessageType.GUI);
             }
@@ -55,6 +56,16 @@ namespace DemoGame.Server.Quests
         protected override IEnumerable<IQuest<User>> LoadCompletedQuests()
         {
             var quests = Owner.DbController.GetQuery<SelectCompletedQuestsQuery>().Execute(Owner.ID);
+            return quests.Select(x => _questManager.GetQuest(x));
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, loads the repeatable quests.
+        /// </summary>
+        /// <returns>The loaded repeatable quests.</returns>
+        protected override IEnumerable<IQuest<User>> LoadRepeatableQuests()
+        {
+            var quests = Owner.DbController.GetQuery<SelectRepeatableQuestsQuery>().Execute();
             return quests.Select(x => _questManager.GetQuest(x));
         }
 
