@@ -14,6 +14,7 @@ namespace NetGore.Features.Quests
 
         readonly List<QuestID> _activeQuests = new List<QuestID>();
         readonly List<QuestID> _completedQuests = new List<QuestID>();
+        readonly List<QuestID> _repeatableQuests = new List<QuestID>();
 
         /// <summary>
         /// Notifies listeners when a new quest has been added to the active quests list.
@@ -29,6 +30,11 @@ namespace NetGore.Features.Quests
         /// Notifies listeners when a new quest has been added to the completed quests list.
         /// </summary>
         public event TypedEventHandler<UserQuestInformation, EventArgs<QuestID>> CompletedQuestAdded;
+
+        /// <summary>
+        /// Notifies listeners when a new quest has been added to the repeatable quests list.
+        /// </summary>
+        public event TypedEventHandler<UserQuestInformation, EventArgs<QuestID>> RepeatableQuestAdded;
 
         /// <summary>
         /// Notifies listeners when the initial quest values have been loaded.
@@ -52,12 +58,21 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Gets the list of repeatable quests.
+        /// </summary>
+        public IEnumerable<QuestID> RepeatableQuests
+        {
+            get { return _repeatableQuests; }
+        }
+
+        /// <summary>
         /// Clears out the active and completed quests.
         /// </summary>
         public void Clear()
         {
             _activeQuests.Clear();
             _completedQuests.Clear();
+            _repeatableQuests.Clear();
         }
 
         /// <summary>
@@ -89,6 +104,15 @@ namespace NetGore.Features.Quests
 
         /// <summary>
         /// When overridden in the derived class, allows for handling the
+        /// <see cref="UserQuestInformation.RepeatableQuestAdded"/> event.
+        /// </summary>
+        /// <param name="questID">The ID of the quest that was added.</param>
+        protected virtual void OnRepeatableQuestAdded(QuestID questID)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the
         /// <see cref="UserQuestInformation.Loaded"/> event.
         /// </summary>
         protected virtual void OnLoaded()
@@ -110,6 +134,10 @@ namespace NetGore.Features.Quests
 
                 case QuestInfoMessages.AddActiveQuest:
                     ReadAddActiveQuest(bs);
+                    break;
+
+                case QuestInfoMessages.AddRepeatableQuest:
+                    ReadAddRepeatableQuest(bs);
                     break;
 
                 case QuestInfoMessages.RemoveActiveQuest:
@@ -176,6 +204,29 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Handles <see cref="QuestInfoMessages.AddRepeatableQuest"/>.
+        /// </summary>
+        /// <param name="bs">The <see cref="BitStream"/> to read from.</param>
+        void ReadAddRepeatableQuest(BitStream bs)
+        {
+            var questID = bs.ReadQuestID();
+
+            // Ensure the quest isn't already in the completed list
+            if (_repeatableQuests.BinarySearch(questID) >= 0)
+                return;
+
+            // Add
+            _repeatableQuests.Add(questID);
+            _repeatableQuests.Sort();
+
+            // Raise events
+            OnRepeatableQuestAdded(questID);
+
+            if (RepeatableQuestAdded != null)
+                RepeatableQuestAdded.Raise(this, EventArgsHelper.Create(questID));
+        }
+
+        /// <summary>
         /// Handles <see cref="QuestInfoMessages.LoadInitialValues"/>.
         /// </summary>
         /// <param name="bs">The <see cref="BitStream"/> to read from.</param>
@@ -183,6 +234,7 @@ namespace NetGore.Features.Quests
         {
             _completedQuests.Clear();
             _activeQuests.Clear();
+            _repeatableQuests.Clear();
 
             // Read completed quests
             var count = bs.ReadUShort();
@@ -196,6 +248,13 @@ namespace NetGore.Features.Quests
             for (var i = 0; i < count; i++)
             {
                 _activeQuests.Add(bs.ReadQuestID());
+            }
+
+            // Read Repeatable quests
+            count = bs.ReadByte();
+            for (var i = 0; i < count; i++)
+            {
+                _repeatableQuests.Add(bs.ReadQuestID());
             }
 
             // Raise events
@@ -257,16 +316,31 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Appends a message to a <see cref="BitStream"/> for synchronizing the client's quest information for when
+        /// a quest is repeatable.
+        /// The message is then read and handled by the receiver using <see cref="UserQuestInformation.Read"/>.
+        /// </summary>
+        /// <param name="bs">The <see cref="BitStream"/> to append the message to.</param>
+        /// <param name="questID">The ID of the repeatable quest.</param>
+        public static void WriteAddRepeatableQuest(BitStream bs, QuestID questID)
+        {
+            bs.WriteEnum(QuestInfoMessages.AddRepeatableQuest);
+            bs.Write(questID);
+        }
+
+        /// <summary>
         /// Appends a message to a <see cref="BitStream"/> for synchronizing all of the client's quest information.
         /// The message is then read and handled by the receiver using <see cref="UserQuestInformation.Read"/>.
         /// </summary>
         /// <param name="bs">The <see cref="BitStream"/> to append the message to.</param>
         /// <param name="completedQuests">All of the completed quests.</param>
         /// <param name="activeQuests">All of the active quests.</param>
-        public static void WriteQuestInfo(BitStream bs, IEnumerable<QuestID> completedQuests, IEnumerable<QuestID> activeQuests)
+        /// <param name="repeatableQuests">All of the repeatable quests.</param>
+        public static void WriteQuestInfo(BitStream bs, IEnumerable<QuestID> completedQuests, IEnumerable<QuestID> activeQuests, IEnumerable<QuestID> repeatableQuests)
         {
             completedQuests = completedQuests.ToImmutable();
             activeQuests = activeQuests.ToImmutable();
+            repeatableQuests = repeatableQuests.ToImmutable();
 
             bs.WriteEnum(QuestInfoMessages.LoadInitialValues);
 
@@ -280,6 +354,13 @@ namespace NetGore.Features.Quests
             // Write the active quests
             bs.Write((byte)activeQuests.Count());
             foreach (var q in activeQuests)
+            {
+                bs.Write(q);
+            }
+
+            // Write the repeatable quests
+            bs.Write((byte)repeatableQuests.Count());
+            foreach (var q in repeatableQuests)
             {
                 bs.Write(q);
             }
@@ -312,6 +393,11 @@ namespace NetGore.Features.Quests
             /// Adds a quest to the list of active quests.
             /// </summary>
             AddActiveQuest,
+
+            /// <summary>
+            /// Adds a quest to the list of repeatable quests.
+            /// </summary>
+            AddRepeatableQuest,
 
             /// <summary>
             /// Removes a quest from the list of active quests.

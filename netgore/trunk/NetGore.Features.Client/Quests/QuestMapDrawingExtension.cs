@@ -209,8 +209,9 @@ namespace NetGore.Features.Quests
             // Get all the quest providers in the area of interest (visible area)
             foreach (var c in _getQuestProviders(map))
             {
-                // Get the provided quests we have not completed
-                var incomplete = _getQuests(c).Where(x => !QuestInfo.CompletedQuests.Contains(x)).ToImmutable();
+                // Get the provided quests we have not completed or if it's repeatable
+                var incomplete = _getQuests(c).Where(x => !QuestInfo.CompletedQuests.Contains(x) ||
+                    QuestInfo.RepeatableQuests.Contains(x)).ToImmutable();
 
                 // If they don't have any quests, continue
                 if (incomplete.IsEmpty())

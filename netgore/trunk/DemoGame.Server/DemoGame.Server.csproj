@@ -320,6 +320,7 @@
     <Compile Include="Queries\Quest\Character\InsertCharacterQuestStatusStartQuery.cs" />
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Alliance\DeleteAllianceQuery.cs" />
+    <Compile Include="Queries\Quest\Character\SelectRepeatableQuestsQuery.cs" />
     <Compile Include="Queries\Quest\DeleteQuestQuery.cs" />
     <Compile Include="Queries\Alliance\InsertAllianceAttackableQuery.cs" />
     <Compile Include="Queries\Alliance\InsertAllianceHostileQuery.cs" />
