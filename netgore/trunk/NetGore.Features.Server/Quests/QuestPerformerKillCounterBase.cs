@@ -182,14 +182,18 @@ namespace NetGore.Features.Quests
             Debug.Assert(Equals(sender, Owner));
 
             // Ensure the counter does not already exist for this quest
-            var existingCounter = _counters.FirstOrDefault(x => x.Quest == e.Item1);
+            var existingCounter = _counters.FirstOrDefault(x => x.Quest == e.Item1 && x.Quest.Repeatable);
             if (existingCounter != null)
             {
-                const string errmsg = "Quest list already contains the quest `{0}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, e.Item1);
-                Debug.Fail(string.Format(errmsg, e.Item1));
-                return;
+                // Since a counter is always added, this logic will always be true when accepting repeatable quests.
+                // So to accommodate repeatable quests, if a counter exists, remove it before creating it again
+                Owner_QuestFinishedOrCanceled(sender, e);
+
+                //const string errmsg = "Quest list already contains the quest `{0}`.";
+                //if (log.IsErrorEnabled)
+                //    log.ErrorFormat(errmsg, e.Item1);
+                //Debug.Fail(string.Format(errmsg, e.Item1));
+                //return;
             }
 
             // Create the counter
