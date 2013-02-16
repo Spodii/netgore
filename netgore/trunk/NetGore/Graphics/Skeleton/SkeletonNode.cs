@@ -219,7 +219,12 @@ namespace NetGore.Graphics
         /// <returns>Angle between the points</returns>
         public static float GetAngle(Vector2 p1, Vector2 p2)
         {
-            return (float)Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
+            float angle = (float)Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
+
+            // Clamp our angle good between -Pi and Pi
+            angle = MathHelper.WrapAngle(angle);
+
+            return angle;
         }
 
         /// <summary>
