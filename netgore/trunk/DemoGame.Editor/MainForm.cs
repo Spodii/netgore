@@ -150,6 +150,9 @@ namespace DemoGame.Editor
             // Auto-update GrhDatas
             SetStatusMessageLoading("Updating GrhData");
             GlobalState.Instance.AutoUpdateGrhDatas();
+            GlobalState.Instance.AutoUpdateMusic();
+            GlobalState.Instance.AutoUpdateSounds();
+         
 
             SetStatusMessageLoading("Updating cached GrhData sizes");
             AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
