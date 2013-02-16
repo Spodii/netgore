@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Server.Queries;
@@ -18,6 +20,16 @@ using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
 using SFML.Graphics;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using NetGore.Audio;
+using NetGore.Content;
+using WeifenLuo.WinFormsUI.Docking;
+using NetGore.IO;
 
 namespace DemoGame.Editor
 {
@@ -257,6 +269,224 @@ namespace DemoGame.Editor
             }
 
             Map.SetGrhToPlace(grhData.GrhIndex);
+        }
+
+
+        /// <summary>
+        /// Finds the next free <see cref="SoundID"/>.
+        /// </summary>
+        /// <param name="usedIDs">Collection of <see cref="SoundID"/>s already assigned.</param>
+        /// <param name="start">The <see cref="SoundID"/> to start at.</param>
+        /// <returns>The next free <see cref="SoundID"/>. The returned value will be marked as used in the
+        /// <paramref name="usedIDs"/>.</returns>
+        static SoundID NextFreeID(HashSet<SoundID> usedIDs, SoundID start)
+        {
+            while (!usedIDs.Add(start))
+            {
+                start++;
+            }
+
+            return start;
+        }
+
+
+        public void AutoUpdateSounds()
+        {
+            const string title = "Update sound";
+            const string confirmMsg = "The following changes are to be made (+ for add, - for remove):";
+            const string upToDateMsg = "The sound is already up-to-date.";
+            const string acceptChangesMsg = "Accept these {0} changes and update the sound?";
+            const string doneMsg = "Sound successfully updated!";
+
+            var cm = NetGore.Content.ContentManager.Create();
+            var sm = AudioManager.GetInstance(cm).SoundManager;
+
+            // Find all the sound files
+            var files = Directory.GetFiles(ContentPaths.Build.Sounds);
+
+            // Find the new files (file exists, but SoundInfo does not)
+            var newFiles =
+                files.Where(f => !sm.SoundInfos.Any(si => StringComparer.OrdinalIgnoreCase.Equals(si.Name, Path.GetFileName(f)))).
+                    ToArray();
+
+            // Find the removed files (SoundInfo exists, but file does not)
+            var removedFiles =
+                sm.SoundInfos.Where(si => !files.Any(f => StringComparer.OrdinalIgnoreCase.Equals(si.Name, Path.GetFileName(f)))).
+                    ToArray();
+
+            // Check if there are any changes
+            if (newFiles.Length <= 0 && removedFiles.Length <= 0)
+            {
+                return;
+            }
+
+            // Display list of changes
+
+            var sb = new StringBuilder();
+            sb.AppendLine(confirmMsg);
+
+            const int maxLines = 25;
+            var lines = 0;
+
+            foreach (var f in removedFiles)
+            {
+                sb.AppendLine(" - " + Path.GetFileName(f.Name) + " [" + f.ID + "]");
+                if (++lines > maxLines)
+                    break;
+            }
+
+            foreach (var f in newFiles)
+            {
+                sb.AppendLine(" + " + Path.GetFileName(f));
+                if (++lines > maxLines)
+                    break;
+            }
+
+            sb.AppendLine();
+            sb.AppendLine(string.Format(acceptChangesMsg, newFiles.Length + removedFiles.Length));
+
+            if (MessageBox.Show(sb.ToString(), title, MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Update by taking the existing SoundInfos, removing the ones to remove, adding the new ones
+
+            var sis = sm.SoundInfos.ToList();
+
+            foreach (var toRemove in removedFiles)
+            {
+                sis.Remove(toRemove);
+            }
+
+            var usedIDs = new HashSet<SoundID>();
+            foreach (var si in sis)
+            {
+                usedIDs.Add(si.ID);
+            }
+
+            var soundIDCounter = new SoundID(1);
+
+            foreach (var toAdd in newFiles)
+            {
+                var name = Path.GetFileName(toAdd);
+                var id = NextFreeID(usedIDs, soundIDCounter);
+                sis.Add(new SoundInfo(name, id));
+            }
+
+            // Save it all
+            sm.ReloadData(sis);
+            sm.Save();
+
+
+            MessageBox.Show(doneMsg, title, MessageBoxButtons.OK);
+        }
+
+        public void AutoUpdateMusic()
+        {
+
+
+            const string title = "Update music";
+            const string confirmMsg = "The following changes are to be made (+ for add, - for remove):";
+            const string upToDateMsg = "The music is already up-to-date.";
+            const string acceptChangesMsg = "Accept these {0} changes and update the music?";
+            const string doneMsg = "Music successfully updated!";
+
+            var cm = NetGore.Content.ContentManager.Create();
+            var mm = AudioManager.GetInstance(cm).MusicManager;
+
+            // Find all the music files
+            var files = Directory.GetFiles(ContentPaths.Build.Music);
+
+            // Find the new files (file exists, but MusicInfo does not)
+            var newFiles =
+                files.Where(f => !mm.MusicInfos.Any(mi => StringComparer.OrdinalIgnoreCase.Equals(mi.Name, Path.GetFileName(f)))).
+                    ToArray();
+
+            // Find the removed files (MusicInfo exists, but file does not)
+            var removedFiles =
+                mm.MusicInfos.Where(mi => !files.Any(f => StringComparer.OrdinalIgnoreCase.Equals(mi.Name, Path.GetFileName(f)))).
+                    ToArray();
+
+            // Check if there are any changes
+            if (newFiles.Length <= 0 && removedFiles.Length <= 0)
+            {
+                return;
+            }
+
+            // Display list of changes
+
+            var sb = new StringBuilder();
+            sb.AppendLine(confirmMsg);
+
+            const int maxLines = 25;
+            var lines = 0;
+
+            foreach (var f in removedFiles)
+            {
+                sb.AppendLine(" - " + Path.GetFileName(f.Name) + " [" + f.ID + "]");
+                if (++lines > maxLines)
+                    break;
+            }
+
+            foreach (var f in newFiles)
+            {
+                sb.AppendLine(" + " + Path.GetFileName(f));
+                if (++lines > maxLines)
+                    break;
+            }
+
+            sb.AppendLine();
+            sb.AppendLine(string.Format(acceptChangesMsg, newFiles.Length + removedFiles.Length));
+
+            if (MessageBox.Show(sb.ToString(), title, MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Update by taking the existing MusicInfos, removing the ones to remove, adding the new ones
+
+            var mis = mm.MusicInfos.ToList();
+
+            foreach (var toRemove in removedFiles)
+            {
+                mis.Remove(toRemove);
+            }
+
+            var usedIDs = new HashSet<MusicID>();
+            foreach (var mi in mis)
+            {
+                usedIDs.Add(mi.ID);
+            }
+
+            var musicIDCounter = new MusicID(1);
+
+            foreach (var toAdd in newFiles)
+            {
+                var name = Path.GetFileName(toAdd);
+                var id = NextFreeID(usedIDs, musicIDCounter);
+                mis.Add(new MusicInfo(name, id));
+            }
+
+            // Save it all
+            mm.ReloadData(mis);
+            mm.Save();
+
+
+            MessageBox.Show(doneMsg, title, MessageBoxButtons.OK);
+        }
+
+        /// <summary>
+        /// Finds the next free <see cref="MusicID"/>.
+        /// </summary>
+        /// <param name="usedIDs">Collection of <see cref="MusicID"/>s already assigned.</param>
+        /// <param name="start">The <see cref="MusicID"/> to start at.</param>
+        /// <returns>The next free <see cref="MusicID"/>. The returned value will be marked as used in the
+        /// <paramref name="usedIDs"/>.</returns>
+        static MusicID NextFreeID(HashSet<MusicID> usedIDs, MusicID start)
+        {
+            while (!usedIDs.Add(start))
+            {
+                start++;
+            }
+
+            return start;
         }
 
         public void AutoUpdateGrhDatas()
