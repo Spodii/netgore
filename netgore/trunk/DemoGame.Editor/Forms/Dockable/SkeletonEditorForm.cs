@@ -660,7 +660,7 @@ namespace DemoGame.Editor
             txtX.Text = SelectedNode.X.ToString();
             txtY.Text = SelectedNode.Y.ToString();
             txtAngle.Text = SelectedNode.GetAngle().ToString();
-            txtLength.Text = SelectedNode.GetLength().ToString();
+            txtLength.Text = SelectedNode.GetLength().ToString("#.###");
             chkIsMod.Checked = SelectedNode.IsModifier;
         }
 
@@ -1266,6 +1266,8 @@ namespace DemoGame.Editor
             {
                 txtAngle.BackColor = EditorColors.Error;
             }
+
+
         }
 
         /// <summary>
@@ -1459,6 +1461,17 @@ namespace DemoGame.Editor
             {
                 txtY.BackColor = EditorColors.Error;
             }
+        }
+
+        private void txtAngle_Leave(object sender, EventArgs e)
+        {
+            if (SelectedNode != null)
+                txtAngle.Text = SelectedNode.GetAngle().ToString();
+        }
+
+        private void txtLength_Leave(object sender, EventArgs e)
+        {
+            txtLength.Text = SelectedNode.GetLength().ToString("#.###");
         }
     }
 }
