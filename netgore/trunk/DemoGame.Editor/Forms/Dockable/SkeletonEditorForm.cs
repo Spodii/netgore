@@ -432,6 +432,16 @@ namespace DemoGame.Editor
             FileBody = filePath;
         }
 
+        public void LoadSkelSets(string filePath)
+        {
+            // Load the skeleton sets into the specified combobox
+            cmbSkeletonBodies.Items.Clear();
+            DirectoryInfo skelBodiesFolder = new DirectoryInfo(filePath);
+            DirectoryInfo[] skelBodies = skelBodiesFolder.GetDirectories();
+            foreach (DirectoryInfo skelBody in skelBodies)
+                cmbSkeletonBodies.Items.Add(skelBody.Name);
+        }
+
         public void LoadFrame(string filePath)
         {
             var newSkeleton = SkeletonLoader.LoadSkeleton(filePath);
@@ -548,6 +558,7 @@ namespace DemoGame.Editor
             LoadFrame(Skeleton.GetFilePath(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev));
             LoadAnim(SkeletonSet.GetFilePath(SkeletonLoader.WalkingSkeletonSetName, ContentPaths.Dev));
             LoadBody(SkeletonBodyInfo.GetFilePath(SkeletonLoader.BasicSkeletonBodyName, ContentPaths.Dev));
+            LoadSkelSets(ContentPaths.Build.Grhs + "\\Character\\Skeletons");
 
             _watch.Start();
 
@@ -676,14 +687,26 @@ namespace DemoGame.Editor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAdd_Click(object sender, EventArgs e)
         {
-            Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
-            var spriteCategorization = new SpriteCategorization("Character.Naked", "Body");
-            var grhData = GrhInfo.GetData(spriteCategorization);
-            var bodyItemInfo = new SkeletonBodyItemInfo(grhData.GrhIndex, _skeleton.RootNode.Name, string.Empty, Vector2.Zero,
-                Vector2.Zero);
-            var bodyItem = new SkeletonBodyItem(bodyItemInfo);
-            SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
-            UpdateBodyList();
+            try
+            {
+                if (cmbSkeletonBodies.SelectedItem == null || cmbSkeletonBodyNodes.SelectedItem == null)
+                    return;
+                var skelBodies = cmbSkeletonBodies.SelectedItem.ToString();
+                var skelBodyNodes = cmbSkeletonBodyNodes.SelectedItem.ToString();
+                Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
+                var spriteCategorization = new SpriteCategorization("Character.Skeletons." + skelBodies, skelBodyNodes);
+                var grhData = GrhInfo.GetData(spriteCategorization);
+                if (grhData == null)
+                    return;
+                var bodyItemInfo = new SkeletonBodyItemInfo(grhData.GrhIndex, _skeleton.RootNode.Name, string.Empty,
+                    Vector2.Zero, Vector2.Zero);
+                var bodyItem = new SkeletonBodyItem(bodyItemInfo);
+                SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
+                UpdateBodyList();
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>
@@ -1231,7 +1254,10 @@ namespace DemoGame.Editor
             if (item.Grh.GrhData != null)
                 txtGrhIndex.Text = item.Grh.GrhData.GrhIndex.ToString();
 
-            cmbSource.SelectedItem = cmbSource.Items.OfType<SkeletonNode>().FirstOrDefault(x => x.Name == item.Source.Name);
+            if (item.Source == null)
+                cmbSource.SelectedItem = null;
+            else
+                cmbSource.SelectedItem = cmbSource.Items.OfType<SkeletonNode>().FirstOrDefault(x => x.Name == item.Source.Name);
 
             if (item.Dest == null)
                 cmbTarget.SelectedItem = null;
@@ -1472,6 +1498,14 @@ namespace DemoGame.Editor
         private void txtLength_Leave(object sender, EventArgs e)
         {
             txtLength.Text = SelectedNode.GetLength().ToString("#.###");
+        }
+
+        private void cmbSkeletonBodies_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cmbSkeletonBodyNodes.Items.Clear();
+            DirectoryInfo skelBodiesFolder = new DirectoryInfo(ContentPaths.Build.Grhs + "\\Character\\Skeletons\\" + cmbSkeletonBodies.SelectedItem.ToString());
+            foreach (FileInfo skelBodyNode in skelBodiesFolder.GetFiles())
+                cmbSkeletonBodyNodes.Items.Add(skelBodyNode.Name);
         }
     }
 }

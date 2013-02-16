@@ -21,8 +21,11 @@ namespace DemoGame.Editor
         static string GetDSIString(SkeletonBodyItem dsi)
         {
             var s = "_null_";
+            if (dsi.Source != null)
+                s = dsi.Source.Name;
+            var d = "_null_";
             if (dsi.Dest != null)
-                s = dsi.Dest.Name;
+                d = dsi.Dest.Name;
 
             string textureName;
             if (dsi.Grh.GrhData == null)
@@ -30,7 +33,7 @@ namespace DemoGame.Editor
             else
                 textureName = dsi.Grh.GrhData.Categorization.ToString();
 
-            return textureName + ": " + dsi.Source.Name + " -> " + s;
+            return textureName + ": " + s + " -> " + d;
         }
 
         /// <summary>
