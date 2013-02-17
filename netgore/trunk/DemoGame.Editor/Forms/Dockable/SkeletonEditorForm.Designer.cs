@@ -782,6 +782,7 @@ namespace DemoGame.Editor
             this.btnClearTarget.Text = "X";
             this.btnClearTarget.UseVisualStyleBackColor = true;
             this.btnClearTarget.TextChanged += new System.EventHandler(this.btnClearTarget_Click);
+            this.btnClearTarget.Click += new System.EventHandler(this.btnClearTarget_Click);
             // 
             // cmbTarget
             // 
