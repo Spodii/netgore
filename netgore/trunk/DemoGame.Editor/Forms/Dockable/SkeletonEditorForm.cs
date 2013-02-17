@@ -903,10 +903,12 @@ namespace DemoGame.Editor
             {
                 lstBodies.Items[i] = lstBodies.Items[i + 1];
                 SkeletonBody.BodyItems[i] = SkeletonBody.BodyItems[i + 1];
+                _frameBody.BodyItems[i] = _frameBody.BodyItems[i + 1];
             }
 
             lstBodies.RemoveItemAtAndReselect(lstBodies.Items.Count - 1);
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length - 1);
+            Array.Resize(ref _frameBody.BodyItems, _frameBody.BodyItems.Length - 1);
         }
 
         /// <summary>
@@ -930,9 +932,18 @@ namespace DemoGame.Editor
             SkeletonBody.BodyItems[selIndex] = (SkeletonBodyItem)o2;
             SkeletonBody.BodyItems[selIndex + 1] = (SkeletonBodyItem)o1;
 
+            o1 = _frameBody.BodyItems[selIndex];
+            o2 = _frameBody.BodyItems[selIndex + 1];
+            _frameBody.BodyItems[selIndex] = (SkeletonBodyItem)o2;
+            _frameBody.BodyItems[selIndex + 1] = (SkeletonBodyItem)o1;
+
             var tmp = SkeletonBody.BodyInfo.Items[selIndex];
             SkeletonBody.BodyInfo.Items[selIndex] = SkeletonBody.BodyInfo.Items[selIndex + 1];
             SkeletonBody.BodyInfo.Items[selIndex + 1] = tmp;
+
+            tmp = _frameBody.BodyInfo.Items[selIndex];
+            _frameBody.BodyInfo.Items[selIndex] = _frameBody.BodyInfo.Items[selIndex + 1];
+            _frameBody.BodyInfo.Items[selIndex + 1] = tmp;
 
             lstBodies.SelectedIndex = selIndex + 1;
         }
@@ -1142,9 +1153,18 @@ namespace DemoGame.Editor
             SkeletonBody.BodyItems[selIndex] = (SkeletonBodyItem)o2;
             SkeletonBody.BodyItems[selIndex - 1] = (SkeletonBodyItem)o1;
 
+            o1 = _frameBody.BodyItems[selIndex];
+            o2 = _frameBody.BodyItems[selIndex - 1];
+            _frameBody.BodyItems[selIndex] = (SkeletonBodyItem)o2;
+            _frameBody.BodyItems[selIndex - 1] = (SkeletonBodyItem)o1;
+
             var tmp = SkeletonBody.BodyInfo.Items[selIndex];
             SkeletonBody.BodyInfo.Items[selIndex] = SkeletonBody.BodyInfo.Items[selIndex - 1];
             SkeletonBody.BodyInfo.Items[selIndex - 1] = tmp;
+
+            tmp = _frameBody.BodyInfo.Items[selIndex];
+            _frameBody.BodyInfo.Items[selIndex] = _frameBody.BodyInfo.Items[selIndex - 1];
+            _frameBody.BodyInfo.Items[selIndex - 1] = tmp;
 
             lstBodies.SelectedIndex = selIndex - 1;
         }

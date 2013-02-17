@@ -33,6 +33,7 @@ namespace DemoGame.Editor
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.GameScreen = new DemoGame.Editor.SkeletonEditorScreenControl();
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabSkeleton = new System.Windows.Forms.TabPage();
             this.gbSkeletonActions = new System.Windows.Forms.GroupBox();
@@ -53,6 +54,7 @@ namespace DemoGame.Editor
             this.label2 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.cmbSkeletonNodes = new DemoGame.Editor.SkeletonNodesComboBox();
             this.gbSkeletonIO = new System.Windows.Forms.GroupBox();
             this.btnSkeletonSaveAs = new System.Windows.Forms.Button();
             this.btnSkeletonSave = new System.Windows.Forms.Button();
@@ -75,6 +77,9 @@ namespace DemoGame.Editor
             this.tabBody = new System.Windows.Forms.TabPage();
             this.gbBodies = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lstBodies = new DemoGame.Editor.SkeletonBodyItemsListBox();
+            this.cmbSkeletonBodyNodes = new System.Windows.Forms.ComboBox();
+            this.cmbSkeletonBodies = new System.Windows.Forms.ComboBox();
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -82,7 +87,9 @@ namespace DemoGame.Editor
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnSelectBodyGrhData = new DemoGame.Editor.SelectGrhDataButton();
             this.btnClearTarget = new System.Windows.Forms.Button();
+            this.cmbTarget = new DemoGame.Editor.SkeletonNodesComboBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.cmbSource = new DemoGame.Editor.SkeletonNodesComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtGrhIndex = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -111,13 +118,6 @@ namespace DemoGame.Editor
             this.radioAnimate = new System.Windows.Forms.RadioButton();
             this.radioEdit = new System.Windows.Forms.RadioButton();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
-            this.cmbSkeletonBodies = new System.Windows.Forms.ComboBox();
-            this.cmbSkeletonBodyNodes = new System.Windows.Forms.ComboBox();
-            this.GameScreen = new DemoGame.Editor.SkeletonEditorScreenControl();
-            this.cmbSkeletonNodes = new DemoGame.Editor.SkeletonNodesComboBox();
-            this.lstBodies = new DemoGame.Editor.SkeletonBodyItemsListBox();
-            this.cmbTarget = new DemoGame.Editor.SkeletonNodesComboBox();
-            this.cmbSource = new DemoGame.Editor.SkeletonNodesComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -161,6 +161,21 @@ namespace DemoGame.Editor
             this.splitContainer2.Size = new System.Drawing.Size(931, 549);
             this.splitContainer2.SplitterDistance = 630;
             this.splitContainer2.TabIndex = 26;
+            // 
+            // GameScreen
+            // 
+            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GameScreen.Location = new System.Drawing.Point(0, 0);
+            this.GameScreen.Name = "GameScreen";
+            this.GameScreen.Size = new System.Drawing.Size(630, 549);
+            this.GameScreen.SkeletonEditorForm = null;
+            this.GameScreen.TabIndex = 2;
+            this.GameScreen.Text = "Game Screen";
+            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
+            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
+            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
+            this.GameScreen.Resize += new System.EventHandler(this.GameScreen_Resize);
             // 
             // tcMenu
             // 
@@ -378,6 +393,20 @@ namespace DemoGame.Editor
             this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 11;
             this.label1.Text = "Name:";
+            // 
+            // cmbSkeletonNodes
+            // 
+            this.cmbSkeletonNodes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cmbSkeletonNodes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSkeletonNodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSkeletonNodes.FormattingEnabled = true;
+            this.cmbSkeletonNodes.Location = new System.Drawing.Point(3, 16);
+            this.cmbSkeletonNodes.Name = "cmbSkeletonNodes";
+            this.cmbSkeletonNodes.Size = new System.Drawing.Size(283, 21);
+            this.cmbSkeletonNodes.Sorted = true;
+            this.cmbSkeletonNodes.TabIndex = 48;
+            this.tt.SetToolTip(this.cmbSkeletonNodes, "The currently selected skeleton node (joint)");
+            this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
             // 
             // gbSkeletonIO
             // 
@@ -633,6 +662,36 @@ namespace DemoGame.Editor
             this.splitContainer1.SplitterDistance = 163;
             this.splitContainer1.TabIndex = 38;
             // 
+            // lstBodies
+            // 
+            this.lstBodies.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstBodies.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstBodies.FormattingEnabled = true;
+            this.lstBodies.Location = new System.Drawing.Point(0, 0);
+            this.lstBodies.Name = "lstBodies";
+            this.lstBodies.Size = new System.Drawing.Size(283, 163);
+            this.lstBodies.TabIndex = 35;
+            this.lstBodies.SelectedIndexChanged += new System.EventHandler(this.lstBodies_SelectedIndexChanged);
+            // 
+            // cmbSkeletonBodyNodes
+            // 
+            this.cmbSkeletonBodyNodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSkeletonBodyNodes.FormattingEnabled = true;
+            this.cmbSkeletonBodyNodes.Location = new System.Drawing.Point(168, 3);
+            this.cmbSkeletonBodyNodes.Name = "cmbSkeletonBodyNodes";
+            this.cmbSkeletonBodyNodes.Size = new System.Drawing.Size(56, 21);
+            this.cmbSkeletonBodyNodes.TabIndex = 49;
+            // 
+            // cmbSkeletonBodies
+            // 
+            this.cmbSkeletonBodies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSkeletonBodies.FormattingEnabled = true;
+            this.cmbSkeletonBodies.Location = new System.Drawing.Point(107, 3);
+            this.cmbSkeletonBodies.Name = "cmbSkeletonBodies";
+            this.cmbSkeletonBodies.Size = new System.Drawing.Size(56, 21);
+            this.cmbSkeletonBodies.TabIndex = 48;
+            this.cmbSkeletonBodies.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonBodies_SelectedIndexChanged);
+            // 
             // btnUp
             // 
             this.btnUp.Dock = System.Windows.Forms.DockStyle.Right;
@@ -724,6 +783,18 @@ namespace DemoGame.Editor
             this.btnClearTarget.UseVisualStyleBackColor = true;
             this.btnClearTarget.TextChanged += new System.EventHandler(this.btnClearTarget_Click);
             // 
+            // cmbTarget
+            // 
+            this.cmbTarget.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTarget.FormattingEnabled = true;
+            this.cmbTarget.Location = new System.Drawing.Point(60, 122);
+            this.cmbTarget.Name = "cmbTarget";
+            this.cmbTarget.Size = new System.Drawing.Size(99, 21);
+            this.cmbTarget.Sorted = true;
+            this.cmbTarget.TabIndex = 47;
+            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -732,6 +803,18 @@ namespace DemoGame.Editor
             this.label15.Size = new System.Drawing.Size(41, 13);
             this.label15.TabIndex = 46;
             this.label15.Text = "Target:";
+            // 
+            // cmbSource
+            // 
+            this.cmbSource.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSource.FormattingEnabled = true;
+            this.cmbSource.Location = new System.Drawing.Point(60, 95);
+            this.cmbSource.Name = "cmbSource";
+            this.cmbSource.Size = new System.Drawing.Size(124, 21);
+            this.cmbSource.Sorted = true;
+            this.cmbSource.TabIndex = 45;
+            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
             // 
             // label14
             // 
@@ -999,89 +1082,6 @@ namespace DemoGame.Editor
             this.radioEdit.TabStop = true;
             this.radioEdit.Text = "Frame Editor";
             this.radioEdit.UseVisualStyleBackColor = true;
-            // 
-            // cmbSkeletonBodies
-            // 
-            this.cmbSkeletonBodies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSkeletonBodies.FormattingEnabled = true;
-            this.cmbSkeletonBodies.Location = new System.Drawing.Point(107, 3);
-            this.cmbSkeletonBodies.Name = "cmbSkeletonBodies";
-            this.cmbSkeletonBodies.Size = new System.Drawing.Size(56, 21);
-            this.cmbSkeletonBodies.TabIndex = 48;
-            this.cmbSkeletonBodies.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonBodies_SelectedIndexChanged);
-            // 
-            // cmbSkeletonBodyNodes
-            // 
-            this.cmbSkeletonBodyNodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSkeletonBodyNodes.FormattingEnabled = true;
-            this.cmbSkeletonBodyNodes.Location = new System.Drawing.Point(168, 3);
-            this.cmbSkeletonBodyNodes.Name = "cmbSkeletonBodyNodes";
-            this.cmbSkeletonBodyNodes.Size = new System.Drawing.Size(56, 21);
-            this.cmbSkeletonBodyNodes.TabIndex = 49;
-            // 
-            // GameScreen
-            // 
-            this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GameScreen.Location = new System.Drawing.Point(0, 0);
-            this.GameScreen.Name = "GameScreen";
-            this.GameScreen.Size = new System.Drawing.Size(630, 549);
-            this.GameScreen.SkeletonEditorForm = null;
-            this.GameScreen.TabIndex = 2;
-            this.GameScreen.Text = "Game Screen";
-            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
-            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
-            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
-            this.GameScreen.Resize += new System.EventHandler(this.GameScreen_Resize);
-            // 
-            // cmbSkeletonNodes
-            // 
-            this.cmbSkeletonNodes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cmbSkeletonNodes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbSkeletonNodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSkeletonNodes.FormattingEnabled = true;
-            this.cmbSkeletonNodes.Location = new System.Drawing.Point(3, 16);
-            this.cmbSkeletonNodes.Name = "cmbSkeletonNodes";
-            this.cmbSkeletonNodes.Size = new System.Drawing.Size(283, 21);
-            this.cmbSkeletonNodes.Sorted = true;
-            this.cmbSkeletonNodes.TabIndex = 48;
-            this.tt.SetToolTip(this.cmbSkeletonNodes, "The currently selected skeleton node (joint)");
-            this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
-            // 
-            // lstBodies
-            // 
-            this.lstBodies.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstBodies.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstBodies.FormattingEnabled = true;
-            this.lstBodies.Location = new System.Drawing.Point(0, 0);
-            this.lstBodies.Name = "lstBodies";
-            this.lstBodies.Size = new System.Drawing.Size(283, 163);
-            this.lstBodies.TabIndex = 35;
-            this.lstBodies.SelectedIndexChanged += new System.EventHandler(this.lstBodies_SelectedIndexChanged);
-            // 
-            // cmbTarget
-            // 
-            this.cmbTarget.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTarget.FormattingEnabled = true;
-            this.cmbTarget.Location = new System.Drawing.Point(60, 122);
-            this.cmbTarget.Name = "cmbTarget";
-            this.cmbTarget.Size = new System.Drawing.Size(99, 21);
-            this.cmbTarget.Sorted = true;
-            this.cmbTarget.TabIndex = 47;
-            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
-            // 
-            // cmbSource
-            // 
-            this.cmbSource.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSource.FormattingEnabled = true;
-            this.cmbSource.Location = new System.Drawing.Point(60, 95);
-            this.cmbSource.Name = "cmbSource";
-            this.cmbSource.Size = new System.Drawing.Size(124, 21);
-            this.cmbSource.Sorted = true;
-            this.cmbSource.TabIndex = 45;
-            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
             // 
             // SkeletonEditorForm
             // 
