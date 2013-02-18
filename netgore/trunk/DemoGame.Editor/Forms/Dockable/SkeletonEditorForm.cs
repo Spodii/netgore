@@ -477,8 +477,13 @@ namespace DemoGame.Editor
             const float TranslateRate = 7f;
             const float ScaleRate = 0.08f;
 
+            var oldCenter = _camera.Center;
+
             switch (e.KeyCode)
             {
+                case Keys.NumPad5:
+                    ResetCamera();
+                    break;
                 case Keys.NumPad8:
                     _camera.Translate(new Vector2(0, -TranslateRate / _camera.Scale));
                     break;
@@ -515,6 +520,8 @@ namespace DemoGame.Editor
 
                     break;
             }
+
+            _camera.CenterOn(oldCenter);
         }
 
         /// <summary>
@@ -562,9 +569,14 @@ namespace DemoGame.Editor
 
             _watch.Start();
 
-            _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
+            ResetCamera();
 
             GameScreen.MouseWheel += GameScreen_MouseWheel;
+        }
+
+        private void ResetCamera()
+        {
+            _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
         }
 
         void RecursiveHookInput(Control rootC)
