@@ -127,15 +127,19 @@ namespace NetGore.Features.Quests
                 ushort count;
                 ushort reqCount;
 
-                // Try to increment the target on the quest
-                if (counter.Increment(target, out count, out reqCount))
+                // Check if the quest is active
+                if (Owner.ActiveQuests.Contains(counter.Quest))
                 {
-                    // Increment successful, so invoke events
-                    OnKillCountIncremented(counter.Quest, target, count, reqCount);
-                    if (KillCountIncremented != null)
+                    // Try to increment the target on the quest
+                    if (counter.Increment(target, out count, out reqCount))
                     {
-                        KillCountIncremented(this,
-                            new QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>(counter.Quest, target, count, reqCount));
+                        // Increment successful, so invoke events
+                        OnKillCountIncremented(counter.Quest, target, count, reqCount);
+                        if (KillCountIncremented != null)
+                        {
+                            KillCountIncremented(this,
+                                new QuestPerformerKillCounterKillIncrementEventArgs<TCharacter, TKillID>(counter.Quest, target, count, reqCount));
+                        }
                     }
                 }
             }
