@@ -20,16 +20,6 @@ using NetGore.Graphics;
 using NetGore.IO;
 using NetGore.World;
 using SFML.Graphics;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using NetGore.Audio;
-using NetGore.Content;
-using WeifenLuo.WinFormsUI.Docking;
-using NetGore.IO;
 
 namespace DemoGame.Editor
 {

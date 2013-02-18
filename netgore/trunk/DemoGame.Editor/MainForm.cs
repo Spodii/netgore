@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
+using DemoGame.Editor.Forms.Dockable;
 using DemoGame.Editor.Properties;
 using DemoGame.Editor.Tools;
 using DemoGame.Editor.UITypeEditors;
@@ -42,6 +43,7 @@ namespace DemoGame.Editor
         SelectedMapObjectsForm _frmSelectedMapObjs;
         SkeletonEditorForm _frmSkeletonEditor;
         SoundEditorForm _frmSoundEditor;
+        private GrhTilesetForm _frmGrhTilesetForm;
 
         public static DockPanel DockPanel { get { return _instance.dockPanel; } }
 
@@ -186,6 +188,9 @@ namespace DemoGame.Editor
             _frmSoundEditor = new SoundEditorForm();
             _frmSoundEditor.VisibleChanged += _frmSoundEditor_VisibleChanged;
 
+            _frmGrhTilesetForm = new GrhTilesetForm();
+            _frmGrhTilesetForm.VisibleChanged += new EventHandler(_frmGrhTilesetForm_VisibleChanged);
+
             // Set up some other stuff
             var mapPropertiesTool = ToolManager.Instance.TryGetTool<MapPropertiesTool>();
             if (mapPropertiesTool != null)
@@ -240,6 +245,11 @@ namespace DemoGame.Editor
             helpManager.Add(trackBarDepth, "Layer Depth", "Layer depth");
 
             SetStatusMessage(string.Empty);
+        }
+
+        void _frmGrhTilesetForm_VisibleChanged(object sender, EventArgs e)
+        {
+            grhTilesetViewMenuItem.Checked = ((Form)sender).Visible;
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -702,6 +712,14 @@ namespace DemoGame.Editor
         private void mapToolStripMenuItem_Paint(object sender, PaintEventArgs e)
         {
             mapToolStripMenuItem.Enabled = MapHelper.ActiveMap != null;
+        }
+
+        private void grhTilesetViewMenuItem_Click(object sender, EventArgs e)
+        {
+            if (grhTilesetViewMenuItem.Checked)
+                _frmGrhTilesetForm.Show(dockPanel, DockState.Float);
+            else
+                _frmGrhTilesetForm.Hide();
         }
     }
 }
