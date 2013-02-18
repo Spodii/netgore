@@ -170,6 +170,9 @@ namespace DemoGame.Editor
                 if (frameInfo.Length == 1 || !Parser.Invariant.TryParse(frameInfo[1], out frameTime))
                     frameTime = 200f;
 
+                if (frameTime <= 0)
+                    return null;
+
                 // Create the keyframe
                 var newSkeleton = new Skeleton(frameInfo[0], ContentPaths.Dev);
                 frames[i] = new SkeletonFrame(frameInfo[0], newSkeleton, frameTime);
