@@ -127,6 +127,9 @@
     <Compile Include="Controls\BodyInfoListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Screen Controls\GrhAtlasView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\SoundInfoListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -204,6 +207,12 @@
     </Compile>
     <Compile Include="Forms\Dockable\ParticleEditorForm.Designer.cs">
       <DependentUpon>ParticleEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GrhTilesetSelectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GrhTilesetSelectForm.Designer.cs">
+      <DependentUpon>GrhTilesetSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\InputNewMapIDForm.cs">
       <SubType>Form</SubType>
@@ -285,6 +294,7 @@
     <Compile Include="Controls\SkeletonNodesComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TilesetConfiguration.cs" />
     <Compile Include="Tools\Map\Cursors\MapGrhFillTool.cs" />
     <Compile Include="Tools\Map\Cursors\MapGrhPencilTool.cs" />
     <Compile Include="Tools\Map\MapDisplayBackgroundTool.cs" />
@@ -469,6 +479,9 @@
     <EmbeddedResource Include="Forms\Dockable\BodyEditorForm.resx">
       <DependentUpon>BodyEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dockable\GrhTilesetForm.resx">
+      <DependentUpon>GrhTilesetForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\SoundEditorForm.resx">
       <DependentUpon>SoundEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -494,6 +507,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Dockable\ToolTargetFormBase.resx">
       <DependentUpon>ToolTargetFormBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GrhTilesetSelectForm.resx">
+      <DependentUpon>GrhTilesetSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputNewMapIDForm.resx">
       <DependentUpon>InputNewMapIDForm.cs</DependentUpon>
