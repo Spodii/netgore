@@ -8,6 +8,9 @@ namespace NetGore.Db.MySql
     /// </summary>
     public static class DbConnectionSettingsExtensions
     {
+        // Ping the server to stay alive if nothing has been queried within two hours
+        private const int KeepAliveTimeSeconds = 7200;
+
         /// <summary>
         /// Makes a MySql connection string using the given settings.
         /// </summary>
@@ -25,10 +28,11 @@ namespace NetGore.Db.MySql
                 Pooling = true,
                 UseCompression = false,
                 UsePerformanceMonitor = false,
-                UseUsageAdvisor = false
+                UseUsageAdvisor = false,
+                InteractiveSession = false,
+                Keepalive = KeepAliveTimeSeconds
             };
-
-            return sb.ToString();
+    
         }
     }
 }
