@@ -720,6 +720,7 @@ namespace DemoGame.Editor
                 _frmGrhTilesetForm.Show(dockPanel, DockState.Float);
             else
                 _frmGrhTilesetForm.Hide();
+            
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Client", "DemoGame.Client\DemoGame.Client.csproj", "{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Server", "DemoGame.Server\DemoGame.Server.csproj", "{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}"
@@ -33,6 +33,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Editor", "DemoGame.Editor\DemoGame.Editor.csproj", "{5F863755-2701-4934-9445-73EF9C1749BF}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		DebugDbClassGen|x86 = DebugDbClassGen|x86
@@ -229,6 +233,7 @@ Global
 		{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}.ReleaseSideScroller|x86.Build.0 = ReleaseSideScroller|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.Debug|x86.ActiveCfg = Debug|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.Debug|x86.Build.0 = Debug|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Debug|x86.Deploy.0 = Debug|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugSideScroller|x86.ActiveCfg = DebugSideScroller|x86
 		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugSideScroller|x86.Build.0 = DebugSideScroller|x86
@@ -244,9 +249,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
