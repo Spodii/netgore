@@ -32,7 +32,8 @@ namespace NetGore.Db.MySql
                 InteractiveSession = false,
                 Keepalive = KeepAliveTimeSeconds
             };
-    
+
+            return sb.ToString();
         }
     }
 }
