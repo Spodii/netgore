@@ -129,6 +129,14 @@ namespace NetGore.Editor.Grhs
                         stationaryGrhData.AutomaticSize = true;
                     }
 
+                    // Add to GrhDataFileTags
+                    if (grhDataFileTags.ContainsKey(grhData))
+                    {
+                        throw new GrhDataException(grhData, string.Format("Found more than one stationary GrhData with the categorization: `{0}`." +
+                            " Make sure that you do not have multiple image files in /DevContent/ in the same folder with the same name but different extensions (e.g. Sprite.png and Sprite.jpg).",
+                            grhData.Categorization));
+                    }
+
                     grhDataFileTags.Add(grhData, fileTags);
                 }
                 else
@@ -168,6 +176,14 @@ namespace NetGore.Editor.Grhs
                     {
                         grhData = GrhInfo.CreateAutomaticAnimatedGrhData(cm, cat, grhIndex);
                         addedGrhDatas.Add(grhData);
+                    }
+
+                    // Add to GrhDataFileTags
+                    if (grhDataFileTags.ContainsKey(grhData))
+                    {
+                        throw new GrhDataException(grhData, string.Format("Found more than one animated GrhData with the categorization: `{0}`." +
+                            " Make sure that you do not have multiple sub-folders in /DevContent/ in the same folder with the same name but different folder tags (e.g. /_Sprite[s100]/ and /_Sprite[s200]/).",
+                            grhData.Categorization));
                     }
 
                     grhDataFileTags.Add(grhData, fileTags);
