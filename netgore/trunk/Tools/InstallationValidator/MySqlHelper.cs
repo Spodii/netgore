@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using NetGore;
 using NetGore.Db;
+using NetGore.IO;
 
 namespace InstallationValidator
 {
@@ -170,39 +172,52 @@ namespace InstallationValidator
         /// <param name="cmds">The additional commands to input when running the process.</param>
         public static void MySqlCommand(string command, out string output, out string error, params string[] cmds)
         {
-            // Build the default command string
-            if (string.IsNullOrEmpty(command))
+            using (var tmpFile = new TempFile())
             {
-                var username = ConnectionSettings.User;
-                var password = ConnectionSettings.Pass;
-                var host = ConnectionSettings.Host;
-                command = string.Format("--user={0} --password={1} --host={2}", username, password, host);
-            }
-
-            var psi = new ProcessStartInfo(MySqlPath, command)
-            {
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            var p = new Process { StartInfo = psi };
-            p.Start();
-
-            if (cmds != null)
-            {
-                for (var i = 0; i < cmds.Length; i++)
+                // Build the default command string
+                if (string.IsNullOrEmpty(command))
                 {
-                    p.StandardInput.WriteLine(cmds[i]);
-                }
-            }
-            p.WaitForExit();
+                    // Since v5.6, MySQL started being a little bitch about passing the password via the command line. So we instead set the credentials
+                    // in a temporary file and pass it that instead.
+                    var username = ConnectionSettings.User;
+                    var host = ConnectionSettings.Host;
+                    var password = ConnectionSettings.Pass;
 
-            output = p.StandardOutput.ReadToEnd();
-            error = p.StandardError.ReadToEnd();
+                    File.WriteAllText(tmpFile.FilePath, string.Format(@"
+[client]
+user={0}
+password={1}
+host={2}
+", username, password, host));
+
+                    command = string.Format("--defaults-extra-file=\"{0}\"", tmpFile.FilePath);
+                }
+
+                var psi = new ProcessStartInfo(MySqlPath, command)
+                {
+                    CreateNoWindow = false,
+                    UseShellExecute = false,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var p = new Process { StartInfo = psi };
+                p.Start();
+
+                if (cmds != null)
+                {
+                    for (var i = 0; i < cmds.Length; i++)
+                    {
+                        p.StandardInput.WriteLine(cmds[i]);
+                    }
+                }
+                p.WaitForExit();
+
+                output = p.StandardOutput.ReadToEnd();
+                error = p.StandardError.ReadToEnd();
+            }
         }
 
         /// <summary>
