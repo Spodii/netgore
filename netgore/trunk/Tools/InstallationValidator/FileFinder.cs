@@ -22,7 +22,7 @@ namespace InstallationValidator
             if (!Directory.Exists(root))
                 return null;
 
-            foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
+            foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories).Reverse())
             {
                 if (Path.GetFileName(file).ToLower().EndsWith(fileName))
                     return file;
