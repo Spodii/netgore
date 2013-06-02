@@ -48,7 +48,7 @@ namespace DemoGame.Server
             {
                 var map = user.World.GetMap(user.RespawnMapID.Value);
                 var mapPos = user.RespawnPosition;
-                if (map != null && map.Size.X < mapPos.X && map.Size.Y < mapPos.Y && mapPos.X >= 0 && mapPos.Y >= 0)
+                if (map != null && map.Size.X > mapPos.X && map.Size.Y > mapPos.Y && mapPos.X >= 0 && mapPos.Y >= 0)
                 {
                     mapID = user.RespawnMapID.Value;
                     position = user.RespawnPosition;
