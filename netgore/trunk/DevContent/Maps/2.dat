@@ -2,6 +2,7 @@
 <Map>
   <Header>
     <Name>Jail</Name>
+	<ParentMapID>1</ParentMapID>
     <HasMusic>True</HasMusic>
     <MusicID>1</MusicID>
     <Size>1024,960</Size>

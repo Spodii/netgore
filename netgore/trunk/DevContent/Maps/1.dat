@@ -2,6 +2,7 @@
 <Map>
   <Header>
     <Name>Town</Name>
+	<ParentMapID>1</ParentMapID>
     <HasMusic>True</HasMusic>
     <MusicID>1</MusicID>
     <Size>2000,2000</Size>

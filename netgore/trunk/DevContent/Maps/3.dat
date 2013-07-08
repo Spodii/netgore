@@ -2,6 +2,7 @@
 <Map>
   <Header>
     <Name>Shop</Name>
+	<ParentMapID>1</ParentMapID>
     <HasMusic>False</HasMusic>
     <MusicID>0</MusicID>
     <Size>960,750</Size>

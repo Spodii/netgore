@@ -146,7 +146,7 @@ namespace DemoGame.Client
                     if (Friend.Online)
                     {
                         FriendsCollection[i].ForeColor = SFML.Graphics.Color.LawnGreen;
-                        FriendsCollection[i].Text = Friend.Name + " : " + Friend.Map.Substring(0, Friend.Map.IndexOf('['));
+                        FriendsCollection[i].Text = Friend.Name + " : " + Friend.Map;
                     }
                     else
                     {

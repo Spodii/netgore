@@ -890,7 +890,8 @@ namespace DemoGame.Server
                 if (FriendsList.Contains(Member.Name))
                 {
                     OnlineFriendsString += Member.Name + ",";
-                    FriendsMap += Member.Map + ",";
+                    var parentMap = World.GetMap(Member.Map.ParentMapID);
+                    FriendsMap += parentMap.Name + ",";
                 }
             }
 
