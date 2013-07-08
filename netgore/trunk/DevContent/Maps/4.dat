@@ -2,6 +2,7 @@
 <Map>
   <Header>
     <Name>New map</Name>
+	<ParentMapID>4</ParentMapID>
     <HasMusic>False</HasMusic>
     <MusicID>0</MusicID>
     <Size>2000,2000</Size>

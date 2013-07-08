@@ -61,6 +61,7 @@ namespace DemoGame
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeSizeKey = "Size";
+        const string _headerNodeParentMapKey = "ParentMapID";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
         const string _wallsNodeName = "Walls";
@@ -145,6 +146,14 @@ namespace DemoGame
         [Category("Map")]
         [Description("The ID of the music to play on the map.")]
         public MusicID? MusicID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the parent map.
+        /// </summary>
+        [Browsable(true)]
+        [Category("Map")]
+        [Description("The ID of the parent map.")]
+        public MapID ParentMapID { get; set; }
 
         /// <summary>
         /// Adds a <see cref="DynamicEntity"/> to the <see cref="MapBase"/>, using the pre-determined unique index.
@@ -859,6 +868,8 @@ namespace DemoGame
             if (!hasMusic)
                 MusicID = null;
 
+            ParentMapID = nodeReader.ReadMapID(_headerNodeParentMapKey);
+
             _size = nodeReader.ReadVector2(_headerNodeSizeKey);
             Indoors = nodeReader.ReadBool(_headerNodeIndoorsKey);
 
@@ -1154,6 +1165,7 @@ namespace DemoGame
             w.WriteStartNode(_headerNodeName);
             {
                 w.Write(_headerNodeNameKey, Name);
+                w.Write(_headerNodeParentMapKey, ParentMapID);
                 w.Write(_headerNodeHasMusicKey, MusicID.HasValue);
                 w.Write(_headerNodeMusicKey, MusicID.HasValue ? MusicID.Value : new MusicID(0));
                 w.Write(_headerNodeSizeKey, Size);

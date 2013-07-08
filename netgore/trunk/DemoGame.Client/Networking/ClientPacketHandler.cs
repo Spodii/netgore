@@ -1127,7 +1127,6 @@ namespace DemoGame.Client
                 i++;
             }
 
-
             FriendsForm._myFriends.RemoveDuplicates((x, y) => x.Name == y.Name);
             FriendsForm._myFriends.RemoveAll((x) => x.Name == "");
             FriendsForm.SortList();
