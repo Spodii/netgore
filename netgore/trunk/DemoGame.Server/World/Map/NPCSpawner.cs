@@ -26,6 +26,7 @@ namespace DemoGame.Server
         readonly CharacterTemplate _characterTemplate;
         readonly Map _map;
         readonly BodyInfo _characterTemplateBody;
+        readonly ushort _respawn;
 
         NPCSpawnerNPC[] _npcs;
 
@@ -55,6 +56,7 @@ namespace DemoGame.Server
             _amount = mapSpawnValues.Amount;
             _area = new MapSpawnRect(mapSpawnValues).ToRectangle(map);
             _spawnDirection = mapSpawnValues.DirectionId;
+            _respawn = mapSpawnValues.Respawn;
 
             if (_characterTemplate == null)
             {
@@ -83,6 +85,14 @@ namespace DemoGame.Server
         public Rectangle Area
         {
             get { return _area; }
+        }
+
+        /// <summary>
+        /// Gets the number of seconds before a dead <see cref="NPCSpawner"/> respawns back on the map.
+        /// </summary>
+        public ushort Respawn
+        {
+            get { return _respawn; }
         }
 
         /// <summary>
@@ -184,7 +194,7 @@ namespace DemoGame.Server
                     if (dir == Direction.None)
                         dir = (Direction) values.GetValue(RandomHelper.NextInt(1, values.Length));
 
-                    NPCSpawnerNPC npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos.Value, dir);
+                    NPCSpawnerNPC npc = new NPCSpawnerNPC(this, _map.World, _characterTemplate, _map, pos.Value, dir, _respawn);
                     _npcs[i] = npc;
                 }
             }
@@ -225,7 +235,7 @@ namespace DemoGame.Server
             /// <param name="position">The position.</param>
             /// <param name="spawnDirection">The direction to spawn in</param>
             /// <exception cref="ArgumentNullException"><paramref name="spawner" /> is <c>null</c>.</exception>
-            public NPCSpawnerNPC(NPCSpawner spawner, World parent, CharacterTemplate template, Map map, Vector2 position, Direction spawnDirection)
+            public NPCSpawnerNPC(NPCSpawner spawner, World parent, CharacterTemplate template, Map map, Vector2 position, Direction spawnDirection, ushort respawn)
                 : base(parent, template, map, position)
             {
                 if (spawner == null)
@@ -233,6 +243,8 @@ namespace DemoGame.Server
 
                 // Set the heading for this NPC
                 Heading = spawnDirection;
+                // Set the amount of seconds before respawning
+                RespawnSecs = respawn;
 
                 _spawner = spawner;
             }

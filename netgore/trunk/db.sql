@@ -2,7 +2,8 @@
 SQLyog Community v10.5 Beta1
 MySQL - 5.5.28 : Database - demogame
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -718,6 +719,7 @@ CREATE TABLE `map_spawn` (
   `map_id` smallint(5) unsigned NOT NULL COMMENT 'The map that this spawn takes place on.',
   `character_template_id` smallint(5) unsigned NOT NULL COMMENT 'The character template used to instantiate the spawned NPCs.',
   `amount` tinyint(3) unsigned NOT NULL COMMENT 'The total number of NPCs this spawner will spawn.',
+  `respawn` smallint(5) unsigned NOT NULL DEFAULT '5' COMMENT 'How long in seconds to wait after death to be respawned (intended for NPCs only).',
   `x` smallint(5) unsigned DEFAULT NULL COMMENT 'The x coordinate of the spawner (NULL indicates the left-most side of the map). Example: All x/y/width/height set to NULL spawns NPCs anywhere on the map.',
   `y` smallint(5) unsigned DEFAULT NULL COMMENT 'The y coordinate of the spawner (NULL indicates the top-most side of the map).',
   `width` smallint(5) unsigned DEFAULT NULL COMMENT 'The width of the spawner (NULL indicates the right-most side of the map).',
@@ -732,7 +734,7 @@ CREATE TABLE `map_spawn` (
 
 /*Data for the table `map_spawn` */
 
-insert  into `map_spawn`(`id`,`map_id`,`character_template_id`,`amount`,`x`,`y`,`width`,`height`,`direction_id`) values (5,2,6,45,130,165,720,475,0),(9,1,1,3,NULL,NULL,NULL,NULL,0),(11,1,2,1,600,580,32,32,0),(16,3,4,1,250,250,1,1,0),(17,3,5,1,678,253,1,1,0),(18,4,2,1,600,400,128,128,5);
+insert  into `map_spawn`(`id`,`map_id`,`character_template_id`,`amount`,`respawn`,`x`,`y`,`width`,`height`,`direction_id`) values (5,2,6,45,5,130,165,720,475,0),(9,1,1,3,20,NULL,NULL,NULL,NULL,0),(11,1,2,1,5,600,580,32,32,0),(16,3,4,1,5,250,250,1,1,0),(17,3,5,1,5,678,253,1,1,0),(18,4,2,1,5,600,400,128,128,5);
 
 /*Table structure for table `quest` */
 
@@ -1288,12 +1290,36 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `bi_account_ban_fer` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW BEGIN
-	IF new.end_time <= NOW() THEN
-		SET new.expired = 1;
-	ELSE
-		SET new.expired = 0;
-	END IF;
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW BEGIN
+
+
+
+
+	IF new.end_time <= NOW() THEN
+
+
+
+
+		SET new.expired = 1;
+
+
+
+
+	ELSE
+
+
+
+
+		SET new.expired = 0;
+
+
+
+
+	END IF;
+
+
+
+
 END */$$
 
 
@@ -1305,12 +1331,36 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `bu_account_ban_fer` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW BEGIN
-	IF new.end_time <= NOW() THEN
-		SET new.expired = 1;
-	ELSE
-		SET new.expired = 0;
-	END IF;
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW BEGIN
+
+
+
+
+	IF new.end_time <= NOW() THEN
+
+
+
+
+		SET new.expired = 1;
+
+
+
+
+	ELSE
+
+
+
+
+		SET new.expired = 0;
+
+
+
+
+	END IF;
+
+
+
+
 END */$$
 
 

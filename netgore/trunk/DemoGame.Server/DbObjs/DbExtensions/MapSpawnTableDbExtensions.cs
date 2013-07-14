@@ -46,6 +46,7 @@ paramValues["direction_id"] = (System.Int16)source.DirectionId;
 paramValues["height"] = (System.Nullable<System.UInt16>)source.Height;
 paramValues["id"] = (System.Int32)source.ID;
 paramValues["map_id"] = (System.UInt16)source.MapID;
+paramValues["respawn"] = (System.UInt16)source.Respawn;
 paramValues["width"] = (System.Nullable<System.UInt16>)source.Width;
 paramValues["x"] = (System.Nullable<System.UInt16>)source.X;
 paramValues["y"] = (System.Nullable<System.UInt16>)source.Y;
@@ -85,6 +86,10 @@ source.ID = (DemoGame.MapSpawnValuesID)(DemoGame.MapSpawnValuesID)dataRecord.Get
 i = dataRecord.GetOrdinal("map_id");
 
 source.MapID = (NetGore.World.MapID)(NetGore.World.MapID)dataRecord.GetUInt16(i);
+
+i = dataRecord.GetOrdinal("respawn");
+
+source.Respawn = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 
 i = dataRecord.GetOrdinal("width");
 
@@ -142,6 +147,11 @@ break;
 
 case "map_id":
 source.MapID = (NetGore.World.MapID)(NetGore.World.MapID)dataRecord.GetUInt16(i);
+break;
+
+
+case "respawn":
+source.Respawn = (System.UInt16)(System.UInt16)dataRecord.GetUInt16(i);
 break;
 
 
@@ -211,6 +221,11 @@ paramValues[i] = (System.UInt16)source.MapID;
 break;
 
 
+case "respawn":
+paramValues[i] = (System.UInt16)source.Respawn;
+break;
+
+
 case "width":
 paramValues[i] = (System.Nullable<System.UInt16>)source.Width;
 break;
@@ -247,6 +262,7 @@ Equals(source.DirectionId, otherItem.DirectionId) &&
 Equals(source.Height, otherItem.Height) && 
 Equals(source.ID, otherItem.ID) && 
 Equals(source.MapID, otherItem.MapID) && 
+Equals(source.Respawn, otherItem.Respawn) && 
 Equals(source.Width, otherItem.Width) && 
 Equals(source.X, otherItem.X) && 
 Equals(source.Y, otherItem.Y);
