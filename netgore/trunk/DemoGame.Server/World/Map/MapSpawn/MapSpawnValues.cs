@@ -29,6 +29,7 @@ namespace DemoGame.Server
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
         private Direction _spawnDirection;
+        ushort _spawnRespawn;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapSpawnValues"/> class.
@@ -37,7 +38,7 @@ namespace DemoGame.Server
         /// <param name="mapID">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         public MapSpawnValues(IDbController dbController, MapID mapID, CharacterTemplateID characterTemplateID)
-            : this(dbController, GetFreeID(dbController), mapID, characterTemplateID, 1, new MapSpawnRect(null, null, null, null), Direction.None)
+            : this(dbController, GetFreeID(dbController), mapID, characterTemplateID, 1, new MapSpawnRect(null, null, null, null), Direction.None, 5)
         {
             DbController.GetQuery<InsertMapSpawnQuery>().Execute(this);
         }
@@ -48,7 +49,7 @@ namespace DemoGame.Server
         /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
         /// <param name="v">The IMapSpawnTable containing the values to use.</param>
         MapSpawnValues(IDbController dbController, IMapSpawnTable v)
-            : this(dbController, v.ID, v.MapID, v.CharacterTemplateID, v.Amount, new MapSpawnRect(v), v.DirectionId)
+            : this(dbController, v.ID, v.MapID, v.CharacterTemplateID, v.Amount, new MapSpawnRect(v), v.DirectionId, v.Respawn)
         {
         }
 
@@ -61,9 +62,10 @@ namespace DemoGame.Server
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         /// <param name="spawnAmount">The maximum number of Characters that will be spawned by this MapSpawnValues.</param>
         /// <param name="spawnRect">The area on the map the spawning will take place at.</param>
-        /// <param name="spawnDirection"The direction on this map to spawn the NPCs </param>
+        /// <param name="spawnDirection">The direction on this map to spawn the NPCs.</param>
+        /// <param name="spawnRespawn">The time it takes for an NPC to spawn.</param>
         MapSpawnValues(IDbController dbController, MapSpawnValuesID id, MapID mapID, CharacterTemplateID characterTemplateID,
-                       byte spawnAmount, MapSpawnRect spawnRect, Direction spawnDirection)
+                       byte spawnAmount, MapSpawnRect spawnRect, Direction spawnDirection, ushort spawnRespawn)
         {
             _dbController = dbController;
             _id = id;
@@ -72,6 +74,7 @@ namespace DemoGame.Server
             _spawnAmount = spawnAmount;
             _spawnArea = spawnRect;
             _spawnDirection = spawnDirection;
+            _spawnRespawn = spawnRespawn;
         }
 
         /// <summary>
@@ -132,6 +135,25 @@ namespace DemoGame.Server
             set
             {
                 _spawnArea = value;
+                UpdateDB();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the time in seconds it takes for the Character to respawn.
+        /// </summary>
+        [Browsable(true)]
+        [DisplayName("Respawn")]
+        [Description("How long in seconds to wait after death to be respawned.")]
+        public ushort SpawnRespawn
+        {
+            get { return _spawnRespawn; }
+            set
+            {
+                if (_spawnRespawn == value)
+                    return;
+
+                _spawnRespawn = value;
                 UpdateDB();
             }
         }
@@ -370,6 +392,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the value of the database column `respawn`.
+        /// </summary>
+        [Browsable(false)]
+        ushort IMapSpawnTable.Respawn
+        {
+            get { return SpawnRespawn; }
+        }
+
+        /// <summary>
         /// Gets the value of the database column `x`.
         /// </summary>
         [Browsable(false)]
@@ -400,8 +431,5 @@ namespace DemoGame.Server
         }
 
         #endregion
-
-
-      
     }
 }

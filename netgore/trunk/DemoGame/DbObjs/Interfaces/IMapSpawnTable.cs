@@ -76,6 +76,13 @@ NetGore.World.MapID MapID
 get;
 }
 /// <summary>
+/// Gets the value of the database column `respawn`.
+/// </summary>
+System.UInt16 Respawn
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `width`.
 /// </summary>
 System.Nullable<System.UInt16> Width
