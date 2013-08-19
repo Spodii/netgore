@@ -1887,7 +1887,7 @@ namespace DemoGame.Server
                 return;
 
             // Set the new recovery time
-            _spRecoverTime += _spRecoveryRate;
+            _spRecoverTime = (int)time + _spRecoveryRate;
 
             // Recover
             HP += 1 + ModStats[StatType.Str] / 2;
