@@ -74,28 +74,22 @@ namespace DemoGame.Server
                     Actor.StopMoving();
                 else
                 {
-                    if (Rand(0, 2) == 0)
-                    {
-                        Actor.MoveUp();
-                        return;
-                    }
-                    
-                    if (Rand(0,2) == 0)
-                    {
-                        Actor.MoveDown();
-                        return;
-                    }
+                    int moveDirection = Rand(0, 4);
 
-                    if (Rand(0, 2) == 0)
+                    switch (moveDirection)
                     {
-                        Actor.MoveLeft();
-                        return;
-                    }
-
-                    if (Rand(0, 2) == 0)
-                    {
-                        Actor.MoveRight();
-                        return;
+                        case 0:
+                            Actor.MoveUp();
+                            return;
+                        case 1:
+                            Actor.MoveDown();
+                            return;
+                        case 2:
+                            Actor.MoveLeft();
+                            return;
+                        case 3:
+                            Actor.MoveRight();
+                            return;
                     }
                 }
             }
