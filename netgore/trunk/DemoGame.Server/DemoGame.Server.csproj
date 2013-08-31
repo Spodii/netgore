@@ -306,7 +306,7 @@
     <Compile Include="Queries\Character\Template\InsertCharacterTemplateInventoryQuery.cs" />
     <Compile Include="Queries\Character\Template\InsertCharacterTemplateQuestProviderQuery.cs" />
     <Compile Include="Queries\Item\Template\DeleteItemTemplateQuery.cs" />
-    <Compile Include="Queries\Character\Template\InsertCharacterTemplateQuery.cs" />
+    <Compile Include="Queries\Character\Template\InsertUpdateCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Character\Template\InsertCharacterTemplateIDOnlyQuery.cs" />
     <Compile Include="Queries\Item\Template\InsertItemTemplateIDOnlyQuery.cs" />
     <Compile Include="Queries\Item\Template\InsertItemTemplateQuery.cs" />
@@ -349,7 +349,7 @@
     <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusFinishedQuery.cs" />
     <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
-    <Compile Include="Queries\Shop\InsertShopQuery.cs" />
+    <Compile Include="Queries\Shop\InsertUpdateShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\InsertShopItemQuery.cs" />
     <Compile Include="Queries\PeerTrading\PeerTradingInsertItemQuery.cs" />
     <Compile Include="Queries\PeerTrading\PeerTradingRemoveItemQuery.cs" />

@@ -9,14 +9,13 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class InsertCharacterTemplateQuery : DbQueryNonReader<ICharacterTemplateTable>
+    public class InsertUpdateShopQuery : DbQueryNonReader<IShopTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertCharacterTemplateQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertUpdateShopQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
-        public InsertCharacterTemplateQuery(DbConnectionPool connectionPool)
+        /// <param name="connectionPool">The connection pool.</param>
+        public InsertUpdateShopQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
@@ -31,9 +30,7 @@ namespace DemoGame.Server.Queries
             // INSERT INTO `{0}` {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
-            var q =
-                qb.Insert(CharacterTemplateTable.TableName).AddAutoParam(CharacterTemplateTable.DbColumns).ODKU().AddFromInsert(
-                    CharacterTemplateTable.DbKeyColumns);
+            var q = qb.Insert(ShopTable.TableName).AddAutoParam(ShopTable.DbColumns).ODKU().AddFromInsert(ShopTable.DbKeyColumns);
             return q.ToString();
         }
 
@@ -46,16 +43,15 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(CharacterTemplateTable.DbColumns);
+            return CreateParameters(ShopTable.DbColumns);
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
-        /// based on the values specified in the given <paramref name="item"/> parameter.
+        /// Sets the parameters.
         /// </summary>
-        /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, ICharacterTemplateTable item)
+        /// <param name="p">The p.</param>
+        /// <param name="item">The item.</param>
+        protected override void SetParameters(DbParameterValues p, IShopTable item)
         {
             item.CopyValues(p);
         }
