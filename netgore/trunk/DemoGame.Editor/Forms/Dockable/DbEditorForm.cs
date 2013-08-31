@@ -261,7 +261,7 @@ namespace DemoGame.Editor
         {
             var getUsedQuery = dbController.GetQuery<SelectShopIDsQuery>();
             var selectQuery = dbController.GetQuery<SelectShopQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertShopQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertUpdateShopQuery>();
 
             return GetFreeID(dbController, true, t => new ShopID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
                 x => insertByIDQuery.Execute(new ShopTable { ID = x, Name = string.Empty }));
@@ -435,7 +435,7 @@ namespace DemoGame.Editor
                     throw;
                 }
 
-                _dbController.GetQuery<InsertCharacterTemplateQuery>().Execute(newItem);
+                _dbController.GetQuery<InsertUpdateCharacterTemplateQuery>().Execute(newItem);
             }
             else
             {
@@ -460,7 +460,7 @@ namespace DemoGame.Editor
                 return;
 
             // Save
-            _dbController.GetQuery<InsertCharacterTemplateQuery>().Execute(v);
+            _dbController.GetQuery<InsertUpdateCharacterTemplateQuery>().Execute(v);
 
             // Equipped items (delete old, then add new)
             _dbController.GetQuery<DeleteCharacterTemplateEquippedForCharacterQuery>().Execute(v.ID);
@@ -593,7 +593,7 @@ namespace DemoGame.Editor
                     throw;
                 }
 
-                _dbController.GetQuery<InsertItemTemplateQuery>().Execute(newItem);
+                _dbController.GetQuery<InsertUpdateItemTemplateQuery>().Execute(newItem);
             }
             else
             {
@@ -618,7 +618,7 @@ namespace DemoGame.Editor
                 return;
 
             // Save
-            _dbController.GetQuery<InsertItemTemplateQuery>().Execute(v);
+            _dbController.GetQuery<InsertUpdateItemTemplateQuery>().Execute(v);
 
             // Reload from the database
             ItemTemplateManager.Instance.Reload(v.ID);
@@ -811,7 +811,6 @@ namespace DemoGame.Editor
             qdc.Save();
 
             // Main quest table values
-            _dbController.GetQuery<DeleteQuestQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertUpdateQuestQuery>().Execute(v);
 
             // Required items to start/finish
@@ -937,8 +936,7 @@ namespace DemoGame.Editor
                 return;
 
             // Main values
-            _dbController.GetQuery<DeleteShopQuery>().Execute(v.ID);
-            _dbController.GetQuery<InsertShopQuery>().Execute(v);
+            _dbController.GetQuery<InsertUpdateShopQuery>().Execute(v);
 
             // Items
             _dbController.GetQuery<InsertShopItemQuery>().Execute(v.ID, v.Items);

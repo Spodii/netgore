@@ -9,14 +9,14 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class InsertItemTemplateQuery : DbQueryNonReader<IItemTemplateTable>
+    public class InsertUpdateItemTemplateQuery : DbQueryNonReader<IItemTemplateTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertItemTemplateQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertUpdateItemTemplateQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public InsertItemTemplateQuery(DbConnectionPool connectionPool)
+        public InsertUpdateItemTemplateQuery(DbConnectionPool connectionPool)
             : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }

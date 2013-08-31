@@ -27,13 +27,15 @@ namespace DemoGame.Server.Queries
         static string CreateQuery(IQueryBuilder qb)
         {
             /*
-                DELETE FROM `{0}` WHERE `character_template_id`=@id
+                DELETE FROM `{0}`
+                    WHERE `character_template_id`=@id
             */
 
             var f = qb.Functions;
             var s = qb.Settings;
             var q =
-                qb.Delete(CharacterTemplateInventoryTable.TableName).Where(f.Equals(s.EscapeColumn("id"), s.Parameterize("id")));
+                qb.Delete(CharacterTemplateInventoryTable.TableName).Where(f.Equals(s.EscapeColumn("character_template_id"),
+                    s.Parameterize("id")));
             return q.ToString();
         }
 

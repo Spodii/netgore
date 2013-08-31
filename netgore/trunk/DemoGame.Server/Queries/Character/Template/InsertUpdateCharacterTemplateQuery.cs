@@ -9,13 +9,15 @@ using NetGore.Db.QueryBuilder;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class InsertShopQuery : DbQueryNonReader<IShopTable>
+    public class InsertUpdateCharacterTemplateQuery : DbQueryNonReader<ICharacterTemplateTable>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertShopQuery"/> class.
+        /// Initializes a new instance of the <see cref="InsertUpdateCharacterTemplateQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        public InsertShopQuery(DbConnectionPool connectionPool) : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public InsertUpdateCharacterTemplateQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, CreateQuery(connectionPool.QueryBuilder))
         {
         }
 
@@ -29,7 +31,9 @@ namespace DemoGame.Server.Queries
             // INSERT INTO `{0}` {1}
             //      ON DUPLICATE KEY UPDATE <{1} - keys>
 
-            var q = qb.Insert(ShopTable.TableName).AddAutoParam(ShopTable.DbColumns).ODKU().AddFromInsert(ShopTable.DbKeyColumns);
+            var q =
+                qb.Insert(CharacterTemplateTable.TableName).AddAutoParam(CharacterTemplateTable.DbColumns).ODKU().AddFromInsert(
+                    CharacterTemplateTable.DbKeyColumns);
             return q.ToString();
         }
 
@@ -42,15 +46,16 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(ShopTable.DbColumns);
+            return CreateParameters(CharacterTemplateTable.DbColumns);
         }
 
         /// <summary>
-        /// Sets the parameters.
+        /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
+        /// based on the values specified in the given <paramref name="item"/> parameter.
         /// </summary>
-        /// <param name="p">The p.</param>
-        /// <param name="item">The item.</param>
-        protected override void SetParameters(DbParameterValues p, IShopTable item)
+        /// <param name="p">Collection of database parameters to set the values for.</param>
+        /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
+        protected override void SetParameters(DbParameterValues p, ICharacterTemplateTable item)
         {
             item.CopyValues(p);
         }
