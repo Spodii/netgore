@@ -1769,10 +1769,6 @@ namespace DemoGame.Server
             // Make sure the position we teleport to is valid
             var validPosition = ValidatePosition(position);
 
-            // Load the character's items
-            if (IsPersistent)
-                Equipped.Load();
-
             base.Teleport(validPosition);
         }
 
