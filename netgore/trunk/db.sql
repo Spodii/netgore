@@ -38,7 +38,7 @@ CREATE TABLE `account` (
 
 /*Data for the table `account` */
 
-insert  into `account`(`id`,`name`,`password`,`email`,`permissions`,`time_created`,`time_last_login`,`creator_ip`,`current_ip`,`friends`) values (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2013-02-10 15:54:45',16777343,16777343,'Helix,Vaughan,'),(3,'Vaughan','3FC0A7ACF087F549AC2B266BAF94B8B1','hilts.vaughan@gmail.com',0,'2013-02-04 18:54:45','2013-02-09 21:21:26',16777343,NULL,'');
+insert  into `account`(`id`,`name`,`password`,`email`,`permissions`,`time_created`,`time_last_login`,`creator_ip`,`current_ip`) values (1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com',255,'2009-09-07 15:43:16','2013-02-10 15:54:45',16777343,16777343);
 
 /*Table structure for table `account_ban` */
 
