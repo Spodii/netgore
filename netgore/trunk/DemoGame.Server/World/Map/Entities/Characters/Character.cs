@@ -1748,10 +1748,6 @@ namespace DemoGame.Server
                 {
                     newMap.AddEntity(this);
                     _spSync.ForceSynchronize();
-                    foreach (var user in newMap.DynamicEntities)
-                    {
-                        if ((user as Character) as User != null) Equipped.SynchronizePaperdollTo((user as Character) as User);
-                    }
                 }
             }
             else
