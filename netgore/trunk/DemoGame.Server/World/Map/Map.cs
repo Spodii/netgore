@@ -210,6 +210,15 @@ namespace DemoGame.Server
                 character.Map.RemoveEntity(character);
             }
 
+            // Syncronise paperdoll layers to all users on the same map
+            foreach (User userOnMap in character.Map.Users)
+            {
+                if (userOnMap != null)
+                {
+                    character.SynchronizePaperdollTo(userOnMap);
+                }
+            }
+
             // Added character is a User
             var user = character as User;
             if (user != null)
@@ -230,15 +239,6 @@ namespace DemoGame.Server
 
                 Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
                 _npcs.Add(npc);
-
-                foreach (User userOnMap in npc.Map.Users)
-                {
-                    if (userOnMap != null)
-                    {
-                        npc.SynchronizePaperdollTo(userOnMap);
-                    }
-                }
-
                 return;
             }
 
