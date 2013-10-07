@@ -813,18 +813,28 @@ namespace DemoGame.Editor
             // Main quest table values
             _dbController.GetQuery<InsertUpdateQuestQuery>().Execute(v);
 
+            // DELETE then INSERT to ensure everything updates correctly
+            // You cannot just simply delete the quest as this will
+            // delete all links in other tables due to the DB key relationship
+
             // Required items to start/finish
+            _dbController.GetQuery<DeleteQuestRequireStartItemQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertQuestRequireStartItemQuery>().Execute(v.ID, v.StartItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
+            _dbController.GetQuery<DeleteQuestRequireFinishItemQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertQuestRequireFinishItemQuery>().Execute(v.ID, v.FinishItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             // Required quests to start/finish
+            _dbController.GetQuery<DeleteQuestRequireStartQuestQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
+            _dbController.GetQuery<DeleteQuestRequireFinishQuestQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertQuestRequireFinishQuestQuery>().Execute(v.ID, v.FinishQuests);
 
             // Other requirements
+            _dbController.GetQuery<DeleteQuestRequireKillQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertQuestRequireKillQuery>().Execute(v.ID, v.Kills.Select(x => (KeyValuePair<CharacterTemplateID, ushort>)x));
 
             // Rewards
+            _dbController.GetQuery<DeleteQuestRewardItemQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertQuestRewardItemQuery>().Execute(v.ID, v.RewardItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             SetQuest(v.ID, false);
@@ -939,6 +949,7 @@ namespace DemoGame.Editor
             _dbController.GetQuery<InsertUpdateShopQuery>().Execute(v);
 
             // Items
+            _dbController.GetQuery<DeleteShopItemsQuery>().Execute(v.ID);
             _dbController.GetQuery<InsertShopItemQuery>().Execute(v.ID, v.Items);
 
             // Reload from the database

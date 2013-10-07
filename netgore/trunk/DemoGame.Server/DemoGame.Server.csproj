@@ -325,12 +325,18 @@
     <Compile Include="Queries\Alliance\InsertAllianceAttackableQuery.cs" />
     <Compile Include="Queries\Alliance\InsertAllianceHostileQuery.cs" />
     <Compile Include="Queries\Alliance\InsertAllianceQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\DeleteQuestRequireFinishItemQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\DeleteQuestRequireFinishQuestQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\DeleteQuestRequireKillQuery.cs" />
     <Compile Include="Queries\Quest\InsertQuestQuery.cs" />
     <Compile Include="Queries\Alliance\InsertUpdateAllianceQuery.cs" />
     <Compile Include="Queries\Quest\InsertUpdateQuestQuery.cs" />
     <Compile Include="Queries\Quest\Finish Reqs\InsertQuestRequireFinishItemQuery.cs" />
     <Compile Include="Queries\Quest\Finish Reqs\InsertQuestRequireFinishQuestQuery.cs" />
     <Compile Include="Queries\Quest\Finish Reqs\InsertQuestRequireKillQuery.cs" />
+    <Compile Include="Queries\Quest\Rewards\DeleteQuestRewardItemQuery.cs" />
+    <Compile Include="Queries\Quest\Start Reqs\DeleteQuestRequireStartItemQuery.cs" />
+    <Compile Include="Queries\Quest\Start Reqs\DeleteQuestRequireStartQuestQuery.cs" />
     <Compile Include="Queries\Quest\Start Reqs\InsertQuestRequireStartItemQuery.cs" />
     <Compile Include="Queries\Quest\Start Reqs\InsertQuestRequireStartQuestQuery.cs" />
     <Compile Include="Queries\Quest\Rewards\InsertQuestRewardItemQuery.cs" />
@@ -350,6 +356,7 @@
     <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
     <Compile Include="Queries\Shop\InsertUpdateShopQuery.cs" />
+    <Compile Include="Queries\Shop\ShopItem\DeleteShopItemsQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\InsertShopItemQuery.cs" />
     <Compile Include="Queries\PeerTrading\PeerTradingInsertItemQuery.cs" />
     <Compile Include="Queries\PeerTrading\PeerTradingRemoveItemQuery.cs" />
