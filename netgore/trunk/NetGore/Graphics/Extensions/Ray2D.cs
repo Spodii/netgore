@@ -16,19 +16,19 @@ namespace NetGore.Graphics.Extensions
     /// </summary>
     public struct Ray2D
     {
-
         public Vector2 Position;
         public Vector2 Direction;
 
-        readonly ISpatialCollection _mapSpatialCollection; 
+        readonly ISpatialCollection _mapSpatialCollection;
+        readonly ISpatial _owner;
 
-        public Ray2D(Vector2 position, Vector2 direction, ISpatialCollection collection)
+        public Ray2D(ISpatial character, Vector2 position, Vector2 direction, ISpatialCollection collection)
         {
             Position = position;
             Direction = direction;
             _mapSpatialCollection = collection;
+            _owner = character;
         }
-
 
         private static void Swap<T>(ref T a, ref T b)
         {
@@ -37,7 +37,7 @@ namespace NetGore.Graphics.Extensions
             b = c;
         }
 
-        public bool Intersects<T>(out ISpatial spatial) where T: ISpatial
+        public bool Intersects<T>(out List<ISpatial> spatial) where T : ISpatial
         {
             Vector2 nullVector;
             spatial = Cast<T>((int)Position.X, (int)Position.Y, (int)Direction.X, (int)Direction.Y, out nullVector);
@@ -52,9 +52,7 @@ namespace NetGore.Graphics.Extensions
             return (spatial != null);
         }
 
-
-
-        private ISpatial Cast<T>(int x0, int y0, int x1, int y1, out Vector2 finalPoint)
+        private List<ISpatial> Cast<T>(int x0, int y0, int x1, int y1, out Vector2 finalPoint)
         {
             int dx = Math.Abs(x1 - x0);
             int dy = Math.Abs(y1 - y0);
@@ -73,21 +71,25 @@ namespace NetGore.Graphics.Extensions
                 sy = -1;
 
             int err = dx - dy;
-
             int e2;
+            var temp = new List<ISpatial>();
 
             while (true)
             {
-
                 finalPoint = new Vector2(x0, y0);
 
-                    var res = _mapSpatialCollection.GetMany(finalPoint).OfType<T>();
+                var res = _mapSpatialCollection.GetMany(finalPoint).OfType<T>();
 
-                    if (!res.IsEmpty())
+                foreach (ISpatial s in res)
+                {
+                    // Don't add the same ISpatial twice
+                    if (!temp.Contains(s))
                     {
-                        return _mapSpatialCollection.Get(finalPoint);
+                        // Don't add ourselves
+                        if (s != _owner)
+                            temp.Add(s);
                     }
-
+                }
 
                 if ((x0 == x1) && (y0 == y1))
                     break;
@@ -103,15 +105,14 @@ namespace NetGore.Graphics.Extensions
                 if (e2 < dx)
                 {
                     err = err + dx;
-                    y0 = y0 +sy;
+                    y0 = y0 + sy;
                 }
             }
+
+            if (!temp.IsEmpty())
+                return temp;
+
             return null;
         }
-
-       
     }
-
-
 }
-

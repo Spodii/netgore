@@ -632,57 +632,66 @@ namespace DemoGame.Server
                 return;
             }
 
-            Ray2D ray = new Ray2D(Position, target.Position, Map.Spatial);
+            Ray2D ray = new Ray2D(this, Position, target.Position, Map.Spatial);
 
-            Vector2 rayCollide;
-
+            List<ISpatial> rayCollide;
 
             // FUTURE: Use to create some sort of wasted ammo on a wall or something.  e.g. Grenade item explodes on walls.
-            bool intersects = ray.Intersects<WallEntity>(out rayCollide);
+            bool hasHitWall = ray.Intersects<WallEntity>(out rayCollide);
 
-            if (intersects)
+            if (hasHitWall)
             {
                 TrySend(GameMessage.CannotAttackNotInSight, ServerMessageType.GUI);
                 return;
             }
 
-            var ammoUsed = false;
+            bool hasHitCharacter = ray.Intersects<Character>(out rayCollide);
 
-            // Check for the needed ammo
-            switch (weapon.WeaponType)
+            if (hasHitCharacter)
             {
-                case WeaponType.Projectile:
-                    // Grab projectile ammo out of the inventory first if possible to avoid having to constantly reload
-                    var invAmmo = Inventory.FirstOrDefault(x => weapon.CanStack(x.Value));
-                    if (invAmmo.Value != null)
-                        Inventory.DecreaseItemAmount(invAmmo.Key);
-                    else
-                        weapon.Destroy();
+                var ammoUsed = false;
 
-                    ammoUsed = true;
-                    break;
+                // Check for the needed ammo
+                switch (weapon.WeaponType)
+                {
+                    case WeaponType.Projectile:
+                        // Grab projectile ammo out of the inventory first if possible to avoid having to constantly reload
+                        var invAmmo = Inventory.FirstOrDefault(x => weapon.CanStack(x.Value));
+                        if (invAmmo.Value != null)
+                            Inventory.DecreaseItemAmount(invAmmo.Key);
+                        else
+                            weapon.Destroy();
 
-                case WeaponType.Ranged:
-                    // By default, guns won't use ammo. But if you want to require guns to use ammo, you can do so here
-                    ammoUsed = true;
-                    break;
+                        ammoUsed = true;
+                        break;
+
+                    case WeaponType.Ranged:
+                        // By default, guns won't use ammo. But if you want to require guns to use ammo, you can do so here
+                        ammoUsed = true;
+                        break;
+                }
+
+                if (!ammoUsed)
+                    return;
+
+                foreach (var rc in rayCollide)
+                {
+                    var c = rc as Character;
+
+                    // Attack
+                    using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, c.MapEntityIndex, weapon.ActionDisplayID))
+                    {
+                        Map.SendToArea(this, charAttack, ServerMessageType.MapEffect);
+                    }
+
+                    OnAttacked();
+
+                    if (Attacked != null)
+                        Attacked.Raise(this, EventArgs.Empty);
+
+                    AttackApplyReal(c);
+                }
             }
-
-            if (!ammoUsed)
-                return;
-
-            // Attack
-            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, target.MapEntityIndex, weapon.ActionDisplayID))
-            {
-                Map.SendToArea(this, charAttack, ServerMessageType.MapEffect);
-            }
-
-            OnAttacked();
-
-            if (Attacked != null)
-                Attacked.Raise(this, EventArgs.Empty);
-
-            AttackApplyReal(target);
         }
 
         /// <summary>
