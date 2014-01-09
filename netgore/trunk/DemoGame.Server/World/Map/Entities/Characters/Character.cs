@@ -634,10 +634,10 @@ namespace DemoGame.Server
 
             Ray2D ray = new Ray2D(this, Position, target.Position, Map.Spatial);
 
-            List<ISpatial> rayCollide;
+            Vector2 rayCollideWall;
 
             // FUTURE: Use to create some sort of wasted ammo on a wall or something.  e.g. Grenade item explodes on walls.
-            bool hasHitWall = ray.Intersects<WallEntity>(out rayCollide);
+            bool hasHitWall = ray.Intersects<WallEntity>(out rayCollideWall);
 
             if (hasHitWall)
             {
@@ -645,7 +645,9 @@ namespace DemoGame.Server
                 return;
             }
 
-            bool hasHitCharacter = ray.Intersects<Character>(out rayCollide);
+            List<ISpatial> rayCollideCharacters;
+
+            bool hasHitCharacter = ray.Intersects<Character>(out rayCollideCharacters);
 
             if (hasHitCharacter)
             {
@@ -674,9 +676,9 @@ namespace DemoGame.Server
                 if (!ammoUsed)
                     return;
 
-                foreach (var rc in rayCollide)
+                foreach (var character in rayCollideCharacters)
                 {
-                    var c = rc as Character;
+                    var c = character as Character;
 
                     // Attack
                     using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, c.MapEntityIndex, weapon.ActionDisplayID))
