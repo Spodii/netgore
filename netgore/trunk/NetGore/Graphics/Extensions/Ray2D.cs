@@ -40,19 +40,34 @@ namespace NetGore.Graphics.Extensions
         public bool Intersects<T>(out List<ISpatial> spatial) where T : ISpatial
         {
             Vector2 nullVector;
-            spatial = Cast<T>((int)Position.X, (int)Position.Y, (int)Direction.X, (int)Direction.Y, out nullVector);
+            spatial = Cast<T>((int)Position.X, (int)Position.Y, (int)Direction.X, (int)Direction.Y, false, out nullVector);
 
             return (spatial != null);
         }
 
         public bool Intersects<T>(out Vector2 intersectingPoint) where T : ISpatial
         {
-            var spatial = Cast<T>((int)Position.X, (int)Position.Y, (int)Direction.X, (int)Direction.Y, out intersectingPoint);
+            var spatial = Cast<T>((int)Position.X, (int)Position.Y, (int)Direction.X, (int)Direction.Y, false, out intersectingPoint);
 
             return (spatial != null);
         }
 
-        private List<ISpatial> Cast<T>(int x0, int y0, int x1, int y1, out Vector2 finalPoint)
+        public bool IntersectsMany<T>(out List<ISpatial> spatial) where T : ISpatial
+        {
+            Vector2 nullVector;
+            spatial = Cast<T>((int)Position.X, (int)Position.Y, (int)Direction.X, (int)Direction.Y, true, out nullVector);
+
+            return (spatial != null);
+        }
+
+        public bool IntersectsMany<T>(out Vector2 intersectingPoint) where T : ISpatial
+        {
+            var spatial = Cast<T>((int)Position.X, (int)Position.Y, (int)Direction.X, (int)Direction.Y, true, out intersectingPoint);
+
+            return (spatial != null);
+        }
+
+        private List<ISpatial> Cast<T>(int x0, int y0, int x1, int y1, bool needMany, out Vector2 finalPoint)
         {
             int dx = Math.Abs(x1 - x0);
             int dy = Math.Abs(y1 - y0);
@@ -88,6 +103,10 @@ namespace NetGore.Graphics.Extensions
                         // Don't add ourselves
                         if (s != _owner)
                             temp.Add(s);
+
+                        // Only return the first if required
+                        if (!temp.IsEmpty() && !needMany)
+                            return temp;
                     }
                 }
 

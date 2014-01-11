@@ -647,6 +647,7 @@ namespace DemoGame.Server
 
             List<ISpatial> rayCollideCharacters;
 
+            // Use IntersectsMany here if you want to damage all characters in the attack path
             bool hasHitCharacter = ray.Intersects<Character>(out rayCollideCharacters);
 
             if (hasHitCharacter)
@@ -679,6 +680,9 @@ namespace DemoGame.Server
                 foreach (var character in rayCollideCharacters)
                 {
                     var c = character as Character;
+
+                    if (!Alliance.CanAttack(c.Alliance))
+                        continue;
 
                     // Attack
                     using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, c.MapEntityIndex, weapon.ActionDisplayID))
