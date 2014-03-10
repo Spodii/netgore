@@ -141,6 +141,17 @@ namespace DemoGame.Editor.Tools
                     {
                         map.RemoveLight(x);
                         removed.Add(x);
+
+                        // Remove the graphic and effect from the map
+                        var msc = MapScreenControl.TryFindInstance(map);
+                        if (msc != null)
+                        {
+                            var dm = msc.DrawingManager;
+                            if (dm != null)
+                            {
+                                dm.LightManager.Remove(x);
+                            }
+                        }
                     }
                 }
 
