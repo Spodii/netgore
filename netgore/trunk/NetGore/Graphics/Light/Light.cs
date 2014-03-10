@@ -262,7 +262,7 @@ namespace NetGore.Graphics
             IsEnabled = reader.ReadBool(_isEnabledValueKey);
 
             var grhIndex = reader.ReadGrhIndex(_spriteValueKey);
-            if (grhIndex.IsInvalid)
+            if (!grhIndex.IsInvalid)
                 Sprite = new Grh(grhIndex, AnimType.Loop, 0);
             else
                 Sprite = null;
