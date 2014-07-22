@@ -17,7 +17,14 @@ namespace NetGore.Graphics.GUI
         /// of the text cursor. When applicable, if the cursor is at the start of the line, the cursor be moved
         /// to the previous line and the remainder of the line will be appended to the end of the previous line.
         /// </summary>
-        void DeleteChar();
+        void DeleteCharLeft();
+
+        /// <summary>
+        /// Deletes the character from the <see cref="Control"/>'s text immediately after the current position
+        /// of the text cursor. When applicable, if the cursor is at the end of the line, the cursor be moved
+        /// to the next line and the remainder of the line will be appended to the start of the previous line.
+        /// </summary>
+        void DeleteCharRight();
 
         /// <summary>
         /// Inserts the specified character to the <see cref="Control"/>'s text at the current position

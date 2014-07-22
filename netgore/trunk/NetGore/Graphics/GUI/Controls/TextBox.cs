@@ -809,7 +809,7 @@ namespace NetGore.Graphics.GUI
         /// of the text cursor. When applicable, if the cursor is at the start of the line, the cursor be moved
         /// to the previous line and the remainder of the line will be appended to the end of the previous line.
         /// </summary>
-        void IEditableText.DeleteChar()
+        void IEditableText.DeleteCharLeft()
         {
             var charToDelete = CursorLinePosition - 1;
             if (charToDelete < 0)
@@ -831,6 +831,36 @@ namespace NetGore.Graphics.GUI
                 // Delete the character behind the cursor
                 _lines.CurrentLine.Remove(charToDelete);
                 CursorLinePosition--;
+            }
+
+            _numCharsToDraw.Invalidate();
+
+            ResetCursorBlink();
+
+            InvokeTextChanged();
+        }
+
+        /// <summary>
+        /// Deletes the character from the <see cref="Control"/>'s text immediately after the current position
+        /// of the text cursor. When applicable, if the cursor is at the end of the line, the cursor be moved
+        /// to the next line and the remainder of the line will be appended to the start of the previous line.
+        /// </summary>
+        void IEditableText.DeleteCharRight()
+        {
+            var charToDelete = CursorLinePosition;
+
+            if (_lines.CurrentLine.LineText.Length == charToDelete)
+            {
+                if (IsMultiLine && _lines.Count > 1)
+                {
+                    _lines.JoinLineWithPrevious(_lines.CurrentLineIndex + 1);
+                }
+            }
+            else
+            {
+                // Delete the character in front of the cursor
+                if (charToDelete < _lines.CurrentLine.LineText.Length)
+                    _lines.CurrentLine.Remove(charToDelete);
             }
 
             _numCharsToDraw.Invalidate();
