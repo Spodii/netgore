@@ -133,6 +133,11 @@ namespace NetGore.Graphics.GUI
                 case Keyboard.Key.Down:
                     Source.MoveCursor(MoveCursorDirection.Down);
                     break;
+
+                case Keyboard.Key.Delete:
+                    // Delete character - right
+                    Source.DeleteCharRight();
+                    break;
             }
         }
 
@@ -151,8 +156,8 @@ namespace NetGore.Graphics.GUI
             switch (s)
             {
                 case "\b":
-                    // Delete character
-                    Source.DeleteChar();
+                    // Delete character - left
+                    Source.DeleteCharLeft();
                     break;
 
                 case "\r":
