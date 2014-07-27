@@ -229,5 +229,13 @@ namespace DemoGame.Client
             UpdateBufferOffset();
             base.UpdateControl(currentTime);
         }
+
+        /// <summary>
+        /// Gets if the input text box has focus.
+        /// </summary>
+        public bool HasInputFocus()
+        {
+            return _input.HasFocus;
+        }
     }
 }

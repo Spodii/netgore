@@ -73,6 +73,10 @@ namespace DemoGame.Client
             if (!GameData.AllowMovementWhileChattingToNPC && GameplayScreen.ChatDialogForm.IsChatting)
                 return false;
 
+            // Don't allow movement while typing/editing text
+            if (GameplayScreen.IsChatFormInputFocused)
+                return false;
+
             // Movement is allowed
             return true;
         }
