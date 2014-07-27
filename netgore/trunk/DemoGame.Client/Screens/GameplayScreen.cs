@@ -1022,6 +1022,14 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Gets if the chat form input has focus.
+        /// </summary>
+        public bool IsChatFormInputFocused
+        {
+            get { return _chatForm.HasInputFocus(); }
+        }
+
         #region IGetTime Members
 
         /// <summary>
