@@ -967,6 +967,22 @@ namespace NetGore.Graphics.GUI
                     ResetCursorBlink();
                     break;
 
+                case MoveCursorDirection.Start:
+                    if (IsMultiLine)
+                        _lines.MoveTo(0);
+
+                    CursorLinePosition = 0;
+                    ResetCursorBlink();
+                    break;
+
+                case MoveCursorDirection.End:
+                    if (IsMultiLine)
+                        _lines.MoveTo(_lines.LastLineIndex);
+
+                    CursorLinePosition = _lines.CurrentLine.LineText.Length;
+                    ResetCursorBlink();
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException("direction");
             }
