@@ -10,6 +10,8 @@ namespace NetGore.Graphics.GUI
         Up,
         Down,
         Left,
-        Right
+        Right,
+        Start,
+        End
     }
 }

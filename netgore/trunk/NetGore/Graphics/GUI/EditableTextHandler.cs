@@ -134,6 +134,14 @@ namespace NetGore.Graphics.GUI
                     Source.MoveCursor(MoveCursorDirection.Down);
                     break;
 
+                case Keyboard.Key.Home:
+                    Source.MoveCursor(MoveCursorDirection.Start);
+                    break;
+ 
+                case Keyboard.Key.End:
+                    Source.MoveCursor(MoveCursorDirection.End);
+                    break;
+
                 case Keyboard.Key.Delete:
                     // Delete character - right
                     Source.DeleteCharRight();

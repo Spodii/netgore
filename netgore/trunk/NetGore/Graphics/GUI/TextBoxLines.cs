@@ -83,6 +83,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the last line index.
+        /// </summary>
+        public int LastLineIndex
+        {
+            get { return _lines.Count - 1; }
+        }
+
+        /// <summary>
         /// Gets the first line.
         /// </summary>
         public TextBoxLine FirstLine
