@@ -44,7 +44,7 @@ namespace NetGore.Audio
                 throw new AudioException("SoundManager is somehow null.");
 
             _musicManager = CreateMusicManager(contentManager);
-            if (_soundManager == null)
+            if (_musicManager == null)
                 throw new AudioException("MusicManager is somehow null.");
         }
 

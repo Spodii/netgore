@@ -31,7 +31,6 @@ namespace NetGore.Graphics.ParticleEngine
         public ParticleColorModifier() : base(true, true)
         {
             ReleaseColor = Color.White;
-            ReleaseColor = Color.White;
         }
 
         /// <summary>

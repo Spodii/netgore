@@ -38,7 +38,6 @@ namespace DemoGame.Client
             _world = world;
 
             _mouseOverBeforeDrawHandler = MouseOver_BeforeDraw;
-            _mouseOverBeforeDrawHandler = MouseOver_BeforeDraw;
             _mouseOverAfterDrawHandler = MouseOver_AfterDraw;
             _targetBeforeDrawHandler = Target_BeforeDraw;
             _targetAfterDrawHandler = Target_AfterDraw;
