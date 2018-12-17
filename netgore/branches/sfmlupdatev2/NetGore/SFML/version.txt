@@ -1,2 +1,0 @@
-﻿SFML 2.0, Git Commit 9d3dfac5323546d49708c86b935bbddb7a83183d
-March 24, 2011

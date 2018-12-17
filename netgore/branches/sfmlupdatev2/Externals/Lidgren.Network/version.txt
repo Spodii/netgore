@@ -1,2 +1,0 @@
-﻿Lidgren Network - Gen 3.5, Revision 249
-June 25, 2011

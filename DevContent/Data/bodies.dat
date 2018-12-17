@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Bodies>
+  <Body>
+    <Count>6</Count>
+    <Item0>
+      <ID>1</ID>
+      <Body>body.naked</Body>
+      <Fall />
+      <Jump />
+      <Attack>walk</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>64,25</Size>
+      <Paperdoll>True</Paperdoll>
+    </Item0>
+    <Item1>
+      <ID>2</ID>
+      <Body>body.iron</Body>
+      <Fall />
+      <Jump />
+      <Attack>walk</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>44,25</Size>
+      <Paperdoll>True</Paperdoll>
+    </Item1>
+    <Item2>
+      <ID>3</ID>
+      <Body>body.gold</Body>
+      <Fall />
+      <Jump />
+      <Attack>walk</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>44,25</Size>
+      <Paperdoll>True</Paperdoll>
+    </Item2>
+    <Item3>
+      <ID>4</ID>
+      <Body>body.black</Body>
+      <Fall />
+      <Jump />
+      <Attack>walk</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>44,25</Size>
+      <Paperdoll>True</Paperdoll>
+    </Item3>
+    <Item4>
+      <ID>5</ID>
+      <Body>sprites.bee</Body>
+      <Fall />
+      <Jump />
+      <Attack>walk</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>32,40</Size>
+      <Paperdoll>False</Paperdoll>
+    </Item4>
+    <Item5>
+      <ID>6</ID>
+      <Body>sprites.soldier</Body>
+      <Fall />
+      <Jump />
+      <Attack>walk</Attack>
+      <Stand>stand</Stand>
+      <Walk>walk</Walk>
+      <Size>64,25</Size>
+      <Paperdoll>False</Paperdoll>
+    </Item5>
+  </Body>
+</Bodies>
