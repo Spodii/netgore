@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NetGore.IO;
+﻿using NetGore.IO;
 
 namespace DemoGame
 {
@@ -30,11 +29,11 @@ namespace DemoGame
         /// <summary>
         /// The port that the server listens on, and that the client uses when connecting to the server.
         /// </summary>
-        public const int ServerPort = 44447;
+        public const int ServerPort = 337;
 
         /// <summary>
         /// Holds the string to pass to <see cref="ContentPaths.TryCopyContent"/>.
         /// </summary>
-        public const string TryCopyContentArgs = "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\"";
+        public const string TryCopyContentArgs = "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Sounds]\"";
     }
 }

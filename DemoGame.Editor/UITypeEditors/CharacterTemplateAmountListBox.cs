@@ -17,10 +17,8 @@ namespace DemoGame.Editor.UITypeEditors
             if (DesignMode)
                 return;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             DrawMode = DrawMode.OwnerDrawFixed;
             Sorted = true;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>

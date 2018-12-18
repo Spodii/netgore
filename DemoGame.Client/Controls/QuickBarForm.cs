@@ -185,9 +185,8 @@ namespace DemoGame.Client
             /// <param name="position">Position of the Control reletive to its parent.</param>
             /// <param name="slot">The 0-based slot number of this <see cref="QuickBarItemPB"/>.</param>
             /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-            // ReSharper disable SuggestBaseTypeForParameter
             public QuickBarItemPB(QuickBarForm parent, Vector2 position, byte slot)
-                : base(parent, position, new Vector2(_slotSize)) // ReSharper restore SuggestBaseTypeForParameter
+                : base(parent, position, new Vector2(_slotSize))
             {
                 IsBoundToParentArea = false;
 

@@ -28,7 +28,6 @@ namespace NetGore.Tests.IO
                 int min;
                 int max;
 
-                // ReSharper disable RedundantCast
                 switch (j)
                 {
                     case 0:
@@ -46,7 +45,6 @@ namespace NetGore.Tests.IO
                         max = (int)'Z';
                         break;
                 }
-                // ReSharper restore RedundantCast
 
                 ret[i] = (char)r.Next(min, max + 1);
             }

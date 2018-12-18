@@ -10,7 +10,7 @@
 	  </Sound>
       <Script>Melee</Script>
       <GrhIndex>0</GrhIndex>
-      <ParticleEffect>blood</ParticleEffect>
+      <ParticleEffect></ParticleEffect>
     </Item0>
     <Item1>
       <ID>1</ID>

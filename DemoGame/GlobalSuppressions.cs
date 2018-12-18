@@ -9,7 +9,6 @@
 // You do not need to add suppressions to this file manually.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 [assembly:
     SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Scope = "member",

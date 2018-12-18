@@ -4,8 +4,6 @@ using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using NUnit.Framework;
 
-// ReSharper disable UnusedMember.Local
-
 namespace NetGore.Tests.Graphics.ParticleEngine
 {
     [TestFixture]

@@ -41,7 +41,6 @@ namespace DemoGame.Editor
         MusicEditorForm _frmMusicEditor;
         NPCChatEditorForm _frmNPCChatEditor;
         SelectedMapObjectsForm _frmSelectedMapObjs;
-        SkeletonEditorForm _frmSkeletonEditor;
         SoundEditorForm _frmSoundEditor;
         private GrhTilesetForm _frmGrhTilesetForm;
 
@@ -172,9 +171,6 @@ namespace DemoGame.Editor
 
             _frmNPCChatEditor = new NPCChatEditorForm();
             _frmNPCChatEditor.VisibleChanged += _frmNPCChatEditor_VisibleChanged;
-
-            _frmSkeletonEditor = new SkeletonEditorForm();
-            _frmSkeletonEditor.VisibleChanged += _frmSkeletonEditor_VisibleChanged;
 
             _frmDbEditor = new DbEditorForm();
             _frmDbEditor.VisibleChanged += _frmDbEditor_VisibleChanged;
@@ -391,16 +387,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the VisibleChanged event of the <see cref="_frmSkeletonEditor"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void _frmSkeletonEditor_VisibleChanged(object sender, EventArgs e)
-        {
-            skeletonEditorToolStripMenuItem.Checked = ((Form)sender).Visible;
-        }
-
-        /// <summary>
         /// Handles the VisibleChanged event of the _frmSoundEditor control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -608,19 +594,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Handles the Click event of the <see cref="skeletonEditorToolStripMenuItem"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void skeletonEditorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (skeletonEditorToolStripMenuItem.Checked)
-                _frmSkeletonEditor.Show(dockPanel, DockState.Float);
-            else
-                _frmSkeletonEditor.Hide();
-        }
-
-        /// <summary>
         /// Handles the Click event of the soundEditorToolStripMenuItem control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -660,9 +633,6 @@ namespace DemoGame.Editor
 
                 if (IsNameFor(Owner._frmSelectedMapObjs, name))
                     return Owner._frmSelectedMapObjs;
-
-                if (IsNameFor(Owner._frmSkeletonEditor, name))
-                    return Owner._frmSkeletonEditor;
 
                 if (IsNameFor(Owner._frmMusicEditor, name))
                     return Owner._frmMusicEditor;

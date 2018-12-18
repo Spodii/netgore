@@ -51,7 +51,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;DEBUG;TOPDOWN</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\DemoGame\CodeRules.ruleset</CodeAnalysisRuleSet>
@@ -66,36 +66,10 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugSideScroller|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseSideScroller|x86' ">
-    <DebugSymbols>false</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DebugType>none</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>none</ErrorReport>
-    <Optimize>true</Optimize>
-    <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
     <OutputPath>bin\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
     <DefineConstants>TRACE;DEBUG;MONO;TOPDOWN</DefineConstants>
-    <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MonoSideScroller|x86' ">
-    <OutputPath>bin\</OutputPath>
-    <PlatformTarget>x86</PlatformTarget>
-    <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
-    <Optimize>false</Optimize>
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -184,8 +158,6 @@
     <Compile Include="Networking\INetworkSenderExtensions.cs" />
     <Compile Include="Networking\ServerMessageType.cs" />
     <Compile Include="Networking\ServerMessageTypeExtensions.cs" />
-    <Compile Include="Networking\ServerPacketHandler.SideScroller.cs" />
-    <Compile Include="Networking\ServerPacketHandler.TopDown.cs" />
     <Compile Include="PeerTrading\PeerTradingHelper.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />
     <Compile Include="Properties\ServerSettings.Designer.cs">
@@ -498,15 +470,12 @@
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AISettings.cs" />
-    <Compile Include="World\Map\Entities\Characters\AI\TestAI.SideScroller.cs" />
-    <Compile Include="World\Map\Entities\Characters\AI\TestAI.TopDown.cs" />
+    <Compile Include="World\Map\Entities\Characters\AI\TestAI.cs" />
     <Compile Include="World\Map\Entities\Characters\Alliance\Alliance.cs" />
     <Compile Include="World\Map\Entities\Characters\Alliance\AllianceManager.cs" />
     <Compile Include="World\Map\Entities\Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="World\Map\Entities\Characters\Character.SideScroller.cs" />
-    <Compile Include="World\Map\Entities\Characters\Character.TopDown.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterAttackEventArgs.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterKillEventArgs.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />

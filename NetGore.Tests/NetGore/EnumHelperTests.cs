@@ -3,8 +3,6 @@ using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 
-// ReSharper disable UnusedMember.Local
-
 namespace NetGore.Tests.NetGore
 {
     [TestFixture]
@@ -28,7 +26,6 @@ namespace NetGore.Tests.NetGore
                 int min;
                 int max;
 
-                // ReSharper disable RedundantCast
                 switch (j)
                 {
                     case 0:
@@ -46,7 +43,6 @@ namespace NetGore.Tests.NetGore
                         max = (int)'Z';
                         break;
                 }
-                // ReSharper restore RedundantCast
 
                 ret[i] = (char)r.Next(min, max + 1);
             }

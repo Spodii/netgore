@@ -34,8 +34,8 @@ namespace DemoGame.Client
             _defaultGameGUIFont = content.LoadFont("Font/varelaroundregular", 12, ContentLevel.Global);
             _defaultChatFont = content.LoadFont("Font/varelaroundregular", 12, ContentLevel.Global);
             _defaultScreenFont = content.LoadFont("Font/varelaroundregular", 24, ContentLevel.Global);
-            _defaultMenuButtonFont = content.LoadFont("Font/journal", 42, ContentLevel.Global);
-            _defaultMenuTitleFont = content.LoadFont("Font/journal", 72, ContentLevel.Global);
+            _defaultMenuButtonFont = content.LoadFont("Font/varelaroundregular", 42, ContentLevel.Global);
+            _defaultMenuTitleFont = content.LoadFont("Font/varelaroundregular", 72, ContentLevel.Global);
         }
 
         /// <summary>
@@ -88,8 +88,7 @@ namespace DemoGame.Client
         /// The menu <see cref="Control"/>s, where the unique name is the key and the <see cref="Control"/> instance
         /// is the value.
         /// </returns>
-        public static IDictionary<string, Control> CreateMenuButtons(IScreenManager screenManager, Control parent,
-                                                                     params string[] names)
+        public static IDictionary<string, Control> CreateMenuButtons(IScreenManager screenManager, Control parent, params string[] names)
         {
             // The offset from the side of the screen
             var baseOffset = new Vector2(25f);

@@ -47,8 +47,8 @@ namespace NetGore.Features.ActionDisplays
         [SyncValue]
         public ActionDisplayID ID
         {
-            get { return _id; } // ReSharper disable UnusedMember.Local
-            private set // ReSharper restore UnusedMember.Local
+            get { return _id; } 
+            private set 
             {
                 // Private setter required for SyncValueAttribute
                 _id = value;

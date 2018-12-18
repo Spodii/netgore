@@ -6,7 +6,7 @@
 # is related to the language specifically.
 
 # Game name
-GameTitle:Skies of Zomok
+GameTitle:DemoGame
 
 ########### Core: Combat messages ###########
 CannotAttackWithWeapon: You cannot attack with a {0}.
@@ -16,7 +16,7 @@ CannotAttackAllianceConflict: You feel you shouldn't attack {0}.
 CannotAttackNotInSight: You can't see the person you are trying to attack!
 CombatStatusEffectWoreOff: The effect of {0} wears off.
 CombatStatusEffectGained: {0} gains the effect of {1}, empowering them by {2}.
-CombatRecieveReward: You recieve {0} EXP and {1} cash.
+CombatReceiveReward: You receive {0} EXP and {1} cash.
 CombatSelfLevelUp: You have risen to level {0}!
 CombatCastingBegin: Casting {0}
 
@@ -54,7 +54,7 @@ CreateAccountInvalidPassword: Invalid password. Must be between 3 and 30 charact
 CreateAccountInvalidEmail: Invalid email address.
 CreateAccountTooManyCreated: Too many accounts have been created from your IP address recently. Please wait and try again later.
 CreateAccountAlreadyExists: An account with that name already exists. Please try a different account name.
-CreateAccountUnknownError: An unknown error has occured while trying to create the account. Please try again, or try a different account name.
+CreateAccountUnknownError: An unknown error has occurred while trying to create the account. Please try again, or try a different account name.
 
 ########### Core: Disconnect reasons ###########
 DisconnectTooManyConnectionsFromIP: Connection rejected by the server since there are too many connections from your IP address.

@@ -1,8 +1,3 @@
-// ReSharper disable RedundantThisQualifier
-// ReSharper disable RedundantNameQualifier
-// ReSharper disable RedundantDelegateCreation
-// ReSharper disable RedundantCast
-
 namespace NetGore.Editor.Grhs
 {
     partial class EditGrhForm
@@ -24,8 +19,6 @@ namespace NetGore.Editor.Grhs
             }
             base.Dispose(disposing);
         }
-
-
 
         /// <summary>
         /// Required method for Designer support - do not modify

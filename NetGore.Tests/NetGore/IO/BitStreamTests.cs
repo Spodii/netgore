@@ -6,9 +6,6 @@ using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 
-#pragma warning disable 618,612
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-
 namespace NetGore.Tests.IO
 {
     [TestFixture]

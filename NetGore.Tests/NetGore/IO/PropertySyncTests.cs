@@ -8,8 +8,6 @@ using NetGore.World;
 using NUnit.Framework;
 using SFML.Graphics;
 
-// ReSharper disable UnusedMember.Local
-
 namespace NetGore.Tests.NetGore.IO
 {
     [TestFixture]

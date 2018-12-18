@@ -44,11 +44,6 @@ namespace DemoGame.Editor
                 return;
             _transBoxManager = new TransBoxManager();
             _camera = new Camera2D(ClientSize.ToVector2()) { KeepInMap = false };
-
-
-
-
-
         }
 
         /// <summary>
@@ -65,8 +60,6 @@ namespace DemoGame.Editor
             get { return _camera; }
         }
 
-
-
         /// <summary>
         /// Gets the <see cref="TransBoxManager"/> for this <see cref="MapScreenControl"/>.
         /// </summary>
@@ -75,8 +68,6 @@ namespace DemoGame.Editor
         {
             get { return _transBoxManager; }
         }
-
-
 
         /// <summary>
         /// Disposes the control

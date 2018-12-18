@@ -1,0 +1,26 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/DemoGame/obj
+/DemoGame.Client/obj
+/DemoGame.DbClassCreator/obj
+/DemoGame.Editor/obj
+/DemoGame.GUITester/obj
+/DemoGame.Server/obj
+/NetGore.Db/obj
+/NetGore.Editor/obj
+/NetGore.Features/obj
+/NetGore.Features.Client/obj
+/NetGore.Features.Editor/obj
+/NetGore.Features.Server/obj
+/NetGore.Tests/obj
+/NetGore/obj
+/.vs/
+/bin
+/DemoGame/bin
+/DemoGame.Client/bin/Content
+/DemoGame.DbClassCreator/bin
+/DemoGame.Client/bin
+/DemoGame.Server/bin
+/packages/

@@ -81,8 +81,7 @@ namespace DemoGame.Editor
         /// Creates the test dialog.
         /// </summary>
         /// <returns>The test dialog.</returns>
-        // ReSharper disable UnusedMember.Local
-        static EditorNPCChatDialog CreateTestDialog() // ReSharper restore UnusedMember.Local
+        static EditorNPCChatDialog CreateTestDialog()
         {
             var dialog = new EditorNPCChatDialog();
 

@@ -16,6 +16,26 @@ namespace DemoGame.Client
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
 
+        public static PacketWriter MoveDown()
+        {
+            return GetWriter(ClientPacketID.MoveDown);
+        }
+
+        public static PacketWriter MoveStopHorizontal()
+        {
+            return GetWriter(ClientPacketID.MoveStopHorizontal);
+        }
+
+        public static PacketWriter MoveStopVertical()
+        {
+            return GetWriter(ClientPacketID.MoveStopVertical);
+        }
+
+        public static PacketWriter MoveUp()
+        {
+            return GetWriter(ClientPacketID.MoveUp);
+        }
+
         public static PacketWriter AcceptOrTurnInQuest(MapEntityIndex questProvider, QuestID questID)
         {
             var pw = GetWriter(ClientPacketID.AcceptOrTurnInQuest);

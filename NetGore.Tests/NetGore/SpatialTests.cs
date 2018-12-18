@@ -5,8 +5,6 @@ using NetGore.World;
 using NUnit.Framework;
 using SFML.Graphics;
 
-// ReSharper disable AccessToModifiedClosure
-
 namespace NetGore.Tests.NetGore
 {
     [TestFixture]

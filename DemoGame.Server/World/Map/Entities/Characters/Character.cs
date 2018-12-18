@@ -445,6 +445,44 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Starts moving the character down.
+        /// </summary>
+        public void MoveDown()
+        {
+            if (!IsAlive)
+                return;
+
+            if (IsMovingDown)
+                return;
+
+            if (_skillCaster.IsCastingSkill)
+                return;
+
+            SetHeading(NetGore.Direction.South);
+
+            SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
+        }
+
+        /// <summary>
+        /// Starts moving the character up.
+        /// </summary>
+        public void MoveUp()
+        {
+            if (!IsAlive)
+                return;
+
+            if (IsMovingUp)
+                return;
+
+            if (_skillCaster.IsCastingSkill)
+                return;
+
+            SetHeading(NetGore.Direction.North);
+
+            SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
+        }
+
+        /// <summary>
         /// Attacks the <paramref name="target"/> using the equipped weapon.
         /// </summary>
         /// <param name="target">The <see cref="Character"/> to attack. If null, the target will be selected

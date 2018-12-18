@@ -233,15 +233,12 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="getTime">The <see cref="IGetTime"/> provider.</param>
         /// <param name="entity">The <see cref="Entity"/> the sprite is for (usually the <see cref="Character"/>).</param>
-        /// <param name="skeletonManager">The <see cref="SkeletonManager"/> to use (ignored in TopDown builds).</param>
         /// <returns>The <see cref="ICharacterSprite"/> instance.</returns>
-        public static ICharacterSprite CreateCharacterSprite(IGetTime getTime, Entity entity, SkeletonManager skeletonManager)
+        public static ICharacterSprite CreateCharacterSprite(IGetTime getTime, Entity entity)
         {
-#if SKELETON_SPRITES
-            return new SkeletonCharacterSprite(getTime, entity, skeletonManager, GameData.AnimationSpeedModifier);
-#else
+
             return new GrhCharacterSprite(entity, "Character");
-#endif
+
         }
 
         /// <summary>
@@ -249,15 +246,15 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="map">The Map to place the Character on.</param>
         /// <param name="skelManager">The SkeletonManager to use for the Character's skeletons.</param>
-        public virtual void Initialize(Map map, SkeletonManager skelManager)
+        public virtual void Initialize(Map map)
         {
             // HACK: This is quite a dirty way to do this
             _map = map;
             _interpolator.Teleport(Position);
 
-            _characterSprite = CreateCharacterSprite(this, this, skelManager);
+            _characterSprite = CreateCharacterSprite(this, this);
 
-            CharacterSprite.SetSet(BodyInfo.Stand, BodyInfo.Size);
+            CharacterSprite.SetSet(BodyInfo.Body, BodyInfo.Size);
             CharacterSprite.SetBody(BodyInfo.Body);
         }
 
@@ -293,8 +290,6 @@ namespace DemoGame.Client
 
             _characterSprite.Update(currentTime);
 
-            UpdateAnimation();
-
             // Update the interpolation
             _interpolator.Update(this, (int)lastDrawnDelta);
         }
@@ -306,45 +301,6 @@ namespace DemoGame.Client
         {
             get { return _providedQuests; }
             set { _providedQuests = value ?? _emptyQuestIDs; }
-        }
-
-        /// <summary>
-        /// Updates the character's sprites.
-        /// Only used in sidescroller builds.
-        /// </summary>
-        protected virtual void UpdateAnimation()
-        {
-#if SKELETON_SPRITES
-            // Only update if the state has changed
-            if (_lastState == State)
-                return;
-
-            _lastState = State;
-
-            switch (State)
-            {
-                case CharacterState.Idle:
-                    CharacterSprite.SetSet(BodyInfo.Stand, BodyInfo.Size);
-                    break;
-
-                case CharacterState.Falling:
-                case CharacterState.FallingLeft:
-                case CharacterState.FallingRight:
-                    CharacterSprite.SetSet(BodyInfo.Fall, BodyInfo.Size);
-                    break;
-
-                case CharacterState.Jumping:
-                case CharacterState.JumpingLeft:
-                case CharacterState.JumpingRight:
-                    CharacterSprite.SetSet(BodyInfo.Jump, BodyInfo.Size);
-                    break;
-
-                case CharacterState.WalkingLeft:
-                case CharacterState.WalkingRight:
-                    CharacterSprite.SetSet(BodyInfo.Walk, BodyInfo.Size);
-                    break;
-            }
-#endif
         }
 
         #region IDrawable Members

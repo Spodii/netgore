@@ -61,7 +61,6 @@ namespace DemoGame.Editor
             this.selectedMapObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grhDatasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.npcChatEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.skeletonEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dbEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.musicEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.soundEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -160,7 +159,6 @@ namespace DemoGame.Editor
             this.grhTilesetViewMenuItem,
             this.grhDatasToolStripMenuItem,
             this.npcChatEditorToolStripMenuItem,
-            this.skeletonEditorToolStripMenuItem,
             this.dbEditorToolStripMenuItem,
             this.musicEditorToolStripMenuItem,
             this.soundEditorToolStripMenuItem,
@@ -188,13 +186,6 @@ namespace DemoGame.Editor
             this.npcChatEditorToolStripMenuItem.Name = "npcChatEditorToolStripMenuItem";
             resources.ApplyResources(this.npcChatEditorToolStripMenuItem, "npcChatEditorToolStripMenuItem");
             this.npcChatEditorToolStripMenuItem.Click += new System.EventHandler(this.npcChatEditorToolStripMenuItem_Click);
-            // 
-            // skeletonEditorToolStripMenuItem
-            // 
-            this.skeletonEditorToolStripMenuItem.CheckOnClick = true;
-            this.skeletonEditorToolStripMenuItem.Name = "skeletonEditorToolStripMenuItem";
-            resources.ApplyResources(this.skeletonEditorToolStripMenuItem, "skeletonEditorToolStripMenuItem");
-            this.skeletonEditorToolStripMenuItem.Click += new System.EventHandler(this.skeletonEditorToolStripMenuItem_Click);
             // 
             // dbEditorToolStripMenuItem
             // 
@@ -433,7 +424,6 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem selectedMapObjectsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem grhDatasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem npcChatEditorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem skeletonEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dbEditorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem particleEffectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadPEToolStripMenuItem;

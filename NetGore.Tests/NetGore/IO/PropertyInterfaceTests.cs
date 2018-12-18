@@ -4,11 +4,6 @@ using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 
-// ReSharper disable MemberCanBePrivate.Local
-// ReSharper disable RedundantTypeArgumentsOfMethod
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-// ReSharper disable UnusedMember.Local
-
 namespace NetGore.Tests.NetGore.IO
 {
     class NonPublicWithNestedPublic

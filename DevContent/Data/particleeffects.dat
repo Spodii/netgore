@@ -379,7 +379,7 @@
             <Emitter>
               <Name>blood</Name>
               <BlendMode>Alpha</BlendMode>
-              <Budget>100</Budget>
+              <Budget>10</Budget>
               <EmitterLife>1</EmitterLife>
               <ParticleLife>
                 <Min>100</Min>
@@ -387,8 +387,8 @@
               </ParticleLife>
               <Origin>0,0</Origin>
               <ReleaseAmount>
-                <Min>15</Min>
-                <Max>25</Max>
+                <Min>1</Min>
+                <Max>3</Max>
               </ReleaseAmount>
               <ReleaseColor>
                 <Min>100,0,0,255</Min>
@@ -396,7 +396,7 @@
               </ReleaseColor>
               <ReleaseRate>
                 <Min>1000</Min>
-                <Max>1000</Max>
+                <Max>2000</Max>
               </ReleaseRate>
               <ReleaseRotation>
                 <Min>0</Min>
@@ -407,8 +407,8 @@
                 <Max>1</Max>
               </ReleaseScale>
               <ReleaseSpeed>
-                <Min>10</Min>
-                <Max>150</Max>
+                <Min>30</Min>
+                <Max>100</Max>
               </ReleaseSpeed>
               <Grh>62</Grh>
               <CustomValues>

@@ -4,8 +4,6 @@ using System.Linq;
 using NetGore.Collections;
 using NUnit.Framework;
 
-// ReSharper disable UnusedMember.Local
-
 namespace NetGore.Tests.NetGore.Collections
 {
     [TestFixture]

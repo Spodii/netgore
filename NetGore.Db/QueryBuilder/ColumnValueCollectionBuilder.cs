@@ -23,10 +23,8 @@ namespace NetGore.Db.QueryBuilder
         /// <exception cref="ArgumentNullException"><paramref name="settings"/> is null.</exception>
         public ColumnValueCollectionBuilder(T owner, IQueryBuilderSettings settings)
         {
-            // ReSharper disable CompareNonConstrainedGenericWithNull
             if (owner == null)
                 throw new ArgumentNullException("owner");
-            // ReSharper restore CompareNonConstrainedGenericWithNull
 
             if (settings == null)
                 throw new ArgumentNullException("settings");

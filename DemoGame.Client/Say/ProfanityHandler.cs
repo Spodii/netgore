@@ -24,7 +24,6 @@ namespace DemoGame.Client.Say
 
         public ProfanityHandler()
         {
-
             try
             {
                 string path = ContentPaths.Build.Data.Join("lang_filter.txt");
@@ -33,15 +32,11 @@ namespace DemoGame.Client.Say
                 _profaneWords = File.ReadAllLines(path).ToList();
                 string expString = string.Format("({0})\\b", string.Join("|", _profaneWords));
                 _regularExpression = new Regex(expString, RegexOptions.IgnoreCase);
-
-
-
             }
             catch (FileNotFoundException exception)
             {
                 Debug.Fail("Language filter is missing; failing...");
             }
-
         }
 
         /// <summary>

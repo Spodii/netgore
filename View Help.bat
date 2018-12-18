@@ -1,1 +1,0 @@
-START "" "http://www.netgore.com/wiki/Beginners_Guide"

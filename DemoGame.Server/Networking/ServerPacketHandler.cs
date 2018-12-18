@@ -16,9 +16,6 @@ using NetGore.Network;
 using NetGore.World;
 using System.Collections.Generic;
 
-// ReSharper disable UnusedMember.Local
-// ReSharper disable UnusedParameter.Local
-
 namespace DemoGame.Server
 {
     partial class ServerPacketHandler : IGetTime
@@ -63,6 +60,52 @@ namespace DemoGame.Server
         public World World
         {
             get { return Server.World; }
+        }
+
+        [MessageHandler((uint)ClientPacketID.MoveDown)]
+        void RecvMoveDown(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) != null && !user.IsMovingDown)
+                user.MoveDown();
+        }
+
+        [MessageHandler((uint)ClientPacketID.MoveStopHorizontal)]
+        void RecvMoveStopHorizontal(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) != null && (user.IsMovingLeft || user.IsMovingRight))
+            {
+                if (user.IsPeerTrading)
+                    return;
+                user.StopMovingHorizontal();
+            }
+        }
+
+        [MessageHandler((uint)ClientPacketID.MoveStopVertical)]
+        void RecvMoveStopVertical(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) != null && (user.IsMovingUp || user.IsMovingDown))
+            {
+                if (user.IsPeerTrading)
+                    return;
+
+                user.StopMovingVertical();
+            }
+        }
+
+        [MessageHandler((uint)ClientPacketID.MoveUp)]
+        void RecvMoveUp(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) != null && !user.IsMovingUp)
+            {
+                if (user.IsPeerTrading)
+                    return;
+
+                user.MoveUp();
+            }
         }
 
         static Character GetTargetCharacter(Character user, MapEntityIndex? index)

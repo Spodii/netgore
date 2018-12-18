@@ -23,9 +23,6 @@ using NetGore.Stats;
 using NetGore.World;
 using SFML.Graphics;
 
-// ReSharper disable UnusedMember.Local
-// ReSharper disable UnusedParameter.Local
-
 namespace DemoGame.Client
 {
     /// <summary>
@@ -357,8 +354,7 @@ namespace DemoGame.Client
             var character = dynamicEntity as Character;
             if (character != null)
             {
-                // HACK: Having to call this .Initialize() and pass these parameters seems hacky
-                character.Initialize(Map, GameplayScreen.SkeletonManager);
+                character.Initialize(Map);
             }
 
             if (log.IsInfoEnabled)
@@ -446,7 +442,7 @@ namespace DemoGame.Client
             var cash = r.ReadInt();
 
             var param = new string[] {exp.ToString(),cash.ToString()};
-            var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatRecieveReward, param);
+            var message = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CombatReceiveReward, param);
 
             GameplayScreen.InfoBox.Add(message);
         }

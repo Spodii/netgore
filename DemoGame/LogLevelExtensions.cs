@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using log4net.Core;
+﻿using log4net.Core;
 using SFML.Graphics;
 
 namespace DemoGame

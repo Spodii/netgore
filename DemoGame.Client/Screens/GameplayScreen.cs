@@ -33,7 +33,6 @@ namespace DemoGame.Client
         static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
-        readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
 
         AvailableQuestsForm _availableQuestsForm;
@@ -171,14 +170,6 @@ namespace DemoGame.Client
         public ShopForm ShopForm
         {
             get { return _shopForm; }
-        }
-
-        /// <summary>
-        /// Gets the global SkeletonManager
-        /// </summary>
-        public SkeletonManager SkeletonManager
-        {
-            get { return _skelManager; }
         }
 
         public SkillCastProgressBar SkillCastProgressBar

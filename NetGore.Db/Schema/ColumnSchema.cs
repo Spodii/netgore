@@ -139,10 +139,7 @@ namespace NetGore.Db.Schema
                 if (r.IsDBNull(ordinal))
                 {
                     // Value is null
-
-                    // ReSharper disable AssignNullToNotNullAttribute
                     d.Add(v, null);
-                    // ReSharper restore AssignNullToNotNullAttribute
                 }
                 else
                 {

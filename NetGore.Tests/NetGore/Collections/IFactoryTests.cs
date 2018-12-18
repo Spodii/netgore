@@ -27,9 +27,7 @@ namespace NetGore.Tests.NetGore.Collections
 
             Func<int, string> creator = delegate(int key)
             {
-                // ReSharper disable AccessToModifiedClosure
                 createCount++;
-                // ReSharper restore AccessToModifiedClosure
 
                 return key.ToString();
             };
@@ -66,9 +64,7 @@ namespace NetGore.Tests.NetGore.Collections
 
             Func<int, string> creator = delegate(int key)
             {
-                // ReSharper disable AccessToModifiedClosure
                 createCount++;
-                // ReSharper restore AccessToModifiedClosure
 
                 return key.ToString();
             };
@@ -234,7 +230,6 @@ namespace NetGore.Tests.NetGore.Collections
         {
             const int numKeysAccessed = 100;
 
-            // ReSharper disable AccessToModifiedClosure
             var createCount = 0;
 
             Func<int, string> creator = delegate(int key)
@@ -294,7 +289,6 @@ namespace NetGore.Tests.NetGore.Collections
                 // Make sure the objects were only created the needed number of times
                 Assert.AreEqual(numKeysAccessed, createCount);
             }
-            // ReSharper restore AccessToModifiedClosure
         }
 
         #endregion

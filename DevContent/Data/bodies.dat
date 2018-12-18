@@ -5,8 +5,6 @@
     <Item0>
       <ID>1</ID>
       <Body>body.naked</Body>
-      <Fall />
-      <Jump />
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
@@ -16,8 +14,6 @@
     <Item1>
       <ID>2</ID>
       <Body>body.iron</Body>
-      <Fall />
-      <Jump />
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
@@ -27,8 +23,6 @@
     <Item2>
       <ID>3</ID>
       <Body>body.gold</Body>
-      <Fall />
-      <Jump />
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
@@ -38,8 +32,6 @@
     <Item3>
       <ID>4</ID>
       <Body>body.black</Body>
-      <Fall />
-      <Jump />
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
@@ -49,8 +41,6 @@
     <Item4>
       <ID>5</ID>
       <Body>sprites.bee</Body>
-      <Fall />
-      <Jump />
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>
@@ -60,8 +50,6 @@
     <Item5>
       <ID>6</ID>
       <Body>sprites.soldier</Body>
-      <Fall />
-      <Jump />
       <Attack>walk</Attack>
       <Stand>stand</Stand>
       <Walk>walk</Walk>

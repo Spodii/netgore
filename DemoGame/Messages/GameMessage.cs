@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace DemoGame
 {
     /// <summary>
@@ -49,13 +47,12 @@ namespace DemoGame
         CombatStatusEffectGained,
 
         /// <summary>
-        /// A message recieved after defeating a monster
+        /// A message received after defeating a monster
         /// </summary>
-        CombatRecieveReward,
-
+        CombatReceiveReward,
 
         /// <summary>
-        /// A message recieved for when you level up
+        /// A message received for when you level up
         /// </summary>
         CombatSelfLevelUp, 
 

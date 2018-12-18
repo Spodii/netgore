@@ -45,8 +45,6 @@ namespace DemoGame.Editor
             Teleport(new Vector2(charInfo.RespawnX, charInfo.RespawnY));
             Resize(BodyInfo.Size);
             Name = charInfo.Name;
-
-            Initialize(map, SkeletonManager.Create(ContentPaths.Build));
         }
 
         public CharacterID CharacterID

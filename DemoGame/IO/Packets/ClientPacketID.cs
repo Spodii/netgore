@@ -52,16 +52,10 @@ namespace DemoGame
         UseInventoryItem,
         UseSkill,
         UseWorld,
-
-#if TOPDOWN
-    // Top-down only
         MoveStopHorizontal,
         MoveStopVertical,
         MoveUp,
         MoveDown,
-#else
-        // Side-scroller only
-        Jump,
-#endif
+
     }
 }

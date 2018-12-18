@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using NetGore.IO;
 using NetGore.World;
 using NUnit.Framework;
 using SFML.Graphics;
-
-// ReSharper disable MemberCanBePrivate.Local
 
 namespace NetGore.Tests.NetGore
 {

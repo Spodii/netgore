@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.Db;
@@ -13,8 +12,6 @@ namespace NetGore.Features.Banning
     public abstract class BanningManagerBase<TAccountID> : IBanningManager<TAccountID>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        // ReSharper disable ClassNeverInstantiated.Local
 
         readonly IDbController _dbController;
         readonly StoredProcGetReasons _procGetReasons;

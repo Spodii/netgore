@@ -478,8 +478,6 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
 
         class PreviewCharacter : Entity, IGetTime
         {
-            static readonly SkeletonManager _skeletonManager = SkeletonManager.Create(ContentPaths.Build);
-
             readonly ICharacterSprite _characterSprite;
 
             BodyID _body;
@@ -489,7 +487,8 @@ Press ""OK"" to delete the character, or ""Cancel"" to abort.";
             /// </summary>
             public PreviewCharacter()
             {
-                _characterSprite = Character.CreateCharacterSprite(this, this, _skeletonManager);
+                _characterSprite = Character.CreateCharacterSprite(this, this);
+                _characterSprite.Paperdoll = true;
             }
 
             public BodyID Body

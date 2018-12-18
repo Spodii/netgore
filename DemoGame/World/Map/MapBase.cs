@@ -52,9 +52,6 @@ namespace DemoGame
         /// </summary>
         const int _findValidPlacementPadding = 128;
 
-        const string _headerNodeCustomGravityKey = "CustomGravity";
-        const string _headerNodeGravityKey = "Gravity";
-
         const string _headerNodeHasMusicKey = "HasMusic";
         const string _headerNodeIndoorsKey = "Indoors";
         const string _headerNodeMusicKey = "MusicID";
@@ -873,11 +870,6 @@ namespace DemoGame
             _size = nodeReader.ReadVector2(_headerNodeSizeKey);
             Indoors = nodeReader.ReadBool(_headerNodeIndoorsKey);
 
-            var customGravity = nodeReader.ReadBool(_headerNodeCustomGravityKey);
-            _gravity = nodeReader.ReadVector2(_headerNodeGravityKey);
-            if (!customGravity)
-                _gravity = null;
-
             Debug.Assert(Size.X > 0 && Size.Y > 0);
 
             // Set the size for the spatial
@@ -1170,8 +1162,6 @@ namespace DemoGame
                 w.Write(_headerNodeMusicKey, MusicID.HasValue ? MusicID.Value : new MusicID(0));
                 w.Write(_headerNodeSizeKey, Size);
                 w.Write(_headerNodeIndoorsKey, Indoors);
-                w.Write(_headerNodeCustomGravityKey, _gravity.HasValue);
-                w.Write(_headerNodeGravityKey, _gravity.HasValue ? _gravity.Value : Vector2.Zero);
             }
             w.WriteEndNode(_headerNodeName);
         }
@@ -1388,21 +1378,6 @@ namespace DemoGame
         public IEnumerable<Entity> Entities
         {
             get { return _entities; }
-        }
-
-        /// <summary>
-        /// Gets the gravity to use on the map.
-        /// </summary>
-        [Browsable(false)]
-        public Vector2 Gravity
-        {
-            get
-            {
-                if (_gravity.HasValue)
-                    return _gravity.Value;
-                else
-                    return EngineSettings.Instance.Gravity;
-            }
         }
 
         /// <summary>

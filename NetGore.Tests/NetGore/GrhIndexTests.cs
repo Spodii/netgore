@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace NetGore.Tests
 {
@@ -19,11 +18,9 @@ namespace NetGore.Tests
         [Test]
         public void EqualsTest()
         {
-            // ReSharper disable EqualExpressionComparison
             Assert.AreEqual(new GrhIndex(5), new GrhIndex(5));
             Assert.IsTrue(new GrhIndex(5) == new GrhIndex(5));
             Assert.IsTrue(new GrhIndex(5).Equals(new GrhIndex(5)));
-            // ReSharper restore EqualExpressionComparison
         }
 
         [Test]

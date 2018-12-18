@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 
-// ReSharper disable RedundantCast
-
 namespace NetGore.Tests.NetGore
 {
     [TestFixture]

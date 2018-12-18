@@ -37,9 +37,7 @@ namespace NetGore.Features.Guilds
             _name = name;
             _tag = tag;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Save();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>

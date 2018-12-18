@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace DemoGame.Server
 {
     /// <summary>
@@ -7,7 +5,6 @@ namespace DemoGame.Server
     /// </summary>
     public class NPCEquipped : CharacterEquipped
     {
-        // ReSharper disable SuggestBaseTypeForParameter
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCEquipped"/> class.
@@ -17,6 +14,5 @@ namespace DemoGame.Server
         {
         }
 
-        // ReSharper restore SuggestBaseTypeForParameter
     }
 }
