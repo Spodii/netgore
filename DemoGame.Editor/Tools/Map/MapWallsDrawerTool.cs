@@ -150,7 +150,6 @@ namespace DemoGame.Editor.Tools
                         {
                             tmpWall.Size = wall.Size != Vector2.Zero ? wall.Size * mg.Scale : mg.Size;
                             tmpWall.Position = mg.Position + (wall.Position * mg.Scale);
-                            tmpWall.IsPlatform = wall.IsPlatform;
                             EntityDrawer.Draw(spriteBatch, camera, tmpWall);
                         }
                     }

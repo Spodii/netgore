@@ -30,7 +30,7 @@ namespace DemoGame
         /// <returns>The deep copy of this object.</returns>
         public override WallEntityBase DeepCopy()
         {
-            return new WallEntity(Position, Size) { IsPlatform = IsPlatform, Weight = Weight };
+            return new WallEntity(Position, Size) { Weight = Weight };
         }
     }
 }

@@ -48,20 +48,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the maximum number of pixels an <see cref="Entity"/> can "step up" when walking into a wall. If the top of the
-        /// wall that they walk into the side of minus the bottom of the entity is less than or equal to this value, the
-        /// <see cref="Entity"/> will be moved on top of the wall instead of being blocked off by it.
-        /// </summary>
-        public int MaxWallStepUpHeight
-        {
-            get
-            {
-                return 0;
-
-            }
-        }
-
-        /// <summary>
         /// Gets the frequently, in milliseconds, that spatialized sounds are updated.
         /// </summary>
         public uint SoundUpdateRate
@@ -97,7 +83,7 @@ namespace NetGore
         /// <param name="soundAttenuation">The <see cref="SoundAttenuation"/>.</param>
         /// <param name="maxWallStepUpHeight">The <see cref="MaxWallStepUpHeight"/>.</param>
         /// <param name="soundUpdateRate">The <see cref="SoundUpdateRate"/>.</param>
-        public EngineSettings(Vector2 gravity, Vector2 maxVelocity, float soundListenerDepth = 300f, float soundMinDistance = 600f,
+        public EngineSettings(Vector2 maxVelocity, float soundListenerDepth = 300f, float soundMinDistance = 600f,
                               float soundAttenuation = 3f, int maxWallStepUpHeight = 5, uint soundUpdateRate = 1000u)
         {
             _maxVelocity = maxVelocity.Abs();

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using NetGore.World;
 
 namespace NetGore.Editor.Grhs
@@ -24,8 +23,7 @@ namespace NetGore.Editor.Grhs
         /// <returns>The string to display.</returns>
         static string GetDrawString(WallEntityBase item)
         {
-            return string.Format("({0},{1}) [{2}x{3}]{4}", item.Position.X, item.Position.Y, item.Size.X, item.Size.Y,
-                item.IsPlatform ? " - Platform" : string.Empty);
+            return string.Format("({0},{1}) [{2}x{3}]", item.Position.X, item.Position.Y, item.Size.X, item.Size.Y);
         }
 
         /// <summary>

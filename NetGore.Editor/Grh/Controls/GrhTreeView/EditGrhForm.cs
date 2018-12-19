@@ -434,20 +434,6 @@ namespace NetGore.Editor.Grhs
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the chkPlatform control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void chkPlatform_CheckedChanged(object sender, EventArgs e)
-        {
-            var wall = lstWalls.SelectedItem as WallEntityBase;
-            if (wall == null)
-                return;
-
-            wall.IsPlatform = chkPlatform.Checked;
-        }
-
-        /// <summary>
         /// Handles the SelectedIndexChanged event of the lstWalls control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -470,7 +456,6 @@ namespace NetGore.Editor.Grhs
                 txtWallY.Text = wall.Position.Y.ToString();
                 txtWallW.Text = wall.Size.X.ToString();
                 txtWallH.Text = wall.Size.Y.ToString();
-                chkPlatform.Checked = wall.IsPlatform;
             }
         }
 

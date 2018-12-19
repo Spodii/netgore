@@ -89,7 +89,6 @@ namespace NetGore.Editor.Grhs
                     newWallEntity.Size = wall.Size != Vector2.Zero ? wall.Size * mg.Scale : mg.Size;
                     newWallEntity.Position = mg.Position + (wall.Position * mg.Scale);
                     newWallEntity.BoundGrhIndex = mg.Grh.GrhData.GrhIndex;
-                    newWallEntity.IsPlatform = wall.IsPlatform;
                     ret.Add(newWallEntity);
                 }
             }

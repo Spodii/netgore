@@ -2,13 +2,11 @@
 <Map>
   <Header>
     <Name>Shop</Name>
-	<ParentMapID>1</ParentMapID>
+    <ParentMapID>1</ParentMapID>
     <HasMusic>False</HasMusic>
     <MusicID>0</MusicID>
     <Size>960,750</Size>
     <Indoors>True</Indoors>
-    <CustomGravity>False</CustomGravity>
-    <Gravity>0,0</Gravity>
   </Header>
   <Walls>
     <Count>15</Count>
@@ -4895,7 +4893,7 @@
         <Item429>
           <GrhIndex>804</GrhIndex>
           <Color>255,255,255,255</Color>
-          <LayerDepth>0</LayerDepth>
+          <LayerDepth>-5</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
           <Position>448,480</Position>
@@ -4906,7 +4904,7 @@
         <Item430>
           <GrhIndex>804</GrhIndex>
           <Color>255,255,255,255</Color>
-          <LayerDepth>-5</LayerDepth>
+          <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
           <Position>448,512</Position>
@@ -5267,37 +5265,37 @@
           <SpriteEffects>None</SpriteEffects>
         </Item462>
         <Item463>
-          <GrhIndex>742</GrhIndex>
+          <GrhIndex>96</GrhIndex>
           <Color>255,255,255,255</Color>
-          <LayerDepth>-3</LayerDepth>
-          <MapRenderLayer>SpriteForeground</MapRenderLayer>
+          <LayerDepth>-5</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>480,512</Position>
+          <Position>480,608</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
-          <SpriteEffects>FlipHorizontally</SpriteEffects>
+          <SpriteEffects>None</SpriteEffects>
         </Item463>
         <Item464>
-          <GrhIndex>742</GrhIndex>
+          <GrhIndex>96</GrhIndex>
           <Color>255,255,255,255</Color>
-          <LayerDepth>-3</LayerDepth>
-          <MapRenderLayer>SpriteForeground</MapRenderLayer>
+          <LayerDepth>-5</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>480,544</Position>
+          <Position>480,640</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
-          <SpriteEffects>FlipHorizontally</SpriteEffects>
+          <SpriteEffects>None</SpriteEffects>
         </Item464>
         <Item465>
-          <GrhIndex>742</GrhIndex>
+          <GrhIndex>96</GrhIndex>
           <Color>255,255,255,255</Color>
-          <LayerDepth>-3</LayerDepth>
-          <MapRenderLayer>SpriteForeground</MapRenderLayer>
+          <LayerDepth>-5</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>480,576</Position>
+          <Position>480,672</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
-          <SpriteEffects>FlipHorizontally</SpriteEffects>
+          <SpriteEffects>None</SpriteEffects>
         </Item465>
         <Item466>
           <GrhIndex>96</GrhIndex>
@@ -5305,7 +5303,7 @@
           <LayerDepth>-5</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>480,608</Position>
+          <Position>480,704</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5316,45 +5314,12 @@
           <LayerDepth>-5</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>480,640</Position>
+          <Position>480,736</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item467>
         <Item468>
-          <GrhIndex>96</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>-5</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>480,672</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item468>
-        <Item469>
-          <GrhIndex>96</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>-5</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>480,704</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item469>
-        <Item470>
-          <GrhIndex>96</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>-5</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>480,736</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item470>
-        <Item471>
           <GrhIndex>728</GrhIndex>
           <Color>255,255,255,255</Color>
           <LayerDepth>0</LayerDepth>
@@ -5364,14 +5329,47 @@
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
-        </Item471>
-        <Item472>
+        </Item468>
+        <Item469>
           <GrhIndex>756</GrhIndex>
           <Color>255,255,255,255</Color>
           <LayerDepth>2</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
           <Position>512,0</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item469>
+        <Item470>
+          <GrhIndex>731</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>7</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,32</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item470>
+        <Item471>
+          <GrhIndex>731</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>7</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,64</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item471>
+        <Item472>
+          <GrhIndex>731</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>7</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,96</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5382,7 +5380,7 @@
           <LayerDepth>7</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,32</Position>
+          <Position>512,128</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5393,51 +5391,51 @@
           <LayerDepth>7</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,64</Position>
+          <Position>512,160</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item474>
         <Item475>
-          <GrhIndex>731</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>7</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>512,96</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item475>
-        <Item476>
-          <GrhIndex>731</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>7</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>512,128</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item476>
-        <Item477>
-          <GrhIndex>731</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>7</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>512,160</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item477>
-        <Item478>
           <GrhIndex>740</GrhIndex>
           <Color>255,255,255,255</Color>
           <LayerDepth>3</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
           <Position>512,192</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item475>
+        <Item476>
+          <GrhIndex>804</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>0</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,192</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item476>
+        <Item477>
+          <GrhIndex>740</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>3</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,224</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item477>
+        <Item478>
+          <GrhIndex>804</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>0</LayerDepth>
+          <MapRenderLayer>SpriteBackground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,224</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5448,18 +5446,18 @@
           <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,192</Position>
+          <Position>512,256</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item479>
         <Item480>
-          <GrhIndex>740</GrhIndex>
+          <GrhIndex>804</GrhIndex>
           <Color>255,255,255,255</Color>
-          <LayerDepth>3</LayerDepth>
+          <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,224</Position>
+          <Position>512,288</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5470,7 +5468,7 @@
           <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,224</Position>
+          <Position>512,320</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5481,7 +5479,7 @@
           <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,256</Position>
+          <Position>512,352</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5492,7 +5490,7 @@
           <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,288</Position>
+          <Position>512,384</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5503,7 +5501,7 @@
           <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,320</Position>
+          <Position>512,416</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5514,18 +5512,18 @@
           <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,352</Position>
+          <Position>512,448</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item485>
         <Item486>
-          <GrhIndex>804</GrhIndex>
+          <GrhIndex>734</GrhIndex>
           <Color>255,255,255,255</Color>
           <LayerDepth>0</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
+          <MapRenderLayer>SpriteForeground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,384</Position>
+          <Position>512,480</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -5536,45 +5534,12 @@
           <LayerDepth>0</LayerDepth>
           <MapRenderLayer>SpriteBackground</MapRenderLayer>
           <Origin>0,0</Origin>
-          <Position>512,416</Position>
+          <Position>512,480</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item487>
         <Item488>
-          <GrhIndex>804</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>0</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>512,448</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item488>
-        <Item489>
-          <GrhIndex>734</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>0</LayerDepth>
-          <MapRenderLayer>SpriteForeground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>512,480</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item489>
-        <Item490>
-          <GrhIndex>804</GrhIndex>
-          <Color>255,255,255,255</Color>
-          <LayerDepth>0</LayerDepth>
-          <MapRenderLayer>SpriteBackground</MapRenderLayer>
-          <Origin>0,0</Origin>
-          <Position>512,480</Position>
-          <Rotation>0</Rotation>
-          <Scale>1,1</Scale>
-          <SpriteEffects>None</SpriteEffects>
-        </Item490>
-        <Item491>
           <GrhIndex>740</GrhIndex>
           <Color>255,255,255,255</Color>
           <LayerDepth>-3</LayerDepth>
@@ -5584,8 +5549,19 @@
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
-        </Item491>
-        <Item492>
+        </Item488>
+        <Item489>
+          <GrhIndex>742</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>-3</LayerDepth>
+          <MapRenderLayer>SpriteForeground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,512</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>FlipHorizontally</SpriteEffects>
+        </Item489>
+        <Item490>
           <GrhIndex>740</GrhIndex>
           <Color>255,255,255,255</Color>
           <LayerDepth>-3</LayerDepth>
@@ -5595,8 +5571,19 @@
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
-        </Item492>
-        <Item493>
+        </Item490>
+        <Item491>
+          <GrhIndex>742</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>-3</LayerDepth>
+          <MapRenderLayer>SpriteForeground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,544</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>FlipHorizontally</SpriteEffects>
+        </Item491>
+        <Item492>
           <GrhIndex>740</GrhIndex>
           <Color>255,255,255,255</Color>
           <LayerDepth>-3</LayerDepth>
@@ -5606,6 +5593,17 @@
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
+        </Item492>
+        <Item493>
+          <GrhIndex>742</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <LayerDepth>-3</LayerDepth>
+          <MapRenderLayer>SpriteForeground</MapRenderLayer>
+          <Origin>0,0</Origin>
+          <Position>512,576</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>FlipHorizontally</SpriteEffects>
         </Item493>
         <Item494>
           <GrhIndex>96</GrhIndex>

@@ -261,7 +261,6 @@ namespace DemoGame.Editor
             Map.SetGrhToPlace(grhData.GrhIndex);
         }
 
-
         /// <summary>
         /// Finds the next free <see cref="SoundID"/>.
         /// </summary>
@@ -278,7 +277,6 @@ namespace DemoGame.Editor
 
             return start;
         }
-
 
         public void AutoUpdateSounds()
         {
@@ -372,8 +370,6 @@ namespace DemoGame.Editor
 
         public void AutoUpdateMusic()
         {
-
-
             const string title = "Update music";
             const string confirmMsg = "The following changes are to be made (+ for add, - for remove):";
             const string upToDateMsg = "The music is already up-to-date.";
@@ -546,9 +542,9 @@ namespace DemoGame.Editor
                         size = Vector2.Zero;
                     }
 
-                    if (wallType == GrhData.BoundWallType.Solid || wallType == GrhData.BoundWallType.Platform)
+                    if (wallType == GrhData.BoundWallType.Solid)
                     {
-                        WallEntity wall = new WallEntity(position, size) { IsPlatform = wallType == GrhData.BoundWallType.Platform };
+                        WallEntity wall = new WallEntity(position, size);
                         wallList.Add(wall);
                     }
                 }

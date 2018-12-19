@@ -6,7 +6,6 @@
       <ID>1</ID>
       <Body>body.naked</Body>
       <Attack>walk</Attack>
-      <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>64,25</Size>
       <Paperdoll>True</Paperdoll>
@@ -15,7 +14,6 @@
       <ID>2</ID>
       <Body>body.iron</Body>
       <Attack>walk</Attack>
-      <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,25</Size>
       <Paperdoll>True</Paperdoll>
@@ -24,7 +22,6 @@
       <ID>3</ID>
       <Body>body.gold</Body>
       <Attack>walk</Attack>
-      <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,25</Size>
       <Paperdoll>True</Paperdoll>
@@ -33,7 +30,6 @@
       <ID>4</ID>
       <Body>body.black</Body>
       <Attack>walk</Attack>
-      <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>44,25</Size>
       <Paperdoll>True</Paperdoll>
@@ -42,7 +38,6 @@
       <ID>5</ID>
       <Body>sprites.bee</Body>
       <Attack>walk</Attack>
-      <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>32,40</Size>
       <Paperdoll>False</Paperdoll>
@@ -51,7 +46,6 @@
       <ID>6</ID>
       <Body>sprites.soldier</Body>
       <Attack>walk</Attack>
-      <Stand>stand</Stand>
       <Walk>walk</Walk>
       <Size>64,25</Size>
       <Paperdoll>False</Paperdoll>
